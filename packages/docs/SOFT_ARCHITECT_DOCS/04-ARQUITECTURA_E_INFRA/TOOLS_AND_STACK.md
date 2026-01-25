@@ -39,3 +39,8 @@ Tecnologías que componen la aplicación "SoftArchitect AI".
 
 ### Infraestructura
 * **Docker Compose:** Orquestación de servicios (BD, API, IA).
+
+| Herramienta | Uso Principal | Contexto |
+| :--- | :--- | :--- |
+| **n8n** | **Orquestador de Automatización** | Motor Low-Code autohosteado en el HomeLab. Gestiona la sincronización Git -> Notion y futuros flujos de CI/CD. |
+| **Notion API** | **CMS Headless** | Receptor de la documentación viva. Se integra mediante Webhooks y n8n. |
