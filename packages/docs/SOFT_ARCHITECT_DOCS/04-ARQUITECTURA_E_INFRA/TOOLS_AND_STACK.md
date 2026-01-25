@@ -11,6 +11,8 @@ Herramientas utilizadas para "construir al constructor".
 | **GEM "SoftArchitect AI"** | **Prototipado (Mago de Oz)** | Instancia personalizada de Gemini para simular el comportamiento del RAG antes de programar y validar los prompts del sistema. |
 | **Claude Sonnet** | **Analista de Conocimiento** | Extracción de información estructurada de los módulos del Máster y redacción del `MASTER_WORKFLOW_0-100.md`. |
 | **Notion** | **Gestión de Proyecto** | Seguimiento de tareas, checklist de hitos y repositorio de notas rápidas. |
+| **n8n** | **Orquestador de Automatización** | Motor Low-Code autohosteado en el HomeLab. Gestiona la sincronización Git -> Notion y futuros flujos de CI/CD. |
+| **Notion API** | **CMS Headless** | Receptor de la documentación viva. Se integra mediante Webhooks y n8n. |
 
 ## 2. Entorno de Desarrollo (Dev Environment)
 Infraestructura física y lógica donde se cocina el código.
@@ -39,8 +41,3 @@ Tecnologías que componen la aplicación "SoftArchitect AI".
 
 ### Infraestructura
 * **Docker Compose:** Orquestación de servicios (BD, API, IA).
-
-| Herramienta | Uso Principal | Contexto |
-| :--- | :--- | :--- |
-| **n8n** | **Orquestador de Automatización** | Motor Low-Code autohosteado en el HomeLab. Gestiona la sincronización Git -> Notion y futuros flujos de CI/CD. |
-| **Notion API** | **CMS Headless** | Receptor de la documentación viva. Se integra mediante Webhooks y n8n. |
