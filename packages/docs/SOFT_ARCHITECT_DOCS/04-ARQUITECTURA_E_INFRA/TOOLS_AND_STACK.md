@@ -11,15 +11,15 @@ Herramientas utilizadas para "construir al constructor".
 | **GEM "SoftArchitect AI"** | **Prototipado (Mago de Oz)** | Instancia personalizada de Gemini para simular el comportamiento del RAG antes de programar y validar los prompts del sistema. |
 | **Claude Sonnet** | **Analista de Conocimiento** | Extracción de información estructurada de los módulos del Máster y redacción del `MASTER_WORKFLOW_0-100.md`. |
 | **Notion** | **Gestión de Proyecto** | Seguimiento de tareas, checklist de hitos y repositorio de notas rápidas. |
-| **n8n** | **Orquestador de Automatización** | Motor Low-Code autohosteado en el HomeLab. Gestiona la sincronización Git -> Notion y futuros flujos de CI/CD. |
-| **Notion API** | **CMS Headless** | Receptor de la documentación viva. Se integra mediante Webhooks y n8n. |
+| **n8n** | **Orquestador de Automatización** | Motor Low-Code en HomeLab. Sincroniza la documentación y gestiona Webhooks. |
+| **Notion API** | **CMS de Conocimiento** | Destino final de la documentación viva. Integrado vía n8n. |
 
 ## 2. Entorno de Desarrollo (Dev Environment)
 Infraestructura física y lógica donde se cocina el código.
 
 | Herramienta | Uso | Configuración |
 | :--- | :--- | :--- |
-| **HomeLab (Ubuntu Server)** | **Servidor Principal** | Host de Docker, BD Vectorial y entorno de compilación remoto. |
+| **HomeLab (CasaOS)** | **Servidor Principal** | SO visual sobre Ubuntu. Gestiona Docker, Volúmenes y Redes de forma gráfica. |
 | **Portátil (Linux/Ryzen)** | **Cliente Fino** | Interfaz de usuario y entorno de pruebas para IA Local potente. |
 | **VS Code + Remote SSH** | **IDE** | Permite desarrollar en el HomeLab desde el portátil como si fuera local. |
 | **Tailscale** | **Red Mesh VPN** | Acceso seguro al entorno de desarrollo desde cualquier lugar sin abrir puertos. |
