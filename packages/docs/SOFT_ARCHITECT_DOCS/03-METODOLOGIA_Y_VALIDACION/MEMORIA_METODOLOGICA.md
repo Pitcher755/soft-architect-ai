@@ -32,6 +32,11 @@ El módulo de Infraestructura es la columna vertebral que hace viable este proye
 4.  **Observabilidad:**
     * Integración futura de herramientas de monitoreo para ver la latencia de las respuestas de la IA (concepto clave en LLMOps visto en el módulo).
 
+5.  **Automatización de Documentación (Docs-as-Code):**
+    * Se ha implementado un pipeline de **Integración Continua de Conocimiento**.
+    * La documentación reside junto al código (Markdown en Git), pero se despliega automáticamente a Notion mediante **n8n** y Webhooks.
+    * *Justificación:* Elimina la desincronización entre lo que hace el código y lo que dice la documentación, aplicando principios DevOps a la gestión del conocimiento.
+
 ---
 
 # 📓 Memoria Metodológica: Ingeniería y Decisiones Arquitectónicas

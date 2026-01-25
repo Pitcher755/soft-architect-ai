@@ -248,3 +248,30 @@ LLM_PROVIDER=cloud
 GROQ_API_KEY=gsk_tucodigosecreto...
 MODEL_NAME=llama-3.1-8b-instant
 Nota: El cambio es instantáneo al reiniciar el contenedor del backend (docker restart sa_api).
+
+---
+
+## 9. Gestión del Entorno con CasaOS y Automatización (n8n)
+
+Dado que el HomeLab utiliza **CasaOS** como interfaz de gestión, la configuración de contenedores críticos como **n8n** debe realizarse a través de su UI para garantizar la persistencia y la conectividad externa.
+
+### 9.1. Instalación y Configuración de n8n
+Para habilitar la automatización "Docs-as-Code" (Sincronización Git -> Notion), n8n requiere una configuración específica que difiere del docker-compose estándar.
+
+**Configuración en CasaOS UI:**
+Acceder a `Settings` del contenedor n8n y configurar:
+
+1.  **Comando de Arranque (Tunneling):**
+    * Para que GitHub pueda enviar Webhooks al servidor local sin abrir puertos en el router, se utiliza el túnel nativo de n8n.
+    * **Campo `Command`:** `start --tunnel`
+
+2.  **Persistencia de Datos (Volúmenes):**
+    * Es crítico mapear correctamente el volumen para no perder los Workflows al reiniciar.
+    * **Host Path:** `/DATA/AppData/n8n` (Ruta nativa de CasaOS).
+    * **Container Path:** `/home/node/.n8n` (Ruta interna estricta).
+
+### 9.2. Workflows Esenciales
+El sistema dispone de un flujo de automatización activo:
+* **Nombre:** `Docs Sync (Git -> Notion)`
+* **Función:** Escucha eventos `push` en GitHub, detecta cambios en archivos Markdown y actualiza la Base de Conocimiento en Notion.
+* **Troubleshooting:** Si Notion da error de conexión, verificar que el ID de la base de datos se pasa como "Expression" (texto fijo) y no mediante el selector dinámico de la UI.
