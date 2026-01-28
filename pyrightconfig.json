@@ -1,0 +1,29 @@
+{
+  "include": ["src/server/app"],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*",
+    "src/server/venv"
+  ],
+  "pythonVersion": "3.12",
+  "pythonPath": "src/server/venv/bin/python",
+  "typeCheckingMode": "basic",
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "reportUnusedImport": true,
+  "reportUnusedVariable": true,
+  "reportGeneralTypeIssues": true,
+  "reportOptionalMemberAccess": true,
+  "reportOptionalSubscript": true,
+  "reportPrivateImportUsage": true,
+  "reportConstantRedefinition": true,
+  "reportInvalidStringEscapeSequence": true,
+  "reportUnusedClass": true,
+  "reportUnusedFunction": true,
+  "reportUnusedParameter": true,
+  "reportUnnecessaryIsInstance": true,
+  "reportUnnecessaryCast": true,
+  "reportUnnecessaryComparison": true,
+  "reportUnusedExpression": true
+}

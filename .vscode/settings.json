@@ -1,0 +1,51 @@
+{
+  // Python Configuration
+  "python.defaultInterpreterPath": "${workspaceFolder}/src/server/venv/bin/python",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=120",
+    "--ignore=E203,W503"
+  ],
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": [
+    "--line-length=120"
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  
+  // Pylance Configuration
+  "pylance.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/src/server/app",
+    "${workspaceFolder}/src/server"
+  ],
+  "python.analysis.venvPath": "${workspaceFolder}/src/server",
+  
+  // Dart Configuration (for Flutter client)
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  
+  // General Editor Settings
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/node_modules": true,
+    "**/build": true,
+    "**/.flutter": true
+  },
+  "editor.formatOnSave": true,
+  "editor.rulers": [120],
+  "editor.wordWrap": "on"
+}
