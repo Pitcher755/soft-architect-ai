@@ -39,7 +39,7 @@ Para evitar el *scope creep*, estas funcionalidades quedan fuera del MVP:
 | Capa | Tecnología | Justificación |
 | :--- | :--- | :--- |
 | **Frontend** | **Flutter (Desktop)** | Rendimiento nativo, tipado fuerte, misma UI para Linux/Win/Mac. |
-| **Backend** | **Python (FastAPI)** | Ecosistema IA dominante, asíncrono, fácil integración con LangChain. |
-| **Orquestación IA** | **LangChain** | Abstracción para cambiar de modelos (Ollama/Groq) sin reescribir código. |
-| **Vector Store** | **ChromaDB** | Base de datos vectorial open-source, local, sin dependencias complejas. |
+| **Backend** | **Python (FastAPI)** | Soporte asíncrono, docs automáticas de API, validación Pydantic. |
+| **IA/RAG** | **LangChain + ChromaDB** | Orquestación de prompts y memoria, almacenamiento vectorial local. |
+| **Inferencia** | **Ollama (Local) / Groq (Cloud)** | Privacidad por defecto con fallback de rendimiento. |
 | **Infra** | **Docker Compose** | Despliegue en un solo comando (`docker compose up`). |

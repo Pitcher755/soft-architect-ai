@@ -16,7 +16,6 @@ El desarrollador (y el Agente) deben asegurar que todos los elementos interactiv
     * *Regla:* No eliminar el `FocusNode` por defecto sin proveer una alternativa visual.
 * [ ] **Atajos de Teclado:**
     * `Ctrl + Enter`: Enviar mensaje en el chat.
-    * `Ctrl + N`: Nuevo Chat.
     * `Esc`: Cerrar modales o diálogos.
 
 ---
@@ -40,16 +39,32 @@ La UI debe ser "leíble" por herramientas como NVDA (Windows) o Orca (Linux).
 
 ---
 
-## 4. Auditoría Automática (Dev Workflow)
+## 4. Independencia de Color
 
-Antes de cerrar una Pull Request de UI:
+* [ ] **Sin Dependencia de Color:** La información no se transmite solo a través del color (ej: estados de error tienen iconos + texto).
+* [ ] **Simulación de Daltonismo:** Probar con herramientas como Color Oracle para asegurar usabilidad para usuarios daltónicos.
 
-1.  Activar el inspector de accesibilidad de Flutter:
-    ```dart
-    // En main.dart (solo debug)
-    MaterialApp(
-      showSemanticsDebugger: true, // Muestra la capa semántica visualmente
-      ...
-    )
-    ```
-2.  Verificar que las áreas táctiles/clicables sean de al menos 44x44px.
+---
+
+## 5. Movimiento y Animación
+
+* [ ] **Movimiento Reducido:** Respetar la configuración del sistema para movimiento reducido (deshabilitar animaciones si se solicita).
+* [ ] **Duración de Animación:** Ninguna animación más larga de 5 segundos sin control de pausa.
+
+---
+
+## 6. Auditoría Automática (Dev Workflow)
+
+* [ ] **Reglas de Linting:** Habilitar `flutter_lints` con reglas de accesibilidad.
+* [ ] **Testing:** Incluir tests de accesibilidad en la suite de tests.
+    * *Ejemplo:* Verificar que todos los elementos interactivos tengan etiquetas semánticas.
+
+---
+
+## 7. Checklist de Testing Manual
+
+* [ ] Navegar toda la app usando solo Tab y Enter.
+* [ ] Usar lector de pantalla para leer todos los elementos UI.
+* [ ] Probar con modo de alto contraste habilitado.
+* [ ] Verificar que las áreas táctiles/clicables sean de al menos 44x44px.
+* [ ] Probar con tamaño de fuente del sistema aumentado al 200%.

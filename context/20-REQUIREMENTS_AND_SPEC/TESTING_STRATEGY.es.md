@@ -1,7 +1,7 @@
 # 🧪 Estrategia de Testing y QA
 
 > **Filosofía:** "Si no está probado, está roto".
-> **Metodología:** TDD (Test Driven Development) estricto para la lógica del Backend.
+> **Metodología:** TDD (Test Driven Development) obligatorio para lógica crítica del Backend.
 
 ---
 
@@ -11,18 +11,16 @@
 * **Objetivo:** Verificar la lógica de negocio aislada.
 * **Backend (Python/Pytest):**
     * Parsers de Markdown.
-    * Lógica de sanitización de prompts.
     * Funciones de utilidad de LangChain (sin llamar al LLM real, usando Mocks).
 * **Frontend (Flutter Test):**
     * Parsers de JSON.
-    * Lógica de StateNotifiers (Riverpod).
     * Validadores de formularios.
 
 ### Nivel 2: Integration Tests (20%)
 * **Objetivo:** Verificar que los componentes hablan entre sí.
 * **Backend:**
     * Testear que el endpoint `/chat` recibe un JSON y devuelve un Stream (usando `TestClient` de FastAPI).
-    * Verificar la conexión con ChromaDB (usando una DB en memoria o container efímero).
+    * Verificar la conexión con ChromaDB (usando DB en memoria o container efímero).
 * **Frontend:**
     * Verificar que el repositorio llama al Datasource correctamente.
 
@@ -51,16 +49,19 @@ Para cualquier lógica crítica (especialmente en `src/server`), se sigue el cic
 | **Backend** | Unit/Int | `pytest` | `docker compose exec api-server pytest` |
 | **Backend** | Async | `pytest-asyncio` | (Incluido en suite anterior) |
 | **Frontend** | Unit/Widget | `flutter_test` | `cd src/client && flutter test` |
-| **Frontend** | Integration | `integration_test` | `flutter test integration_test/app_test.dart` |
+| **E2E** | Full | `flutter_driver` | `cd src/client && flutter drive --target=test_driver/app.dart` |
 
 ---
 
-## 4. Gestión de LLMs en Tests
+## 4. Datos de Test y Mocks
 
-**Regla de Oro:** NUNCA llamar a un LLM real (Ollama o Groq) en los tests unitarios.
-* Son lentos.
-* Cuestan dinero/recursos.
-* No son deterministas (pueden dar respuestas diferentes).
+* **Backend:** Usar `pytest-mock` para respuestas LLM. Simular que el LLM devuelve "Hola mundo" instantáneamente para probar que la UI lo pinta bien.
+* **Frontend:** Usar `mockito` para repositorios. Mockear respuestas API para testear estados de error.
 
-**Solución:** Usar **Mocks**.
-* Simular que el LLM devuelve "Hola mundo" instantáneamente para probar que la UI lo pinta bien.
+---
+
+## 5. Integración CI/CD
+
+* **GitHub Actions:** Ejecutar tests en cada PR a `develop`.
+* **Coverage:** Forzar >80% cobertura con `coverage.py` (Python) y `flutter_test --coverage` (Dart).
+* **Mutation Testing:** Usar `mutmut` para Python para asegurar que los tests son robustos.

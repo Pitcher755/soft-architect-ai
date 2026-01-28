@@ -96,8 +96,6 @@ Para que la experiencia sea fluida como la seda, ejecuta estos ajustes una sola 
 VS Code intenta ejecutar comandos de Docker con tu usuario. Si necesita `sudo` cada vez, fallará silenciosamente.
 
 ```bash
-# Añade tu usuario al grupo docker
-sudo usermod -aG docker $USER
 # Aplica los cambios sin reiniciar
 newgrp docker
 # Prueba que funciona (debe decir "Hello from Docker!")
@@ -304,3 +302,4 @@ En la carpeta `infrastructure`, asegúrate de que el `docker-compose.yml` tiene 
 ```bash
 cd infrastructure
 docker compose up -d
+```

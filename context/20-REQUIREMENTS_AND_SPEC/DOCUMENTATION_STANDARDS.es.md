@@ -10,17 +10,14 @@
 * **Audiencia:** Humanos (Desarrolladores, Auditores, Usuarios).
 * **Contenido:**
     * Cómo instalar el proyecto (`SETUP_GUIDE`).
-    * Por qué tomamos esta decisión (`adr/`).
-    * Estado de los Sprints y User Stories (`user-stories/`).
     * La memoria del TFM (`MEMORIA_METODOLOGICA`).
 * **Formato:** Markdown libre, explicativo, con diagramas Mermaid si es necesario.
 
 ### 🧠 `packages/knowledge_base/` (Cerebro RAG / Assets)
 * **Audiencia:** Agentes de IA (ArchitectZero).
 * **Contenido:**
-    * **Reglas puras:** "En Flutter se usa camelCase".
-    * **Plantillas:** Archivos `.template.md` vacíos para rellenar.
-    * **Facts:** Datos técnicos objetivos sobre las tecnologías usadas.
+    * Reglas puras: "En Flutter se usa camelCase".
+    * Facts: Datos técnicos objetivos sobre las tecnologías usadas.
 * **Formato:** Markdown estricto, atómico (archivos pequeños), optimizado para ser vectorizado (Chunking friendly). Evitar introducciones largas. Ir al grano.
 
 ---
@@ -39,8 +36,10 @@
     * Usar bloques de código para ejemplos (` ```python `).
 3.  **Meta-data:** Si es posible, incluir un bloque de frontmatter o una cabecera de contexto:
     ```markdown
-    > **Contexto:** Flutter / Riverpod Rules
-    > **Uso:** Consultar al generar StateNotifiers.
+    ---
+    tech: flutter
+    category: state-management
+    ---
     ```
 
 ---
@@ -51,7 +50,16 @@ Se recomienda el uso de **Mermaid.js** incrustado en el Markdown para diagramas 
 
 ```mermaid
 graph TD;
-    A[User Input] --> B(Flutter Client);
-    B --> C{Backend API};
-    C -->|Local| D[Ollama];
-    C -->|Cloud| E[Groq];
+    A[Usuario] --> B[App Flutter]
+    B --> C[API Python]
+    C --> D[Ollama Local]
+    C --> E[Groq Cloud]
+```
+
+---
+
+## 4. Versionado y Actualizaciones
+
+* **Control de Versiones:** Toda la documentación se versiona con el código.
+* **Proceso de Revisión:** Los cambios en documentación requieren revisión por al menos otro miembro del equipo.
+* **Accesibilidad:** Asegurar que los diagramas tengan alt text y los bloques de código tengan resaltado de sintaxis.

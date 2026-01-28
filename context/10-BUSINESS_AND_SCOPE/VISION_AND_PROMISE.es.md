@@ -31,24 +31,26 @@ El desarrollo de software moderno sufre de tres patologías críticas que SoftAr
 
 Implementamos un sistema **RAG (Retrieval-Augmented Generation)** altamente especializado que opera bajo principios estrictos:
 
-* **Local-First & Privado:** A diferencia de las soluciones SaaS, SoftArchitect puede correr 100% offline usando **Ollama** y **ChromaDB**. Tus ideas y tu código nunca salen de tu máquina si no quieres.
-* **Arquitectura Fractal:** El sistema entiende que un proyecto Flutter tiene necesidades distintas a un backend Python. Utiliza **Tech Packs** modulares para cambiar su "personalidad técnica" dinámicamente.
-* **Workflow Forzado:** La herramienta guía al usuario a través del *Master Workflow*: `Requirements` -> `Architecture` -> `Tests` -> `Code`. No permite avanzar sin validar la etapa anterior.
+* **Inteligencia Contextual:** La IA "recuerda" las reglas de tu proyecto a través de "Tech Packs" modulares (ej: "En Flutter se usa Riverpod, no GetX").
+* **Privacidad Local-First:** Opera principalmente en tu máquina, con fallback a nube solo cuando se elige explícitamente.
+* **Workflow Estructurado:** Guía al desarrollador a través de un proceso riguroso (Requisitos -> Arquitectura -> Código -> Test) antes de permitir la generación de código.
+* **Motor de IA Híbrido:** Combina modelos locales (Ollama) para privacidad con modelos en nube (Groq) para rendimiento.
 
 ---
 
-## 4. La Promesa de Valor (The Promise)
+## 4. La Promesa (The Promise)
 
-Al utilizar SoftArchitect AI, garantizamos:
+Al usar SoftArchitect AI, los desarrolladores podrán:
 
-1.  **Cero Alucinaciones Estructurales:** La IA nunca inventará carpetas que no existen ni importará librerías no aprobadas en el `pubspec.yaml` o `requirements.txt`.
-2.  **Ingeniería, no solo Coding:** El usuario terminará con más documentación técnica de calidad (ADRs, diagramas) que código fuente, asegurando la mantenibilidad a largo plazo.
-3.  **Soberanía del Dato:** Garantía total de que la Propiedad Intelectual (IP) del código generado permanece bajo control del usuario (Local Vector Store).
+* **Reducir la Fatiga por Decisiones:** La IA proporciona recomendaciones claras y contextuales basadas en mejores prácticas de la industria y las restricciones de tu proyecto.
+* **Aumentar la Calidad del Código:** Cada sugerencia generada pasa por filtros arquitectónicos y de seguridad.
+* **Acelerar la Entrega:** Enfocarse en el diseño de alto nivel mientras la IA maneja el boilerplate y el scaffolding.
+* **Mantener la Soberanía:** Tu código y datos nunca salen de tu máquina a menos que lo permitas explícitamente.
 
 ---
 
-## 5. El Usuario Objetivo (Target Audience)
+## 5. Audiencia Objetivo (The Users)
 
-* **El Desarrollador Junior/Mid:** Que necesita un mentor constante para aplicar Clean Architecture sin perderse.
-* **El Solopreneur:** Que necesita actuar como CTO, Project Manager y Dev al mismo tiempo.
-* **La Consultora de Software:** Que necesita estandarizar la calidad de entrega de sus equipos y reducir el tiempo de *onboarding* en nuevos stacks.
+* **El Desarrollador Solitario:** Que necesita un mentor para guiarlo a través de arquitecturas complejas sin el costo de un consultor.
+* **El Equipo de Startup:** Que quiere estandarizar la calidad y reducir el tiempo de onboarding en nuevos stacks.
+* **La Consultora Empresarial:** Que necesita estandarizar la calidad de entrega de sus equipos y reducir el tiempo de onboarding en nuevos stacks.

@@ -36,22 +36,36 @@ El cerebro del sistema. Desacoplado del frontend para permitir escalabilidad fut
 * **Orquestador:** **LangChain** (Python).
     * *Rol:* Gestión de cadenas de pensamiento (Chains), memoria conversacional y abstracción de proveedores de modelos.
 * **Modelos (LLMs):**
-    * **Local Provider:** **Ollama** ejecutando `Qwen2.5-Coder` (Optimizado para código).
-    * **Cloud Provider:** **Groq** ejecutando `Llama-3` (Para inferencia ultrarrápida cuando la privacidad estricta no es requerida).
-* **Vector Store:** **ChromaDB**.
-    * *Configuración:* Persistencia en disco local (dentro de Docker Volume).
-    * *Embeddings:* `nomic-embed-text` (Local) o similar.
+    * **Local (Privacidad):** Ollama corriendo `Qwen2.5-Coder-7b` (Optimizado para código).
+    * **Cloud (Velocidad):** Groq API corriendo `Llama-3-70b` o `Mixtral`.
+* **Vector Store:** **ChromaDB** (Persistencia local de embeddings).
+
+### Herramientas Adicionales
+* **Pre-commit Hooks:** Validación automática antes de subir código.
+* **Logging:** Logging estructurado con `loguru` para debugging y monitoring.
 
 ---
 
-## 3. Infraestructura & DevOps
+## 3. Infraestructura: Docker & Orquestación
 
-### Containerización
-* **Docker Compose:** Orquestación de servicios (`client`, `api`, `chroma`).
-* **GPU Acceleration:** Uso de **NVIDIA Container Toolkit** para pasar la GPU del host al contenedor de Ollama (Linux).
+* **Containerización:** Docker Compose para desarrollo local.
+* **Soporte GPU:** NVIDIA Container Toolkit para aceleración de inferencia local.
+* **Networking:** Red interna Docker para comunicación de servicios.
 
-### Entorno de Desarrollo
-* **Linting:**
-    * Dart: `very_good_analysis` o reglas estrictas en `analysis_options.yaml`.
-    * Python: `Ruff` (Linter + Formatter ultra rápido).
-* **Pre-commit Hooks:** Validación automática antes de subir código.
+---
+
+## 4. Herramientas de Desarrollo
+
+* **IDE:** VS Code con extensiones Flutter y Python.
+* **Control de Versiones:** Git con workflow GitFlow.
+* **CI/CD:** GitHub Actions para testing automatizado y building.
+* **Documentación:** Markdown con Mermaid para diagramas.
+
+---
+
+## 5. Benchmarks de Performance
+
+* **Tiempo de Inicio:** <5 segundos para contenedores Docker.
+* **Tiempo de Respuesta:** <2 segundos para inferencia local, <1 segundo para cloud.
+* **Uso de Memoria:** <2GB RAM para modo local, <500MB para modo cloud.
+* **Uso de Disco:** <10GB para todas las dependencias y modelos.

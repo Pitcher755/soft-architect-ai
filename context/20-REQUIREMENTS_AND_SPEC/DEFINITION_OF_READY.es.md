@@ -7,7 +7,7 @@
 
 ## 1. Para Historias de Usuario (User Stories)
 
-Una Historia de Usuario se considera **READY** para entrar en un Sprint solo si cumple el acrónimo **INVEST** y además tiene:
+Una Historia de Usuario se considera **READY** para entrar en un Sprint solo si cumple el acrónimo INVEST y además tiene:
 
 1.  **Título Claro:** Formato "Como [rol], quiero [acción], para [beneficio]".
 2.  **Criterios de Aceptación (Gherkin/Lista):**
@@ -38,13 +38,23 @@ Requiere:
 
 ---
 
-## 4. Checklist de Auto-Verificación del Agente
+## 4. Para Tareas de Documentación
 
-*Cuando el usuario pida: "Hazme la pantalla de Login", el Agente debe verificar:*
+Requiere:
 
-1.  ¿Tengo los campos del formulario definidos?
-2.  ¿Sé contra qué endpoint autenticar?
-3.  ¿Tengo el diseño visual o uso el estándar?
+* [ ] **Audiencia Definida:** Se sabe si es para humanos (`doc/`) o IA (`packages/knowledge_base/`).
+* [ ] **Estándares de Formato:** Sigue `DOCUMENTATION_STANDARDS.md`.
+* [ ] **Trigger de Actualización:** Vinculado a un cambio de código o decisión arquitectónica.
 
-*Si la respuesta es **NO** a alguna, el Agente debe responder:*
+---
+
+## 5. Criterios Generales
+
+* [ ] **Sin Ambigüedades:** Todos los términos están definidos o enlazados a documentación existente.
+* [ ] **Testable:** Puede ser verificado a través de tests automatizados o checks manuales.
+* [ ] **Priorizado:** Tiene un nivel de prioridad (P1, P2, P3) y cabe en la capacidad del Sprint.
+* [ ] **Alineado Arquitectónicamente:** No viola los principios de `ARCHITECTURE.md`.
+
+---
+
 > "🛑 **Bloqueo por DoR:** La tarea no cumple la *Definition of Ready*. Por favor, especifica los campos del formulario y el endpoint de autenticación antes de que genere el código."
