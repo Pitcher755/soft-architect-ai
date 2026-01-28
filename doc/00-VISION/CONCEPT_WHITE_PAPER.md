@@ -347,3 +347,16 @@ Se implementa una capa de abstracción en el Backend (`LLMService`) que permite 
 2.  **`cloud` (Groq):** Para equipos modestos o antiguos. Velocidad extrema mediante LPUs en la nube, sacrificando la privacidad estricta del prompt en tránsito.
 
 Esta decisión transforma a *SoftArchitect AI* de una herramienta "Local-Only" a una "Local-First Capable", ampliando su compatibilidad al 100% de los desarrolladores.
+
+## 6. Evolución de la Estrategia de IA (Febrero 2026)
+
+### 6.1. Especialización del Modelo Local
+Tras pruebas de rendimiento en hardware de gama media (NVIDIA RTX 3050 - 4GB VRAM), se ha pivotado de modelos generalistas (Llama 3) a modelos especialistas en código para maximizar la eficiencia.
+* **Modelo Seleccionado:** `Qwen2.5-Coder-7b`.
+* **Justificación:** Ofrece un rendimiento superior en generación de código (Python/Flutter) comparado con modelos 4x más grandes, cabiendo perfectamente en la VRAM de una GPU de portátil estándar, garantizando una latencia de respuesta < 200ms.
+
+### 6.2. Dualidad de Infraestructura (Local vs Cloud)
+El sistema ahora soporta dos modos de operación transparentes al usuario, definidos por el entorno de despliegue:
+1.  **Modo "Iron" (Local):** Ejecución 100% privada usando Ollama + GPU NVIDIA (Docker Runtime). Ideal para equipos con gráfica dedicada.
+2.  **Modo "Ether" (Híbrido/Cloud):** Ejecución en HomeLabs antiguos (CPU Only) delegando la inferencia a **Groq Cloud** (Llama 3.3 70B) mediante API, manteniendo la base vectorial en local.
+

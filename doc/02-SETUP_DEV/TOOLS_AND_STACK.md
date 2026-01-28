@@ -41,3 +41,14 @@ Tecnologías que componen la aplicación "SoftArchitect AI".
 
 ### Infraestructura
 * **Docker Compose:** Orquestación de servicios (BD, API, IA).
+
+---
+## 4. Actualización de Stack (Fase de Implementación Local)
+
+### Modelos de IA (LLMs)
+* **Qwen2.5-Coder-7b:** Modelo principal para generación de código en entorno local. Elegido por su optimización para programación y bajo consumo de VRAM (cabe en RTX 3050).
+* **Phi-4 (Microsoft):** Modelo secundario para razonamiento lógico complejo si fuera necesario.
+
+### Herramientas de Infraestructura (Linux)
+* **NVIDIA Container Toolkit:** Permite a los contenedores Docker acceder a la GPU del host.
+* **Warp Terminal:** Terminal moderna utilizada para la gestión del flujo de trabajo y comandos de Docker.

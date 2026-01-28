@@ -1,0 +1,45 @@
+services:
+  # 🧠 El Cerebro Local (Ollama)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: sa_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_storage:/root/.ollama
+    # 👇 CONFIGURACIÓN NVIDIA (Requerida para que detecte tu RTX 3050)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    restart: always
+    networks:
+      - sa_network
+
+  # 🖥️ La Interfaz Gráfica (Open WebUI)
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: sa_webui
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - webui_storage:/app/backend/data
+    depends_on:
+      - ollama
+    restart: always
+    networks:
+      - sa_network
+
+volumes:
+  ollama_storage:
+  webui_storage:
+
+
+networks:
+  sa_network:
+    driver: bridge

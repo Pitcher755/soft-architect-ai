@@ -119,3 +119,23 @@ Durante la fase de validación técnica ("The Fire Test"), se identificó un cue
 
 ### Decisión de Diseño:
 En lugar de restringir el software a hardware de gama alta, se optó por una **Arquitectura Híbrida**. Se integra **Groq Cloud** como fallback transparente. Esto permite desarrollar y testear la lógica del RAG en el HomeLab (usando nube rápida) y desplegar en producción local o en el portátil potente (usando Ollama) con el mismo codebase. Es un ejemplo práctico de cómo la infraestructura dicta decisiones de arquitectura de software.
+
+## 10. Desafío de Ingeniería: Virtualización de GPU en Contenedores
+
+Uno de los retos técnicos más complejos superados fue la orquestación de recursos de hardware (GPU) dentro de un entorno contenerizado (Docker) en Linux.
+
+### 10.1. El Problema "NVIDIA Passthrough"
+Docker, por defecto, aísla el contenedor del hardware del host. Para que el motor de inferencia (Ollama) pudiera acceder a los núcleos CUDA de la tarjeta gráfica (RTX 3050), no bastaba con instalar drivers en el host.
+
+### 10.2. Solución Implementada: NVIDIA Container Toolkit
+Se integró el `nvidia-container-toolkit` en el sistema operativo base (Linux) y se configuró el `daemon.json` de Docker para permitir el runtime de NVIDIA.
+A nivel de **Infraestructura como Código (IaC)**, se modificó el `docker-compose.yml` para reservar capacidades de hardware específicas:
+
+```yaml
+deploy:
+  resources:
+    reservations:
+      devices:
+        - driver: nvidia
+          count: 1
+          capabilities: [gpu]

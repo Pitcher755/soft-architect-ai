@@ -8,15 +8,23 @@
 [![Privacy](https://img.shields.io/badge/Privacy-Local--First-green)]()
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+## 📚 Documentación Clave
+
+- [White Paper y Visión](doc/00-VISION/CONCEPT_WHITE_PAPER.md)
+- [Metodología y Estructura del Conocimiento](doc/01-MEMORIA/MEMORIA_METODOLOGICA.md)
+- [Guía de Instalación y Setup](doc/02-SETUP_DEV/SETUP_GUIDE.md)
+- [Stack Tecnológico](doc/02-SETUP_DEV/TOOLS_AND_STACK.md)
+- [Automatización y DevOps](doc/02-SETUP_DEV/AUTOMATION.md)
+
 ## 📖 Visión
 
-SoftArchitect AI no es otro "chat de código". es una plataforma de desarrollo asistido que guía a los desarrolladores a través de un **Workflow de Ingeniería Estricto** (Requirements → Architecture → Code → Deploy).
+SoftArchitect AI no es otro "chat de código". Es una plataforma de desarrollo asistido que guía a los desarrolladores a través de un **Workflow de Ingeniería Estricto** (Requirements → Architecture → Code → Deploy).
 
 Actúa como un **Quality Gate** inteligente que asegura el cumplimiento de buenas prácticas (SOLID, Clean Architecture, OWASP) antes de escribir una sola línea de código, utilizando **RAG (Retrieval-Augmented Generation)** sobre una base de conocimiento académica y práctica.
 
 ## 🚀 Características Clave
 
-* **🧠 RAG Contextual:** No da consejos genéricos. Entiende tu stack y fase del proyecto gracias a "Tech Packs" especializados.
+* **🧠 RAG Contextual & Tech Packs:** Utiliza una "Enciclopedia Técnica" modular (`packages/knowledge_base/02-TECH-PACKS`) que permite al asistente entrevistar al usuario para configurar stacks específicos (Flutter, Python, Firebase) con reglas de arquitectura precisas.
 * **🛡️ Local-First & Híbrido:**
     * **Modo Privacidad:** Ejecuta LLMs (Ollama) en tu red local. Tus datos nunca salen.
     * **Modo Rendimiento:** Conecta con Groq Cloud para inferencia ultrarrápida en hardware modesto.
@@ -34,12 +42,14 @@ Actúa como un **Quality Gate** inteligente que asegura el cumplimiento de buena
 
 ```text
 soft-architect-ai/
-├── apps/               # Código Fuente de las Aplicaciones
-│   ├── api-server/     # Backend Python + RAG Logic
-│   └── client-desktop/ # Frontend Flutter
+├── context/                 # 🧠 Contexto para Agentes (AGENTS.md, Reglas Globales)
+├── doc/                     # 📘 Documentación Viva del Proyecto (Bitácora, TFM)
 ├── packages/
-│   └── docs/           # 🧠 El Cerebro (Documentación Viva & Knowledge Base)
-└── infra/              # Configuración Docker y DevOps
+│   └── knowledge_base/      # 🤖 El Cerebro RAG (Templates, Tech Packs, Examples)
+├── src/                     # Código Fuente de las Aplicaciones
+│   ├── client/              # Frontend Flutter Desktop
+│   └── server/              # Backend Python API + LangChain Logic
+└── infrastructure/          # Configuración Docker y DevOps (docker-compose.yml)
 
 ```
 
@@ -53,28 +63,29 @@ soft-architect-ai/
 ### Instalación Rápida (Dev)
 
 1. **Clonar el repositorio:**
+
+> Consulta la [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.md) para instrucciones paso a paso y resolución de problemas.
+
 ```bash
 git clone [https://github.com/TU_USUARIO/soft-architect-ai.git](https://github.com/TU_USUARIO/soft-architect-ai.git)
 cd soft-architect-ai
 
 ```
 
-
 2. **Configurar Entorno (.env):**
+
 ```bash
 cp .env.example .env
 # Edita .env para elegir LLM_PROVIDER=local o LLM_PROVIDER=cloud
 
 ```
 
-
 3. **Levantar Servicios:**
+
 ```bash
-docker compose up -d
+docker compose -f infrastructure/docker-compose.yml up -d
 
 ```
-
-
 
 ---
 

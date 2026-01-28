@@ -275,3 +275,32 @@ El sistema dispone de un flujo de automatización activo:
 * **Nombre:** `Docs Sync (Git -> Notion)`
 * **Función:** Escucha eventos `push` en GitHub, detecta cambios en archivos Markdown y actualiza la Base de Conocimiento en Notion.
 * **Troubleshooting:** Si Notion da error de conexión, verificar que el ID de la base de datos se pasa como "Expression" (texto fijo) y no mediante el selector dinámico de la UI.
+
+## 10. Configuración Avanzada: Entorno Linux con NVIDIA (Modo GPU)
+
+Si despliegas el proyecto en un equipo Linux con tarjeta gráfica dedicada (NVIDIA), sigue estos pasos para habilitar la aceleración por hardware (CUDA).
+
+### 10.1. Prerrequisitos del Host
+No basta con tener Docker. Necesitas el puente entre Docker y tu tarjeta gráfica.
+
+1.  **Instalar NVIDIA Container Toolkit:**
+    ```bash
+    curl -fsSL [https://nvidia.github.io/libnvidia-container/gpgkey](https://nvidia.github.io/libnvidia-container/gpgkey) | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+      && curl -s -L [https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list](https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list) | \
+      sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+      sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+    sudo apt-get update
+    sudo apt-get install -y nvidia-container-toolkit
+    sudo nvidia-ctk runtime configure --runtime=docker
+    sudo systemctl restart docker
+    ```
+
+2.  **Verificación:**
+    Ejecuta `sudo docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi`. Deberías ver una tabla con los detalles de tu tarjeta gráfica.
+
+### 10.2. Despliegue del Stack
+En la carpeta `infrastructure`, asegúrate de que el `docker-compose.yml` tiene descomentada la sección `deploy` del servicio `ollama`.
+
+```bash
+cd infrastructure
+docker compose up -d
