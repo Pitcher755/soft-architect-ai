@@ -7,7 +7,7 @@ services:
       - "11434:11434"
     volumes:
       - ollama_storage:/root/.ollama
-    # 👇 CONFIGURACIÓN NVIDIA (Requerida para que detecte tu RTX 3050)
+    # 👇 CONFIGURACIÓN NVIDIA (Requerida para que detecte mi RTX 3050)
     deploy:
       resources:
         reservations:
