@@ -10,11 +10,14 @@
 
 ## 📚 Documentación Clave
 
-- [White Paper y Visión](doc/00-VISION/CONCEPT_WHITE_PAPER.md)
-- [Metodología y Estructura del Conocimiento](doc/01-MEMORIA/MEMORIA_METODOLOGICA.md)
-- [Guía de Instalación y Setup](doc/02-SETUP_DEV/SETUP_GUIDE.md)
-- [Stack Tecnológico](doc/02-SETUP_DEV/TOOLS_AND_STACK.md)
-- [Automatización y DevOps](doc/02-SETUP_DEV/AUTOMATION.md)
+- [White Paper y Visión](doc/00-VISION/CONCEPT_WHITE_PAPER.es.md)
+- [Guía Rápida de Inicio](doc/02-SETUP_DEV/QUICK_START_GUIDE.es.md)
+- [Reporte de Pruebas Funcionales](doc/01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md)
+- [Log de Instalación Inicial](doc/01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md)
+- [Metodología y Estructura](doc/01-PROJECT_REPORT/MEMORIA_METODOLOGICA.es.md)
+- [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.es.md)
+- [Stack Tecnológico](doc/02-SETUP_DEV/TOOLS_AND_STACK.es.md)
+- [Automatización y DevOps](doc/02-SETUP_DEV/AUTOMATION.es.md)
 
 ## 📖 Visión
 
@@ -64,7 +67,7 @@ soft-architect-ai/
 
 1. **Clonar el repositorio:**
 
-> Consulta la [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.md) para instrucciones paso a paso y resolución de problemas.
+> Consulta la [Guía Rápida](doc/02-SETUP_DEV/QUICK_START_GUIDE.es.md) para instrucciones rápidas o la [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.es.md) para pasos completos y resolución de problemas.
 
 ```bash
 git clone [https://github.com/TU_USUARIO/soft-architect-ai.git](https://github.com/TU_USUARIO/soft-architect-ai.git)

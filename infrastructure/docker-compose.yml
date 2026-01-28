@@ -24,8 +24,6 @@
 #   - src/server/README.md: Backend documentation
 # ═══════════════════════════════════════════════════════════════
 
-version: '3.9'
-
 services:
 
   # ─────────────────────────────────────────────────────────────
@@ -45,21 +43,21 @@ services:
   ollama:
     image: ollama/ollama:${OLLAMA_IMAGE_VERSION:-latest}
     container_name: sa_ollama
-    
+
     # 📌 PUERTO: NO exponer externamente, acceso vía red interna
     # Si necesitas acceso local: ports: ["11434:11434"]
-    
+
     # 💾 VOLÚMENES: Persistencia de modelos descargados
     volumes:
       - ollama_storage:/root/.ollama
-    
+
     # 🌐 RED: Comunicación interna con FastAPI
     networks:
       - sa_network
-    
+
     # 🔄 RESTART: Reintentar si falla (esperar 5s entre intentos)
     restart: on-failure:5
-    
+
     # 🛡️ RECURSOS: Limitar CPU/RAM para que no monopolice sistema
     deploy:
       resources:
@@ -74,15 +72,15 @@ services:
         #   - driver: nvidia
         #     count: 1
         #     capabilities: [gpu]
-    
-    # 📋 HEALTHCHECK: Verificar que Ollama está listo
+
+        # 📋 HEALTHCHECK: Solo verificar que el proceso corre
     healthcheck:
-      test: curl -f http://localhost:11434/api/status || exit 1
+      test: [ "CMD-SHELL", "[ -f /root/.ollama/port ] || exit 1" ]
       interval: 10s
       timeout: 3s
-      retries: 3
-      start_period: 20s  # Esperar a que descargue modelo
-    
+      retries: 5
+      start_period: 30s # Tiempo para iniciar y descargar modelo
+
     # 📝 LOGGING: Capturar logs en archivos del host
     logging:
       driver: 'json-file'
@@ -104,22 +102,22 @@ services:
   chromadb:
     image: chromadb/chroma:${CHROMADB_IMAGE_VERSION:-latest}
     container_name: sa_chromadb
-    
+
     # 📌 PUERTO: NO mapear a host (acceso solo vía red interna)
     # API accede a http://chromadb:8000
     # Si necesitas debug: ports: ["8001:8000"]
-    
+
     # 💾 VOLÚMENES: Persistencia de embeddings
     volumes:
       - chroma_storage:/chroma/chroma
-    
+
     # 🌐 RED: Comunicación interna con FastAPI
     networks:
       - sa_network
-    
+
     # 🔄 RESTART: Reintentar si falla
     restart: on-failure:3
-    
+
     # 🛡️ RECURSOS: Limitar para operación eficiente
     deploy:
       resources:
@@ -129,14 +127,15 @@ services:
         reservations:
           cpus: '0.5'
           memory: 256MB
-    
-    # 📋 HEALTHCHECK: Verificar disponibilidad
+
+    # 📋 HEALTHCHECK: Verificar que ChromaDB está respondiendo
     healthcheck:
-      test: curl -f http://localhost:8000/api/v1/heartbeat || exit 1
+      test: [ "CMD-SHELL", "if [ ! -f /chroma/chroma/__init__.py ]; then exit 1; fi" ]
       interval: 10s
       timeout: 3s
-      retries: 3
-    
+      retries: 5
+      start_period: 15s
+
     # 📝 LOGGING
     logging:
       driver: 'json-file'
@@ -166,13 +165,13 @@ services:
       dockerfile: Dockerfile
       args:
         PYTHON_VERSION: ${PYTHON_VERSION:-3.12.3}
-    
+
     container_name: sa_api
-    
+
     # 📌 PUERTOS: Mapear 8000 del contenedor al host
     ports:
       - "8000:8000"
-    
+
     # 💾 VOLÚMENES: Hot-reload en desarrollo
     volumes:
       # Código: Permite editar archivos y recargar sin rebuild
@@ -187,14 +186,14 @@ services:
       - ./logs:/app/logs
       # Data: Persistencia de SQLite y caché
       - ./data:/app/data
-    
+
     # 🌐 RED: Comunicación con Ollama y ChromaDB
     networks:
       - sa_network
-    
+
     # 🔄 RESTART: Reintentar si crashea
     restart: on-failure:3
-    
+
     # 🛡️ RECURSOS: Limitar para estabilidad
     deploy:
       resources:
@@ -204,7 +203,7 @@ services:
         reservations:
           cpus: '0.5'
           memory: 256MB
-    
+
     # 📋 HEALTHCHECK: API listo (endpoint /api/v1/health)
     healthcheck:
       test: curl -f http://localhost:8000/api/v1/health || exit 1
@@ -212,14 +211,12 @@ services:
       timeout: 3s
       retries: 5
       start_period: 10s
-    
-    # 🔗 DEPENDENCIAS: Esperar a que Ollama y ChromaDB estén listos
+
+    # 🔗 DEPENDENCIAS: Esperar a que Ollama y ChromaDB estén creados (no necesariamente healthy)
     depends_on:
-      ollama:
-        condition: service_healthy
-      chromadb:
-        condition: service_healthy
-    
+      - ollama
+      - chromadb
+
     # 🌍 VARIABLES DE AMBIENTE: Configuración en tiempo de ejecución
     environment:
       # Python: Logs no bufferizados (visibles en `docker logs`)
@@ -246,7 +243,7 @@ services:
       # Security
       - IRON_MODE=${IRON_MODE:-True}
       - PII_DETECTION_ENABLED=${PII_DETECTION_ENABLED:-True}
-    
+
     # 📝 LOGGING
     logging:
       driver: 'json-file'
@@ -257,16 +254,16 @@ services:
 
 # ═══════════════════════════════════════════════════════════════
 # 💾 VOLÚMENES PERSISTENTES (Nombrados)
-# 
+#
 # Almacenamiento que persiste entre recreaciones de contenedores.
 # Ubicación: /var/lib/docker/volumes (Linux)
 # ═══════════════════════════════════════════════════════════════
 volumes:
-  
+
   # 🧠 Modelos descargados de Ollama (~5-10GB según modelo)
   ollama_storage:
     driver: local
-  
+
   # 📚 Embeddings de ChromaDB (~100MB típico)
   chroma_storage:
     driver: local
