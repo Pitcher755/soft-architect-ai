@@ -1,8 +1,11 @@
 """
 Domain layer: Core business entities.
 """
-from typing import List, Optional
 from datetime import datetime
+# `List` and `Optional` from `typing` are not required because
+# we use modern annotations (PEP 585/604) like `list[...]` and
+# `X | None` throughout this module.
+
 
 
 class ChatMessage:
@@ -23,7 +26,7 @@ class ChatMessage:
         session_id: str,
         role: str,
         content: str,
-        timestamp: Optional[datetime] = None,
+        timestamp: datetime | None = None,
     ):
         self.id = id
         self.session_id = session_id
@@ -48,9 +51,9 @@ class ChatSession:
         self,
         id: str,
         title: str,
-        messages: Optional[List[ChatMessage]] = None,
-        created_at: Optional[datetime] = None,
-        updated_at: Optional[datetime] = None,
+        messages: list[ChatMessage] | None = None,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
     ):
         self.id = id
         self.title = title

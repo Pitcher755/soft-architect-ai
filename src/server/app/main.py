@@ -10,9 +10,9 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from app.api.v1 import router as api_v1_router
 from app.core.config import settings
 from app.core.database import init_chromadb, init_sqlite
-from app.api.v1 import router as api_v1_router
 
 # ═══════════════════════════════════════════════════════════════
 # Logging Setup
@@ -130,6 +130,10 @@ if __name__ == "__main__":
 
     uvicorn.run(
         "app.main:app",
+        # Bind to 0.0.0.0 so the container/network interface
+        # accepts external connections. This is intentional for
+        # Docker deployments where the service must be reachable
+        # from the host and other containers.
         host="0.0.0.0",
         port=8000,
         reload=settings.DEBUG,
