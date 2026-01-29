@@ -15,7 +15,7 @@ on:
 # Environment variables
 env:
   PYTHON_VERSION: '3.12'
-  FLUTTER_VERSION: '3.38.3'
+  FLUTTER_VERSION: 'latest'
 
 jobs:
   dart-lint:
