@@ -1,12 +1,14 @@
-[build-system]
-requires = ["setuptools>=45", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "softarchitect-ai"
 version = "0.1.0"
 description = "Privacy-first AI assistant for software architecture guidance"
-requires-python = ">=3.12.3,<4.0"
+authors = [{name = "SoftArchitect AI Team", email = "team@softarchitect.local"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = "^3.12.3"
+
+[tool.poetry]
+packages = [{include = "app"}]
 
 [tool.mypy]
 # MyPy configuration for strict type checking
@@ -118,6 +120,10 @@ line-ending = "auto"
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10  # Complejidad ciclomática máxima
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 python = "^3.12.3"
