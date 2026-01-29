@@ -36,7 +36,9 @@ doc/
 │   ├── SETUP_GUIDE.es.md         (Guía de instalación en español)
 │   ├── SETUP_GUIDE.en.md         (Guía de instalación en inglés)
 │   ├── TOOLS_AND_STACK.es.md     (Stack tecnológico en español)
-│   └── TOOLS_AND_STACK.en.md     (Stack tecnológico en inglés)
+│   ├── TOOLS_AND_STACK.en.md     (Stack tecnológico en inglés)
+│   ├── TEST_COVERAGE_DASHBOARD.md    (Dashboard de cobertura de tests) ⭐ NEW
+│   └── TEST_EXECUTION_LOG.md     (Histórico de ejecuciones de tests) ⭐ NEW
 ├── 03-HU-TRACKING/                # Seguimiento de Historias de Usuario
 │   ├── README.md                  (Índice maestro de HUs)
 │   ├── HU-1.1-DOCKER-SETUP/       (HU-1.1: Infraestructura Docker)
@@ -120,6 +122,9 @@ doc/
 | TOOLS_AND_STACK | Versiones exactas, compatibilidades | Desarrolladores | ~400 |
 | DOCKER_COMPOSE_GUIDE | Docker Compose detallado, networking | DevOps/Infra | ~500 |
 | AUTOMATION | CI/CD, scripts de automatización | DevOps/SRE | ~500 |
+| TEST_COVERAGE_DASHBOARD ⭐ NEW | Dashboard de cobertura y métricas de tests | QA/Dev/Leads | ~400 |
+| TEST_EXECUTION_LOG ⭐ NEW | Histórico y seguimiento de test runs | QA/CI | ~350 |
+| TEST_STRATEGY_AND_ROADMAP ⭐ NEW | Plan detallado para robustez production-ready | Arquitectos/Leads | ~600 |
 ### 📋 Tracking de Historias de Usuario (03-HU-TRACKING/)
 
 | Historia | Descripción | Estado | Documentos |
@@ -178,6 +183,9 @@ doc/
 - [DOCKER_COMPOSE_GUIDE.es.md](02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md) - Docker en detalle
 
 **Testing & Validación:**
+- [TEST_COVERAGE_DASHBOARD.md](02-SETUP_DEV/TEST_COVERAGE_DASHBOARD.md) - Métricas actuales de cobertura ⭐ NEW
+- [TEST_EXECUTION_LOG.md](02-SETUP_DEV/TEST_EXECUTION_LOG.md) - Histórico de test runs ⭐ NEW
+- [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Plan para robustez production-ready ⭐ NEW
 - [FUNCTIONAL_TEST_REPORT.md](01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Resultados de pruebas
 - [INITIAL_SETUP_LOG.es.md](01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md) - Verificación de instalación
 
