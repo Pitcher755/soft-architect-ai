@@ -37,6 +37,32 @@ SoftArchitect AI is not another "code chat". It is an assisted development platf
 
 It acts as an intelligent **Quality Gate** that ensures compliance with best practices (SOLID, Clean Architecture, OWASP) before writing a single line of code, using **RAG (Retrieval-Augmented Generation)** on an academic and practical knowledge base.
 
+#### ⚡ Quick Start (5 minutes)
+
+Get SoftArchitect AI running locally in under 5 minutes:
+
+```bash
+# 1. Clone & navigate
+git clone https://github.com/YOUR_USER/soft-architect-ai.git
+cd soft-architect-ai
+
+# 2. Start all services (Docker required)
+./start_stack.sh
+
+# 3. Access services:
+# - API: http://localhost:8000
+# - API Docs: http://localhost:8000/docs
+# - ChromaDB: http://localhost:8001
+# - Ollama: http://localhost:11434
+
+# 4. Stop services when done
+./stop_stack.sh
+```
+
+**Requirements:** Docker 20.10+ and Docker Compose 2.0+ | **Time:** ~2 minutes (first-time pull)
+
+For detailed setup, troubleshooting, and advanced configuration, see [Detailed Setup Guide](doc/02-SETUP_DEV/SETUP_GUIDE.en.md).
+
 #### 🚀 Key Features
 
 * **🧠 Contextual RAG & Tech Packs:** Uses a modular "Technical Encyclopedia" (`packages/knowledge_base/02-TECH-PACKS`) that allows the assistant to interview users to configure specific stacks (Flutter, Python, Firebase) with precise architecture rules.
@@ -137,6 +163,32 @@ docker compose -f infrastructure/docker-compose.yml up -d
 SoftArchitect AI no es otro "chat de código". Es una plataforma de desarrollo asistido que guía a los desarrolladores a través de un **Workflow de Ingeniería Estricto** (Requirements → Architecture → Code → Deploy).
 
 Actúa como un **Quality Gate** inteligente que asegura el cumplimiento de buenas prácticas (SOLID, Clean Architecture, OWASP) antes de escribir una sola línea de código, utilizando **RAG (Retrieval-Augmented Generation)** sobre una base de conocimiento académica y práctica.
+
+#### ⚡ Inicio Rápido (5 minutos)
+
+Levanta SoftArchitect AI localmente en menos de 5 minutos:
+
+```bash
+# 1. Clonar y navegar
+git clone https://github.com/TU_USUARIO/soft-architect-ai.git
+cd soft-architect-ai
+
+# 2. Levantar todos los servicios (requiere Docker)
+./start_stack.sh
+
+# 3. Acceder a los servicios:
+# - API: http://localhost:8000
+# - Documentación API: http://localhost:8000/docs
+# - ChromaDB: http://localhost:8001
+# - Ollama: http://localhost:11434
+
+# 4. Detener servicios al terminar
+./stop_stack.sh
+```
+
+**Requisitos:** Docker 20.10+ y Docker Compose 2.0+ | **Tiempo:** ~2 minutos (primer descargar)
+
+Para configuración detallada, solución de problemas y opciones avanzadas, consulta la [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.es.md).
 
 #### 🚀 Características Clave
 

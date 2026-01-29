@@ -249,6 +249,180 @@ Nota: El cambio es instantáneo al reiniciar el contenedor del backend (docker r
 
 ---
 
+## 8. 🚀 HU-1.1: Levantamiento de Infraestructura con Docker Compose
+
+Esta sección documenta los procedimientos para iniciar, configurar y validar el stack completo de SoftArchitect AI utilizando Docker Compose.
+
+### 8.1. Inicio Automático con Script
+
+El proyecto incluye un script automatizado (`start_stack.sh`) que valida el entorno y levanta todos los servicios de manera segura.
+
+**Ejecución:**
+
+```bash
+# Desde la raíz del proyecto
+chmod +x start_stack.sh
+./start_stack.sh
+```
+
+**Salida esperada:**
+
+```
+[INFO] Iniciando validaciones pre-deployment...
+[INFO] ✓ Docker instalado (versión 20.10.X)
+[INFO] ✓ Docker Compose instalado (versión 2.X.X)
+[INFO] ✓ Permisos de data/chromadb (755)
+[INFO] ✓ Permisos de data/ollama (755)
+[INFO] Levantando stack con docker compose...
+[SUCCESS] 🎉 Stack iniciado. Accede a:
+  • API FastAPI: http://localhost:8000
+  • Docs OpenAPI: http://localhost:8000/docs
+  • ChromaDB: http://localhost:8001
+  • Ollama: http://localhost:11434
+[INFO] Logs en: ./infrastructure/logs/docker.log
+```
+
+### 8.2. Inicio Manual (Paso a Paso)
+
+Si prefieres control granular o depuración, sigue estos pasos:
+
+**1. Verificación del entorno:**
+
+```bash
+cd infrastructure
+chmod 755 data/chromadb data/ollama
+docker --version  # Debe ser >= 20.10
+docker compose --version  # Debe ser >= 2.0
+```
+
+**2. Cargar variables de entorno:**
+
+```bash
+# Copiar template si no existe
+[ ! -f .env ] && cp .env.example .env
+
+# Revisar configuración (editarlo según tus necesidades)
+cat .env
+```
+
+**3. Validación de Docker Compose:**
+
+```bash
+docker compose config > /dev/null && echo "✓ docker-compose.yml es válido" || echo "✗ Error en docker-compose.yml"
+```
+
+**4. Levantar servicios en background:**
+
+```bash
+docker compose up -d
+```
+
+**5. Verificar estado de servicios:**
+
+```bash
+docker compose ps
+```
+
+Deberías ver:
+
+```
+NAME            COMMAND                 STATUS
+sa_api          "python -m uvicorn..." Up (healthy)
+sa_chromadb     "python -m chroma..." Up (healthy)
+sa_ollama       "/bin/ollama serve"   Up
+```
+
+**6. Verificar conectividad entre servicios:**
+
+```bash
+# API debe estar disponible
+curl -s http://localhost:8000/health | jq '.status'
+
+# ChromaDB debe estar disponible
+curl -s http://localhost:8001/api/v1 | jq '.api_version'
+
+# Ollama debe estar disponible
+curl -s http://localhost:11434/api/tags | jq '.models | length'
+```
+
+### 8.3. Detener el Stack
+
+Para detener los servicios de manera ordenada:
+
+```bash
+# Opción 1: Usar el script (recomendado)
+./stop_stack.sh
+
+# Opción 2: Comando manual
+cd infrastructure
+docker compose down
+```
+
+**Salida esperada:**
+
+```
+[INFO] Deteniendo servicios...
+[SUCCESS] Stack detenido correctamente.
+[INFO] Datos persistidos en ./infrastructure/data/
+```
+
+### 8.4. Troubleshooting
+
+#### Problema: Puerto 8000 ya en uso
+
+**Síntoma:** `Error starting userland proxy: listen tcp 0.0.0.0:8000: bind: address already in use`
+
+**Solución:**
+
+```bash
+# Encontrar qué proceso usa el puerto
+lsof -i :8000
+
+# Opción A: Matar el proceso conflictivo
+kill -9 <PID>
+
+# Opción B: Cambiar puerto en .env (si deseas)
+# Editar infrastructure/.env:
+# API_PORT=8001  (cambiar de 8000 a otro)
+# docker compose up -d  # Reiniciar
+```
+
+#### Problema: ChromaDB no inicia (error de permisos)
+
+**Síntoma:** `ERROR: Permission denied: '/data/chromadb/...`
+
+**Solución:**
+
+```bash
+# Reparar permisos de datos
+sudo chmod -R 755 infrastructure/data/chromadb
+sudo chmod -R 755 infrastructure/data/ollama
+
+# Eliminar volúmenes corruptos (⚠️ destruye datos)
+docker compose down -v
+docker compose up -d
+```
+
+#### Problema: Ollama tarda mucho en iniciar
+
+**Síntoma:** Ollama muestra status `Up` pero `/api/tags` devuelve lista vacía
+
+**Solución:**
+
+```bash
+# Ollama descarga modelos bajo demanda
+# Verificar descargas activas
+docker logs -f sa_ollama
+
+# Precargar un modelo (primera descarga: 5-30 minutos según modelo)
+curl http://localhost:11434/api/pull -d '{"name": "qwen2.5-coder:7b"}' 2>&1 | jq
+
+# Una vez completado, verificar disponibilidad
+curl http://localhost:11434/api/tags | jq '.models[].name'
+```
+
+---
+
 ## 9. Gestión del Entorno con CasaOS y Automatización (n8n)
 
 Dado que el HomeLab utiliza **CasaOS** como interfaz de gestión, la configuración de contenedores críticos como **n8n** debe realizarse a través de su UI para garantizar la persistencia y la conectividad externa.
