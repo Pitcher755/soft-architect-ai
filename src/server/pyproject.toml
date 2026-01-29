@@ -62,7 +62,7 @@ addopts = [
     "-q",
     "--strict-markers",
     "--strict-config",
-    "--cov=.",
+    "--cov=app",
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-fail-under=80",
@@ -113,6 +113,7 @@ line-ending = "auto"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"]  # Allow assert in tests
+"app/tests/**/*.py" = ["S101"]  # Allow assert in tests under app/tests
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10  # Complejidad ciclomática máxima

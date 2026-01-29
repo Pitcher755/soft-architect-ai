@@ -11,7 +11,8 @@ from .knowledge import router as knowledge_router
 # Main router for API v1
 router = APIRouter(prefix="/api/v1")
 
-# Include all routers
-router.include_router(health_router)
+# Include all routers. Mount health under /system to keep compatibility
+# with top-level API expectations (GET /api/v1/system/health)
+router.include_router(health_router, prefix="/system")
 router.include_router(chat_router)
 router.include_router(knowledge_router)
