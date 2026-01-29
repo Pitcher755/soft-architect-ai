@@ -40,7 +40,7 @@ jobs:
         if: steps.check_flutter.outputs.flutter_exists == 'true'
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.0'
+          flutter-version: '3.38.4'
           cache: true
 
       - name: Get Flutter dependencies
@@ -83,7 +83,7 @@ jobs:
         run: pip install poetry==1.8.3
 
       - name: Install project dependencies
-        run: cd src/server && poetry install --with dev
+        run: cd src/server && poetry install
 
       - name: Run Ruff linting
         run: cd src/server && poetry run ruff check app/ || true
