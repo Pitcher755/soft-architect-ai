@@ -1,7 +1,7 @@
 # 📑 Índice de Documentación - SoftArchitect AI
 
-> **Fecha:** 28 de Enero de 2026  
-> **Estado:** ✅ Documentación Centralizada en `doc/`  
+> **Fecha:** 28 de Enero de 2026
+> **Estado:** ✅ Documentación Centralizada en `doc/`
 > **Estructura:** Bilingual (ES/EN), Organizada por Categorías
 
 ---
@@ -36,7 +36,21 @@ doc/
 │   ├── SETUP_GUIDE.es.md         (Guía de instalación en español)
 │   ├── SETUP_GUIDE.en.md         (Guía de instalación en inglés)
 │   ├── TOOLS_AND_STACK.es.md     (Stack tecnológico en español)
-│   └── TOOLS_AND_STACK.en.md     (Stack tecnológico en inglés)
+│   ├── TOOLS_AND_STACK.en.md     (Stack tecnológico en inglés)
+│   ├── TEST_COVERAGE_DASHBOARD.md    (Dashboard de cobertura de tests) ⭐ NEW
+│   └── TEST_EXECUTION_LOG.md     (Histórico de ejecuciones de tests) ⭐ NEW
+├── 03-HU-TRACKING/                # Seguimiento de Historias de Usuario
+│   ├── README.md                  (Índice maestro de HUs)
+│   ├── HU-1.1-DOCKER-SETUP/       (HU-1.1: Infraestructura Docker)
+│   │   ├── README.md
+│   │   ├── PROGRESS.md
+│   │   └── ARTIFACTS.md
+│   └── HU-1.2-BACKEND-SKELETON/   (HU-1.2: Backend FastAPI) ⭐ NEW
+│       ├── README.md
+│       ├── WORKFLOW.md
+│       ├── PROGRESS.md
+│       └── ARTIFACTS.md
+│
 │
 └── private/                      # Documentación interna (no publicada)
     └── INTERNAL_DEV_BLUEPRINT.md (Blueprint de desarrollo interno)
@@ -108,6 +122,16 @@ doc/
 | TOOLS_AND_STACK | Versiones exactas, compatibilidades | Desarrolladores | ~400 |
 | DOCKER_COMPOSE_GUIDE | Docker Compose detallado, networking | DevOps/Infra | ~500 |
 | AUTOMATION | CI/CD, scripts de automatización | DevOps/SRE | ~500 |
+| TEST_COVERAGE_DASHBOARD ⭐ NEW | Dashboard de cobertura y métricas de tests | QA/Dev/Leads | ~400 |
+| TEST_EXECUTION_LOG ⭐ NEW | Histórico y seguimiento de test runs | QA/CI | ~350 |
+| TEST_STRATEGY_AND_ROADMAP ⭐ NEW | Plan detallado para robustez production-ready | Arquitectos/Leads | ~600 |
+### 📋 Tracking de Historias de Usuario (03-HU-TRACKING/)
+
+| Historia | Descripción | Estado | Documentos |
+|---------|-------------|--------|------------|
+| HU-1.1 | Docker Infrastructure Setup | ✅ Completado | README, PROGRESS, ARTIFACTS |
+| HU-1.2 ⭐ COMPLETED | Backend Skeleton (FastAPI) | ✅ Completado | README (bilingüe), WORKFLOW, PROGRESS, ARTIFACTS |
+
 
 ### 🔒 Privado (private/)
 
@@ -142,8 +166,10 @@ doc/
 | **Cobertura Visual** | ✅ 100% | Todos los temas documentados |
 | **Bilingual (ES/EN)** | ✅ 95% | Mayoría bilingüe, algunos doc EN-only |
 | **Centralización** | ✅ 100% | Todo en `doc/` (raíz limpia) |
-| **Actualización** | ✅ 28 Ene 2026 | Última actualización |
-| **Métricas** | ✅ 26 Archivos | ~6500+ líneas totales |
+| **Actualización** | ✅ 29 Ene 2026 | Última actualización |
+| **Métricas** | ✅ 31 Archivos | ~9500+ líneas totales |
+| **HU Tracking** | ✅ 2 HUs | HU-1.1 ✅ (Complete), HU-1.2 ✅ (Phases 0-5 Complete) |
+| **Security Report** | ✅ NEW | PHASE_5_SECURITY_VALIDATION_REPORT.md agregado |
 
 ---
 
@@ -157,6 +183,9 @@ doc/
 - [DOCKER_COMPOSE_GUIDE.es.md](02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md) - Docker en detalle
 
 **Testing & Validación:**
+- [TEST_COVERAGE_DASHBOARD.md](02-SETUP_DEV/TEST_COVERAGE_DASHBOARD.md) - Métricas actuales de cobertura ⭐ NEW
+- [TEST_EXECUTION_LOG.md](02-SETUP_DEV/TEST_EXECUTION_LOG.md) - Histórico de test runs ⭐ NEW
+- [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Plan para robustez production-ready ⭐ NEW
 - [FUNCTIONAL_TEST_REPORT.md](01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Resultados de pruebas
 - [INITIAL_SETUP_LOG.es.md](01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md) - Verificación de instalación
 
@@ -194,6 +223,6 @@ doc/
 
 ---
 
-**Última Actualización:** 28 de Enero de 2026  
-**Responsable:** ArchitectZero AI Agent  
+**Última Actualización:** 29 de Enero de 2026
+**Responsable:** ArchitectZero AI Agent
 **Estado:** ✅ LISTO PARA PRODUCCIÓN

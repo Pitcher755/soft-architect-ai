@@ -1,168 +1,328 @@
-# 🐍 SoftArchitect AI - Python Backend
+🐍 SoftArchitect AI - Backend
+FastAPI + Clean Architecture + RAG Engine
+🐍 SoftArchitect AI - Backend
+FastAPI + Clean Architecture + RAG Engine
 
-**Languages:** [English](#english) | [Español](#español)
+## Navegación
+- [Español](#es)
+- [English](#en)
 
 ---
 
-<a name="english"></a>
+<a name="es"></a>
+## 🇪🇸 Español
 
-## 🇬🇧 English Version
+**Índice (ES)**
+- [Descripción](#es-overview)
+- [Arquitectura](#es-architecture)
+- [Stack Tecnológico](#es-tech)
+- [Instalación Local](#es-setup)
+- [Testing](#es-testing)
+- [Estructura del Proyecto](#es-structure)
+- [Documentación de la API](#es-api)
+- [Referencias](#es-refs)
 
-### 🐍 SoftArchitect AI - Python Backend
+[Ir a English](#en)
 
-#### Overview
+---
 
-Backend API for **SoftArchitect AI**, built with FastAPI.
+<a name="es-overview"></a>
+### 🎯 Descripción
+Backend para SoftArchitect AI, un asistente de arquitectura de software impulsado por IA.
 
-- ✅ Multi-platform support: Linux, Windows, macOS
-- ✅ Async/await with Uvicorn ASGI server
-- ✅ Modular Monolith architecture
-- ✅ Privacy-first (Local-only by default, optional Cloud)
-- ✅ ChromaDB for vector embeddings
-- ✅ Ollama (local) or Groq (cloud) for LLM inference
+Características clave:
+- Clean Architecture (Domain-Driven Design)
+- Configuración type-safe (Pydantic Settings)
+- Motor RAG (Retrieval-Augmented Generation)
+- IA local-first con integración Ollama
+- ChromaDB como vector store para la base de conocimiento
 
-#### Architecture
+<a name="es-architecture"></a>
+### 🏗️ Arquitectura
+Sigue los principios de Clean Architecture:
 
 ```
-app/
-├── main.py                  # FastAPI entry point
-├── core/                    # Global configuration
-│   ├── config.py            # Settings from .env
-│   ├── database.py          # ChromaDB & SQLite setup
-│   └── security.py          # Input sanitization & validation
-├── api/                     # API routes (versioned)
-│   ├── v1/
-│   │   ├── health.py        # Health check endpoint
-│   │   ├── chat.py          # Chat messages (Phase 2)
-│   │   └── knowledge.py     # Knowledge retrieval (Phase 2)
-│   └── dependencies.py      # Shared dependencies
-├── domain/                  # Business logic (Clean Arch)
-│   ├── entities/            # ChatMessage, ChatSession
-│   ├── services/            # Use cases
-│   └── repositories/        # Data contracts
-├── infrastructure/          # External integrations
-│   ├── llm/                 # Ollama/Groq client
-│   ├── vector_store/        # ChromaDB wrapper
-│   └── external/            # Third-party APIs
-└── tests/                   # Test suite
-    ├── unit/                # Unit tests
-    ├── integration/         # API integration tests
-    └── fixtures/            # Test data
+src/server/
+├── core/           # Configuración, seguridad, eventos
+├── domain/         # Lógica de negocio (entidades, esquemas)
+├── services/       # Servicios de aplicación (RAG, vectores)
+├── api/            # Capa API (routers, endpoints)
+└── utils/          # Helpers genéricos
 ```
 
-#### Quick Start
+Referencia: `context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md`
 
-##### 1. Setup Python Environment
+<a name="es-tech"></a>
+### 🛠️ Stack Tecnológico
+- Framework: FastAPI 0.115.6
+- Servidor: Uvicorn 0.34.0 (ASGI)
+- Validación: Pydantic 2.10.5
+- Linter: Ruff 0.8.6
+- Testing: Pytest 8.3.4 + pytest-cov 6.0.0
+- Python: 3.12.3
 
+<a name="es-setup"></a>
+### 🚀 Instalación Local
+Prerequisitos: Python 3.12.3+, Poetry 1.7.0+
+
+Instalación:
 ```bash
 cd src/server
-
-# Create virtual environment
-python3.11 -m venv venv
-
-# Activate virtual environment
-# On Linux/macOS:
-source venv/bin/activate
-# On Windows:
-# venv\Scripts\activate
-
-# Upgrade pip
-pip install --upgrade pip
-
-# Install dependencies
-pip install -r requirements.txt
+poetry install
 ```
 
-##### 2. Configure Environment
-
+Configurar entorno:
 ```bash
-cp .env.example .env
+cp ../../infrastructure/.env.example .env
+# Editar .env con tu configuración
+```
+
+Ejecutar servidor de desarrollo:
+```bash
+poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Acceder a la API:
+- API: http://localhost:8000
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+<a name="es-testing"></a>
+### 🧪 Testing
+Ejecutar todos los tests:
+```bash
+poetry run pytest
+```
+Con cobertura:
+```bash
+poetry run pytest --cov=. --cov-report=html
+```
+Ver reporte: `htmlcov/index.html`
+
+Linter y formato:
+```bash
+poetry run ruff check .
+poetry run ruff check --fix .
+poetry run ruff format .
+```
+
+<a name="es-structure"></a>
+### 📂 Estructura del Proyecto
+Resumen de carpetas clave:
+
+```
+src/server/
+├── api/
+│   └── v1/
+│       ├── endpoints/      # Implementaciones de endpoints
+│       └── router.py       # Agregador de routers
+├── core/
+│   ├── config.py           # Pydantic Settings
+│   └── errors.py           # Clases de error
+├── domain/
+│   ├── models/
+│   └── schemas/
+├── services/               # RAG, vectores
+├── utils/
+├── tests/
+└── main.py
+```
+
+<a name="es-api"></a>
+### 📖 Documentación de la API
+Health Check
+- Endpoint: `GET /api/v1/system/health`
+
+Respuesta:
+```json
+{
+  "status": "ok",
+  "app": "SoftArchitect AI",
+  "version": "0.1.0",
+  "environment": "development",
+  "debug_mode": false
+}
+```
+
+Health Check Detallado
+- Endpoint: `GET /api/v1/system/health/detailed`
+
+Respuesta:
+```json
+{
+  "status": "ok",
+  "app": "SoftArchitect AI",
+  "version": "0.1.0",
+  "environment": "development",
+  "debug_mode": false,
+  "services": { "chromadb": "unknown", "ollama": "unknown" }
+}
+```
+
+<a name="es-refs"></a>
+### 🔗 Referencias
+- Project Structure Map
+- Tech Stack Details
+- Error Handling Standard
+- Security Rules
+- Testing Strategy
+
+---
+
+<a name="en"></a>
+## 🇬🇧 English
+
+**Index (EN)**
+- [Overview](#en-overview)
+- [Architecture](#en-architecture)
+- [Tech Stack](#en-tech)
+- [Local Setup](#en-setup)
+- [Testing](#en-testing)
+- [Project Structure](#en-structure)
+- [API Documentation](#en-api)
+- [References](#en-refs)
+
+[Ir a Español](#es)
+
+---
+
+<a name="en-overview"></a>
+### 🎯 Overview
+Backend service for SoftArchitect AI, an AI-powered software architecture assistant.
+
+Key features:
+- Clean Architecture (Domain-Driven Design)
+- Type-safe configuration (Pydantic Settings)
+- RAG engine (Retrieval-Augmented Generation)
+- Local-first AI with Ollama integration
+- ChromaDB vector store for knowledge base
+
+<a name="en-architecture"></a>
+### 🏗️ Architecture
+Follows Clean Architecture principles:
+
+```
+src/server/
+├── core/           # Configuration, security, events
+├── domain/         # Business logic (entities, schemas)
+├── services/       # Application services (RAG, vectors)
+├── api/            # API layer (routers, endpoints)
+└── utils/          # Generic helpers
+```
+
+Reference: `context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md`
+
+<a name="en-tech"></a>
+### 🛠️ Tech Stack
+- Framework: FastAPI 0.115.6
+- Server: Uvicorn 0.34.0 (ASGI)
+- Validation: Pydantic 2.10.5
+- Linter: Ruff 0.8.6
+- Testing: Pytest 8.3.4 + pytest-cov 6.0.0
+- Python: 3.12.3
+
+<a name="en-setup"></a>
+### 🚀 Local Setup
+Prerequisites: Python 3.12.3+, Poetry 1.7.0+
+
+Installation:
+```bash
+cd src/server
+poetry install
+```
+
+Configure environment:
+```bash
+cp ../../infrastructure/.env.example .env
 # Edit .env with your configuration
 ```
 
-##### 3. Run Development Server
-
+Run development server:
 ```bash
-# Start API with auto-reload
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
-# Or use the direct command
-uvicorn app.main:app --reload
+poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Server will start at: **http://localhost:8000**
+Access API:
+- API: http://localhost:8000
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
 
-##### 4. API Documentation
-
-Once running, visit:
-- **Swagger UI:** http://localhost:8000/docs
-- **ReDoc:** http://localhost:8000/redoc
-
-##### 5. Health Check
-
+<a name="en-testing"></a>
+### 🧪 Testing
+Run all tests:
 ```bash
-curl http://localhost:8000/api/v1/health
+poetry run pytest
 ```
+With coverage:
+```bash
+poetry run pytest --cov=. --cov-report=html
+```
+
+Lint & format:
+```bash
+poetry run ruff check .
+poetry run ruff check --fix .
+poetry run ruff format .
+```
+
+<a name="en-structure"></a>
+### 📂 Project Structure
+```
+src/server/
+├── api/
+│   └── v1/
+│       ├── endpoints/      # Endpoint implementations
+│       └── router.py       # API router aggregator
+├── core/
+│   ├── config.py           # Pydantic Settings (env vars)
+│   └── errors.py           # Custom error classes
+├── domain/
+│   ├── models/
+│   └── schemas/
+├── services/               # RAG, vectors
+├── utils/
+├── tests/
+└── main.py
+```
+
+<a name="en-api"></a>
+### 📖 API Documentation
+Health Check
+- Endpoint: `GET /api/v1/system/health`
 
 Response:
 ```json
 {
-  "status": "OK",
-  "message": "SoftArchitect AI backend is running",
-  "version": "0.1.0"
+  "status": "ok",
+  "app": "SoftArchitect AI",
+  "version": "0.1.0",
+  "environment": "development",
+  "debug_mode": false
 }
 ```
 
-#### Running Tests
+Detailed Health Check
+- Endpoint: `GET /api/v1/system/health/detailed`
 
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=app tests/
-
-# Run specific test file
-pytest app/tests/unit/test_security.py
-
-# Run in verbose mode
-pytest -v
-
-# Run with asyncio support
-pytest --asyncio-mode=auto
+Response:
+```json
+{
+  "status": "ok",
+  "app": "SoftArchitect AI",
+  "version": "0.1.0",
+  "environment": "development",
+  "debug_mode": false,
+  "services": { "chromadb": "unknown", "ollama": "unknown" }
+}
 ```
 
-#### Code Quality
-
-```bash
-# Format code with Black
-black app/
-
-# Lint with Flake8
-flake8 app/
-
-# Type checking with MyPy
-mypy app/
-```
-
-#### Dependencies
-
-##### Core Framework
-- `fastapi` (0.104.1) - Modern web framework
-- `uvicorn` (0.24.0) - ASGI server
-
-##### Data & Validation
-- `pydantic` (2.5.0) - Data validation
-- `pydantic-settings` (2.1.0) - Settings management
-
-##### Vector & LLM
-- `chromadb` (0.4.21) - Vector database
-- `langchain` (0.1.1) - LLM framework
-- `ollama` (0.1.0) - Ollama client
-- `groq` (0.4.1) - Groq API client
-
-##### Database
-- `sqlalchemy` (2.0.23) - SQL toolkit
+<a name="en-refs"></a>
+### 🔗 References
+- Project Structure Map
+- Tech Stack Details
+- Error Handling Standard
+- Security Rules
+- Testing Strategy
 - `sqlite3-python` (1.0.0) - SQLite bindings
 
 ##### Security

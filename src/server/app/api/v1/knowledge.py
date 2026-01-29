@@ -2,6 +2,7 @@
 Placeholder for knowledge base endpoint.
 Will be implemented in next phase.
 """
+
 from fastapi import APIRouter
 
 router = APIRouter(tags=["knowledge"])

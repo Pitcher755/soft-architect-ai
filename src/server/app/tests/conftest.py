@@ -1,6 +1,7 @@
 """
 Tests: Conftest for pytest configuration and shared fixtures.
 """
+
 import pytest
 from httpx import AsyncClient
 

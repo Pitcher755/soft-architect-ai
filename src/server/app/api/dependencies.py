@@ -1,13 +1,13 @@
 """
 Shared dependencies for API endpoints.
 """
+
 from fastapi import HTTPException, status
-from typing import Optional
 
 from ..core.security import TokenValidator
 
 
-async def verify_api_key(x_api_key: Optional[str] = None) -> str:
+async def verify_api_key(x_api_key: str | None = None) -> str:
     """
     Verify API key from request header.
 

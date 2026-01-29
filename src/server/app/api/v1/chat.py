@@ -2,6 +2,7 @@
 Placeholder for chat endpoint.
 Will be implemented in next phase.
 """
+
 from fastapi import APIRouter
 
 router = APIRouter(tags=["chat"])
