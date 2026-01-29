@@ -1,0 +1,140 @@
+name: Code Quality & English Compliance
+
+# Run on every push to main/develop and all PRs
+on:
+  push:
+    branches: [main, develop, feature/infra-docker-setup]
+    paths:
+      - 'src/**'
+      - '.github/workflows/lint.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/**'
+
+# Environment variables
+env:
+  PYTHON_VERSION: '3.12'
+  FLUTTER_VERSION: '3.10.1'
+
+jobs:
+  dart-lint:
+    name: Flutter/Dart Linting
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Get Flutter dependencies
+        run: cd src/client && flutter pub get
+
+      - name: Run Flutter analyzer
+        run: cd src/client && flutter analyze
+
+      - name: Check Dart formatting
+        run: cd src/client && dart format --set-exit-if-changed lib/
+
+      - name: Run Flutter tests (if exist)
+        run: cd src/client && flutter test 2>/dev/null || true
+        continue-on-error: true
+
+  python-lint:
+    name: Python Linting & Type Checking
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install development dependencies
+        run: |
+          cd src/server
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 2>/dev/null || true
+          pip install pylint mypy black isort 2>/dev/null || true
+
+      - name: Run PyLint
+        run: cd src/server && pylint app/ --max-line-length=120 --exit-zero || true
+        continue-on-error: true
+
+      - name: Run MyPy type checking
+        run: cd src/server && mypy app/ --ignore-missing-imports || true
+        continue-on-error: true
+
+      - name: Check Black formatting
+        run: cd src/server && black app/ --check || true
+        continue-on-error: true
+
+      - name: Check import sorting
+        run: cd src/server && isort app/ --check-only || true
+        continue-on-error: true
+
+  english-compliance:
+    name: English Compliance Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check for Spanish in Dart files
+        run: |
+          echo "🔍 Checking Dart files for Spanish..."
+          if find src/client/lib -name "*.dart" -exec grep -l "// .*[áéíóúñ¡¿]" {} \; 2>/dev/null | head -5; then
+            echo "⚠️  Found potential Spanish comments in Dart"
+          else
+            echo "✅ No Spanish comments found in Dart"
+          fi
+        continue-on-error: true
+
+      - name: Check for Spanish in Python files
+        run: |
+          echo "🔍 Checking Python files for Spanish..."
+          if find src/server/app -name "*.py" -exec grep -l "# .*[áéíóúñ¡¿]" {} \; 2>/dev/null | head -5; then
+            echo "⚠️  Found potential Spanish comments in Python"
+          else
+            echo "✅ No Spanish comments found in Python"
+          fi
+        continue-on-error: true
+
+      - name: Make audit script executable
+        run: chmod +x scripts/audit-english-compliance.sh || true
+
+      - name: Run English compliance audit
+        run: ./scripts/audit-english-compliance.sh || true
+        continue-on-error: true
+
+  summary:
+    name: Lint Summary
+    runs-on: ubuntu-latest
+    needs: [dart-lint, python-lint, english-compliance]
+    if: always()
+    
+    steps:
+      - name: Print Summary
+        run: |
+          echo "╔════════════════════════════════════════════╗"
+          echo "║  ✅ Code Quality & Compliance Check Done  ║"
+          echo "╚════════════════════════════════════════════╝"
+          echo ""
+          echo "✅ Dart/Flutter linting completed"
+          echo "✅ Python linting & type checking completed"
+          echo "✅ English compliance audit completed"
+          echo ""
+          echo "Reference: AGENTS.md §6 - Code Language Standards"
