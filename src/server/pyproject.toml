@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "softarchitect-ai"
 version = "0.1.0"
 description = "Privacy-first AI assistant for software architecture guidance"
+requires-python = ">=3.12.3,<4.0"
 
 [tool.mypy]
 # MyPy configuration for strict type checking
@@ -64,4 +65,19 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
+]
+
+[tool.poetry.dependencies]
+fastapi = "0.115.6"
+uvicorn = {version = "0.34.0", extras = ["standard"]}
+python-multipart = "0.0.20"
+pydantic = "2.10.5"
+pydantic-settings = "2.7.1"
+
+[dependency-groups]
+dev = [
+    "ruff (==0.8.6)",
+    "pytest (==8.3.4)",
+    "pytest-cov (==6.0.0)",
+    "httpx (==0.28.1)"
 ]
