@@ -124,6 +124,108 @@ Para cada Feature, se deben crear obligatoriamente estos elementos:
 
 ---
 
+## 📚 8. Estándar de Documentación (Doc as Code)
+
+**Principio Fundamental:** Toda documentación es "doc as code" - versionada, revisada y organizada en la estructura `doc/`.
+
+### Estructura de Carpetas (Obligatoria)
+
+```text
+doc/
+├── 00-VISION/               # Papers conceptuales y visión del proyecto
+│   ├── CONCEPT_WHITE_PAPER.es.md
+│   └── CONCEPT_WHITE_PAPER.en.md
+│
+├── 01-PROJECT_REPORT/       # Reportes, análisis y evaluaciones
+│   ├── CONTEXT_COVERAGE_REPORT.{es,en}.md
+│   ├── FUNCTIONAL_TEST_REPORT.md
+│   ├── INITIAL_SETUP_LOG.{es,en}.md
+│   ├── MEMORIA_METODOLOGICA.{es,en}.md
+│   ├── PROJECT_MANIFESTO.{es,en}.md
+│   └── SIMULACION_POC.{es,en}.md
+│
+├── 02-SETUP_DEV/            # Guías técnicas y configuración
+│   ├── AUTOMATION.{es,en}.md
+│   ├── DOCKER_COMPOSE_GUIDE.{es,en}.md
+│   ├── QUICK_START_GUIDE.{es,en}.md
+│   ├── SETUP_GUIDE.{es,en}.md
+│   └── TOOLS_AND_STACK.{es,en}.md
+│
+├── 03-HU-TRACKING/          # Seguimiento de historias de usuario (HU)
+│   ├── README.md            # Índice maestro de todas las HUs
+│   └── HU-{ID}-{NAME}/      # Carpeta por cada HU
+│       ├── README.md        # Descripción y contexto
+│       ├── PROGRESS.md      # Checklist de 6 fases
+│       └── ARTIFACTS.md     # Manifest de archivos a generar
+│
+├── private/                 # Documentación interna (no pública)
+│   └── INTERNAL_DEV_BLUEPRINT.md
+│
+└── INDEX.md                 # Índice maestro de toda la documentación
+```
+
+### Reglas de Documentación
+
+1. **UBICACIÓN:** Toda documentación va en `doc/` excepto:
+   - `README.md` (portada en raíz)
+   - `AGENTS.md` (identidad del agente en raíz)
+   - `context/` (requisitos y especificaciones en carpeta separada)
+
+2. **NOMBRADO:** 
+   - Usar UPPERCASE_SNAKE_CASE para nombres de archivo
+   - Sufijo bilingual: `.{es,en}.md` cuando sea versión traducida
+   - Sufijo en inglés cuando es universal: `.md`
+
+3. **CONTENIDO (Headers):**
+   - Siempre incluir table de contenidos (`## 📖 Tabla de Contenidos` o `## 📋 Table of Contents`)
+   - Metadata al inicio: `> **Fecha:** DD/MM/YYYY` y `> **Estado:** ✅/⚠️/❌`
+   - Emojis consistentes: 📖 (contenidos), 🚀 (inicio), 🔍 (análisis), etc.
+
+4. **ORGANIZACIÓN POR CATEGORÍA:**
+   - **00-VISION/** - Documentos estratégicos, concept papers, manifiestos
+   - **01-PROJECT_REPORT/** - Resultados de análisis, reportes de pruebas, logs
+   - **02-SETUP_DEV/** - Guías prácticas, troubleshooting, stack técnico
+   - **03-HU-TRACKING/** - Seguimiento de historias de usuario (una carpeta por HU)
+   - **private/** - Documentación sensible o interna
+
+5. **BILINGUAL SUPPORT:**
+   - Archivos clave deben tener versión ES + EN (`.es.md` y `.en.md`)
+   - Reportes técnicos pueden ser solo EN o solo ES si aplica
+   - Nunca mezclar idiomas en el mismo archivo
+
+6. **LINKS INTERNOS:**
+   - Usar rutas relativas: `[file.md](file.md)` o `[file](./category/file.md)`
+   - Incluir tabla de contenidos al inicio para navegación interna
+   - Actualizar TODO link cruzado cuando se mueve/renombra documento
+
+7. **VERSIONADO:**
+   - Incluir timestamp en metadata (top section)
+   - Guardar en Git: `git add doc/` con mensaje descriptivo
+   - Usar etiquetas (v0.0.1-init, v0.1.0-phase1, etc.)
+
+8. **VALIDACIÓN:**
+   - Verificar que NO hay archivos `.md` sueltos en raíz (excepto README.md, AGENTS.md)
+   - Verificar estructura con: `tree doc/ -L 2`
+   - Links validan automáticamente en CI/CD (futuro)
+
+### Comandos Útiles
+
+```bash
+# Verificar estructura
+tree doc/ -L 2
+
+# Contar líneas de documentación
+find doc/ -name "*.md" -exec wc -l {} + | tail -1
+
+# Buscar archivos .md en raíz (debería estar vacío excepto README.md)
+ls -la *.md | grep -v README.md | grep -v AGENTS.md
+
+# Validar Markdown sintaxis (requiere mdl)
+mdl doc/
+```
+
+---
+
 ## 🧾 9. Referencias y Contexto
 
 Los siguientes documentos son la fuente de verdad:
