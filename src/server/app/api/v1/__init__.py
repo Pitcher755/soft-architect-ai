@@ -1,6 +1,7 @@
 """
 API v1 initialization and router setup.
 """
+
 from fastapi import APIRouter
 
 from .chat import router as chat_router

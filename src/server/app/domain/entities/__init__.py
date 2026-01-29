@@ -1,12 +1,12 @@
 """
 Domain layer: Core business entities.
 """
+
 from datetime import datetime
 
 # `List` and `Optional` from `typing` are not required because
 # we use modern annotations (PEP 585/604) like `list[...]` and
 # `X | None` throughout this module.
-
 
 
 class ChatMessage:

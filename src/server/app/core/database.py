@@ -1,6 +1,7 @@
 """
 Database and vector store configuration.
 """
+
 from pathlib import Path
 
 

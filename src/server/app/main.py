@@ -4,6 +4,7 @@ SoftArchitect AI Backend - Main Entry Point
 FastAPI application for RAG-based software architecture assistant.
 Local-first, privacy-preserving AI service.
 """
+
 import logging
 
 from fastapi import FastAPI, Request

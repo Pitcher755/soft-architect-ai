@@ -2,6 +2,7 @@
 Configuration settings for SoftArchitect AI backend.
 Loads from .env file with sensible defaults.
 """
+
 from typing import Literal
 
 from pydantic_settings import BaseSettings
