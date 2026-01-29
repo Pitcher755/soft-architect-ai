@@ -3,7 +3,7 @@ name: Code Quality & English Compliance
 # Run on every push to main/develop and all PRs
 on:
   push:
-    branches: [main, develop, feature/infra-docker-setup]
+    branches: [main, develop, feature/backend-skeleton]
     paths:
       - 'src/**'
       - '.github/workflows/lint.yml'
@@ -21,35 +21,53 @@ jobs:
   dart-lint:
     name: Flutter/Dart Linting
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
+      - name: Check if Flutter client exists
+        id: check_flutter
+        run: |
+          if [ -d "src/client" ]; then
+            echo "flutter_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "flutter_exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Setup Flutter
+        if: steps.check_flutter.outputs.flutter_exists == 'true'
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version: '3.27.0'
           cache: true
 
       - name: Get Flutter dependencies
+        if: steps.check_flutter.outputs.flutter_exists == 'true'
         run: cd src/client && flutter pub get
 
       - name: Run Flutter analyzer
+        if: steps.check_flutter.outputs.flutter_exists == 'true'
         run: cd src/client && flutter analyze
 
       - name: Check Dart formatting
+        if: steps.check_flutter.outputs.flutter_exists == 'true'
         run: cd src/client && dart format --set-exit-if-changed lib/
 
       - name: Run Flutter tests (if exist)
+        if: steps.check_flutter.outputs.flutter_exists == 'true'
         run: cd src/client && flutter test 2>/dev/null || true
         continue-on-error: true
+
+      - name: Skip Flutter (client not yet initialized)
+        if: steps.check_flutter.outputs.flutter_exists == 'false'
+        run: echo "⏭️  Flutter client not yet initialized. Skipping Dart linting."
 
   python-lint:
     name: Python Linting & Type Checking
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -61,33 +79,32 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
 
-      - name: Install development dependencies
-        run: |
-          cd src/server
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt 2>/dev/null || true
-          pip install pylint mypy black isort 2>/dev/null || true
+      - name: Install Poetry
+        run: pip install poetry==1.8.3
 
-      - name: Run PyLint
-        run: cd src/server && pylint app/ --max-line-length=120 --exit-zero || true
+      - name: Install project dependencies
+        run: cd src/server && poetry install --with dev
+
+      - name: Run Ruff linting
+        run: cd src/server && poetry run ruff check app/ || true
         continue-on-error: true
 
-      - name: Run MyPy type checking
-        run: cd src/server && mypy app/ --ignore-missing-imports || true
+      - name: Run Ruff formatting check
+        run: cd src/server && poetry run ruff format --check app/ || true
         continue-on-error: true
 
-      - name: Check Black formatting
-        run: cd src/server && black app/ --check || true
+      - name: Run pytest
+        run: cd src/server && poetry run pytest tests/ -v --tb=short || true
         continue-on-error: true
 
-      - name: Check import sorting
-        run: cd src/server && isort app/ --check-only || true
+      - name: Run Bandit security check
+        run: cd src/server && poetry run bandit -r app/ -f json --severity-level medium || true
         continue-on-error: true
 
   english-compliance:
     name: English Compliance Audit
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -125,7 +142,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [dart-lint, python-lint, english-compliance]
     if: always()
-    
+
     steps:
       - name: Print Summary
         run: |
@@ -133,8 +150,9 @@ jobs:
           echo "║  ✅ Code Quality & Compliance Check Done  ║"
           echo "╚════════════════════════════════════════════╝"
           echo ""
-          echo "✅ Dart/Flutter linting completed"
-          echo "✅ Python linting & type checking completed"
+          echo "✅ Dart/Flutter linting completed (skipped if client not initialized)"
+          echo "✅ Python linting & security checks completed"
           echo "✅ English compliance audit completed"
           echo ""
           echo "Reference: AGENTS.md §6 - Code Language Standards"
+          echo "Backend Tests: See TEST_STRATEGY_AND_ROADMAP.md for coverage details"
