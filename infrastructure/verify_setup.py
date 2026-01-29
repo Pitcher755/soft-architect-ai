@@ -10,7 +10,13 @@ import subprocess
 from typing import Tuple
 
 
-def check_service_port(host: str, port: int, service_name: str, retries: int = 3) -> bool:
+def check_service_port(
+    host: str,
+    port: int,
+    service_name: str,
+    retries: int = 3,
+    show_errors: bool = True,
+) -> bool:
     """
     Intenta conectar a un servicio con reintentos.
     Útil porque los servicios tardan en arrancar.
@@ -24,7 +30,8 @@ def check_service_port(host: str, port: int, service_name: str, retries: int = 3
                     print(f"✅ {service_name} ({host}:{port}): RESPONDIENDO")
                     return True
         except Exception as e:
-            print(f"   Intento {attempt+1}/{retries} falló: {e}")
+            if show_errors:
+                print(f"   Intento {attempt+1}/{retries} falló: {e}")
             time.sleep(2)
 
     print(f"❌ {service_name} ({host}:{port}): NO RESPONDE después de {retries} intentos")
@@ -60,7 +67,7 @@ def main():
     checks = [
         ("Contenedores Docker", check_docker_services),
         ("Backend API (8000)", lambda: check_service_port('127.0.0.1', 8000, 'FastAPI')),
-        ("ChromaDB (8001)", lambda: check_service_port('chromadb', 8001, 'ChromaDB') or check_service_port('127.0.0.1', 8001, 'ChromaDB')),
+        ("ChromaDB (8001)", lambda: check_service_port('127.0.0.1', 8001, 'ChromaDB')),
         ("Ollama (11434)", lambda: check_service_port('127.0.0.1', 11434, 'Ollama')),
     ]
 

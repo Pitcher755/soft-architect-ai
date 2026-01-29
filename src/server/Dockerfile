@@ -1,5 +1,5 @@
 # Multi-stage build para minimizar tamaño final
-FROM python:3.12-slim as builder
+FROM python:3.12-slim AS builder
 
 WORKDIR /app
 COPY requirements.txt .

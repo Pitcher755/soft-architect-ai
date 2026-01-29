@@ -193,17 +193,21 @@ doc/
    - Reportes técnicos pueden ser solo EN o solo ES si aplica
    - Nunca mezclar idiomas en el mismo archivo
 
-6. **LINKS INTERNOS:**
+6. **IDIOMA EN CÓDIGO Y DOCUMENTACIÓN:**
+   - Todo lo que esté escrito en el código debe estar en **inglés** (comentarios, nombres de variables, DartDoc, PyDoc, etc.).
+   - En `doc/` cada documento debe existir en dos versiones: **inglés** (`.en.md`) y **español** (`.es.md`).
+
+7. **LINKS INTERNOS:**
    - Usar rutas relativas: `[file.md](file.md)` o `[file](./category/file.md)`
    - Incluir tabla de contenidos al inicio para navegación interna
    - Actualizar TODO link cruzado cuando se mueve/renombra documento
 
-7. **VERSIONADO:**
+8. **VERSIONADO:**
    - Incluir timestamp en metadata (top section)
    - Guardar en Git: `git add doc/` con mensaje descriptivo
    - Usar etiquetas (v0.0.1-init, v0.1.0-phase1, etc.)
 
-8. **VALIDACIÓN:**
+9. **VALIDACIÓN:**
    - Verificar que NO hay archivos `.md` sueltos en raíz (excepto README.md, AGENTS.md)
    - Verificar estructura con: `tree doc/ -L 2`
    - Links validan automáticamente en CI/CD (futuro)

@@ -1,4 +1,167 @@
-# 📑 HU-TRACKING: Índice de User Stories en Ejecución
+# 📑 HU-TRACKING: User Stories Index
+
+## 🇬🇧 English
+
+> **Directory:** User Story tracking documentation  
+> **Structure:** `doc/03-HU-TRACKING/HU-{Sprint}-{Name}/`  
+> **Last Updated:** January 29, 2026
+
+---
+
+## 📊 STATE OF THE UNION
+
+### Sprint 1: Infrastructure & Scaffolding (The Bedrock)
+
+**Goal:** Have a dockerized environment where frontend and backend can run and communicate.
+
+| HU | Name | Owner | Status | Progress | Docs |
+|----|------|-------|--------|----------|------|
+| **HU-1.1** | Orchestration & Environment | DevOps | 🔄 IN PROGRESS | 14% | [→ Go](HU-1.1-DOCKER-SETUP/) |
+| HU-1.2 | Backend Skeleton (FastAPI) | Backend Lead | ⏳ PENDING | 0% | [→ Go](HU-1.2-BACKEND-SKELETON/) |
+
+### Sprint 2: RAG Brain (Knowledge Injection)
+
+**Goal:** Provide memory to the system by ingesting Tech Packs and vectorizing them.
+
+| HU | Name | Owner | Status | Progress | Docs |
+|----|------|-------|--------|----------|------|
+| HU-2.1 | Knowledge Ingestion | Backend | ⏳ PENDING | 0% | [→ Go](HU-2.1-RAG-INGESTION/) |
+| HU-2.2 | Vectorization to ChromaDB | Backend | ⏳ PENDING | 0% | [→ Go](HU-2.2-VECTORIZATION/) |
+
+### Sprint 3: Interface & Conversation (The Face)
+
+**Goal:** Connect users to the brain through a smooth Flutter UI.
+
+| HU | Name | Owner | Status | Progress | Docs |
+|----|------|-------|--------|----------|------|
+| HU-3.1 | Chat UI + Markdown | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.1-CHAT-UI/) |
+| HU-3.2 | Streaming + API Connection | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.2-STREAMING/) |
+
+---
+
+## 🔍 HOW TO USE THIS DIRECTORY
+
+### Structure for Each HU
+
+```
+HU-{Sprint}-{Name}/
+├── README.md        # Description, acceptance criteria, dependencies
+├── PROGRESS.md      # Task checklist (6 phases)
+├── ARTIFACTS.md     # Files to generate
+└── WORKFLOW.md      # (Optional) Specific workflow details
+```
+
+### Example: HU-1.1
+
+```
+HU-1.1-DOCKER-SETUP/
+├── README.md        → HU description
+├── PROGRESS.md      → 60+ checkable items
+├── ARTIFACTS.md     → Files: docker-compose.yml, scripts, etc.
+└── WORKFLOW.md      → 6 phases (Phase 0-6)
+```
+
+### Quick Access
+
+- **Track HU-1.1 progress:**  
+  → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/PROGRESS.md`
+
+- **See HU-1.1 artifacts:**  
+  → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/ARTIFACTS.md`
+
+- **Detailed phases:**  
+  → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/WORKFLOW.md` (if available)
+
+---
+
+## 📌 RULES FOR DOCUMENTING HUs
+
+1. **Directory Name:** `HU-{ID}-{NAME-IN-UPPERCASE}`
+   - Example: `HU-1.1-DOCKER-SETUP`, `HU-2.1-RAG-INGESTION`
+
+2. **Required Files:**
+   - `README.md` - Context, criteria, dependencies
+   - `PROGRESS.md` - 6-phase checklist
+   - `ARTIFACTS.md` - Generated files list
+
+3. **Optional Files:**
+   - `WORKFLOW.md` - Detailed phases (if complex)
+   - `DECISIONS.md` - Technical decisions made
+   - `LESSONS.md` - Lessons learned (post-completion)
+
+4. **Updates:**
+   - Update `PROGRESS.md` after each phase
+   - Update this index (README.md) with status
+   - Keep links functional
+
+5. **Git Convention:**
+   - Create branch: `git checkout -b feature/hu-{id}-{name}`
+   - Commit: `feat(hu-{id}): description`
+   - PR: Reference `Fixes #HU-{id}`
+
+---
+
+## 🔗 REFERENCES
+
+### Source of Truth
+- [context/40-ROADMAP/USER_STORIES_MASTER.en.json](../../context/40-ROADMAP/USER_STORIES_MASTER.en.json) - Official HU definition
+- [AGENTS.md](../../AGENTS.md) - Architecture rules
+- [doc/INDEX.md](../INDEX.md) - Documentation index
+
+### Related
+- [doc/01-PROJECT_REPORT/CONTEXT_COVERAGE_REPORT.en.md](../01-PROJECT_REPORT/CONTEXT_COVERAGE_REPORT.en.md) - Coverage report
+- [doc/02-SETUP_DEV/SETUP_GUIDE.en.md](../02-SETUP_DEV/SETUP_GUIDE.en.md) - Setup guide
+- [doc/02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.en.md](../02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.en.md) - Docker compose guide
+
+---
+
+## ⚙️ STANDARD WORKFLOW
+
+For each HU follow this flow:
+
+```
+1. Create branch: git checkout -b feature/hu-{id}-{name}
+2. Create directory: doc/03-HU-TRACKING/HU-{id}-{NAME}/
+3. Create README, PROGRESS, ARTIFACTS
+4. Update this index with the HU link
+5. Execute Phase 0 (Preparation)
+6. Execute Phases 1-6 (Iterative)
+7. Mark as COMPLETED when Definition of Done ✅
+8. Merge PR into develop
+9. Create tag: git tag -a v{version} -m "Release HU-{id}"
+```
+
+---
+
+## 📊 METRICS
+
+### Documentation Coverage
+- ✅ HU-1.1: 100% (README, PROGRESS, ARTIFACTS)
+- ⏳ HU-1.2: 0% (Pending)
+- ⏳ HU-2.1: 0% (Pending)
+- ⏳ HU-2.2: 0% (Pending)
+- ⏳ HU-3.1: 0% (Pending)
+- ⏳ HU-3.2: 0% (Pending)
+
+### Progress Overview
+```
+Phase 0 (Prep):   ██████░░░░░░░░░░░░░░░░░░░░░░ 100% (HU-1.1)
+Phase 1 (TDD):    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+Phase 2 (Code):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+Phase 3 (Hard):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+Phase 4 (Docs):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+Phase 5 (Test):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+Phase 6 (Git):    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+```
+
+---
+
+**Last Updated:** January 29, 2026  
+**Owner:** ArchitectZero (Lead Software Architect)
+
+---
+
+## 🇪🇸 Español
 
 > **Directorio:** Documentación de seguimiento por User Story (HU)  
 > **Estructura:** `doc/03-HU-TRACKING/HU-{Sprint}-{Name}/`  
@@ -102,13 +265,14 @@ HU-1.1-DOCKER-SETUP/
 ## 🔗 REFERENCIAS
 
 ### Source of Truth
-- `context/40-ROADMAP/USER_STORIES_MASTER.es.json` - Definición oficial de HUs
-- `AGENTS.md` - Reglas de arquitectura
-- `doc/INDEX.md` - Índice general de documentación
+- [context/40-ROADMAP/USER_STORIES_MASTER.es.json](../../context/40-ROADMAP/USER_STORIES_MASTER.es.json) - Definición oficial de HUs
+- [AGENTS.md](../../AGENTS.md) - Reglas de arquitectura
+- [doc/INDEX.md](../INDEX.md) - Índice general de documentación
 
 ### Relacionados
-- `doc/01-PROJECT_REPORT/` - Reportes (validación, setup, etc.)
-- `doc/02-SETUP_DEV/` - Guías técnicas (SETUP_GUIDE, DOCKER_COMPOSE_GUIDE, etc.)
+- [doc/01-PROJECT_REPORT/CONTEXT_COVERAGE_REPORT.es.md](../01-PROJECT_REPORT/CONTEXT_COVERAGE_REPORT.es.md) - Reporte de cobertura
+- [doc/02-SETUP_DEV/SETUP_GUIDE.es.md](../02-SETUP_DEV/SETUP_GUIDE.es.md) - Guía de setup
+- [doc/02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md](../02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md) - Guía de Docker Compose
 
 ---
 
