@@ -131,5 +131,6 @@ dev = [
     "pytest (==8.3.4)",
     "pytest-cov (==6.0.0)",
     "httpx (==0.28.1)",
-    "pre-commit (==4.0.1)"
+    "pre-commit (==4.0.1)",
+    "bandit (==1.8.0)"
 ]

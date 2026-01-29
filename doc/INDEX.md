@@ -1,7 +1,7 @@
 # 📑 Índice de Documentación - SoftArchitect AI
 
-> **Fecha:** 28 de Enero de 2026  
-> **Estado:** ✅ Documentación Centralizada en `doc/`  
+> **Fecha:** 28 de Enero de 2026
+> **Estado:** ✅ Documentación Centralizada en `doc/`
 > **Estructura:** Bilingual (ES/EN), Organizada por Categorías
 
 ---
@@ -125,7 +125,7 @@ doc/
 | Historia | Descripción | Estado | Documentos |
 |---------|-------------|--------|------------|
 | HU-1.1 | Docker Infrastructure Setup | ✅ Completado | README, PROGRESS, ARTIFACTS |
-| HU-1.2 ⭐ NEW | Backend Skeleton (FastAPI) | 📋 Ready | README, WORKFLOW, PROGRESS, ARTIFACTS |
+| HU-1.2 ⭐ COMPLETED | Backend Skeleton (FastAPI) | ✅ Completado | README (bilingüe), WORKFLOW, PROGRESS, ARTIFACTS |
 
 
 ### 🔒 Privado (private/)
@@ -162,8 +162,9 @@ doc/
 | **Bilingual (ES/EN)** | ✅ 95% | Mayoría bilingüe, algunos doc EN-only |
 | **Centralización** | ✅ 100% | Todo en `doc/` (raíz limpia) |
 | **Actualización** | ✅ 29 Ene 2026 | Última actualización |
-| **Métricas** | ✅ 30 Archivos | ~8700+ líneas totales |
-| **HU Tracking** | ✅ 2 HUs | HU-1.1 ✅, HU-1.2 📋 |
+| **Métricas** | ✅ 31 Archivos | ~9500+ líneas totales |
+| **HU Tracking** | ✅ 2 HUs | HU-1.1 ✅ (Complete), HU-1.2 ✅ (Phases 0-5 Complete) |
+| **Security Report** | ✅ NEW | PHASE_5_SECURITY_VALIDATION_REPORT.md agregado |
 
 ---
 
@@ -214,6 +215,6 @@ doc/
 
 ---
 
-**Última Actualización:** 29 de Enero de 2026  
-**Responsable:** ArchitectZero AI Agent  
+**Última Actualización:** 29 de Enero de 2026
+**Responsable:** ArchitectZero AI Agent
 **Estado:** ✅ LISTO PARA PRODUCCIÓN

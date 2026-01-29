@@ -9,8 +9,8 @@ async def test_startup_event_local(monkeypatch, caplog):
     import app.main as main_mod
 
     # Monkeypatch database inits to avoid filesystem side-effects
-    monkeypatch.setattr(main_mod, "init_chromadb", lambda: Path("/tmp/chromadb"))
-    monkeypatch.setattr(main_mod, "init_sqlite", lambda: "sqlite:////tmp/db")
+    monkeypatch.setattr(main_mod, "init_chromadb", lambda: Path("/tmp/chromadb"))  # noqa: S108
+    monkeypatch.setattr(main_mod, "init_sqlite", lambda: "sqlite:////tmp/db")  # noqa: S108
 
     # Ensure settings reflect local provider
     from app.core import config
@@ -33,8 +33,8 @@ async def test_startup_event_cloud(monkeypatch, caplog):
     """Startup should log Groq Cloud when provider is cloud."""
     import app.main as main_mod
 
-    monkeypatch.setattr(main_mod, "init_chromadb", lambda: Path("/tmp/chromadb"))
-    monkeypatch.setattr(main_mod, "init_sqlite", lambda: "sqlite:////tmp/db")
+    monkeypatch.setattr(main_mod, "init_chromadb", lambda: Path("/tmp/chromadb"))  # noqa: S108
+    monkeypatch.setattr(main_mod, "init_sqlite", lambda: "sqlite:////tmp/db")  # noqa: S108
 
     from app.core import config
 
