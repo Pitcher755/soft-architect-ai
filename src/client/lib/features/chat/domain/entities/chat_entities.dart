@@ -29,13 +29,12 @@ class ChatMessage {
     String? role,
     String? content,
     DateTime? timestamp,
-  }) =>
-      ChatMessage(
-        id: id ?? this.id,
-        role: role ?? this.role,
-        content: content ?? this.content,
-        timestamp: timestamp ?? this.timestamp,
-      );
+  }) => ChatMessage(
+    id: id ?? this.id,
+    role: role ?? this.role,
+    content: content ?? this.content,
+    timestamp: timestamp ?? this.timestamp,
+  );
 
   @override
   String toString() =>

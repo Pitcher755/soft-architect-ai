@@ -7,10 +7,7 @@ class AppConfig {
   );
 
   static const Duration apiTimeout = Duration(
-    seconds: int.fromEnvironment(
-      'API_TIMEOUT_SECONDS',
-      defaultValue: 30,
-    ),
+    seconds: int.fromEnvironment('API_TIMEOUT_SECONDS', defaultValue: 30),
   );
 
   // LLM Provider
@@ -31,9 +28,7 @@ class AppConfig {
   );
 
   // Groq Configuration
-  static const String groqApiKey = String.fromEnvironment(
-    'GROQ_API_KEY',
-  );
+  static const String groqApiKey = String.fromEnvironment('GROQ_API_KEY');
 
   // UI Configuration
   static const String themeMode = String.fromEnvironment(
