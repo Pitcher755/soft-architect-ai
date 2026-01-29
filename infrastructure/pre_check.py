@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Pre-flight checks: Valida que el entorno HOST está listo.
-Ejecutar ANTES de docker compose up.
+Pre-flight checks: Validates that HOST environment is ready.
+Execute BEFORE docker compose up.
 """
 import socket
 import subprocess
@@ -11,31 +11,31 @@ from pathlib import Path
 
 
 def check_docker_installed():
-    """¿Está Docker instalado?"""
+    """Check if Docker is installed."""
     try:
         result = subprocess.run(['docker', '--version'], capture_output=True, timeout=5)
         if result.returncode == 0:
             print(f"✅ Docker: {result.stdout.decode().strip()}")
             return True
     except FileNotFoundError:
-        print("❌ Docker NO está instalado. Por favor instala Docker Desktop.")
+        print("❌ Docker is NOT installed. Please install Docker Desktop.")
         return False
 
 
 def check_docker_running():
-    """¿Está Docker daemon corriendo?"""
+    """Check if Docker daemon is running."""
     try:
         subprocess.run(['docker', 'info'], capture_output=True, timeout=5)
-        print("✅ Docker daemon: CORRIENDO")
+        print("✅ Docker daemon: RUNNING")
         return True
     except Exception as e:
-        print(f"❌ Docker daemon: NO RESPONDE. Error: {e}")
-        print("   Inicia Docker Desktop o el servicio docker.")
+        print(f"❌ Docker daemon: NOT RESPONDING. Error: {e}")
+        print("   Start Docker Desktop or the docker service.")
         return False
 
 
 def check_compose_running():
-    """¿Están los servicios de Docker Compose activos? (solo informativo)"""
+    """Check if Docker Compose services are active (informational only)."""
     try:
         result = subprocess.run(
             ['docker', 'ps', '--filter', 'name=sa_', '--format', '{{.Names}}'],
@@ -44,49 +44,49 @@ def check_compose_running():
         )
         names = result.stdout.decode().strip().splitlines()
         if names:
-            print("✅ Docker Compose: servicios activos")
+            print("✅ Docker Compose: services active")
         else:
-            print("⚠️  Docker Compose: servicios NO activos (se levantarán en GREEN)")
+            print("⚠️  Docker Compose: services NOT active (will be started in GREEN)")
         return True
     except Exception as e:
-        print(f"⚠️  Docker Compose: no se pudo verificar. Error: {e}")
+        print(f"⚠️  Docker Compose: could not verify. Error: {e}")
         return True
 
 
 def check_port_available(port, service_name, allow_in_use=False):
-    """¿Está el puerto disponible?"""
+    """Check if port is available."""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(1)
             result = s.connect_ex(('127.0.0.1', port))
             if result != 0:
-                print(f"✅ Puerto {port} ({service_name}): DISPONIBLE")
+                print(f"✅ Port {port} ({service_name}): AVAILABLE")
                 return True
             if allow_in_use:
-                print(f"⚠️  Puerto {port} ({service_name}): EN USO (servicios activos)")
+                print(f"⚠️  Port {port} ({service_name}): IN USE (services active)")
                 return True
-            print(f"❌ Puerto {port} ({service_name}): YA ESTÁ EN USO")
-            print(f"   Ejecuta: sudo lsof -i :{port} (Linux/Mac)")
+            print(f"❌ Port {port} ({service_name}): ALREADY IN USE")
+            print(f"   Run: sudo lsof -i :{port} (Linux/Mac)")
             return False
     except Exception as e:
-        print(f"⚠️  Error verificando puerto {port}: {e}")
+        print(f"⚠️  Error checking port {port}: {e}")
         return False
 
 
 def check_env_file():
-    """¿Existe .env? Si no, lo crea desde .env.example"""
+    """Check if .env exists. If not, create it from .env.example."""
     env_path = Path('.env')
     env_example = Path('.env.example')
 
     if env_path.exists():
-        print("✅ .env: EXISTE")
+        print("✅ .env: EXISTS")
         return True
     elif env_example.exists():
-        print("⚠️  .env NO existe, pero .env.example SÍ")
-        print("   Crearé .env automáticamente durante docker compose up")
+        print("⚠️  .env does NOT exist, but .env.example DOES")
+        print("   Will create .env automatically during docker compose up")
         return True
     else:
-        print("❌ Ni .env ni .env.example existen")
+        print("❌ Neither .env nor .env.example exist")
         return False
 
 

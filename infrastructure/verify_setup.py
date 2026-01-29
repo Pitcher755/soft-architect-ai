@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Post-deployment check: Valida que todos los servicios respondieron.
-Ejecutar DESPUÉS de docker compose up.
+Post-deployment check: Validates that all services responded.
+Execute AFTER docker compose up.
 """
 import socket
 import sys
@@ -18,8 +18,8 @@ def check_service_port(
     show_errors: bool = True,
 ) -> bool:
     """
-    Intenta conectar a un servicio con reintentos.
-    Útil porque los servicios tardan en arrancar.
+    Attempt to connect to a service with retries.
+    Useful because services take time to start.
     """
     for attempt in range(retries):
         try:
@@ -27,19 +27,19 @@ def check_service_port(
                 s.settimeout(2)
                 result = s.connect_ex((host, port))
                 if result == 0:
-                    print(f"✅ {service_name} ({host}:{port}): RESPONDIENDO")
+                    print(f"✅ {service_name} ({host}:{port}): RESPONDING")
                     return True
         except Exception as e:
             if show_errors:
-                print(f"   Intento {attempt+1}/{retries} falló: {e}")
+                print(f"   Attempt {attempt+1}/{retries} failed: {e}")
             time.sleep(2)
 
-    print(f"❌ {service_name} ({host}:{port}): NO RESPONDE después de {retries} intentos")
+    print(f"❌ {service_name} ({host}:{port}): NOT RESPONDING after {retries} attempts")
     return False
 
 
 def check_docker_services() -> bool:
-    """Verifica que los contenedores Docker están en estado HEALTHY."""
+    """Verify that Docker containers are in HEALTHY state."""
     try:
         result = subprocess.run(
             ['docker', 'compose', 'ps', '-q'],
@@ -49,13 +49,13 @@ def check_docker_services() -> bool:
         )
         lines = result.stdout.strip().split('\n')
         if len(lines) >= 3:
-            print(f"✅ Docker Compose: {len(lines)} contenedores detectados")
+            print(f"✅ Docker Compose: {len(lines)} containers detected")
             return True
         else:
-            print(f"❌ Docker Compose: Esperaba 3+ contenedores, encontré {len(lines)}")
+            print(f"❌ Docker Compose: Expected 3+ containers, found {len(lines)}")
             return False
     except Exception as e:
-        print(f"❌ Error verificando Docker: {e}")
+        print(f"❌ Error checking Docker: {e}")
         return False
 
 
@@ -65,7 +65,7 @@ def main():
     print("=" * 60)
 
     checks = [
-        ("Contenedores Docker", check_docker_services),
+        ("Docker Containers", check_docker_services),
         ("Backend API (8000)", lambda: check_service_port('127.0.0.1', 8000, 'FastAPI')),
         ("ChromaDB (8001)", lambda: check_service_port('127.0.0.1', 8001, 'ChromaDB')),
         ("Ollama (11434)", lambda: check_service_port('127.0.0.1', 11434, 'Ollama')),
@@ -85,12 +85,12 @@ def main():
     total = len(results)
 
     if passed == total:
-        print(f"✨ {passed}/{total} checks pasaron. Stack completamente operativo.")
-        print("\n🎉 ÉXITO: HU-1.1 está lista.")
+        print(f"✨ {passed}/{total} checks passed. Stack fully operational.")
+        print("\n🎉 SUCCESS: HU-1.1 is ready.")
         sys.exit(0)
     else:
-        print(f"⚠️  {passed}/{total} checks pasaron.")
-        print("   Para debugging: docker compose logs -f")
+        print(f"⚠️  {passed}/{total} checks passed.")
+        print("   For debugging: docker compose logs -f")
         sys.exit(1)
 
 

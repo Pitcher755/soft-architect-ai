@@ -1,6 +1,6 @@
 services:
   # ================================
-  # FastAPI Backend
+  # FastAPI Backend Service
   # ================================
   api-server:
     build:
@@ -34,7 +34,7 @@ services:
       start_period: 10s
 
   # ================================
-  # ChromaDB Vector Database
+  # ChromaDB Vector Database Service
   # ================================
   chromadb:
     image: ghcr.io/chroma-core/chroma:latest
@@ -57,7 +57,7 @@ services:
       start_period: 10s
 
   # ================================
-  # Ollama LLM Engine
+  # Ollama LLM Engine Service
   # ================================
   ollama:
     image: ollama/ollama:latest
@@ -75,13 +75,13 @@ services:
     deploy:
       resources:
         reservations:
-          # GPU support: Activo para Nvidia RTX 3050
-          # Para equipos sin GPU: comenta las 4 líneas siguientes y descomenta 'devices: []'
+          # GPU support: Active for Nvidia RTX 3050
+          # For systems without GPU: comment the following 4 lines and uncomment 'devices: []'
           devices:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-          # devices: []  # Descomentar si NO tienes GPU Nvidia
+          # devices: []  # Uncomment if you do NOT have Nvidia GPU
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/11434'" ]
       interval: 10s
@@ -90,7 +90,7 @@ services:
       start_period: 30s
 
 # ================================
-# Networks
+# Docker Networks Configuration
 # ================================
 networks:
   sa_network:
@@ -100,7 +100,7 @@ networks:
         - subnet: 172.25.0.0/16
 
 # ================================
-# Volumes (Persistencia)
+# Volumes (Data Persistence)
 # ================================
 volumes:
   chromadb_data:
