@@ -1,282 +1,121 @@
-# ═══════════════════════════════════════════════════════════════
-# 🐋 Docker Compose Configuration - SoftArchitect AI
-#
-# Orquestación de servicios para desarrollo local (Linux/Windows/macOS)
-#
-# Arquitectura:
-#   [Flutter App] <-> [FastAPI Backend] <-> {Ollama + ChromaDB}
-#
-# Requisitos:
-#   - Docker Desktop o Docker Engine
-#   - Docker Compose v2.0+
-#   - 8GB RAM mínimo (4GB Ollama + 2GB ChromaDB + 2GB Sistema)
-#   - GPU NVIDIA (opcional, para Ollama)
-#
-# Quick Start:
-#   1. docker compose up --build
-#   2. Esperar 30s para que Ollama descargue modelo
-#   3. API disponible en http://localhost:8000
-#   4. Swagger en http://localhost:8000/docs
-#
-# Refs:
-#   - AGENTS.md: Arquitectura del proyecto
-#   - context/30-ARCHITECTURE/TECH_STACK_DETAILS.es.md
-#   - src/server/README.md: Backend documentation
-# ═══════════════════════════════════════════════════════════════
-
+---
 services:
-
-  # ─────────────────────────────────────────────────────────────
-  # 🧠 OLLAMA - IA Engine Local (Privacy-First)
-  #
-  # Servicio que ejecuta modelos de LLM localmente sin enviar
-  # datos a internet. Privacidad total, latencia alta (~2-5s).
-  #
-  # Modelos soportados:
-  #   - qwen2.5-coder:7b (recomendado para arquitectura de código)
-  #   - llama2:7b (general purpose, más pequeño)
-  #   - mistral:7b (excelente balance)
-  #
-  # GPU NVIDIA: Soporta CUDA con Container Toolkit instalado
-  # CPU-only: Funcionará pero lento (~30s por respuesta)
-  # ─────────────────────────────────────────────────────────────
-  ollama:
-    image: ollama/ollama:${OLLAMA_IMAGE_VERSION:-latest}
-    container_name: sa_ollama
-
-    # 📌 PUERTO: NO exponer externamente, acceso vía red interna
-    # Si necesitas acceso local: ports: ["11434:11434"]
-
-    # 💾 VOLÚMENES: Persistencia de modelos descargados
-    volumes:
-      - ollama_storage:/root/.ollama
-
-    # 🌐 RED: Comunicación interna con FastAPI
-    networks:
-      - sa_network
-
-    # 🔄 RESTART: Reintentar si falla (esperar 5s entre intentos)
-    restart: on-failure:5
-
-    # 🛡️ RECURSOS: Limitar CPU/RAM para que no monopolice sistema
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: ${OLLAMA_MEMORY_LIMIT:-2GB}
-        reservations:
-          cpus: '1'
-          memory: 1GB
-        # GPU NVIDIA (OPCIONAL): Descomentar si tienes NVIDIA GPU
-        # devices:
-        #   - driver: nvidia
-        #     count: 1
-        #     capabilities: [gpu]
-
-        # 📋 HEALTHCHECK: Solo verificar que el proceso corre
-    healthcheck:
-      test: [ "CMD-SHELL", "[ -f /root/.ollama/port ] || exit 1" ]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 30s # Tiempo para iniciar y descargar modelo
-
-    # 📝 LOGGING: Capturar logs en archivos del host
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '10m'
-        max-file: '3'
-
-  # ─────────────────────────────────────────────────────────────
-  # 📚 CHROMADB - Vector Database (Embeddings Locales)
-  #
-  # Almacenamiento vectorial para embeddings de documentación.
-  # Permite búsqueda semántica de Tech Packs.
-  #
-  # Características:
-  #   - Persistencia local en volumen Docker
-  #   - Interfaz HTTP REST
-  #   - No requiere credenciales
-  # ─────────────────────────────────────────────────────────────
-  chromadb:
-    image: chromadb/chroma:${CHROMADB_IMAGE_VERSION:-latest}
-    container_name: sa_chromadb
-
-    # 📌 PUERTO: NO mapear a host (acceso solo vía red interna)
-    # API accede a http://chromadb:8000
-    # Si necesitas debug: ports: ["8001:8000"]
-
-    # 💾 VOLÚMENES: Persistencia de embeddings
-    volumes:
-      - chroma_storage:/chroma/chroma
-
-    # 🌐 RED: Comunicación interna con FastAPI
-    networks:
-      - sa_network
-
-    # 🔄 RESTART: Reintentar si falla
-    restart: on-failure:3
-
-    # 🛡️ RECURSOS: Limitar para operación eficiente
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: ${CHROMADB_MEMORY_LIMIT:-512MB}
-        reservations:
-          cpus: '0.5'
-          memory: 256MB
-
-    # 📋 HEALTHCHECK: Verificar que ChromaDB está respondiendo
-    healthcheck:
-      test: [ "CMD-SHELL", "if [ ! -f /chroma/chroma/__init__.py ]; then exit 1; fi" ]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 15s
-
-    # 📝 LOGGING
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '10m'
-        max-file: '2'
-
-  # ─────────────────────────────────────────────────────────────
-  # ⚙️ FASTAPI - Backend API (The Core)
-  #
-  # Servicio principal: orquestación RAG, routing de LLM,
-  # gestión de conversaciones, autenticación.
-  #
-  # Estructura:
-  #   - app/main.py: Punto de entrada FastAPI
-  #   - app/api/v1/: Endpoints versionados
-  #   - app/core/: Config, seguridad, database
-  #   - app/domain/: Lógica de negocio (Pure Python)
-  #
-  # Puertos:
-  #   - 8000: API REST + Swagger UI
-  # ─────────────────────────────────────────────────────────────
+  # ================================
+  # FastAPI Backend Service
+  # ================================
   api-server:
-    # 🔨 BUILD: Compilar imagen desde Dockerfile
     build:
       context: ../src/server
       dockerfile: Dockerfile
-      args:
-        PYTHON_VERSION: ${PYTHON_VERSION:-3.12.3}
-
     container_name: sa_api
-
-    # 📌 PUERTOS: Mapear 8000 del contenedor al host
     ports:
-      - "8000:8000"
-
-    # 💾 VOLÚMENES: Hot-reload en desarrollo
+      - "${BACKEND_PORT:-8000}:8000"
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - DEBUG=${DEBUG:-true}
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     volumes:
-      # Código: Permite editar archivos y recargar sin rebuild
-      - ../src/server:/app
-      # Exclusión: No sincronizar archivos de caché y venv
-      - /app/.mypy_cache
-      - /app/.pytest_cache
-      - /app/venv
-      # Knowledge Base: Acceso a Tech Packs (read-only)
-      - ../packages/knowledge_base:/app/knowledge_base:ro
-      # Logs: Persistir en host para debugging
-      - ./logs:/app/logs
-      # Data: Persistencia de SQLite y caché
-      - ./data:/app/data
-
-    # 🌐 RED: Comunicación con Ollama y ChromaDB
+      - ./data/logs:/app/logs
+    depends_on:
+      chromadb:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
     networks:
       - sa_network
-
-    # 🔄 RESTART: Reintentar si crashea
-    restart: on-failure:3
-
-    # 🛡️ RECURSOS: Limitar para estabilidad
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: ${API_MEMORY_LIMIT:-512MB}
-        reservations:
-          cpus: '0.5'
-          memory: 256MB
-
-    # 📋 HEALTHCHECK: API listo (endpoint /api/v1/health)
+    restart: unless-stopped
     healthcheck:
-      test: curl -f http://localhost:8000/api/v1/health || exit 1
+      test:
+        - CMD-SHELL
+        - >
+            python -c "import socket;
+            socket.create_connection(('localhost', 8000), timeout=2)"
       interval: 10s
-      timeout: 3s
-      retries: 5
+      timeout: 5s
+      retries: 3
       start_period: 10s
 
-    # 🔗 DEPENDENCIAS: Esperar a que Ollama y ChromaDB estén creados (no necesariamente healthy)
-    depends_on:
-      - ollama
-      - chromadb
-
-    # 🌍 VARIABLES DE AMBIENTE: Configuración en tiempo de ejecución
+  # ================================
+  # ChromaDB Vector Database Service
+  # ================================
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: sa_chromadb
+    ports:
+      - "8001:8000"
     environment:
-      # Python: Logs no bufferizados (visibles en `docker logs`)
-      - PYTHONUNBUFFERED=1
-      - PYTHONDONTWRITEBYTECODE=1
-      # FastAPI
-      - DEBUG=${DEBUG:-False}
-      - APP_NAME=SoftArchitect AI
-      - APP_VERSION=0.1.0
-      # LLM Configuration
-      - LLM_PROVIDER=${LLM_PROVIDER:-local}
-      - OLLAMA_BASE_URL=http://ollama:11434
-      - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen2.5-coder:7b}
-      - GROQ_API_KEY=${GROQ_API_KEY:-}
-      - GROQ_MODEL=${GROQ_MODEL:-llama2-70b-4096}
-      # Vector Store
-      - CHROMA_HOST=chromadb
-      - CHROMA_PORT=8000
-      - CHROMADB_PATH=/chroma/chroma
-      # Paths
-      - KNOWLEDGE_BASE_PATH=/app/knowledge_base
-      - CACHE_DIR=/app/data/cache
-      - SQLITE_DB_PATH=/app/data/softarchitect.db
-      # Security
-      - IRON_MODE=${IRON_MODE:-True}
-      - PII_DETECTION_ENABLED=${PII_DETECTION_ENABLED:-True}
+      - CHROMA_DB_IMPL=duckdb
+      - PERSIST_DIRECTORY=/data
+    volumes:
+      - chromadb_data:/data
+    networks:
+      - sa_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >
+            bash -c 'echo > /dev/tcp/localhost/8000'
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
-    # 📝 LOGGING
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '10m'
-        max-file: '5'
-        labels: 'service=api'
+  # ================================
+  # Ollama LLM Engine Service
+  # ================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: sa_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_MODELS=/root/.ollama/models
+    networks:
+      - sa_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          # GPU support: Active for Nvidia RTX 3050
+          # For systems without GPU: comment the following 4 lines and
+          # uncomment 'devices: []'
+          # Use devices: [] if you do NOT have Nvidia GPU
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >
+            bash -c 'echo > /dev/tcp/localhost/11434'
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
-# ═══════════════════════════════════════════════════════════════
-# 💾 VOLÚMENES PERSISTENTES (Nombrados)
-#
-# Almacenamiento que persiste entre recreaciones de contenedores.
-# Ubicación: /var/lib/docker/volumes (Linux)
-# ═══════════════════════════════════════════════════════════════
-volumes:
-
-  # 🧠 Modelos descargados de Ollama (~5-10GB según modelo)
-  ollama_storage:
-    driver: local
-
-  # 📚 Embeddings de ChromaDB (~100MB típico)
-  chroma_storage:
-    driver: local
-
-# ═══════════════════════════════════════════════════════════════
-# 🌐 REDES PERSONALIZADAS
-#
-# Red interna para comunicación entre contenedores.
-# Permite DNS automático: ollama:11434, chromadb:8000, etc.
-# ═══════════════════════════════════════════════════════════════
+# ================================
+# Docker Networks Configuration
+# ================================
 networks:
   sa_network:
     driver: bridge
     ipam:
       config:
         - subnet: 172.25.0.0/16
+
+# ================================
+# Volumes (Data Persistence)
+# ================================
+volumes:
+  chromadb_data:
+    driver: local
+  ollama_data:
+    driver: local

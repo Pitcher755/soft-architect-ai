@@ -1,0 +1,63 @@
+[MESSAGES CONTROL]
+# Disable some default messages that conflict with our standards
+disable=
+    duplicate-code,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-instance-attributes,
+
+[FORMAT]
+# Maximum line length (matches Black and Dart)
+max-line-length=120
+
+# Indentation
+indent-string='    '
+
+[DESIGN]
+# Code style and documentation requirements
+max-attributes=7
+max-locals=15
+max-returns=6
+max-branches=12
+max-statements=50
+
+# Require docstrings in public methods
+min-public-methods=1
+
+[VARIABLES]
+# Allow common single-letter variables
+additional-builtins=i,j,k,ex,Run,_,x,y,z,df,ax,fig,plt
+
+[STRING]
+# Use double quotes for consistency
+good-names=i,j,k,ex,Run,_,x,y,z,df,ax,fig,plt,e,f,v,fn,ok,w,h,c,r
+
+[BASIC]
+# Function and method naming conventions (must be English)
+function-naming-style=snake_case
+method-naming-style=snake_case
+attr-naming-style=snake_case
+argument-naming-style=snake_case
+variable-naming-style=snake_case
+class-naming-style=PascalCase
+const-naming-style=UPPER_CASE
+module-naming-style=snake_case
+
+# Regex for good names (English characters and numbers)
+good-names-rgxs=^[_a-z][_a-z0-9]*$
+
+[EXCEPTIONS]
+# Broad exception catching is not allowed
+overgeneral-exceptions=Exception
+
+[LOGGING]
+# Logging format consistency
+logging-format-style=new
+
+[SIMILARITY]
+# Ignore imports when checking for similarity
+ignore-imports=yes
+
+[SPELLING]
+# Dictionary for spell checking (optional - leave empty to disable)
+spelling-dict=en_US

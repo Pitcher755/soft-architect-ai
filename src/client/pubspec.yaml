@@ -28,71 +28,29 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  # ═══════════════════════════════════════════════════════════════
-  # Flutter SDK Dependencies
-  # ═══════════════════════════════════════════════════════════════
+  cupertino_icons: ^1.0.8
+  dio: ^5.9.1
   flutter:
     sdk: flutter
+  flutter_dotenv: ^6.0.0
   flutter_localizations:
     sdk: flutter
-
-  # ═══════════════════════════════════════════════════════════════
-  # UI & Design System
-  # ═══════════════════════════════════════════════════════════════
-  cupertino_icons: ^1.0.8                 # iOS style icons
-
-  # ═══════════════════════════════════════════════════════════════
-  # State Management (Riverpod Ecosystem)
-  # ═══════════════════════════════════════════════════════════════
-  riverpod: ^3.1.0                        # Core reactive state management
-  flutter_riverpod: ^3.1.0                # Flutter integration for Riverpod
-  riverpod_generator: ^4.0.0+1            # Code generation for providers
-
-  # ═══════════════════════════════════════════════════════════════
-  # Navigation & Routing
-  # ═══════════════════════════════════════════════════════════════
-  go_router: ^17.0.1                      # Declarative routing
-
-  # ═══════════════════════════════════════════════════════════════
-  # Networking & HTTP
-  # ═══════════════════════════════════════════════════════════════
-  dio: ^5.9.1                             # HTTP client with interceptors
-
-  # ═══════════════════════════════════════════════════════════════
-  # Serialization & Data Modeling
-  # ═══════════════════════════════════════════════════════════════
-  json_serializable: ^6.11.2              # JSON serialization
-  freezed_annotation: ^3.1.0              # Immutable models annotations
-
-  # ═══════════════════════════════════════════════════════════════
-  # Markdown & Code Rendering
-  # ═══════════════════════════════════════════════════════════════
-  flutter_markdown: ^0.7.7+1              # Markdown widget for AI responses
-  markdown: ^7.3.0                        # Markdown parser
-  highlight: ^0.7.0                       # Syntax highlighting for code blocks
-
-  # ═══════════════════════════════════════════════════════════════
-  # Configuration & Environment
-  # ═══════════════════════════════════════════════════════════════
-  flutter_dotenv: ^6.0.0                  # Load .env variables
+  flutter_markdown: ^0.7.7+1
+  flutter_riverpod: ^3.1.0
+  freezed_annotation: ^3.1.0
+  go_router: ^17.0.1
+  highlight: ^0.7.0
+  json_serializable: ^6.11.2
+  markdown: ^7.3.0
+  riverpod: ^3.1.0
+  riverpod_generator: ^4.0.0+1
 
 dev_dependencies:
-  # ═══════════════════════════════════════════════════════════════
-  # Flutter Testing Framework
-  # ═══════════════════════════════════════════════════════════════
+  build_runner: ^2.10.5
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-
-  # ═══════════════════════════════════════════════════════════════
-  # Code Quality & Linting
-  # ═══════════════════════════════════════════════════════════════
-  flutter_lints: ^6.0.0                   # Recommended lints for Flutter
-
-  # ═══════════════════════════════════════════════════════════════
-  # Code Generation Tools
-  # ═══════════════════════════════════════════════════════════════
-  build_runner: ^2.10.5                   # Build system for code generation
-  freezed: ^3.2.3                         # Code generator for immutable classes
+  freezed: ^3.2.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

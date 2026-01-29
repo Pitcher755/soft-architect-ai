@@ -1,0 +1,135 @@
+# ═══════════════════════════════════════════════════════════════
+# Docker Build Exclusions
+# 
+# This file specifies which files and directories to exclude from
+# Docker build context, reducing image size and preventing accidental
+# inclusion of sensitive data or unnecessary artifacts.
+#
+# Purpose: Minimize Docker image size and prevent secrets leakage
+# ═══════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════
+# Version Control
+# ═══════════════════════════════════════════════════════════════
+.git
+.gitignore
+.gitattributes
+
+# ═══════════════════════════════════════════════════════════════
+# Environment & Configuration Files (SECURITY)
+# ═══════════════════════════════════════════════════════════════
+# All environment files except example (which contains documentation)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ═══════════════════════════════════════════════════════════════
+# IDE & Editor Configuration
+# ═══════════════════════════════════════════════════════════════
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ═══════════════════════════════════════════════════════════════
+# Documentation & Markdown
+# ═══════════════════════════════════════════════════════════════
+*.md
+README.md
+AGENTS.md
+doc/
+context/
+
+# ═══════════════════════════════════════════════════════════════
+# Testing & Development
+# ═══════════════════════════════════════════════════════════════
+tests/
+test/
+*.test.dart
+*_test.dart
+pytest/
+.pytest_cache
+.coverage
+coverage/
+
+# ═══════════════════════════════════════════════════════════════
+# Node.js Dependencies (if Flutter web build)
+# ═══════════════════════════════════════════════════════════════
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# ═══════════════════════════════════════════════════════════════
+# Python Development & Virtual Environments
+# ═══════════════════════════════════════════════════════════════
+venv/
+env/
+ENV/
+.venv
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ═══════════════════════════════════════════════════════════════
+# Flutter/Dart Development
+# ═══════════════════════════════════════════════════════════════
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+build/
+.gradle
+
+# ═══════════════════════════════════════════════════════════════
+# Git LFS (if using)
+# ═══════════════════════════════════════════════════════════════
+.git-lfs
+
+# ═══════════════════════════════════════════════════════════════
+# OS & Local Files
+# ═══════════════════════════════════════════════════════════════
+.DS_Store
+Thumbs.db
+*.log
+.env.local
+
+# ═══════════════════════════════════════════════════════════════
+# Infrastructure & Deployment Scripts (use only runtime configs)
+# ═══════════════════════════════════════════════════════════════
+scripts/
+*.sh
+Makefile
+docker-compose.override.yml
+
+# ═══════════════════════════════════════════════════════════════
+# Build Artifacts & Cache
+# ═══════════════════════════════════════════════════════════════
+*.tar
+*.gz
+*.zip

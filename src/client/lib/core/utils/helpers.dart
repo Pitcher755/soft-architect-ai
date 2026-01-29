@@ -13,7 +13,9 @@ bool isValidEmail(String email) {
 
 /// Truncates a string to a maximum length, adding ellipsis if needed.
 String truncate(String text, int maxLength) {
-  if (text.length <= maxLength) return text;
+  if (text.length <= maxLength) {
+    return text;
+  }
   return '${text.substring(0, maxLength)}...';
 }
 
