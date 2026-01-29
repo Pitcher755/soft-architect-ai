@@ -6,14 +6,17 @@ Execute BEFORE docker compose up.
 import socket
 import subprocess
 import sys
-import platform
 from pathlib import Path
 
 
 def check_docker_installed():
     """Check if Docker is installed."""
     try:
-        result = subprocess.run(['docker', '--version'], capture_output=True, timeout=5)
+        result = subprocess.run(
+            ["docker", "--version"],
+            capture_output=True,
+            timeout=5,
+        )
         if result.returncode == 0:
             print(f"✅ Docker: {result.stdout.decode().strip()}")
             return True
@@ -25,7 +28,7 @@ def check_docker_installed():
 def check_docker_running():
     """Check if Docker daemon is running."""
     try:
-        subprocess.run(['docker', 'info'], capture_output=True, timeout=5)
+        subprocess.run(["docker", "info"], capture_output=True, timeout=5)
         print("✅ Docker daemon: RUNNING")
         return True
     except Exception as e:
@@ -38,7 +41,14 @@ def check_compose_running():
     """Check if Docker Compose services are active (informational only)."""
     try:
         result = subprocess.run(
-            ['docker', 'ps', '--filter', 'name=sa_', '--format', '{{.Names}}'],
+            [
+                "docker",
+                "ps",
+                "--filter",
+                "name=sa_",
+                "--format",
+                "{{.Names}}",
+            ],
             capture_output=True,
             timeout=5,
         )
@@ -46,7 +56,10 @@ def check_compose_running():
         if names:
             print("✅ Docker Compose: services active")
         else:
-            print("⚠️  Docker Compose: services NOT active (will be started in GREEN)")
+            message = (
+                "⚠️  Docker Compose: services NOT active " "(will be started in GREEN)"
+            )
+            print(message)
         return True
     except Exception as e:
         print(f"⚠️  Docker Compose: could not verify. Error: {e}")
@@ -58,15 +71,19 @@ def check_port_available(port, service_name, allow_in_use=False):
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(1)
-            result = s.connect_ex(('127.0.0.1', port))
+            result = s.connect_ex(("127.0.0.1", port))
             if result != 0:
                 print(f"✅ Port {port} ({service_name}): AVAILABLE")
                 return True
             if allow_in_use:
-                print(f"⚠️  Port {port} ({service_name}): IN USE (services active)")
+                message = (
+                    f"⚠️  Port {port} ({service_name}): IN USE " "(services active)"
+                )
+                print(message)
                 return True
             print(f"❌ Port {port} ({service_name}): ALREADY IN USE")
-            print(f"   Run: sudo lsof -i :{port} (Linux/Mac)")
+            message = f"   Run: sudo lsof -i :{port} " "(Linux/Mac)"
+            print(message)
             return False
     except Exception as e:
         print(f"⚠️  Error checking port {port}: {e}")
@@ -75,8 +92,8 @@ def check_port_available(port, service_name, allow_in_use=False):
 
 def check_env_file():
     """Check if .env exists. If not, create it from .env.example."""
-    env_path = Path('.env')
-    env_example = Path('.env.example')
+    env_path = Path(".env")
+    env_example = Path(".env.example")
 
     if env_path.exists():
         print("✅ .env: EXISTS")
@@ -97,13 +114,29 @@ def main():
 
     compose_running = check_compose_running()
 
+    def make_port_check(port, service_name):
+        return lambda: check_port_available(
+            port,
+            service_name,
+            allow_in_use=compose_running,
+        )
+
     checks = [
         ("Docker instalado", check_docker_installed),
         ("Docker daemon activo", check_docker_running),
         ("Docker Compose activo", lambda: compose_running),
-        ("Puerto 8000 (API) disponible", lambda: check_port_available(8000, "FastAPI", allow_in_use=compose_running)),
-        ("Puerto 8001 (ChromaDB) disponible", lambda: check_port_available(8001, "ChromaDB", allow_in_use=compose_running)),
-        ("Puerto 11434 (Ollama) disponible", lambda: check_port_available(11434, "Ollama", allow_in_use=compose_running)),
+        (
+            "Puerto 8000 (API) disponible",
+            make_port_check(8000, "FastAPI"),
+        ),
+        (
+            "Puerto 8001 (ChromaDB) disponible",
+            make_port_check(8001, "ChromaDB"),
+        ),
+        (
+            "Puerto 11434 (Ollama) disponible",
+            make_port_check(11434, "Ollama"),
+        ),
         ("Variables de entorno", check_env_file),
     ]
 
@@ -121,12 +154,18 @@ def main():
     total = len(results)
 
     if passed == total:
-        print(f"✨ {passed}/{total} checks pasaron. Listo para docker compose up.")
+        message = (
+            f"✨ {passed}/{total} checks pasaron. " "Listo para docker compose up."
+        )
+        print(message)
         sys.exit(0)
     else:
-        print(f"🛑 {passed}/{total} checks pasaron. Soluciona los errores arriba.")
+        message = (
+            f"🛑 {passed}/{total} checks pasaron. " "Soluciona los errores arriba."
+        )
+        print(message)
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

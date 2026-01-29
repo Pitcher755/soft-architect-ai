@@ -7,7 +7,7 @@ import socket
 import sys
 import time
 import subprocess
-from typing import Tuple
+from pathlib import Path
 
 
 def check_service_port(
@@ -31,28 +31,36 @@ def check_service_port(
                     return True
         except Exception as e:
             if show_errors:
-                print(f"   Attempt {attempt+1}/{retries} failed: {e}")
+                print(f"   Attempt {attempt + 1}/{retries} failed: {e}")
             time.sleep(2)
 
-    print(f"❌ {service_name} ({host}:{port}): NOT RESPONDING after {retries} attempts")
+    print(
+        f"❌ {service_name} ({host}:{port}): "
+        f"NOT RESPONDING after {retries} attempts"
+    )
     return False
 
 
 def check_docker_services() -> bool:
     """Verify that Docker containers are in HEALTHY state."""
     try:
+        compose_dir = Path(__file__).resolve().parent
         result = subprocess.run(
-            ['docker', 'compose', 'ps', '-q'],
+            ["docker", "compose", "ps", "-q"],
             capture_output=True,
             timeout=5,
-            text=True
+            text=True,
+            cwd=compose_dir,
         )
-        lines = result.stdout.strip().split('\n')
+        lines = result.stdout.strip().split("\n")
         if len(lines) >= 3:
             print(f"✅ Docker Compose: {len(lines)} containers detected")
             return True
         else:
-            print(f"❌ Docker Compose: Expected 3+ containers, found {len(lines)}")
+            message = (
+                "❌ Docker Compose: Expected 3+ containers, " f"found {len(lines)}"
+            )
+            print(message)
             return False
     except Exception as e:
         print(f"❌ Error checking Docker: {e}")
@@ -66,9 +74,18 @@ def main():
 
     checks = [
         ("Docker Containers", check_docker_services),
-        ("Backend API (8000)", lambda: check_service_port('127.0.0.1', 8000, 'FastAPI')),
-        ("ChromaDB (8001)", lambda: check_service_port('127.0.0.1', 8001, 'ChromaDB')),
-        ("Ollama (11434)", lambda: check_service_port('127.0.0.1', 11434, 'Ollama')),
+        (
+            "Backend API (8000)",
+            lambda: check_service_port("127.0.0.1", 8000, "FastAPI"),
+        ),
+        (
+            "ChromaDB (8001)",
+            lambda: check_service_port("127.0.0.1", 8001, "ChromaDB"),
+        ),
+        (
+            "Ollama (11434)",
+            lambda: check_service_port("127.0.0.1", 11434, "Ollama"),
+        ),
     ]
 
     results = []
@@ -94,5 +111,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

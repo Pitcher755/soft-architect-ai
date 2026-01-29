@@ -1,3 +1,4 @@
+---
 services:
   # ================================
   # FastAPI Backend Service
@@ -27,7 +28,11 @@ services:
       - sa_network
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "python -c \"import socket; socket.create_connection(('localhost', 8000), timeout=2)\"" ]
+      test:
+        - CMD-SHELL
+        - >
+            python -c "import socket;
+            socket.create_connection(('localhost', 8000), timeout=2)"
       interval: 10s
       timeout: 5s
       retries: 3
@@ -50,7 +55,10 @@ services:
       - sa_network
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8000'" ]
+      test:
+        - CMD-SHELL
+        - >
+            bash -c 'echo > /dev/tcp/localhost/8000'
       interval: 10s
       timeout: 5s
       retries: 3
@@ -76,14 +84,18 @@ services:
       resources:
         reservations:
           # GPU support: Active for Nvidia RTX 3050
-          # For systems without GPU: comment the following 4 lines and uncomment 'devices: []'
+          # For systems without GPU: comment the following 4 lines and
+          # uncomment 'devices: []'
+          # Use devices: [] if you do NOT have Nvidia GPU
           devices:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-          # devices: []  # Uncomment if you do NOT have Nvidia GPU
     healthcheck:
-      test: [ "CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/11434'" ]
+      test:
+        - CMD-SHELL
+        - >
+            bash -c 'echo > /dev/tcp/localhost/11434'
       interval: 10s
       timeout: 5s
       retries: 3
