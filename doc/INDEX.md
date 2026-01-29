@@ -37,6 +37,18 @@ doc/
 │   ├── SETUP_GUIDE.en.md         (Guía de instalación en inglés)
 │   ├── TOOLS_AND_STACK.es.md     (Stack tecnológico en español)
 │   └── TOOLS_AND_STACK.en.md     (Stack tecnológico en inglés)
+├── 03-HU-TRACKING/                # Seguimiento de Historias de Usuario
+│   ├── README.md                  (Índice maestro de HUs)
+│   ├── HU-1.1-DOCKER-SETUP/       (HU-1.1: Infraestructura Docker)
+│   │   ├── README.md
+│   │   ├── PROGRESS.md
+│   │   └── ARTIFACTS.md
+│   └── HU-1.2-BACKEND-SKELETON/   (HU-1.2: Backend FastAPI) ⭐ NEW
+│       ├── README.md
+│       ├── WORKFLOW.md
+│       ├── PROGRESS.md
+│       └── ARTIFACTS.md
+│
 │
 └── private/                      # Documentación interna (no publicada)
     └── INTERNAL_DEV_BLUEPRINT.md (Blueprint de desarrollo interno)
@@ -108,6 +120,13 @@ doc/
 | TOOLS_AND_STACK | Versiones exactas, compatibilidades | Desarrolladores | ~400 |
 | DOCKER_COMPOSE_GUIDE | Docker Compose detallado, networking | DevOps/Infra | ~500 |
 | AUTOMATION | CI/CD, scripts de automatización | DevOps/SRE | ~500 |
+### 📋 Tracking de Historias de Usuario (03-HU-TRACKING/)
+
+| Historia | Descripción | Estado | Documentos |
+|---------|-------------|--------|------------|
+| HU-1.1 | Docker Infrastructure Setup | ✅ Completado | README, PROGRESS, ARTIFACTS |
+| HU-1.2 ⭐ NEW | Backend Skeleton (FastAPI) | 📋 Ready | README, WORKFLOW, PROGRESS, ARTIFACTS |
+
 
 ### 🔒 Privado (private/)
 
@@ -142,8 +161,9 @@ doc/
 | **Cobertura Visual** | ✅ 100% | Todos los temas documentados |
 | **Bilingual (ES/EN)** | ✅ 95% | Mayoría bilingüe, algunos doc EN-only |
 | **Centralización** | ✅ 100% | Todo en `doc/` (raíz limpia) |
-| **Actualización** | ✅ 28 Ene 2026 | Última actualización |
-| **Métricas** | ✅ 26 Archivos | ~6500+ líneas totales |
+| **Actualización** | ✅ 29 Ene 2026 | Última actualización |
+| **Métricas** | ✅ 30 Archivos | ~8700+ líneas totales |
+| **HU Tracking** | ✅ 2 HUs | HU-1.1 ✅, HU-1.2 📋 |
 
 ---
 
@@ -194,6 +214,6 @@ doc/
 
 ---
 
-**Última Actualización:** 28 de Enero de 2026  
+**Última Actualización:** 29 de Enero de 2026  
 **Responsable:** ArchitectZero AI Agent  
 **Estado:** ✅ LISTO PARA PRODUCCIÓN
