@@ -1,3 +1,163 @@
+🐍 SoftArchitect AI - Backend
+FastAPI + Clean Architecture + RAG Engine
+
+## Table of Contents
+- Overview
+- Architecture
+- Tech Stack
+- Local Setup
+- Testing
+- Project Structure
+- API Documentation
+
+## Overview
+Backend service for SoftArchitect AI, an AI-powered software architecture assistant.
+
+Key Features:
+
+- Clean Architecture (Domain-Driven Design)
+- Type-safe configuration (Pydantic Settings)
+- RAG (Retrieval-Augmented Generation) engine
+- Local-first AI with Ollama integration
+- ChromaDB vector store for knowledge base
+
+## Architecture
+Follows Clean Architecture principles:
+
+src/server/
+├── core/           # Configuration, security, events
+├── domain/         # Business logic (entities, schemas)
+├── services/       # Application services (RAG, vectors)
+├── api/            # API layer (routers, endpoints)
+└── utils/          # Generic helpers
+
+Reference: context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md
+
+## Tech Stack
+Framework: FastAPI 0.115.6
+Server: Uvicorn 0.34.0 (ASGI)
+Validation: Pydantic 2.10.5
+Linter: Ruff 0.8.6
+Testing: Pytest 8.3.4 + pytest-cov 6.0.0
+Python: 3.12.3
+
+## Local Setup
+Prerequisites
+Python 3.12.3+
+Poetry 1.7.0+
+
+Installation
+```bash
+cd src/server
+poetry install
+```
+
+Configure environment:
+```bash
+cp ../../infrastructure/.env.example .env
+# Edit .env with your configuration
+```
+
+Run development server:
+```bash
+poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Access API:
+
+API: http://localhost:8000
+Swagger UI: http://localhost:8000/docs
+ReDoc: http://localhost:8000/redoc
+
+## Testing
+Run all tests
+```bash
+poetry run pytest
+```
+Run with coverage
+```bash
+poetry run pytest --cov=. --cov-report=html
+```
+View coverage report: open htmlcov/index.html
+
+Run linter
+```bash
+# Check only
+poetry run ruff check .
+
+# Auto-fix
+poetry run ruff check --fix .
+
+# Format
+poetry run ruff format .
+```
+
+## Project Structure
+See project layout in the repository root. Key folders:
+
+src/server/
+├── api/
+│   └── v1/
+│       ├── endpoints/      # Endpoint implementations
+│       │   └── system.py   # Health, status endpoints
+│       └── router.py       # API router aggregator
+├── core/
+│   ├── config.py           # Pydantic Settings (env vars)
+│   └── errors.py           # Custom error classes
+├── domain/
+│   ├── models/             # Business entities (empty for now)
+│   └── schemas/            # Pydantic DTOs
+│       └── health.py       # Health response schemas
+├── services/
+│   ├── rag/                # RAG logic (HU-2.1)
+│   └── vectors/            # ChromaDB logic (HU-2.2)
+├── utils/                  # Generic utilities
+├── tests/
+├── main.py                 # FastAPI app entrypoint
+├── pyproject.toml          # Poetry config + tool settings
+└── README.md               # This file
+
+## API Documentation
+Health Check
+Endpoint: GET /api/v1/system/health
+
+Response:
+
+```json
+{
+  "status": "ok",
+  "app": "SoftArchitect AI",
+  "version": "0.1.0",
+  "environment": "development",
+  "debug_mode": false
+}
+```
+
+Detailed Health Check
+Endpoint: GET /api/v1/system/health/detailed
+
+Response:
+
+```json
+{
+  "status": "ok",
+  "app": "SoftArchitect AI",
+  "version": "0.1.0",
+  "environment": "development",
+  "debug_mode": false,
+  "services": {
+    "chromadb": "unknown",
+    "ollama": "unknown"
+  }
+}
+```
+
+## References
+- Project Structure Map
+- Tech Stack Details
+- Error Handling Standard
+- Security Rules
+- Testing Strategy
 # 🐍 SoftArchitect AI - Python Backend
 
 **Languages:** [English](#english) | [Español](#español)
