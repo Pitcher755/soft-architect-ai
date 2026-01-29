@@ -33,7 +33,6 @@ class AppConfig {
   // Groq Configuration
   static const String groqApiKey = String.fromEnvironment(
     'GROQ_API_KEY',
-    defaultValue: '',
   );
 
   // UI Configuration
@@ -50,7 +49,6 @@ class AppConfig {
   // Debug
   static const bool enableDebugLogging = bool.fromEnvironment(
     'ENABLE_DEBUG_LOGGING',
-    defaultValue: false,
   );
 
   // Computed properties

@@ -5,9 +5,7 @@ enum ButtonVariant { primary, secondary, ghost }
 /// Shared button component following the Design System.
 class SoftArchitectButton extends StatelessWidget {
   const SoftArchitectButton({
-    super.key,
-    required this.onPressed,
-    required this.label,
+    required this.onPressed, required this.label, super.key,
     this.variant = ButtonVariant.primary,
     this.isLoading = false,
     this.isEnabled = true,
@@ -20,16 +18,13 @@ class SoftArchitectButton extends StatelessWidget {
   final bool isEnabled;
 
   @override
-  Widget build(BuildContext context) {
-    return switch (variant) {
+  Widget build(BuildContext context) => switch (variant) {
       ButtonVariant.primary => _buildPrimary(context),
       ButtonVariant.secondary => _buildSecondary(context),
       ButtonVariant.ghost => _buildGhost(context),
     };
-  }
 
-  Widget _buildPrimary(BuildContext context) {
-    return ElevatedButton(
+  Widget _buildPrimary(BuildContext context) => ElevatedButton(
       onPressed: isEnabled && !isLoading ? onPressed : null,
       child: isLoading
           ? const SizedBox(
@@ -39,10 +34,8 @@ class SoftArchitectButton extends StatelessWidget {
             )
           : Text(label),
     );
-  }
 
-  Widget _buildSecondary(BuildContext context) {
-    return OutlinedButton(
+  Widget _buildSecondary(BuildContext context) => OutlinedButton(
       onPressed: isEnabled && !isLoading ? onPressed : null,
       child: isLoading
           ? const SizedBox(
@@ -52,12 +45,9 @@ class SoftArchitectButton extends StatelessWidget {
             )
           : Text(label),
     );
-  }
 
-  Widget _buildGhost(BuildContext context) {
-    return TextButton(
+  Widget _buildGhost(BuildContext context) => TextButton(
       onPressed: isEnabled && !isLoading ? onPressed : null,
       child: Text(label),
     );
-  }
 }

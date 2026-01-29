@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 /// Inspired by VS Code, Linear, and GitHub Dark Mode.
 class AppTheme {
   // Base Colors (Backgrounds)
-  static const Color bgPrimary = Color(0xFF0D1117);      // Almost black, bluish
-  static const Color bgSecondary = Color(0xFF161B22);    // Sidebars, panels
-  static const Color bgTertiary = Color(0xFF21262D);     // Input fields, borders
-  static const Color bgElevation = Color(0xFF30363D);    // Dropdowns, modals
+  static const Color bgPrimary = Color(0xFF0D1117);
+  // Almost black, bluish
+  static const Color bgSecondary = Color(0xFF161B22);
+  // Sidebars, panels
+  static const Color bgTertiary = Color(0xFF21262D);
+  // Input fields, borders
+  static const Color bgElevation = Color(0xFF30363D);
 
   // Accent Colors
   static const Color primary = Color(0xFF58A6FF);        // Tech Blue
@@ -22,17 +25,16 @@ class AppTheme {
   static const Color textCode = Color(0xFFE1E4E8);       // Code blocks
 
   /// Dark Theme (Default)
-  static ThemeData darkTheme() {
-    return ThemeData(
+  static ThemeData darkTheme() => ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: bgPrimary,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: bgSecondary,
         elevation: 0,
         centerTitle: true,
       ),
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: primary,
         secondary: secondary,
         tertiary: accent,
@@ -44,15 +46,15 @@ class AppTheme {
         fillColor: bgTertiary,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: bgElevation),
+          borderSide: const BorderSide(color: bgElevation),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: bgElevation),
+          borderSide: const BorderSide(color: bgElevation),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: primary, width: 2),
+          borderSide: const BorderSide(color: primary, width: 2),
         ),
       ),
       textTheme: const TextTheme(
@@ -79,20 +81,18 @@ class AppTheme {
         labelSmall: TextStyle(color: textSecondary),
       ),
     );
-  }
 
   /// Light Theme (Secondary)
-  static ThemeData lightTheme() {
-    return ThemeData(
+  static ThemeData lightTheme() => ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.white,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFFF6F8FA),
         elevation: 0,
         centerTitle: true,
       ),
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: primary,
         secondary: secondary,
         tertiary: accent,
@@ -100,5 +100,4 @@ class AppTheme {
         surface: Color(0xFFF6F8FA),
       ),
     );
-  }
 }
