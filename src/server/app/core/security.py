@@ -2,7 +2,6 @@
 Security utilities for input validation and sanitization.
 """
 import re
-from typing import Optional
 
 
 class InputSanitizer:
@@ -67,7 +66,7 @@ class TokenValidator:
     """
 
     @staticmethod
-    def validate_api_key(api_key: Optional[str]) -> bool:
+    def validate_api_key(api_key: str | None) -> bool:
         """
         Validate API key format.
 

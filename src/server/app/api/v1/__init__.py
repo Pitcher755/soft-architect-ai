@@ -3,8 +3,8 @@ API v1 initialization and router setup.
 """
 from fastapi import APIRouter
 
-from .health import router as health_router
 from .chat import router as chat_router
+from .health import router as health_router
 from .knowledge import router as knowledge_router
 
 # Main router for API v1
