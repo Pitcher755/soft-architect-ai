@@ -1,0 +1,330 @@
+{
+    "project": "SoftArchitect AI",
+    "version": "0.1.0",
+    "sprints": [
+        {
+            "sprint_id": "SPRINT-0",
+            "name": "MVP Foundation",
+            "duration": "4 weeks",
+            "start_date": "2026-02-01",
+            "end_date": "2026-02-28",
+            "status": "planning",
+            "epics": [
+                {
+                    "epic_id": "EPIC-001",
+                    "name": "Local-First RAG Engine",
+                    "description": "Core functionality: question → RAG → response locally",
+                    "priority": "CRITICAL",
+                    "stories": [
+                        {
+                            "story_id": "US-001",
+                            "title": "Setup Ollama integration with FastAPI",
+                            "description": "User can run local LLM without internet",
+                            "acceptance_criteria": [
+                                "Ollama container starts with docker-compose",
+                                "FastAPI endpoint /llm/query works locally",
+                                "Response time < 5 seconds for typical query",
+                                "Error handling for offline Ollama"
+                            ],
+                            "story_points": 5,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "backend",
+                                "integration",
+                                "critical"
+                            ]
+                        },
+                        {
+                            "story_id": "US-002",
+                            "title": "Setup ChromaDB vector store",
+                            "description": "User's tech-pack knowledge persists and can be searched",
+                            "acceptance_criteria": [
+                                "ChromaDB stores embeddings locally",
+                                "Similarity search returns top 5 relevant docs",
+                                "Re-indexing works without data loss",
+                                "Storage < 500MB for 1000 documents"
+                            ],
+                            "story_points": 5,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "backend",
+                                "data",
+                                "critical"
+                            ]
+                        },
+                        {
+                            "story_id": "US-003",
+                            "title": "Implement RAG query processing pipeline",
+                            "description": "Query → retrieval → context → LLM generation → response",
+                            "acceptance_criteria": [
+                                "End-to-end query processing works",
+                                "Context window management (max 4K tokens)",
+                                "Prompt sanitization (no injection attacks)",
+                                "Streaming response to UI"
+                            ],
+                            "story_points": 8,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "backend",
+                                "rag",
+                                "critical"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "epic_id": "EPIC-002",
+                    "name": "Desktop UI (Flutter)",
+                    "description": "Native desktop app for Windows/macOS/Linux",
+                    "priority": "CRITICAL",
+                    "stories": [
+                        {
+                            "story_id": "US-004",
+                            "title": "Create main chat interface",
+                            "description": "User can ask questions and see responses in real-time",
+                            "acceptance_criteria": [
+                                "Chat input field at bottom",
+                                "Message history scrollable",
+                                "Typing indicator while processing",
+                                "Responsive design (resizable window)",
+                                "Copy-to-clipboard for responses"
+                            ],
+                            "story_points": 5,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "frontend",
+                                "ui",
+                                "critical"
+                            ]
+                        },
+                        {
+                            "story_id": "US-005",
+                            "title": "Implement settings panel",
+                            "description": "User can configure model, temp, token limits, etc.",
+                            "acceptance_criteria": [
+                                "Settings persisted in local SQLite",
+                                "Model selection dropdown (Ollama models)",
+                                "Temperature slider (0.0-1.0)",
+                                "Max tokens input (100-4096)",
+                                "Privacy settings visible",
+                                "Export/Import config"
+                            ],
+                            "story_points": 5,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "frontend",
+                                "config"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "epic_id": "EPIC-003",
+                    "name": "Knowledge Base Management",
+                    "description": "User can upload, manage, and search tech-packs",
+                    "priority": "HIGH",
+                    "stories": [
+                        {
+                            "story_id": "US-006",
+                            "title": "File upload & indexing",
+                            "description": "User can drag-drop markdown files to be indexed",
+                            "acceptance_criteria": [
+                                "Drag-drop zone in UI",
+                                "Auto-parse markdown to embeddings",
+                                "Show progress bar during indexing",
+                                "Support .md, .json, .txt files",
+                                "Duplicate detection"
+                            ],
+                            "story_points": 5,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "frontend",
+                                "backend",
+                                "data"
+                            ]
+                        },
+                        {
+                            "story_id": "US-007",
+                            "title": "Search & filter knowledge base",
+                            "description": "User can find relevant documents quickly",
+                            "acceptance_criteria": [
+                                "Full-text search input",
+                                "Filter by category/tag",
+                                "Show search results with preview",
+                                "Click to view full document",
+                                "Bookmark feature"
+                            ],
+                            "story_points": 4,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "frontend",
+                                "search"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sprint_id": "SPRINT-1",
+            "name": "Security & Hardening",
+            "duration": "2 weeks",
+            "start_date": "2026-03-01",
+            "end_date": "2026-03-14",
+            "status": "planning",
+            "epics": [
+                {
+                    "epic_id": "EPIC-004",
+                    "name": "Security Hardening",
+                    "description": "Implement encryption, validation, and security controls",
+                    "priority": "CRITICAL",
+                    "stories": [
+                        {
+                            "story_id": "US-008",
+                            "title": "Implement input validation & sanitization",
+                            "description": "Prevent injection attacks and malicious input",
+                            "acceptance_criteria": [
+                                "Pydantic validators on all API inputs",
+                                "XSS protection in UI",
+                                "SQL injection prevention (ORM only)",
+                                "Rate limiting on endpoints",
+                                "Request size limits"
+                            ],
+                            "story_points": 5,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "security",
+                                "backend"
+                            ]
+                        },
+                        {
+                            "story_id": "US-009",
+                            "title": "Add encryption for sensitive data",
+                            "description": "Encrypt user queries & responses at rest",
+                            "acceptance_criteria": [
+                                "AES-256 encryption for SQLite data",
+                                "TLS 1.3+ for API communication",
+                                "Key management (local only)",
+                                "Encryption/decryption transparent to user",
+                                "Performance impact < 5%"
+                            ],
+                            "story_points": 6,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "security",
+                                "backend"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sprint_id": "SPRINT-2",
+            "name": "Testing & Quality",
+            "duration": "2 weeks",
+            "start_date": "2026-03-15",
+            "end_date": "2026-03-28",
+            "status": "planning",
+            "epics": [
+                {
+                    "epic_id": "EPIC-005",
+                    "name": "Test Coverage & QA",
+                    "description": "Unit, integration, and E2E tests for all features",
+                    "priority": "HIGH",
+                    "stories": [
+                        {
+                            "story_id": "US-010",
+                            "title": "Unit tests for RAG pipeline",
+                            "description": "Test each stage of RAG processing",
+                            "acceptance_criteria": [
+                                "Test coverage > 85%",
+                                "All edge cases covered",
+                                "Mocks for Ollama/ChromaDB",
+                                "Run in < 5 seconds"
+                            ],
+                            "story_points": 5,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "testing",
+                                "backend"
+                            ]
+                        },
+                        {
+                            "story_id": "US-011",
+                            "title": "Integration tests (API + UI)",
+                            "description": "End-to-end tests for user workflows",
+                            "acceptance_criteria": [
+                                "Chat flow test (input → response)",
+                                "Settings persistence test",
+                                "File upload → search test",
+                                "Error handling scenarios",
+                                "Performance benchmarks"
+                            ],
+                            "story_points": 6,
+                            "assignee": "TBD",
+                            "status": "backlog",
+                            "tags": [
+                                "testing",
+                                "integration"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "backlog": [
+        {
+            "story_id": "US-100",
+            "title": "Multi-language support",
+            "description": "Support ES, EN, FR, DE interfaces",
+            "priority": "LOW",
+            "status": "future",
+            "tags": [
+                "localization",
+                "frontend"
+            ]
+        },
+        {
+            "story_id": "US-101",
+            "title": "Cloud sync (optional)",
+            "description": "Allow user-initiated cloud backup to AWS/Azure",
+            "priority": "LOW",
+            "status": "future",
+            "tags": [
+                "backend",
+                "cloud",
+                "optional"
+            ]
+        },
+        {
+            "story_id": "US-102",
+            "title": "Collaborative features",
+            "description": "Share decisions with team (future roadmap)",
+            "priority": "LOW",
+            "status": "future",
+            "tags": [
+                "collaboration",
+                "future"
+            ]
+        }
+    ],
+    "metadata": {
+        "created_at": "2026-01-30",
+        "updated_at": "2026-01-30",
+        "version_control": "Git",
+        "owner": "SoftArchitect Team",
+        "note": "Living document - updated per sprint review"
+    }
+}
