@@ -1,0 +1,316 @@
+# 📁 Project Structure: LangChain Integration
+
+> **Propósito:** Patrón de organización de código para aplicaciones LangChain
+> **Filosofía:** Feature Slices + Clean Architecture
+
+---
+
+## Estructura Recomendada
+
+```
+soft-architect-ai/
+│
+├── src/
+│   ├── core/
+│   │   ├── llm/
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py            # ⚙️ Configuración de Modelos (Temp, Top-K, API Keys)
+│   │   │   ├── llm_provider.py      # 🏭 Factory para obtener ChatOpenAI / ChatOllama / ChatAnthropic
+│   │   │   └── models.py            # 📊 Enum de modelos disponibles
+│   │   │
+│   │   ├── prompts/                 # 📝 Templates de prompts (puros, reutilizables)
+│   │   │   ├── __init__.py
+│   │   │   ├── rag_prompts.py       # RAG-specific prompts
+│   │   │   ├── agent_prompts.py     # Agent-specific prompts
+│   │   │   ├── summarization_prompts.py
+│   │   │   └── translation_prompts.py
+│   │   │
+│   │   └── schemas/                 # 📋 Esquemas Pydantic para outputs
+│   │       ├── __init__.py
+│   │       ├── common.py            # Schemas genéricos (Citation, Error)
+│   │       ├── rag_schemas.py       # Para RAG outputs
+│   │       └── agent_schemas.py     # Para Agent outputs
+│   │
+│   ├── features/                    # 🎯 Feature Slices (cada feature aislada)
+│   │   │
+│   │   ├── document_chat/           # Feature: Chat sobre documentos
+│   │   │   ├── __init__.py
+│   │   │   ├── chains/              # 🔗 Lógica de Orquestación (LCEL)
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── retrieval_chain.py    # Buscar docs + pasar al LLM
+│   │   │   │   ├── generation_chain.py   # Generar respuesta basada en docs
+│   │   │   │   └── combined_chain.py     # Retrieval + Generation (RAG completo)
+│   │   │   │
+│   │   │   ├── tools/               # 🛠️ Herramientas para Agentes
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── vector_search_tool.py # Tool: buscar en vector store
+│   │   │   │   └── citation_tool.py      # Tool: extraer fuentes
+│   │   │   │
+│   │   │   ├── parsers/             # 📦 Pydantic Parsers
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── response_parser.py   # Parser: validar response estructura
+│   │   │   │
+│   │   │   ├── service.py           # 🎭 Service layer (inyecta chains + herramientas)
+│   │   │   ├── models.py            # 📊 Domain models
+│   │   │   └── repository.py        # 💾 Data access
+│   │   │
+│   │   ├── invoice_extraction/      # Feature: Extracción de facturas
+│   │   │   ├── chains/
+│   │   │   │   └── extraction_chain.py
+│   │   │   ├── parsers/
+│   │   │   │   └── invoice_parser.py
+│   │   │   └── service.py
+│   │   │
+│   │   └── code_generation/         # Feature: Generar código
+│   │       ├── chains/
+│   │       ├── tools/
+│   │       └── service.py
+│   │
+│   └── infrastructure/
+│       ├── vector_store/            # 🗄️ Integración con Chroma/Pinecone
+│       │   ├── __init__.py
+│       │   ├── base_store.py        # Interfaz abstracta
+│       │   ├── chroma_store.py      # Implementación: Chroma local
+│       │   ├── pinecone_store.py    # Implementación: Pinecone cloud
+│       │   └── retriever.py         # Wrapper para usar como Runnable
+│       │
+│       ├── cache/                   # 💾 Caché de responses (opcional)
+│       │   └── redis_cache.py
+│       │
+│       └── observability/           # 📊 Logging + LangSmith
+│           ├── __init__.py
+│           ├── logger_config.py     # Setup de logging
+│           └── langsmith_config.py  # Setup de LangSmith tracer
+│
+├── tests/
+│   ├── features/
+│   │   └── document_chat/
+│   │       ├── test_retrieval_chain.py
+│   │       ├── test_generation_chain.py
+│   │       └── test_service.py
+│   │
+│   └── integration/
+│       └── test_rag_e2e.py
+│
+└── pyproject.toml                    # 📦 Dependencies (langchain, pydantic, etc)
+
+```
+
+---
+
+## Desglose por Responsabilidad
+
+### `core/llm/` - Configuración LLM Centralizada
+
+**Propósito:** Lugar único donde se instancian y configuran modelos.
+
+```python
+# core/llm/config.py
+from dataclasses import dataclass
+
+@dataclass
+class LLMConfig:
+    temperature: float = 0.7
+    max_tokens: int = 2000
+    timeout: int = 30
+
+# core/llm/llm_provider.py
+from langchain_community.chat_models import ChatOllama
+from langchain_openai import ChatOpenAI
+
+class LLMProvider:
+    @staticmethod
+    def get_model(provider: str = "ollama", config: LLMConfig = LLMConfig()):
+        if provider == "ollama":
+            return ChatOllama(
+                model="llama3",
+                temperature=config.temperature,
+                num_predict=config.max_tokens
+            )
+        elif provider == "openai":
+            return ChatOpenAI(
+                model="gpt-4",
+                temperature=config.temperature,
+                max_tokens=config.max_tokens
+            )
+        else:
+            raise ValueError(f"Unknown provider: {provider}")
+
+# Usage en cualquier chain:
+model = LLMProvider.get_model("ollama")
+```
+
+### `core/prompts/` - Templates Separados
+
+**Propósito:** Prompts documentados, versionables, testeables.
+
+```python
+# core/prompts/rag_prompts.py
+from langchain_core.prompts import ChatPromptTemplate
+
+RAG_SYSTEM_PROMPT = """You are a helpful assistant answering questions based on provided context.
+Instructions:
+- Use ONLY the context provided
+- If answer not in context, say "No information available"
+- Provide accurate citations"""
+
+RAG_CONTEXT_TEMPLATE = """Context documents:\n{context}"""
+RAG_QUESTION_TEMPLATE = """Question: {question}"""
+
+rag_prompt = ChatPromptTemplate.from_messages([
+    ("system", RAG_SYSTEM_PROMPT),
+    ("user", RAG_CONTEXT_TEMPLATE + "\n\n" + RAG_QUESTION_TEMPLATE)
+])
+```
+
+### `core/schemas/` - Pydantic Models
+
+**Propósito:** Documentar y validar estructuras de output.
+
+```python
+# core/schemas/rag_schemas.py
+from pydantic import BaseModel, Field
+from typing import List
+
+class Citation(BaseModel):
+    source: str = Field(description="Documento fuente")
+    page: int = Field(description="Número de página")
+    excerpt: str = Field(description="Fragmento citado")
+
+class RAGResponse(BaseModel):
+    answer: str = Field(description="Respuesta completa")
+    citations: List[Citation] = Field(description="Fuentes citadas")
+    confidence: float = Field(ge=0, le=1, description="Confianza (0-1)")
+```
+
+### `features/{{FEATURE}}/` - Feature Slices
+
+**Propósito:** Cada feature (RAG, Agents, etc) es autónoma.
+
+```
+document_chat/
+├── chains/              # Lógica pura LCEL
+├── tools/              # Si es agente, herramientas aquí
+├── parsers/            # Parsers específicos del feature
+├── service.py          # Orquesta chains + inyecta dependencias
+└── models.py           # Domain models del feature
+```
+
+**Ejemplo: `features/document_chat/service.py`**
+
+```python
+from core.llm.llm_provider import LLMProvider
+from core.prompts.rag_prompts import rag_prompt
+from core.schemas.rag_schemas import RAGResponse
+from infrastructure.vector_store.retriever import get_retriever
+from chains.combined_chain import build_rag_chain
+
+class DocumentChatService:
+    def __init__(self):
+        self.model = LLMProvider.get_model("ollama")
+        self.retriever = get_retriever()
+        self.rag_chain = build_rag_chain(
+            prompt=rag_prompt,
+            model=self.model,
+            retriever=self.retriever
+        )
+
+    async def chat(self, question: str) -> RAGResponse:
+        result = await self.rag_chain.ainvoke({
+            "question": question
+        })
+        return RAGResponse.model_validate(result)
+```
+
+### `infrastructure/vector_store/` - Persistencia
+
+**Propósito:** Abstracción de vector store (Chroma, Pinecone, etc).
+
+```python
+# infrastructure/vector_store/base_store.py
+from abc import ABC, abstractmethod
+
+class VectorStoreBase(ABC):
+    @abstractmethod
+    def add_documents(self, texts: List[str], metadata: List[dict]):
+        pass
+
+    @abstractmethod
+    def as_retriever(self, search_type: str = "similarity"):
+        pass
+
+# infrastructure/vector_store/chroma_store.py
+from langchain_community.vectorstores import Chroma
+
+class ChromaStore(VectorStoreBase):
+    def __init__(self, collection_name: str):
+        self.store = Chroma(collection_name=collection_name)
+
+    def as_retriever(self, search_type: str = "similarity"):
+        return self.store.as_retriever(search_type=search_type)
+
+# Usage:
+retriever = ChromaStore("documents").as_retriever()
+```
+
+---
+
+## Patrones de Uso
+
+### Pattern 1: Simple RAG
+
+```
+core/llm (model config)
+    ↓
+core/prompts (prompt template)
+    ↓
+features/document_chat/chains (LCEL: retriever | prompt | model | parser)
+    ↓
+features/document_chat/service (orquestación)
+```
+
+### Pattern 2: Agent with Tools
+
+```
+core/llm (model config)
+    ↓
+core/prompts (system prompt para agente)
+    ↓
+features/agent/tools (herramientas disponibles)
+    ↓
+features/agent/chains (agent = model con tools)
+    ↓
+features/agent/service (loop: think → act → observe)
+```
+
+### Pattern 3: Multi-Feature
+
+```
+feature1/document_chat
+    └── chains/rag_chain.py
+feature2/invoice_extraction
+    └── chains/extraction_chain.py
+feature3/code_generation
+    └── chains/generation_chain.py
+
+Todas comparten:
+- core/llm (mismo modelo)
+- core/prompts (templates reutilizables)
+- infrastructure/vector_store (mismo retriever)
+```
+
+---
+
+## Principios de Diseño
+
+1. **Separación de Concerns:** Prompts ≠ Logic ≠ Infrastructure
+2. **Reutilización:** Core modules se importan en features
+3. **Testabilidad:** Cada chain es una función pura testeable
+4. **Escalabilidad:** Agregar features sin modificar core
+5. **Observabilidad:** Logs en infra/, no en chains
+
+---
+
+**Fecha:** 30 de Enero de 2026
+**Versión:** 1.0
+**Status:** ✅ RECOMMENDED STRUCTURE
