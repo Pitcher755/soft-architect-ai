@@ -1,5 +1,8 @@
 packages/docs/SOFT_ARCHITECT_DOCS/01-VISION_E_IDEACION/IDEAS.md
 .env
-USER_STORIES_MASTER.*.json
+context/40-ROADMAP/USER_STORIES_MASTER.*.json
 ROADMAP_DETAILED.*.md
 private/
+
+# Internal Development Blueprints (not committed)
+doc/private/INTERNAL_DEV_BLUEPRINT.*.md

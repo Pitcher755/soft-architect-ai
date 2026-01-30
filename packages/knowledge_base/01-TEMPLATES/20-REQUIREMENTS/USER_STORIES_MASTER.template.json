@@ -1,0 +1,33 @@
+{
+    "project_name": "{{PROJECT_NAME}}",
+    "version": "0.1.0",
+    "sprints": [
+        {
+            "id": "S1",
+            "name": "Sprint 1: MVP Core",
+            "goal": "{{SPRINT_1_GOAL}}",
+            "epics": [
+                {
+                    "epic_id": "E1",
+                    "name": "{{EPIC_NAME}}",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-1.1",
+                            "name": "Como [ROL], quiero [ACCIÓN], para [BENEFICIO].",
+                            "priority": "High",
+                            "estimation": "M",
+                            "acceptance_criteria": [
+                                "✅ (Positivo) El sistema hace X.",
+                                "❌ (Negativo) El sistema impide Y."
+                            ],
+                            "technical_tasks": [
+                                "Crear modelo de datos.",
+                                "Crear endpoint API."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
