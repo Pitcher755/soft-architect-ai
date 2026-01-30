@@ -1,0 +1,213 @@
+# Directory Structure Template for {{TECH_NAME}}
+
+## Clean Architecture + Modular Structure
+
+```
+{{PROJECT_NAME}}/
+│
+├── 📁 src/                          # Source code (Clean Architecture)
+│   │
+│   ├── 📁 config/                   # ⚙️ Configuration & Environment
+│   │   ├── __init__.py
+│   │   ├── settings.py              # Env vars, app settings
+│   │   ├── database.py              # DB connection
+│   │   └── constants.py             # App constants
+│   │
+│   ├── 📁 core/                     # 🧠 Core & Utilities (Shared)
+│   │   ├── __init__.py
+│   │   ├── exceptions.py            # Custom exceptions
+│   │   ├── logger.py                # Logging setup
+│   │   └── utils.py                 # Helper functions
+│   │
+│   ├── 📁 domain/                   # 🎯 Business Logic (Agnóstico)
+│   │   ├── __init__.py
+│   │   ├── 📁 models/               # Entities
+│   │   │   ├── __init__.py
+│   │   │   ├── user_model.py
+│   │   │   └── {{DOMAIN_MODEL}}.py
+│   │   ├── 📁 schemas/              # DTOs (Data Transfer Objects)
+│   │   │   ├── __init__.py
+│   │   │   ├── user_schema.py
+│   │   │   └── {{DOMAIN_SCHEMA}}.py
+│   │   ├── 📁 services/             # Use Cases / Business Logic
+│   │   │   ├── __init__.py
+│   │   │   ├── user_service.py
+│   │   │   └── {{DOMAIN_SERVICE}}.py
+│   │   └── 📁 exceptions/           # Domain-specific exceptions
+│   │       ├── __init__.py
+│   │       └── {{DOMAIN_EXCEPTION}}.py
+│   │
+│   ├── 📁 infrastructure/           # 🔌 Technical Implementation
+│   │   ├── __init__.py
+│   │   ├── 📁 repositories/         # Data Access Layer (DAL)
+│   │   │   ├── __init__.py
+│   │   │   ├── user_repository.py
+│   │   │   └── {{REPO_NAME}}.py
+│   │   ├── 📁 database/             # DB Drivers & ORM Setup
+│   │   │   ├── __init__.py
+│   │   │   ├── orm.py               # {{ORM_NAME}} setup
+│   │   │   └── migrations/          # Database migrations
+│   │   │       └── .gitkeep
+│   │   ├── 📁 external/             # External APIs (Third-party services)
+│   │   │   ├── __init__.py
+│   │   │   └── {{EXTERNAL_SERVICE}}.py
+│   │   └── 📁 cache/                # Caching layer
+│   │       ├── __init__.py
+│   │       └── cache_provider.py
+│   │
+│   ├── 📁 presentation/             # 🎨 Controllers / API Routes
+│   │   ├── __init__.py
+│   │   ├── 📁 api/                  # REST/GraphQL Endpoints
+│   │   │   ├── __init__.py
+│   │   │   ├── v1/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── users.py         # User endpoints
+│   │   │   │   └── {{ENDPOINT}}.py
+│   │   │   └── middleware/          # Middleware layer
+│   │   │       ├── __init__.py
+│   │   │       ├── auth.py
+│   │   │       └── error_handler.py
+│   │   └── 📁 cli/                  # CLI Commands (if applicable)
+│   │       ├── __init__.py
+│   │       └── commands.py
+│   │
+│   └── main.py / app.py             # Application entry point
+
+│
+├── 📁 tests/                        # Test Suite (Mirror structure of src/)
+│   ├── __init__.py
+│   ├── conftest.py                  # Pytest fixtures & config
+│   ├── 📁 unit/                     # Unit Tests (~70%)
+│   │   ├── __init__.py
+│   │   ├── domain/
+│   │   │   ├── test_user_service.py
+│   │   │   └── test_{{DOMAIN_SERVICE}}.py
+│   │   ├── infrastructure/
+│   │   │   ├── test_user_repository.py
+│   │   │   └── test_{{REPO_NAME}}.py
+│   │   └── presentation/
+│   │       └── test_api_endpoints.py
+│   ├── 📁 integration/              # Integration Tests (~20%)
+│   │   ├── __init__.py
+│   │   ├── test_user_flow.py
+│   │   └── test_{{FLOW_NAME}}.py
+│   └── 📁 e2e/                      # End-to-End Tests (~10%)
+│       ├── __init__.py
+│       └── test_full_flow.py
+│
+├── 📁 docs/                         # Documentation
+│   ├── README.md
+│   ├── ARCHITECTURE.md
+│   ├── API.md                       # API documentation
+│   ├── SETUP.md                     # Setup guide
+│   └── DEPLOYMENT.md                # Deployment guide
+│
+├── 📁 scripts/                      # Utility scripts
+│   ├── setup.sh
+│   ├── migrate.sh                   # DB migrations
+│   ├── seed.sh                      # Seed data
+│   └── {{CUSTOM_SCRIPT}}.sh
+│
+├── 📁 docker/                       # Docker configuration
+│   ├── Dockerfile
+│   ├── Dockerfile.dev               # Dev image
+│   └── docker-compose.yml
+│
+├── 📁 .github/                      # GitHub (CI/CD, templates)
+│   ├── workflows/
+│   │   ├── lint.yml
+│   │   ├── test.yml
+│   │   └── deploy.yml
+│   └── ISSUE_TEMPLATE/
+│       └── bug_report.md
+│
+├── 📁 .vscode/                      # VS Code settings (optional)
+│   └── settings.json
+│
+├── .env.example                     # Environment variables template
+├── .env                             # ⚠️ NEVER COMMIT (local only)
+├── .gitignore
+├── .gitattributes
+├── {{PACKAGE_MANIFEST}}             # Package manifest
+│   ├── pyproject.toml               # Python
+│   ├── package.json                 # Node.js
+│   ├── go.mod                       # Go
+│   ├── Cargo.toml                   # Rust
+│   └── pubspec.yaml                 # Dart/Flutter
+│
+├── {{LOCK_FILE}}                    # Dependency lock file
+│   ├── poetry.lock                  # Python (Poetry)
+│   ├── package-lock.json            # Node.js
+│   ├── go.sum                       # Go
+│   ├── Cargo.lock                   # Rust
+│   └── pubspec.lock                 # Dart/Flutter
+│
+├── {{CONFIG_FILES}}
+│   ├── {{LINTER_CONFIG}}            # .eslintrc, pyproject.toml, etc
+│   ├── {{FORMATTER_CONFIG}}         # .prettierrc, black, etc
+│   ├── {{TYPECHECK_CONFIG}}         # tsconfig.json, pyrightconfig.json
+│   └── {{TESTRUNNER_CONFIG}}        # jest.config, pytest.ini, etc
+│
+├── Makefile (optional)              # Common commands
+├── README.md                        # Project README
+├── LICENSE                          # License
+└── CONTRIBUTING.md                  # Contribution guide
+
+```
+
+---
+
+## 📋 Key Principles
+
+### 1. **Separation of Concerns**
+Each layer has a single responsibility:
+- **Domain:** Business logic (independent of framework/DB)
+- **Infrastructure:** Technical details (DB, APIs, caches)
+- **Presentation:** HTTP/CLI layer
+
+### 2. **Dependency Rule**
+Inner layers (Domain) must never depend on outer layers (Presentation, Infrastructure).
+
+### 3. **Testability**
+- Domain logic is unit-testable without dependencies
+- Infrastructure is mockable
+- Full integration tests possible
+
+### 4. **Scalability**
+- Easy to add new use cases (new files in domain/)
+- Easy to switch implementations (new repository impl)
+- Modular and independent
+
+### 5. **Maintainability**
+- Clear structure = easy to navigate
+- No circular dependencies
+- Self-documenting through naming
+
+---
+
+## 🚀 Generating Folders
+
+**Command (bash):**
+```bash
+mkdir -p src/{config,core,domain/{models,schemas,services,exceptions},infrastructure/{repositories,database,external,cache},presentation/{api/v1,middleware,cli}}
+mkdir -p tests/{unit/{domain,infrastructure,presentation},integration,e2e}
+mkdir -p docs scripts docker .github/workflows
+touch .env.example .gitignore README.md
+```
+
+---
+
+## ✅ Validation Checklist
+
+- [ ] No mixed concerns (domain code in presentation, etc)
+- [ ] All directories have `__init__.py` (Python)
+- [ ] Tests mirror src structure
+- [ ] Documentation exists (README, SETUP, API)
+- [ ] .env.example has all required variables
+- [ ] .gitignore excludes sensitive files
+
+---
+
+**Structure Version:** 1.0
+**Last Updated:** {{STRUCTURE_UPDATE_DATE}}
+**Valid For:** {{TECH_NAME}} projects
