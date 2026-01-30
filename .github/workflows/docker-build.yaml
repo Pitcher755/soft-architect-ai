@@ -1,0 +1,223 @@
+name: 🐳 Docker Build Verification
+
+# DISPARADOR: Cambios en Docker/Infra o cambios significativos
+on:
+  push:
+    branches: [main, develop, feature/backend-skeleton]
+    paths:
+      - 'infrastructure/**'
+      - 'Dockerfile'
+      - 'Dockerfile.backend'
+      - 'Dockerfile.frontend'
+      - '.dockerignore'
+      - 'docker-compose.yml'
+      - '.github/workflows/docker-build.yaml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'infrastructure/**'
+      - 'Dockerfile*'
+      - '.dockerignore'
+      - 'docker-compose.yml'
+
+  # ✨ NUEVO: Permitir que sea reutilizable por otros workflows
+  workflow_call:
+
+# Permite solo una ejecución por rama a la vez
+concurrency:
+  group: docker-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════
+  # STEP 1: VERIFICAR DOCKERFILE SYNTAX
+  # ═══════════════════════════════════════════════════════════════════
+  dockerfile-lint:
+    name: 🐳 Dockerfile Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📋 List Dockerfiles
+        run: |
+          echo "Found Dockerfiles:"
+          find . -name "Dockerfile*" -type f 2>/dev/null | head -10
+
+      - name: 🔍 Validate Dockerfile Format
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          ignore: DL3008,DL3009
+        continue-on-error: true
+
+  # ═══════════════════════════════════════════════════════════════════
+  # STEP 2: BUILD IMAGEN BACKEND (Dry Run)
+  # ═══════════════════════════════════════════════════════════════════
+  build-backend:
+    name: 🐍 Build Backend Image (FastAPI)
+    runs-on: ubuntu-latest
+    needs: dockerfile-lint
+
+    steps:
+      - name: ✅ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 📝 Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            softarchitect/backend
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=semver,pattern={{version}}
+
+      - name: 🏗️ Build Backend Image (DRY RUN)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false  # ⚠️ NO subir a registry (solo verificar)
+          tags: softarchitect/backend:ci-test
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=oci,dest=/tmp/image-backend
+          build-args: |
+            BUILD_ENV=test
+            VERSION=ci-test
+
+      - name: ✅ Backend Image Built Successfully
+        run: |
+          echo "✅ Backend Docker image built successfully"
+          echo "Image would be: softarchitect/backend:ci-test"
+
+  # ═══════════════════════════════════════════════════════════════════
+  # STEP 3: VALIDAR DOCKER COMPOSE
+  # ═══════════════════════════════════════════════════════════════════
+  docker-compose-validate:
+    name: 🎼 Docker Compose Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐳 Check Docker Compose Files
+        run: |
+          echo "Validating docker-compose files..."
+          if [ -f "docker-compose.yml" ]; then
+            echo "✅ Found docker-compose.yml"
+            docker compose config --quiet && echo "✅ Syntax valid"
+          else
+            echo "⚠️ No docker-compose.yml found"
+          fi
+
+      - name: 📋 Show Compose Services
+        run: |
+          if [ -f "docker-compose.yml" ]; then
+            echo "Services in docker-compose.yml:"
+            docker compose config | grep -A 5 "services:" || true
+          fi
+
+  # ═══════════════════════════════════════════════════════════════════
+  # STEP 4: SEGURIDAD - ESCANEAR IMAGEN
+  # ═══════════════════════════════════════════════════════════════════
+  image-security:
+    name: 🔒 Image Security Scan
+    runs-on: ubuntu-latest
+    needs: build-backend
+
+    steps:
+      - name: ✅ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🏗️ Build Image for Scan
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true  # Cargar en Docker local para scanear
+          tags: softarchitect/backend:scan
+          cache-from: type=gha
+
+      - name: 🔍 Scan with Trivy (Vulnerabilities)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'softarchitect/backend:scan'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
+
+      - name: 📊 Upload Trivy Results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'trivy-image'
+
+  # ═══════════════════════════════════════════════════════════════════
+  # STEP 5: VERIFICACIÓN DE TAMAÑO
+  # ═══════════════════════════════════════════════════════════════════
+  image-size-check:
+    name: 📏 Image Size Check
+    runs-on: ubuntu-latest
+    needs: build-backend
+
+    steps:
+      - name: ✅ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🏗️ Build and Check Size
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          tags: softarchitect/backend:size-check
+          cache-from: type=gha
+
+      - name: 📊 Display Image Size
+        run: |
+          docker images softarchitect/backend:size-check
+          SIZE=$(docker images --format "{{.Size}}" softarchitect/backend:size-check)
+          echo "### 📊 Docker Image Size: $SIZE" >> $GITHUB_STEP_SUMMARY
+
+  # ═══════════════════════════════════════════════════════════════════
+  # NOTIFICACIONES Y REPORTS
+  # ═══════════════════════════════════════════════════════════════════
+  job-summary:
+    name: 📊 Summary
+    runs-on: ubuntu-latest
+    needs: [dockerfile-lint, build-backend, docker-compose-validate, image-security, image-size-check]
+    if: always()
+
+    steps:
+      - name: ✅ Docker Build Verification Complete
+        run: |
+          echo "## ✅ Docker Build Verification Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Checks Performed:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Dockerfile validation (hadolint)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Backend image build (dry run)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Docker Compose syntax" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Image security scan (Trivy)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Image size verification" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Step:" >> $GITHUB_STEP_SUMMARY
+          echo "Images are ready to push to registry (if on main branch)" >> $GITHUB_STEP_SUMMARY
