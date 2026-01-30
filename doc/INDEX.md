@@ -62,10 +62,11 @@ doc/
 
 ### ✨ Para Nuevos Usuarios
 
-**Ruta Recomendada (30 minutos):**
-1. Lee [CONCEPT_WHITE_PAPER.es.md](00-VISION/CONCEPT_WHITE_PAPER.es.md) - Entiende la visión
-2. Lee [QUICK_START_GUIDE.es.md](02-SETUP_DEV/QUICK_START_GUIDE.es.md) - Levanta servicios
-3. Lee [FUNCTIONAL_TEST_REPORT.md](01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Verifica que todo funciona
+**Ruta Recomendada (30 minutos - COMIENZA AQUÍ):**
+1. **⭐ [WHAT_WE_ARE_BUILDING.es.md](00-VISION/WHAT_WE_ARE_BUILDING.es.md)** - Entiende exactamente QUÉ estamos construyendo
+2. Lee [CONCEPT_WHITE_PAPER.es.md](00-VISION/CONCEPT_WHITE_PAPER.es.md) - Entiende la visión detallada
+3. Lee [QUICK_START_GUIDE.es.md](02-SETUP_DEV/QUICK_START_GUIDE.es.md) - Levanta servicios
+4. Lee [FUNCTIONAL_TEST_REPORT.md](01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Verifica que todo funciona
 
 ### 🏗️ Para Arquitectos & Tech Leads
 
@@ -101,6 +102,7 @@ doc/
 
 | Archivo | Descripción | Audiencia |
 |---------|-------------|-----------|
+| **WHAT_WE_ARE_BUILDING** ⭐ NEW | La definición completa de qué estamos construyendo (La Esencia) | Todos |
 | CONCEPT_WHITE_PAPER | Documento conceptual del proyecto (Problemática, Solución, Oportunidad) | Todos |
 
 ### 📈 Reportes & Análisis (01-PROJECT_REPORT/)
