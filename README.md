@@ -72,6 +72,7 @@ For detailed setup, troubleshooting, and advanced configuration, see [Detailed S
     * **Privacy Mode:** Runs LLMs (Ollama) on your local network. Your data never leaves.
     * **Performance Mode:** Connects to Groq Cloud for ultra-fast inference on modest hardware.
 * **🏭 Context Factory:** Automatically generates technical documentation (`AGENTS.md`, `RULES.md`) so your Copilot works better.
+* **🤖 CI/CD Pipelines:** Intelligent GitHub Actions workflows for monorepo (auto-detect changes, run only relevant checks).
 
 #### 🛠️ Technology Stack
 
@@ -200,6 +201,7 @@ Para configuración detallada, solución de problemas y opciones avanzadas, cons
     * **Modo Privacidad:** Ejecuta LLMs (Ollama) en tu red local. Tus datos nunca salen.
     * **Modo Rendimiento:** Conecta con Groq Cloud para inferencia ultrarrápida en hardware modesto.
 * **🏭 Fábrica de Contexto:** Genera automáticamente la documentación técnica (`AGENTS.md`, `RULES.md`) para que tu Copilot trabaje mejor.
+* **🤖 Pipelines CI/CD:** Workflows GitHub Actions inteligentes para monorepo (detecta cambios automáticamente, ejecuta solo checks relevantes).
 
 #### 🛠️ Stack Tecnológico
 
