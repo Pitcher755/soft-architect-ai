@@ -31,6 +31,7 @@
 - [Technology Stack](doc/02-SETUP_DEV/TOOLS_AND_STACK.en.md)
 - [Automation & DevOps](doc/02-SETUP_DEV/AUTOMATION.en.md)
 - **⭐ NEW:** [Knowledge Base Completion Report](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
+- **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
 
 #### 📖 Vision
 
