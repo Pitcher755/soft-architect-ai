@@ -1,0 +1,303 @@
+# 📁 Project Structure: Semantic Kernel Integration
+
+> **Propósito:** Patrón de organización de código para aplicaciones SK
+> **Filosofía:** Plugin-Centric Architecture
+
+---
+
+## Estructura Recomendada
+
+```
+soft-architect-ai/
+│
+├── src/
+│   ├── core/
+│   │   ├── kernel_builder.py        # 🏭 Factory para crear Kernels configurados
+│   │   ├── kernel_config.py         # ⚙️ Configuración centralizada
+│   │   └── service_setup.py         # 📋 Registro de servicios (modelos, memoria)
+│   │
+│   ├── plugins/                     # 🧩 Carpeta raíz de Plugins
+│   │   │
+│   │   ├── WriterPlugin/            # Plugin Semántico: Tareas de texto
+│   │   │   ├── __init__.py
+│   │   │   ├── Summarize/
+│   │   │   │   ├── skprompt.txt     # Prompt template
+│   │   │   │   └── config.json      # Parámetros (temp, max_tokens)
+│   │   │   ├── Translate/
+│   │   │   │   ├── skprompt.txt
+│   │   │   │   └── config.json
+│   │   │   └── GenerateIdeas/
+│   │   │       ├── skprompt.txt
+│   │   │       └── config.json
+│   │   │
+│   │   ├── MathPlugin/              # Plugin Nativo: Operaciones deterministas
+│   │   │   ├── __init__.py
+│   │   │   ├── math_functions.py    # @kernel_function def add, subtract, multiply
+│   │   │   └── calculator.py        # Lógica auxiliar
+│   │   │
+│   │   ├── DatabasePlugin/          # Plugin Nativo: Acceso a datos
+│   │   │   ├── __init__.py
+│   │   │   ├── db_functions.py      # @kernel_function def query, execute, fetch
+│   │   │   └── models.py            # SQLAlchemy models o Pydantic schemas
+│   │   │
+│   │   └── SearchPlugin/            # Plugin Híbrido: Semántico + Nativo
+│   │       ├── __init__.py
+│   │       ├── Search/              # Semantic function
+│   │       │   ├── skprompt.txt
+│   │       │   └── config.json
+│   │       └── search_functions.py  # Native: conecta con vectorstore
+│   │
+│   ├── planners/                    # 📋 Configuración de Planners
+│   │   ├── __init__.py
+│   │   ├── handlebars_setup.py      # HandlebarsPlanner configurado
+│   │   └── stepwise_setup.py        # StepwisePlanner (alternativa)
+│   │
+│   ├── services/                    # 🎭 Capas de aplicación
+│   │   ├── __init__.py
+│   │   ├── agent_service.py         # Orquestación del Kernel + Planner
+│   │   ├── chat_service.py          # Chat con historial
+│   │   └── task_service.py          # Ejecutar tareas complejas
+│   │
+│   └── infrastructure/              # 🔧 Integraciones
+│       ├── __init__.py
+│       ├── memory/                  # Memoria connectors
+│       │   ├── pinecone_memory.py   # Pinecone connector
+│       │   └── chroma_memory.py     # ChromaDB connector
+│       └── llm/                     # LLM connectors
+│           ├── azure_openai.py      # Azure OpenAI
+│           └── ollama.py            # Local Ollama
+│
+├── tests/
+│   ├── plugins/
+│   │   ├── test_writer_plugin.py
+│   │   └── test_math_plugin.py
+│   │
+│   └── integration/
+│       └── test_planner_e2e.py
+│
+└── pyproject.toml                    # 📦 Dependencies (semantic-kernel, etc)
+
+```
+
+---
+
+## Desglose por Responsabilidad
+
+### `core/kernel_builder.py` - Instanciación
+
+**Propósito:** Lugar único donde se crean Kernels configurados.
+
+```python
+# core/kernel_builder.py
+from semantic_kernel import Kernel
+from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
+from semantic_kernel.connectors.memory.pinecone import PineconeMemory
+
+class KernelBuilder:
+    @staticmethod
+    def create_default_kernel(
+        memory_namespace: str = "default"
+    ) -> Kernel:
+        """Crea un Kernel con configuración estándar."""
+        kernel = Kernel()
+
+        # Registrar servicio LLM
+        kernel.add_service(
+            AzureChatCompletion(
+                deployment_name="gpt-4",
+                model_id="gpt-4",
+                api_key=os.getenv("AZURE_OPENAI_KEY")
+            )
+        )
+
+        # Registrar memoria (Pinecone)
+        kernel.add_memory(
+            PineconeMemory(
+                index_name="softarchitect",
+                namespace=memory_namespace
+            )
+        )
+
+        return kernel
+```
+
+### `plugins/{{PluginName}}/` - Plugin Organization
+
+**Propósito:** Cada plugin es una carpeta con funciones relacionadas.
+
+```
+WriterPlugin/
+├── __init__.py
+├── Summarize/
+│   ├── skprompt.txt
+│   └── config.json
+└── Translate/
+    ├── skprompt.txt
+    └── config.json
+
+MathPlugin/
+├── __init__.py
+└── math_functions.py
+
+```
+
+**`plugins/WriterPlugin/__init__.py`:**
+
+```python
+from semantic_kernel.skill_definition import sk_function
+
+class WriterPlugin:
+    # No native functions aquí (si las hubiera)
+    pass
+
+def import_plugin(kernel):
+    """Importa el plugin en el kernel."""
+    kernel.import_semantic_skill_from_directory(
+        "plugins",
+        "WriterPlugin"
+    )
+```
+
+### `planners/` - Orquestación
+
+**Propósito:** Configurar planners que deciden qué plugins usar.
+
+```python
+# planners/handlebars_setup.py
+from semantic_kernel.planners import HandlebarsPlanner
+
+async def create_planner(kernel):
+    planner = HandlebarsPlanner(
+        kernel,
+        allow_missing_functions=False  # Strict
+    )
+    return planner
+```
+
+### `services/agent_service.py` - Punto de Entrada
+
+**Propósito:** Orquesta Kernel + Planner + Plugins.
+
+```python
+# services/agent_service.py
+from core.kernel_builder import KernelBuilder
+from planners.handlebars_setup import create_planner
+
+class AgentService:
+    async def __init__(self, user_id: str):
+        """Crea un agente por usuario (stateless request scope)."""
+        self.kernel = KernelBuilder.create_default_kernel(
+            memory_namespace=f"user_{user_id}"
+        )
+        self.planner = await create_planner(self.kernel)
+
+    async def execute(self, goal: str):
+        """Ejecuta un objetivo usando el Planner."""
+        plan = await self.planner.create_plan(goal, max_iterations=5)
+        return await plan.invoke(self.kernel)
+```
+
+### `infrastructure/memory/` - Vector DB Connectors
+
+**Propósito:** Abstraer el tipo de vector store (Pinecone, Chroma, etc).
+
+```python
+# infrastructure/memory/pinecone_memory.py
+class PineconeMemory:
+    def __init__(self, index_name: str, namespace: str):
+        self.client = Pinecone(api_key=os.getenv("PINECONE_KEY"))
+        self.index = self.client.Index(index_name)
+        self.namespace = namespace
+
+    async def save_reference(self, key: str, value: str):
+        """Guarda un vector en Pinecone."""
+        embedding = generate_embedding(value)
+        self.index.upsert(
+            vectors=[(key, embedding)],
+            namespace=self.namespace
+        )
+
+    async def recall(self, query: str):
+        """Busca vectores similares."""
+        query_embedding = generate_embedding(query)
+        results = self.index.query(
+            vector=query_embedding,
+            namespace=self.namespace,
+            top_k=5
+        )
+        return results
+```
+
+---
+
+## Patrones de Uso
+
+### Pattern 1: Goal-Oriented (Recomendado)
+
+```
+User Goal
+    ↓
+Kernel (servicios, memoria)
+    ↓
+HandlebarsPlanner
+    ↓
+Plugins (semánticos + nativos)
+    ↓
+Ejecución de plan
+```
+
+**Implementación:**
+
+```python
+service = AgentService(user_id="user_123")
+result = await service.execute("Summariza estos documentos y crea un plan de acción")
+```
+
+### Pattern 2: Sequential Execution
+
+```
+Plugin A (semantic: summarize)
+    ↓
+Plugin B (native: analyze)
+    ↓
+Plugin C (semantic: generate report)
+```
+
+**Implementación:**
+
+```python
+kernel = KernelBuilder.create_default_kernel()
+step1 = await kernel.invoke_plugin_function("Writer", "Summarize", {"text": "..."})
+step2 = await kernel.invoke_plugin_function("Math", "Analyze", {"data": step1})
+step3 = await kernel.invoke_plugin_function("Writer", "GenerateReport", {"analysis": step2})
+```
+
+### Pattern 3: Nested Plugins
+
+Un plugin invoca otros plugins.
+
+```python
+class OrchestratorPlugin:
+    @kernel_function(description="Ejecuta un flujo completo")
+    async def run_workflow(self, input: str):
+        # Dentro, invoca otros plugins
+        summary = await kernel.invoke_plugin_function(...)
+        analysis = await kernel.invoke_plugin_function(...)
+        return {"summary": summary, "analysis": analysis}
+```
+
+---
+
+## Principios de Diseño
+
+1. **Plugin Isolation:** Un plugin, una responsabilidad
+2. **Kernel Stateless:** Cada request crea un kernel fresh
+3. **Planner Limits:** Max iterations, timeout, sandbox
+4. **Memory Isolation:** Namespaces para multi-tenancy
+5. **Type Safety:** Type hints en funciones nativas
+
+---
+
+**Fecha:** 30 de Enero de 2026
+**Versión:** 1.0
+**Status:** ✅ RECOMMENDED STRUCTURE
