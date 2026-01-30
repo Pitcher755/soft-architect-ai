@@ -70,10 +70,11 @@ doc/
 ### 🏗️ Para Arquitectos & Tech Leads
 
 **Ruta Recomendada (60 minutos):**
-1. [MEMORIA_METODOLOGICA.es.md](01-PROJECT_REPORT/MEMORIA_METODOLOGICA.es.md) - Metodología
-2. [PROJECT_MANIFESTO.es.md](01-PROJECT_REPORT/PROJECT_MANIFESTO.es.md) - Principios
-3. [../../AGENTS.md](../../AGENTS.md) - Definición del agente
-4. [../../context/30-ARCHITECTURE/](../../context/30-ARCHITECTURE/) - Detalles arquitectónicos
+1. [SYSTEM_E2E_WORKFLOW.md](01-PROJECT_REPORT/SYSTEM_E2E_WORKFLOW.md) - ⭐ **COMIENZA AQUÍ** - Visualiza el flujo completo
+2. [MEMORIA_METODOLOGICA.es.md](01-PROJECT_REPORT/MEMORIA_METODOLOGICA.es.md) - Metodología
+3. [PROJECT_MANIFESTO.es.md](01-PROJECT_REPORT/PROJECT_MANIFESTO.es.md) - Principios
+4. [../../AGENTS.md](../../AGENTS.md) - Definición del agente
+5. [../../context/30-ARCHITECTURE/](../../context/30-ARCHITECTURE/) - Detalles arquitectónicos
 
 ### 👨‍💻 Para Desarrolladores
 
@@ -106,12 +107,14 @@ doc/
 
 | Archivo | Descripción | Audiencia | Líneas |
 |---------|-------------|-----------|--------|
+| **SYSTEM_E2E_WORKFLOW** ⭐ NEW | Diagrama Mermaid del flujo end-to-end completo (5 fases interactivas) | Arquitectos/Diseñadores | ~320 |
 | FUNCTIONAL_TEST_REPORT | 18/18 pruebas pasadas, métricas, compliance | QA/DevOps | ~716 |
 | INITIAL_SETUP_LOG | Timeline de instalación, 4 fases de setup | DevOps/Infra | ~500 |
 | MEMORIA_METODOLOGICA | Visión, metodología, reglas de ingeniería | Arquitectos/Leads | ~600 |
 | PROJECT_MANIFESTO | Principios, valores, compromisos del proyecto | Todos | ~300 |
 | CONTEXT_COVERAGE_REPORT | Análisis de completitud de documentación | PMs/Leads | ~400 |
 | SIMULACION_POC | Simulación y análisis POC del sistema | Técnicos | ~400 |
+| KNOWLEDGE_BASE_COMPLETION | Reporte de Fases 0-6 del Knowledge Base (29 archivos, 934 líneas) | Arquitectos | ~400 |
 
 ### 🛠️ Setup & Desarrollo (02-SETUP_DEV/)
 
