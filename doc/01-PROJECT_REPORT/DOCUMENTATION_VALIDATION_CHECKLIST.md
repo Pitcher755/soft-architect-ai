@@ -1,7 +1,7 @@
 # 📋 Guía de Validación: Estructura de Documentación
 
-> **Propósito:** Verificación rápida de que la documentación cumple con AGENTS.md §8  
-> **Fecha:** 29 de enero de 2026  
+> **Propósito:** Verificación rápida de que la documentación cumple con AGENTS.md §8
+> **Fecha:** 29 de enero de 2026
 > **Aplicable a:** Toda nueva documentación
 
 ---
@@ -47,8 +47,8 @@ Antes de agregar documentación nueva, verifica:
 ```markdown
 # 📚 Título del Documento
 
-> **Fecha:** DD/MM/YYYY  
-> **Estado:** ✅/⚠️/❌  
+> **Fecha:** DD/MM/YYYY
+> **Estado:** ✅/⚠️/❌
 > **Versión:** X.Y.Z (opcional)
 
 ---
@@ -85,7 +85,7 @@ Contenido...
   - Conceptos (00-VISION)
   - Guías de desarrollo (02-SETUP_DEV)
   - Setup/instalación (02-SETUP_DEV)
-  
+
 - ⚠️ **Solo un idioma:**
   - Reportes técnicos (01-PROJECT_REPORT)
   - Logs de sesión (01-PROJECT_REPORT)
@@ -247,7 +247,7 @@ Ejemplos:
 ```markdown
 # 📚 [Título]
 
-> **Fecha:** [DD/MM/YYYY]  
+> **Fecha:** [DD/MM/YYYY]
 > **Estado:** ✅/⚠️/❌
 
 ---
@@ -303,5 +303,5 @@ git commit -m "📚 Agregar NUEVO_ARCHIVO en CATEGORIA"
 
 ---
 
-**Última actualización:** 29 de enero de 2026  
+**Última actualización:** 29 de enero de 2026
 **Creado por:** ArchitectZero

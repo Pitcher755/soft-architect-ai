@@ -1,16 +1,19 @@
 # HU-2.2 Artifacts Manifest
 
-**Estado:** ❌ PENDIENTE
+**Estado:** 🔄 EN PROGRESO
+**Archivos Completados:** 4/11
+**Última Actualización:** 31/01/2026
 
 ## Archivos a Generar
 
 ### Código Fuente
-- ❌ `services/vectors/__init__.py` - Package initialization
-- ❌ `services/vectors/vector_store_service.py` - Main VectorStoreService class
-- ❌ `scripts/ingest.py` - Manual ingestion script
+- ✅ `src/server/core/exceptions/base.py` - Base exception system (BaseAppError, VectorStoreError)
+- ✅ `src/server/services/rag/__init__.py` - Package initialization
+- ❌ `src/server/services/rag/vector_store.py` - Main VectorStoreService class
+- ❌ `src/server/scripts/ingest.py` - Manual ingestion script
 
 ### Tests
-- ❌ `tests/test_vector_store.py` - Unit tests for VectorStoreService
+- ✅ `src/server/tests/unit/services/rag/test_vector_store.py` - Unit tests for VectorStoreService (FASE RED completa)
 - ❌ `tests/test_ingest_script.py` - Integration tests for ingestion
 
 ### Configuración
