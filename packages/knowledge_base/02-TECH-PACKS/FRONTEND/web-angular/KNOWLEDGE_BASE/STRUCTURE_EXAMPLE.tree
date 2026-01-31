@@ -1,0 +1,383 @@
+# 🏗️ Angular Project Structure: Standalone Components Era
+
+> **Angular Version:** 17+
+> **Pattern:** Standalone Components (NgModule is Legacy)
+> **Architecture:** Feature-Driven Structure
+
+Estructura moderna de proyectos Angular basada en Componentes Standalone.
+
+---
+
+## 📖 Tabla de Contenidos
+
+1. [Estructura Raíz](#estructura-raíz)
+2. [Core Module (Singletons)](#core-module-singletons)
+3. [Features (Lazy Loading)](#features-lazy-loading)
+4. [Shared Components](#shared-components)
+5. [Convenciones de Naming](#convenciones-de-naming)
+
+---
+
+## Estructura Raíz
+
+```
+src/
+│
+├── app/
+│   ├── app.config.ts              # Configuración Global (Providers, Routes)
+│   ├── app.routes.ts              # Definición de rutas (Lazy Loading)
+│   ├── app.component.ts           # Root Component
+│   │
+│   ├── core/                      # Singleton Services & Guards
+│   │   ├── auth/
+│   │   │   ├── auth.service.ts
+│   │   │   ├── auth.interceptor.ts
+│   │   │   ├── jwt.guard.ts
+│   │   │   └── auth.model.ts
+│   │   │
+│   │   ├── http/
+│   │   │   └── error.interceptor.ts
+│   │   │
+│   │   ├── storage/
+│   │   │   └── local-storage.service.ts
+│   │   │
+│   │   └── config/
+│   │       └── app.config.service.ts
+│   │
+│   ├── features/                  # Módulos Funcionales (Lazy Loaded)
+│   │   ├── dashboard/
+│   │   │   ├── dashboard.routes.ts
+│   │   │   ├── pages/
+│   │   │   │   └── dashboard.component.ts  # Standalone
+│   │   │   ├── services/
+│   │   │   │   └── dashboard.service.ts
+│   │   │   └── ui/
+│   │   │       ├── stat-card.component.ts
+│   │   │       └── chart-widget.component.ts
+│   │   │
+│   │   ├── users/
+│   │   │   ├── users.routes.ts
+│   │   │   ├── pages/
+│   │   │   │   ├── users-list.component.ts
+│   │   │   │   ├── user-detail.component.ts
+│   │   │   │   └── user-edit.component.ts
+│   │   │   ├── services/
+│   │   │   │   └── users.service.ts
+│   │   │   ├── models/
+│   │   │   │   └── user.model.ts
+│   │   │   └── ui/
+│   │   │       ├── user-card.component.ts
+│   │   │       └── user-form.component.ts
+│   │   │
+│   │   └── auth/
+│   │       ├── auth.routes.ts
+│   │       ├── pages/
+│   │       │   ├── login.component.ts
+│   │       │   └── register.component.ts
+│   │       ├── models/
+│   │       │   └── credentials.model.ts
+│   │       └── ui/
+│   │           └── auth-form.component.ts
+│   │
+│   ├── shared/                   # UI Kit Reutilizable (No Business Logic)
+│   │   ├── components/
+│   │   │   ├── modal/
+│   │   │   │   ├── modal.component.ts
+│   │   │   │   └── modal.component.css
+│   │   │   ├── button/
+│   │   │   │   └── button.component.ts
+│   │   │   └── confirm-dialog/
+│   │   │       └── confirm-dialog.component.ts
+│   │   │
+│   │   ├── pipes/
+│   │   │   ├── truncate.pipe.ts
+│   │   │   ├── safe-html.pipe.ts
+│   │   │   └── date-format.pipe.ts
+│   │   │
+│   │   ├── directives/
+│   │   │   ├── click-outside.directive.ts
+│   │   │   └── auto-focus.directive.ts
+│   │   │
+│   │   ├── styles/
+│   │   │   ├── variables.css
+│   │   │   ├── reset.css
+│   │   │   └── utilities.css
+│   │   │
+│   │   └── constants.ts           # Constantes globales
+│   │
+│   ├── layout/                   # Layout Components (Header, Sidebar)
+│   │   ├── sidebar.component.ts
+│   │   ├── header.component.ts
+│   │   ├── footer.component.ts
+│   │   └── main-layout.component.ts
+│   │
+│   └── models/                   # Shared Data Models
+│       ├── api-response.model.ts
+│       ├── pagination.model.ts
+│       └── error.model.ts
+│
+├── assets/                      # Estáticos (Imágenes, iconos)
+│   ├── images/
+│   ├── icons/
+│   └── fonts/
+│
+├── environments/               # Variables de entorno
+│   ├── environment.ts          # Desarrollo
+│   ├── environment.prod.ts     # Producción
+│   └── environment.staging.ts  # Staging
+│
+├── main.ts                     # Bootstrap
+├── index.html                  # HTML raíz
+└── styles.css                  # Estilos globales
+
+```
+
+---
+
+## Core Module (Singletons)
+
+Servicios que se instancian UNA SOLA VEZ en toda la app.
+
+### `auth.service.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export interface User {
+  id: string;
+  email: string;
+  roles: string[];
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private currentUser = new BehaviorSubject<User | null>(null);
+  currentUser$ = this.currentUser.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.loadUser();
+  }
+
+  login(email: string, password: string): Observable<User> {
+    return this.http.post<User>('/api/auth/login', { email, password })
+      .pipe(
+        tap(user => this.currentUser.next(user)),
+        tap(user => localStorage.setItem('token', user.token))
+      );
+  }
+
+  logout(): void {
+    this.currentUser.next(null);
+    localStorage.removeItem('token');
+  }
+
+  private loadUser(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Validar token y cargar usuario
+    }
+  }
+}
+```
+
+### `jwt.guard.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class JwtGuard implements CanActivate {
+  constructor(private auth: AuthService, private router: Router) {}
+
+  canActivate(): boolean {
+    if (this.auth.isAuthenticated()) {
+      return true;
+    }
+    this.router.navigate(['/login']);
+    return false;
+  }
+}
+```
+
+---
+
+## Features (Lazy Loading)
+
+Cada feature es **autónoma** y carga bajo demanda.
+
+### `dashboard.routes.ts`
+
+```typescript
+import { Routes } from '@angular/router';
+import { DashboardComponent } from './pages/dashboard.component';
+
+export const DASHBOARD_ROUTES: Routes = [
+  {
+    path: '',
+    component: DashboardComponent,
+    data: { title: 'Dashboard' }
+  }
+];
+```
+
+### `users.routes.ts`
+
+```typescript
+import { Routes } from '@angular/router';
+import { JwtGuard } from '@/core/auth/jwt.guard';
+import { UsersListComponent } from './pages/users-list.component';
+import { UserDetailComponent } from './pages/user-detail.component';
+
+export const USERS_ROUTES: Routes = [
+  {
+    path: '',
+    component: UsersListComponent,
+    canActivate: [JwtGuard],
+    data: { title: 'Users' }
+  },
+  {
+    path: ':id',
+    component: UserDetailComponent,
+    canActivate: [JwtGuard]
+  }
+];
+```
+
+### `app.routes.ts` (Router Principal)
+
+```typescript
+import { Routes } from '@angular/router';
+import { JwtGuard } from './core/auth/jwt.guard';
+
+export const APP_ROUTES: Routes = [
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./features/dashboard/dashboard.routes')
+          .then(m => m.DASHBOARD_ROUTES),
+        canActivate: [JwtGuard]
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./features/users/users.routes')
+          .then(m => m.USERS_ROUTES),
+        canActivate: [JwtGuard]
+      }
+    ]
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes')
+      .then(m => m.AUTH_ROUTES)
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
+];
+```
+
+---
+
+## Shared Components
+
+Componentes sin lógica de negocio, reutilizables.
+
+### `modal.component.ts`
+
+```typescript
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-modal',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div class="modal-overlay" (click)="onClose()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>{{ title }}</h2>
+          <button class="close" (click)="onClose()">×</button>
+        </div>
+        <div class="modal-body">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </div>
+  `,
+  styleUrls: ['./modal.component.css']
+})
+export class ModalComponent {
+  @Input() title: string = '';
+  @Output() closed = new EventEmitter<void>();
+
+  onClose(): void {
+    this.closed.emit();
+  }
+}
+```
+
+---
+
+## Convenciones de Naming
+
+| Elemento | Patrón | Ejemplo |
+|:---|:---|:---|
+| **Componente** | `{name}.component.ts` | `user-card.component.ts` |
+| **Service** | `{domain}.service.ts` | `users.service.ts` |
+| **Guard** | `{domain}.guard.ts` | `jwt.guard.ts` |
+| **Pipe** | `{name}.pipe.ts` | `truncate.pipe.ts` |
+| **Directive** | `{name}.directive.ts` | `click-outside.directive.ts` |
+| **Model/Interface** | `{name}.model.ts` | `user.model.ts` |
+| **Routes** | `{feature}.routes.ts` | `users.routes.ts` |
+
+---
+
+## Best Practices Checklist
+
+```bash
+# ✅ 1. Structure
+[ ] Componentes standalone (no NgModules)
+[ ] Lazy loading en features
+[ ] Singletons en core/
+[ ] Sin business logic en shared/
+
+# ✅ 2. Services
+[ ] Un servicio por dominio
+[ ] Injectable con providedIn: 'root'
+[ ] No lógica en componentes
+
+# ✅ 3. Routing
+[ ] Routes tipadas
+[ ] Guards en rutas protegidas
+[ ] Lazy loading de features
+[ ] Redirect para 404
+
+# ✅ 4. Components
+[ ] Presentacionales (dumb) vs Contenedores (smart)
+[ ] Input/Output bien definidos
+[ ] OnPush change detection
+[ ] No suscripciones directas (AsyncPipe)
+
+# ✅ 5. Performance
+[ ] Code splitting automático
+[ ] Lazy loading de módulos
+[ ] OnPush detection
+[ ] trackBy en *ngFor
+```
+
+---
+
+**Fecha:** 30 de Enero de 2026
+**Status:** ✅ MODERN ANGULAR STRUCTURE
+**Responsable:** ArchitectZero AI Agent

@@ -1,0 +1,54 @@
+# Reglas del Master Workflow para el Motor RAG
+# Versión: 2.0
+# Objetivo: Definir las puertas de calidad (Quality Gates) que no se pueden saltar.
+
+workflow_config:
+  strict_mode: true
+  language: "es"
+
+phases:
+  - id: "10_context"
+    name: "Fase 1: Gobernanza e Identidad"
+    description: "Definición del propósito, roles y reglas del juego."
+    order: 1
+    required_artifacts:
+      - "00-ROOT/AGENTS.md"
+      - "00-ROOT/RULES.md"
+      - "10-CONTEXT/PROJECT_MANIFESTO.md"
+      - "10-CONTEXT/USER_JOURNEY_MAP.md"
+    validation_rules:
+      - "must_exist"
+      - "min_length_500_chars"
+
+  - id: "20_requirements"
+    name: "Fase 2: Especificación y Seguridad"
+    description: "Definición funcional y política de seguridad."
+    order: 2
+    depends_on: ["10_context"]
+    required_artifacts:
+      - "20-REQUIREMENTS/REQUIREMENTS_MASTER.md"
+      - "20-REQUIREMENTS/USER_STORIES_MASTER.json"
+      - "20-REQUIREMENTS/SECURITY_PRIVACY_POLICY.md"
+    validation_rules:
+      - "json_schema_valid"
+      - "security_check_passed"
+
+  - id: "30_architecture"
+    name: "Fase 3: Arquitectura Técnica"
+    description: "Selección de stack y diseño de sistemas."
+    order: 3
+    depends_on: ["20_requirements"]
+    required_artifacts:
+      - "30-ARCHITECTURE/TECH_STACK_DECISION.md"
+      - "30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
+      - "30-ARCHITECTURE/API_INTERFACE_CONTRACT.md"
+      - "30-ARCHITECTURE/SECURITY_THREAT_MODEL.md"
+
+  - id: "40_planning"
+    name: "Fase 4: Planificación y Calidad"
+    description: "Hoja de ruta y estrategia de testing."
+    order: 4
+    depends_on: ["30_architecture"]
+    required_artifacts:
+      - "40-PLANNING/ROADMAP_PHASES.md"
+      - "40-PLANNING/TESTING_STRATEGY.md"

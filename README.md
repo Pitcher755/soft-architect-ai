@@ -30,6 +30,8 @@
 - [Detailed Setup Guide](doc/02-SETUP_DEV/SETUP_GUIDE.en.md)
 - [Technology Stack](doc/02-SETUP_DEV/TOOLS_AND_STACK.en.md)
 - [Automation & DevOps](doc/02-SETUP_DEV/AUTOMATION.en.md)
+- **⭐ NEW:** [Knowledge Base Completion Report](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
+- **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
 
 #### 📖 Vision
 
@@ -70,6 +72,7 @@ For detailed setup, troubleshooting, and advanced configuration, see [Detailed S
     * **Privacy Mode:** Runs LLMs (Ollama) on your local network. Your data never leaves.
     * **Performance Mode:** Connects to Groq Cloud for ultra-fast inference on modest hardware.
 * **🏭 Context Factory:** Automatically generates technical documentation (`AGENTS.md`, `RULES.md`) so your Copilot works better.
+* **🤖 CI/CD Pipelines:** Intelligent GitHub Actions workflows for monorepo (auto-detect changes, run only relevant checks).
 
 #### 🛠️ Technology Stack
 
@@ -157,6 +160,7 @@ docker compose -f infrastructure/docker-compose.yml up -d
 - [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.es.md)
 - [Stack Tecnológico](doc/02-SETUP_DEV/TOOLS_AND_STACK.es.md)
 - [Automatización y DevOps](doc/02-SETUP_DEV/AUTOMATION.es.md)
+- **⭐ NUEVO:** [Reporte de Knowledge Base Completada](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Fases 0-6 (29 archivos, 934 líneas)
 
 #### 📖 Visión
 
@@ -197,6 +201,7 @@ Para configuración detallada, solución de problemas y opciones avanzadas, cons
     * **Modo Privacidad:** Ejecuta LLMs (Ollama) en tu red local. Tus datos nunca salen.
     * **Modo Rendimiento:** Conecta con Groq Cloud para inferencia ultrarrápida en hardware modesto.
 * **🏭 Fábrica de Contexto:** Genera automáticamente la documentación técnica (`AGENTS.md`, `RULES.md`) para que tu Copilot trabaje mejor.
+* **🤖 Pipelines CI/CD:** Workflows GitHub Actions inteligentes para monorepo (detecta cambios automáticamente, ejecuta solo checks relevantes).
 
 #### 🛠️ Stack Tecnológico
 
@@ -261,4 +266,3 @@ docker compose -f infrastructure/docker-compose.yml up -d
 ---
 
 **Master's Thesis Project - Master's Degree in Development with AI**
-

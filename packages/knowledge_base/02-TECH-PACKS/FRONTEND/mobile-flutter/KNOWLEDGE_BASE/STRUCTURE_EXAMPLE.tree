@@ -1,0 +1,232 @@
+# Directory Structure: SoftArchitect Flutter Frontend
+
+## Feature-First Architecture + Riverpod 2.0
+
+```
+lib/
+├── 📄 main.dart                    # ⭐ Entry Point (ProviderScope wrapper)
+│
+├── 📄 app.dart                     # MaterialApp config (Router, Theme, debug banner)
+│
+├── 📁 core/                        # 🧠 Shared & Global Configuration
+│   ├── __init.dart__
+│   ├── 📁 config/                  # Environment configuration
+│   │   ├── app_config.dart         # Env vars (API_URL, API_KEY, etc.)
+│   │   └── environment.dart        # Dev vs Prod configs
+│   │
+│   ├── 📁 theme/                   # Design System
+│   │   ├── app_theme.dart          # Global theme (light/dark)
+│   │   ├── colors.dart             # Color palette (const)
+│   │   ├── text_styles.dart        # Typography (font families, sizes)
+│   │   └── dimensions.dart         # Spacing, border radius (const)
+│   │
+│   ├── 📁 router/                  # Navigation (GoRouter)
+│   │   ├── app_router.dart         # GoRouter provider & route definitions
+│   │   └── routes.dart             # Route path constants
+│   │
+│   ├── 📁 utils/                   # Helper utilities
+│   │   ├── validators.dart         # Email, password validators
+│   │   ├── formatters.dart         # Date, currency formatters
+│   │   ├── logger.dart             # Debug logging (no print!)
+│   │   └── extensions.dart         # String, BuildContext extensions
+│   │
+│   └── 📁 exceptions/              # Domain exceptions
+│       ├── app_exception.dart      # Base exception class
+│       └── error_handler.dart      # Map API errors to app errors
+│
+├── 📁 features/                    # 🏗️ Vertical Feature Slices (Modular)
+│   │
+│   ├── 📁 auth/                    # Feature: Autenticación
+│   │   ├── 📁 data/                # Data Layer
+│   │   │   ├── datasources/
+│   │   │   │   ├── auth_remote_datasource.dart  # API calls
+│   │   │   │   └── auth_local_datasource.dart   # Local storage (token)
+│   │   │   ├── models/
+│   │   │   │   ├── user_model.dart              # JSON-serializable
+│   │   │   │   └── auth_response_model.dart
+│   │   │   └── repositories/
+│   │   │       └── auth_repository_impl.dart    # Implements IAuthRepository
+│   │   │
+│   │   ├── 📁 domain/              # Domain Layer (Pure, Agnóstico)
+│   │   │   ├── entities/
+│   │   │   │   ├── user_entity.dart             # @freezed
+│   │   │   │   └── auth_state_entity.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── auth_repository.dart         # Abstract interface
+│   │   │   └── usecases/
+│   │   │       ├── login_usecase.dart
+│   │   │       ├── logout_usecase.dart
+│   │   │       └── refresh_token_usecase.dart
+│   │   │
+│   │   └── 📁 presentation/        # Presentation Layer (UI + Logic)
+│   │       ├── controllers/
+│   │       │   ├── auth_controller.dart         # @riverpod (state management)
+│   │       │   ├── login_controller.dart
+│   │       │   └── session_controller.dart      # Global session provider
+│   │       ├── screens/
+│   │       │   ├── login_screen.dart            # ConsumerWidget
+│   │       │   ├── register_screen.dart
+│   │       │   ├── forgot_password_screen.dart
+│   │       │   └── splash_screen.dart
+│   │       └── widgets/
+│   │           ├── email_textfield.dart         # Reusable form fields
+│   │           ├── password_textfield.dart
+│   │           └── auth_error_dialog.dart
+│   │
+│   ├── 📁 documents/               # Feature: Documentos (RAG)
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   └── document_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   └── document_model.dart
+│   │   │   └── repositories/
+│   │   │       └── document_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── document_entity.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── document_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── upload_document_usecase.dart
+│   │   │       ├── query_document_usecase.dart
+│   │   │       └── list_documents_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   └── document_controller.dart
+│   │       ├── screens/
+│   │       │   ├── documents_list_screen.dart
+│   │       │   ├── document_detail_screen.dart
+│   │       │   └── upload_document_screen.dart
+│   │       └── widgets/
+│   │           ├── document_card.dart
+│   │           └── search_documents_field.dart
+│   │
+│   └── 📁 {{FEATURE}}/             # Nuevo feature (plantilla)
+│       ├── data/
+│       ├── domain/
+│       └── presentation/
+│
+├── 📁 shared/                      # 🌍 Global Reusable Widgets & Providers
+│   ├── 📁 widgets/                 # Componentes reutilizables globales
+│   │   ├── app_button.dart         # CustomButton (global)
+│   │   ├── app_text_field.dart     # CustomTextField (global)
+│   │   ├── app_dialog.dart         # CustomDialog template
+│   │   ├── error_widget.dart       # Error display (global)
+│   │   ├── loading_overlay.dart    # Loading spinner (global)
+│   │   └── empty_state_widget.dart # Empty state display (global)
+│   │
+│   ├── 📁 providers/               # Global Riverpod providers
+│   │   ├── http_client_provider.dart       # Dio HTTP client
+│   │   ├── shared_preferences_provider.dart # Local storage
+│   │   ├── connectivity_provider.dart      # Network status
+│   │   └── {{GLOBAL}}_provider.dart
+│   │
+│   └── 📁 constants/               # Global constants
+│       ├── app_constants.dart      # API timeouts, retry counts
+│       └── error_messages.dart     # Error strings (i18n ready)
+│
+├── 📁 test/                        # 🧪 Test Suite (mirrors src structure)
+│   ├── 📁 unit/                    # Unit tests (~70%)
+│   │   ├── domain/
+│   │   │   ├── usecases/
+│   │   │   │   └── test_login_usecase.dart
+│   │   │   └── entities/
+│   │   │       └── test_user_entity.dart
+│   │   ├── presentation/
+│   │   │   └── controllers/
+│   │   │       └── test_auth_controller.dart
+│   │   └── data/
+│   │       └── repositories/
+│   │           └── test_auth_repository_impl.dart
+│   │
+│   ├── 📁 integration/             # Integration tests (~20%)
+│   │   ├── auth_flow_test.dart     # Login → get profile flow
+│   │   └── document_upload_test.dart
+│   │
+│   └── 📁 widget_test/             # Widget tests (~10%)
+│       ├── screens/
+│       │   └── test_login_screen.dart
+│       └── widgets/
+│           └── test_app_button.dart
+│
+├── 📄 pubspec.yaml                 # Project metadata & dependencies
+├── 📄 pubspec.lock                 # Locked versions (COMMIT THIS!)
+├── 📄 analysis_options.yaml        # Linter config (very_good_analysis)
+├── 📄 .env.example                 # Environment variables template
+├── 📄 .gitignore                   # Exclude build/, .dart_tool/, .env
+├── 📄 README.md                    # Project documentation
+└── 📄 Dockerfile                   # Container image (for web/desktop releases)
+
+```
+
+---
+
+## 📋 Key Principles
+
+### 1. **Feature-First Organization**
+Each feature is self-contained:
+- `data/` - API calls, local storage, models (JSON-serializable)
+- `domain/` - Business logic, entities, use cases (pure Dart)
+- `presentation/` - UI, controllers (Riverpod), widgets
+
+**Benefit:** Scales infinitely. Each feature can be worked on independently.
+
+### 2. **Separation of Concerns (Clean Architecture)**
+- **Domain:** Pure Dart, no Flutter, no Riverpod
+- **Data:** Repositories implement domain interfaces
+- **Presentation:** UI consumes controllers, controllers use repositories
+
+### 3. **Immutability First**
+All entities and models use `@freezed` (auto-generated immutable classes).
+
+### 4. **Riverpod for State Management**
+- Providers for global state (auth, connectivity)
+- AsyncNotifier for async operations (loading/error/data)
+- ConsumerWidget to access providers
+
+### 5. **Null Safety**
+No `!` operator without 100% guarantee. Use `?` and `??`.
+
+---
+
+## 🚀 Generate Folder Structure (Bash)
+
+```bash
+# Create directory structure
+mkdir -p lib/{core/{config,theme,router,utils,exceptions},features/{auth/{data/{datasources,models,repositories},domain/{entities,repositories,usecases},presentation/{controllers,screens,widgets}},documents/{data/{datasources,models,repositories},domain/{entities,repositories,usecases},presentation/{controllers,screens,widgets}}},shared/{widgets,providers,constants}}
+
+# Create test structure
+mkdir -p test/{unit/{domain/{usecases,entities},data/repositories,presentation/controllers},integration,widget_test/{screens,widgets}}
+
+# Create __init__.dart files (optional, not required in Dart)
+find lib test -type d -exec touch {}/__init__.dart \; 2>/dev/null || true
+
+# Create essential files
+touch lib/main.dart lib/app.dart
+touch pubspec.yaml analysis_options.yaml .env.example .gitignore Dockerfile README.md
+```
+
+---
+
+## ✅ Validation Checklist
+
+Before committing code:
+
+- [ ] ✅ Feature-first architecture (no lib/models/, lib/screens/)
+- [ ] ✅ All classes are `@immutable` or `@freezed`
+- [ ] ✅ Tests mirror source structure
+- [ ] ✅ `flutter analyze` runs clean
+- [ ] ✅ `dart format lib/` applied
+- [ ] ✅ No `print()` calls (use logger)
+- [ ] ✅ Null-safe: no `!` without justification
+- [ ] ✅ Riverpod providers properly typed
+- [ ] ✅ Domain layer is pure Dart (no Flutter imports)
+- [ ] ✅ BuildContext validated after async operations
+
+---
+
+**Structure Version:** 1.0
+**Architecture:** Clean Architecture + Feature-First
+**State Management:** Riverpod 2.0
+**Last Updated:** 30/01/2026
+**Used By:** SoftArchitect AI (Dogfooding ✨)
