@@ -381,6 +381,57 @@ git commit -m "chore: regenerate poetry.lock after dependency changes"
 
 ---
 
+## 🔧 CORRECCIÓN ADICIONAL: Consistencia en Workflows
+
+### Problema Descubierto
+Después de resolver los problemas de Poetry en `lint.yml`, se descubrió que **otro workflow** (`backend-ci.yaml`) también usaba Poetry sin instalarlo, causando el mismo error "poetry: command not found" en el job de "Run Backend Unit Tests".
+
+### Análisis del Problema
+```bash
+# En backend-ci.yaml (PROBLEMÁTICO)
+- name: Run Backend Unit Tests
+  run: |
+    cd src/server
+    poetry run pytest tests/ -v --tb=short
+```
+
+**Problema:** El workflow `backend-ci.yaml` usaba `poetry run pytest` pero nunca instalaba Poetry, mientras que `lint.yml` sí lo hacía correctamente.
+
+### Solución Implementada
+**Archivo modificado:** `.github/workflows/backend-ci.yaml`
+
+**Cambio realizado:**
+```diff
+- name: Run Backend Unit Tests
+  run: |
+-   cd src/server
+-   poetry run pytest tests/ -v --tb=short
++   python -m pytest tests/ -v --tb=short
+  working-directory: src/server
+```
+
+**Razón:** Para mantener consistencia con el resto del workflow que usa `pip` en lugar de Poetry, se reemplazó el comando para usar `python -m pytest` directamente.
+
+### Validación de la Corrección
+```bash
+# Verificación de consistencia
+grep -r "poetry" .github/workflows/
+# Resultado: Solo lint.yml usa Poetry (correctamente instalado)
+# backend-ci.yaml ahora usa pip consistentemente
+```
+
+### Commit Documentado
+```
+49485a0 fix(backend-ci): replace poetry with python -m pytest for consistency
+├─ Remove poetry usage from backend-ci.yaml unit tests job
+├─ Use python -m pytest instead of poetry run pytest
+├─ Maintain consistency with other jobs that use pip instead of Poetry
+├─ Fixes: 'poetry: command not found' error in backend CI pipeline
+└─ Backend CI now uses pip consistently across all jobs
+```
+
+---
+
 **Documento preparado por:** ArchitectZero
 **Validado:** 31/01/2026
 **Referencia:** context/SECURITY_HARDENING_POLICY.es.md, doc/02-SETUP_DEV/SETUP_GUIDE.es.md
