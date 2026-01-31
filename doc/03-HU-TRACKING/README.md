@@ -2,8 +2,8 @@
 
 ## 🇬🇧 English
 
-> **Directory:** User Story tracking documentation  
-> **Structure:** `doc/03-HU-TRACKING/HU-{Sprint}-{Name}/`  
+> **Directory:** User Story tracking documentation
+> **Structure:** `doc/03-HU-TRACKING/HU-{Sprint}-{Name}/`
 > **Last Updated:** January 29, 2026
 
 ---
@@ -18,6 +18,14 @@
 |----|------|-------|--------|----------|------|
 | **HU-1.1** | Orchestration & Environment | DevOps | 🔄 IN PROGRESS | 14% | [→ Go](HU-1.1-DOCKER-SETUP/) |
 | HU-1.2 | Backend Skeleton (FastAPI) | Backend Lead | ⏳ PENDING | 0% | [→ Go](HU-1.2-BACKEND-SKELETON/) |
+
+### Sprint 0: Knowledge Base (Foundation)
+
+**Goal:** Populate knowledge base with Tech Packs and establish source of truth.
+
+| HU | Name | Owner | Status | Progress | Docs |
+|----|------|-------|--------|----------|------|
+| **HU-2.0** | Knowledge Base Population | Architect | ✅ COMPLETED | 100% | [→ Go](HU-2.0-KNOWLEDGE-BASE-POPULATION/) |
 
 ### Sprint 2: RAG Brain (Knowledge Injection)
 
@@ -63,13 +71,13 @@ HU-1.1-DOCKER-SETUP/
 
 ### Quick Access
 
-- **Track HU-1.1 progress:**  
+- **Track HU-1.1 progress:**
   → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/PROGRESS.md`
 
-- **See HU-1.1 artifacts:**  
+- **See HU-1.1 artifacts:**
   → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/ARTIFACTS.md`
 
-- **Detailed phases:**  
+- **Detailed phases:**
   → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/WORKFLOW.md` (if available)
 
 ---
@@ -156,15 +164,15 @@ Phase 6 (Git):    ░░░░░░░░░░░░░░░░░░░░�
 
 ---
 
-**Last Updated:** January 29, 2026  
+**Last Updated:** January 29, 2026
 **Owner:** ArchitectZero (Lead Software Architect)
 
 ---
 
 ## 🇪🇸 Español
 
-> **Directorio:** Documentación de seguimiento por User Story (HU)  
-> **Estructura:** `doc/03-HU-TRACKING/HU-{Sprint}-{Name}/`  
+> **Directorio:** Documentación de seguimiento por User Story (HU)
+> **Estructura:** `doc/03-HU-TRACKING/HU-{Sprint}-{Name}/`
 > **Última Actualización:** 29 de Enero de 2026
 
 ---
@@ -224,13 +232,13 @@ HU-1.1-DOCKER-SETUP/
 
 ### Acceso Rápido
 
-- **Quiero ver el progreso de HU-1.1:**  
+- **Quiero ver el progreso de HU-1.1:**
   → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/PROGRESS.md`
 
-- **Quiero saber qué archivos genera HU-1.1:**  
+- **Quiero saber qué archivos genera HU-1.1:**
   → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/ARTIFACTS.md`
 
-- **Quiero las fases detalladas:**  
+- **Quiero las fases detalladas:**
   → `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/WORKFLOW.md` (si existe)
 
 ---
@@ -317,5 +325,5 @@ Fase 6 (Git):    ░░░░░░░░░░░░░░░░░░░░░
 
 ---
 
-**Última Actualización:** 29 de Enero de 2026  
+**Última Actualización:** 29 de Enero de 2026
 **Responsable:** ArchitectZero (Lead Software Architect)

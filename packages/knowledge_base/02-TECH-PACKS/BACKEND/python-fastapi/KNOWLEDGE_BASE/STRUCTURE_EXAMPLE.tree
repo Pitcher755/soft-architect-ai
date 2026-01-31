@@ -1,0 +1,210 @@
+# Directory Structure: SoftArchitect Python FastAPI Backend
+
+## Clean Architecture + ASGI Best Practices
+
+```
+src/
+├── 📄 main.py                       # ⭐ Entry Point (App initialization & config)
+│
+├── 📁 core/                         # ⚙️ Global Configuration & Utilities
+│   ├── __init__.py
+│   ├── config.py                    # Pydantic Settings (Env vars, DB URL, Secrets)
+│   ├── exceptions.py                # Custom Domain Exceptions (DomainError, ValidationError)
+│   ├── logger.py                    # Structured logging setup
+│   └── security.py                  # Auth logic (JWT tokens, password hashing)
+│
+├── 📁 api/                          # 🎨 Presentation Layer (HTTP/REST Interface)
+│   ├── __init__.py
+│   ├── dependencies.py              # Reusable endpoint dependencies (CurrentUser, AuthService)
+│   └── 📁 v1/                       # API versioning
+│       ├── __init__.py
+│       ├── router.py                # Main router aggregator (combines all endpoints)
+│       └── 📁 endpoints/            # Endpoint definitions per domain
+│           ├── __init__.py
+│           ├── auth.py              # POST /auth/login, /auth/register
+│           ├── users.py             # GET/POST /users, /users/{id}
+│           ├── documents.py         # GET /documents (for RAG)
+│           └── {{DOMAIN}}.py        # Feature-specific endpoints
+│
+├── 📁 domain/                       # 🧠 Business Logic (Completely Framework-Agnostic)
+│   ├── __init__.py
+│   ├── 📁 models/                   # Database Models (SQLAlchemy/SQLModel)
+│   │   ├── __init__.py
+│   │   ├── user.py                  # class User(Base): id, email, password_hash, created_at
+│   │   ├── document.py              # class Document(Base): id, title, content, embedding
+│   │   └── {{ENTITY}}.py
+│   │
+│   ├── 📁 schemas/                  # Pydantic Models (Request/Response DTOs)
+│   │   ├── __init__.py
+│   │   ├── user.py                  # UserCreateRequest, UserResponse, UserUpdateRequest
+│   │   ├── document.py              # DocumentCreateRequest, DocumentResponse
+│   │   └── {{SCHEMA}}.py
+│   │
+│   ├── 📁 services/                 # Use Cases / Business Logic (Pure functions)
+│   │   ├── __init__.py
+│   │   ├── user_service.py          # create_user(), get_user(), authenticate()
+│   │   ├── auth_service.py          # verify_jwt(), generate_token()
+│   │   ├── document_service.py      # index_document(), search_documents()
+│   │   └── {{SERVICE}}.py
+│   │
+│   └── 📁 exceptions/               # Domain-specific exceptions
+│       ├── __init__.py
+│       ├── user_exceptions.py       # UserNotFoundError, InvalidCredentialsError
+│       ├── document_exceptions.py   # DocumentNotFoundError
+│       └── {{DOMAIN}}_exceptions.py
+│
+├── 📁 infrastructure/               # 🔌 Technical Implementation (Adapters & External Systems)
+│   ├── __init__.py
+│   ├── database.py                  # SQLAlchemy Engine, SessionLocal, Base class
+│   │
+│   ├── 📁 repositories/             # Data Access Layer (DAL) - implements Repository pattern
+│   │   ├── __init__.py
+│   │   ├── base_repository.py       # Generic CRUD operations
+│   │   ├── user_repository.py       # class UserRepository(BaseRepository): get_by_email(), etc
+│   │   ├── document_repository.py   # class DocumentRepository: search(), index()
+│   │   └── {{ENTITY}}_repository.py
+│   │
+│   ├── 📁 external/                 # External API Integrations
+│   │   ├── __init__.py
+│   │   ├── ollama_client.py         # Communicate with Ollama local LLM
+│   │   ├── chroma_client.py         # Vector DB integration
+│   │   └── {{SERVICE}}_client.py
+│   │
+│   └── 📁 cache/                    # Caching layer (Redis, in-memory)
+│       ├── __init__.py
+│       └── cache_provider.py        # Abstract cache interface + implementations
+│
+├── 📁 tests/                        # 🧪 Test Suite (Mirrors src structure)
+│   ├── __init__.py
+│   ├── conftest.py                  # Pytest fixtures (db_session, app_client, test_user)
+│   │
+│   ├── 📁 unit/                     # Unit Tests (~70% coverage)
+│   │   ├── __init__.py
+│   │   ├── domain/
+│   │   │   ├── test_user_service.py
+│   │   │   ├── test_auth_service.py
+│   │   │   └── test_{{SERVICE}}.py
+│   │   ├── infrastructure/
+│   │   │   ├── test_user_repository.py
+│   │   │   └── test_{{REPOSITORY}}.py
+│   │   └── api/
+│   │       └── test_endpoint_handlers.py
+│   │
+│   ├── 📁 integration/              # Integration Tests (~20% coverage)
+│   │   ├── __init__.py
+│   │   ├── test_user_flow.py        # Create user → login → get profile
+│   │   ├── test_document_flow.py    # Upload document → index → search
+│   │   └── test_{{FLOW}}.py
+│   │
+│   └── 📁 e2e/                      # End-to-End Tests (~10% coverage, slow)
+│       ├── __init__.py
+│       └── test_full_rag_flow.py    # Index doc → Query → Get response
+│
+├── 📁 migrations/                   # Alembic database migrations
+│   ├── versions/
+│   │   ├── 001_initial_schema.py
+│   │   └── {{VERSION}}_{{MIGRATION}}.py
+│   ├── env.py
+│   └── script.py.mako
+│
+├── 📁 scripts/                      # Utility scripts
+│   ├── seed_db.py                   # Populate database with test data
+│   ├── migrate.py                   # Run Alembic migrations
+│   └── {{UTILITY}}.py
+│
+├── 📄 pyproject.toml                # Project metadata & dependencies (Poetry)
+├── 📄 poetry.lock                   # Locked versions (COMMIT THIS!)
+├── 📄 pyrightconfig.json            # Type checker config (strict mode)
+├── 📄 .env.example                  # Environment variables template
+├── 📄 .gitignore                    # Exclude .env, __pycache__, .pytest_cache
+├── 📄 README.md                     # Project documentation
+└── 📄 Dockerfile                    # Container image definition
+
+```
+
+---
+
+## 📋 Key Principles
+
+### 1. **Strict Separation of Concerns**
+Each layer has a single responsibility:
+- **Domain:** Business logic (independent of framework/DB/HTTP)
+- **Infrastructure:** Technical details (DB, caching, external APIs)
+- **API:** HTTP request/response handling
+
+### 2. **Dependency Rule (Clean Arch Core)**
+Inner layers (Domain) must NEVER depend on outer layers (API, Infrastructure).
+
+```python
+# ✅ GOOD: Domain depends on nothing
+class UserService:
+    def __init__(self, repository):  # Injected, not imported from infrastructure
+        self.repository = repository
+
+# ❌ BAD: Domain depends on infrastructure
+from infrastructure.repositories import UserRepository  # VIOLATION!
+class UserService:
+    def __init__(self):
+        self.repository = UserRepository()
+```
+
+### 3. **Testability First**
+- Domain services testable without mocks
+- Repositories mockable for service tests
+- Full integration tests with test database
+
+### 4. **Async-Aware**
+- `async def` for I/O-bound operations (DB, HTTP)
+- `def` for pure logic and CPU-bound work
+- Use `asyncio` utilities for concurrency
+
+### 5. **Type Safety (Mandatory)**
+- All functions: explicit type hints
+- All models: Pydantic validation
+- Type checker: `pyright --strict` (no errors allowed)
+
+---
+
+## 🚀 Generate Folders (Bash)
+
+```bash
+# Create directory structure
+mkdir -p src/{core,api/v1/endpoints,domain/{models,schemas,services,exceptions},infrastructure/{repositories,external,cache},tests/{unit/{domain,infrastructure,api},integration,e2e},migrations/versions,scripts}
+
+# Create __init__.py files
+find src tests -type d -exec touch {}/__init__.py \;
+
+# Create example files
+touch src/main.py
+touch src/core/{config,exceptions,logger,security}.py
+touch src/domain/services/user_service.py
+touch src/infrastructure/repositories/user_repository.py
+touch tests/conftest.py
+
+# Create root config files
+touch pyproject.toml pyrightconfig.json .env.example .gitignore Dockerfile README.md
+```
+
+---
+
+## ✅ Validation Checklist
+
+Before committing code, verify:
+
+- [ ] ✅ No mixed concerns (domain code NOT in api/, etc)
+- [ ] ✅ All directories have `__init__.py`
+- [ ] ✅ Tests mirror src structure
+- [ ] ✅ Documentation exists (README, SETUP guides)
+- [ ] ✅ `.env.example` has all required variables
+- [ ] ✅ `.gitignore` excludes `.env`, `__pycache__`, `.pytest_cache`
+- [ ] ✅ Type hints: `pyright --strict` runs clean
+- [ ] ✅ Lint: `ruff check --fix` passes
+- [ ] ✅ All tests green: `pytest tests/`
+- [ ] ✅ No `print()` calls in src/ (use logging)
+
+---
+
+**Structure Version:** 1.0
+**Framework:** FastAPI + SQLAlchemy 2.0
+**Last Updated:** 30/01/2026
+**Used By:** SoftArchitect AI (Dogfooding ✨)
