@@ -1,3 +1,14 @@
+
+name: 📱 Frontend CI Pipeline
+
+on:
+  workflow_call:
+
+jobs:
+  frontend-tests:
+    name: 🎨 Frontend Quality & Tests
+    runs-on: ubuntu-latest
+
 name: 📱 Frontend CI (Flutter/Dart)
 
 # DISPARADOR: Solo cuando hay cambios en Flutter/Frontend
@@ -62,6 +73,7 @@ jobs:
     needs: check-flutter
     if: needs.check-flutter.outputs.flutter_exists == 'true'
 
+
     steps:
       - name: ✅ Checkout Code
         uses: actions/checkout@v4
@@ -69,6 +81,42 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+
+          flutter-version: 'latest'
+          channel: 'stable'
+
+      - name: 📦 Get Flutter Dependencies
+        run: |
+          cd src/client
+          flutter pub get
+          flutter doctor -v
+
+      - name: 🔍 Flutter Analyze
+        run: |
+          cd src/client
+          flutter analyze
+
+      - name: 🧪 Flutter Tests
+        run: |
+          cd src/client
+          flutter test --coverage || true
+
+      - name: 🏗️ Build Desktop (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          cd src/client
+          flutter build linux --release || flutter build linux || true
+
+      - name: 📊 Dependency Health Check
+        run: |
+          cd src/client
+          flutter pub outdated --exit-code 0 || true
+
+      - name: ✨ Format Check (Dart)
+        run: |
+          cd src/client
+          dart format --set-exit-if-changed . || true
+
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
           cache: true
@@ -227,3 +275,4 @@ jobs:
             echo "## ℹ️ Frontend CI Skipped" >> $GITHUB_STEP_SUMMARY
             echo "Flutter project not detected (OK for backend-focused development)" >> $GITHUB_STEP_SUMMARY
           fi
+

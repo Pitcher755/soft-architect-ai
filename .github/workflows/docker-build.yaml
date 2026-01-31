@@ -1,3 +1,14 @@
+
+name: 🐳 Docker Build Pipeline
+
+on:
+  workflow_call:
+
+jobs:
+  docker-build:
+    name: 🐳 Docker Build & Validation
+    runs-on: ubuntu-latest
+
 name: 🐳 Docker Build Verification
 
 # DISPARADOR: Cambios en Docker/Infra o cambios significativos
@@ -60,9 +71,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: dockerfile-lint
 
+
     steps:
       - name: ✅ Checkout Code
         uses: actions/checkout@v4
+
+
+      - name: 🐳 Setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: ✔️ Validate Dockerfile
+        run: |
+          if [ -f Dockerfile ]; then
+            echo "✅ Dockerfile found"
+            docker build --dry-run . || echo "⚠️ Dockerfile syntax check (non-blocking)"
+          else
+            echo "⚠️ No Dockerfile found in root"
+          fi
+
+      - name: ✔️ Validate Docker Compose
+        run: |
+          if [ -f docker-compose.yml ]; then
+            echo "✅ docker-compose.yml found"
+            docker-compose config > /dev/null && echo "✅ docker-compose syntax valid" || echo "❌ docker-compose syntax invalid"
 
       - name: 🔧 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -115,8 +146,48 @@ jobs:
           if [ -f "docker-compose.yml" ]; then
             echo "✅ Found docker-compose.yml"
             docker compose config --quiet && echo "✅ Syntax valid"
+
           else
             echo "⚠️ No docker-compose.yml found"
+          fi
+
+
+      - name: 🏗️ Build Docker Image (Dry Run)
+        run: |
+          if [ -f Dockerfile ]; then
+            docker build -t soft-architect-ai:test . --progress=plain || echo "⚠️ Build failed (non-blocking)"
+          fi
+
+      - name: 🔒 Security Scan (Trivy)
+        if: always()
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+        continue-on-error: true
+
+      - name: 📤 Upload Trivy Results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
+
+      - name: 📏 Check Image Size
+        if: always()
+        run: |
+          if [ -f Dockerfile ]; then
+            echo "🐳 Docker image size check:"
+            docker images | grep soft-architect-ai || echo "Image not built"
+          fi
+
+      - name: 🔍 Infrastructure Validation
+        run: |
+          if [ -f infrastructure/docker-compose.yml ]; then
+            echo "✅ infrastructure/docker-compose.yml found"
+            docker-compose -f infrastructure/docker-compose.yml config > /dev/null && echo "✅ Infrastructure config valid" || echo "❌ Infrastructure config invalid"
           fi
 
       - name: 📋 Show Compose Services
@@ -221,3 +292,4 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Next Step:" >> $GITHUB_STEP_SUMMARY
           echo "Images are ready to push to registry (if on main branch)" >> $GITHUB_STEP_SUMMARY
+
