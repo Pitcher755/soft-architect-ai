@@ -13,6 +13,12 @@ concurrency:
   group: ci-master-${{ github.ref }}
   cancel-in-progress: true
 
+# 👇 AÑADE ESTO
+permissions:
+  pull-requests: write  # Necesario para comentar en la PR
+  contents: read        # Necesario para leer el código
+# 👆 FIN DEL AÑADIDO
+
 jobs:
   # ═══════════════════════════════════════════════════════════════════
   # ORQUESTADOR: Detecta qué cambió y corre solo lo relevante
