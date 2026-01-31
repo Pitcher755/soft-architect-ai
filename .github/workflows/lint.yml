@@ -3,7 +3,7 @@ name: Code Quality & English Compliance
 # Run on every push to main/develop and all PRs
 on:
   push:
-    branches: [main, develop, feature/backend-skeleton]
+    branches: [main, develop, feature/backend-skeleton, feature/rag-vectorization]
     paths:
       - 'src/**'
       - '.github/workflows/lint.yml'
