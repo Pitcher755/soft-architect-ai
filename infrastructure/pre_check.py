@@ -3,6 +3,7 @@
 Pre-flight checks: Validates that HOST environment is ready.
 Execute BEFORE docker compose up.
 """
+
 import socket
 import subprocess
 import sys

@@ -137,6 +137,10 @@ doc/
 |---------|-------------|--------|------------|
 | HU-1.1 | Docker Infrastructure Setup | ✅ Completado | README, PROGRESS, ARTIFACTS |
 | HU-1.2 ⭐ COMPLETED | Backend Skeleton (FastAPI) | ✅ Completado | README (bilingüe), WORKFLOW, PROGRESS, ARTIFACTS |
+| HU-2.1 ⭐ COMPLETED | RAG Ingestion Loader | ✅ Completado | README (bilingüe), PROGRESS, ARTIFACTS |
+| HU-2.2 | RAG Vectorization | ❌ Pendiente | README, PROGRESS, ARTIFACTS |
+| HU-3.1 | Flutter Chat UI | ❌ Pendiente | README, PROGRESS, ARTIFACTS |
+| HU-3.2 | Streaming API Connection | ❌ Pendiente | README, PROGRESS, ARTIFACTS |
 
 ### 🧠 Knowledge Base (Fases 0-6 + FASE 3 Constitutional) ⭐ COMPLETED
 

@@ -3,6 +3,7 @@
 Post-deployment check: Validates that all services responded.
 Execute AFTER docker compose up.
 """
+
 import socket
 import sys
 import time
