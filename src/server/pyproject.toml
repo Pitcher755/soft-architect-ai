@@ -9,7 +9,13 @@ description = "Privacy-first AI assistant for software architecture guidance"
 authors = ["SoftArchitect AI Team <team@softarchitect.local>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "app"}]
+packages = [
+    {include = "services"},
+    {include = "core"},
+    {include = "api"},
+    {include = "domain"},
+    {include = "utils"},
+]
 
 [tool.mypy]
 # MyPy configuration for strict type checking
@@ -55,7 +61,7 @@ exclude = '''
 profile = "black"
 line_length = 120
 skip_glob = ["*/migrations/*"]
-known_first_party = ["app"]
+known_first_party = ["services", "core", "api", "domain", "utils"]
 
 [tool.pytest.ini_options]
 # Pytest configuration
@@ -65,9 +71,14 @@ addopts = [
     "-q",
     "--strict-markers",
     "--strict-config",
-    "--cov=app",
+    "--cov=services",
+    "--cov=core",
+    "--cov=api",
+    "--cov=domain",
+    "--cov=utils",
     "--cov-report=term-missing",
     "--cov-report=html",
+    "--cov-report=xml",
     "--cov-fail-under=80",
 ]
 testpaths = ["tests"]
@@ -117,7 +128,7 @@ line-ending = "auto"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"]  # Allow assert in tests
-"app/tests/**/*.py" = ["S101"]  # Allow assert in tests under app/tests
+"src/server/tests/**/*.py" = ["S101"]  # Allow assert in tests under src/server/tests
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10  # Complejidad ciclomática máxima
