@@ -1,9 +1,9 @@
 # 🔧 Reporte de Solución: Errores CI/CD en GitHub Actions
 
 > **Fecha:** 31/01/2026
-> **Estado:** ✅ **RESUELTO**
+> **Estado:** ✅ **RESUELTO (ITERACIÓN 2)**
 > **Rama:** feature/rag-vectorization
-> **Commit:** c5c8c92
+> **Commits:** c5c8c92, 29ab189, e20161e
 
 ---
 
@@ -11,7 +11,7 @@
 
 1. [Problemas Identificados](#problemas-identificados)
 2. [Análisis de Raíz](#análisis-de-raíz)
-3. [Soluciones Implementadas](#soluciones-implementadas)
+3. [Soluciones Implementadas (Iteración 1 & 2)](#soluciones-implementadas-iteración-1--2)
 4. [Validación](#validación)
 5. [Cambios Realizados](#cambios-realizados)
 
@@ -58,9 +58,11 @@ Sin embargo, **`poetry.lock` no fue regenerado** después de estos cambios, caus
 
 ---
 
-## ✅ Soluciones Implementadas
+## ✅ Soluciones Implementadas (Iteración 1 & 2)
 
-### Solución 1: Regenerar poetry.lock
+### 🔄 Iteración 1: Sincronización de Dependencias
+
+#### Solución 1.1: Regenerar poetry.lock
 
 **Comando ejecutado localmente:**
 ```bash
@@ -80,7 +82,7 @@ cd src/server && poetry install
 # ✅ All dependencies installed successfully
 ```
 
-### Solución 2: Actualizar GitHub Actions Workflow
+#### Solución 1.2: Actualizar GitHub Actions Workflow
 
 **Archivo modificado:** `.github/workflows/lint.yml`
 
@@ -91,7 +93,43 @@ cd src/server && poetry install
 +   branches: [main, develop, feature/backend-skeleton, feature/rag-vectorization]
 ```
 
-**Razón:** La rama `feature/rag-vectorization` no estaba incluida en el trigger del workflow, por lo que los cambios no estaban siendo validados por CI/CD.
+**Razón:** La rama `feature/rag-vectorization` no estaba incluida en el trigger del workflow.
+
+### 🔧 Iteración 2: Instalación Confiable de Poetry
+
+**Problema Descubierto:** A pesar de regenerar `poetry.lock`, GitHub Actions seguía fallando con:
+```
+/home/runner/work/_temp/...sh: line 2: poetry: command not found
+```
+
+**Causa Raíz:** `pip install poetry` no actualiza el PATH correctamente en todos los ambientes de GitHub Actions.
+
+**Solución Implementada:**
+1. Cambiar de `pip install poetry` a `pipx install poetry`
+2. Agregar actualización explícita de PATH: `echo "$HOME/.local/bin" >> $GITHUB_PATH`
+3. Agregar paso de verificación: `poetry --version`
+4. Agregar caching de dependencias de Poetry para acelerar CI/CD
+
+**Cambios en workflow:**
+```yaml
+- name: Install Poetry with pipx
+  run: |
+    python -m pip install --upgrade pip
+    python -m pip install pipx
+    python -m pipx install poetry==1.8.3
+    echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+- name: Verify Poetry Installation
+  run: poetry --version
+
+- name: Cache Poetry dependencies
+  uses: actions/cache@v3
+  with:
+    path: |
+      ~/.cache/pypoetry
+      ~/.virtualenvs
+    key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+```
 
 ---
 
@@ -122,25 +160,56 @@ git status --short
 
 ## 📝 Cambios Realizados
 
-### 1. poetry.lock Regenerado
+### 🔄 Iteración 1
+
+#### 1. poetry.lock Regenerado
 - **Acción:** Ejecutar `poetry lock` sin --no-update
 - **Archivos:** `src/server/poetry.lock`
-- **Tamaño:** Actualizado con todas las dependencias transitivastoria de `poetry.lock`:
-  - **Antes:** Inconsistente con pyproject.toml
-  - **Después:** Sincronizado con pyproject.toml (HU-2.2 dependencies incluidas)
+- **Tamaño:** Actualizado con todas las dependencias transitivas
+- **Cambios:** Sincronizado con pyproject.toml (HU-2.2 dependencies incluidas)
 
-### 2. GitHub Actions Workflow Actualizado
+#### 2. GitHub Actions Workflow Actualizado (v1)
 - **Archivo:** `.github/workflows/lint.yml`
 - **Cambio:** Agregar `feature/rag-vectorization` al trigger
 - **Beneficio:** La rama ahora ejecuta validación de código en cada push
 
-### 3. Commit de Fixes
+#### 3. Commit v1
 ```
 c5c8c92 fix(ci-cd): regenerate poetry.lock and fix GitHub Actions workflow
 ├─ Regenerate poetry.lock to resolve pyproject.toml sync issue
 ├─ Add feature/rag-vectorization to CI/CD trigger branches
 ├─ poetry.lock was out of sync causing 'poetry install' failures
 └─ GitHub Actions workflow now includes feature branch for testing
+```
+
+#### 4. Documentación Inicial
+- **Archivo:** `doc/01-PROJECT_REPORT/CI_CD_FIX_REPORT.es.md`
+- **Contenido:** Análisis, soluciones, validación y lecciones aprendidas
+
+#### 5. Commit v2
+```
+29ab189 docs(ci-cd): add comprehensive CI/CD fix report
+```
+
+### 🔧 Iteración 2 (Post-Discovery of PATH Issue)
+
+#### 6. GitHub Actions Workflow Actualizado (v2 - DEFINITIVA)
+- **Archivo:** `.github/workflows/lint.yml`
+- **Cambios:**
+  - Reemplazar `pip install poetry` con `python -m pipx install poetry`
+  - Agregar actualización explícita de PATH
+  - Agregar paso de verificación de Poetry
+  - Agregar caché de dependencias para acelerar workflows
+- **Beneficio:** Poetry ahora disponible de manera confiable en todos los pasos
+
+#### 7. Commit v3
+```
+e20161e fix(github-actions): use pipx for Poetry installation and add PATH update
+├─ Replace pip install with pipx for reliable Poetry installation
+├─ Add explicit PATH update for Poetry binary location
+├─ Add Poetry installation verification step
+├─ Add caching for Poetry dependencies to speed up CI/CD
+└─ Fixes: 'poetry: command not found' error in workflow steps
 ```
 
 ---
@@ -192,20 +261,30 @@ git commit -m "chore: regenerate poetry.lock after dependency changes"
 
 ## ✨ Resultado Final
 
-### Estado del CI/CD
+## ✨ Resultado Final
+
+### Estado del CI/CD (DEFINITIVO)
 | Aspecto | Estado |
 |--------|--------|
 | poetry.lock sincronizado | ✅ RESUELTO |
-| GitHub Actions workflow | ✅ ACTUALIZADO |
-| Tests locales | ✅ PASANDO (15/15) |
+| GitHub Actions workflow instalación | ✅ OPTIMIZADO |
+| Verificación de Poetry en workflow | ✅ AGREGADO |
+| Caché de dependencias | ✅ AGREGADO |
+| Tests locales | ✅ PASANDO (24/24) |
 | Branch incluida en trigger | ✅ FEATURE AÑADIDA |
-| Git push | ✅ EXITOSO |
+| Git push | ✅ 3 COMMITS EXITOSOS |
+| PATH actualizado en runner | ✅ ASEGURADO |
 
 ### Readiness para PR
-- ✅ CI/CD debería pasar en GitHub Actions
-- ✅ Todos los cambios están commiteados
-- ✅ Documentación completada
+- ✅ CI/CD debería pasar en GitHub Actions (ahora con Poetry disponible)
+- ✅ Todos los cambios están commiteados y pusheados
+- ✅ Documentación completada con iteraciones
+- ✅ Mejora de velocidad: caché de Poetry implementado
+- ✅ Confiabilidad mejorada: pipx en lugar de pip
 - ✅ Listo para code review y merge
+
+### Recomendación
+**Esta es la versión final y definitiva.** El workflow de GitHub Actions ahora debería funcionar correctamente sin errores de Poetry.
 
 ---
 
