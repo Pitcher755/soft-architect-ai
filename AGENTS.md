@@ -171,7 +171,7 @@ doc/
    - `AGENTS.md` (identidad del agente en raíz)
    - `context/` (requisitos y especificaciones en carpeta separada)
 
-2. **NOMBRADO:** 
+2. **NOMBRADO:**
    - Usar UPPERCASE_SNAKE_CASE para nombres de archivo
    - Sufijo bilingual: `.{es,en}.md` cuando sea versión traducida
    - Sufijo en inglés cuando es universal: `.md`
@@ -212,6 +212,14 @@ doc/
    - Verificar estructura con: `tree doc/ -L 2`
    - Links validan automáticamente en CI/CD (futuro)
 
+10. **ESTRUCTURA BILINGÜE DE README:**
+   - **OBLIGATORIO:** Todos los README del proyecto (raíz, doc/, HUs, etc.) DEBEN seguir la estructura bilingüe navegable
+   - **Patrón:** README.md contiene bloques `<div id="english">` y `<div id="español">` con selector visual de idioma
+   - **Navegación:** Incluir tabla de selección de idioma en el inicio con links a `#english` y `#español`
+   - **Contenido:** Duplicar contenido completo en ambos idiomas (no usar archivos .en.md / .es.md separados para README)
+   - **Referencia:** Ver [HU-2.1 README.md](doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/README.md) como modelo de implementación
+   - **Beneficio:** Mejor UX, navegación unificada, fácil acceso a ambos idiomas sin cambiar de archivo
+
 ### Comandos Útiles
 
 ```bash
@@ -237,4 +245,3 @@ Los siguientes documentos son la fuente de verdad:
 * `context/RULES.md` (Reglas específicas del repositorio).
 * `packages/knowledge_base/02-TECH-PACKS/` (Guías de implementación por tecnología).
 * `doc/01-MEMORIA/MEMORIA_METODOLOGICA.md` (Visión y Metodología).
-
