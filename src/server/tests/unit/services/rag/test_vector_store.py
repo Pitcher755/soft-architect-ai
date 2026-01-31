@@ -65,7 +65,9 @@ class TestVectorStoreServiceInitialization:
         from services.rag.vector_store import VectorStoreService
 
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = (
+            1500  # heartbeat returns milliseconds (int)
+        )
         mock_chroma.HttpClient.return_value = mock_client
 
         service = VectorStoreService(host="localhost", port=8000)
@@ -109,7 +111,7 @@ class TestDocumentIngestion:
     def test_ingest_empty_list(self, mock_chroma):
         """✅ Should return 0 for empty document list (graceful degradation)."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
         mock_client.get_or_create_collection.return_value = mock_collection
         mock_chroma.HttpClient.return_value = mock_client
@@ -126,7 +128,7 @@ class TestDocumentIngestion:
     def test_ingest_single_document(self, mock_chroma, sample_documents):
         """✅ Should ingest single document with correct ID and metadata."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
         mock_client.get_or_create_collection.return_value = mock_collection
         mock_chroma.HttpClient.return_value = mock_client
@@ -152,7 +154,7 @@ class TestDocumentIngestion:
     def test_ingest_multiple_documents(self, mock_chroma, sample_documents):
         """✅ Should ingest multiple documents in batch."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
         mock_client.get_or_create_collection.return_value = mock_collection
         mock_chroma.HttpClient.return_value = mock_client
@@ -177,7 +179,7 @@ class TestDocumentIngestion:
     def test_metadata_cleaning(self, mock_chroma):
         """✅ Should clean metadata (only str/int/float/bool for Chroma)."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
         mock_client.get_or_create_collection.return_value = mock_collection
         mock_chroma.HttpClient.return_value = mock_client
@@ -210,7 +212,7 @@ class TestDocumentIngestion:
     def test_deterministic_id_generation(self, mock_chroma, sample_documents):
         """✅ Should generate same ID for same document (idempotency)."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
         mock_client.get_or_create_collection.return_value = mock_collection
         mock_chroma.HttpClient.return_value = mock_client
@@ -244,7 +246,7 @@ class TestIdempotency:
     def test_upsert_twice_no_duplicates(self, mock_chroma, sample_documents):
         """✅ Should not duplicate documents when run twice."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
         mock_client.get_or_create_collection.return_value = mock_collection
         mock_chroma.HttpClient.return_value = mock_client
@@ -270,7 +272,7 @@ class TestErrorHandling:
     def test_ingestion_database_error(self, mock_chroma):
         """❌ Should raise VectorStoreError if upsert fails."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
         mock_collection.upsert.side_effect = Exception("Database write failed")
         mock_client.get_or_create_collection.return_value = mock_collection
@@ -304,7 +306,7 @@ class TestQueryFunctionality:
     def test_query_basic(self, mock_chroma):
         """✅ Should query collection and return results."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
 
         mock_collection.query.return_value = {
@@ -329,7 +331,7 @@ class TestQueryFunctionality:
     def test_query_returns_metadatas(self, mock_chroma):
         """✅ Should include metadata in query results."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_collection = MagicMock()
 
         mock_collection.query.return_value = {
@@ -358,7 +360,7 @@ class TestHealthCheck:
     def test_health_check_success(self, mock_chroma):
         """✅ Should return True when ChromaDB is healthy."""
         mock_client = MagicMock()
-        mock_client.heartbeat.return_value = {"ok": True}
+        mock_client.heartbeat.return_value = 1500
         mock_chroma.HttpClient.return_value = mock_client
 
         from services.rag.vector_store import VectorStoreService
@@ -374,7 +376,7 @@ class TestHealthCheck:
         mock_client = MagicMock()
         # First heartbeat (during init) succeeds, second (in health_check) fails
         mock_client.heartbeat.side_effect = [
-            {"ok": True},  # Init success
+            1500,  # Init success (milliseconds)
             Exception("Heartbeat failed"),  # health_check failure
         ]
         mock_chroma.HttpClient.return_value = mock_client

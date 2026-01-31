@@ -25,6 +25,7 @@ Local-First Privacy Notice:
 """
 
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,35 +46,8 @@ logger = logging.getLogger(__name__)
 
 
 # ═══════════════════════════════════════════════════════════════
-# FastAPI App Creation
+# Lifespan Event Handler
 # ═══════════════════════════════════════════════════════════════
-app = FastAPI(
-    title=settings.APP_NAME,
-    description="Local-First AI Assistant for Software Architecture",
-    version=settings.APP_VERSION,
-    debug=settings.DEBUG,
-)
-
-
-# ═══════════════════════════════════════════════════════════════
-# CORS Middleware Configuration
-# ═══════════════════════════════════════════════════════════════
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:*",
-        "http://127.0.0.1:*",
-    ],  # Local development only
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-# ═══════════════════════════════════════════════════════════════
-# Startup & Shutdown Events
-# ═══════════════════════════════════════════════════════════════
-@app.on_event("startup")
 async def startup_event():
     """
     Initialize resources on application startup.
@@ -105,7 +79,6 @@ async def startup_event():
         logger.info("Groq Cloud provider configured")
 
 
-@app.on_event("shutdown")
 async def shutdown_event():
     """
     Clean up resources on application shutdown.
@@ -117,6 +90,47 @@ async def shutdown_event():
     - Cleaning up temporary resources
     """
     logger.info(f"Shutting down {settings.APP_NAME}")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Handle application startup and shutdown events.
+
+    This lifespan context manager provides the same functionality
+    as the deprecated @app.on_event decorators using the modern
+    FastAPI lifespan API.
+    """
+    await startup_event()
+    yield  # Application runs here
+    await shutdown_event()
+
+
+# ═══════════════════════════════════════════════════════════════
+# FastAPI App Creation
+# ═══════════════════════════════════════════════════════════════
+app = FastAPI(
+    title=settings.APP_NAME,
+    description="Local-First AI Assistant for Software Architecture",
+    version=settings.APP_VERSION,
+    debug=settings.DEBUG,
+    lifespan=lifespan,
+)
+
+
+# ═══════════════════════════════════════════════════════════════
+# CORS Middleware Configuration
+# ═══════════════════════════════════════════════════════════════
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:*",
+        "http://127.0.0.1:*",
+    ],  # Local development only
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ═══════════════════════════════════════════════════════════════
