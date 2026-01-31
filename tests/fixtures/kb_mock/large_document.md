@@ -1,0 +1,33 @@
+# Large Document for Chunking Tests
+
+This document contains substantial content to test semantic chunking.
+
+## First Major Section
+
+This is the first section with detailed information.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### Subsection 1.1 - Detailed Analysis
+
+More detailed content here.
+
+### Subsection 1.2 - Further Details
+
+Additional details for testing.
+
+## Second Major Section
+
+Starting the second major section.
+
+Content with more information and context.
+
+### Subsection 2.1 - Technical Details
+
+Technical specifications and details.
+
+## Third Major Section
+
+Concluding section with final thoughts.
