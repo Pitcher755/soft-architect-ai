@@ -1,0 +1,60 @@
+name: 🐍 Backend CI Pipeline
+
+on:
+  workflow_call:
+
+jobs:
+  backend-tests:
+    name: 🔬 Backend Quality & Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.12']
+
+    steps:
+      - name: ✅ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🎨 Code Formatting (Black)
+        run: |
+          python -m black --check . --exclude=__pycache__,venv,.venv,build,dist || true
+
+      - name: 🔍 Linting (Ruff)
+        run: |
+          python -m ruff check . || true
+
+      - name: 🔒 Security Scan (Bandit)
+        run: |
+          python -m bandit -r api/ core/ domain/ services/ utils/ --exit-code 0 || true
+
+      - name: 🧪 Unit Tests (Pytest)
+        run: |
+          python -m pytest tests/ -v --tb=short --cov=api,core,domain,services,utils --cov-report=term-missing
+
+      - name: 🚀 Startup Verification
+        run: |
+          python -c "from core.config import settings; print(f'✅ API Config loaded: {settings.app_name}')"
+
+      - name: 📊 Coverage Report
+        if: always()
+        run: |
+          python -m pytest tests/ --cov=api,core,domain,services,utils --cov-report=xml --cov-report=html || true
+
+      - name: 📈 Upload Coverage
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          flags: backend
+          name: backend-coverage

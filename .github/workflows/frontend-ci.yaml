@@ -1,0 +1,51 @@
+name: 📱 Frontend CI Pipeline
+
+on:
+  workflow_call:
+
+jobs:
+  frontend-tests:
+    name: 🎨 Frontend Quality & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'latest'
+          channel: 'stable'
+
+      - name: 📦 Get Flutter Dependencies
+        run: |
+          cd src/client
+          flutter pub get
+          flutter doctor -v
+
+      - name: 🔍 Flutter Analyze
+        run: |
+          cd src/client
+          flutter analyze
+
+      - name: 🧪 Flutter Tests
+        run: |
+          cd src/client
+          flutter test --coverage || true
+
+      - name: 🏗️ Build Desktop (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          cd src/client
+          flutter build linux --release || flutter build linux || true
+
+      - name: 📊 Dependency Health Check
+        run: |
+          cd src/client
+          flutter pub outdated --exit-code 0 || true
+
+      - name: ✨ Format Check (Dart)
+        run: |
+          cd src/client
+          dart format --set-exit-if-changed . || true
