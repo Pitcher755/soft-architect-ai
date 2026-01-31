@@ -19,3 +19,4 @@ ruff==0.14.14
 stevedore==5.6.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
+uvicorn==<versión>
