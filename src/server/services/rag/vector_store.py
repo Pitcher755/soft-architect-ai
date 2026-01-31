@@ -1,29 +1,80 @@
 """
-VectorStoreService: Capa de persistencia para RAG (HU-2.2)
+VectorStoreService: Vector embedding persistence layer (HU-2.2)
 
-Responsabilidades:
-1. Conectar a ChromaDB (HTTP)
-2. Transformar documentos de LangChain a formato Chroma
-3. Generar IDs deterministas para idempotencia
-4. Manejar errores con códigos controlados
+Responsibilities:
+1. Connect to ChromaDB (HTTP)
+2. Transform LangChain documents to Chroma format
+3. Generate deterministic IDs for idempotency
+4. Handle errors with controlled error codes
 
 Architecture: Adapter Pattern (ChromaDB is an external dependency)
 """
 
 import hashlib
 import logging
+import time
+from collections.abc import Callable
+from functools import wraps
+from typing import Any
 
 import chromadb
 from langchain_core.documents import Document
 
-from core.exceptions.base import VectorStoreError
+from core.exceptions import (
+    ConnectionError,
+    DatabaseReadError,
+    DatabaseWriteError,
+)
 
 logger = logging.getLogger(__name__)
+
+
+def retry_with_backoff(max_retries: int = 3, base_delay: float = 1.0):
+    """
+    Decorator for retry logic with exponential backoff.
+
+    Strategy:
+    - 1st attempt: fails → wait 1s
+    - 2nd attempt: fails → wait 2s
+    - 3rd attempt: fails → wait 4s
+    - If all fail → raise exception
+
+    Args:
+        max_retries: Maximum number of retry attempts
+        base_delay: Initial delay in seconds
+    """
+
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_exception = None
+            for attempt in range(max_retries):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_exception = e
+                    if attempt < max_retries - 1:
+                        delay = base_delay * (2**attempt)
+                        logger.warning(
+                            f"Attempt {attempt + 1} failed: {e}. "
+                            f"Retrying in {delay}s..."
+                        )
+                        time.sleep(delay)
+
+            if last_exception:
+                raise last_exception
+
+        return wrapper
+
+    return decorator
 
 
 class VectorStoreService:
     """
     Service for managing vector embeddings in ChromaDB.
+
+    Implements idempotent document ingestion with deterministic ID generation,
+    error handling with specific error codes, and retry logic for resilience.
 
     Attributes:
         host (str): ChromaDB server hostname
@@ -45,10 +96,10 @@ class VectorStoreService:
         Args:
             host: ChromaDB server hostname (default: localhost)
             port: ChromaDB server port (default: 8000)
-            collection_name: Name of collection to use (default: softarchitect_knowledge_base)
+            collection_name: Name of collection to use
 
         Raises:
-            VectorStoreError: If connection to ChromaDB fails (code SYS_001)
+            ConnectionError: If connection to ChromaDB fails (code SYS_001)
         """
         self.host = host
         self.port = port
@@ -56,189 +107,184 @@ class VectorStoreService:
 
         try:
             logger.info(f"Attempting to connect to ChromaDB at {host}:{port}...")
-
-            # Initialize HTTP client (for Docker/production)
             self.client = chromadb.HttpClient(host=host, port=port)
 
-            # Check connection with heartbeat
-            heartbeat_response = self.client.heartbeat()
-            logger.info(f"ChromaDB heartbeat OK: {heartbeat_response}")
+            # Verify connection with heartbeat
+            heartbeat_result = self.client.heartbeat()
+            if not heartbeat_result.get("ok"):
+                raise Exception("Heartbeat check failed")
 
-            # Get or create collection with HNSW space for semantic similarity
+            logger.info("✅ ChromaDB connection successful")
+
+            # Get or create collection
             self.collection = self.client.get_or_create_collection(
-                name=self.collection_name,
-                metadata={
-                    "hnsw:space": "cosine",  # Cosine similarity for embeddings
-                    "description": "SoftArchitect AI Knowledge Base",
-                },
+                name=collection_name,
+                metadata={"description": "SoftArchitect AI Knowledge Base"},
             )
+            logger.info(f"✅ Collection '{collection_name}' ready")
 
-            logger.info(
-                f"✅ Successfully connected to ChromaDB collection: {self.collection_name}"
-            )
-
-        except chromadb.errors.ChromaError as e:
-            logger.error(f"❌ ChromaDB native error: {e}")
-            raise VectorStoreError(
-                code="SYS_001",
-                message=f"Failed to connect to ChromaDB at {host}:{port}",
-                details={"host": host, "port": port, "error": str(e)},
-            ) from e
         except Exception as e:
-            logger.error(f"❌ Unexpected error connecting to ChromaDB: {e}")
-            raise VectorStoreError(
-                code="SYS_001",
-                message="Connection refused: ChromaDB is not reachable",
-                details={"error": str(e)},
-            ) from e
+            logger.error(f"❌ Connection failed: {e}")
+            raise ConnectionError(host=host, port=port, reason=str(e)) from e
 
     def _generate_id(self, content: str, source: str) -> str:
         """
-        Generate deterministic ID for document (hash-based for idempotency).
+        Generate deterministic ID for document (hash-based).
 
-        Uses MD5 hash of content + source to ensure:
-        - Same document always gets same ID
-        - IDs are unique per document content
-        - Idempotency: running ingest twice doesn't duplicate
+        Ensures idempotency: same content + source always produces same ID.
 
         Args:
             content: Document page content
-            source: Document source path
+            source: Document source/filename
 
         Returns:
-            Hexadecimal MD5 hash (32 characters)
+            32-character MD5 hash string
         """
-        raw_id = f"{source}:{content[:100]}"  # Use source + first 100 chars
-        return hashlib.md5(raw_id.encode("utf-8")).hexdigest()  # noqa: S324
+        raw_id = f"{content.strip()}::{source.strip()}"
+        return hashlib.md5(raw_id.encode("utf-8")).hexdigest()
 
-    def _clean_metadata(self, metadata: dict) -> dict:
+    def _clean_metadata(self, metadata: dict[str, Any]) -> dict[str, Any]:
         """
-        Clean document metadata for Chroma compatibility.
+        Clean metadata to only include Chroma-compatible types.
 
-        Chroma only accepts: str, int, float, bool
-        This method filters out complex types (list, dict, None)
+        Chroma only supports: str, int, float, bool.
+        Removes lists, dicts, None values, and complex types.
 
         Args:
-            metadata: Raw metadata dict
+            metadata: Raw metadata dictionary
 
         Returns:
-            Cleaned metadata with only Chroma-compatible types
+            Cleaned metadata with only valid types
         """
         cleaned = {}
+        valid_types = (str, int, float, bool)
+
         for key, value in metadata.items():
-            if isinstance(value, str | int | float | bool):
+            if isinstance(value, valid_types):
                 cleaned[key] = value
-            elif value is not None:
-                # Log non-serializable metadata (for debugging)
-                logger.debug(
-                    f"Filtered out non-serializable metadata: {key}={type(value)}"
-                )
+            elif value is None:
+                # Skip None values
+                continue
+            else:
+                # Convert other types to string if they exist
+                logger.debug(f"Skipping metadata field '{key}' with type {type(value)}")
+
         return cleaned
 
+    @retry_with_backoff(max_retries=3, base_delay=1.0)
     def ingest(self, documents: list[Document]) -> int:
         """
-        Ingest documents into ChromaDB vector store.
+        Ingest documents into ChromaDB with deterministic IDs.
 
-        Process:
-        1. Validate and transform documents
-        2. Generate deterministic IDs
-        3. Clean metadata
-        4. Upsert into Chroma (idempotent)
+        Implements idempotency: running twice with same documents
+        won't create duplicates (ChromaDB upsert semantics).
 
         Args:
             documents: List of LangChain Document objects
 
         Returns:
-            Number of documents successfully ingested
+            Number of documents ingested
 
         Raises:
-            VectorStoreError: If upsert operation fails
+            DatabaseWriteError: If upsert operation fails
         """
         if not documents:
-            logger.warning("No documents provided for ingestion")
+            logger.info("No documents to ingest")
             return 0
 
-        logger.info(f"Starting ingestion of {len(documents)} documents...")
+        try:
+            ids = []
+            texts = []
+            metadatas = []
 
-        ids = []
-        texts = []
-        metadatas = []
-
-        # Transform documents
-        for i, doc in enumerate(documents):
-            try:
+            for doc in documents:
                 # Generate deterministic ID
                 doc_id = self._generate_id(
-                    content=doc.page_content,
-                    source=doc.metadata.get("source", f"doc_{i}"),
+                    doc.page_content, doc.metadata.get("source", "unknown")
                 )
                 ids.append(doc_id)
-
-                # Add content
                 texts.append(doc.page_content)
 
-                # Clean and add metadata
-                clean_meta = self._clean_metadata(doc.metadata)
-                metadatas.append(clean_meta)
+                # Clean metadata
+                cleaned_meta = self._clean_metadata(doc.metadata)
+                metadatas.append(cleaned_meta)
 
-                logger.debug(f"Prepared document {i+1}/{len(documents)}: {doc_id}")
+            # Upsert to collection (idempotent operation)
+            self.collection.upsert(ids=ids, documents=texts, metadatas=metadatas)
 
-            except Exception as e:
-                logger.error(f"Error preparing document {i}: {e}")
-                raise VectorStoreError(
-                    code="INGEST_001",
-                    message=f"Error transforming document at index {i}",
-                    details={"index": i, "error": str(e)},
-                ) from e
-
-        # Upsert to Chroma
-        try:
-            logger.info(
-                f"Upserting {len(ids)} vectors to Chroma collection: {self.collection_name}"
-            )
-
-            self.collection.upsert(
-                ids=ids,
-                documents=texts,
-                metadatas=metadatas,
-                # embeddings: Chroma generates automatically using default model
-            )
-
-            logger.info(f"✅ Successfully ingested {len(ids)} documents")
-            return len(ids)
+            logger.info(f"✅ Successfully ingested {len(documents)} documents")
+            return len(documents)
 
         except Exception as e:
-            logger.error(f"❌ Error upserting to ChromaDB: {e}")
-            raise VectorStoreError(
-                code="DB_WRITE_ERR",
-                message="Failed to write vectors to database",
-                details={"collection": self.collection_name, "error": str(e)},
-            ) from e
+            logger.error(f"❌ Ingestion failed: {e}")
+            raise DatabaseWriteError(operation="upsert", reason=str(e)) from e
 
-    def query(self, query_text: str, n_results: int = 5) -> list[dict]:
+    def query(self, query_text: str, n_results: int = 5) -> dict[str, Any]:
         """
-        Query the vector store for similar documents.
+        Query the vector store for semantically similar documents.
 
         Args:
-            query_text: Text query to search
-            n_results: Number of results to return
+            query_text: Query text to find similar documents
+            n_results: Number of results to return (default: 5)
 
         Returns:
-            List of similar documents with metadata
+            Dictionary with 'documents', 'metadatas', 'distances', 'ids'
 
         Raises:
-            VectorStoreError: If query fails
+            DatabaseReadError: If query operation fails
         """
         try:
             results = self.collection.query(
                 query_texts=[query_text], n_results=n_results
             )
-            logger.info(f"Query returned {len(results['documents'][0])} results")
+            logger.debug(f"Query returned {len(results['documents'][0])} results")
             return results
+
         except Exception as e:
-            logger.error(f"Error querying ChromaDB: {e}")
-            raise VectorStoreError(
-                code="DB_READ_ERR",
-                message="Failed to query vector store",
-                details={"error": str(e)},
-            ) from e
+            logger.error(f"❌ Query failed: {e}")
+            raise DatabaseReadError(operation="query", reason=str(e)) from e
+
+    def health_check(self) -> bool:
+        """
+        Check if ChromaDB is healthy and collection is accessible.
+
+        Returns:
+            True if healthy
+
+        Raises:
+            ConnectionError: If heartbeat fails
+        """
+        try:
+            heartbeat = self.client.heartbeat()
+            if not heartbeat.get("ok"):
+                raise Exception("Heartbeat check failed")
+
+            logger.debug("✅ ChromaDB health check passed")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Health check failed: {e}")
+            raise ConnectionError(host=self.host, port=self.port, reason=str(e)) from e
+
+    def get_collection_stats(self) -> dict[str, Any]:
+        """
+        Get statistics about the collection.
+
+        Returns:
+            Dictionary with collection metadata and stats
+        """
+        try:
+            collection_metadata = self.collection.metadata
+            count = self.collection.count()
+
+            return {
+                "collection_name": self.collection_name,
+                "metadata": collection_metadata,
+                "document_count": count,
+                "host": self.host,
+                "port": self.port,
+            }
+
+        except Exception as e:
+            logger.error(f"❌ Failed to get collection stats: {e}")
+            raise DatabaseReadError(operation="get_stats", reason=str(e)) from e

@@ -1,15 +1,15 @@
 """
 Unit Tests for VectorStoreService (HU-2.2)
 
-TDD Approach: Tests escritos ANTES de la implementación.
-Usamos Mocking para evitar dependencia de Docker en CI.
+TDD Approach: Tests written BEFORE implementation.
+Uses Mocking to avoid dependency on Docker in CI.
 
-Cobertura:
-- ✅ Connection failure (SYS_001)
-- ✅ Document ingestion with metadata
-- ✅ ID generation (deterministic hashing)
-- ✅ Upsert idempotency
-- ✅ Metadata cleaning (Chroma constraints)
+Test Coverage:
+- Connection failures (SYS_001)
+- Document ingestion with metadata
+- ID generation (deterministic hashing)
+- Upsert idempotency
+- Metadata cleaning (Chroma constraints)
 """
 
 from unittest.mock import MagicMock, patch
@@ -17,146 +17,151 @@ from unittest.mock import MagicMock, patch
 import pytest
 from langchain_core.documents import Document
 
-from core.exceptions.base import VectorStoreError
-from services.rag.vector_store import VectorStoreService
+from core.exceptions import ConnectionError, DatabaseWriteError
 
 # ==================== FIXTURES ====================
 
 
 @pytest.fixture
 def sample_documents():
-    """Sample documents output from HU-2.1 MarkdownLoader"""
+    """Sample documents output from HU-2.1 MarkdownLoader."""
     return [
         Document(
             page_content="Clean Architecture ensures that business rules are not coupled to UI frameworks.",
             metadata={
-                "source": "packages/knowledge_base/01-ARCHITECTURE/CLEAN_ARCH.md",
-                "filename": "CLEAN_ARCH.md",
-                "header": "Intro",
+                "source": "CLEAN_ARCHITECTURE.md",
+                "filename": "CLEAN_ARCHITECTURE.md",
+                "header": "Principles",
             },
         ),
         Document(
             page_content="Docker provides container isolation and reproducible deployments.",
             metadata={
-                "source": "packages/knowledge_base/02-DEVOPS/DOCKER.md",
-                "filename": "DOCKER.md",
-                "header": None,  # Some docs may not have headers
+                "source": "DOCKER_GUIDE.md",
+                "filename": "DOCKER_GUIDE.md",
+                "header": "Introduction",
             },
         ),
         Document(
             page_content="ChromaDB uses HNSW algorithm for fast vector similarity search.",
             metadata={
-                "source": "packages/knowledge_base/03-TECH-STACK/CHROMA.md",
-                "filename": "CHROMA.md",
-                "header": "How It Works",
+                "source": "CHROMADB_DOCS.md",
+                "filename": "CHROMADB_DOCS.md",
+                "header": "Architecture",
             },
         ),
     ]
-
-
-@pytest.fixture
-def mock_chroma_client():
-    """Mock ChromaDB HTTP client"""
-    with patch("chromadb.HttpClient") as mock:
-        mock_collection = MagicMock()
-        mock.return_value.get_or_create_collection.return_value = mock_collection
-        yield mock
 
 
 # ==================== TEST SUITE ====================
 
 
 class TestVectorStoreServiceInitialization:
-    """Group 1: Connection and Initialization Tests"""
+    """Group 1: Connection and Initialization Tests."""
 
-    def test_initialization_success(self, mock_chroma_client):
-        """✅ Should successfully initialize when ChromaDB is reachable"""
-        # Arrange: Mock successful heartbeat
-        mock_chroma_client.return_value.heartbeat.return_value = {"ok": True}
+    @patch("services.rag.vector_store.chromadb")
+    def test_initialization_success(self, mock_chroma):
+        """✅ Should successfully initialize when ChromaDB is reachable."""
+        from services.rag.vector_store import VectorStoreService
 
-        # Act
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_chroma.HttpClient.return_value = mock_client
+
         service = VectorStoreService(host="localhost", port=8000)
 
-        # Assert
         assert service.host == "localhost"
         assert service.port == 8000
         assert service.collection_name == "softarchitect_knowledge_base"
-        mock_chroma_client.assert_called_once_with(host="localhost", port=8000)
+        mock_chroma.HttpClient.assert_called_once_with(host="localhost", port=8000)
 
-    def test_connection_failure_raises_sys_001(self):
-        """❌ Should raise VectorStoreError with SYS_001 if connection fails"""
-        with patch("chromadb.HttpClient") as mock_client:
-            # Simulate connection refused
-            mock_client.side_effect = Exception("Connection refused: Errno 111")
+    @patch("services.rag.vector_store.chromadb")
+    def test_connection_failure_raises_sys_001(self, mock_chroma):
+        """❌ Should raise ConnectionError with SYS_001 if connection fails."""
+        mock_chroma.HttpClient.side_effect = Exception("Connection refused")
 
-            # Act & Assert
-            with pytest.raises(VectorStoreError) as exc_info:
-                VectorStoreService(host="unreachable_host", port=9999)
+        from services.rag.vector_store import VectorStoreService
 
-            assert exc_info.value.code == "SYS_001"
-            assert (
-                "Connection" in exc_info.value.message
-                or "connect" in exc_info.value.message.lower()
-            )
+        with pytest.raises(ConnectionError) as exc_info:
+            VectorStoreService(host="localhost", port=8000)
 
-    def test_heartbeat_failure_raises_sys_001(self):
-        """❌ Should raise SYS_001 if heartbeat check fails"""
-        with patch("chromadb.HttpClient") as mock_client:
-            mock_client.return_value.heartbeat.side_effect = Exception("Timeout")
+        assert exc_info.value.code == "SYS_001"
 
-            with pytest.raises(VectorStoreError) as exc_info:
-                VectorStoreService()
+    @patch("services.rag.vector_store.chromadb")
+    def test_heartbeat_failure_raises_sys_001(self, mock_chroma):
+        """❌ Should raise SYS_001 if heartbeat check fails."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.side_effect = Exception("Timeout")
+        mock_chroma.HttpClient.return_value = mock_client
 
-            assert exc_info.value.code == "SYS_001"
+        from services.rag.vector_store import VectorStoreService
+
+        with pytest.raises(ConnectionError) as exc_info:
+            VectorStoreService(host="localhost", port=8000)
+
+        assert exc_info.value.code == "SYS_001"
 
 
 class TestDocumentIngestion:
-    """Group 2: Document Ingestion and Transformation Tests"""
+    """Group 2: Document Ingestion and Transformation Tests."""
 
-    def test_ingest_empty_list(self, mock_chroma_client):
-        """✅ Should return 0 for empty document list (graceful degradation)"""
+    @patch("services.rag.vector_store.chromadb")
+    def test_ingest_empty_list(self, mock_chroma):
+        """✅ Should return 0 for empty document list (graceful degradation)."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
         service = VectorStoreService()
         count = service.ingest([])
 
         assert count == 0
-        mock_chroma_client.return_value.get_or_create_collection.return_value.upsert.assert_not_called()
+        mock_collection.upsert.assert_not_called()
 
-    def test_ingest_single_document(self, mock_chroma_client, sample_documents):
-        """✅ Should ingest single document with correct ID and metadata"""
+    @patch("services.rag.vector_store.chromadb")
+    def test_ingest_single_document(self, mock_chroma, sample_documents):
+        """✅ Should ingest single document with correct ID and metadata."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
         service = VectorStoreService()
-        mock_collection = (
-            mock_chroma_client.return_value.get_or_create_collection.return_value
-        )
-
-        # Act
         count = service.ingest([sample_documents[0]])
 
-        # Assert
         assert count == 1
         mock_collection.upsert.assert_called_once()
 
-        # Inspect the call arguments
         call_kwargs = mock_collection.upsert.call_args[1]
         assert len(call_kwargs["ids"]) == 1
         assert len(call_kwargs["documents"]) == 1
         assert len(call_kwargs["metadatas"]) == 1
 
-        # Verify ID is deterministic (hash-based)
         doc_id = call_kwargs["ids"][0]
         assert isinstance(doc_id, str)
         assert len(doc_id) == 32  # MD5 hash length
 
-    def test_ingest_multiple_documents(self, mock_chroma_client, sample_documents):
-        """✅ Should ingest multiple documents in batch"""
-        service = VectorStoreService()
-        mock_collection = (
-            mock_chroma_client.return_value.get_or_create_collection.return_value
-        )
+    @patch("services.rag.vector_store.chromadb")
+    def test_ingest_multiple_documents(self, mock_chroma, sample_documents):
+        """✅ Should ingest multiple documents in batch."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
 
-        # Act
+        from services.rag.vector_store import VectorStoreService
+
+        service = VectorStoreService()
         count = service.ingest(sample_documents)
 
-        # Assert
         assert count == 3
         mock_collection.upsert.assert_called_once()
 
@@ -165,34 +170,34 @@ class TestDocumentIngestion:
         assert len(call_kwargs["documents"]) == 3
         assert len(call_kwargs["metadatas"]) == 3
 
-        # All IDs should be unique
         ids = call_kwargs["ids"]
         assert len(set(ids)) == 3
 
-    def test_metadata_cleaning(self, mock_chroma_client, sample_documents):
-        """✅ Should clean metadata (only str/int/float/bool for Chroma)"""
-        service = VectorStoreService()
-        mock_collection = (
-            mock_chroma_client.return_value.get_or_create_collection.return_value
-        )
+    @patch("services.rag.vector_store.chromadb")
+    def test_metadata_cleaning(self, mock_chroma):
+        """✅ Should clean metadata (only str/int/float/bool for Chroma)."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
 
-        # Create document with complex metadata (should be cleaned)
+        from services.rag.vector_store import VectorStoreService
+
+        service = VectorStoreService()
+
         doc_with_complex_meta = Document(
             page_content="Test",
             metadata={
-                "source": "test.md",
-                "filename": "test.md",
-                "list_field": ["a", "b"],  # Not allowed in Chroma
-                "dict_field": {"nested": "data"},  # Not allowed
-                "valid_field": "string_value",  # Allowed
-                "number_field": 42,  # Allowed
+                "valid_field": "string_value",
+                "number_field": 42,
+                "list_field": [1, 2, 3],
+                "dict_field": {"nested": "value"},
             },
         )
 
-        # Act
         service.ingest([doc_with_complex_meta])
 
-        # Assert
         call_kwargs = mock_collection.upsert.call_args[1]
         metadata = call_kwargs["metadatas"][0]
 
@@ -201,76 +206,182 @@ class TestDocumentIngestion:
         assert "list_field" not in metadata
         assert "dict_field" not in metadata
 
-    def test_deterministic_id_generation(self, sample_documents):
-        """✅ Should generate same ID for same document (idempotency)"""
-        # Create two identical documents
+    @patch("services.rag.vector_store.chromadb")
+    def test_deterministic_id_generation(self, mock_chroma, sample_documents):
+        """✅ Should generate same ID for same document (idempotency)."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
         doc1 = sample_documents[0]
         doc2 = Document(
-            page_content=doc1.page_content,  # Exact same content
-            metadata={"source": doc1.metadata["source"]},  # Exact same source
+            page_content=doc1.page_content, metadata={"source": doc1.metadata["source"]}
         )
 
-        with patch("chromadb.HttpClient"):
-            service = VectorStoreService()
+        service = VectorStoreService()
+        service.ingest([doc1])
 
-            # Generate IDs twice
-            id1 = service._generate_id(doc1.page_content, doc1.metadata["source"])
-            id2 = service._generate_id(doc2.page_content, doc2.metadata["source"])
+        call_args_1 = mock_collection.upsert.call_args[1]
+        id1 = call_args_1["ids"][0]
 
-            # Assert
-            assert id1 == id2  # Deterministic
+        mock_collection.reset_mock()
+        service.ingest([doc2])
+
+        call_args_2 = mock_collection.upsert.call_args[1]
+        id2 = call_args_2["ids"][0]
+
+        assert id1 == id2
 
 
 class TestIdempotency:
-    """Group 3: Idempotency Tests (Critical for RAG)"""
+    """Group 3: Idempotency Tests (Critical for RAG)."""
 
-    def test_upsert_twice_no_duplicates(self, mock_chroma_client, sample_documents):
-        """✅ Should not duplicate documents when run twice"""
+    @patch("services.rag.vector_store.chromadb")
+    def test_upsert_twice_no_duplicates(self, mock_chroma, sample_documents):
+        """✅ Should not duplicate documents when run twice."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
         service = VectorStoreService()
-        mock_collection = (
-            mock_chroma_client.return_value.get_or_create_collection.return_value
-        )
 
-        # Act: Ingest same documents twice
         service.ingest(sample_documents)
         service.ingest(sample_documents)
 
-        # Assert: upsert called twice
         assert mock_collection.upsert.call_count == 2
 
-        # Both calls should have same IDs (deterministic)
         call1_ids = mock_collection.upsert.call_args_list[0][1]["ids"]
         call2_ids = mock_collection.upsert.call_args_list[1][1]["ids"]
         assert call1_ids == call2_ids
 
 
 class TestErrorHandling:
-    """Group 4: Error Handling and Resilience"""
+    """Group 4: Error Handling and Resilience."""
 
-    def test_ingestion_database_error(self, mock_chroma_client):
-        """❌ Should raise VectorStoreError if upsert fails"""
-        service = VectorStoreService()
-        mock_collection = (
-            mock_chroma_client.return_value.get_or_create_collection.return_value
-        )
+    @patch("services.rag.vector_store.chromadb")
+    def test_ingestion_database_error(self, mock_chroma):
+        """❌ Should raise VectorStoreError if upsert fails."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
         mock_collection.upsert.side_effect = Exception("Database write failed")
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
 
+        from services.rag.vector_store import VectorStoreService
+
+        service = VectorStoreService()
         doc = Document(page_content="Test", metadata={"source": "test.md"})
 
-        with pytest.raises(VectorStoreError) as exc_info:
+        with pytest.raises(DatabaseWriteError):
             service.ingest([doc])
 
-        assert exc_info.value.code == "DB_WRITE_ERR"
-
     def test_error_to_dict(self):
-        """✅ Should convert error to API response format"""
-        error = VectorStoreError(
-            code="SYS_001",
-            message="Connection failed",
-            details={"host": "localhost", "port": 8000},
+        """✅ Should convert error to API response format."""
+        error = ConnectionError(
+            host="localhost", port=8000, reason="Connection refused"
         )
 
         error_dict = error.to_dict()
         assert error_dict["error_code"] == "SYS_001"
-        assert error_dict["error_message"] == "Connection failed"
+        assert "Failed to connect" in error_dict["error_message"]
         assert error_dict["details"]["host"] == "localhost"
+        assert error_dict["details"]["port"] == 8000
+
+
+class TestQueryFunctionality:
+    """Group 5: Query and Retrieval Tests."""
+
+    @patch("services.rag.vector_store.chromadb")
+    def test_query_basic(self, mock_chroma):
+        """✅ Should query collection and return results."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+
+        mock_collection.query.return_value = {
+            "documents": [["Test document"]],
+            "metadatas": [[{"source": "test.md"}]],
+            "distances": [[0.1]],
+            "ids": [["doc_id_1"]],
+        }
+
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
+        service = VectorStoreService()
+        results = service.query("test query", n_results=5)
+
+        assert "documents" in results
+        assert len(results["documents"][0]) > 0
+
+    @patch("services.rag.vector_store.chromadb")
+    def test_query_returns_metadatas(self, mock_chroma):
+        """✅ Should include metadata in query results."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_collection = MagicMock()
+
+        mock_collection.query.return_value = {
+            "documents": [["Document with metadata"]],
+            "metadatas": [[{"source": "source.md", "header": "Title"}]],
+            "distances": [[0.05]],
+            "ids": [["id_1"]],
+        }
+
+        mock_client.get_or_create_collection.return_value = mock_collection
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
+        service = VectorStoreService()
+        results = service.query("search term")
+
+        assert "metadatas" in results
+        assert results["metadatas"][0][0]["source"] == "source.md"
+
+
+class TestHealthCheck:
+    """Group 6: Health Check Tests."""
+
+    @patch("services.rag.vector_store.chromadb")
+    def test_health_check_success(self, mock_chroma):
+        """✅ Should return True when ChromaDB is healthy."""
+        mock_client = MagicMock()
+        mock_client.heartbeat.return_value = {"ok": True}
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
+        service = VectorStoreService()
+        health = service.health_check()
+
+        assert health is True
+
+    @patch("services.rag.vector_store.chromadb")
+    def test_health_check_failure(self, mock_chroma):
+        """❌ Should raise error when ChromaDB is unhealthy."""
+        mock_client = MagicMock()
+        # First heartbeat (during init) succeeds, second (in health_check) fails
+        mock_client.heartbeat.side_effect = [
+            {"ok": True},  # Init success
+            Exception("Heartbeat failed"),  # health_check failure
+        ]
+        mock_chroma.HttpClient.return_value = mock_client
+
+        from services.rag.vector_store import VectorStoreService
+
+        service = VectorStoreService()
+
+        with pytest.raises(ConnectionError):
+            service.health_check()
