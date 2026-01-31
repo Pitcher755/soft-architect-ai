@@ -34,8 +34,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = Field(default="development", description="Environment name")
 
     # Server Configuration
-    # Note: 0.0.0.0 is acceptable for local development; restrict to specific IPs in production
-    HOST: str = Field(default="0.0.0.0", description="Server host")  # nosec B104
+    HOST: str = Field(default="0.0.0.0", description="Server host")  # noqa: S104
     PORT: int = Field(default=8000, description="Server port", ge=1, le=65535)
 
     # CORS Configuration (Security)
