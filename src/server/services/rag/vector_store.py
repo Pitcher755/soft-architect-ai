@@ -10,20 +10,20 @@ Responsibilities:
 Architecture: Adapter Pattern (ChromaDB is an external dependency)
 """
 
-import hashlib
 import logging
+import hashlib
 import time
-from collections.abc import Callable
 from functools import wraps
-from typing import Any
+from typing import List, Optional, Dict, Any, Callable
 
 import chromadb
 from langchain_core.documents import Document
 
 from core.exceptions import (
+    VectorStoreError,
     ConnectionError,
-    DatabaseReadError,
     DatabaseWriteError,
+    DatabaseReadError,
 )
 
 logger = logging.getLogger(__name__)
@@ -54,13 +54,13 @@ def retry_with_backoff(max_retries: int = 3, base_delay: float = 1.0):
                 except Exception as e:
                     last_exception = e
                     if attempt < max_retries - 1:
-                        delay = base_delay * (2**attempt)
+                        delay = base_delay * (2 ** attempt)
                         logger.warning(
                             f"Attempt {attempt + 1} failed: {e}. "
                             f"Retrying in {delay}s..."
                         )
                         time.sleep(delay)
-
+            
             if last_exception:
                 raise last_exception
 
@@ -88,7 +88,7 @@ class VectorStoreService:
         self,
         host: str = "localhost",
         port: int = 8000,
-        collection_name: str = "softarchitect_knowledge_base",
+        collection_name: str = "softarchitect_knowledge_base"
     ):
         """
         Initialize VectorStoreService with ChromaDB connection.
@@ -119,13 +119,17 @@ class VectorStoreService:
             # Get or create collection
             self.collection = self.client.get_or_create_collection(
                 name=collection_name,
-                metadata={"description": "SoftArchitect AI Knowledge Base"},
+                metadata={"description": "SoftArchitect AI Knowledge Base"}
             )
             logger.info(f"✅ Collection '{collection_name}' ready")
 
         except Exception as e:
             logger.error(f"❌ Connection failed: {e}")
-            raise ConnectionError(host=host, port=port, reason=str(e)) from e
+            raise ConnectionError(
+                host=host,
+                port=port,
+                reason=str(e)
+            ) from e
 
     def _generate_id(self, content: str, source: str) -> str:
         """
@@ -141,9 +145,9 @@ class VectorStoreService:
             32-character MD5 hash string
         """
         raw_id = f"{content.strip()}::{source.strip()}"
-        return hashlib.md5(raw_id.encode("utf-8")).hexdigest()
+        return hashlib.md5(raw_id.encode("utf-8")).hexdigest()  # noqa: S324 - MD5 used for deterministic hashing, not cryptography
 
-    def _clean_metadata(self, metadata: dict[str, Any]) -> dict[str, Any]:
+    def _clean_metadata(self, metadata: Dict[str, Any]) -> Dict[str, Any]:
         """
         Clean metadata to only include Chroma-compatible types.
 
@@ -172,7 +176,7 @@ class VectorStoreService:
         return cleaned
 
     @retry_with_backoff(max_retries=3, base_delay=1.0)
-    def ingest(self, documents: list[Document]) -> int:
+    def ingest(self, documents: List[Document]) -> int:
         """
         Ingest documents into ChromaDB with deterministic IDs.
 
@@ -200,7 +204,8 @@ class VectorStoreService:
             for doc in documents:
                 # Generate deterministic ID
                 doc_id = self._generate_id(
-                    doc.page_content, doc.metadata.get("source", "unknown")
+                    doc.page_content,
+                    doc.metadata.get("source", "unknown")
                 )
                 ids.append(doc_id)
                 texts.append(doc.page_content)
@@ -210,16 +215,27 @@ class VectorStoreService:
                 metadatas.append(cleaned_meta)
 
             # Upsert to collection (idempotent operation)
-            self.collection.upsert(ids=ids, documents=texts, metadatas=metadatas)
+            self.collection.upsert(
+                ids=ids,
+                documents=texts,
+                metadatas=metadatas
+            )
 
             logger.info(f"✅ Successfully ingested {len(documents)} documents")
             return len(documents)
 
         except Exception as e:
             logger.error(f"❌ Ingestion failed: {e}")
-            raise DatabaseWriteError(operation="upsert", reason=str(e)) from e
+            raise DatabaseWriteError(
+                operation="upsert",
+                reason=str(e)
+            ) from e
 
-    def query(self, query_text: str, n_results: int = 5) -> dict[str, Any]:
+    def query(
+        self,
+        query_text: str,
+        n_results: int = 5
+    ) -> Dict[str, Any]:
         """
         Query the vector store for semantically similar documents.
 
@@ -235,14 +251,18 @@ class VectorStoreService:
         """
         try:
             results = self.collection.query(
-                query_texts=[query_text], n_results=n_results
+                query_texts=[query_text],
+                n_results=n_results
             )
             logger.debug(f"Query returned {len(results['documents'][0])} results")
             return results
 
         except Exception as e:
             logger.error(f"❌ Query failed: {e}")
-            raise DatabaseReadError(operation="query", reason=str(e)) from e
+            raise DatabaseReadError(
+                operation="query",
+                reason=str(e)
+            ) from e
 
     def health_check(self) -> bool:
         """
@@ -264,9 +284,13 @@ class VectorStoreService:
 
         except Exception as e:
             logger.error(f"❌ Health check failed: {e}")
-            raise ConnectionError(host=self.host, port=self.port, reason=str(e)) from e
+            raise ConnectionError(
+                host=self.host,
+                port=self.port,
+                reason=str(e)
+            ) from e
 
-    def get_collection_stats(self) -> dict[str, Any]:
+    def get_collection_stats(self) -> Dict[str, Any]:
         """
         Get statistics about the collection.
 
@@ -282,9 +306,12 @@ class VectorStoreService:
                 "metadata": collection_metadata,
                 "document_count": count,
                 "host": self.host,
-                "port": self.port,
+                "port": self.port
             }
 
         except Exception as e:
             logger.error(f"❌ Failed to get collection stats: {e}")
-            raise DatabaseReadError(operation="get_stats", reason=str(e)) from e
+            raise DatabaseReadError(
+                operation="get_stats",
+                reason=str(e)
+            ) from e
