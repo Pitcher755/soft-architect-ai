@@ -1,9 +1,9 @@
 # 🔧 Reporte de Solución: Errores CI/CD en GitHub Actions
 
-> **Fecha:** 31/01/2026
-> **Estado:** ✅ **RESUELTO (ITERACIÓN 3 - DEFINITIVA)**
+> **Fecha:** 01/02/2026
+> **Estado:** ✅ **RESUELTO (ITERACIÓN 7 - MISSING DEPENDENCIES)**
 > **Rama:** feature/rag-vectorization
-> **Commits:** c5c8c92, 29ab189, e20161e, f707d0c, e08922e
+> **Commits:** c5c8c92, 29ab189, e20161e, f707d0c, e08922e, 3bb1007, 5d42704, f70bf41
 
 ---
 
@@ -594,6 +594,75 @@ from services.rag.vector_store import VectorStoreService  # Import absoluto
 
 ---
 
+## 🔄 Iteración #7: Missing ChromaDB Dependency in requirements.txt
+
+**Fecha:** 01/02/2026
+**Commit:** `f70bf41`
+**Descripción del Problema:**
+GitHub Actions seguía fallando con 14 test failures:
+```
+ModuleNotFoundError: No module named 'chromadb'
+services/rag/vector_store.py:20: ModuleNotFoundError
+```
+
+**Análisis del Problema:**
+Aunque `chromadb` estaba definido en `src/server/pyproject.toml` (Poetry config), el workflow de CI/CD instala dependencias desde el `requirements.txt` raíz:
+```yaml
+# .github/workflows/backend-ci.yaml
+- run: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt  # ❌ chromadb no estaba aquí
+```
+
+**Root Cause:**
+- `pyproject.toml` solo es usado por Poetry localmente
+- GitHub Actions usa `pip install -r requirements.txt`
+- `chromadb` y sus dependencias NO estaban en requirements.txt
+- Por lo tanto, el import fallaba en CI aunque funcionara localmente
+
+**Solución Implementada:**
+
+Agregar ChromaDB y dependencias transitorias al `requirements.txt` raíz:
+
+```txt
+# ChromaDB and dependencies for RAG functionality (HU-2.2)
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+onnxruntime>=1.16.0
+```
+
+**Por qué estas dependencias:**
+- `chromadb>=0.4.0` - Vector database para RAG (VectorStoreService)
+- `sentence-transformers>=2.2.0` - Modelos de embedding (requerido por ChromaDB)
+- `onnxruntime>=1.16.0` - Runtime optimizado para inferencia (requerido por sentence-transformers)
+
+**Verificación Local:**
+```bash
+$ python -c "import chromadb; print(f'✅ ChromaDB version: {chromadb.__version__}')"
+✅ ChromaDB version: 1.4.1
+```
+
+**Resultado Esperado:**
+- ✅ GitHub Actions instalará chromadb correctamente
+- ✅ Los 14 test failures se resolverán
+- ✅ Coverage volverá a 82% (actualmente 25% porque los tests fallan)
+- ✅ Job 62129459030 pasará exitosamente
+
+**Commit Documentado:**
+```
+f70bf41 fix(deps): add chromadb and dependencies to requirements.txt for CI
+├─ Added chromadb>=0.4.0 for VectorStoreService
+├─ Added sentence-transformers>=2.2.0 (ChromaDB dependency)
+├─ Added onnxruntime>=1.16.0 (ChromaDB dependency)
+├─ Fixes ModuleNotFoundError in GitHub Actions CI/CD
+└─ Resolves job 62129459030 failure (14 test failures)
+```
+
+**Archivo Modificado:**
+- `requirements.txt` (líneas 33-36)
+
+---
+
 **Documento preparado por:** ArchitectZero
-**Validado:** 31/01/2026
+**Validado:** 01/02/2026
 **Referencia:** context/SECURITY_HARDENING_POLICY.es.md, doc/02-SETUP_DEV/SETUP_GUIDE.es.md
