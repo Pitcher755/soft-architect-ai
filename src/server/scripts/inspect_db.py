@@ -23,7 +23,6 @@ import click
 # Add src/server to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core.exceptions import ConnectionError as ChromaConnectionError
 from services.rag.vector_store import VectorStoreService
 
 logger = logging.getLogger(__name__)
@@ -64,7 +63,7 @@ def cli(ctx: click.Context, host: str, port: int, verbose: bool) -> None:
         )
         if verbose:
             click.echo(f"✓ Connected to ChromaDB at {host}:{port}")
-    except ChromaConnectionError as e:
+    except Exception as e:
         click.echo(f"❌ Failed to connect to ChromaDB: {e}", err=True)
         click.echo(f"   Make sure ChromaDB is running at {host}:{port}", err=True)
         sys.exit(1)
@@ -79,10 +78,13 @@ def health(ctx: click.Context) -> None:
     try:
         # Try to get collection stats to verify connection
         stats_data = store.get_collection_stats()
+        
         click.echo("✅ ChromaDB is healthy")
-        click.echo(f"   Collection: {stats_data['collection_name']}")
-        click.echo(f"   Documents: {stats_data['document_count']}")
-        click.echo(f"   Host: {stats_data['host']}:{stats_data['port']}")
+        click.echo(f"   Collection: {stats_data.get('collection_name', 'unknown')}")
+        click.echo(f"   Documents: {stats_data.get('document_count', 0)}")
+        host = stats_data.get("host", "unknown")
+        port = stats_data.get("port", "unknown")
+        click.echo(f"   Host: {host}:{port}")
     except Exception as e:
         click.echo(f"❌ ChromaDB health check failed: {e}", err=True)
         sys.exit(1)
@@ -113,23 +115,39 @@ def query(ctx: click.Context, query_text: str, limit: int, json_output: bool) ->
                 "results": [],
             }
 
-            if results.get("documents") and results["documents"][0]:
-                output["matches"] = len(results["documents"][0])
+            documents = results.get("documents")
+            metadatas = results.get("metadatas")
+            distances = results.get("distances")
+            
+            # Validate we have document results
+            if documents and len(documents) > 0:
+                doc_list = documents[0]
+                meta_list = metadatas[0] if metadatas else []
+                dist_list = distances[0] if distances else []
+                
+                if len(doc_list) > 0:
+                    output["matches"] = len(doc_list)
 
-                for doc, meta, distance in zip(
-                    results["documents"][0],
-                    results["metadatas"][0] if results.get("metadatas") else [],
-                    results["distances"][0] if results.get("distances") else [],
-                ):
-                    output["results"].append(
-                        {
-                            "content": doc[:300],
-                            "filename": meta.get("filename", "unknown"),
-                            "source": meta.get("source", "unknown"),
-                            "file_type": meta.get("file_type", "unknown"),
-                            "distance": float(distance) if distance is not None else None,
-                        }
-                    )
+                    for idx, doc in enumerate(doc_list):
+                        meta = meta_list[idx] if idx < len(meta_list) else {}
+                        distance = dist_list[idx] if idx < len(dist_list) else None
+                        
+                        distance_value: float | None = None
+                        if distance is not None:
+                            try:
+                                distance_value = float(distance)
+                            except (ValueError, TypeError):
+                                distance_value = None
+                        
+                        output["results"].append(
+                            {
+                                "content": doc[:300],
+                                "filename": meta.get("filename", "unknown") if isinstance(meta, dict) else "unknown",
+                                "source": meta.get("source", "unknown") if isinstance(meta, dict) else "unknown",
+                                "file_type": meta.get("file_type", "unknown") if isinstance(meta, dict) else "unknown",
+                                "distance": distance_value,
+                            }
+                        )
 
             click.echo(json.dumps(output, indent=2))
         else:
@@ -137,27 +155,44 @@ def query(ctx: click.Context, query_text: str, limit: int, json_output: bool) ->
             click.echo(f"\n🔍 Query: {query_text}")
             click.echo(f"📊 Limit: {limit}\n")
 
-            if results.get("documents") and results["documents"][0]:
-                for idx, (doc, meta, distance) in enumerate(
-                    zip(
-                        results["documents"][0],
-                        results["metadatas"][0] if results.get("metadatas") else [],
-                        results["distances"][0] if results.get("distances") else [],
-                    ),
-                    1,
-                ):
-                    distance_str = (
-                        f"{float(distance):.4f}" if distance is not None else "N/A"
-                    )
-                    click.echo(f"[{idx}] 📄 {meta.get('filename', 'unknown')}")
-                    click.echo(f"    📍 {meta.get('source', 'unknown')}")
-                    click.echo(f"    🏷️  Type: {meta.get('file_type', 'unknown')}")
-                    click.echo(f"    📐 Distance: {distance_str}")
-                    click.echo(f"    📝 Content:\n")
-                    content = doc[:500] + "..." if len(doc) > 500 else doc
-                    for line in content.split("\n"):
-                        click.echo(f"       {line}")
-                    click.echo()
+            documents = results.get("documents")
+            metadatas = results.get("metadatas")
+            distances = results.get("distances")
+            
+            if documents and len(documents) > 0:
+                doc_list = documents[0]
+                meta_list = metadatas[0] if metadatas else []
+                dist_list = distances[0] if distances else []
+                
+                if len(doc_list) > 0:
+                    for idx, doc in enumerate(doc_list, 1):
+                        meta = meta_list[idx - 1] if idx - 1 < len(meta_list) else {}
+                        distance = dist_list[idx - 1] if idx - 1 < len(dist_list) else None
+                        
+                        distance_str = "N/A"
+                        if distance is not None:
+                            try:
+                                distance_str = f"{float(distance):.4f}"
+                            except (ValueError, TypeError):
+                                distance_str = "N/A"
+                        
+                        filename = meta.get("filename", "unknown") if isinstance(meta, dict) else "unknown"
+                        source = meta.get("source", "unknown") if isinstance(meta, dict) else "unknown"
+                        file_type = meta.get("file_type", "unknown") if isinstance(meta, dict) else "unknown"
+                        
+                        click.echo(f"[{idx}] 📄 {filename}")
+                        click.echo(f"    📍 {source}")
+                        click.echo(f"    Type: {file_type}")
+                        click.echo(f"    Distance: {distance_str}")
+                        click.echo(f"    Content:\n")
+                        
+                        doc_str = doc
+                        content = doc_str[:500] + "..." if len(doc_str) > 500 else doc_str
+                        for line in content.split("\n"):
+                            click.echo(f"       {line}")
+                        click.echo()
+                else:
+                    click.echo("   No results found.")
             else:
                 click.echo("   No results found.")
 
@@ -176,9 +211,11 @@ def stats(ctx: click.Context) -> None:
         stats_data = store.get_collection_stats()
 
         click.echo("\n📊 ChromaDB Statistics:")
-        click.echo(f"  Collection Name: {stats_data['collection_name']}")
-        click.echo(f"  Document Count: {stats_data['document_count']}")
-        click.echo(f"  Host: {stats_data['host']}:{stats_data['port']}")
+        click.echo(f"  Collection Name: {stats_data.get('collection_name', 'unknown')}")
+        click.echo(f"  Document Count: {stats_data.get('document_count', 0)}")
+        host = stats_data.get("host", "unknown")
+        port = stats_data.get("port", "unknown")
+        click.echo(f"  Host: {host}:{port}")
         click.echo()
 
     except Exception as e:
@@ -197,8 +234,10 @@ def collections(ctx: click.Context) -> None:
         stats_data = store.get_collection_stats()
 
         click.echo("\n📚 Available Collections:")
-        click.echo(f"  {stats_data['collection_name']}")
-        click.echo(f"    Documents: {stats_data['document_count']}")
+        collection_name = stats_data.get("collection_name", "unknown")
+        doc_count = stats_data.get("document_count", 0)
+        click.echo(f"  {collection_name}")
+        click.echo(f"    Documents: {doc_count}")
         click.echo()
 
     except Exception as e:
