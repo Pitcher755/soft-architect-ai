@@ -111,8 +111,8 @@ class VectorStoreService:
 
             # Verify connection with heartbeat
             heartbeat_result = self.client.heartbeat()
-            # heartbeat() returns milliseconds (int), not a dict
-            if not isinstance(heartbeat_result, (int, float)) or heartbeat_result <= 0:
+            # heartbeat() returns milliseconds (int)
+            if heartbeat_result <= 0:
                 raise Exception(f"Heartbeat check failed: {heartbeat_result}")
 
             logger.info("✅ ChromaDB connection successful")
@@ -220,7 +220,7 @@ class VectorStoreService:
             logger.error(f"❌ Ingestion failed: {e}")
             raise DatabaseWriteError(operation="upsert", reason=str(e)) from e
 
-    def query(self, query_text: str, n_results: int = 5) -> dict[str, Any]:
+    def query(self, query_text: str, n_results: int = 5):
         """
         Query the vector store for semantically similar documents.
 
@@ -229,7 +229,7 @@ class VectorStoreService:
             n_results: Number of results to return (default: 5)
 
         Returns:
-            Dictionary with 'documents', 'metadatas', 'distances', 'ids'
+            ChromaDB QueryResult with 'documents', 'metadatas', 'distances', 'ids'
 
         Raises:
             DatabaseReadError: If query operation fails
@@ -238,7 +238,10 @@ class VectorStoreService:
             results = self.collection.query(
                 query_texts=[query_text], n_results=n_results
             )
-            logger.debug(f"Query returned {len(results['documents'][0])} results")
+            # Safely access documents list (ChromaDB returns nested structure)
+            docs = results.get("documents", [[]])
+            if docs and len(docs) > 0:
+                logger.debug(f"Query returned {len(docs[0])} results")
             return results
 
         except Exception as e:
@@ -257,8 +260,8 @@ class VectorStoreService:
         """
         try:
             heartbeat = self.client.heartbeat()
-            # heartbeat() returns milliseconds (int), not a dict
-            if not isinstance(heartbeat, (int, float)) or heartbeat <= 0:
+            # heartbeat() returns milliseconds (int)
+            if heartbeat <= 0:
                 raise Exception(f"Heartbeat check failed: {heartbeat}")
 
             logger.debug("✅ ChromaDB health check passed")
