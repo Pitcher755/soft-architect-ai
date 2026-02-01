@@ -9,7 +9,11 @@ description = "Privacy-first AI assistant for software architecture guidance"
 authors = ["SoftArchitect AI Team <team@softarchitect.local>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "app"}]
+packages = [
+    {include = "app"},
+    {include = "core"},
+    {include = "services"},
+]
 
 [tool.mypy]
 # MyPy configuration for strict type checking
@@ -55,7 +59,7 @@ exclude = '''
 profile = "black"
 line_length = 120
 skip_glob = ["*/migrations/*"]
-known_first_party = ["app"]
+known_first_party = ["app", "core", "services"]
 
 [tool.pytest.ini_options]
 # Pytest configuration
@@ -65,9 +69,9 @@ addopts = [
     "-q",
     "--strict-markers",
     "--strict-config",
-    "--cov=app",
     "--cov-report=term-missing",
     "--cov-report=html",
+    "--cov-report=xml",
     "--cov-fail-under=80",
 ]
 testpaths = ["tests"]
@@ -129,6 +133,9 @@ uvicorn = {version = "0.34.0", extras = ["standard"]}
 python-multipart = "0.0.20"
 pydantic = "2.10.5"
 pydantic-settings = "2.7.1"
+chromadb = ">=0.4.0"
+sentence-transformers = ">=2.2.0"
+onnxruntime = ">=1.16.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "0.8.6"

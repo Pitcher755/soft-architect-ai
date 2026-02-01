@@ -4,7 +4,7 @@
 
 > **Directory:** User Story tracking documentation
 > **Structure:** `doc/03-HU-TRACKING/HU-{Sprint}-{Name}/`
-> **Last Updated:** January 29, 2026
+> **Last Updated:** January 31, 2026
 
 ---
 
@@ -34,7 +34,7 @@
 | HU | Name | Owner | Status | Progress | Docs |
 |----|------|-------|--------|----------|------|
 | HU-2.1 | Knowledge Ingestion | Backend | ⏳ PENDING | 0% | [→ Go](HU-2.1-RAG-INGESTION/) |
-| HU-2.2 | Vectorization to ChromaDB | Backend | ⏳ PENDING | 0% | [→ Go](HU-2.2-VECTORIZATION/) |
+| HU-2.2 | Vectorization to ChromaDB | Backend | 🔄 IN PROGRESS | 17% | [→ Go](HU-2.2-RAG-VECTORIZATION/) |
 
 ### Sprint 3: Interface & Conversation (The Face)
 
