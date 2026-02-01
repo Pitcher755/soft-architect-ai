@@ -248,6 +248,35 @@ class VectorStoreService:
             logger.error(f"❌ Query failed: {e}")
             raise DatabaseReadError(operation="query", reason=str(e)) from e
 
+    def clear_collection(self) -> bool:
+        """
+        Delete and recreate the collection (clear all documents).
+
+        Useful for re-ingestion with fresh data.
+
+        Returns:
+            True if successful
+
+        Raises:
+            DatabaseWriteError: If delete operation fails
+        """
+        try:
+            logger.info(f"Clearing collection '{self.collection_name}'...")
+            self.client.delete_collection(name=self.collection_name)
+            logger.info(f"✅ Collection deleted")
+
+            # Recreate empty collection
+            self.collection = self.client.get_or_create_collection(
+                name=self.collection_name,
+                metadata={"description": "SoftArchitect AI Knowledge Base"},
+            )
+            logger.info(f"✅ Collection '{self.collection_name}' recreated (empty)")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Clear failed: {e}")
+            raise DatabaseWriteError(operation="delete_collection", reason=str(e)) from e
+
     def health_check(self) -> bool:
         """
         Check if ChromaDB is healthy and collection is accessible.

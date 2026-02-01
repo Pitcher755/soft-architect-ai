@@ -52,21 +52,27 @@ class TestChromaDataPersistence:
 
     def test_chroma_data_size_after_ingestion(self) -> None:
         """
-        Verify chroma_data has reasonable size (> 1MB) after ingestion.
+        Verify chroma_data has reasonable size (> 5MB) after multiformat ingestion.
 
         This test ensures that data has been persisted to disk after
         the ingestion process. The size threshold accounts for:
-        - SQLite database with 40+ documents
+        - SQLite database with 129+ documents (multiformat: .md, .yaml, .json, .tree)
         - HNSW index files (.bin files)
-        - Vector embeddings
+        - Vector embeddings for tech packs and knowledge base
+
+        Expected range: 5-50 MB (after ingesting 129 documents)
         """
         chroma_path = self.get_chroma_data_path()
         total_size = sum(
             f.stat().st_size for f in chroma_path.rglob("*") if f.is_file()
         )
-        assert total_size > 1_000_000, (
+        assert total_size > 5_000_000, (
             f"Chroma data too small for expected ingested documents: "
-            f"{total_size} bytes (expected > 1MB)"
+            f"{total_size / 1_000_000:.1f}MB (expected > 5MB for 129 docs)"
+        )
+        assert total_size < 100_000_000, (
+            f"Chroma data unexpectedly large: "
+            f"{total_size / 1_000_000:.1f}MB (expected < 100MB)"
         )
 
     def test_chroma_contains_index_files(self) -> None:
@@ -78,7 +84,7 @@ class TestChromaDataPersistence:
         ), f"No .bin index files found in {chroma_path}. Expected HNSW index files."
 
     def test_chroma_collection_accessible(self) -> None:
-        """Verify that ChromaDB collection is accessible via HTTP client."""
+        """Verify that ChromaDB collection is accessible with 129+ documents."""
         try:
             import chromadb
         except ImportError:
@@ -90,9 +96,12 @@ class TestChromaDataPersistence:
                 name="softarchitect_knowledge_base"
             )
             assert collection is not None
-            assert collection.count() > 0, (
-                "Collection exists but contains no documents. "
-                "Run ingestion first: poetry run python scripts/ingest.py"
+            # Verify collection has all 129 documents from multiformat ingestion
+            doc_count = collection.count()
+            assert doc_count >= 129, (
+                f"Collection has {doc_count} documents, expected >= 129. "
+                "Run ingestion: poetry run python scripts/ingest.py "
+                "--knowledge-base packages/knowledge_base --clear"
             )
         except Exception as e:
             pytest.skip(f"ChromaDB not available for testing: {e}")

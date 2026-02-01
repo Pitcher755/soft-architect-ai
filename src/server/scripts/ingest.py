@@ -1,15 +1,22 @@
 #!/usr/bin/env python
 """
-Ingestion Script for SoftArchitect AI Knowledge Base (HU-2.2)
+Ingestion Script for SoftArchitect AI Knowledge Base (HU-2.3)
 
-This script loads Markdown documents from the knowledge base,
+This script loads multi-format documents from the knowledge base,
 transforms them into LangChain Documents, and ingests them
 into ChromaDB for semantic search.
 
+Supported formats:
+- .md (Markdown documentation)
+- .yaml/.yml (YAML configuration and tech packs)
+- .json (JSON schemas and user stories)
+- .tree (Tree structure files)
+
 Usage:
     python src/server/scripts/ingest.py
+    python src/server/scripts/ingest.py --knowledge-base packages/knowledge_base
     python src/server/scripts/ingest.py --host chromadb --port 8000
-    python src/server/scripts/ingest.py --clear  # Clear existing collection
+    python src/server/scripts/ingest.py --clear  # Clear collection before ingestion
 
 Environment:
     CHROMA_HOST: ChromaDB server hostname (default: localhost)
@@ -17,9 +24,12 @@ Environment:
 """
 
 import argparse
+import json
 import logging
 import sys
 from pathlib import Path
+
+import yaml
 
 # Add src/server to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -36,9 +46,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def load_markdown_documents(knowledge_base_path: str) -> list[Document]:
+def load_multiformat_documents(knowledge_base_path: str) -> list[Document]:
     """
-    Load Markdown documents from knowledge base directory.
+    Load multi-format documents from knowledge base directory.
+    
+    Supported formats:
+    - .md (Markdown)
+    - .yaml/.yml (YAML)
+    - .json (JSON)
+    - .tree (Tree structure)
 
     Args:
         knowledge_base_path: Path to knowledge_base directory
@@ -53,35 +69,73 @@ def load_markdown_documents(knowledge_base_path: str) -> list[Document]:
         return []
 
     documents = []
-    md_files = list(kb_path.rglob("*.md"))
+    
+    # Find all supported file types
+    file_patterns = {
+        "*.md": "markdown",
+        "*.yaml": "yaml",
+        "*.yml": "yaml",
+        "*.json": "json",
+        "*.tree": "tree",
+    }
+    
+    all_files = []
+    for pattern, file_type in file_patterns.items():
+        files = list(kb_path.rglob(pattern))
+        all_files.extend([(f, file_type) for f in files])
+    
+    logger.info(f"Found {len(all_files)} documents in {kb_path}")
 
-    logger.info(f"Found {len(md_files)} Markdown files in {kb_path}")
-
-    for md_file in md_files:
+    for file_path, file_type in all_files:
         try:
-            with open(md_file, encoding="utf-8") as f:
-                content = f.read()
+            content = None
+            metadata_extra = {"file_type": file_type}
+            
+            if file_type == "markdown":
+                with open(file_path, encoding="utf-8") as f:
+                    content = f.read()
+            
+            elif file_type == "yaml":
+                with open(file_path, encoding="utf-8") as f:
+                    data = yaml.safe_load(f)
+                    content = yaml.dump(data, default_flow_style=False) if data else ""
+                    metadata_extra["yaml_keys"] = list(data.keys()) if isinstance(data, dict) else "list"
+            
+            elif file_type == "json":
+                with open(file_path, encoding="utf-8") as f:
+                    data = json.load(f)
+                    content = json.dumps(data, indent=2, ensure_ascii=False)
+                    metadata_extra["json_type"] = type(data).__name__
+            
+            elif file_type == "tree":
+                with open(file_path, encoding="utf-8") as f:
+                    content = f.read()
+            
+            if not content or not content.strip():
+                logger.warning(f"Skipping empty file: {file_path}")
+                continue
 
             # Extract relative path as source
             try:
-                source = str(md_file.relative_to(kb_path.parent))
+                source = str(file_path.relative_to(kb_path.parent))
             except ValueError:
-                source = str(md_file)
+                source = str(file_path)
 
             doc = Document(
                 page_content=content,
                 metadata={
                     "source": source,
-                    "filename": md_file.name,
-                    "file_path": str(md_file),
-                    "size_bytes": md_file.stat().st_size,
+                    "filename": file_path.name,
+                    "file_path": str(file_path),
+                    "size_bytes": file_path.stat().st_size,
+                    **metadata_extra,
                 },
             )
             documents.append(doc)
-            logger.debug(f"Loaded: {md_file.name} ({len(content)} chars)")
+            logger.debug(f"Loaded: {file_path.name} ({len(content)} chars, type={file_type})")
 
         except Exception as e:
-            logger.error(f"Failed to load {md_file}: {e}")
+            logger.error(f"Failed to load {file_path}: {e}")
             continue
 
     logger.info(f"✅ Successfully loaded {len(documents)} documents")
@@ -109,7 +163,7 @@ def main():
     parser.add_argument(
         "--clear",
         action="store_true",
-        help="Clear collection before ingestion (not implemented)",
+        help="Clear collection before ingestion",
     )
     parser.add_argument(
         "--dry-run",
@@ -127,8 +181,8 @@ def main():
     logger.info(f"Dry Run: {args.dry_run}")
 
     # Load documents
-    logger.info("\n📂 Loading Markdown documents...")
-    documents = load_markdown_documents(args.knowledge_base)
+    logger.info("\n📂 Loading multi-format documents...")
+    documents = load_multiformat_documents(args.knowledge_base)
 
     if not documents:
         logger.error("No documents loaded. Exiting.")
@@ -154,8 +208,17 @@ def main():
     except ChromaConnectionError as e:
         logger.error(f"❌ Failed to connect to ChromaDB: {e}")
         logger.error(f"   Make sure ChromaDB is running at {args.host}:{args.port}")
-        logger.error("   You can start it with: docker-compose up -d chroma")
+        logger.error("   You can start it with: docker-compose up -d chromadb")
         return 1
+
+    # Clear collection if requested
+    if args.clear:
+        logger.info("\n🧹 Clearing existing collection...")
+        try:
+            vector_store.clear_collection()
+        except Exception as e:
+            logger.error(f"❌ Failed to clear collection: {e}")
+            return 1
 
     # Ingest documents
     logger.info(f"\n📥 Ingesting {len(documents)} documents...")
