@@ -536,6 +536,64 @@ packages = [
 
 ---
 
+## 🔧 CORRECCIÓN FINAL: Module Import Hierarchy Issue
+
+**Problema Descubierto:** Después del commit anterior, GitHub Actions seguía fallando con:
+```
+AttributeError: module 'services' has no attribute 'rag'
+```
+
+Este error ocurría cuando los tests intentaban hacer patch a `services.rag.vector_store.chromadb`:
+```python
+@patch("services.rag.vector_store.chromadb")  # ❌ Falla porque Python no encuentra services.rag
+```
+
+**Análisis del Problema:**
+El problema era que la jerarquía de `__init__.py` no estaba correctamente exponiendo el módulo `rag`:
+```
+services/
+├── __init__.py  # ❌ No importaba rag, entonces Python no lo exponía
+└── rag/
+    ├── __init__.py  # ❌ Usaba imports relativos (from .vector_store)
+    └── vector_store.py
+
+core/
+└── exceptions/  # ❌ Sin __init__.py en core, Python no lo reconocía como package
+```
+
+**Solución Implementada:**
+
+1. **Crear `core/__init__.py`** - Hacer core un package Python legítimo
+2. **Actualizar `services/__init__.py`** - Importar explícitamente el módulo rag
+3. **Actualizar `services/rag/__init__.py`** - Usar imports absolutos
+
+```python
+# services/__init__.py
+from services import rag  # Exponer rag como atributo
+
+# services/rag/__init__.py
+from services.rag.vector_store import VectorStoreService  # Import absoluto
+```
+
+**Resultado:**
+- ✅ Python ahora puede resolver `services.rag` como módulo
+- ✅ El patch `@patch("services.rag.vector_store.chromadb")` funciona correctamente
+- ✅ Todos los 15 tests unitarios pasan
+- ✅ Todos los 9 tests E2E pasan
+- ✅ Coverage correcta: 82% para módulos testeados
+
+**Commit Documentado:**
+```
+3bb1007 fix(imports): properly expose rag module in services package hierarchy
+├─ Create core/__init__.py to make core a proper Python package
+├─ Update services/__init__.py to import rag module
+├─ Update services/rag/__init__.py to use absolute imports
+├─ Fixes: AttributeError: module 'services' has no attribute 'rag' in GitHub Actions
+└─ All 15 unit tests for VectorStoreService now passing
+```
+
+---
+
 **Documento preparado por:** ArchitectZero
 **Validado:** 31/01/2026
 **Referencia:** context/SECURITY_HARDENING_POLICY.es.md, doc/02-SETUP_DEV/SETUP_GUIDE.es.md
