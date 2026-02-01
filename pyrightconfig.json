@@ -1,13 +1,19 @@
 {
-  "include": ["src/server/app"],
+  "include": [
+    "src/server/app",
+    "src/server/services",
+    "src/server/core",
+    "src/server/tests"
+  ],
   "exclude": [
     "**/node_modules",
     "**/__pycache__",
-    "**/.*",
-    "src/server/venv"
+    "**/.*"
   ],
   "pythonVersion": "3.12",
   "pythonPath": "src/server/venv/bin/python",
+  "venvPath": "src/server",
+  "venv": "venv",
   "typeCheckingMode": "basic",
   "reportMissingImports": true,
   "reportMissingTypeStubs": false,
