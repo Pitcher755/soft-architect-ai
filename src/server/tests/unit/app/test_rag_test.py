@@ -22,7 +22,11 @@ class TestRAGHealthEndpoint:
 
         assert router is not None
         # Check that health route is registered
-        route_paths = [route.path for route in router.routes]
+        route_paths = [
+            getattr(route, "path", None)
+            for route in router.routes
+            if hasattr(route, "path")
+        ]
         assert "/rag/test/health" in route_paths
 
     @patch("app.api.v1.rag_test.VectorStoreService")
@@ -59,7 +63,11 @@ class TestRAGRetrievalEndpoint:
 
         assert router is not None
         # Check that retrieval route is registered
-        route_paths = [route.path for route in router.routes]
+        route_paths = [
+            getattr(route, "path", None)
+            for route in router.routes
+            if hasattr(route, "path")
+        ]
         assert "/rag/test/retrieval" in route_paths
 
     @patch("app.api.v1.rag_test.VectorStoreService")

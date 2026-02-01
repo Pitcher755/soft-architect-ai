@@ -92,54 +92,46 @@ async def test_rag_retrieval(body: QueryRequest) -> QueryResponse:
         formatted_results: list[RetrievalResult] = []
 
         # Safely extract documents and metadata
-        if results is not None:
-            documents_list = results.get("documents")
-            metadatas_list = results.get("metadatas")
+        documents_list = results.get("documents")
+        metadatas_list = results.get("metadatas")
 
-            if (
-                documents_list is not None
-                and isinstance(documents_list, list)
-                and len(documents_list) > 0
-                and metadatas_list is not None
-                and isinstance(metadatas_list, list)
-                and len(metadatas_list) > 0
-            ):
-                docs = documents_list[0]
-                metas = metadatas_list[0]
+        if (
+            documents_list is not None
+            and len(documents_list) > 0
+            and metadatas_list is not None
+            and len(metadatas_list) > 0
+        ):
+            docs = documents_list[0]
+            metas = metadatas_list[0]
 
-                if isinstance(docs, list) and isinstance(metas, list):
-                    for doc, meta in zip(docs, metas):
-                        # Ensure doc is string
-                        if not isinstance(doc, str):
-                            continue
+            for doc, meta in zip(docs, metas):
+                # Ensure meta is dict (doc is guaranteed to be str from ChromaDB)
+                if not isinstance(meta, dict):
+                    meta = {}
 
-                        # Ensure meta is dict
-                        if not isinstance(meta, dict):
-                            meta = {}
+                # Limit content to 300 chars for API response
+                excerpt = doc[:300] + ("..." if len(doc) > 300 else "")
 
-                        # Limit content to 300 chars for API response
-                        excerpt = doc[:300] + ("..." if len(doc) > 300 else "")
+                source_value = meta.get("filename", "unknown")
+                path_value = meta.get("source", "unknown")
 
-                        source_value = meta.get("filename", "unknown")
-                        path_value = meta.get("source", "unknown")
+                # Type-safe conversions
+                source_str = (
+                    str(source_value)
+                    if source_value is not None
+                    else "unknown"
+                )
+                path_str = (
+                    str(path_value) if path_value is not None else "unknown"
+                )
 
-                        # Type-safe conversions
-                        source_str = (
-                            str(source_value)
-                            if source_value is not None
-                            else "unknown"
-                        )
-                        path_str = (
-                            str(path_value) if path_value is not None else "unknown"
-                        )
-
-                        formatted_results.append(
-                            RetrievalResult(
-                                content=excerpt,
-                                source=source_str,
-                                path=path_str,
-                            )
-                        )
+                formatted_results.append(
+                    RetrievalResult(
+                        content=excerpt,
+                        source=source_str,
+                        path=path_str,
+                    )
+                )
 
         logger.info(f"RAG query returned {len(formatted_results)} results")
 
