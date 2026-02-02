@@ -49,7 +49,7 @@ services:
       - CHROMA_DB_IMPL=duckdb
       - PERSIST_DIRECTORY=/data
     volumes:
-      - chromadb_data:/data
+      - ./chroma_data:/data
     networks:
       - sa_network
     restart: unless-stopped
@@ -114,7 +114,7 @@ networks:
 # Volumes (Data Persistence)
 # ================================
 volumes:
-  chromadb_data:
-    driver: local
+  # chromadb_data: Replaced with bind mount ./chroma_data
+  # This allows direct inspection of ChromaDB data from host filesystem
   ollama_data:
     driver: local

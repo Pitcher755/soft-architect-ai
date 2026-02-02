@@ -25,6 +25,7 @@ from fastapi import APIRouter
 from .chat import router as chat_router
 from .health import router as health_router
 from .knowledge import router as knowledge_router
+from .rag_test import router as rag_test_router
 
 # Main router for API v1
 # All endpoints are grouped under /api/v1
@@ -36,3 +37,4 @@ router = APIRouter(prefix="/api/v1")
 router.include_router(health_router, prefix="/system")
 router.include_router(chat_router)
 router.include_router(knowledge_router)
+router.include_router(rag_test_router)

@@ -20,7 +20,7 @@ from typing import Any
 import chromadb
 from langchain_core.documents import Document
 
-from core.exceptions import (
+from core.exceptions.base import (
     ConnectionError,
     DatabaseReadError,
     DatabaseWriteError,
@@ -133,16 +133,17 @@ class VectorStoreService:
         Generate deterministic ID for document (hash-based).
 
         Ensures idempotency: same content + source always produces same ID.
+        Uses SHA-256 instead of MD5 for collision resistance.
 
         Args:
             content: Document page content
             source: Document source/filename
 
         Returns:
-            32-character MD5 hash string
+            64-character SHA-256 hash string
         """
         raw_id = f"{content.strip()}::{source.strip()}"
-        return hashlib.md5(raw_id.encode("utf-8")).hexdigest()  # noqa: S324 - MD5 used for deterministic hashing, not cryptography
+        return hashlib.sha256(raw_id.encode("utf-8")).hexdigest()
 
     def _clean_metadata(self, metadata: dict[str, Any]) -> dict[str, Any]:
         """
@@ -220,7 +221,7 @@ class VectorStoreService:
             logger.error(f"❌ Ingestion failed: {e}")
             raise DatabaseWriteError(operation="upsert", reason=str(e)) from e
 
-    def query(self, query_text: str, n_results: int = 5):
+    def query(self, query_text: str, n_results: int = 5) -> Any:
         """
         Query the vector store for semantically similar documents.
 
@@ -247,6 +248,37 @@ class VectorStoreService:
         except Exception as e:
             logger.error(f"❌ Query failed: {e}")
             raise DatabaseReadError(operation="query", reason=str(e)) from e
+
+    def clear_collection(self) -> bool:
+        """
+        Delete and recreate the collection (clear all documents).
+
+        Useful for re-ingestion with fresh data.
+
+        Returns:
+            True if successful
+
+        Raises:
+            DatabaseWriteError: If delete operation fails
+        """
+        try:
+            logger.info(f"Clearing collection '{self.collection_name}'...")
+            self.client.delete_collection(name=self.collection_name)
+            logger.info("✅ Collection deleted")
+
+            # Recreate empty collection
+            self.collection = self.client.get_or_create_collection(
+                name=self.collection_name,
+                metadata={"description": "SoftArchitect AI Knowledge Base"},
+            )
+            logger.info(f"✅ Collection '{self.collection_name}' recreated (empty)")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Clear failed: {e}")
+            raise DatabaseWriteError(
+                operation="delete_collection", reason=str(e)
+            ) from e
 
     def health_check(self) -> bool:
         """

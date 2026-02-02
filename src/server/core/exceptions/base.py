@@ -13,6 +13,16 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+__all__ = [
+    "BaseAppError",
+    "VectorStoreError",
+    "ConnectionError",
+    "DatabaseWriteError",
+    "DatabaseReadError",
+    "ValidationError",
+    "ConfigurationError",
+]
+
 
 class BaseAppError(Exception):
     """
@@ -27,6 +37,11 @@ class BaseAppError(Exception):
         details: Additional context information (dict)
         status_code: HTTP status code for API responses
     """
+
+    code: str
+    message: str
+    details: dict[str, Any]
+    status_code: int
 
     def __init__(
         self,
