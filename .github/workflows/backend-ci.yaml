@@ -73,6 +73,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: ./src/server/coverage.xml
+        continue-on-error: true
       - name: Lint Services (Ruff)
         run: |
           cd src/server

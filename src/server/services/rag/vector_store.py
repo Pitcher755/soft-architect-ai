@@ -263,7 +263,7 @@ class VectorStoreService:
         try:
             logger.info(f"Clearing collection '{self.collection_name}'...")
             self.client.delete_collection(name=self.collection_name)
-            logger.info(f"✅ Collection deleted")
+            logger.info("✅ Collection deleted")
 
             # Recreate empty collection
             self.collection = self.client.get_or_create_collection(
