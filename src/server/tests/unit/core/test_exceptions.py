@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 import pytest
 
-from core.exceptions import (  # type: ignore
+from core.exceptions.base import (
     BaseAppError,
     ConfigurationError,
     ConnectionError,
