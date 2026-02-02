@@ -321,6 +321,306 @@ Detalle del Build Pipeline:
 
 ---
 
+## ⚡ Fase 2: Primer Inicio (First-Run Automation)
+
+### Visión General
+En el primer inicio, la aplicación ejecuta automáticamente 6 pasos sin que el usuario intervenga:
+1. **Verificar Ollama** (0-10% progress)
+2. **Descargar Qwen2.5:3b** (10-30%)
+3. **Generar embeddings** (30-85%)
+4. **Inicializar SQLite** (85-92%)
+5. **Health check** (92-98%)
+6. **Mostrar onboarding** (98-100%)
+
+### Paso 0: Splash Screen
+```
+╔═════════════════════════════════════════════╗
+║   SoftArchitect AI - Inicializando...       ║
+║                                             ║
+║   [████░░░░░░░░░░░░░░░░░░░░░░░░] 15%     ║
+║                                             ║
+║   Descargando dependencias (1/6)...         ║
+╚═════════════════════════════════════════════╝
+```
+
+- Se muestra apenas abre la app
+- Barra de progreso actualiza en tiempo real
+- No permite interacción (bloquea UI)
+
+### Paso 1: Verificar Ollama (0-10%)
+
+```python
+# Lógica: services/rag/ollama_init.py
+
+def verify_ollama():
+    # Detectar si Ollama ya está descargado
+    ollama_path = pathlib.Path.home() / ".softarchitect" / "ollama"
+    
+    if not ollama_path.exists():
+        print("Descargando Ollama (390 MB)...")
+        # Detectar OS y arquitectura
+        # Descargar desde https://ollama.ai/download
+        # Extraer a ~/.softarchitect/ollama/
+        # [Progress: 0% → 10%]
+    
+    # Detectar CUDA si está instalado -nvidia
+    if is_gpu_variant():
+        has_cuda = detect_cuda_toolkit()
+        if has_cuda:
+            os.environ["OLLAMA_CUDA"] = "1"
+            print("✓ CUDA detected, GPU acceleration enabled")
+        else:
+            # Fallback a CPU - esperado
+            print("⚠ GPU mode selected but CUDA not detected. Using CPU.")
+            update_ollama_config(gpu_enabled=False)
+    
+    # Iniciar servicio Ollama en background
+    # Bind a 127.0.0.1:11434 (localhost only, no network)
+    start_ollama_service()
+    
+    return 10  # Progress porcentaje
+```
+
+**Timing:**
+- Si Ollama ya existe: <1 segundo
+- Si necesita descargar: 30-45 segundos (depending on internet)
+
+### Paso 2: Descargar Qwen2.5:3b (10-30%)
+
+```python
+def pull_model():
+    # Verificar si modelo ya descargado
+    models_dir = pathlib.Path.home() / ".softarchitect" / "models"
+    model_file = models_dir / "qwen2.5-3b.gguf"
+    
+    if not model_file.exists():
+        print("Descargando Qwen2.5:3b (2.0 GB)...")
+        # Usa ollama CLI internamente
+        subprocess.run([
+            "ollama", "pull", "qwen2.5:3b"
+        ], timeout=600)
+        # [Progress: 10% → 30%]
+    else:
+        print("✓ Qwen2.5:3b already present")
+    
+    return 30
+```
+
+**Timing:**
+- Si modelo existe: <1 segundo
+- Si necesita descargar: 60-120 segundos (fiber: 60s, standard: 120s)
+
+**Validación:**
+- `ollama list` confirma modelo presente
+- Size: ~2 GB en disk
+
+### Paso 3: Generar Embeddings (30-85%)
+
+```python
+def generate_embeddings():
+    print("Generando embeddings para knowledge base...")
+    # Ejecuta: python scripts/ingest.py
+    
+    # Lógica:
+    # 1. Lee todos los .md de packages/knowledge_base/
+    # 2. Crea embeddings usando el modelo descargado
+    # 3. Almacena en ~/.softarchitect/chroma_data/
+    # 4. Construye HNSW index para búsqueda rápida
+    
+    # Si -nvidia: utiliza CUDA (30-60 segundos)
+    # Si -cpu: CPU-only (60-120 segundos)
+    
+    ingest_result = subprocess.run([
+        sys.executable, "scripts/ingest.py",
+        "--chroma-dir", str(chroma_dir),
+        "--batch-size", "32" if gpu_enabled else "8"
+    ], timeout=180)
+    
+    if ingest_result.returncode != 0:
+        raise Exception("Embedding generation failed")
+    
+    # [Progress: 30% → 85%]
+    return 85
+```
+
+**Timing:**
+- GPU (Nvidia 3050+): 30-60 segundos
+- CPU (Quad-core): 60-120 segundos
+
+**Output:**
+- `~/.softarchitect/chroma_data/` (≈9 MB)
+- HNSW index + SQLite metadata
+
+### Paso 4: Inicializar SQLite (85-92%)
+
+```python
+def init_database():
+    print("Inicializando base de datos...")
+    
+    db_path = pathlib.Path.home() / ".softarchitect" / "softarchitect.db"
+    
+    # Crear schema si no existe
+    with sqlite3.connect(db_path) as conn:
+        conn.executescript("""
+            CREATE TABLE IF NOT EXISTS conversations (
+                id TEXT PRIMARY KEY,
+                created_at TIMESTAMP,
+                title TEXT,
+                model TEXT DEFAULT 'qwen2.5:3b'
+            );
+            
+            CREATE TABLE IF NOT EXISTS messages (
+                id TEXT PRIMARY KEY,
+                conversation_id TEXT,
+                role TEXT,
+                content TEXT,
+                timestamp TIMESTAMP,
+                FOREIGN KEY(conversation_id) REFERENCES conversations(id)
+            );
+            
+            CREATE TABLE IF NOT EXISTS settings (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            );
+            
+            INSERT OR IGNORE INTO settings (key, value) 
+            VALUES ('gpu_enabled', ?), ('language', 'es')
+        """, (str(gpu_enabled),))
+    
+    # [Progress: 85% → 92%]
+    return 92
+```
+
+**Timing:** <2 segundos
+
+### Paso 5: Health Check (92-98%)
+
+```python
+def health_check():
+    print("Verificando conectividad...")
+    
+    # 1. FastAPI backend está running?
+    try:
+        response = requests.get("http://localhost:8000/health", timeout=5)
+        if response.status_code != 200:
+            raise Exception("Backend not responding")
+        print("✓ Backend healthy")
+    except Exception as e:
+        raise Exception(f"Backend health check failed: {e}")
+    
+    # 2. Ollama disponible?
+    try:
+        response = requests.get("http://localhost:11434/api/tags", timeout=5)
+        models = response.json().get("models", [])
+        if not any("qwen" in m.get("name", "") for m in models):
+            raise Exception("Qwen model not available")
+        print("✓ Ollama + Qwen2.5:3b ready")
+    except Exception as e:
+        raise Exception(f"Ollama check failed: {e}")
+    
+    # 3. ChromaDB accesible?
+    try:
+        from services.rag.chromadb_client import ChromaClient
+        client = ChromaClient()
+        stats = client.get_collection_stats()
+        print(f"✓ ChromaDB ready ({stats['doc_count']} embeddings)")
+    except Exception as e:
+        raise Exception(f"ChromaDB check failed: {e}")
+    
+    # [Progress: 92% → 98%]
+    return 98
+```
+
+**Timing:** 3-5 segundos
+
+### Paso 6: Mostrar Onboarding (98-100%)
+
+```python
+def show_onboarding():
+    print("Completado! Bienvenido...")
+    
+    # Ocultar splash screen
+    # Mostrar Flutter UI con 3-4 pantallas:
+    
+    # Screen 1: "Welcome to SoftArchitect AI"
+    # - Explicar qué es
+    # - Mostrar key features
+    # - "Comenzar chat" button
+    
+    # Screen 2: "Tu primer prompt"
+    # - Ejemplo: "¿Qué es arquitectura limpia?"
+    # - Pre-loaded en chat input
+    # - Presionar Enter para enviar
+    
+    # Screen 3: "Ajustes rápidos" (opcional)
+    # - Tema: Dark/Light
+    # - Lenguaje: ES/EN
+    # - "Continuar" button
+    
+    # Screen 4: "Chat UI"
+    # - Empty conversation ready
+    # - Cursor en input
+    # - Aguardando primer prompt
+    
+    # [Progress: 98% → 100%]
+    # Splash desaparece
+    # Chat UI en pantalla
+    
+    return 100
+```
+
+**Timing:** UI appears immediately
+
+### 📊 Tabla de Tiempos Totales
+
+| Escenario | GPU (Nvidia 3050+) | CPU (Quad-core) |
+|-----------|-------------------|-----------------|
+| **Todo nuevo** (downloads + setup) | 3-5 min | 5-8 min |
+| **Solo embeddings** (Ollama existente) | 30-60 seg | 60-120 seg |
+| **Todo en caché** (segundo inicio) | <100 ms | <100 ms |
+
+### 🛠️ Manejo de Errores During First Run
+
+```python
+# Si Ollama descarga falla:
+# → Retry 3 veces con backoff exponencial
+# → Si sigue fallando: Mostrar error modal
+#   "Cannot download Ollama. Check internet. Manual: https://ollama.ai/download"
+
+# Si GPU variant pero CUDA no encontrado:
+# → Auto-fallback a CPU (silencioso)
+# → Continuar proceso (usuario ve latencia más alta)
+# → Log en ~/.softarchitect/logs/startup.log
+
+# Si embeddings fallan:
+# → Retry con batch-size reducido
+# → Si sigue fallando: Reset chroma_data/ y retry
+# → Si 3 retries fallan: Mostrar error + soporte link
+
+# Si base de datos corrupta:
+# → Backup existing DB
+# → Crear schema nuevo
+# → Perder historial pero continuar funcionando
+```
+
+### ✅ Validación Post-Setup
+
+```bash
+# Verificaciones que hace el app antes de mostrar UI:
+
+✓ ~/.softarchitect/ directory exists
+✓ Ollama service running on 127.0.0.1:11434
+✓ Model "qwen2.5:3b" listed in ollama
+✓ ~/.softarchitect/chroma_data/ exists with valid index
+✓ ~/.softarchitect/softarchitect.db schema OK
+✓ FastAPI backend responds to /health
+✓ Storage permisos OK (read/write test)
+```
+
+Si cualquier validación falla → Mostrar error specifico + opción para retry
+
+---
+
 ## 📋 Checklist para Production Release
 
 ```
