@@ -699,6 +699,366 @@ Usuario quiere usar SoftArchitect AI:
 
 ---
 
+## 🌐 Variante Web: Demo & Presentación Interactiva (Homelab)
+
+### 📋 Visión General
+
+Además de la versión desktop standalone con **Qwen2.5:3b local**, se desarrollará una **versión web optimizada** para ejecutar en el homelab del desarrollador con las siguientes características:
+
+- **Runtime**: Flutter Web (misma codebase que desktop)
+- **Despliegue**: Docker en homelab (kubernetes o docker-compose)
+- **LLM Backend**: **Groq API Cloud** (no local Ollama)
+- **Caso de Uso**: Presentación interactiva, demostraciones en vivo, pruebas sin instalación
+- **Audiencia**: Presentadores, evaluadores, stakeholders sin setup técnico
+
+### 🎯 Por Qué Groq en la Versión Web?
+
+```
+DESKTOP (v0.1.0):
+├─ LLM: Qwen2.5:3b (local, ollama)
+├─ Ventajas: 
+│  ├─ Privacy total (datos no salen)
+│  ├─ Offline (sin internet)
+│  ├─ Latency <50ms (GPU nvidia)
+│  └─ No tiene límite de tokens
+└─ Desventaja: Requiere 4GB VRAM
+
+WEB/HOMELAB (DEMO):
+├─ LLM: Groq API Cloud
+├─ Ventajas:
+│  ├─ Gratis hasta 30K req/mes
+│  ├─ Latency <100ms (ultra-rápido)
+│  ├─ No requiere GPU local
+│  ├─ Escalable (Groq maneja carga)
+│  └─ Perfecto para demos en vivo
+└─ Desventaja: Requiere API key + internet
+```
+
+### 🏗️ Arquitectura Web (Demo)
+
+```
+┌────────────────────────────────────────────────────────────┐
+│         HOMELAB (Docker Container)                         │
+├────────────────────────────────────────────────────────────┤
+│                                                             │
+│ ┌─────────────────────────────────────────────────────┐   │
+│ │ Flutter Web UI                                      │   │
+│ │ ├─ Chat interface (responsive, mobile-friendly)    │   │
+│ │ ├─ Settings (select Groq model)                    │   │
+│ │ └─ Hosted on: localhost:8080 (or homelab.local)    │   │
+│ └─────────────────────────────────────────────────────┘   │
+│                         ↓ (HTTP/WebSocket)                 │
+│ ┌─────────────────────────────────────────────────────┐   │
+│ │ FastAPI Backend (Python)                           │   │
+│ │ ├─ /api/v1/chat (POST, streaming)                  │   │
+│ │ ├─ /api/v1/conversations (GET, POST, DELETE)       │   │
+│ │ ├─ /health (liveness probe)                        │   │
+│ │ └─ Port: 8000                                       │   │
+│ └─────────────────────────────────────────────────────┘   │
+│                         ↓ (HTTPS + GROQ_API_KEY)           │
+│                   [Groq API Cloud]                         │
+│              (Llama 3.3 70B, 3.1 70B, etc.)               │
+│                                                             │
+│ ┌─────────────────────────────────────────────────────┐   │
+│ │ ChromaDB (Vector Store)                            │   │
+│ │ ├─ Volumen: /data/chroma_data                      │   │
+│ │ ├─ Contiene: Embeddings de knowledge_base/          │   │
+│ │ └─ Reutiliza misma KB que desktop                   │   │
+│ └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│ ┌─────────────────────────────────────────────────────┐   │
+│ │ SQLite (Historial de Conversaciones)               │   │
+│ │ ├─ Volumen: /data/softarchitect.db                 │   │
+│ │ └─ Persiste entre sesiones                         │   │
+│ └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└────────────────────────────────────────────────────────────┘
+         ↑                                      ↑
+    [Acceso Local]              [API Key via .env]
+    homelab.local:8080          $GROQ_API_KEY
+```
+
+### 📦 Docker Compose para Homelab
+
+```yaml
+# infrastructure/docker-compose.web.yml (variante demo)
+# Nota: Sin campo 'version' (deprecated desde Docker Compose v2)
+
+services:
+  softarchitect-web:
+    image: softarchitect-ai:web-latest
+    ports:
+      - "8080:8080"  # Flutter Web UI
+      - "8000:8000"  # FastAPI API
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}  # Inyectado de .env.local
+      - LLM_MODE=groq  # "groq" or "ollama"
+      - GROQ_MODEL=llama-3.3-70b-versatile  # Modelo por defecto
+      - FLASK_ENV=demo  # No incluir datos sensibles en logs
+    volumes:
+      - ./chroma_data:/data/chroma_data  # Reutilizar KB embeddings
+      - ./softarchitect.db:/data/softarchitect.db
+    networks:
+      - homelab
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Opcional: Nginx reverse proxy para acceso desde la red
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    networks:
+      - homelab
+    depends_on:
+      - softarchitect-web
+
+networks:
+  homelab:
+    driver: bridge
+```
+
+### 🔑 Configuración de Groq API
+
+```python
+# services/rag/groq_client.py (NUEVA clase)
+
+from groq import Groq
+import os
+
+class GroqClient:
+    def __init__(self):
+        self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        self.model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    
+    async def stream_response(self, messages: List[dict], temperature=0.7):
+        """
+        Streaming response using Groq API
+        
+        Args:
+            messages: [{"role": "user", "content": "..."}]
+            temperature: 0.0-2.0 (higher = more creative)
+        
+        Yields:
+            str: Token chunks
+        """
+        try:
+            stream = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=temperature,
+                stream=True,
+                max_tokens=1024
+            )
+            
+            for chunk in stream:
+                if chunk.choices[0].delta.content:
+                    yield chunk.choices[0].delta.content
+        
+        except Exception as e:
+            yield f"Error: {str(e)}\n\nTip: Verifica tu API key de Groq en Settings"
+    
+    def get_available_models(self):
+        """List available Groq models for UI dropdown"""
+        return [
+            {"id": "llama-3.3-70b-versatile", "name": "Llama 3.3 70B (Recomendado)"},
+            {"id": "llama-3.1-70b-versatile", "name": "Llama 3.1 70B"},
+            {"id": "mixtral-8x7b-32768", "name": "Mixtral 8x7B"},
+            {"id": "gemma-7b-it", "name": "Gemma 7B"},
+        ]
+```
+
+### 🎨 Cambios en el Frontend (Flutter)
+
+```dart
+// lib/features/settings/presentation/pages/settings_page.dart
+
+// Añadir nuevas opciones en Settings:
+
+class SettingsPage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Ajustes')),
+      body: ListView(
+        children: [
+          // Sección existente: Tema
+          _ThemeTile(),
+          
+          // NUEVA Sección: Modo LLM (Desktop vs Demo)
+          SectionHeader('Modo LLM'),
+          _LLMModeTile(),  // Switch: "Ollama Local" vs "Groq Cloud"
+          
+          // Si Groq seleccionado:
+          if (ref.watch(llmModeProvider) == LLMMode.groq)
+            _GroqSettingsTile(),  // Input: API key + modelo selector
+          
+          // Sección existente: Sobre
+          _AboutTile(),
+        ],
+      ),
+    );
+  }
+}
+
+// Riverpod providers
+final llmModeProvider = StateNotifierProvider<LLMModeNotifier, LLMMode>((ref) {
+  return LLMModeNotifier(prefs: ref.watch(sharedPreferencesProvider));
+});
+
+final groqApiKeyProvider = StateNotifierProvider<GroqApiKeyNotifier, String?>((ref) {
+  return GroqApiKeyNotifier(prefs: ref.watch(sharedPreferencesProvider));
+});
+```
+
+### 🚀 API Endpoint (Adaptado para Groq)
+
+```python
+# api/v1/endpoints/chat.py (MODIFICADO)
+
+@router.post("/message", response_class=StreamingResponse)
+async def chat_message(
+    request: ChatMessageRequest,
+    llm_mode: str = Header(default="ollama"),  # "ollama" o "groq"
+    db: Session = Depends(get_db)
+):
+    """
+    Endpoint de chat unificado:
+    - Desktop: usa Ollama local (Qwen2.5:3b)
+    - Web/Demo: usa Groq API (Llama 3.3 70B)
+    """
+    try:
+        # Recuperar documentos relevantes (misma lógica)
+        rag_service = RAGService(chroma_client=get_chroma_client())
+        context_docs = rag_service.query(request.message, top_k=3)
+        
+        # Construir prompt con contexto
+        system_prompt = build_system_prompt(context_docs)
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": request.message}
+        ]
+        
+        # Seleccionar backend según modo
+        if llm_mode == "groq":
+            llm_client = GroqClient()
+            stream_generator = llm_client.stream_response(messages)
+        else:
+            llm_client = OllamaClient()
+            stream_generator = llm_client.stream_response(messages)
+        
+        # Streaming response
+        async def generate():
+            full_response = ""
+            for token in stream_generator:
+                full_response += token
+                yield f"data: {json.dumps({'token': token})}\n\n"
+            
+            # Guardar en DB (conversación + respuesta)
+            save_conversation(db, request.conversation_id, full_response)
+        
+        return StreamingResponse(
+            generate(),
+            media_type="text/event-stream"
+        )
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+```
+
+### 📊 Comparativa: Desktop vs Web/Demo
+
+| Aspecto | Desktop (v0.1.0) | Web/Demo (Homelab) |
+|---------|------------------|-------------------|
+| **LLM** | Qwen2.5:3b (Local Ollama) | Groq API Cloud |
+| **Requisitos** | GPU/CPU local + 8-12GB RAM | Solo Groq API key |
+| **Latency** | 50-300ms (según hardware) | <100ms (Groq) |
+| **Costo** | 0€ (todo local) | Gratis < 30K req/mes |
+| **Privacy** | 100% (offline) | Datos → Groq (HTTPS) |
+| **Caso de Uso** | Productivo, trabajo diario | Demo, presentación, pruebas |
+| **Instalación** | Instalador .msi/.deb/.dmg | Docker o `docker-compose up` |
+| **Escalabilidad** | Limitado por hardware local | Infinito (Groq maneja carga) |
+| **Knowledge Base** | Misma (packages/knowledge_base/) | Misma (reutiliza chroma_data) |
+
+### 🎤 Flujo de Demo en Vivo
+
+```
+Escenario: Presentación en conferencia/reunión
+
+1. Antes de la demo:
+   ├─ Homelab con Docker ejecutándose en background
+   ├─ Compartir WiFi o usar hotspot personal
+   └─ Abrir navegador: homelab.local:8080
+
+2. Durante la demo (sin instalación):
+   ├─ Usuario (presentador): Escribe prompt en vivo
+   │  └─ "¿Cuáles son los 5 SOLID principles?"
+   ├─ Sistema: Busca en ChromaDB (mismo que desktop)
+   ├─ Groq responde: <100ms (más rápido que hablar)
+   ├─ UI muestra tokens apareciendo en tiempo real
+   └─ Presentador: "Sin instalación, sin setup..."
+
+3. Ventajas vs Demostración clásica:
+   ├─ ✅ Código de demo = código de producción
+   ├─ ✅ No necesita internet rápido (solo API key)
+   ├─ ✅ Historial de conversaciones persiste
+   ├─ ✅ Mismo UI que versión desktop
+   └─ ✅ Stakeholders pueden acceder desde cualquier dispositivo
+```
+
+### 🔒 Seguridad & Configuración
+
+```bash
+# .env.local (nunca en Git)
+GROQ_API_KEY=gsk_xxxxx...  # De https://console.groq.com/keys
+LLM_MODE=groq
+GROQ_MODEL=llama-3.3-70b-versatile
+
+# .env (plantilla, con ejemplo fake)
+GROQ_API_KEY=gsk_PLACEHOLDER_CHANGE_IN_LOCAL
+LLM_MODE=groq
+GROQ_MODEL=llama-3.3-70b-versatile
+```
+
+**Notas de seguridad:**
+- API key **nunca** se commitea a Git
+- Usar `GROQ_API_KEY` como variable de entorno inyectada
+- En CI/CD, usar GitHub Secrets
+- En homelab, usar `.env.local` que está en `.gitignore`
+- Si se expone key: regenerar en dashboard de Groq (instantáneo)
+
+### 🎯 Roadmap Integración
+
+**Sprint 3** (Chat Frontend):
+- ✅ Implementar endpoint unificado `/api/v1/message` que soporte ambos modos
+- ✅ Agregar parámetro `llm_mode` al header o request body
+
+**Sprint 4** (Integración Groq):
+- Crear `GroqClient` clase
+- Implementar autenticación API key
+- Agregar selector de modelo en Settings
+
+**Sprint 5** (Docker Web):
+- Crear `docker-compose.web.yml`
+- Build imagen: `softarchitect-ai:web-latest`
+- Probar en homelab local
+- Documentar guía de deploy
+
+**MVP+** (Futuro):
+- Soporte para múltiples LLMs (Anthropic Claude, OpenAI GPT-4)
+- Métricas de uso (requests, latency, costo Groq)
+- Webhook para CI/CD automation
+
+---
+
 ## 🔄 Actualización de Knowledge Base (MVP+)
 
 Para futuras versiones (no en v0.1.0), se podría implementar:
