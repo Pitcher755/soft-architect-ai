@@ -133,18 +133,17 @@ class VectorStoreService:
         Generate deterministic ID for document (hash-based).
 
         Ensures idempotency: same content + source always produces same ID.
+        Uses SHA-256 instead of MD5 for collision resistance.
 
         Args:
             content: Document page content
             source: Document source/filename
 
         Returns:
-            32-character MD5 hash string
+            64-character SHA-256 hash string
         """
         raw_id = f"{content.strip()}::{source.strip()}"
-        return hashlib.md5(  # noqa: S324 - MD5 used for deterministic hashing
-            raw_id.encode("utf-8")
-        ).hexdigest()
+        return hashlib.sha256(raw_id.encode("utf-8")).hexdigest()
 
     def _clean_metadata(self, metadata: dict[str, Any]) -> dict[str, Any]:
         """

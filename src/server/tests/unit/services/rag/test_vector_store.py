@@ -17,7 +17,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from langchain_core.documents import Document
 
-from core.exceptions import ConnectionError, DatabaseWriteError
+from core.exceptions.base import ConnectionError, DatabaseWriteError
 
 # ==================== FIXTURES ====================
 
@@ -148,7 +148,7 @@ class TestDocumentIngestion:
 
         doc_id = call_kwargs["ids"][0]
         assert isinstance(doc_id, str)
-        assert len(doc_id) == 32  # MD5 hash length
+        assert len(doc_id) == 64  # SHA-256 hash length
 
     @patch("services.rag.vector_store.chromadb")
     def test_ingest_multiple_documents(self, mock_chroma, sample_documents):
