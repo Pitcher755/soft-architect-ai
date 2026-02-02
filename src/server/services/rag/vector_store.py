@@ -221,7 +221,7 @@ class VectorStoreService:
             logger.error(f"❌ Ingestion failed: {e}")
             raise DatabaseWriteError(operation="upsert", reason=str(e)) from e
 
-    def query(self, query_text: str, n_results: int = 5):
+    def query(self, query_text: str, n_results: int = 5) -> Any:
         """
         Query the vector store for semantically similar documents.
 

@@ -324,6 +324,7 @@ class TestQueryFunctionality:
         service = VectorStoreService()
         results = service.query("test query", n_results=5)
 
+        assert results is not None
         assert "documents" in results
         assert len(results["documents"][0]) > 0
 
@@ -349,6 +350,7 @@ class TestQueryFunctionality:
         service = VectorStoreService()
         results = service.query("search term")
 
+        assert results is not None
         assert "metadatas" in results
         assert results["metadatas"][0][0]["source"] == "source.md"
 
