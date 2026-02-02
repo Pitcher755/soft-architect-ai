@@ -20,7 +20,7 @@ from typing import Any
 import chromadb
 from langchain_core.documents import Document
 
-from core.exceptions import (
+from core.exceptions.base import (
     ConnectionError,
     DatabaseReadError,
     DatabaseWriteError,
@@ -142,7 +142,9 @@ class VectorStoreService:
             32-character MD5 hash string
         """
         raw_id = f"{content.strip()}::{source.strip()}"
-        return hashlib.md5(raw_id.encode("utf-8")).hexdigest()  # noqa: S324 - MD5 used for deterministic hashing, not cryptography
+        return hashlib.md5(  # noqa: S324 - MD5 used for deterministic hashing
+            raw_id.encode("utf-8")
+        ).hexdigest()
 
     def _clean_metadata(self, metadata: dict[str, Any]) -> dict[str, Any]:
         """
@@ -275,7 +277,9 @@ class VectorStoreService:
 
         except Exception as e:
             logger.error(f"❌ Clear failed: {e}")
-            raise DatabaseWriteError(operation="delete_collection", reason=str(e)) from e
+            raise DatabaseWriteError(
+                operation="delete_collection", reason=str(e)
+            ) from e
 
     def health_check(self) -> bool:
         """
