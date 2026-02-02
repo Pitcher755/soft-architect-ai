@@ -1,0 +1,472 @@
+{
+    "project_name": "SoftArchitect AI - MVP v0.1.0",
+    "tech_stack": {
+        "frontend": "Flutter Desktop (Linux/Windows)",
+        "backend": "Python FastAPI + LangChain",
+        "ai_engine": "Ollama (Local) / Groq (Cloud)",
+        "database": "ChromaDB (Vector) + SQLite (Config)"
+    },
+    "methodology": "Scrum / GitFlow",
+    "sprints": [
+        {
+            "id": "S1",
+            "name": "Sprint 1: Infraestructura y Scaffolding (The Bedrock)",
+            "goal": "Tener un entorno 'Dockerizado' donde Frontend y Backend se ejecuten y comuniquen básicamente.",
+            "epics": [
+                {
+                    "epic_id": "E1",
+                    "name": "Orquestación y Entorno",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-1.1",
+                            "name": "Como DevOps, quiero un docker-compose unificado, para levantar todo el stack con un solo comando.",
+                            "priority": "Critical",
+                            "estimation": "M",
+                            "branch_name": "feature/infra-docker-setup",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/TECH_STACK_DETAILS.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Ejecutar `docker compose up` levanta 3 contenedores: api-server, client-desktop y chromadb.",
+                                "✅ (Positivo) Los volúmenes de persistencia están creados en `./data`.",
+                                "✅ (Positivo) El backend es accesible en localhost:8000/docs.",
+                                "❌ (Negativo) Si Docker no está instalado, el script de setup falla con un mensaje de error legible y no explota."
+                            ],
+                            "technical_tasks": [
+                                "Crear `infrastructure/docker-compose.yml`.",
+                                "Configurar `nvidia-container-toolkit` para soporte GPU.",
+                                "Crear `.env.example` con variables de configuración."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-1.2",
+                            "name": "Como Backend Dev, quiero la estructura base de FastAPI, para empezar a desarrollar endpoints sobre una arquitectura limpia.",
+                            "priority": "High",
+                            "estimation": "S",
+                            "branch_name": "feature/backend-skeleton",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Endpoint GET `/health` devuelve 200 OK.",
+                                "✅ (Positivo) La estructura de carpetas sigue estrictamente el mapa de arquitectura.",
+                                "✅ (Positivo) `poetry install` instala las dependencias sin conflictos.",
+                                "❌ (Negativo) El linter `ruff` falla si se intenta commitear código sin formato (simulado en pre-commit)."
+                            ],
+                            "technical_tasks": [
+                                "Inicializar proyecto FastAPI en `src/server`.",
+                                "Configurar Pydantic Settings para leer `.env`.",
+                                "Implementar Middleware de CORS."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S2",
+            "name": "Sprint 2: El Cerebro RAG (Knowledge Injection)",
+            "goal": "Dotar al sistema de memoria. Que sea capaz de leer los Tech Packs y vectorizarlos.",
+            "epics": [
+                {
+                    "epic_id": "E2",
+                    "name": "Ingesta de Conocimiento",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-2.1",
+                            "name": "Como Arquitecto, quiero que el sistema lea los archivos Markdown de `packages/knowledge_base`, para alimentar el contexto de la IA.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "branch_name": "feature/rag-ingestion-loader",
+                            "dependencies": [
+                                "packages/knowledge_base/"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) El script recorre recursivamente las carpetas.",
+                                "✅ (Positivo) Se extraen metadatos (título, ruta) correctamente.",
+                                "✅ (Positivo) Los archivos grandes se dividen en chunks lógicos (Semantic Splitting).",
+                                "❌ (Negativo) Se ignoran archivos que no sean `.md` o archivos ocultos de sistema."
+                            ],
+                            "technical_tasks": [
+                                "Implementar `DocumentLoader` en Python.",
+                                "Crear función de limpieza de texto (Markdown cleaner)."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-2.2",
+                            "name": "Como Sistema, quiero vectorizar el contenido y guardarlo en ChromaDB, para poder recuperarlo semánticamente.",
+                            "priority": "Critical",
+                            "estimation": "L",
+                            "branch_name": "feature/rag-vectorization",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) La carpeta `chroma_data` aumenta de tamaño tras la ingesta.",
+                                "✅ (Positivo) Una consulta de prueba devuelve los fragmentos del Tech Pack correcto.",
+                                "✅ (Positivo) Funciona offline usando embeddings locales.",
+                                "❌ (Negativo) Si ChromaDB está caído, el sistema lanza el error `SYS_001` (ConnectionRefused) controlado."
+                            ],
+                            "technical_tasks": [
+                                "Configurar cliente ChromaDB en Python.",
+                                "Implementar `VectorStoreService`.",
+                                "Crear script `ingest.py` para ejecución manual."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S3",
+            "name": "Sprint 3: Interfaz y Conversación (The Face)",
+            "goal": "Conectar al usuario con el cerebro a través de una UI fluida en Flutter.",
+            "epics": [
+                {
+                    "epic_id": "E3",
+                    "name": "Experiencia de Chat Desktop",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-3.1",
+                            "name": "Como Usuario, quiero una interfaz de chat limpia que renderice Markdown, para leer código cómodamente.",
+                            "priority": "High",
+                            "estimation": "L",
+                            "branch_name": "feature/ui-chat-widget",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/DESIGN_SYSTEM.md",
+                                "context/30-ARCHITECTURE/UI_WIREFRAMES_AND_PROMPTS.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) El chat sigue los colores del `DESIGN_SYSTEM.md` (Dark Mode).",
+                                "✅ (Positivo) Los bloques de código tienen resaltado de sintaxis y botón de copiar.",
+                                "✅ (Positivo) La UI es responsive al redimensionar la ventana.",
+                                "❌ (Negativo) El botón de enviar está deshabilitado si el campo de texto está vacío."
+                            ],
+                            "technical_tasks": [
+                                "Implementar `ChatScreen` usando el prompt de Stitch como referencia.",
+                                "Integrar paquete `flutter_markdown` y `flutter_highlighter`.",
+                                "Crear widgets burbuja de chat personalizados."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-3.2",
+                            "name": "Como Usuario, quiero recibir la respuesta de la IA en tiempo real (Streaming), para reducir la sensación de espera.",
+                            "priority": "Critical",
+                            "estimation": "XL",
+                            "branch_name": "feature/ui-api-connection",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md",
+                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Al enviar un mensaje, no hay bloqueo de UI (Optimistic UI).",
+                                "✅ (Positivo) El texto aparece token a token vía SSE.",
+                                "✅ (Positivo) El scroll baja automáticamente con nuevos mensajes.",
+                                "❌ (Negativo) Si el backend falla, se muestra un mensaje amigable según `ERROR_HANDLING_STANDARD.md` (no excepciones rojas)."
+                            ],
+                            "technical_tasks": [
+                                "Implementar Repositorio `ChatRepository` en Dart.",
+                                "Gestionar estado con `Riverpod` (StreamProvider).",
+                                "Conectar con endpoint `/api/v1/chat/stream`."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-3.3",
+                            "name": "Como Usuario, quiero que los errores se muestren de forma clara y amigable, para entender qué salió mal sin ver stack traces.",
+                            "priority": "High",
+                            "estimation": "S",
+                            "branch_name": "feature/ui-error-handling",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Si el backend no responde, se muestra 'No hay conexión con el servidor'.",
+                                "✅ (Positivo) Si ChromaDB falla, se sugiere 'Reintentar' automáticamente.",
+                                "✅ (Positivo) Los errores desaparecen después de 5 segundos (autohide).",
+                                "❌ (Negativo) El usuario nunca ve un stack trace de Python en la UI."
+                            ],
+                            "technical_tasks": [
+                                "Implementar widget `ErrorBanner` reusable.",
+                                "Mapear códigos de error a mensajes en español.",
+                                "Crear `ErrorMiddleware` en Riverpod para capturar excepciones."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S4",
+            "name": "Sprint 4: Backend Chat & RAG Integration (The Brain Connection)",
+            "goal": "Implementar el endpoint de chat definitivo que integra RAG de forma transparente.",
+            "epics": [
+                {
+                    "epic_id": "E4",
+                    "name": "Chat API Definitiva",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-4.1",
+                            "name": "Como Backend, quiero implementar POST /api/v1/chat/message, para procesar mensajes del usuario con RAG integrado.",
+                            "priority": "Critical",
+                            "estimation": "L",
+                            "branch_name": "feature/backend-chat-endpoint",
+                            "dependencies": [
+                                "HU-2.2",
+                                "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Endpoint acepta {conversation_id, message} y devuelve {response, sources}.",
+                                "✅ (Positivo) Internamente usa RAG para enriquecer el contexto (sin exponerlo).",
+                                "✅ (Positivo) La respuesta incluye referencias a documentos (sources).",
+                                "❌ (Negativo) Las fuentes no incluyen rutas internas (privacy)."
+                            ],
+                            "technical_tasks": [
+                                "Crear Use Case `ChatWithRAG` en services/.",
+                                "Integrar `VectorStoreService` (de HU-2.2).",
+                                "Llamar a LLM local (Ollama) con contexto enriquecido.",
+                                "Logging de conversaciones para audit trail."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-4.2",
+                            "name": "Como Sistema, quiero mantener el historial de conversaciones, para permitir seguimiento y contexto en chats largos.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "branch_name": "feature/backend-conversation-history",
+                            "dependencies": [
+                                "HU-4.1"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) GET /api/v1/conversations/{id} devuelve todo el historial.",
+                                "✅ (Positivo) Las conversaciones se almacenan en SQLite (no en memoria).",
+                                "✅ (Positivo) El contexto anterior se pasa al LLM para coherencia.",
+                                "❌ (Negativo) No se almacenan prompts del sistema en la BD (solo en variables de env)."
+                            ],
+                            "technical_tasks": [
+                                "Crear modelo SQLAlchemy `Conversation`.",
+                                "Implementar migrations de base de datos.",
+                                "Usar `conversation_id` para agrupar mensajes."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-4.3",
+                            "name": "Como Usuario, quiero que el chat responda en tiempo real, para no sentir que el sistema está bloqueado.",
+                            "priority": "Critical",
+                            "estimation": "M",
+                            "branch_name": "feature/backend-streaming",
+                            "dependencies": [
+                                "HU-4.1"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Endpoint usa Server-Sent Events (SSE) para streaming.",
+                                "✅ (Positivo) El cliente recibe tokens uno a uno en tiempo real.",
+                                "✅ (Positivo) La latencia de primer token <200ms (según requisitos no funcionales).",
+                                "❌ (Negativo) Si se corta la conexión, se reintentas automáticamente."
+                            ],
+                            "technical_tasks": [
+                                "Implementar generator de streaming en FastAPI.",
+                                "Conectar output del LLM al stream.",
+                                "Manejo de timeout de cliente desconectado."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S5",
+            "name": "Sprint 5: Cleanup & Polish (Remove Training Wheels)",
+            "goal": "Remover endpoints temporales, consolidar código, optimizar rendimiento.",
+            "epics": [
+                {
+                    "epic_id": "E5",
+                    "name": "Limpieza y Optimización",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-5.1",
+                            "name": "Como Arquitecto, quiero remover los endpoints temporales /api/v1/rag/test/*, para no exponer APIs de debugging en producción.",
+                            "priority": "Medium",
+                            "estimation": "S",
+                            "branch_name": "chore/remove-temporary-endpoints",
+                            "dependencies": [
+                                "HU-2.3",
+                                "HU-4.1"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Los endpoints /api/v1/rag/test/* han sido removidos.",
+                                "✅ (Positivo) Toda funcionalidad de debugging se movió a CLI (inspect_db.py).",
+                                "✅ (Positivo) No hay regresión en tests existentes.",
+                                "❌ (Negativo) Las herramientas de CLI siguen disponibles para desarrolladores."
+                            ],
+                            "technical_tasks": [
+                                "Borrar `src/server/app/api/v1/rag_test.py`.",
+                                "Desregistrar router del router principal.",
+                                "Actualizar documentación de API."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-5.2",
+                            "name": "Como DevOps, quiero optimizar las imágenes Docker, para reducir tamaño de descarga y startup time.",
+                            "priority": "Medium",
+                            "estimation": "M",
+                            "branch_name": "chore/optimize-docker-images",
+                            "dependencies": [
+                                "HU-1.1"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Imagen del backend <500MB (usar multi-stage builds).",
+                                "✅ (Positivo) Imagen del Ollama <3GB (caché de modelos).",
+                                "✅ (Positivo) Startup completo <30 segundos.",
+                                "❌ (Negativo) No se commitean binarios grandes en Git."
+                            ],
+                            "technical_tasks": [
+                                "Implementar multi-stage Dockerfile.",
+                                "Usar slim base images.",
+                                "Configurar caché de Docker Compose."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S6",
+            "name": "Sprint 6: Packaging & Distribution (The Release)",
+            "goal": "Preparar el software para distribución: instaladores, documentación, onboarding.",
+            "epics": [
+                {
+                    "epic_id": "E6",
+                    "name": "Empaquetamiento y Distribución",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-6.1",
+                            "name": "Como Usuario Final, quiero descargar un instalador de una sola línea, para ejecutar el software sin saber de Docker o Python.",
+                            "priority": "Critical",
+                            "estimation": "XL",
+                            "branch_name": "feature/packaging-installers",
+                            "dependencies": [
+                                "HU-4.3",
+                                "HU-5.2"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Existe instalador .deb para Linux.",
+                                "✅ (Positivo) Existe instalador .msi para Windows.",
+                                "✅ (Positivo) Existe instalador .dmg para macOS.",
+                                "✅ (Positivo) El instalador ejecuta el setup de chroma_data automáticamente en primer inicio.",
+                                "❌ (Negativo) El usuario final NO ve comandos de Docker o Python."
+                            ],
+                            "technical_tasks": [
+                                "Usar flutter_distributor o similar para packaging.",
+                                "Crear script `setup_on_first_run.py` que genera chroma_data.",
+                                "Embeber Ollama runtime en el instalador (o descargarlo en primer inicio).",
+                                "Crear acceso directo de escritorio."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-6.2",
+                            "name": "Como Usuario, quiero un onboarding visual que explique qué es SoftArchitect AI, para no estar perdido en el primer inicio.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "branch_name": "feature/ui-onboarding",
+                            "dependencies": [
+                                "HU-3.1"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Primera ejecución muestra un tour visual con 3-4 pantallas.",
+                                "✅ (Positivo) Se explica qué es RAG y por qué es offline.",
+                                "✅ (Positivo) El botón 'Comenzar' cierra el onboarding y abre el chat.",
+                                "❌ (Negativo) El onboarding no aparece si el usuario ya lo completó."
+                            ],
+                            "technical_tasks": [
+                                "Crear screens de onboarding en Flutter.",
+                                "Guardar flag 'onboarding_completed' en SQLite.",
+                                "Localización en español e inglés."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-6.3",
+                            "name": "Como Desarrollador, quiero documentación clara de cómo hacer builds reproducibles, para poder mantener el software.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "branch_name": "docs/build-and-release-guide",
+                            "dependencies": [
+                                "HU-6.1"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Existe BUILDING.md con instrucciones paso a paso.",
+                                "✅ (Positivo) Existe RELEASING.md con checklist pre-release.",
+                                "✅ (Positivo) Los builds son deterministas (mismo código = mismo hash).",
+                                "❌ (Negativo) No se incluyen secretos en la documentación."
+                            ],
+                            "technical_tasks": [
+                                "Crear BUILDING.md con full instructions.",
+                                "Crear RELEASING.md con checklist.",
+                                "Documentar procedimiento de firma de código (code signing)."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S7",
+            "name": "Sprint 7: CI/CD & Release Management (Go Live)",
+            "goal": "Automatizar builds, testing, y deployments. Release v0.1.0 al público.",
+            "epics": [
+                {
+                    "epic_id": "E7",
+                    "name": "Automatización y Releases",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-7.1",
+                            "name": "Como DevOps, quiero pipelines de CI/CD en GitHub Actions, para automatizar builds y tests.",
+                            "priority": "Critical",
+                            "estimation": "L",
+                            "branch_name": "ci/github-actions-setup",
+                            "dependencies": [
+                                "HU-5.2"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) En cada push a develop: corren todos los tests.",
+                                "✅ (Positivo) En cada PR: coverage reporte automático.",
+                                "✅ (Positivo) En tag v*: se generan instaladores para 3 plataformas.",
+                                "✅ (Positivo) Los artefactos se cargan a GitHub Releases automáticamente.",
+                                "❌ (Negativo) Un fallo en tests bloquea la PR (required status check)."
+                            ],
+                            "technical_tasks": [
+                                "Crear workflow para tests (.github/workflows/tests.yml).",
+                                "Crear workflow para builds (.github/workflows/build.yml).",
+                                "Crear workflow para releases (.github/workflows/release.yml).",
+                                "Configurar code signing para macOS y Windows."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-7.2",
+                            "name": "Como Usuario, quiero descargar la primera release oficial v0.1.0, para usar SoftArchitect AI en producción.",
+                            "priority": "Critical",
+                            "estimation": "S",
+                            "branch_name": "release/v0.1.0",
+                            "dependencies": [
+                                "HU-7.1",
+                                "HU-6.1",
+                                "HU-6.3"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Release publicada en GitHub Releases.",
+                                "✅ (Positivo) Instaladores disponibles para Linux, Windows, macOS.",
+                                "✅ (Positivo) Release notes explican las features y cambios.",
+                                "✅ (Positivo) Se puede descargar y ejecutar sin errores de usuario final."
+                            ],
+                            "technical_tasks": [
+                                "Crear tag Git v0.1.0 en rama develop.",
+                                "Generar CHANGELOG desde commits.",
+                                "Escribir release notes en español e inglés.",
+                                "Validar instaladores en máquinas limpias (VMs o CIs)."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
