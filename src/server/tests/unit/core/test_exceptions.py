@@ -8,12 +8,11 @@ Tests exception classes and their methods:
 - Error logging
 """
 
-import logging
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
-from core.exceptions import (
+from core.exceptions import (  # type: ignore
     BaseAppError,
     ConfigurationError,
     ConnectionError,
