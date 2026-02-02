@@ -467,6 +467,48 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "S8",
+            "name": "Sprint 8: Web Variant & Cloud Integration (Demos & Scale)",
+            "goal": "Crear una versión web optimizada para demostraciones en homelab usando Groq API, expandiendo los casos de uso.",
+            "epics": [
+                {
+                    "epic_id": "E8",
+                    "name": "Variante Web para Presentaciones",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-8.1",
+                            "name": "Como Presentador, quiero una versión web de SoftArchitect AI desplegada en mi homelab, para demostraciones sin instalación usando Groq API.",
+                            "priority": "Medium",
+                            "estimation": "XL",
+                            "branch_name": "feature/web-variant-groq-demo",
+                            "dependencies": [
+                                "HU-4.1",
+                                "HU-5.2"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Flutter Web compila sin código específico de desktop.",
+                                "✅ (Positivo) Endpoint /api/v1/chat/message funciona con LLM_MODE=groq.",
+                                "✅ (Positivo) Docker Compose despliega todo con docker compose -f docker-compose.web.yml up.",
+                                "✅ (Positivo) La UI es responsive en desktop, tablet y móvil.",
+                                "✅ (Positivo) Setup en <5 minutos (clonar repo → API key → docker up → abrir URL).",
+                                "❌ (Negativo) No requiere GPU local (Groq maneja el poder computacional)."
+                            ],
+                            "technical_tasks": [
+                                "Refactorizar ChatService para abstraer LLM (patrón Strategy).",
+                                "Crear services/rag/groq_client.py con streaming de Groq API.",
+                                "Actualizar endpoint POST /api/v1/chat/message para soportar LLM_MODE=groq.",
+                                "Crear infrastructure/docker-compose.web.yml (sin campo version).",
+                                "Crear Dockerfile.web optimizado para Flutter Web.",
+                                "Agregar GitHub Actions workflow para builds web (.github/workflows/build-web.yml).",
+                                "Escribir doc/02-SETUP_DEV/WEB_DEMO_SETUP.{es,en}.md con setup <5 minutos.",
+                                "Tests para ambos modos LLM (ollama y groq) con mocks."
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
