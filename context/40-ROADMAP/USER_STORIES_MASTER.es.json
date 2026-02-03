@@ -119,76 +119,168 @@
         },
         {
             "id": "S3",
-            "name": "Sprint 3: Interfaz y Conversación (The Face)",
-            "goal": "Conectar al usuario con el cerebro a través de una UI fluida en Flutter.",
+            "name": "Sprint 3: Generación Secuencial de Documentos Guiada por Proyecto (Project-First)",
+            "goal": "Implementar el motor de generación secuencial de documentos mediante chat iterativo, guiado por templates RAG y estructurado en directorios de proyecto.",
             "epics": [
                 {
                     "epic_id": "E3",
-                    "name": "Experiencia de Chat Desktop",
+                    "name": "Gestión de Proyectos y Sistema de Archivos",
                     "user_stories": [
                         {
                             "hu_id": "HU-3.1",
-                            "name": "Como Usuario, quiero una interfaz de chat limpia que renderice Markdown, para leer código cómodamente.",
-                            "priority": "High",
-                            "estimation": "L",
-                            "branch_name": "feature/ui-chat-widget",
+                            "name": "Como Usuario, quiero una interfaz IDE-like para crear y gestionar proyectos, con navegación lateral y preview de documentos.",
+                            "priority": "Critical",
+                            "estimation": "XL",
+                            "points": 13,
+                            "branch_name": "feature/ui-project-shell",
                             "dependencies": [
                                 "context/30-ARCHITECTURE/DESIGN_SYSTEM.md",
                                 "context/30-ARCHITECTURE/UI_WIREFRAMES_AND_PROMPTS.md"
                             ],
                             "verification_criteria": [
-                                "✅ (Positivo) El chat sigue los colores del `DESIGN_SYSTEM.md` (Dark Mode).",
-                                "✅ (Positivo) Los bloques de código tienen resaltado de sintaxis y botón de copiar.",
-                                "✅ (Positivo) La UI es responsive al redimensionar la ventana.",
-                                "❌ (Negativo) El botón de enviar está deshabilitado si el campo de texto está vacío."
+                                "✅ (Positivo) Pantalla de inicio con opción 'Crear Proyecto' y listado de proyectos recientes.",
+                                "✅ (Positivo) Vista de árbol de directorios con estructura: context/10-20-30-35-40/ auto-creadas.",
+                                "✅ (Positivo) Panel lateral con navegación entre documentos y chatbot.",
+                                "✅ (Positivo) Preview de Markdown en tiempo real con sintaxis destacada.",
+                                "✅ (Positivo) Barra de menú con opciones: Nuevo Proyecto, Abrir, Guardar, Exportar.",
+                                "✅ (Positivo) Interfaz responsive para redimensionamiento de ventana.",
+                                "✅ (Positivo) Indicador visual de estado de generación de documentos (spinner, progreso).",
+                                "❌ (Negativo) No se permite crear proyectos con nombres duplicados o caracteres inválidos."
                             ],
                             "technical_tasks": [
-                                "Implementar `ChatScreen` usando el prompt de Stitch como referencia.",
-                                "Integrar paquete `flutter_markdown` y `flutter_highlighter`.",
-                                "Crear widgets burbuja de chat personalizados."
+                                "Crear `ProjectShell` widget (contenedor principal).",
+                                "Implementar `DirectoryTreeView` con expansión/colapso.",
+                                "Crear `DocumentPreviewPanel` con soporte Markdown.",
+                                "Implementar `ProjectCreationDialog` con validación.",
+                                "Gestionar estado de proyectos con Riverpod.",
+                                "Integrar tema del `DESIGN_SYSTEM.md` (Dark Mode).",
+                                "Tests de UI: 5+ casos de navegación."
                             ]
                         },
                         {
                             "hu_id": "HU-3.2",
-                            "name": "Como Usuario, quiero recibir la respuesta de la IA en tiempo real (Streaming), para reducir la sensación de espera.",
+                            "name": "Como Backend, quiero un servicio de FileSystem que maneje CRUD de archivos y directorios, con validación de permisos y persistencia.",
                             "priority": "Critical",
-                            "estimation": "XL",
-                            "branch_name": "feature/ui-api-connection",
+                            "estimation": "L",
+                            "points": 8,
+                            "branch_name": "feature/backend-filesystem-service",
                             "dependencies": [
-                                "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md",
+                                "context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md",
                                 "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
                             ],
                             "verification_criteria": [
-                                "✅ (Positivo) Al enviar un mensaje, no hay bloqueo de UI (Optimistic UI).",
-                                "✅ (Positivo) El texto aparece token a token vía SSE.",
-                                "✅ (Positivo) El scroll baja automáticamente con nuevos mensajes.",
-                                "❌ (Negativo) Si el backend falla, se muestra un mensaje amigable según `ERROR_HANDLING_STANDARD.md` (no excepciones rojas)."
+                                "✅ (Positivo) Endpoint POST /api/v1/projects para crear proyecto con estructura de dirs.",
+                                "✅ (Positivo) Endpoint GET /api/v1/projects/{id}/tree devuelve árbol de archivos.",
+                                "✅ (Positivo) Endpoint POST /api/v1/documents para guardar documento en disco.",
+                                "✅ (Positivo) Endpoint GET /api/v1/documents/{id} recupera contenido de archivo.",
+                                "✅ (Positivo) Validación de rutas (no permitir traversal attacks).",
+                                "✅ (Positivo) Manejo de errores: permisos insuficientes, disco lleno, etc.",
+                                "✅ (Positivo) Logging de operaciones para audit trail.",
+                                "❌ (Negativo) No se permite escribir fuera del directorio del proyecto."
                             ],
                             "technical_tasks": [
-                                "Implementar Repositorio `ChatRepository` en Dart.",
-                                "Gestionar estado con `Riverpod` (StreamProvider).",
-                                "Conectar con endpoint `/api/v1/chat/stream`."
+                                "Implementar `FileSystemService` con métodos CRUD.",
+                                "Crear validador de rutas seguras.",
+                                "Implementar endpoints RESTful del proyecto.",
+                                "Manejo de excepciones según estándar de errores.",
+                                "Tests unitarios: >85% cobertura.",
+                                "Tests de integración: 3+ escenarios de CRUD."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "epic_id": "E4",
+                    "name": "Generación Secuencial de Documentos y RAG Guiado",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-3.3",
+                            "name": "Como Usuario, quiero un chat que me guíe secuencialmente para generar documentos (Doc 1→25) usando templates RAG e iteración conversacional.",
+                            "priority": "Critical",
+                            "estimation": "XXL",
+                            "points": 21,
+                            "branch_name": "feature/chat-sequential-docs",
+                            "dependencies": [
+                                "HU-3.1",
+                                "HU-3.2",
+                                "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Chat inicial pregunta idea/nombre del proyecto y genera Doc 1.",
+                                "✅ (Positivo) Cada documento generado se guarda automáticamente en la carpeta correcta.",
+                                "✅ (Positivo) Usuario puede iterar: 'Regenerar', 'Refinar' o 'Siguiente Documento'.",
+                                "✅ (Positivo) RAG es 100% guiado por templates (sin generación libre).",
+                                "✅ (Positivo) Barra de progreso muestra documentos completados (X/25).",
+                                "✅ (Positivo) Streaming de respuesta token-a-token con latencia <200ms.",
+                                "✅ (Positivo) Persistencia de chat en BD (SQLite) para recuperación.",
+                                "✅ (Positivo) Manejo de errores con retry automático.",
+                                "✅ (Positivo) Tests de flujo: 3+ escenarios de generación secuencial."
+                            ],
+                            "technical_tasks": [
+                                "Implementar `ChatSequentialDocsOrchestrator` en Backend.",
+                                "Crear templates RAG para Doc 1-25 en knowledge_base.",
+                                "Endpoint POST /api/v1/chat/sequential para iniciar generación.",
+                                "Endpoint POST /api/v1/chat/iterate para refinamiento.",
+                                "Endpoint GET /api/v1/documents/status para progreso.",
+                                "Gestionar estado de generación con Riverpod en Frontend.",
+                                "Tests de integración E2E: usuario crea proyecto → genera 3+ documentos."
                             ]
                         },
                         {
-                            "hu_id": "HU-3.3",
-                            "name": "Como Usuario, quiero que los errores se muestren de forma clara y amigable, para entender qué salió mal sin ver stack traces.",
+                            "hu_id": "HU-3.4",
+                            "name": "Como Sistema, quiero manejo robusto de errores con gates de validación y fallback logic, para garantizar integridad de documentos.",
                             "priority": "High",
-                            "estimation": "S",
-                            "branch_name": "feature/ui-error-handling",
+                            "estimation": "M",
+                            "points": 5,
+                            "branch_name": "feature/error-handling-gates",
                             "dependencies": [
+                                "HU-3.3",
                                 "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
                             ],
                             "verification_criteria": [
-                                "✅ (Positivo) Si el backend no responde, se muestra 'No hay conexión con el servidor'.",
-                                "✅ (Positivo) Si ChromaDB falla, se sugiere 'Reintentar' automáticamente.",
-                                "✅ (Positivo) Los errores desaparecen después de 5 segundos (autohide).",
-                                "❌ (Negativo) El usuario nunca ve un stack trace de Python en la UI."
+                                "✅ (Positivo) Validación de contenido antes de guardar (no vacío, formato válido).",
+                                "✅ (Positivo) Gates de calidad: Flesch-Kincaid >5, sin PII, no tokens incompletos.",
+                                "✅ (Positivo) Retry automático con backoff exponencial (3 reintentos).",
+                                "✅ (Positivo) Fallback a template genérico si LLM falla.",
+                                "✅ (Positivo) Rollback de documento si validación falla.",
+                                "✅ (Positivo) Logging detallado de fallos para debugging.",
+                                "❌ (Negativo) Usuario no ve stack traces (mensajes amigables en español)."
                             ],
                             "technical_tasks": [
-                                "Implementar widget `ErrorBanner` reusable.",
-                                "Mapear códigos de error a mensajes en español.",
-                                "Crear `ErrorMiddleware` en Riverpod para capturar excepciones."
+                                "Implementar validadores de contenido (estructura, PII, tokens).",
+                                "Crear gates de calidad con scoring.",
+                                "Decorador @retry_with_backoff en Python.",
+                                "Manejo de excepciones según estándar.",
+                                "Tests unitarios: >90% cobertura de validadores."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-3.5",
+                            "name": "Como Usuario, quiero streaming optimizado y latencia <200ms, para una experiencia fluida sin esperas.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "points": 8,
+                            "branch_name": "feature/streaming-optimization",
+                            "dependencies": [
+                                "HU-3.3",
+                                "context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Primer token en <200ms (medido con chrono).",
+                                "✅ (Positivo) WebSocket para comunicación bidireccional.",
+                                "✅ (Positivo) Cache de embeddings en ChromaDB para RAG.",
+                                "✅ (Positivo) Compresión gzip en respuestas HTTP.",
+                                "✅ (Positivo) Batch de tokens: mínimo 50ms entre sends.",
+                                "✅ (Positivo) UI no se congela durante generación (async rendering).",
+                                "❌ (Negativo) Cero latencia de red visible al usuario."
+                            ],
+                            "technical_tasks": [
+                                "Implementar WebSocket en FastAPI.",
+                                "Optimizar queries ChromaDB (índices, batch size).",
+                                "Middleware de compresión gzip.",
+                                "Profiling de latencia con APM (OpenTelemetry).",
+                                "Tests de performance: medir latencia P95.",
+                                "Cache warming de embeddings frecuentes."
                             ]
                         }
                     ]
