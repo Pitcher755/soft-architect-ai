@@ -16,7 +16,7 @@ on:
 # Permite solo una ejecución por rama a la vez
 concurrency:
   group: ci-master-${{ github.ref }}
-  cancel-in-progress: yes
+  cancel-in-progress: true
 
 permissions:
   pull-requests: write
@@ -69,8 +69,8 @@ jobs:
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Backend CI?
-  # Nota: Workflows reutilizables funcionan en
-  # rama default (develop/main)
+  # Nota: Workflows reutilizables funcionan solo
+  # en rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   backend-ci:
     name: 🐍 Backend Pipeline
@@ -83,8 +83,8 @@ jobs:
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Frontend CI?
-  # Nota: Workflows reutilizables funcionan en
-  # rama default (develop/main)
+  # Nota: Workflows reutilizables funcionan solo
+  # en rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   frontend-ci:
     name: 📱 Frontend Pipeline
@@ -97,8 +97,8 @@ jobs:
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Docker Build?
-  # Nota: Workflows reutilizables funcionan en
-  # rama default (develop/main)
+  # Nota: Workflows reutilizables funcionan solo
+  # en rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   docker-build:
     name: 🐳 Docker Pipeline
@@ -238,17 +238,20 @@ jobs:
             >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------|" \
             >> $GITHUB_STEP_SUMMARY
-          BE='${{ needs.changes.outputs.backend \
-            == "true" && "🟢 Executed" || "⏭️ Skipped" }}'
-          FE='${{ needs.changes.outputs.frontend \
-            == "true" && "🟢 Executed" || "⏭️ Skipped" }}'
-          DO='${{ needs.changes.outputs.docker \
-            == "true" && "🟢 Executed" || "⏭️ Skipped" }}'
-          echo "| 🐍 Backend | $BE |" \
+          BACKEND='🟢 Executed'
+          FRONTEND='🟢 Executed'
+          DOCKER='🟢 Executed'
+          if [ "${{ needs.changes.outputs.backend }}" \
+            != 'true' ]; then BACKEND='⏭️ Skipped'; fi
+          if [ "${{ needs.changes.outputs.frontend }}" \
+            != 'true' ]; then FRONTEND='⏭️ Skipped'; fi
+          if [ "${{ needs.changes.outputs.docker }}" \
+            != 'true' ]; then DOCKER='⏭️ Skipped'; fi
+          echo "| 🐍 Backend | $BACKEND |" \
             >> $GITHUB_STEP_SUMMARY
-          echo "| 📱 Frontend | $FE |" \
+          echo "| 📱 Frontend | $FRONTEND |" \
             >> $GITHUB_STEP_SUMMARY
-          echo "| 🐳 Docker | $DO |" \
+          echo "| 🐳 Docker | $DOCKER |" \
             >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Only relevant pipelines executed" \
