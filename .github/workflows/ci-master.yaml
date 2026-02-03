@@ -3,7 +3,7 @@ name: 🎯 Monorepo CI Master (Orchestrator)
 # DISPARADOR: Todo push y PR en main/develop
 on:
   push:
-    branches: [main, develop, feature/backend-skeleton]
+    branches: [main, develop, feature/backend-skeleton, chore/rag-verification-tools]
   pull_request:
     branches: [main, develop]
   workflow_dispatch:  # Permite ejecutar manualmente desde GitHub
@@ -66,29 +66,38 @@ jobs:
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Backend CI?
+  # Nota: Los workflows locales reutilizables funcionan en rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   backend-ci:
     name: 🐍 Backend Pipeline
     needs: changes
-    if: needs.changes.outputs.backend == 'true'
+    if: |
+      needs.changes.outputs.backend == 'true' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     uses: ./.github/workflows/backend-ci.yaml
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Frontend CI?
+  # Nota: Los workflows locales reutilizables funcionan en rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   frontend-ci:
     name: 📱 Frontend Pipeline
     needs: changes
-    if: needs.changes.outputs.frontend == 'true'
+    if: |
+      needs.changes.outputs.frontend == 'true' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     uses: ./.github/workflows/frontend-ci.yaml
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Docker Build?
+  # Nota: Los workflows locales reutilizables funcionan en rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   docker-build:
     name: 🐳 Docker Pipeline
     needs: changes
-    if: needs.changes.outputs.docker == 'true'
+    if: |
+      needs.changes.outputs.docker == 'true' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     uses: ./.github/workflows/docker-build.yaml
 
   # ═══════════════════════════════════════════════════════════════════
