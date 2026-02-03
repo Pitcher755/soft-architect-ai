@@ -5,9 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/config/app_config.dart';
 import 'core/config/theme_config.dart';
+import 'core/database_initializer.dart';
 import 'core/router/app_router.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize database for current platform (Desktop/Web/Mobile)
+  await initializeSqfliteForDesktop();
+  debugPrint(getDatabaseInitStatus());
+
   // Load environment variables from .env file (optional for development)
   try {
     await dotenv.load();
