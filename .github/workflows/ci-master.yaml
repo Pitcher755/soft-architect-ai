@@ -1,23 +1,26 @@
+---
 name: 🎯 Monorepo CI Master (Orchestrator)
 
 # DISPARADOR: Todo push y PR en main/develop
 on:
   push:
-    branches: [main, develop, feature/backend-skeleton, chore/rag-verification-tools]
+    branches:
+      - main
+      - develop
+      - feature/backend-skeleton
+      - chore/rag-verification-tools
   pull_request:
     branches: [main, develop]
-  workflow_dispatch:  # Permite ejecutar manualmente desde GitHub
+  workflow_dispatch:
 
 # Permite solo una ejecución por rama a la vez
 concurrency:
   group: ci-master-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: yes
 
-# 👇 AÑADE ESTO
 permissions:
-  pull-requests: write  # Necesario para comentar en la PR
-  contents: read        # Necesario para leer el código
-# 👆 FIN DEL AÑADIDO
+  pull-requests: write
+  contents: read
 
 jobs:
   # ═══════════════════════════════════════════════════════════════════
@@ -66,50 +69,55 @@ jobs:
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Backend CI?
-  # Nota: Los workflows locales reutilizables funcionan en rama default (develop/main)
+  # Nota: Workflows reutilizables funcionan en
+  # rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   backend-ci:
     name: 🐍 Backend Pipeline
     needs: changes
     if: |
       needs.changes.outputs.backend == 'true' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+      (github.ref == 'refs/heads/main' ||
+       github.ref == 'refs/heads/develop')
     uses: ./.github/workflows/backend-ci.yaml
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Frontend CI?
-  # Nota: Los workflows locales reutilizables funcionan en rama default (develop/main)
+  # Nota: Workflows reutilizables funcionan en
+  # rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   frontend-ci:
     name: 📱 Frontend Pipeline
     needs: changes
     if: |
       needs.changes.outputs.frontend == 'true' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+      (github.ref == 'refs/heads/main' ||
+       github.ref == 'refs/heads/develop')
     uses: ./.github/workflows/frontend-ci.yaml
 
   # ═══════════════════════════════════════════════════════════════════
   # DECISIÓN: ¿Ejecutar Docker Build?
-  # Nota: Los workflows locales reutilizables funcionan en rama default (develop/main)
+  # Nota: Workflows reutilizables funcionan en
+  # rama default (develop/main)
   # ═══════════════════════════════════════════════════════════════════
   docker-build:
     name: 🐳 Docker Pipeline
     needs: changes
     if: |
       needs.changes.outputs.docker == 'true' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+      (github.ref == 'refs/heads/main' ||
+       github.ref == 'refs/heads/develop')
     uses: ./.github/workflows/docker-build.yaml
 
   # ═══════════════════════════════════════════════════════════════════
   # RESUMEN FINAL: Dashboard de estado
-  # ✨ CORREGIDO: if: always() para que se ejecute incluso si otros se saltan
+  # ✨ CORREGIDO: if: always() para ejecutarse
+  # incluso si otros se saltan
   # ═══════════════════════════════════════════════════════════════════
   dashboard:
     name: 📊 CI Dashboard
     runs-on: ubuntu-latest
-    # ✨ CORREGIDO: if: always() para que se ejecute incluso si otros se saltan
     if: always()
-    # ✨ CORREGIDO: needs SOLO los que SIEMPRE se ejecutan (changes)
     needs: [changes]
 
     steps:
@@ -132,10 +140,21 @@ jobs:
 
           | Component | Status | Action |
           |-----------|--------|--------|
-          | 🐍 Backend | ${{ needs.changes.outputs.backend == 'true' && '✅ Changed' || '⏭️ Skipped' }} | ${{ needs.changes.outputs.backend == 'true' && 'Running Backend CI' || 'No changes detected' }} |
-          | 📱 Frontend | ${{ needs.changes.outputs.frontend == 'true' && '✅ Changed' || '⏭️ Skipped' }} | ${{ needs.changes.outputs.frontend == 'true' && 'Running Frontend CI' || 'No changes detected' }} |
-          | 🐳 Docker | ${{ needs.changes.outputs.docker == 'true' && '✅ Changed' || '⏭️ Skipped' }} | ${{ needs.changes.outputs.docker == 'true' && 'Running Docker Build' || 'No changes detected' }} |
-          | 📚 Docs | ${{ needs.changes.outputs.docs == 'true' && '✅ Changed' || '⏭️ Skipped' }} | Documentation updated |
+          | 🐍 Backend | ${{ needs.changes.outputs.backend
+            == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
+            ${{ needs.changes.outputs.backend == 'true' &&
+            'Running Backend CI' || 'No changes detected' }} |
+          | 📱 Frontend | ${{ needs.changes.outputs.frontend
+            == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
+            ${{ needs.changes.outputs.frontend == 'true' &&
+            'Running Frontend CI' || 'No changes' }} |
+          | 🐳 Docker | ${{ needs.changes.outputs.docker
+            == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
+            ${{ needs.changes.outputs.docker == 'true' &&
+            'Running Docker Build' || 'No changes' }} |
+          | 📚 Docs | ${{ needs.changes.outputs.docs
+            == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
+            Documentation updated |
 
           ---
 
@@ -143,7 +162,7 @@ jobs:
 
           ### Backend Pipeline
           - **Status:** ${{ job.status }}
-          - **Duration:** ~2-3 minutes
+          - **Duration:** ~2-3 mins
           - **Checks:**
             - Code Quality (Black, Ruff, MyPy)
             - Unit Tests (pytest)
@@ -152,7 +171,7 @@ jobs:
 
           ### Frontend Pipeline
           - **Status:** ${{ job.status }}
-          - **Duration:** ~3-5 minutes
+          - **Duration:** ~3-5 mins
           - **Checks:**
             - Flutter Analysis
             - Widget Tests
@@ -161,7 +180,7 @@ jobs:
 
           ### Docker Pipeline
           - **Status:** ${{ job.status }}
-          - **Duration:** ~2-4 minutes
+          - **Duration:** ~2-4 mins
           - **Checks:**
             - Dockerfile Validation
             - Image Build (dry run)
@@ -173,18 +192,18 @@ jobs:
 
           ## 🎓 What This Means
 
-          ✅ **GREEN (All passing):** Your code is ready to merge to main
-          🟡 **YELLOW (Warnings):** Review warnings, likely still OK to merge
-          🔴 **RED (Failed):** Fix issues before merging. Click on failed job for details.
+          ✅ **GREEN:** Code ready to merge to main
+          🟡 **YELLOW:** Review warnings
+          🔴 **RED:** Fix before merging
 
           ---
 
           ## 🚀 Next Steps
 
-          1. If pipeline is 🟢 **GREEN:** Merge to main with confidence
-          2. If pipeline is 🔴 **RED:** Click "Details" on failed job to see error logs
-          3. Fix issues locally: `pytest`, `flutter analyze`, `black .`
-          4. Push again: CI will re-run automatically
+          1. If 🟢 GREEN: Merge with confidence
+          2. If 🔴 RED: Click Details on failed job
+          3. Fix: `pytest`, `flutter analyze`, `black .`
+          4. Push: CI will re-run automatically
 
           EOF
 
@@ -194,13 +213,12 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
-
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
           script: |
             const fs = require('fs');
-            const dashboard = fs.readFileSync('/tmp/ci_dashboard.md', 'utf8');
-
+            const dashboard = fs.readFileSync(
+              '/tmp/ci_dashboard.md', 'utf8'
+            );
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -210,14 +228,28 @@ jobs:
 
       - name: 📈 Job Status Summary
         run: |
-          echo "## ✅ CI Pipeline Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## ✅ CI Pipeline Execution Summary" \
+            >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Intelligent Monorepo Execution:" >> $GITHUB_STEP_SUMMARY
+          echo "### Monorepo Execution:" \
+            >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| 🐍 Backend | ${{ needs.changes.outputs.backend == 'true' && '🟢 Executed' || '⏭️ Skipped' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 📱 Frontend | ${{ needs.changes.outputs.frontend == 'true' && '🟢 Executed' || '⏭️ Skipped' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🐳 Docker | ${{ needs.changes.outputs.docker == 'true' && '🟢 Executed' || '⏭️ Skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" \
+            >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" \
+            >> $GITHUB_STEP_SUMMARY
+          BE='${{ needs.changes.outputs.backend \
+            == "true" && "🟢 Executed" || "⏭️ Skipped" }}'
+          FE='${{ needs.changes.outputs.frontend \
+            == "true" && "🟢 Executed" || "⏭️ Skipped" }}'
+          DO='${{ needs.changes.outputs.docker \
+            == "true" && "🟢 Executed" || "⏭️ Skipped" }}'
+          echo "| 🐍 Backend | $BE |" \
+            >> $GITHUB_STEP_SUMMARY
+          echo "| 📱 Frontend | $FE |" \
+            >> $GITHUB_STEP_SUMMARY
+          echo "| 🐳 Docker | $DO |" \
+            >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Optimization:** Only relevant pipelines were executed based on file changes" >> $GITHUB_STEP_SUMMARY
+          echo "Only relevant pipelines executed" \
+            >> $GITHUB_STEP_SUMMARY
