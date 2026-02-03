@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,12 +16,17 @@ void main() async {
   await initializeSqfliteForDesktop();
   debugPrint(getDatabaseInitStatus());
 
-  // Load environment variables from .env file (optional for development)
-  try {
-    await dotenv.load();
-  } on Exception catch (e) {
-    // .env file not found, will use default values from AppConfig
-    debugPrint('Note: .env file not found, using default configuration: $e');
+  // Load environment variables from .env file (skip on web, optional on desktop)
+  if (!kIsWeb) {
+    try {
+      await dotenv.load();
+      debugPrint('✅ .env file loaded successfully');
+    } catch (e) {
+      // .env file not found or error loading, will use default values from AppConfig
+      debugPrint('⚠️  Note: .env file not found or error loading, using default configuration: $e');
+    }
+  } else {
+    debugPrint('ℹ️  Web platform: skipping .env file loading');
   }
 
   runApp(const ProviderScope(child: SoftArchitectApp()));
