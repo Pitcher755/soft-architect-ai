@@ -13,10 +13,12 @@
 - **[LINEAR ISSUE](https://linear.app/pitcherdev/issue/PIT-62)** - Descripción oficial
 - **[HU-3.1_WORKFLOW_ANALYSIS.md](HU-3.1_WORKFLOW_ANALYSIS.md)** - Análisis profundo
 
-### Para Implementar (cuando sea el momento)
-1. **[HU-3.1_TEST_PLAN_RED_PHASE.md](HU-3.1_TEST_PLAN_RED_PHASE.md)** - Leer primero para TDD
-2. **[HU-3.1_SECURITY_AND_QUALITY_CHECKLIST.md](HU-3.1_SECURITY_AND_QUALITY_CHECKLIST.md)** - Reglas de calidad
-3. **WORKFLOW_ANALYSIS.md § Workflow de Implementación** - Paso a paso semanal
+### Para Implementar (Seguir en Orden)
+1. **⭐ [HU-3.1_IMPLEMENTATION_WORKFLOW_MASTER.md](HU-3.1_IMPLEMENTATION_WORKFLOW_MASTER.md)** - 🚀 **COMIENZA AQUÍ**
+   - Workflow maestro de 4 fases (1500+ líneas)
+   - Incluye: Análisis, Todos los 6 Tests RED, Seguridad, Quality Gates
+   - Copy-paste ready code examples
+   - Pre-commit validation checklist
 
 ---
 
