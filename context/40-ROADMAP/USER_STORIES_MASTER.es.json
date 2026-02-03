@@ -128,63 +128,61 @@
                     "user_stories": [
                         {
                             "hu_id": "HU-3.1",
-                            "name": "Como Usuario, quiero una interfaz IDE-like para crear y gestionar proyectos, con navegación lateral y preview de documentos.",
+                            "name": "Como Usuario, quiero una interfaz IDE-like para crear y gestionar proyectos, con persistencia local en SQLite (Flutter).",
                             "priority": "Critical",
                             "estimation": "XL",
                             "points": 13,
                             "branch_name": "feature/ui-project-shell",
                             "dependencies": [
                                 "context/30-ARCHITECTURE/DESIGN_SYSTEM.md",
-                                "context/30-ARCHITECTURE/UI_WIREFRAMES_AND_PROMPTS.md"
+                                "HU-3.2"
                             ],
+                            "description": "Client-Side Project Management: Dashboard principal con Sidebar (lista de proyectos), Modal de creación con selector de carpetas nativo del SO, Persistencia en sqflite (user_data.db) gestionado 100% por Flutter. El Backend NO participa en gestión de proyectos.",
                             "verification_criteria": [
-                                "✅ (Positivo) Pantalla de inicio con opción 'Crear Proyecto' y listado de proyectos recientes.",
-                                "✅ (Positivo) Vista de árbol de directorios con estructura: context/10-20-30-35-40/ auto-creadas.",
-                                "✅ (Positivo) Panel lateral con navegación entre documentos y chatbot.",
-                                "✅ (Positivo) Preview de Markdown en tiempo real con sintaxis destacada.",
-                                "✅ (Positivo) Barra de menú con opciones: Nuevo Proyecto, Abrir, Guardar, Exportar.",
-                                "✅ (Positivo) Interfaz responsive para redimensionamiento de ventana.",
-                                "✅ (Positivo) Indicador visual de estado de generación de documentos (spinner, progreso).",
-                                "❌ (Negativo) No se permite crear proyectos con nombres duplicados o caracteres inválidos."
+                                "✅ (Positivo) La BD SQLite (sqflite) persiste lista de proyectos (nombre, ruta, timestamp) en el Host.",
+                                "✅ (Positivo) El botón 'Nuevo Proyecto' abre selector de carpetas nativo (file_picker package).",
+                                "✅ (Positivo) La Sidebar lista proyectos leyendo de sqflite, auto-actualiza tras crear proyecto.",
+                                "✅ (Positivo) Interfaz sigue DESIGN_SYSTEM.md (Dark Mode, responsive).",
+                                "✅ (Positivo) Seleccionar proyecto carga dashboard con barra de progreso (Doc N/25).",
+                                "❌ (Negativo) El Backend NO intenta acceder ni crear proyectos (es stateless)."
                             ],
                             "technical_tasks": [
-                                "Crear `ProjectShell` widget (contenedor principal).",
-                                "Implementar `DirectoryTreeView` con expansión/colapso.",
-                                "Crear `DocumentPreviewPanel` con soporte Markdown.",
-                                "Implementar `ProjectCreationDialog` con validación.",
-                                "Gestionar estado de proyectos con Riverpod.",
-                                "Integrar tema del `DESIGN_SYSTEM.md` (Dark Mode).",
-                                "Tests de UI: 5+ casos de navegación."
+                                "Implementar `database_helper.dart` para inicializar sqflite en Flutter.",
+                                "Crear schema SQLite: tabla 'projects' (id, name, path, created_at, updated_at).",
+                                "Integrar `file_picker` package para selector de carpetas nativo.",
+                                "Implementar `ProjectSidebarWidget` que lee proyectos de sqflite.",
+                                "Crear `CreateProjectDialog` modal con validación.",
+                                "Implementar `ProjectDashboard` widget (solo lectura de progreso).",
+                                "Tests unitarios: sqflite operations, file picker integration (>85%)."
                             ]
                         },
                         {
                             "hu_id": "HU-3.2",
-                            "name": "Como Backend, quiero un servicio de FileSystem que maneje CRUD de archivos y directorios, con validación de permisos y persistencia.",
+                            "name": "Como Frontend (Dart), quiero un FileSystemService que maneje la creación de carpetas y persistencia de documentos en el Host.",
                             "priority": "Critical",
                             "estimation": "L",
                             "points": 8,
-                            "branch_name": "feature/backend-filesystem-service",
+                            "branch_name": "feature/client-filesystem-service",
                             "dependencies": [
-                                "context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md",
-                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
+                                "HU-3.1",
+                                "context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
                             ],
+                            "description": "Client-Side File I/O: Servicio Dart que crea estructura context/ (10-CONTEXT, 20-REQUIREMENTS, 30-ARCHITECTURE, 35-UX_UI, 40-PLANNING) al iniciar proyecto. El Backend Python NO participa en I/O. Todo es lógica dart:io.",
                             "verification_criteria": [
-                                "✅ (Positivo) Endpoint POST /api/v1/projects para crear proyecto con estructura de dirs.",
-                                "✅ (Positivo) Endpoint GET /api/v1/projects/{id}/tree devuelve árbol de archivos.",
-                                "✅ (Positivo) Endpoint POST /api/v1/documents para guardar documento en disco.",
-                                "✅ (Positivo) Endpoint GET /api/v1/documents/{id} recupera contenido de archivo.",
-                                "✅ (Positivo) Validación de rutas (no permitir traversal attacks).",
-                                "✅ (Positivo) Manejo de errores: permisos insuficientes, disco lleno, etc.",
-                                "✅ (Positivo) Logging de operaciones para audit trail.",
-                                "❌ (Negativo) No se permite escribir fuera del directorio del proyecto."
+                                "✅ (Positivo) Servicio FileSystemService crea estructura context/ idempotente (sin errores si existe).",
+                                "✅ (Positivo) Método saveDocument(path, content) escribe archivos Markdown/JSON en disco.",
+                                "✅ (Positivo) Validación de rutas (no permitir traversal attacks, no ../).",
+                                "✅ (Positivo) Manejo de permisos insuficientes con mensajes amigables.",
+                                "✅ (Positivo) Logging de operaciones en context/40-PLANNING/.audit.log.",
+                                "❌ (Negativo) Backend NUNCA intenta escribir en disco ni acceder a FileSystem del usuario."
                             ],
                             "technical_tasks": [
-                                "Implementar `FileSystemService` con métodos CRUD.",
-                                "Crear validador de rutas seguras.",
-                                "Implementar endpoints RESTful del proyecto.",
-                                "Manejo de excepciones según estándar de errores.",
-                                "Tests unitarios: >85% cobertura.",
-                                "Tests de integración: 3+ escenarios de CRUD."
+                                "Crear `services/file_system_service.dart` en Flutter.",
+                                "Implementar método `createProjectStructure(basePath) → void`.",
+                                "Implementar método `saveDocument(projectPath, section, filename, content) → Future<bool>`.",
+                                "Crear validador `PathValidator` para prevenir traversal attacks.",
+                                "Implementar audit logging en archivo `.audit.log`.",
+                                "Tests unitarios: File I/O, validación de rutas, permisos (>85%)."
                             ]
                         }
                     ]
@@ -206,25 +204,25 @@
                                 "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md"
                             ],
                             "verification_criteria": [
-                                "✅ (Positivo) Chat inicial pregunta idea/nombre del proyecto y genera Doc 1.",
-                                "✅ (Positivo) Cada documento generado se guarda automáticamente en la carpeta correcta.",
-                                "✅ (Positivo) Usuario puede iterar: 'Regenerar', 'Refinar' o 'Siguiente Documento'.",
-                                "✅ (Positivo) RAG es 100% guiado por templates (sin generación libre).",
-                                "✅ (Positivo) Barra de progreso muestra documentos completados (X/25).",
-                                "✅ (Positivo) Control UX: Botón enviar (➤) se deshabilita visualmente si campo vacío o solo espacios.",
-                                "✅ (Positivo) Herramientas de Código: Bloques código con botón 'Copiar' en cabecera → portapapeles.",
-                                "✅ (Positivo) Streaming de respuesta token-a-token con latencia <200ms.",
-                                "✅ (Positivo) Tests de flujo: 3+ escenarios de generación secuencial."
+                                "✅ (Positivo) Chat inicial pregunta descripción del proyecto y genera 'Propuesta Doc 1'.",
+                                "✅ (Positivo) Propuesta es JSON/Markdown temporal (NO persiste hasta 'Validar').",
+                                "✅ (Positivo) Control UX: Botón enviar (➤) deshabilitado si campo vacío o solo espacios.",
+                                "✅ (Positivo) Herramientas Código: Bloques código con botón 'Copiar' en cabecera → portapapeles.",
+                                "✅ (Positivo) Botón 'Validar y Guardar' llama a FileSystemService (HU-3.2) para persistencia en disco.",
+                                "✅ (Positivo) Streaming token-a-token usando SSE (<200ms TTF - Time To First Token).",
+                                "✅ (Positivo) Barra de progreso: Doc N/25 actualiza tras validar.",
+                                "✅ (Positivo) Flujo 100% secuencial (nunca 2 docs en paralelo).",
+                                "❌ (Negativo) Documentos NO se guardan si usuario no hace clic 'Validar'."
                             ],
                             "technical_tasks": [
                                 "Implementar widget `SequentialChatScreen` (UI principal).",
                                 "Crear listener `TextEditingController` para gestionar estado `isEnabled` del botón enviar.",
-                                "Implementar widget `CodeBlockHeader` con integración Clipboard para funcionalidad 'Copiar'.",
-                                "Implementar orquestador RAG en `services/rag/document_proposal_service.py`.",
-                                "Crear `ProjectMetadataService` para rastrear estado del proyecto y último doc generado.",
-                                "Implementar endpoint chat `POST /api/v1/chat/message` para generación de propuestas.",
-                                "Implementar `POST /api/v1/documents/validate` endpoint para persistencia de docs validados.",
-                                "Tests unitarios: Generación de propuestas, transiciones de estado, validación de entrada (>85%)."
+                                "Implementar widget `CodeBlockHeader` con integración Clipboard para 'Copiar'.",
+                                "Implementar backend endpoint `POST /api/v1/chat/message` con RAG orchestrator.",
+                                "Backend devuelve 'Propuesta' en JSON format (structure + content placeholders).",
+                                "Frontend renderiza propuesta con botones: 'Validar y Guardar', 'Regenerar', 'Rechazar'.",
+                                "Botón 'Validar y Guardar' llama a FileSystemService.saveDocument() para persistencia.",
+                                "Implementar SSE streaming de respuesta backend para token-a-token real-time."
                             ]
                         },
                         {
@@ -239,22 +237,22 @@
                                 "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
                             ],
                             "verification_criteria": [
-                                "✅ (Positivo) Si timeout RAG: Reintenta automáticamente 3 veces (delays 1s, 2s, 4s).",
-                                "✅ (Positivo) Después de 3 reintentos: Muestra placeholder template + mensaje 'RAG no disponible'.",
-                                "✅ (Positivo) Error disco lleno: Mensaje 'Libera 500MB para continuar'.",
-                                "✅ (Positivo) Permiso denegado: 'Verifica permisos en directorio /context'.",
-                                "✅ (Positivo) Todos los errores registrados con timestamp + user_id + error_code.",
-                                "✅ (Positivo) Frontend muestra notificación de error (ScaffoldMessenger) con autohide 5s.",
-                                "✅ (Positivo) Manejo manual de errores: Usuario puede hacer clic en 'Reintentar' o 'Omitir Documento' en notificación.",
-                                "❌ (Negativo) Usuario no ve stack traces (mensajes amigables en español)."
+                                "✅ (Positivo) Errores no críticos (info, advertencias): Snackbar con autohide 5s.",
+                                "✅ (Positivo) Errores críticos (timeout, fallo RAG, fallo I/O): Snackbar sin autohide, botón 'Cerrar' manual.",
+                                "✅ (Positivo) Mensajes de error mapeados a lenguaje humano (NO stack traces).",
+                                "✅ (Positivo) RAG timeout (>30s): Retry automático 3 veces con backoff (1s, 2s, 4s).",
+                                "✅ (Positivo) Después de 3 reintentos: Mostrar template placeholder + mensaje 'RAG no disponible'.",
+                                "✅ (Positivo) Disco lleno: Mensaje 'Libera 500MB para continuar'.",
+                                "✅ (Positivo) Permiso denegado: 'Verifica permisos en directorio del proyecto'.",
+                                "❌ (Negativo) Usuario no ve stack traces (solo mensajes amigables en español)."
                             ],
                             "technical_tasks": [
-                                "Implementar decorador `@retry_with_backoff` para llamadas RAG.",
-                                "Crear jerarquía de excepciones personalizadas en `core/exceptions/`.",
-                                "Implementar middleware de manejo de errores en FastAPI.",
-                                "Crear widget `ErrorNotificationWidget` con ScaffoldMessenger (5s autohide).",
-                                "Implementar duración parametrizable de notificaciones para manejo flexible de errores.",
-                                "Tests unitarios: Simular timeout RAG, disco lleno, errores de permisos (>90%)."
+                                "Implementar decorador `@retry_with_backoff` en Python para RAG calls.",
+                                "Crear widget `ErrorSnackbarWidget` (ScaffoldMessenger con duración parametrizable).",
+                                "Mapear códigos de error a mensajes en español.",
+                                "Implementar fallback logic: Si RAG falla 3 veces, usar template placeholder.",
+                                "Logging en context/40-PLANNING/.error.log con timestamp + error_code.",
+                                "Tests unitarios: Simular timeout RAG, disco lleno, permisos (>90%)."
                             ]
                         },
                         {

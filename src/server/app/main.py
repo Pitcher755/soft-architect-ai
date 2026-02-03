@@ -33,7 +33,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.v1 import router as api_v1_router
 from app.core.config import settings
-from app.core.database import init_chromadb, init_sqlite
+from app.core.database import init_chromadb
 
 # ═══════════════════════════════════════════════════════════════
 # Logging Setup
@@ -64,12 +64,9 @@ async def startup_event():
     """
     logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
 
-    # Initialize databases
+    # Initialize databases (ChromaDB only - SQLite is Frontend-managed)
     chromadb_path = init_chromadb()
     logger.info(f"ChromaDB initialized at {chromadb_path}")
-
-    sqlite_url = init_sqlite()
-    logger.info(f"SQLite initialized at {sqlite_url}")
 
     # LLM Provider info
     logger.info(f"LLM Provider: {settings.LLM_PROVIDER}")
@@ -85,9 +82,11 @@ async def shutdown_event():
 
     This event handler runs once when the application is shutting down
     and is responsible for:
-    - Closing database connections
+    - Closing ChromaDB connections
     - Flushing logs
     - Cleaning up temporary resources
+
+    Note: SQLite persistence is handled by Flutter client only.
     """
     logger.info(f"Shutting down {settings.APP_NAME}")
 

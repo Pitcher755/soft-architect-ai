@@ -128,7 +128,7 @@
                     "user_stories": [
                         {
                             "hu_id": "HU-3.1",
-                            "name": "As User, I want an IDE-like interface (ProjectShell) to create and manage local projects, so I have full control over my architectures.",
+                            "name": "As User, I want an IDE-like interface to create and manage projects with local SQLite persistence (Flutter-managed).",
                             "priority": "Critical",
                             "estimation": "XL",
                             "points": 13,
@@ -137,53 +137,52 @@
                                 "context/30-ARCHITECTURE/DESIGN_SYSTEM.md",
                                 "HU-3.2"
                             ],
-                            "description": "Project-First Paradigm: UI Foundation. Desktop interface with Sidebar for project list, modal to create projects (name + base path), Dashboard showing progress (Doc N/25), File tree panel showing context/ structure.",
+                            "description": "Client-Side Project Management: Main dashboard with Sidebar (project list), Create modal with native folder picker, Persistence in sqflite (user_data.db) 100% managed by Flutter. Backend does NOT participate in project management.",
                             "verification_criteria": [
-                                "✅ (Positive) Create project modal opens and accepts name + base path.",
-                                "✅ (Positive) Sidebar lists all created projects and auto-updates.",
-                                "✅ (Positive) Selecting project loads ProjectDashboard with progress bar (Doc 0/25).",
+                                "✅ (Positive) SQLite database (sqflite) persists projects (name, path, timestamp) in Host.",
+                                "✅ (Positive) 'New Project' button opens native folder picker (file_picker package).",
+                                "✅ (Positive) Sidebar lists projects from sqflite, auto-updates after project creation.",
                                 "✅ (Positive) UI follows DESIGN_SYSTEM.md (Dark Mode, responsive).",
-                                "✅ (Positive) File tree panel (right sidebar) shows context/10-CONTEXT, 20-REQUIREMENTS, etc.",
-                                "❌ (Negative) No persistence until HU-3.2 complete (backend I/O)."
+                                "✅ (Positive) Selecting project loads dashboard with progress bar (Doc N/25).",
+                                "❌ (Negative) Backend NEVER accesses or creates projects (stateless)."
                             ],
                             "technical_tasks": [
-                                "Implement `MainScreen` with Riverpod state management.",
-                                "Create `ProjectSidebarWidget` with list of projects.",
-                                "Implement `ProjectDashboard` widget (summary + chat + file tree stubs).",
-                                "Create `CreateProjectDialog` modal.",
-                                "Integrate with FileSystemService (HU-3.2) for read-only operations.",
-                                "Unit tests: ProjectSidebar, modal interaction (>85% coverage)."
+                                "Implement `database_helper.dart` to initialize sqflite in Flutter.",
+                                "Create SQLite schema: table 'projects' (id, name, path, created_at, updated_at).",
+                                "Integrate `file_picker` package for native folder selection.",
+                                "Implement `ProjectSidebarWidget` reading projects from sqflite.",
+                                "Create `CreateProjectDialog` modal with validation.",
+                                "Implement `ProjectDashboard` widget (progress bar only).",
+                                "Unit tests: sqflite operations, file picker integration (>85%)."
                             ]
                         },
                         {
                             "hu_id": "HU-3.2",
-                            "name": "As Backend, I want a FileSystemService to safely create/read/write project structures, ensuring permission validation and audit trails.",
+                            "name": "As Frontend (Dart), I want a FileSystemService that handles folder creation and document persistence on the Host.",
                             "priority": "Critical",
                             "estimation": "L",
                             "points": 8,
-                            "branch_name": "feature/backend-filesystem-service",
+                            "branch_name": "feature/client-filesystem-service",
                             "dependencies": [
-                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md",
-                                "AGENTS.md (Section 8: CI/CD Rules)"
+                                "HU-3.1",
+                                "context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
                             ],
-                            "description": "Core infrastructure: Backend file I/O motor. Auto-create context/10-CONTEXT, 20-REQUIREMENTS, 30-ARCHITECTURE, 35-UX_UI, 40-PLANNING directories. Validate permissions before write. Implement idempotent project creation. Audit trail on all writes.",
+                            "description": "Client-Side File I/O: Dart service that creates context/ structure (10-CONTEXT, 20-REQUIREMENTS, 30-ARCHITECTURE, 35-UX_UI, 40-PLANNING) on project init. Backend Python does NOT participate in I/O. All dart:io logic.",
                             "verification_criteria": [
-                                "✅ (Positive) create_project() creates structure idempotently (no errors if exists).",
-                                "✅ (Positive) get_project_state() returns correct list of existing documents.",
-                                "✅ (Positive) write_validated_document() backs up previous version before overwrite.",
-                                "✅ (Positive) Validates permissions (throw if no write access).",
-                                "✅ (Positive) Path traversal attacks prevented (no ../ escapes).",
-                                "✅ (Positive) Audit log created at project/.audit.log.",
-                                "❌ (Negative) Endpoint not yet written (HU-4.x responsibility)."
+                                "✅ (Positive) FileSystemService creates context/ structure idempotently (no errors if exists).",
+                                "✅ (Positive) Method saveDocument(path, content) writes Markdown/JSON files to disk.",
+                                "✅ (Positive) Path validation (prevent traversal attacks, no ../ escapes).",
+                                "✅ (Positive) Handle permission errors with friendly messages.",
+                                "✅ (Positive) Operation logging in context/40-PLANNING/.audit.log.",
+                                "❌ (Negative) Backend NEVER attempts disk writes or filesystem access."
                             ],
                             "technical_tasks": [
-                                "Create `services/filesystem/file_system_service.py` with core methods.",
-                                "Implement `services/filesystem/path_validator.py` (security validation).",
-                                "Implement `create_project_structure(project_base_path) -> ProjectCreationResult`.",
-                                "Implement `get_project_state(base_path) -> ProjectFileState`.",
-                                "Implement `write_validated_document(project_path, section, content) -> FileWriteResult`.",
-                                "Unit tests: >90% coverage (file ops, permissions, backup logic).",
-                                "Integration tests: Multi-OS (Windows/Linux/macOS)."
+                                "Create `services/file_system_service.dart` in Flutter.",
+                                "Implement `createProjectStructure(basePath) → void`.",
+                                "Implement `saveDocument(projectPath, section, filename, content) → Future<bool>`.",
+                                "Create `PathValidator` to prevent traversal attacks.",
+                                "Implement audit logging in `.audit.log`.",
+                                "Unit tests: File I/O, path validation, permissions (>85%)."
                             ]
                         }
                     ]
