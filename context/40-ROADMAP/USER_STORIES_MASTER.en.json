@@ -1,0 +1,290 @@
+{
+    "project_name": "SoftArchitect AI - MVP v0.1.0",
+    "tech_stack": {
+        "frontend": "Flutter Desktop (Linux/Windows)",
+        "backend": "Python FastAPI + LangChain",
+        "ai_engine": "Ollama (Local) / Groq (Cloud)",
+        "database": "ChromaDB (Vector) + SQLite (Config)"
+    },
+    "methodology": "Scrum / GitFlow",
+    "sprints": [
+        {
+            "id": "S1",
+            "name": "Sprint 1: Infrastructure and Scaffolding (The Bedrock)",
+            "goal": "Have a 'Dockerized' environment where Frontend and Backend run and communicate basically.",
+            "epics": [
+                {
+                    "epic_id": "E1",
+                    "name": "Orchestration and Environment",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-1.1",
+                            "name": "As DevOps, I want a unified docker-compose, to lift the entire stack with a single command.",
+                            "priority": "Critical",
+                            "estimation": "M",
+                            "branch_name": "feature/infra-docker-setup",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/TECH_STACK_DETAILS.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positive) Executing `docker compose up` lifts 3 containers: api-server, client-desktop and chromadb.",
+                                "✅ (Positive) Persistence volumes are created in `./data`.",
+                                "✅ (Positive) The backend is accessible at localhost:8000/docs.",
+                                "❌ (Negative) If Docker is not installed, the setup script fails with a readable error message and does not explode."
+                            ],
+                            "technical_tasks": [
+                                "Create `infrastructure/docker-compose.yml`.",
+                                "Configure `nvidia-container-toolkit` for GPU support.",
+                                "Create `.env.example` with configuration variables."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-1.2",
+                            "name": "As Backend Dev, I want the base structure of FastAPI, to start developing endpoints on a clean architecture.",
+                            "priority": "High",
+                            "estimation": "S",
+                            "branch_name": "feature/backend-skeleton",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positive) GET `/health` endpoint returns 200 OK.",
+                                "✅ (Positive) The folder structure strictly follows the architecture map.",
+                                "✅ (Positive) `poetry install` installs dependencies without conflicts.",
+                                "❌ (Negative) The `ruff` linter fails if trying to commit unformatted code (simulated in pre-commit)."
+                            ],
+                            "technical_tasks": [
+                                "Initialize FastAPI project in `src/server`.",
+                                "Configure Pydantic Settings to read `.env`.",
+                                "Implement CORS Middleware."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S2",
+            "name": "Sprint 2: The RAG Brain (Knowledge Injection)",
+            "goal": "Endow the system with memory. Make it capable of reading Tech Packs and vectorizing them.",
+            "epics": [
+                {
+                    "epic_id": "E2",
+                    "name": "Knowledge Ingestion",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-2.1",
+                            "name": "As Architect, I want the system to read Markdown files from `packages/knowledge_base`, to feed the AI context.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "branch_name": "feature/rag-ingestion-loader",
+                            "dependencies": [
+                                "packages/knowledge_base/"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positive) The script recursively traverses folders.",
+                                "✅ (Positive) Metadata (title, path) are extracted correctly.",
+                                "✅ (Positive) Large files are divided into logical chunks (Semantic Splitting).",
+                                "❌ (Negative) Files that are not `.md` or hidden system files are ignored."
+                            ],
+                            "technical_tasks": [
+                                "Implement `DocumentLoader` in Python.",
+                                "Create text cleaning function (Markdown cleaner)."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-2.2",
+                            "name": "As System, I want to vectorize the content and store it in ChromaDB, to retrieve it semantically.",
+                            "priority": "Critical",
+                            "estimation": "L",
+                            "branch_name": "feature/rag-vectorization",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positive) The `chroma_data` folder increases in size after ingestion.",
+                                "✅ (Positive) A test query returns fragments from the correct Tech Pack.",
+                                "✅ (Positive) Works offline using local embeddings.",
+                                "❌ (Negative) If ChromaDB is down, the system throws controlled error `SYS_001` (ConnectionRefused)."
+                            ],
+                            "technical_tasks": [
+                                "Configure ChromaDB client in Python.",
+                                "Implement `VectorStoreService`.",
+                                "Create `ingest.py` script for manual execution."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S3",
+            "name": "Sprint 3: Project-First Sequential Document Generation (The Architect's Assistant)",
+            "goal": "Implement Project-First paradigm: sequential document generation (25 docs), guided RAG (100% templates), iterative validation with persistent storage.",
+            "epics": [
+                {
+                    "epic_id": "E3",
+                    "name": "Project Management & File System",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-3.1",
+                            "name": "As User, I want an IDE-like interface (ProjectShell) to create and manage local projects, so I have full control over my architectures.",
+                            "priority": "Critical",
+                            "estimation": "XL",
+                            "branch_name": "feature/ui-project-shell",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/DESIGN_SYSTEM.md",
+                                "HU-3.2"
+                            ],
+                            "description": "Project-First Paradigm: UI Foundation. Desktop interface with Sidebar for project list, modal to create projects (name + base path), Dashboard showing progress (Doc N/25), File tree panel showing context/ structure.",
+                            "verification_criteria": [
+                                "✅ (Positive) Create project modal opens and accepts name + base path.",
+                                "✅ (Positive) Sidebar lists all created projects and auto-updates.",
+                                "✅ (Positive) Selecting project loads ProjectDashboard with progress bar (Doc 0/25).",
+                                "✅ (Positive) UI follows DESIGN_SYSTEM.md (Dark Mode, responsive).",
+                                "✅ (Positive) File tree panel (right sidebar) shows context/10-CONTEXT, 20-REQUIREMENTS, etc.",
+                                "❌ (Negative) No persistence until HU-3.2 complete (backend I/O)."
+                            ],
+                            "technical_tasks": [
+                                "Implement `MainScreen` with Riverpod state management.",
+                                "Create `ProjectSidebarWidget` with list of projects.",
+                                "Implement `ProjectDashboard` widget (summary + chat + file tree stubs).",
+                                "Create `CreateProjectDialog` modal.",
+                                "Integrate with FileSystemService (HU-3.2) for read-only operations.",
+                                "Unit tests: ProjectSidebar, modal interaction (>85% coverage)."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-3.2",
+                            "name": "As Backend, I want a FileSystemService to safely create/read/write project structures, ensuring permission validation and audit trails.",
+                            "priority": "Critical",
+                            "estimation": "L",
+                            "branch_name": "feature/backend-filesystem-service",
+                            "dependencies": [
+                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md",
+                                "AGENTS.md (Section 8: CI/CD Rules)"
+                            ],
+                            "description": "Core infrastructure: Backend file I/O motor. Auto-create context/10-CONTEXT, 20-REQUIREMENTS, 30-ARCHITECTURE, 35-UX_UI, 40-PLANNING directories. Validate permissions before write. Implement idempotent project creation. Audit trail on all writes.",
+                            "verification_criteria": [
+                                "✅ (Positive) create_project() creates structure idempotently (no errors if exists).",
+                                "✅ (Positive) get_project_state() returns correct list of existing documents.",
+                                "✅ (Positive) write_validated_document() backs up previous version before overwrite.",
+                                "✅ (Positive) Validates permissions (throw if no write access).",
+                                "✅ (Positive) Path traversal attacks prevented (no ../ escapes).",
+                                "✅ (Positive) Audit log created at project/.audit.log.",
+                                "❌ (Negative) Endpoint not yet written (HU-4.x responsibility)."
+                            ],
+                            "technical_tasks": [
+                                "Create `services/filesystem/file_system_service.py` with core methods.",
+                                "Implement `services/filesystem/path_validator.py` (security validation).",
+                                "Implement `create_project_structure(project_base_path) -> ProjectCreationResult`.",
+                                "Implement `get_project_state(base_path) -> ProjectFileState`.",
+                                "Implement `write_validated_document(project_path, section, content) -> FileWriteResult`.",
+                                "Unit tests: >90% coverage (file ops, permissions, backup logic).",
+                                "Integration tests: Multi-OS (Windows/Linux/macOS)."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "epic_id": "E4",
+                    "name": "Sequential Document Generation & RAG",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-3.3",
+                            "name": "As User, I want the system to generate 25 documents sequentially (guided by RAG templates), allowing me to iterate before saving each one.",
+                            "priority": "Critical",
+                            "estimation": "XXL",
+                            "branch_name": "feature/ui-chat-sequential-docs",
+                            "dependencies": [
+                                "HU-3.1",
+                                "HU-3.2",
+                                "packages/knowledge_base/01-TEMPLATES/"
+                            ],
+                            "description": "Core feature: Sequential document generation pipeline. User describes project once. System generates Doc 1-25 sequentially (never parallel). RAG 100% guided by templates (01-TEMPLATES/). User can iterate in chat (refine) or validate (persist). Chat history in BD, docs on disk.",
+                            "verification_criteria": [
+                                "✅ (Positive) Chat accepts project description and initiates Doc 1 proposal.",
+                                "✅ (Positive) Backend loads template (e.g., 01-TEMPLATES/10-CONTEXT.md) and adapts to project.",
+                                "✅ (Positive) RAG uses Ollama/Groq to fill template placeholders.",
+                                "✅ (Positive) Frontend shows proposal in markdown preview with 'Accept' | 'Edit' | 'Reject' buttons.",
+                                "✅ (Positive) If user clicks 'Edit': Chat mode opens for refinement, RAG regenerates on submission.",
+                                "✅ (Positive) If user clicks 'Accept': Calls HU-3.2 to persist doc, auto-loads Doc 2 proposal.",
+                                "✅ (Positive) Workflow is 100% sequential (never 2 docs in parallel).",
+                                "✅ (Positive) After Doc 25: Success message 'Documentation complete (25 docs)'.",
+                                "❌ (Negative) No docs saved if user doesn't explicitly Accept."
+                            ],
+                            "technical_tasks": [
+                                "Implement RAG orchestrator in `services/rag/document_proposal_service.py`.",
+                                "Create `ProjectMetadataService` to track project state and last doc generated.",
+                                "Implement chat endpoint `POST /api/v1/projects/{id}/chat/message` that generates proposals.",
+                                "Implement `POST /api/v1/projects/{id}/document/validate` endpoint to persist validated docs.",
+                                "Create `DocumentProposalWidget` with preview + edit + buttons.",
+                                "Integrate ChatPanel with sequential state machine.",
+                                "Unit tests: Proposal generation, state transitions (>85%).",
+                                "E2E tests: Full workflow Doc 1 → Accept → Doc 2 proposal."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-3.4",
+                            "name": "As System, I want resilient error handling and validation gates, so document generation gracefully handles RAG timeouts, disk errors, and user mistakes.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "branch_name": "feature/backend-error-handling",
+                            "dependencies": [
+                                "HU-3.3",
+                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
+                            ],
+                            "description": "Resilience layer: Error recovery. RAG timeout (>30s) triggers auto-retry (3x with backoff). Disk full → clear message. Permission denied → specific error per OS. All errors logged to context/40-PLANNING/ERROR_LOG.md.",
+                            "verification_criteria": [
+                                "✅ (Positive) If RAG timeout: Auto-retry 3 times (1s, 2s, 4s delays).",
+                                "✅ (Positive) After 3 retries: Show template placeholder + 'RAG unavailable' message.",
+                                "✅ (Positive) Disk full error: Message 'Free 500MB to continue'.",
+                                "✅ (Positive) Permission denied: 'Check permissions on /context directory'.",
+                                "✅ (Positive) All errors logged with timestamp + user_id + error_code.",
+                                "✅ (Positive) Frontend shows error banner (not exception).",
+                                "❌ (Negative) No retry if user rejects document."
+                            ],
+                            "technical_tasks": [
+                                "Add `@retry_with_backoff` decorator to RAG calls.",
+                                "Create custom exception hierarchy in `core/exceptions/`.",
+                                "Implement error handler middleware in FastAPI.",
+                                "Add error logging to `context/40-PLANNING/ERROR_LOG.md`.",
+                                "Create `ErrorBanner` widget in Flutter.",
+                                "Unit tests: Simulate RAG timeout, disk full, permission errors (>90%)."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-3.5",
+                            "name": "As User, I want streaming text generation (SSE) and optimized performance, so the UI feels responsive (<2s per document proposal).",
+                            "priority": "High",
+                            "estimation": "M",
+                            "branch_name": "feature/ui-streaming-optimization",
+                            "dependencies": [
+                                "HU-3.3",
+                                "HU-3.4"
+                            ],
+                            "description": "Performance optimization: Streaming + caching. Backend uses Server-Sent Events (SSE) to stream text chunks. Frontend renders streaming text in real-time. Templates cached in memory. Embeddings pre-computed.",
+                            "verification_criteria": [
+                                "✅ (Positive) Latency: <500ms from 'Accept Doc N' button click to 'Generating Doc N+1...' on screen.",
+                                "✅ (Positive) Streaming visible: User sees text appear token-by-token (not wait for full response).",
+                                "✅ (Positive) 25-doc generation: <5 minutes total time.",
+                                "✅ (Positive) Memory usage: Stays <500MB (no growth over 25 docs).",
+                                "✅ (Positive) Benchmark tests confirm latency targets.",
+                                "❌ (Negative) No GPU required (CPU-only target)."
+                            ],
+                            "technical_tasks": [
+                                "Implement SSE endpoint in FastAPI (`/api/v1/projects/{id}/document/stream`).",
+                                "Cache templates in memory (Redis or Python dict).",
+                                "Pre-compute embeddings for 01-TEMPLATES/ on app startup.",
+                                "Implement `StreamingChatPanel` in Flutter (SSE listener).",
+                                "Add `ProgressIndicator` during streaming.",
+                                "Performance benchmarks: pytest + custom Flutter benchmark.",
+                                "Memory profiling: Ensure no leaks over 25 docs."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
