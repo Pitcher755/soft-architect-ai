@@ -2,12 +2,6 @@
 
 /// Represents a file or directory in project tree
 class FileNode {
-  final String id;
-  final String name;
-  final String path;
-  final bool isDirectory;
-  final List<FileNode> children;
-
   const FileNode({
     required this.id,
     required this.name,
@@ -15,6 +9,11 @@ class FileNode {
     required this.isDirectory,
     this.children = const [],
   });
+  final String id;
+  final String name;
+  final String path;
+  final bool isDirectory;
+  final List<FileNode> children;
 
   /// Get depth in tree (root = 0)
   int get depth => path.split('/').length - 1;
@@ -22,8 +21,21 @@ class FileNode {
   /// Check if this node is expanded (has children to show)
   bool get hasChildren => isDirectory && children.isNotEmpty;
 
+  /// Get file extension (empty for directories)
+  String get extension => isDirectory ? '' : name.split('.').last;
+
+  /// Get parent path
+  String get parentPath {
+    final parts = path.split('/');
+    return parts.sublist(0, parts.length - 1).join('/');
+  }
+
+  /// Check if this is a hidden file (starts with dot)
+  bool get isHidden => name.startsWith('.');
+
   @override
-  String toString() => 'FileNode(id: $id, name: $name, isDir: $isDirectory)';
+  String toString() =>
+      'FileNode(id: $id, name: $name, isDir: $isDirectory, depth: $depth)';
 
   @override
   bool operator ==(Object other) =>

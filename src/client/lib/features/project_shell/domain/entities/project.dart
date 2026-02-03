@@ -16,6 +16,16 @@ class Project {
     this.lastOpened,
   });
 
+  /// Get project directory name for display
+  String get displayName =>
+      path.split('/').last.isEmpty ? name : path.split('/').last;
+
+  /// Check if project was recently accessed (last 30 days)
+  bool get isRecentlyAccessed {
+    if (lastOpened == null) return false;
+    return DateTime.now().difference(lastOpened!).inDays <= 30;
+  }
+
   /// Create copy with optional field overrides
   Project copyWith({
     String? id,
@@ -34,7 +44,8 @@ class Project {
   }
 
   @override
-  String toString() => 'Project(id: $id, name: $name, path: $path)';
+  String toString() =>
+      'Project(id: $id, name: $name, path: $path, recent: $isRecentlyAccessed)';
 
   @override
   bool operator ==(Object other) =>

@@ -1,4 +1,6 @@
 // lib/features/project_shell/data/data_sources/sqlite_data_source.dart
+import 'dart:developer' as developer;
+
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 import '../../core/exceptions/project_shell_exceptions.dart';
@@ -14,13 +16,18 @@ class SQLiteDataSource {
   /// Save project to database
   Future<void> saveProject(ProjectModel project) async {
     try {
+      developer.log('Saving project: ${project.id}', name: 'SQLiteDataSource');
       await database.insert(
         _projectTableName,
         project.toJson(),
         conflictAlgorithm: sqflite.ConflictAlgorithm.fail,
       );
-    } catch (e) {
-      throw DatabaseException('Failed to save project: $e', originalError: e);
+    } catch (e, st) {
+      throw DatabaseException(
+        'Failed to save project: $e',
+        originalError: e,
+        stackTrace: st,
+      );
     }
   }
 
@@ -35,8 +42,12 @@ class SQLiteDataSource {
 
       if (result.isEmpty) return null;
       return ProjectModel.fromJson(result.first);
-    } catch (e) {
-      throw DatabaseException('Failed to get project: $e', originalError: e);
+    } catch (e, st) {
+      throw DatabaseException(
+        'Failed to get project: $e',
+        originalError: e,
+        stackTrace: st,
+      );
     }
   }
 
@@ -45,10 +56,11 @@ class SQLiteDataSource {
     try {
       final results = await database.query(_projectTableName);
       return results.map(ProjectModel.fromJson).toList();
-    } catch (e) {
+    } catch (e, st) {
       throw DatabaseException(
         'Failed to get all projects: $e',
         originalError: e,
+        stackTrace: st,
       );
     }
   }
@@ -56,16 +68,18 @@ class SQLiteDataSource {
   /// Update project last opened time
   Future<void> updateLastOpened(String projectId) async {
     try {
+      developer.log('Updating lastOpened: $projectId', name: 'SQLiteDataSource');
       await database.update(
         _projectTableName,
         {'last_opened': DateTime.now().toIso8601String()},
         where: 'id = ?',
         whereArgs: [projectId],
       );
-    } catch (e) {
+    } catch (e, st) {
       throw DatabaseException(
         'Failed to update last opened: $e',
         originalError: e,
+        stackTrace: st,
       );
     }
   }
@@ -73,18 +87,24 @@ class SQLiteDataSource {
   /// Delete project
   Future<void> deleteProject(String projectId) async {
     try {
+      developer.log('Deleting project: $projectId', name: 'SQLiteDataSource');
       await database.delete(
         _projectTableName,
         where: 'id = ?',
         whereArgs: [projectId],
       );
-    } catch (e) {
-      throw DatabaseException('Failed to delete project: $e', originalError: e);
+    } catch (e, st) {
+      throw DatabaseException(
+        'Failed to delete project: $e',
+        originalError: e,
+        stackTrace: st,
+      );
     }
   }
 
   /// Create projects table (init)
   static Future<void> createTables(sqflite.Database db) async {
+    developer.log('Creating projects table', name: 'SQLiteDataSource');
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $_projectTableName (
         id TEXT PRIMARY KEY,
@@ -95,5 +115,6 @@ class SQLiteDataSource {
         CHECK (LENGTH(name) >= 3 AND LENGTH(name) <= 50)
       )
     ''');
+    developer.log('Projects table created successfully', name: 'SQLiteDataSource');
   }
 }
