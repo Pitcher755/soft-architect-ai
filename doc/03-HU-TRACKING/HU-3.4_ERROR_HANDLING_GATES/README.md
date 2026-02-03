@@ -42,6 +42,8 @@ Implementar **validación y recuperación** con:
 | 5 | ✅ Rollback de documento si validación falla | ⏳ |
 | 6 | ✅ Logging detallado de fallos | ⏳ |
 | 7 | ❌ Usuario NO ve stack traces (mensajes amigables en español) | ⏳ |
+| 8 | ✅ (UX) Las notificaciones de éxito/info (Snackbars) tienen 'Autohide' y desaparecen automáticamente a los 5 segundos | ⏳ |
+| 9 | ✅ (UX) Las notificaciones de error crítico requieren cierre manual o acción del usuario | ⏳ |
 
 ---
 
@@ -54,6 +56,7 @@ Implementar **validación y recuperación** con:
 | 3 | Decorador @retry_with_backoff | ⏳ |
 | 4 | Manejo de excepciones según estándar | ⏳ |
 | 5 | Tests unitarios >90% cobertura | ⏳ |
+| 6 | Configurar `ScaffoldMessenger` o sistema de Toasts con duración parametrizable (default 5s para success/info, infinito para error) | ⏳ |
 
 ---
 

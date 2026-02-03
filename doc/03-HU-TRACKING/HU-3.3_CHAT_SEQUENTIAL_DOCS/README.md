@@ -46,6 +46,8 @@ Implementar el **orquestador de generación secuencial** con:
 | 7 | ✅ Persistencia de chat en BD para recuperación | ⏳ |
 | 8 | ✅ Manejo de errores con retry automático | ⏳ |
 | 9 | ✅ Tests de flujo: 3+ escenarios de generación secuencial | ⏳ |
+| 10 | ✅ (UX) El botón de enviar (➤) se deshabilita visualmente (gris) si el campo de texto está vacío o solo tiene espacios | ⏳ |
+| 11 | ✅ (UX) Los bloques de código renderizados incluyen un botón de 'Copiar' en la cabecera que guarda el contenido en el portapapeles | ⏳ |
 
 ---
 
@@ -60,6 +62,8 @@ Implementar el **orquestador de generación secuencial** con:
 | 5 | Endpoint GET /api/v1/documents/status para progreso | ⏳ |
 | 6 | Gestionar estado de generación con Riverpod en Frontend | ⏳ |
 | 7 | Tests E2E: usuario crea proyecto → genera 3+ documentos | ⏳ |
+| 8 | Implementar `TextEditingController` listener para gestionar el estado `isEnabled` del botón de envío | ⏳ |
+| 9 | Crear widget `CodeBlockHeader` con icono de copiado e integración con `Clipboard` de Flutter | ⏳ |
 
 ---
 
