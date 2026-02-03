@@ -12,17 +12,15 @@ class ProjectModel extends Project {
   });
 
   /// Convert from JSON (from database)
-  factory ProjectModel.fromJson(Map<String, dynamic> json) {
-    return ProjectModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      path: json['path'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      lastOpened: json['last_opened'] != null
-          ? DateTime.parse(json['last_opened'] as String)
-          : null,
-    );
-  }
+  factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        path: json['path'] as String,
+        createdAt: DateTime.parse(json['created_at'] as String),
+        lastOpened: json['last_opened'] != null
+            ? DateTime.parse(json['last_opened'] as String)
+            : null,
+      );
 
   /// Convert to JSON (for database)
   Map<String, dynamic> toJson() => {

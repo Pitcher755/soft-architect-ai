@@ -24,12 +24,13 @@ class ProjectShellState {
     Project? selectedProject,
     bool? isLoading,
     String? errorMessage,
-  }) => ProjectShellState(
-    projects: projects ?? this.projects,
-    selectedProject: selectedProject ?? this.selectedProject,
-    isLoading: isLoading ?? this.isLoading,
-    errorMessage: errorMessage ?? this.errorMessage,
-  );
+  }) =>
+      ProjectShellState(
+        projects: projects ?? this.projects,
+        selectedProject: selectedProject ?? this.selectedProject,
+        isLoading: isLoading ?? this.isLoading,
+        errorMessage: errorMessage ?? this.errorMessage,
+      );
 }
 
 /// Notifier for project shell state
@@ -84,12 +85,10 @@ class ProjectShellNotifier extends StateNotifier<ProjectShellState> {
     developer.log('Deleting project: $projectId');
     try {
       await repository.deleteProject(projectId);
-      final updatedProjects = state.projects
-          .where((p) => p.id != projectId)
-          .toList();
-      final newSelected = state.selectedProject?.id == projectId
-          ? null
-          : state.selectedProject;
+      final updatedProjects =
+          state.projects.where((p) => p.id != projectId).toList();
+      final newSelected =
+          state.selectedProject?.id == projectId ? null : state.selectedProject;
       state = state.copyWith(
         projects: updatedProjects,
         selectedProject: newSelected,

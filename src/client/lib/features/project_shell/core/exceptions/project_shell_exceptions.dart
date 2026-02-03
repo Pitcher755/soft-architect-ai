@@ -58,6 +58,83 @@ class PathTraversalException extends ProjectShellException {
 
   @override
   String toUserMessage() =>
+      'Ruta de archivo inválida. No se pueden usar rutas relativas con "..".';
+}
+
+/// Database operation failed
+class DatabaseException extends ProjectShellException {
+  DatabaseException(
+    String message, {
+    dynamic originalError,
+    StackTrace? stackTrace,
+  })
+    : super(
+        code: 'DB_ERR_001',
+        message: message,
+        originalError: originalError,
+        stackTrace: stackTrace,
+      );
+
+  @override
+  String toUserMessage() =>
+      'Error en la base de datos. Por favor, intenta de nuevo.';
+}
+
+/// File system operation failed
+class FileSystemException extends ProjectShellException {
+  FileSystemException(
+    String message, {
+    dynamic originalError,
+    StackTrace? stackTrace,
+  })
+    : super(
+        code: 'FS_ERR_001',
+        message: message,
+        originalError: originalError,
+        stackTrace: stackTrace,
+      );
+
+  @override
+  String toUserMessage() =>
+      'Error al acceder al sistema de archivos. Verifica permisos.';
+}
+
+/// Project not found
+class ProjectNotFoundException extends ProjectShellException {
+  ProjectNotFoundException(String projectId, {super.stackTrace})
+    : super(
+        code: 'PROJ_003',
+        message: 'Project not found: $projectId',
+      );
+
+  @override
+  String toUserMessage() => 'El proyecto no existe.';
+}
+
+/// Invalid file type
+class InvalidFileTypeException extends ProjectShellException {
+  InvalidFileTypeException(String fileName, {super.stackTrace})
+    : super(
+        code: 'FILE_001',
+        message: 'Invalid file type: $fileName',
+      );
+
+  @override
+  String toUserMessage() =>
+      'Tipo de archivo no permitido. Solo se permiten ciertos tipos.';
+}
+
+/// Unauthorized access attempt
+class UnauthorizedException extends ProjectShellException {
+  UnauthorizedException(String reason, {super.stackTrace})
+    : super(
+        code: 'SEC_002',
+        message: 'Unauthorized access: $reason',
+      );
+
+  @override
+  String toUserMessage() => 'No tienes permiso para realizar esta acción.';
+}
       'La ruta especificada no es válida por razones de seguridad.';
 }
 

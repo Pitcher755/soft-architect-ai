@@ -12,17 +12,17 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 /// - Text: #E6EDF3
 /// - Secondary text: #8b949e
 class MarkdownPreviewWidget extends StatelessWidget {
-  /// Markdown content to display
-  final String? content;
-
-  /// Filename being displayed (for header)
-  final String? filename;
-
   const MarkdownPreviewWidget({
     Key? key,
     this.content,
     this.filename,
   }) : super(key: key);
+
+  /// Markdown content to display
+  final String? content;
+
+  /// Filename being displayed (for header)
+  final String? filename;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,6 @@ class _EmptyPreview extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Icon(
             Icons.description_outlined,
@@ -60,8 +59,8 @@ class _EmptyPreview extends StatelessWidget {
           Text(
             'Select a file to preview',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: textSecondary,
-            ),
+                  color: textSecondary,
+                ),
           ),
         ],
       ),
@@ -71,13 +70,12 @@ class _EmptyPreview extends StatelessWidget {
 
 /// Markdown content display
 class _MarkdownContent extends StatelessWidget {
-  final String content;
-  final String? filename;
-
   const _MarkdownContent({
     required this.content,
     this.filename,
   });
+  final String content;
+  final String? filename;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +92,6 @@ class _MarkdownContent extends StatelessWidget {
               border: Border(
                 bottom: BorderSide(
                   color: Color(0xFF30363d),
-                  width: 1,
                 ),
               ),
               color: Color(0xFF161B22),

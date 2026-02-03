@@ -2,12 +2,6 @@
 
 /// Core project entity - represents a SoftArchitect project
 class Project {
-  final String id;
-  final String name;
-  final String path;
-  final DateTime createdAt;
-  final DateTime? lastOpened;
-
   const Project({
     required this.id,
     required this.name,
@@ -15,6 +9,11 @@ class Project {
     required this.createdAt,
     this.lastOpened,
   });
+  final String id;
+  final String name;
+  final String path;
+  final DateTime createdAt;
+  final DateTime? lastOpened;
 
   /// Get project directory name for display
   String get displayName =>
@@ -33,15 +32,14 @@ class Project {
     String? path,
     DateTime? createdAt,
     DateTime? lastOpened,
-  }) {
-    return Project(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      path: path ?? this.path,
-      createdAt: createdAt ?? this.createdAt,
-      lastOpened: lastOpened ?? this.lastOpened,
-    );
-  }
+  }) =>
+      Project(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        path: path ?? this.path,
+        createdAt: createdAt ?? this.createdAt,
+        lastOpened: lastOpened ?? this.lastOpened,
+      );
 
   @override
   String toString() =>

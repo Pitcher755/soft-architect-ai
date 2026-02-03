@@ -33,12 +33,12 @@ class ProjectModel {
 
   /// Create model from database JSON.
   factory ProjectModel.fromMap(Map<String, dynamic> map) => ProjectModel(
-    id: map['id'] as String,
-    name: map['name'] as String,
-    path: map['path'] as String,
-    createdAt: DateTime.parse(map['created_at'] as String),
-    updatedAt: DateTime.parse(map['updated_at'] as String),
-  );
+        id: map['id'] as String,
+        name: map['name'] as String,
+        path: map['path'] as String,
+        createdAt: DateTime.parse(map['created_at'] as String),
+        updatedAt: DateTime.parse(map['updated_at'] as String),
+      );
 
   final String id;
   final String name;
@@ -48,12 +48,12 @@ class ProjectModel {
 
   /// Convert model to JSON for database storage.
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'name': name,
-    'path': path,
-    'created_at': createdAt.toIso8601String(),
-    'updated_at': updatedAt.toIso8601String(),
-  };
+        'id': id,
+        'name': name,
+        'path': path,
+        'created_at': createdAt.toIso8601String(),
+        'updated_at': updatedAt.toIso8601String(),
+      };
 
   /// Create a copy with optional field updates.
   ProjectModel copyWith({
@@ -62,17 +62,17 @@ class ProjectModel {
     String? path,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) => ProjectModel(
-    id: id ?? this.id,
-    name: name ?? this.name,
-    path: path ?? this.path,
-    createdAt: createdAt ?? this.createdAt,
-    updatedAt: updatedAt ?? this.updatedAt,
-  );
+  }) =>
+      ProjectModel(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        path: path ?? this.path,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
 
   @override
-  String toString() =>
-      'ProjectModel(id: $id, name: $name, path: $path, '
+  String toString() => 'ProjectModel(id: $id, name: $name, path: $path, '
       'createdAt: $createdAt, updatedAt: $updatedAt)';
 
   @override
@@ -96,8 +96,7 @@ class DatabaseException implements Exception {
   final Exception? originalException;
 
   @override
-  String toString() =>
-      'DatabaseException: $message'
+  String toString() => 'DatabaseException: $message'
       '${originalException != null ? '\nCause: $originalException' : ''}';
 }
 

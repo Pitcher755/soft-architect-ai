@@ -36,8 +36,7 @@ class FileSearchUseCase {
     final lowerQuery = query.toLowerCase();
     return nodes
         .where((node) =>
-            node.isDirectory &&
-            node.name.toLowerCase().contains(lowerQuery))
+            node.isDirectory && node.name.toLowerCase().contains(lowerQuery))
         .toList();
   }
 

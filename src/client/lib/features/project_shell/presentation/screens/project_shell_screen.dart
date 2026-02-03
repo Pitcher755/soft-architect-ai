@@ -266,67 +266,67 @@ Select a text or markdown file to preview its content.
 
   /// Mock file tree structure (replace with real data from repository)
   FileNode _buildMockTree() => const FileNode(
-    id: 'root',
-    name: 'Project Root',
-    path: '/',
-    isDirectory: true,
-    children: [
-      FileNode(
-        id: 'file-readme',
-        name: 'README.md',
-        path: '/README.md',
-        isDirectory: false,
-      ),
-      FileNode(
-        id: 'dir-docs',
-        name: 'docs',
-        path: '/docs',
+        id: 'root',
+        name: 'Project Root',
+        path: '/',
         isDirectory: true,
         children: [
           FileNode(
-            id: 'file-arch',
-            name: 'ARCHITECTURE.md',
-            path: '/docs/ARCHITECTURE.md',
+            id: 'file-readme',
+            name: 'README.md',
+            path: '/README.md',
             isDirectory: false,
           ),
           FileNode(
-            id: 'file-setup',
-            name: 'SETUP.md',
-            path: '/docs/SETUP.md',
-            isDirectory: false,
-          ),
-        ],
-      ),
-      FileNode(
-        id: 'dir-src',
-        name: 'src',
-        path: '/src',
-        isDirectory: true,
-        children: [
-          FileNode(
-            id: 'file-main',
-            name: 'main.dart',
-            path: '/src/main.dart',
-            isDirectory: false,
-          ),
-          FileNode(
-            id: 'dir-features',
-            name: 'features',
-            path: '/src/features',
+            id: 'dir-docs',
+            name: 'docs',
+            path: '/docs',
             isDirectory: true,
             children: [
               FileNode(
-                id: 'file-feature1',
-                name: 'feature.dart',
-                path: '/src/features/feature.dart',
+                id: 'file-arch',
+                name: 'ARCHITECTURE.md',
+                path: '/docs/ARCHITECTURE.md',
+                isDirectory: false,
+              ),
+              FileNode(
+                id: 'file-setup',
+                name: 'SETUP.md',
+                path: '/docs/SETUP.md',
                 isDirectory: false,
               ),
             ],
           ),
+          FileNode(
+            id: 'dir-src',
+            name: 'src',
+            path: '/src',
+            isDirectory: true,
+            children: [
+              FileNode(
+                id: 'file-main',
+                name: 'main.dart',
+                path: '/src/main.dart',
+                isDirectory: false,
+              ),
+              FileNode(
+                id: 'dir-features',
+                name: 'features',
+                path: '/src/features',
+                isDirectory: true,
+                children: [
+                  FileNode(
+                    id: 'file-feature1',
+                    name: 'feature.dart',
+                    path: '/src/features/feature.dart',
+                    isDirectory: false,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
-      ),
-    ],
-  );
+      );
 
   @override
   void dispose() {

@@ -28,6 +28,6 @@ final projectRepositoryProvider = Provider<ProjectRepository>((ref) {
 /// Usage: ref.watch(projectShellProvider)
 final projectShellProvider =
     StateNotifierProvider<ProjectShellNotifier, ProjectShellState>((ref) {
-      final repository = ref.watch(projectRepositoryProvider);
-      return ProjectShellNotifier(repository);
-    });
+  final repository = ref.watch(projectRepositoryProvider);
+  return ProjectShellNotifier(repository);
+});

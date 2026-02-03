@@ -6,12 +6,15 @@ class DirectoryTreeUseCase {
   /// Toggle node expansion state (immutable)
   static Set<String> toggleNodeExpanded(Set<String> expanded, String nodeId) {
     final newExpanded = Set<String>.from(expanded);
-    newExpanded.contains(nodeId) ? newExpanded.remove(nodeId) : newExpanded.add(nodeId);
+    newExpanded.contains(nodeId)
+        ? newExpanded.remove(nodeId)
+        : newExpanded.add(nodeId);
     return newExpanded;
   }
 
   /// Expand node and all its children recursively
-  static Set<String> expandNodeRecursively(Set<String> expanded, FileNode node) {
+  static Set<String> expandNodeRecursively(
+      Set<String> expanded, FileNode node) {
     final newExpanded = Set<String>.from(expanded);
     _addNodeAndChildren(node, newExpanded);
     return newExpanded;
@@ -36,7 +39,7 @@ class DirectoryTreeUseCase {
 
   /// Count total visible nodes for performance tracking
   static int countVisibleNodes(FileNode root, Set<String> expanded) {
-    int count = 1; // root
+    var count = 1; // root
     if (expanded.contains(root.id)) {
       for (final child in root.children) {
         count += countVisibleNodes(child, expanded);

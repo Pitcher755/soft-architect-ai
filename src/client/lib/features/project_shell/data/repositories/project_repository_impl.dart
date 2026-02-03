@@ -36,14 +36,16 @@ class ProjectRepositoryImpl implements ProjectRepository {
         createdAt: DateTime.now(),
       );
 
-      developer.log('Creating project: ${project.id}', name: 'ProjectRepository');
+      developer.log('Creating project: ${project.id}',
+          name: 'ProjectRepository');
 
       // 4. Save to database
       await sqliteDataSource.saveProject(project);
 
       return project;
     } catch (e) {
-      developer.log('Error creating project: $e', name: 'ProjectRepository', error: e);
+      developer.log('Error creating project: $e',
+          name: 'ProjectRepository', error: e);
       rethrow;
     }
   }
@@ -53,8 +55,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
       sqliteDataSource.getProject(projectId);
 
   @override
-  Future<List<Project>> getAllProjects() =>
-      sqliteDataSource.getAllProjects();
+  Future<List<Project>> getAllProjects() => sqliteDataSource.getAllProjects();
 
   @override
   Future<Project?> getLastOpenedProject() async {

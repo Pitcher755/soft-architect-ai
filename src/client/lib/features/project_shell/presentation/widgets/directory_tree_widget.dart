@@ -13,6 +13,13 @@ import '../../domain/entities/file_node.dart';
 /// - Border color: #30363d
 /// - Text secondary: #8b949e
 class DirectoryTreeWidget extends StatefulWidget {
+  const DirectoryTreeWidget({
+    required this.root,
+    required this.onFileSelected,
+    Key? key,
+    this.selectedNode,
+  }) : super(key: key);
+
   /// Root node of the file tree
   final FileNode root;
 
@@ -21,13 +28,6 @@ class DirectoryTreeWidget extends StatefulWidget {
 
   /// Currently selected node
   final FileNode? selectedNode;
-
-  const DirectoryTreeWidget({
-    Key? key,
-    required this.root,
-    required this.onFileSelected,
-    this.selectedNode,
-  }) : super(key: key);
 
   @override
   State<DirectoryTreeWidget> createState() => _DirectoryTreeWidgetState();
@@ -45,7 +45,8 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    developer.log('Building DirectoryTreeWidget with root: ${widget.root.name}');
+    developer
+        .log('Building DirectoryTreeWidget with root: ${widget.root.name}');
 
     return SingleChildScrollView(
       child: _buildTreeNode(widget.root),
@@ -85,9 +86,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
             }
           });
         },
-        children: node.children
-            .map((child) => _buildTreeNode(child))
-            .toList(),
+        children: node.children.map(_buildTreeNode).toList(),
       );
     }
     // File node
@@ -132,7 +131,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
     final ext = filename.split('.').last.toLowerCase();
 
     IconData icon;
-    Color color = textSecondary;
+    var color = textSecondary;
 
     // Determine icon based on file extension
     switch (ext) {
