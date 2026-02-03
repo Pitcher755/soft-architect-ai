@@ -1,0 +1,4 @@
+{
+  "testFilePattern": "**/*_test.dart",
+  "testDirectory": "tests/unit/flutter"
+}

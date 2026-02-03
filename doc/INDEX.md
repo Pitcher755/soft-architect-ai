@@ -31,6 +31,8 @@ doc/
 │   ├── AUTOMATION.es.md          (Automatización y DevOps en español)
 │   ├── AUTOMATION.en.md          (Automatización y DevOps en inglés)
 │   ├── DOCKER_COMPOSE_GUIDE.es.md    (Guía Docker Compose en español)
+│   ├── MONOREPO_TESTING_ARCHITECTURE.es.md   (Arquitectura de Testing - ES) ⭐ NEW
+│   ├── MONOREPO_TESTING_ARCHITECTURE.en.md   (Arquitectura de Testing - EN) ⭐ NEW
 │   ├── QUICK_START_GUIDE.es.md   (Inicio rápido en español) ⭐ NEW
 │   ├── QUICK_START_GUIDE.en.md   (Inicio rápido en inglés) ⭐ NEW
 │   ├── SETUP_GUIDE.es.md         (Guía de instalación en español)

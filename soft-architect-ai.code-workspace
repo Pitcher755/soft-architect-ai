@@ -1,0 +1,45 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "soft-architect-ai (Monorepo)",
+      "isolated": false
+    },
+    {
+      "path": "src/client",
+      "name": "Flutter Client",
+      "isolated": false
+    },
+    {
+      "path": "src/server",
+      "name": "Python Server",
+      "isolated": false
+    }
+  ],
+  "settings": {
+    "dart.sdkPath": "${workspaceFolder}/src/client",
+    "dart.analysisExcludedFolders": [
+      ".dart_tool",
+      "build",
+      "ios",
+      "android",
+      "web",
+      "macos",
+      "windows",
+      "linux"
+    ],
+    "[dart]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "Dart-Code.dart-code"
+    },
+    "python.defaultInterpreterPath": "/usr/bin/python3"
+  },
+  "extensions": {
+    "recommendations": [
+      "Dart-Code.dart-code",
+      "Dart-Code.flutter",
+      "ms-python.python",
+      "ms-python.vscode-pylance"
+    ]
+  }
+}

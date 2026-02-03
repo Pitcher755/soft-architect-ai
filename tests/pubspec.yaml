@@ -1,0 +1,28 @@
+name: softarchitect_ai_tests
+description: Test suite for SoftArchitect AI monorepo
+version: 0.1.0
+
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  sqflite: ^2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  mockito: ^5.6.3
+  test: ^1.24.0
+
+# Path dependency to the main Flutter app
+# This allows imports like: import 'package:softarchitect_ai/...'
+dependency_overrides:
+  softarchitect_ai:
+    path: ../src/client
