@@ -1,86 +1,67 @@
 // tests/unit/data/sqlite_data_source_test.dart
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart';
-import '../../test_helper.dart';
+import 'package:softarchitect_ai/features/project_shell/data/models/project_model.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   group('SQLiteDataSource', () {
-    late Database database;
-    late SQLiteDataSource dataSource;
+    late Database db;
 
     setUp(() async {
-      database = await initTestDatabase();
-      dataSource = SQLiteDataSource(database);
+      sqfliteFfiInit();
+      db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
+      await SQLiteDataSource.createTables(db);
     });
 
-    tearDown(() async {
-      await database.close();
+    tearDown(() async => await db.close());
+
+    test('saveProject inserts project into database', () async {
+      final ds = SQLiteDataSource(db);
+      final project = ProjectModel(
+        id: '123',
+        name: 'test-project',
+        path: '/path',
+        createdAt: DateTime.now(),
+      );
+      await ds.saveProject(project);
+      final result = await db.query(
+        'projects',
+        where: 'id = ?',
+        whereArgs: ['123'],
+      );
+      expect(result.length, 1);
     });
 
-    test('createProject inserts project into database', () async {
-      const projectData = {
-        'id': 'test-proj-1',
-        'name': 'Test Project',
-        'path': '/home/test/projects/test',
-        'createdAt': '2026-02-03T10:00:00Z',
-      };
-
-      final id = await dataSource.createProject(projectData);
-
-      expect(id, isNotEmpty);
+    test('getProject retrieves project from database', () async {
+      final ds = SQLiteDataSource(db);
+      final project = ProjectModel(
+        id: '456',
+        name: 'another-project',
+        path: '/path',
+        createdAt: DateTime.now(),
+      );
+      await ds.saveProject(project);
+      final retrieved = await ds.getProject('456');
+      expect(retrieved?.name, 'another-project');
     });
 
-    test('getProject retrieves project by ID', () async {
-      const projectData = {
-        'id': 'test-proj-2',
-        'name': 'Retrieve Test',
-        'path': '/home/test/projects/retrieve',
-        'createdAt': '2026-02-03T10:00:00Z',
-      };
-
-      await dataSource.createProject(projectData);
-      final project = await dataSource.getProject('test-proj-2');
-
-      expect(project, isNotNull);
-      expect(project!['name'], 'Retrieve Test');
-    });
-
-    test('getAllProjects returns all projects', () async {
-      const project1 = {
-        'id': 'proj-1',
-        'name': 'Project 1',
-        'path': '/proj1',
-        'createdAt': '2026-02-03T10:00:00Z',
-      };
-      const project2 = {
-        'id': 'proj-2',
-        'name': 'Project 2',
-        'path': '/proj2',
-        'createdAt': '2026-02-03T10:00:00Z',
-      };
-
-      await dataSource.createProject(project1);
-      await dataSource.createProject(project2);
-
-      final projects = await dataSource.getAllProjects();
-
-      expect(projects.length, 2);
-    });
-
-    test('deleteProject removes project from database', () async {
-      const projectData = {
-        'id': 'test-proj-delete',
-        'name': 'Delete Test',
-        'path': '/home/test/projects/delete',
-        'createdAt': '2026-02-03T10:00:00Z',
-      };
-
-      await dataSource.createProject(projectData);
-      await dataSource.deleteProject('test-proj-delete');
-      final project = await dataSource.getProject('test-proj-delete');
-
-      expect(project, isNull);
+    test('saveProject throws on duplicate name', () async {
+      final ds = SQLiteDataSource(db);
+      await db.insert('projects', {
+        'id': '1',
+        'name': 'duplicate',
+        'path': '/p1',
+        'created_at': DateTime.now().toIso8601String(),
+      });
+      final dup = ProjectModel(
+        id: '2',
+        name: 'duplicate',
+        path: '/p2',
+        createdAt: DateTime.now(),
+      );
+      expect(() => ds.saveProject(dup), throwsA(isA<DatabaseException>()));
     });
   });
 }
