@@ -131,6 +131,7 @@
                             "name": "As User, I want an IDE-like interface (ProjectShell) to create and manage local projects, so I have full control over my architectures.",
                             "priority": "Critical",
                             "estimation": "XL",
+                            "points": 13,
                             "branch_name": "feature/ui-project-shell",
                             "dependencies": [
                                 "context/30-ARCHITECTURE/DESIGN_SYSTEM.md",
@@ -159,6 +160,7 @@
                             "name": "As Backend, I want a FileSystemService to safely create/read/write project structures, ensuring permission validation and audit trails.",
                             "priority": "Critical",
                             "estimation": "L",
+                            "points": 8,
                             "branch_name": "feature/backend-filesystem-service",
                             "dependencies": [
                                 "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md",
@@ -195,7 +197,8 @@
                             "name": "As User, I want the system to generate 25 documents sequentially (guided by RAG templates), allowing me to iterate before saving each one.",
                             "priority": "Critical",
                             "estimation": "XXL",
-                            "branch_name": "feature/ui-chat-sequential-docs",
+                            "points": 21,
+                            "branch_name": "feature/chat-sequential-docs",
                             "dependencies": [
                                 "HU-3.1",
                                 "HU-3.2",
@@ -207,21 +210,21 @@
                                 "✅ (Positive) Backend loads template (e.g., 01-TEMPLATES/10-CONTEXT.md) and adapts to project.",
                                 "✅ (Positive) RAG uses Ollama/Groq to fill template placeholders.",
                                 "✅ (Positive) Frontend shows proposal in markdown preview with 'Accept' | 'Edit' | 'Reject' buttons.",
-                                "✅ (Positive) If user clicks 'Edit': Chat mode opens for refinement, RAG regenerates on submission.",
-                                "✅ (Positive) If user clicks 'Accept': Calls HU-3.2 to persist doc, auto-loads Doc 2 proposal.",
-                                "✅ (Positive) Workflow is 100% sequential (never 2 docs in parallel).",
-                                "✅ (Positive) After Doc 25: Success message 'Documentation complete (25 docs)'.",
+                                "✅ (Positive) Chat flow is 100% sequential: Doc 1 → Doc 2 → ... → Doc 25 (never parallel).",
+                                "✅ (Positive) UX Control: Send button (➤) disables visually (gray) if text field is empty or whitespace-only.",
+                                "✅ (Positive) UX Tools: Code blocks rendered include 'Copy' button in header to save content to clipboard.",
+                                "✅ (Positive) Streaming response: Token-by-token display (<200ms latency, no wait for full response).",
                                 "❌ (Negative) No docs saved if user doesn't explicitly Accept."
                             ],
                             "technical_tasks": [
+                                "Implement `SequentialChatScreen` widget (main UI).",
+                                "Create `TextEditingController` listener for managing send button `isEnabled` state.",
+                                "Implement `CodeBlockHeader` widget with Clipboard integration for 'Copy' functionality.",
                                 "Implement RAG orchestrator in `services/rag/document_proposal_service.py`.",
                                 "Create `ProjectMetadataService` to track project state and last doc generated.",
-                                "Implement chat endpoint `POST /api/v1/projects/{id}/chat/message` that generates proposals.",
-                                "Implement `POST /api/v1/projects/{id}/document/validate` endpoint to persist validated docs.",
-                                "Create `DocumentProposalWidget` with preview + edit + buttons.",
-                                "Integrate ChatPanel with sequential state machine.",
-                                "Unit tests: Proposal generation, state transitions (>85%).",
-                                "E2E tests: Full workflow Doc 1 → Accept → Doc 2 proposal."
+                                "Implement chat endpoint `POST /api/v1/chat/message` for proposal generation.",
+                                "Implement `POST /api/v1/documents/validate` endpoint to persist validated docs.",
+                                "Unit tests: Proposal generation, state transitions, input validation (>85%)."
                             ]
                         },
                         {
@@ -229,7 +232,8 @@
                             "name": "As System, I want resilient error handling and validation gates, so document generation gracefully handles RAG timeouts, disk errors, and user mistakes.",
                             "priority": "High",
                             "estimation": "M",
-                            "branch_name": "feature/backend-error-handling",
+                            "points": 5,
+                            "branch_name": "feature/error-handling-gates",
                             "dependencies": [
                                 "HU-3.3",
                                 "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
@@ -241,15 +245,16 @@
                                 "✅ (Positive) Disk full error: Message 'Free 500MB to continue'.",
                                 "✅ (Positive) Permission denied: 'Check permissions on /context directory'.",
                                 "✅ (Positive) All errors logged with timestamp + user_id + error_code.",
-                                "✅ (Positive) Frontend shows error banner (not exception).",
+                                "✅ (Positive) Frontend shows error notification (ScaffoldMessenger) with 5s auto-hide.",
+                                "✅ (Positive) Manual error handling: User can click 'Retry' or 'Skip Document' in notification.",
                                 "❌ (Negative) No retry if user rejects document."
                             ],
                             "technical_tasks": [
-                                "Add `@retry_with_backoff` decorator to RAG calls.",
+                                "Implement `@retry_with_backoff` decorator for RAG calls.",
                                 "Create custom exception hierarchy in `core/exceptions/`.",
                                 "Implement error handler middleware in FastAPI.",
-                                "Add error logging to `context/40-PLANNING/ERROR_LOG.md`.",
-                                "Create `ErrorBanner` widget in Flutter.",
+                                "Create `ErrorNotificationWidget` with ScaffoldMessenger (5s autohide).",
+                                "Implement parametrizable notification duration for flexible error handling.",
                                 "Unit tests: Simulate RAG timeout, disk full, permission errors (>90%)."
                             ]
                         },
@@ -258,7 +263,8 @@
                             "name": "As User, I want streaming text generation (SSE) and optimized performance, so the UI feels responsive (<2s per document proposal).",
                             "priority": "High",
                             "estimation": "M",
-                            "branch_name": "feature/ui-streaming-optimization",
+                            "points": 8,
+                            "branch_name": "feature/streaming-optimization",
                             "dependencies": [
                                 "HU-3.3",
                                 "HU-3.4"

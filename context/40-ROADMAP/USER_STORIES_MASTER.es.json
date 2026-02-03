@@ -211,19 +211,20 @@
                                 "✅ (Positivo) Usuario puede iterar: 'Regenerar', 'Refinar' o 'Siguiente Documento'.",
                                 "✅ (Positivo) RAG es 100% guiado por templates (sin generación libre).",
                                 "✅ (Positivo) Barra de progreso muestra documentos completados (X/25).",
+                                "✅ (Positivo) Control UX: Botón enviar (➤) se deshabilita visualmente si campo vacío o solo espacios.",
+                                "✅ (Positivo) Herramientas de Código: Bloques código con botón 'Copiar' en cabecera → portapapeles.",
                                 "✅ (Positivo) Streaming de respuesta token-a-token con latencia <200ms.",
-                                "✅ (Positivo) Persistencia de chat en BD (SQLite) para recuperación.",
-                                "✅ (Positivo) Manejo de errores con retry automático.",
                                 "✅ (Positivo) Tests de flujo: 3+ escenarios de generación secuencial."
                             ],
                             "technical_tasks": [
-                                "Implementar `ChatSequentialDocsOrchestrator` en Backend.",
-                                "Crear templates RAG para Doc 1-25 en knowledge_base.",
-                                "Endpoint POST /api/v1/chat/sequential para iniciar generación.",
-                                "Endpoint POST /api/v1/chat/iterate para refinamiento.",
-                                "Endpoint GET /api/v1/documents/status para progreso.",
-                                "Gestionar estado de generación con Riverpod en Frontend.",
-                                "Tests de integración E2E: usuario crea proyecto → genera 3+ documentos."
+                                "Implementar widget `SequentialChatScreen` (UI principal).",
+                                "Crear listener `TextEditingController` para gestionar estado `isEnabled` del botón enviar.",
+                                "Implementar widget `CodeBlockHeader` con integración Clipboard para funcionalidad 'Copiar'.",
+                                "Implementar orquestador RAG en `services/rag/document_proposal_service.py`.",
+                                "Crear `ProjectMetadataService` para rastrear estado del proyecto y último doc generado.",
+                                "Implementar endpoint chat `POST /api/v1/chat/message` para generación de propuestas.",
+                                "Implementar `POST /api/v1/documents/validate` endpoint para persistencia de docs validados.",
+                                "Tests unitarios: Generación de propuestas, transiciones de estado, validación de entrada (>85%)."
                             ]
                         },
                         {
@@ -238,20 +239,22 @@
                                 "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
                             ],
                             "verification_criteria": [
-                                "✅ (Positivo) Validación de contenido antes de guardar (no vacío, formato válido).",
-                                "✅ (Positivo) Gates de calidad: Flesch-Kincaid >5, sin PII, no tokens incompletos.",
-                                "✅ (Positivo) Retry automático con backoff exponencial (3 reintentos).",
-                                "✅ (Positivo) Fallback a template genérico si LLM falla.",
-                                "✅ (Positivo) Rollback de documento si validación falla.",
-                                "✅ (Positivo) Logging detallado de fallos para debugging.",
+                                "✅ (Positivo) Si timeout RAG: Reintenta automáticamente 3 veces (delays 1s, 2s, 4s).",
+                                "✅ (Positivo) Después de 3 reintentos: Muestra placeholder template + mensaje 'RAG no disponible'.",
+                                "✅ (Positivo) Error disco lleno: Mensaje 'Libera 500MB para continuar'.",
+                                "✅ (Positivo) Permiso denegado: 'Verifica permisos en directorio /context'.",
+                                "✅ (Positivo) Todos los errores registrados con timestamp + user_id + error_code.",
+                                "✅ (Positivo) Frontend muestra notificación de error (ScaffoldMessenger) con autohide 5s.",
+                                "✅ (Positivo) Manejo manual de errores: Usuario puede hacer clic en 'Reintentar' o 'Omitir Documento' en notificación.",
                                 "❌ (Negativo) Usuario no ve stack traces (mensajes amigables en español)."
                             ],
                             "technical_tasks": [
-                                "Implementar validadores de contenido (estructura, PII, tokens).",
-                                "Crear gates de calidad con scoring.",
-                                "Decorador @retry_with_backoff en Python.",
-                                "Manejo de excepciones según estándar.",
-                                "Tests unitarios: >90% cobertura de validadores."
+                                "Implementar decorador `@retry_with_backoff` para llamadas RAG.",
+                                "Crear jerarquía de excepciones personalizadas en `core/exceptions/`.",
+                                "Implementar middleware de manejo de errores en FastAPI.",
+                                "Crear widget `ErrorNotificationWidget` con ScaffoldMessenger (5s autohide).",
+                                "Implementar duración parametrizable de notificaciones para manejo flexible de errores.",
+                                "Tests unitarios: Simular timeout RAG, disco lleno, errores de permisos (>90%)."
                             ]
                         },
                         {
