@@ -10,7 +10,7 @@ import 'package:softarchitect_ai/features/project_shell/presentation/providers/p
 import 'package:softarchitect_ai/features/project_shell/presentation/screens/project_shell_screen.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/directory_tree_widget.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/markdown_preview_widget.dart';
-import '../../../../../helpers/project_fixtures.dart';
+import '../../../../helpers/project_fixtures.dart';
 
 /// Mock repository that returns predefined test data
 class MockProjectRepository implements ProjectRepository {
