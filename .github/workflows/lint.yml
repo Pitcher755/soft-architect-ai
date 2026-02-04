@@ -15,7 +15,7 @@ on:
 # Environment variables
 env:
   PYTHON_VERSION: '3.12'
-  FLUTTER_VERSION: '3.38.0'
+  FLUTTER_VERSION: '3.38.9'
 
 jobs:
   dart-lint:
@@ -40,7 +40,7 @@ jobs:
         if: steps.check_flutter.outputs.flutter_exists == 'true'
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.0'
+          flutter-version: '3.38.9'
           cache: true
 
       - name: Get Flutter dependencies
