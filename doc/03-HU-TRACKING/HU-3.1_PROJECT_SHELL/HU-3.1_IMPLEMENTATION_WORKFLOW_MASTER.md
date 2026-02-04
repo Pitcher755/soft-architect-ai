@@ -215,47 +215,45 @@ src/client/lib/features/project_shell/
 
 ## 1.3: Crear test_helper.dart y Fixtures
 
-### Paso 1.3.1: Crear tests/helpers/test_helper.dart
+### Paso 1.3.1: Crear tests/test/helpers/test_helper.dart
 
 ```bash
-cat > tests/helpers/test_helper.dart << 'EOF'
-// tests/helpers/test_helper.dart
+cat > tests/test/helpers/test_helper.dart << 'EOF'
+// tests/test/helpers/test_helper.dart
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart';
-import 'package:softarchitect_ai/features/project_shell/domain/repositories/project_repository.dart';
 
-// Generar mocks: dart run build_runner build
-@GenerateMocks([
-  ProjectRepository,
-  SQLiteDataSource,
-])
-void main() {
-  // Stub setup
+/// Helper para inicializar SQLite en memoria para tests
+Future<sqflite.Database> initTestDatabase() async {
+  final db = await sqflite.openDatabase(
+    ':memory:',
+    version: 1,
+    onCreate: (db, version) async {
+      await SQLiteDataSource.createTables(db);
+    },
+  );
+  return db;
 }
 
-// Helper para inicializar SQLite en memoria
-Future<Database> initTestDatabase() async {
-  sqfliteFfiInit();
-  return databaseFactoryFfi.openDatabase(
-    inMemoryDatabasePath,
-  );
+/// Helper para limpiar la base de datos después de los tests
+Future<void> closeTestDatabase(sqflite.Database db) async {
+  await db.close();
 }
 EOF
 ```
 
-✅ **Validación:** Archivo creado en `tests/helpers/test_helper.dart`.
+✅ **Validación:** Archivo creado en `tests/test/helpers/test_helper.dart`.
 
 ---
 
 ## 1.4: Crear Fixtures de Datos
 
-### Paso 1.4.1: tests/helpers/project_fixtures.dart
+### Paso 1.4.1: tests/test/helpers/project_fixtures.dart
 
 ```bash
-cat > tests/helpers/project_fixtures.dart << 'EOF'
-// tests/helpers/project_fixtures.dart
+cat > tests/test/helpers/project_fixtures.dart << 'EOF'
+// tests/test/helpers/project_fixtures.dart
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart';
 
@@ -294,8 +292,8 @@ EOF
 ### Paso 1.5.1: Test 1 - ProjectValidation
 
 ```bash
-cat > tests/unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart << 'EOF'
-// tests/unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart
+cat > tests/flutter/test/unit/features/project_shell/domain/use_cases/project_validation_use_case_test.dart << 'EOF'
+// tests/flutter/test/unit/features/project_shell/domain/use_cases/project_validation_use_case_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/use_cases/project_validation_use_case.dart';
 
@@ -330,8 +328,8 @@ EOF
 ### Paso 1.5.2: Test 2 - DirectoryTree Logic
 
 ```bash
-cat > tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart << 'EOF'
-// tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart
+cat > tests/flutter/test/unit/features/project_shell/domain/directory_tree_use_case_test.dart << 'EOF'
+// tests/flutter/test/unit/features/project_shell/domain/directory_tree_use_case_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/use_cases/directory_tree_use_case.dart';
 
@@ -367,8 +365,8 @@ EOF
 ### Paso 1.5.3: Test 3 - FileSearch
 
 ```bash
-cat > tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart << 'EOF'
-// tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart
+cat > tests/flutter/test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart << 'EOF'
+// tests/flutter/test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/use_cases/file_search_use_case.dart';
 
@@ -394,8 +392,8 @@ EOF
 ### Paso 1.5.4: Test 4 - SQLite
 
 ```bash
-cat > tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart << 'EOF'
-// tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart
+cat > tests/flutter/test/unit/features/project_shell/data/sqlite_data_source_test.dart << 'EOF'
+// tests/flutter/test/unit/features/project_shell/data/sqlite_data_source_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -429,8 +427,8 @@ EOF
 ### Paso 1.5.5: Test 5 - ProjectRepository
 
 ```bash
-cat > tests/unit/flutter/features/project_shell/data/project_repository_impl_test.dart << 'EOF'
-// tests/unit/flutter/features/project_shell/data/project_repository_impl_test.dart
+cat > tests/flutter/test/unit/features/project_shell/data/project_repository_impl_test.dart << 'EOF'
+// tests/flutter/test/unit/features/project_shell/data/project_repository_impl_test.dart
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -454,8 +452,8 @@ EOF
 ### Paso 1.5.6: Test 6 - Riverpod Notifier
 
 ```bash
-cat > tests/unit/flutter/features/project_shell/presentation/project_shell_notifier_test.dart << 'EOF'
-// tests/unit/flutter/features/project_shell/presentation/project_shell_notifier_test.dart
+cat > tests/flutter/test/unit/features/project_shell/presentation/project_shell_notifier_test.dart << 'EOF'
+// tests/flutter/test/unit/features/project_shell/presentation/project_shell_notifier_test.dart
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -475,8 +473,8 @@ EOF
 ### Paso 1.5.7: Ejecutar tests (RED phase)
 
 ```bash
-cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
-flutter test unit/flutter/features/project_shell/ --verbose
+cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests/flutter
+flutter test test/unit/features/project_shell/ --verbose
 ```
 
 **Expected result:** 🔴 **6 tests FAIL** (porque las clases no existen aún)
@@ -490,7 +488,7 @@ flutter test unit/flutter/features/project_shell/ --verbose
 ### Test 1: Project Creation & Validation
 
 ```dart
-// tests/unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart
+// tests/flutter/test/unit/features/project_shell/domain/use_cases/project_validation_use_case_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/use_cases/project_validation_use_case.dart';
 
@@ -524,7 +522,7 @@ void main() {
 ### Test 2: Directory Tree Expansion Logic
 
 ```dart
-// tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart
+// tests/flutter/test/unit/features/project_shell/domain/directory_tree_use_case_test.dart
 void main() {
   group('DirectoryTreeUseCase', () {
     test('toggleNodeExpanded adds node ID when collapsed', () {
@@ -551,7 +549,7 @@ void main() {
 ### Test 3: File Search Filtering
 
 ```dart
-// tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart
+// tests/flutter/test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart
 void main() {
   group('FileSearchUseCase', () {
     test('search returns empty list when query is empty', () {
@@ -582,7 +580,7 @@ void main() {
 ### Test 4: SQLite Persistence
 
 ```dart
-// tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart
+// tests/flutter/test/unit/features/project_shell/data/sqlite_data_source_test.dart
 void main() {
   group('SQLiteDataSource', () {
     late Database db;
@@ -647,7 +645,7 @@ void main() {
 ### Test 5: ProjectRepository
 
 ```dart
-// tests/unit/flutter/features/project_shell/data/project_repository_impl_test.dart
+// tests/flutter/test/unit/features/project_shell/data/project_repository_impl_test.dart
 void main() {
   group('ProjectRepositoryImpl', () {
     late MockSQLiteDataSource mockSqlite;
@@ -677,7 +675,7 @@ void main() {
 ### Test 6: Riverpod Notifier
 
 ```dart
-// tests/unit/flutter/features/project_shell/presentation/project_shell_notifier_test.dart
+// tests/flutter/test/unit/features/project_shell/presentation/project_shell_notifier_test.dart
 void main() {
   group('ProjectShellNotifier', () {
     late MockProjectRepository mockRepo;

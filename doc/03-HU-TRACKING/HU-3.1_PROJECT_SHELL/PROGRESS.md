@@ -49,12 +49,12 @@
   - 18 directorios: lib/features/project_shell/{core,data,domain,presentation}
   - 9 directorios: tests/{unit,widget,integration}/{domain,data,presentation}
 
-- [x] Test infrastructure completada
-  - tests/helpers/test_helper.dart: Mocks + SQLite in-memory helper
-  - tests/helpers/project_fixtures.dart: 4 test fixtures creados
+- [x] Test infrastructure completada (CENTRALIZADO en monorepo)
+  - tests/test/helpers/test_helper.dart: SQLite in-memory helper
+  - tests/test/helpers/project_fixtures.dart: 4 test fixtures creados
 
 - [x] RED Phase Tests (6 suites, 25 test cases)
-  - tests/unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart (32 líneas)
+  - tests/test/unit/features/project_shell/domain/use_cases/project_validation_use_case_test.dart (32 líneas)
   - tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart (63 líneas)
   - tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart (87 líneas)
   - tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart (72 líneas)
@@ -85,17 +85,17 @@
 #### Logros de Fase 2:
 
 **A. Test Infrastructure Centralizada en `/tests/`:**
-- [x] Estructura reorganizada: `tests/unit/flutter/features/project_shell/domain/` y `tests/unit/flutter/features/project_shell/data/`
+- [x] Estructura reorganizada: `tests/test/unit/features/project_shell/domain/` y `tests/test/unit/features/project_shell/data/` (CENTRALIZADO en monorepo)
 - [x] `tests/pubspec.yaml` creado (BREAKTHROUGH!)
   - Declara: flutter, flutter_test, sqflite, mockito, test
   - **KEY:** `dependency_overrides: softarchitect_ai: path: ../src/client`
   - Result: `flutter pub get` resolvió 122 dependencias ✅
 
-- [x] `tests/helpers/test_helper.dart` actualizado con imports correctos
+- [x] `tests/test/helpers/test_helper.dart` actualizado con imports correctos
   - Import: `package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart`
   - Proporciona: `initTestDatabase()`, `closeTestDatabase()`
 
-- [x] `tests/helpers/project_fixtures.dart` actualizado
+- [x] `tests/test/helpers/project_fixtures.dart` actualizado
   - Imports: `package:softarchitect_ai/features/project_shell/domain/entities/...`
   - Fixtures: testProject, testFileNode, testDirectoryNode, testRootNode
 
@@ -470,11 +470,11 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
    - domain/{entities, repositories, use_cases}/
    - presentation/{notifiers, providers, screens, widgets}/
 
-✅ tests/helpers/test_helper.dart (24 líneas)
+✅ tests/test/helpers/test_helper.dart (24 líneas)
    - @GenerateMocks([ProjectRepository, SQLiteDataSource])
    - initTestDatabase() con SQLite in-memory
 
-✅ tests/helpers/project_fixtures.dart (43 líneas)
+✅ tests/test/helpers/project_fixtures.dart (43 líneas)
    - testProject, testFileNode, testDirectoryNode, testRootNode
 
 ✅ tests/unit/flutter/features/project_shell/domain/ (3 files)
