@@ -33,6 +33,9 @@ void main() {
         ),
       );
 
+      // Wait for post-frame callbacks to complete
+      await tester.pumpAndSettle();
+
       // Then - Widget should render without errors
       expect(find.byType(DirectoryTreeWidget), findsOneWidget);
       expect(find.byType(SingleChildScrollView), findsOneWidget);

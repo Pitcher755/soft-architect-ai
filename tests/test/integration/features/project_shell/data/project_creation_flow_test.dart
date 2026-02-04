@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/core/exceptions/project_shell_exceptions.dart';
 import 'package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart';
 import 'package:softarchitect_ai/features/project_shell/data/repositories/project_repository_impl.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
 
 import '../../../../helpers/test_helper.dart';
 
@@ -10,15 +11,17 @@ void main() {
   group('Project Creation Flow Integration Test', () {
     late SQLiteDataSource dataSource;
     late ProjectRepositoryImpl repository;
+    late sqflite.Database db;
 
     setUp(() async {
-      final db = await initTestDatabase();
+      db = await initTestDatabase();
+      await clearTestDatabase(db); // Limpiar base de datos antes de cada test
       dataSource = SQLiteDataSource(db);
       repository = ProjectRepositoryImpl(dataSource);
     });
 
     tearDown(() async {
-      // Clean up will be handled by test_helper
+      await closeTestDatabase(db);
     });
 
     test('should create and retrieve project successfully', () async {

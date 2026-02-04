@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/directory_tree_widget.dart';
+
 import '../../../../helpers/project_fixtures.dart';
 
 void main() {
   group('Directory Navigation Flow Integration Test', () {
-    testWidgets('should handle complete directory navigation workflow', (WidgetTester tester) async {
+    testWidgets('should handle complete directory navigation workflow', (
+      WidgetTester tester,
+    ) async {
       FileNode? selectedFile;
 
       // Given a complex directory structure
@@ -85,6 +88,10 @@ void main() {
         ),
       );
 
+      // Expand root to show children
+      await tester.tap(find.text('complex-project'));
+      await tester.pumpAndSettle();
+
       // Then - Initially only root level items should be visible
       expect(find.text('README.md'), findsOneWidget);
       expect(find.text('src'), findsOneWidget);
@@ -156,7 +163,9 @@ void main() {
       expect(find.text('main_test.dart'), findsOneWidget);
     });
 
-    testWidgets('should handle selection highlighting correctly', (WidgetTester tester) async {
+    testWidgets('should handle selection highlighting correctly', (
+      WidgetTester tester,
+    ) async {
       FileNode? selectedFile;
 
       await tester.pumpWidget(
@@ -169,6 +178,10 @@ void main() {
           ),
         ),
       );
+
+      // Expand root to show children
+      await tester.tap(find.text('test-project'));
+      await tester.pumpAndSettle();
 
       // Initially no selection
       var listTiles = tester.widgetList<ListTile>(find.byType(ListTile));
@@ -207,7 +220,9 @@ void main() {
       expect(selectedTile.selected, isTrue);
     });
 
-    testWidgets('should handle deep nesting correctly', (WidgetTester tester) async {
+    testWidgets('should handle deep nesting correctly', (
+      WidgetTester tester,
+    ) async {
       // Create a deeply nested structure
       final deepNested = FileNode(
         id: 'level1',
@@ -243,37 +258,41 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: deepNested,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: deepNested, onFileSelected: (_) {}),
           ),
         ),
       );
 
-      // Initially only level1 visible
+      // Initially root is collapsed, only root visible
       expect(find.text('level1'), findsOneWidget);
       expect(find.text('level2'), findsNothing);
 
-      // Expand level1
+      // Expand root to show level2
       await tester.tap(find.text('level1'));
       await tester.pumpAndSettle();
+
+      // Now level2 should be visible
+      expect(find.text('level1'), findsOneWidget);
       expect(find.text('level2'), findsOneWidget);
       expect(find.text('level3'), findsNothing);
 
-      // Expand level2
+      // Expand level2 to show level3
       await tester.tap(find.text('level2'));
       await tester.pumpAndSettle();
+      expect(find.text('level2'), findsOneWidget);
       expect(find.text('level3'), findsOneWidget);
       expect(find.text('deep.txt'), findsNothing);
 
-      // Expand level3
+      // Expand level3 to show deep.txt
       await tester.tap(find.text('level3'));
       await tester.pumpAndSettle();
+      expect(find.text('level3'), findsOneWidget);
       expect(find.text('deep.txt'), findsOneWidget);
     });
 
-    testWidgets('should maintain expansion state correctly', (WidgetTester tester) async {
+    testWidgets('should maintain expansion state correctly', (
+      WidgetTester tester,
+    ) async {
       FileNode? selectedFile;
 
       await tester.pumpWidget(
@@ -286,6 +305,10 @@ void main() {
           ),
         ),
       );
+
+      // Expand root to show docs
+      await tester.tap(find.text('test-project'));
+      await tester.pumpAndSettle();
 
       // Expand docs
       await tester.tap(find.text('docs'));

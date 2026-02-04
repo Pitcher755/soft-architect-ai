@@ -34,11 +34,14 @@ dev_dependencies:
     sdk: flutter
 
   # Testing Tools
-  mockito: ^5.6.3
+  #mockito: ^5.6.3
 
   # Integration Testing
   integration_test:
     sdk: flutter
+
+  # Database testing
+  sqflite_common_ffi: ^2.3.0
 
 # ============================================================================
 # MONOREPO PATH DEPENDENCIES

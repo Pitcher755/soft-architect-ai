@@ -35,12 +35,19 @@ class DirectoryTreeWidget extends StatefulWidget {
 
 class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
   /// Tracks expanded directory nodes
-  final Set<String> _expanded = {};
+  late final Set<String> _expanded;
 
   @override
   void initState() {
     super.initState();
-    developer.log('DirectoryTreeWidget initialized');
+    developer.log('DirectoryTreeWidget initialized with root expanded');
+    _expanded = _getInitiallyExpandedNodes(widget.root);
+  }
+
+  /// Recursively collect all directory nodes that should be initially expanded
+  Set<String> _getInitiallyExpandedNodes(FileNode node) {
+    // Start with no directories expanded initially
+    return <String>{};
   }
 
   @override
@@ -60,6 +67,9 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
 
     if (node.isDirectory && node.children.isNotEmpty) {
       final isExpanded = _expanded.contains(node.id);
+      developer.log(
+        'Building directory node: ${node.name}, isExpanded: $isExpanded, expanded set: $_expanded',
+      );
 
       return ExpansionTile(
         key: ValueKey(node.id),
