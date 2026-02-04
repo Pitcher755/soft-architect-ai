@@ -1,5 +1,6 @@
 // lib/features/project_shell/core/security/path_validator.dart
 import 'package:path/path.dart' as p;
+
 import '../constants/validation_constants.dart';
 import '../exceptions/project_shell_exceptions.dart';
 
@@ -21,9 +22,7 @@ class PathValidator {
 
     // ❌ REJECT: Absolute paths
     if (p.isAbsolute(normalized)) {
-      throw PathTraversalException(
-        'Absolute paths not allowed: $normalized',
-      );
+      throw PathTraversalException('Absolute paths not allowed: $normalized');
     }
 
     // ❌ REJECT: Path traversal attempts
@@ -38,7 +37,8 @@ class PathValidator {
     // ❌ REJECT: Excessive path length (DoS prevention)
     if (filePath.length > ValidationConstants.maxFilePathLength) {
       throw PathTraversalException(
-        'Path length exceeds maximum (${ValidationConstants.maxFilePathLength})',
+        'Path length exceeds maximum '
+        '(${ValidationConstants.maxFilePathLength})',
       );
     }
 

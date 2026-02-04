@@ -10,7 +10,13 @@ class ValidationConstants {
 
   // File/path validation
   /// Disallowed path components (security - no traversal)
-  static const List<String> disallowedPathComponents = ['..', '~', r'$', '`', '\x00'];
+  static const List<String> disallowedPathComponents = [
+    '..',
+    '~',
+    r'$',
+    '`',
+    '\x00',
+  ];
 
   /// Max file path length (prevent DoS)
   static const int maxFilePathLength = 4096;

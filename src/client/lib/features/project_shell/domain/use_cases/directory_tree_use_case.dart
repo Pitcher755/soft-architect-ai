@@ -14,24 +14,20 @@ class DirectoryTreeUseCase {
 
   /// Expand node and all its children recursively
   static Set<String> expandNodeRecursively(
-      Set<String> expanded, FileNode node) {
+    Set<String> expanded,
+    FileNode node,
+  ) {
     final newExpanded = Set<String>.from(expanded);
     _addNodeAndChildren(node, newExpanded);
     return newExpanded;
   }
 
   /// Collapse node (children stay expanded)
-  static Set<String> collapseNode(Set<String> expanded, String nodeId) {
-    final newExpanded = Set<String>.from(expanded);
-    newExpanded.remove(nodeId);
-    return newExpanded;
-  }
+  static Set<String> collapseNode(Set<String> expanded, String nodeId) =>
+      Set<String>.from(expanded)..remove(nodeId);
 
   /// Get visible nodes based on expansion state (depth-first)
-  static List<FileNode> getVisibleNodes(
-    FileNode root,
-    Set<String> expanded,
-  ) {
+  static List<FileNode> getVisibleNodes(FileNode root, Set<String> expanded) {
     final visible = <FileNode>[root];
     _addVisibleChildren(root, expanded, visible);
     return visible;
@@ -53,7 +49,9 @@ class DirectoryTreeUseCase {
     Set<String> expanded,
     List<FileNode> visible,
   ) {
-    if (!expanded.contains(node.id)) return;
+    if (!expanded.contains(node.id)) {
+      return;
+    }
 
     for (final child in node.children) {
       visible.add(child);

@@ -9,7 +9,9 @@ class FileSearchUseCase {
   /// Search files by query (case-insensitive, recursive)
   static List<FileNode> search(List<FileNode> nodes, String query) {
     final trimmedQuery = query.trim();
-    if (trimmedQuery.isEmpty) return [];
+    if (trimmedQuery.isEmpty) {
+      return [];
+    }
     if (trimmedQuery.length > maxQueryLength) {
       throw ArgumentError('Query too long: max $maxQueryLength chars');
     }
@@ -33,12 +35,15 @@ class FileSearchUseCase {
 
   /// Search only directories
   static List<FileNode> searchDirectories(List<FileNode> nodes, String query) {
-    if (query.isEmpty) return [];
+    if (query.isEmpty) {
+      return [];
+    }
     final lowerQuery = query.toLowerCase();
     return nodes
-        .where((node) =>
-            node.isDirectory &&
-            node.name.toLowerCase().contains(lowerQuery))
+        .where(
+          (node) =>
+              node.isDirectory && node.name.toLowerCase().contains(lowerQuery),
+        )
         .toList();
   }
 
@@ -48,10 +53,12 @@ class FileSearchUseCase {
     List<FileNode> results,
   ) {
     for (final node in nodes) {
-      if (results.length >= maxResults) break;
+      if (results.length >= maxResults) {
+        break;
+      }
       if (!node.isDirectory &&
           (node.name.toLowerCase().contains(query) ||
-           node.path.toLowerCase().contains(query))) {
+              node.path.toLowerCase().contains(query))) {
         results.add(node);
       }
       if (node.isDirectory && node.children.isNotEmpty) {

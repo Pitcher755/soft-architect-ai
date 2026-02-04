@@ -40,7 +40,9 @@ class SQLiteDataSource {
         whereArgs: [projectId],
       );
 
-      if (result.isEmpty) return null;
+      if (result.isEmpty) {
+        return null;
+      }
       return ProjectModel.fromJson(result.first);
     } catch (e, st) {
       throw DatabaseException(
@@ -68,8 +70,10 @@ class SQLiteDataSource {
   /// Update project last opened time
   Future<void> updateLastOpened(String projectId) async {
     try {
-      developer.log('Updating lastOpened: $projectId',
-          name: 'SQLiteDataSource');
+      developer.log(
+        'Updating lastOpened: $projectId',
+        name: 'SQLiteDataSource',
+      );
       await database.update(
         _projectTableName,
         {'last_opened': DateTime.now().toIso8601String()},
@@ -116,7 +120,9 @@ class SQLiteDataSource {
         CHECK (LENGTH(name) >= 3 AND LENGTH(name) <= 50)
       )
     ''');
-    developer.log('Projects table created successfully',
-        name: 'SQLiteDataSource');
+    developer.log(
+      'Projects table created successfully',
+      name: 'SQLiteDataSource',
+    );
   }
 }

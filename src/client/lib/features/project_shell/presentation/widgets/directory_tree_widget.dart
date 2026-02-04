@@ -45,12 +45,11 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    developer
-        .log('Building DirectoryTreeWidget with root: ${widget.root.name}');
-
-    return SingleChildScrollView(
-      child: _buildTreeNode(widget.root),
+    developer.log(
+      'Building DirectoryTreeWidget with root: ${widget.root.name}',
     );
+
+    return SingleChildScrollView(child: _buildTreeNode(widget.root));
   }
 
   /// Recursively builds tree nodes (directories and files)
@@ -70,14 +69,12 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
           size: 18,
           color: primary,
         ),
-        backgroundColor: sidebarBg.withOpacity(0.5),
+        backgroundColor: sidebarBg.withValues(alpha: 0.5),
         collapsedBackgroundColor: Colors.transparent,
         tilePadding: const EdgeInsets.symmetric(horizontal: 8),
         initiallyExpanded: isExpanded,
         onExpansionChanged: (expanded) {
-          developer.log(
-            'Directory expanded: ${node.name} = $expanded',
-          );
+          developer.log('Directory expanded: ${node.name} = $expanded');
           setState(() {
             if (expanded) {
               _expanded.add(node.id);
@@ -97,10 +94,10 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
       title: _buildNodeTitle(node, false),
       leading: _buildFileIcon(node.name),
       selected: isSelected,
-      selectedTileColor: primary.withOpacity(0.2),
+      selectedTileColor: primary.withValues(alpha: 0.2),
       selectedColor: primary,
       tileColor: Colors.transparent,
-      hoverColor: borderDark.withOpacity(0.5),
+      hoverColor: borderDark.withValues(alpha: 0.5),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       onTap: () {
         developer.log('File selected: ${node.name}');

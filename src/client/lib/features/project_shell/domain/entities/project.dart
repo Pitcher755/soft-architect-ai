@@ -3,11 +3,13 @@
 /// Core project entity - represents a SoftArchitect project.
 ///
 /// A project is the main container for organizing architectural analysis,
-/// consisting of a directory structure, configuration files, and related documents.
+/// consisting of a directory structure, configuration files,
+/// and related documents.
 ///
 /// **Properties:**
-/// - [id]: Unique identifier (format: proj_<timestamp>)
-/// - [name]: User-friendly project name (3-50 alphanumeric chars)
+/// - [id]: Unique identifier (format: proj_timestamp)
+/// - [name]: User-friendly project name
+///   (3-50 alphanumeric chars)
 /// - [path]: Absolute filesystem path to project root
 /// - [createdAt]: Project creation timestamp
 /// - [lastOpened]: Last access timestamp (nullable)
@@ -22,7 +24,6 @@
 /// );
 /// ```
 class Project {
-
   const Project({
     required this.id,
     required this.name,
@@ -30,6 +31,7 @@ class Project {
     required this.createdAt,
     this.lastOpened,
   });
+
   /// Unique project identifier
   final String id;
 
@@ -55,7 +57,9 @@ class Project {
   ///
   /// Returns `true` if [lastOpened] is within 30 days, `false` otherwise.
   bool get isRecentlyAccessed {
-    if (lastOpened == null) return false;
+    if (lastOpened == null) {
+      return false;
+    }
     return DateTime.now().difference(lastOpened!).inDays <= 30;
   }
 
@@ -72,12 +76,12 @@ class Project {
     DateTime? createdAt,
     DateTime? lastOpened,
   }) => Project(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      path: path ?? this.path,
-      createdAt: createdAt ?? this.createdAt,
-      lastOpened: lastOpened ?? this.lastOpened,
-    );
+    id: id ?? this.id,
+    name: name ?? this.name,
+    path: path ?? this.path,
+    createdAt: createdAt ?? this.createdAt,
+    lastOpened: lastOpened ?? this.lastOpened,
+  );
 
   @override
   String toString() =>

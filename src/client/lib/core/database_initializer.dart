@@ -1,6 +1,7 @@
 /// Database Initialization for SoftArchitect AI Flutter Client.
 ///
-/// Simplified initialization that delegates platform-specific logic to Riverpod providers.
+/// Simplified initialization that delegates platform-specific logic
+/// to Riverpod providers.
 ///
 /// Architecture: Client-First + Platform-Aware Providers
 ///   - Web: MockProjectRepository (in-memory, no dart:io)
@@ -45,6 +46,7 @@ String getDatabaseInitStatus() {
   if (isWeb) {
     return 'ℹ️  Web platform - MockProjectRepository active';
   } else {
-    return '✅ Desktop platform - project_providers handling repository selection';
+    return '✅ Desktop platform - project_providers handling '
+        'repository selection';
   }
 }

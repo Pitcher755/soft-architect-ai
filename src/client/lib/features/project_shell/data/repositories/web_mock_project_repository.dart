@@ -51,7 +51,7 @@ class WebMockProjectRepository implements ProjectRepository {
     await Future.delayed(const Duration(milliseconds: 50));
     try {
       return _projects.firstWhere((p) => p.id == projectId);
-    } catch (_) {
+    } on Exception catch (_) {
       return null;
     }
   }
@@ -61,13 +61,14 @@ class WebMockProjectRepository implements ProjectRepository {
     await Future.delayed(const Duration(milliseconds: 50));
     try {
       return _projects.reduce(
-        (a, b) => (a.lastOpened ?? DateTime(1970)).isAfter(
-          b.lastOpened ?? DateTime(1970),
-        )
+        (a, b) =>
+            (a.lastOpened ?? DateTime(1970)).isAfter(
+              b.lastOpened ?? DateTime(1970),
+            )
             ? a
             : b,
       );
-    } catch (_) {
+    } on Exception catch (_) {
       return null;
     }
   }

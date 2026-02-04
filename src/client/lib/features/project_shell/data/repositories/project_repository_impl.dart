@@ -1,6 +1,5 @@
 // lib/features/project_shell/data/repositories/project_repository_impl.dart
 import 'dart:convert';
-
 import 'dart:developer' as developer;
 
 import 'package:crypto/crypto.dart';
@@ -36,16 +35,21 @@ class ProjectRepositoryImpl implements ProjectRepository {
         createdAt: DateTime.now(),
       );
 
-      developer.log('Creating project: ${project.id}',
-          name: 'ProjectRepository');
+      developer.log(
+        'Creating project: ${project.id}',
+        name: 'ProjectRepository',
+      );
 
       // 4. Save to database
       await sqliteDataSource.saveProject(project);
 
       return project;
     } catch (e) {
-      developer.log('Error creating project: $e',
-          name: 'ProjectRepository', error: e);
+      developer.log(
+        'Error creating project: $e',
+        name: 'ProjectRepository',
+        error: e,
+      );
       rethrow;
     }
   }
@@ -60,7 +64,9 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Project?> getLastOpenedProject() async {
     final projects = await getAllProjects();
-    if (projects.isEmpty) return null;
+    if (projects.isEmpty) {
+      return null;
+    }
 
     projects.sort(
       (a, b) =>

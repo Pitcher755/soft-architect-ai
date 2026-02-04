@@ -16,15 +16,19 @@ void main() async {
   await initializeSqfliteForDesktop();
   debugPrint(getDatabaseInitStatus());
 
-  // Load environment variables from .env file (skip on web, optional on desktop)
+  // Load environment variables from .env file
+  // (skip on web, optional on desktop)
   if (!kIsWeb) {
     try {
       await dotenv.load();
       debugPrint('✅ .env file loaded successfully');
-    } catch (e) {
-      // .env file not found or error loading, will use default values from AppConfig
+    } on Exception catch (e) {
+      // .env file not found or error loading, will use default values
+      // from AppConfig
       debugPrint(
-          '⚠️  Note: .env file not found or error loading, using default configuration: $e');
+        '⚠️  Note: .env file not found or error loading, '
+        'using default configuration: $e',
+      );
     }
   } else {
     debugPrint('ℹ️  Web platform: skipping .env file loading');
