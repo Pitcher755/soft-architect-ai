@@ -1,31 +1,34 @@
 name: softarchitect_ai_monorepo
 description: SoftArchitect AI - Monorepo root for testing and shared dependencies
 version: 0.1.0
-
 publish_to: 'none'
 
+# ============================================================================
+# ENVIRONMENT & PLATFORM CONFIGURATION
+# Required: Dart SDK 3.10.9+ (stable) | Flutter 3.38.0+
+# ============================================================================
 environment:
-  sdk: '>=3.0.0 <4.0.0'
-  flutter: '>=3.10.0'
+  sdk: '>=3.10.9 <4.0.0'
+  flutter: '>=3.38.0'
 
-# These dependencies are for monorepo-level testing and analysis
-# Individual packages (src/client, src/server) have their own pubspec.yaml
+# ============================================================================
+# MONOREPO-LEVEL DEPENDENCIES
+# Shared dependencies for orchestration and shared utilities
+# ============================================================================
 dependencies:
   flutter:
     sdk: flutter
 
-  sqflite: ^2.3.0
-  path_provider: ^2.1.0
-
+# ============================================================================
+# DEVELOPMENT DEPENDENCIES
+# Tools for building, analyzing, and quality assurance
+# ============================================================================
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  mockito: ^5.4.4
-  test: ^1.24.0
-  custom_lint: ^0.5.0
-
-# Monorepo configuration
-# This allows the analyzer to resolve packages from src/client
+# ============================================================================
+# FLUTTER CONFIGURATION
+# ============================================================================
 flutter:
   uses-material-design: true

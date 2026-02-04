@@ -15,8 +15,14 @@ class FileNode {
   final bool isDirectory;
   final List<FileNode> children;
 
-  /// Get depth in tree (root = 0)
-  int get depth => path.split('/').length - 1;
+  /// Get depth in tree (root = 1)
+  int get depth {
+    final parts = path.split('/').where((p) => p.isNotEmpty).toList();
+    if (!isDirectory && parts.isNotEmpty) {
+      return parts.length - 1; // exclude file name for files
+    }
+    return parts.length;
+  }
 
   /// Check if this node is expanded (has children to show)
   bool get hasChildren => isDirectory && children.isNotEmpty;

@@ -31,11 +31,11 @@ abstract class ProjectShellException implements Exception {
 /// Project name validation failed
 class InvalidProjectNameException extends ProjectShellException {
   InvalidProjectNameException(String name, {super.stackTrace})
-    : super(
-        code: 'PROJ_001',
-        message:
-            'Invalid project name: $name. Must be 3-50 alphanumeric/dash/underscore.',
-      );
+      : super(
+          code: 'PROJ_001',
+          message:
+              'Invalid project name: $name. Must be 3-50 alphanumeric/dash/underscore.',
+        );
 
   @override
   String toUserMessage() =>
@@ -45,7 +45,7 @@ class InvalidProjectNameException extends ProjectShellException {
 /// Project name already exists in database
 class DuplicateProjectNameException extends ProjectShellException {
   DuplicateProjectNameException(String name, {super.stackTrace})
-    : super(code: 'PROJ_002', message: 'Project name already exists: $name');
+      : super(code: 'PROJ_002', message: 'Project name already exists: $name');
 
   @override
   String toUserMessage() => 'Ya existe un proyecto con ese nombre.';
@@ -54,7 +54,7 @@ class DuplicateProjectNameException extends ProjectShellException {
 /// Security: Path traversal attempt detected
 class PathTraversalException extends ProjectShellException {
   PathTraversalException(String message, {super.stackTrace})
-    : super(code: 'SEC_001', message: 'Path traversal detected: $message');
+      : super(code: 'SEC_001', message: 'Path traversal detected: $message');
 
   @override
   String toUserMessage() =>
@@ -65,15 +65,12 @@ class PathTraversalException extends ProjectShellException {
 class DatabaseException extends ProjectShellException {
   DatabaseException(
     String message, {
-    dynamic originalError,
-    StackTrace? stackTrace,
-  })
-    : super(
-        code: 'DB_ERR_001',
-        message: message,
-        originalError: originalError,
-        stackTrace: stackTrace,
-      );
+    super.originalError,
+    super.stackTrace,
+  }) : super(
+          code: 'DB_ERR_001',
+          message: message,
+        );
 
   @override
   String toUserMessage() =>
@@ -84,15 +81,12 @@ class DatabaseException extends ProjectShellException {
 class FileSystemException extends ProjectShellException {
   FileSystemException(
     String message, {
-    dynamic originalError,
-    StackTrace? stackTrace,
-  })
-    : super(
-        code: 'FS_ERR_001',
-        message: message,
-        originalError: originalError,
-        stackTrace: stackTrace,
-      );
+    super.originalError,
+    super.stackTrace,
+  }) : super(
+          code: 'FS_ERR_001',
+          message: message,
+        );
 
   @override
   String toUserMessage() =>
@@ -102,10 +96,10 @@ class FileSystemException extends ProjectShellException {
 /// Project not found
 class ProjectNotFoundException extends ProjectShellException {
   ProjectNotFoundException(String projectId, {super.stackTrace})
-    : super(
-        code: 'PROJ_003',
-        message: 'Project not found: $projectId',
-      );
+      : super(
+          code: 'PROJ_003',
+          message: 'Project not found: $projectId',
+        );
 
   @override
   String toUserMessage() => 'El proyecto no existe.';
@@ -114,10 +108,10 @@ class ProjectNotFoundException extends ProjectShellException {
 /// Invalid file type
 class InvalidFileTypeException extends ProjectShellException {
   InvalidFileTypeException(String fileName, {super.stackTrace})
-    : super(
-        code: 'FILE_001',
-        message: 'Invalid file type: $fileName',
-      );
+      : super(
+          code: 'FILE_001',
+          message: 'Invalid file type: $fileName',
+        );
 
   @override
   String toUserMessage() =>
@@ -127,33 +121,11 @@ class InvalidFileTypeException extends ProjectShellException {
 /// Unauthorized access attempt
 class UnauthorizedException extends ProjectShellException {
   UnauthorizedException(String reason, {super.stackTrace})
-    : super(
-        code: 'SEC_002',
-        message: 'Unauthorized access: $reason',
-      );
+      : super(
+          code: 'SEC_002',
+          message: 'Unauthorized access: $reason',
+        );
 
   @override
   String toUserMessage() => 'No tienes permiso para realizar esta acción.';
-}
-      'La ruta especificada no es válida por razones de seguridad.';
-}
-
-/// Database operation failed
-class DatabaseException extends ProjectShellException {
-  DatabaseException(String message, {super.originalError, super.stackTrace})
-    : super(code: 'DB_ERR_001', message: message);
-
-  @override
-  String toUserMessage() =>
-      'Error de base de datos. Por favor, intente de nuevo.';
-}
-
-/// File system operation failed
-class FileSystemException extends ProjectShellException {
-  FileSystemException(String message, {super.originalError, super.stackTrace})
-    : super(code: 'FS_ERR_001', message: message);
-
-  @override
-  String toUserMessage() =>
-      'Error al acceder al archivo. Verifique los permisos.';
 }
