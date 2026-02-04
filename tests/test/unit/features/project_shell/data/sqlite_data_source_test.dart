@@ -1,12 +1,11 @@
 // tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:softarchitect_ai/features/project_shell/core/exceptions/project_shell_exceptions.dart';
 import 'package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart';
 import 'package:softarchitect_ai/features/project_shell/data/models/project_model.dart';
-import 'package:softarchitect_ai/tests/helpers/project_fixtures.dart';
-import 'package:softarchitect_ai/tests/helpers/test_helper.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
+
+import '../../../../helpers/test_helper.dart';
 
 void main() {
   group('SQLiteDataSource', () {
@@ -39,21 +38,24 @@ void main() {
         expect(saved?.path, equals('/home/test/project'));
       });
 
-      test('should throw DatabaseException when saving duplicate project', () async {
-        final project = ProjectModel(
-          id: 'test-proj-123',
-          name: 'test-project',
-          path: '/home/test/project',
-          createdAt: DateTime(2026, 2, 3, 10, 0),
-        );
+      test(
+        'should throw DatabaseException when saving duplicate project',
+        () async {
+          final project = ProjectModel(
+            id: 'test-proj-123',
+            name: 'test-project',
+            path: '/home/test/project',
+            createdAt: DateTime(2026, 2, 3, 10, 0),
+          );
 
-        await dataSource.saveProject(project);
+          await dataSource.saveProject(project);
 
-        expect(
-          () => dataSource.saveProject(project),
-          throwsA(isA<DatabaseException>()),
-        );
-      });
+          expect(
+            () => dataSource.saveProject(project),
+            throwsA(isA<DatabaseException>()),
+          );
+        },
+      );
     });
 
     group('getProject', () {
@@ -101,7 +103,10 @@ void main() {
         final results = await dataSource.getAllProjects();
 
         expect(results.length, equals(2));
-        expect(results.map((p) => p.id), containsAll(['test-proj-1', 'test-proj-2']));
+        expect(
+          results.map((p) => p.id),
+          containsAll(['test-proj-1', 'test-proj-2']),
+        );
       });
 
       test('should return empty list when no projects exist', () async {
@@ -124,7 +129,10 @@ void main() {
 
         final updated = await dataSource.getProject('test-proj-123');
         expect(updated?.lastOpened, isNotNull);
-        expect(updated?.lastOpened?.isAfter(DateTime(2026, 2, 3, 9, 59)), isTrue);
+        expect(
+          updated?.lastOpened?.isAfter(DateTime(2026, 2, 3, 9, 59)),
+          isTrue,
+        );
       });
     });
 

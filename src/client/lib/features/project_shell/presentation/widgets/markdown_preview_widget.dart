@@ -13,10 +13,10 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 /// - Secondary text: #8b949e
 class MarkdownPreviewWidget extends StatelessWidget {
   const MarkdownPreviewWidget({
-    Key? key,
+    super.key,
     this.content,
     this.filename,
-  }) : super(key: key);
+  });
 
   /// Markdown content to display
   final String? content;

@@ -1,7 +1,7 @@
 // lib/features/project_shell/core/security/path_validator.dart
 import 'package:path/path.dart' as p;
-import 'package:softarchitect_ai/features/project_shell/core/constants/validation_constants.dart';
-import 'package:softarchitect_ai/features/project_shell/core/exceptions/project_shell_exceptions.dart';
+import '../constants/validation_constants.dart';
+import '../exceptions/project_shell_exceptions.dart';
 
 /// Path security validation - prevents path traversal attacks
 class PathValidator {

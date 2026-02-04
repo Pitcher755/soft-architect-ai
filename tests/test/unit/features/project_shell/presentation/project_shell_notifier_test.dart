@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/repositories/project_repository.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/notifiers/project_shell_notifier.dart';
-import '../../../../../helpers/project_fixtures.dart';
+
+import '../../../../helpers/project_fixtures.dart';
 
 // Fake implementation for testing
 class FakeProjectRepository implements ProjectRepository {
@@ -28,7 +29,14 @@ class FakeProjectRepository implements ProjectRepository {
     if (shouldThrowCreate) {
       throw exception ?? Exception('Test error');
     }
-    return createdProject ?? Project(id: 'test-id', name: name, path: path, createdAt: DateTime.now(), lastOpened: null);
+    return createdProject ??
+        Project(
+          id: 'test-id',
+          name: name,
+          path: path,
+          createdAt: DateTime.now(),
+          lastOpened: null,
+        );
   }
 
   @override
@@ -90,10 +98,17 @@ void main() {
       }
     });
 
-    ProjectShellNotifier createNotifier([List<Project>? initialProjects, Exception? error, Project? createdProject, bool shouldThrowDelete = false, bool shouldThrowCreate = false]) {
+    ProjectShellNotifier createNotifier([
+      List<Project>? initialProjects,
+      Exception? error,
+      Project? createdProject,
+      bool shouldThrowDelete = false,
+      bool shouldThrowCreate = false,
+    ]) {
       final repo = FakeProjectRepository(
         projects: initialProjects ?? [],
-        shouldThrowGetAll: error != null && !shouldThrowDelete && !shouldThrowCreate,
+        shouldThrowGetAll:
+            error != null && !shouldThrowDelete && !shouldThrowCreate,
         shouldThrowCreate: shouldThrowCreate,
         shouldThrowDelete: shouldThrowDelete,
         exception: error,
@@ -126,7 +141,10 @@ void main() {
 
         expect(notifier.state.projects, isEmpty);
         expect(notifier.state.isLoading, isFalse);
-        expect(notifier.state.errorMessage, contains('Failed to load projects'));
+        expect(
+          notifier.state.errorMessage,
+          contains('Failed to load projects'),
+        );
       });
     });
 
@@ -171,14 +189,23 @@ void main() {
         const path = '/home/test/project';
 
         // Initialize with empty projects and error for createProject
-        notifier = createNotifier([], Exception('Validation error'), null, false, true);
+        notifier = createNotifier(
+          [],
+          Exception('Validation error'),
+          null,
+          false,
+          true,
+        );
         await Future.delayed(Duration.zero);
 
         await notifier.createProject(name, path);
 
         expect(notifier.state.projects, isEmpty);
         expect(notifier.state.selectedProject, isNull);
-        expect(notifier.state.errorMessage, contains('Failed to create project'));
+        expect(
+          notifier.state.errorMessage,
+          contains('Failed to create project'),
+        );
       });
     });
 
@@ -206,40 +233,57 @@ void main() {
         expect(notifier.state.errorMessage, isNull);
       });
 
-      test('should keep selected project if different project deleted', () async {
-        final projectToDelete = testProject;
-        final otherProject = Project(
-          id: 'other-proj-456',
-          name: 'other-project',
-          path: '/home/test/other',
-          createdAt: DateTime(2026, 2, 3, 11, 0),
-        );
+      test(
+        'should keep selected project if different project deleted',
+        () async {
+          final projectToDelete = testProject;
+          final otherProject = Project(
+            id: 'other-proj-456',
+            name: 'other-project',
+            path: '/home/test/other',
+            createdAt: DateTime(2026, 2, 3, 11, 0),
+          );
 
-        // Initialize with projects
-        notifier = createNotifier([projectToDelete, otherProject]);
-        await Future.delayed(Duration.zero);
+          // Initialize with projects
+          notifier = createNotifier([projectToDelete, otherProject]);
+          await Future.delayed(Duration.zero);
 
-        // Select a different project
-        await notifier.selectProject(otherProject);
+          // Select a different project
+          await notifier.selectProject(otherProject);
 
-        await notifier.deleteProject(projectToDelete.id);
+          await notifier.deleteProject(projectToDelete.id);
 
-        expect(notifier.state.projects, equals([otherProject]));
-        expect(notifier.state.selectedProject, equals(otherProject)); // Should remain selected
-        expect(notifier.state.errorMessage, isNull);
-      });
+          expect(notifier.state.projects, equals([otherProject]));
+          expect(
+            notifier.state.selectedProject,
+            equals(otherProject),
+          ); // Should remain selected
+          expect(notifier.state.errorMessage, isNull);
+        },
+      );
 
       test('should handle delete project error', () async {
         final projectToDelete = testProject;
 
         // Initialize with projects and error for deleteProject
-        notifier = createNotifier([projectToDelete], Exception('Delete error'), null, true);
+        notifier = createNotifier(
+          [projectToDelete],
+          Exception('Delete error'),
+          null,
+          true,
+        );
         await Future.delayed(Duration.zero);
 
         await notifier.deleteProject(projectToDelete.id);
 
-        expect(notifier.state.projects, equals([projectToDelete])); // Should remain
-        expect(notifier.state.errorMessage, contains('Failed to delete project'));
+        expect(
+          notifier.state.projects,
+          equals([projectToDelete]),
+        ); // Should remain
+        expect(
+          notifier.state.errorMessage,
+          contains('Failed to delete project'),
+        );
       });
     });
 

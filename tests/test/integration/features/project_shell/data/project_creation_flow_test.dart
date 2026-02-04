@@ -2,8 +2,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/core/exceptions/project_shell_exceptions.dart';
 import 'package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart';
-import 'package:softarchitect_ai/features/project_shell/data/models/project_model.dart';
 import 'package:softarchitect_ai/features/project_shell/data/repositories/project_repository_impl.dart';
+
 import '../../../../helpers/test_helper.dart';
 
 void main() {
@@ -27,7 +27,10 @@ void main() {
       const projectPath = '/home/test/integration/project';
 
       // When - Create project
-      final createdProject = await repository.createProject(projectName, projectPath);
+      final createdProject = await repository.createProject(
+        projectName,
+        projectPath,
+      );
 
       // Then - Verify project was created
       expect(createdProject.name, equals(projectName));
@@ -56,13 +59,22 @@ void main() {
 
       // Then - Verify all projects are returned
       expect(allProjects.length, equals(3));
-      expect(allProjects.map((p) => p.id), containsAll([project1.id, project2.id, project3.id]));
-      expect(allProjects.map((p) => p.name), containsAll(['project-1', 'project-2', 'project-3']));
+      expect(
+        allProjects.map((p) => p.id),
+        containsAll([project1.id, project2.id, project3.id]),
+      );
+      expect(
+        allProjects.map((p) => p.name),
+        containsAll(['project-1', 'project-2', 'project-3']),
+      );
     });
 
     test('should update last opened timestamp', () async {
       // Given
-      final project = await repository.createProject('test-project', '/test/path');
+      final project = await repository.createProject(
+        'test-project',
+        '/test/path',
+      );
 
       // When
       await repository.updateLastOpened(project.id);
@@ -74,7 +86,10 @@ void main() {
 
     test('should delete project completely', () async {
       // Given
-      final project = await repository.createProject('to-delete', '/delete/path');
+      final project = await repository.createProject(
+        'to-delete',
+        '/delete/path',
+      );
       final projectId = project.id;
 
       // Verify it exists
@@ -95,12 +110,20 @@ void main() {
 
     test('should return last opened project correctly', () async {
       // Given - Create projects with different last opened times
-      final oldProject = await repository.createProject('old-project', '/old/path');
-      final newProject = await repository.createProject('new-project', '/new/path');
+      final oldProject = await repository.createProject(
+        'old-project',
+        '/old/path',
+      );
+      final newProject = await repository.createProject(
+        'new-project',
+        '/new/path',
+      );
 
       // Update last opened for both (new project last)
       await repository.updateLastOpened(oldProject.id);
-      await Future.delayed(const Duration(milliseconds: 10)); // Ensure different timestamps
+      await Future.delayed(
+        const Duration(milliseconds: 10),
+      ); // Ensure different timestamps
       await repository.updateLastOpened(newProject.id);
 
       // When
@@ -115,7 +138,7 @@ void main() {
       // Test invalid name
       await expectLater(
         repository.createProject('ab', '/valid/path'),
-        throwsA(isA<ValidationException>()),
+        throwsA(isA<InvalidProjectNameException>()),
       );
 
       // Test path traversal
@@ -150,7 +173,9 @@ void main() {
 
       // Create multiple projects concurrently
       for (int i = 0; i < 5; i++) {
-        futures.add(repository.createProject('concurrent-$i', '/concurrent/$i'));
+        futures.add(
+          repository.createProject('concurrent-$i', '/concurrent/$i'),
+        );
       }
 
       // Wait for all to complete
@@ -159,7 +184,10 @@ void main() {
       // Verify all were created
       final allProjects = await repository.getAllProjects();
       expect(allProjects.length, equals(5));
-      expect(allProjects.every((p) => p.name.startsWith('concurrent-')), isTrue);
+      expect(
+        allProjects.every((p) => p.name.startsWith('concurrent-')),
+        isTrue,
+      );
     });
   });
 }

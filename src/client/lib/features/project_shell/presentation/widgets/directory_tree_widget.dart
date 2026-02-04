@@ -16,9 +16,9 @@ class DirectoryTreeWidget extends StatefulWidget {
   const DirectoryTreeWidget({
     required this.root,
     required this.onFileSelected,
-    Key? key,
+    super.key,
     this.selectedNode,
-  }) : super(key: key);
+  });
 
   /// Root node of the file tree
   final FileNode root;

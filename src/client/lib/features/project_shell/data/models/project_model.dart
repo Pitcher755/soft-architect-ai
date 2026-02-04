@@ -1,5 +1,5 @@
 // lib/features/project_shell/data/models/project_model.dart
-import 'package:softarchitect_ai/features/project_shell/domain/entities/project.dart';
+import '../../domain/entities/project.dart';
 
 /// DTO for Project (database/network transfer)
 class ProjectModel extends Project {

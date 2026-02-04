@@ -6,21 +6,22 @@ import 'package:softarchitect_ai/features/project_shell/domain/entities/project.
 import 'package:softarchitect_ai/features/project_shell/domain/repositories/project_repository.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/providers/project_providers.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/screens/project_shell_screen.dart';
-import '../../../helpers/project_fixtures.dart';
 
 void main() {
   group('Project Shell Screen Flow Integration Test', () {
-    testWidgets('should render project shell screen with basic layout', (WidgetTester tester) async {
+    testWidgets('should render project shell screen with basic layout', (
+      WidgetTester tester,
+    ) async {
       // When - Render the project shell screen
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
             // Override with a mock repository that returns test data
-            projectRepositoryProvider.overrideWith((ref) => MockProjectRepository()),
+            projectRepositoryProvider.overrideWith(
+              (ref) => MockProjectRepository(),
+            ),
           ],
-          child: MaterialApp(
-            home: ProjectShellScreen(),
-          ),
+          child: MaterialApp(home: ProjectShellScreen()),
         ),
       );
 
@@ -32,16 +33,18 @@ void main() {
       expect(find.byType(Scaffold), findsOneWidget);
     });
 
-    testWidgets('should display project information when project is selected', (WidgetTester tester) async {
+    testWidgets('should display project information when project is selected', (
+      WidgetTester tester,
+    ) async {
       // When - Render screen and wait for project loading
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            projectRepositoryProvider.overrideWith((ref) => MockProjectRepository()),
+            projectRepositoryProvider.overrideWith(
+              (ref) => MockProjectRepository(),
+            ),
           ],
-          child: MaterialApp(
-            home: ProjectShellScreen(),
-          ),
+          child: MaterialApp(home: ProjectShellScreen()),
         ),
       );
 
@@ -60,12 +63,24 @@ void main() {
 class MockProjectRepository implements ProjectRepository {
   @override
   Future<List<Project>> getAllProjects() async {
-    return [Project(id: 'test', name: 'Test Project', path: '/test')];
+    return [
+      Project(
+        id: 'test',
+        name: 'Test Project',
+        path: '/test',
+        createdAt: DateTime.now(),
+      ),
+    ];
   }
 
   @override
   Future<Project> createProject(String name, String path) async {
-    return Project(id: 'new', name: name, path: path);
+    return Project(
+      id: 'new',
+      name: name,
+      path: path,
+      createdAt: DateTime.now(),
+    );
   }
 
   @override
@@ -76,14 +91,24 @@ class MockProjectRepository implements ProjectRepository {
   @override
   Future<Project?> getProject(String projectId) async {
     if (projectId == 'test') {
-      return Project(id: 'test', name: 'Test Project', path: '/test');
+      return Project(
+        id: 'test',
+        name: 'Test Project',
+        path: '/test',
+        createdAt: DateTime.now(),
+      );
     }
     return null;
   }
 
   @override
   Future<Project?> getLastOpenedProject() async {
-    return Project(id: 'test', name: 'Test Project', path: '/test');
+    return Project(
+      id: 'test',
+      name: 'Test Project',
+      path: '/test',
+      createdAt: DateTime.now(),
+    );
   }
 
   @override

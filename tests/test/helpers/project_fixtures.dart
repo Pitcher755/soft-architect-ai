@@ -3,7 +3,7 @@ import 'package:softarchitect_ai/features/project_shell/domain/entities/file_nod
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project.dart';
 
 /// Test project entity
-final testProject = Project(
+late final testProject = Project(
   id: 'test-proj-123',
   name: 'test-project',
   path: '/home/test/SoftArchitect/projects/test-project',
@@ -12,7 +12,7 @@ final testProject = Project(
 );
 
 /// Test file node (markdown file)
-final testFileNode = FileNode(
+late final testFileNode = FileNode(
   id: 'file-001',
   name: 'architecture.md',
   path: '/home/test/SoftArchitect/projects/test-project/architecture.md',
@@ -21,7 +21,7 @@ final testFileNode = FileNode(
 );
 
 /// Test directory node containing a file
-final testDirectoryNode = FileNode(
+late final testDirectoryNode = FileNode(
   id: 'dir-001',
   name: 'docs',
   path: '/home/test/SoftArchitect/projects/test-project/docs',
@@ -30,7 +30,7 @@ final testDirectoryNode = FileNode(
 );
 
 /// Test root tree node with mixed content
-final testRootNode = FileNode(
+late final testRootNode = FileNode(
   id: 'root',
   name: 'test-project',
   path: '/home/test/SoftArchitect/projects/test-project',

@@ -22,6 +22,14 @@
 /// );
 /// ```
 class Project {
+
+  const Project({
+    required this.id,
+    required this.name,
+    required this.path,
+    required this.createdAt,
+    this.lastOpened,
+  });
   /// Unique project identifier
   final String id;
 
@@ -36,14 +44,6 @@ class Project {
 
   /// Last time project was opened (nullable if never opened)
   final DateTime? lastOpened;
-
-  const Project({
-    required this.id,
-    required this.name,
-    required this.path,
-    required this.createdAt,
-    this.lastOpened,
-  });
 
   /// Get project directory name for display purposes
   ///
@@ -71,15 +71,13 @@ class Project {
     String? path,
     DateTime? createdAt,
     DateTime? lastOpened,
-  }) {
-    return Project(
+  }) => Project(
       id: id ?? this.id,
       name: name ?? this.name,
       path: path ?? this.path,
       createdAt: createdAt ?? this.createdAt,
       lastOpened: lastOpened ?? this.lastOpened,
     );
-  }
 
   @override
   String toString() =>
