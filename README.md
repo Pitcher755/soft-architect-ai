@@ -33,6 +33,7 @@
 - **⭐ NEW:** [Knowledge Base Completion Report](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
 - **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
 - **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
+- **📊 TEST COVERAGE:** [Coverage Reports Package](COVERAGE_REPORT.md) - 95.3% (202/212 tests) ✅
 
 #### 📖 Vision
 
@@ -134,6 +135,31 @@ docker compose -f infrastructure/docker-compose.yml up -d
 - [Security & Privacy Rules](context/20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.en.md)
 - [Roadmap & Phases](context/40-ROADMAP/ROADMAP_PHASES.en.md)
 - [User Stories](context/40-ROADMAP/USER_STORIES_MASTER.en.json)
+
+#### 🧪 Testing (Monorepo Structure)
+
+All tests are centralized in the `tests/` directory with language-specific organization:
+
+```bash
+# Run Flutter tests (169 unit + 36 widget + 9 integration)
+./run_tests.sh flutter
+
+# Run Python tests
+./run_tests.sh python
+
+# Run all tests
+./run_tests.sh all
+
+# Generate coverage report
+./run_tests.sh flutter --coverage
+```
+
+**Test Structure:**
+- `tests/flutter/test/` - Flutter unit/widget/integration tests
+- `tests/python/unit/` - Python unit tests
+- `src/client/lib/tests/` - Shared test helpers & fixtures
+
+See [tests/README.md](tests/README.md) for detailed testing documentation and structure.
 
 ---
 
@@ -263,6 +289,31 @@ docker compose -f infrastructure/docker-compose.yml up -d
 - [Reglas de Seguridad & Privacidad](context/20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.es.md)
 - [Roadmap y Fases](context/40-ROADMAP/ROADMAP_PHASES.es.md)
 - [Historias de Usuario](context/40-ROADMAP/USER_STORIES_MASTER.es.json)
+
+#### 🧪 Testing (Estructura Monorepo)
+
+Todos los tests están centralizados en el directorio `tests/` con organización específica por lenguaje:
+
+```bash
+# Ejecutar tests de Flutter (169 unit + 36 widget + 9 integration)
+./run_tests.sh flutter
+
+# Ejecutar tests de Python
+./run_tests.sh python
+
+# Ejecutar todos los tests
+./run_tests.sh all
+
+# Generar reporte de cobertura
+./run_tests.sh flutter --coverage
+```
+
+**Estructura de Tests:**
+- `tests/flutter/test/` - Tests unitarios/widget/integración de Flutter
+- `tests/python/unit/` - Tests unitarios de Python
+- `src/client/lib/tests/` - Helpers y fixtures compartidos
+
+Consulta [tests/README.md](tests/README.md) para documentación detallada sobre testing y estructura.
 
 ---
 

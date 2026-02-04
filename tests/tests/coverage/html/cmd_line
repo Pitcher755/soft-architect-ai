@@ -1,1 +1,0 @@
-genhtml --ignore-errors source coverage/lcov.info -o coverage/html --title 'SoftArchitect AI - Flutter Unit Tests Coverage'

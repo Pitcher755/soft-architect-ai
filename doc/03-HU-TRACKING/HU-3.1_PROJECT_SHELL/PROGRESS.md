@@ -50,16 +50,16 @@
   - 9 directorios: tests/{unit,widget,integration}/{domain,data,presentation}
 
 - [x] Test infrastructure completada
-  - tests/test_helper.dart: Mocks + SQLite in-memory helper
-  - tests/fixtures/project_fixtures.dart: 4 test fixtures creados
+  - tests/helpers/test_helper.dart: Mocks + SQLite in-memory helper
+  - tests/helpers/project_fixtures.dart: 4 test fixtures creados
 
 - [x] RED Phase Tests (6 suites, 25 test cases)
-  - tests/unit/domain/project_validation_use_case_test.dart (32 líneas)
-  - tests/unit/domain/directory_tree_use_case_test.dart (63 líneas)
-  - tests/unit/domain/file_search_use_case_test.dart (87 líneas)
-  - tests/unit/data/sqlite_data_source_test.dart (72 líneas)
-  - tests/unit/data/project_repository_impl_test.dart (72 líneas)
-  - tests/unit/presentation/project_shell_notifier_test.dart (72 líneas)
+  - tests/unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart (32 líneas)
+  - tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart (63 líneas)
+  - tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart (87 líneas)
+  - tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart (72 líneas)
+  - tests/unit/flutter/features/project_shell/data/project_repository_impl_test.dart (72 líneas)
+  - tests/unit/flutter/features/project_shell/presentation/project_shell_notifier_test.dart (72 líneas)
 
 - [x] Test Status: 🔴 FAILING (esperado - RED phase)
   - Lint errors: Esperados (clases no existen aún)
@@ -85,41 +85,41 @@
 #### Logros de Fase 2:
 
 **A. Test Infrastructure Centralizada en `/tests/`:**
-- [x] Estructura reorganizada: `tests/test/domain/` y `tests/test/data/`
+- [x] Estructura reorganizada: `tests/unit/flutter/features/project_shell/domain/` y `tests/unit/flutter/features/project_shell/data/`
 - [x] `tests/pubspec.yaml` creado (BREAKTHROUGH!)
   - Declara: flutter, flutter_test, sqflite, mockito, test
   - **KEY:** `dependency_overrides: softarchitect_ai: path: ../src/client`
   - Result: `flutter pub get` resolvió 122 dependencias ✅
 
-- [x] `tests/test_helper.dart` actualizado con imports correctos
+- [x] `tests/helpers/test_helper.dart` actualizado con imports correctos
   - Import: `package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart`
   - Proporciona: `initTestDatabase()`, `closeTestDatabase()`
 
-- [x] `tests/fixtures/project_fixtures.dart` actualizado
+- [x] `tests/helpers/project_fixtures.dart` actualizado
   - Imports: `package:softarchitect_ai/features/project_shell/domain/entities/...`
   - Fixtures: testProject, testFileNode, testDirectoryNode, testRootNode
 
 **B. 15 RED Phase Tests Creados con Imports Correctos:**
 
 **Domain Layer (10 tests - 3 files):**
-- [x] `tests/test/domain/project_validation_use_case_test.dart`
+- [x] `tests/unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart`
   - Imports: `package:softarchitect_ai/features/project_shell/domain/use_cases/project_validation_use_case.dart`
   - 4 tests: validate, empty, invalid, duplicate cases
 
-- [x] `tests/test/domain/directory_tree_use_case_test.dart`
+- [x] `tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart`
   - Imports: `package:softarchitect_ai/features/project_shell/domain/use_cases/directory_tree_use_case.dart`
   - 3 tests: build, sort, cache cases
 
-- [x] `tests/test/domain/file_search_use_case_test.dart`
+- [x] `tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart`
   - Imports: `package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart`
   - 3 tests: search, filter, performance cases
 
 **Data Layer (5 tests - 2 files):**
-- [x] `tests/test/data/sqlite_data_source_test.dart`
+- [x] `tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart`
   - Imports: 3x `package:softarchitect_ai/...`
   - 3 tests: save, get, duplicate cases (3 SETUP FAILURES - esperado)
 
-- [x] `tests/test/data/project_repository_impl_test.dart`
+- [x] `tests/unit/flutter/features/project_shell/data/project_repository_impl_test.dart`
   - Imports: `package:softarchitect_ai/features/project_shell/core/exceptions/...`
   - 2 tests: success, failure cases
 
@@ -470,23 +470,23 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
    - domain/{entities, repositories, use_cases}/
    - presentation/{notifiers, providers, screens, widgets}/
 
-✅ tests/test_helper.dart (24 líneas)
+✅ tests/helpers/test_helper.dart (24 líneas)
    - @GenerateMocks([ProjectRepository, SQLiteDataSource])
    - initTestDatabase() con SQLite in-memory
 
-✅ tests/fixtures/project_fixtures.dart (43 líneas)
+✅ tests/helpers/project_fixtures.dart (43 líneas)
    - testProject, testFileNode, testDirectoryNode, testRootNode
 
-✅ tests/unit/domain/ (3 files)
+✅ tests/unit/flutter/features/project_shell/domain/ (3 files)
    - project_validation_use_case_test.dart (32 líneas, 4 tests)
    - directory_tree_use_case_test.dart (24 líneas, 3 tests)
    - file_search_use_case_test.dart (28 líneas, 3 tests)
 
-✅ tests/unit/data/ (2 files)
+✅ tests/unit/flutter/features/project_shell/data/ (2 files)
    - sqlite_data_source_test.dart (63 líneas, 3 tests)
    - project_repository_impl_test.dart (28 líneas, 2 tests)
 
-✅ tests/unit/presentation/ (1 file)
+✅ tests/unit/flutter/features/project_shell/presentation/ (1 file)
    - project_shell_notifier_test.dart (31 líneas, 1 test)
 ```
 

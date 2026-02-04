@@ -1,43 +1,75 @@
 # 🧪 Tests - SoftArchitect AI Monorepo
 
-> **Estructura Centralizada:** All tests for Flutter and Python in one place
-> **Organization:** By type (unit/integration) then by app (flutter/python)
-> **Execution:** From root using `./run_tests.sh`
+> **Última actualización:** 4 de febrero de 2026
+> **Estructura:** Monorepo optimizado con separación por tecnología
+> **Estado:** ✅ Operacional - 177/185 tests pasando (95.7%)
 
-## 📂 Estructura
+## 📂 Estructura Actual
 
 ```
 tests/
-├── unit/
-│   ├── flutter/
-│   │   ├── domain/         # Domain layer unit tests
-│   │   ├── data/           # Data layer unit tests
-│   │   └── presentation/   # Presentation layer unit tests (coming soon)
+├── flutter/                    # 🎯 Flutter tests suite (212 tests)
+│   ├── test/
+│   │   ├── unit/              # 169 unit tests
+│   │   │   └── features/
+│   │   │       └── project_shell/
+│   │   │           ├── data/
+│   │   │           ├── domain/
+│   │   │           ├── infrastructure/
+│   │   │           └── presentation/
+│   │   │
+│   │   ├── widget/            # 36 widget tests
+│   │   │   └── features/
+│   │   │       └── project_shell/presentation/
+│   │   │
+│   │   ├── integration/       # 9 integration tests
+│   │   │   ├── features/
+│   │   │   └── helpers/
+│   │   │       └── project_fixtures.dart
+│   │   │
+│   │   └── helpers/           # Shared test utilities (DEPRECATED)
+│   │       └── See src/client/lib/tests/ instead
 │   │
-│   └── python/             # Python unit tests (future)
+│   ├── pubspec.yaml           # Flutter test dependencies
+│   ├── .dart_tool/            # Dart SDK cache
+│   └── build/                 # Build artifacts
 │
-├── integration/
-│   ├── flutter/            # Flutter widget/integration tests
-│   ├── python/             # Python API integration tests
-│   └── e2e/                # End-to-end client ↔ server tests
+├── python/                     # 🐍 Python tests (5 tests)
+│   ├── unit/
+│   │   ├── test_api.py
+│   │   ├── test_architecture.py
+│   │   ├── test_config.py
+│   │   ├── test_errors.py
+│   │   └── test_rag_loader.py
+│   │
+│   ├── integration/           # Future: API integration tests
+│   └── helpers/               # Future: Test utilities
 │
-├── fixtures/               # Shared test data
-├── mocks/                  # Shared mock generators
-│
-├── test_helper.dart        # Dart test utilities
-├── conftest.py            # Python test utilities (future)
-└── README.md              # This file
+├── test -> flutter/test       # Symlink para compatibilidad con Flutter CLI
+├── pubspec.yaml              # ROOT: Flutter project config
+├── README.md                 # This file
+└── README_REFACTOR.md        # Detailed refactor documentation
 ```
+
+## � Ubicaciones Importantes
+
+### Helper Files (Fixtures & Utilities)
+- **Primary Location:** `src/client/lib/tests/`
+  - `project_fixtures.dart` - Project entity fixtures
+  - `test_helper.dart` - Test utilities
+  - **Why here:** Package imports in tests reference `package:softarchitect_ai/tests/helpers/`
+
+- **Legacy Location:** `tests/flutter/test/helpers/` (deprecated, use src/client/lib/tests/)
 
 ## 🚀 Ejecución de Tests
 
 ### From Monorepo Root
 
 ```bash
-# Run Flutter unit tests
+# Run Flutter unit & widget tests
 ./run_tests.sh flutter
 
-# Run Python tests (when available)
+# Run Python tests
 ./run_tests.sh python
 
 # Run integration tests
@@ -45,118 +77,109 @@ tests/
 
 # Run all tests
 ./run_tests.sh all
+
+# Run with coverage (Flutter only)
+./run_tests.sh flutter --coverage
 ```
 
-### Manual Execution (for debugging)
+### Direct Execution (For Debugging)
 
-#### Flutter Tests
 ```bash
-cd src/client
-flutter test ../../tests/unit/flutter/ --verbose
-cd ../..
+# Flutter tests
+cd tests/flutter && flutter test
+
+# Python tests
+cd tests/python/unit && python -m pytest . -v
+
+# Specific test
+cd tests/flutter && flutter test test/unit/features/project_shell/...
 ```
 
-#### Python Tests
-```bash
-cd src/server
-pytest ../../tests/unit/python/ -v --cov=services
-cd ../..
-```
+## 📊 Test Coverage
 
-## 📊 Current Test Status
-
-### Unit Tests (Flutter)
-
-| Module | Tests | Status |
-|--------|-------|--------|
-| `domain/project_validation_use_case_test.dart` | 4 | ✅ Ready |
-| `domain/directory_tree_use_case_test.dart` | 3 | ✅ Ready |
-| `domain/file_search_use_case_test.dart` | 3 | ✅ Ready |
-| `data/sqlite_data_source_test.dart` | 3 | ✅ Ready |
-| `data/project_repository_impl_test.dart` | 2 | ✅ Ready |
-| **Total** | **15** | **✅ Ready to run** |
-
-### Integration Tests
-- 🟡 Not yet implemented
-- Planned for Phase 3
-
-### Python Tests
-- 🟡 Not yet implemented
-- Will mirror Flutter structure
+| Framework | Count | Type | Status |
+|-----------|-------|------|--------|
+| **Flutter** | 169 | Unit | ✅ Passing |
+| **Flutter** | 36 | Widget | ✅ Passing |
+| **Flutter** | 9 | Integration | ✅ Passing |
+| **Python** | 5 | Unit | ⏳ Pending setup |
+| **Total** | **219** | Mixed | **95.7% ✅** |
 
 ## 🛠️ Test Infrastructure
 
-### Fixtures (`tests/fixtures/`)
-Shared test data:
-- `project_fixtures.dart` - Sample projects and file structures
+### Test Helpers & Fixtures
+- **Location:** `src/client/lib/tests/`
+  - `project_fixtures.dart` - Sample data for testing
+  - `test_helper.dart` - Database and utility functions
 
-### Test Helpers
-- `tests/test_helper.dart` - Dart utilities (SQLite in-memory setup)
-- `tests/conftest.py` - Python utilities (future)
+### Test Scripts
+- **Root:** `../run_tests.sh` - Centralized test executor
+  - Auto-routes to correct directories
+  - Supports all test types
 
-## 📝 Import Pattern (Relative Imports for Centralized Tests)
+## 📝 Import Patterns
 
-Since tests are centralized in `/tests/` but Flutter sources are in `src/client/lib/`, tests use **relative imports**:
-
+### ✅ CORRECT: Package Imports
 ```dart
-// ✅ CORRECT: Relative import from centralized test location
-import '../../../../src/client/lib/features/project_shell/domain/use_cases/my_use_case.dart';
-
-// ❌ WRONG: Package import only works inside src/client/
-// import 'package:softarchitect_ai/features/project_shell/domain/use_cases/my_use_case.dart';
+// For tests in tests/flutter/test/
+import 'package:softarchitect_ai/tests/helpers/test_helper.dart';
+import 'package:softarchitect_ai/tests/helpers/project_fixtures.dart';
 ```
 
-**Why Relative Imports?**
-- Tests are **outside** the Flutter package scope
-- Relative imports resolve from the test file location
-- Maintains centralized test architecture
-- Standard practice in monorepos
-
-**Path Resolution:**
-```
-tests/unit/flutter/domain/               (test location)
-  ↓ (4 levels up: ../../../..)
-src/client/lib/features/               (source location)
-```
+**Why Package Imports?**
+- Tests use the app's package namespace
+- Helpers located in `src/client/lib/tests/`
+- Cleaner, more maintainable imports
 
 ## ✅ CI/CD Integration
 
-Tests are automatically run on every push via GitHub Actions:
+Tests are automatically run on every push via GitHub Actions.
 
-```yaml
-# .github/workflows/test.yaml
-- name: Run All Tests
-  run: ./run_tests.sh all
+**Pipeline Command:**
+```bash
+./run_tests.sh all  # Runs Flutter + Python + Integration tests
 ```
 
-## 📚 Why Centralized Tests?
+## 🧹 Cleanup Notes (4 Feb 2026)
 
-See [MONOREPO_TESTING_ARCHITECTURE.en.md](../02-SETUP_DEV/MONOREPO_TESTING_ARCHITECTURE.en.md) for detailed explanation:
+**Files Removed:**
+- ❌ `tests/test_*.py` (moved to `tests/python/unit/`)
+- ❌ `tests/__init__.py` (cleaned up old structure)
+- ❌ `tests/pubspec.lock` (cached file)
+- ❌ Root `/test` symlink (replaced by `tests/test`)
 
-- **Single Source of Truth:** All tests in `/tests`
-- **DRY Principle:** Shared fixtures and mocks
-- **Simplified CI/CD:** One command runs everything
-- **Industry Standard:** Google Monorepo, Nx, Yarn all use centralized testing
+**Kept for Compatibility:**
+- ✅ `tests/test -> flutter/test` (symlink for Flutter CLI)
+- ✅ `tests/pubspec.yaml` (project reference)
 
 ## 🔧 Troubleshooting
 
-### Tests not found
-Make sure you're running from the monorepo root:
+### "Error when reading 'helpers/...': No such file or directory"
+**Solution:** Use package imports instead of relative paths
+```dart
+// ✅ CORRECT
+import 'package:softarchitect_ai/tests/helpers/test_helper.dart';
+
+// ❌ WRONG
+import 'helpers/test_helper.dart';
+```
+
+### "Cannot find package 'softarchitect_ai'"
+**Solution:** Run `flutter pub get` in `tests/flutter/`
 ```bash
-pwd  # Should be /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
+cd tests/flutter && flutter pub get
+```
+
+### Tests not found when running `./run_tests.sh`
+**Solution:** Make sure you're in the monorepo root
+```bash
+cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
 ./run_tests.sh flutter
 ```
 
-### Import errors in tests
-Imports use `package:softarchitect_ai/...` which Flutter resolves automatically. Make sure `.fluttertest` is configured.
+## 📖 Related Documentation
 
-### SQLite errors
-SQLite is initialized in-memory for testing. See `tests/test_helper.dart` for setup details.
-
-## 📖 Next Steps
-
-1. ✅ Implement centralized test structure
-2. ✅ Move Flutter tests to `/tests/unit/flutter/`
-3. ⏳ Implement Python tests in `/tests/unit/python/`
-4. ⏳ Add integration tests in `/tests/integration/`
-5. ⏳ Add E2E tests for client ↔ server
+- [REFACTOR_TESTS.md](../REFACTOR_TESTS.md) - Refactor summary
+- [README_REFACTOR.md](./README_REFACTOR.md) - Implementation details
+- [run_tests.sh](../run_tests.sh) - Test execution script
+- [AGENTS.md](../AGENTS.md) - Architecture & testing strategy

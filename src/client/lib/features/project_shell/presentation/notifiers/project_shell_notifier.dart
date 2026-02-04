@@ -27,7 +27,7 @@ class ProjectShellState {
   }) =>
       ProjectShellState(
         projects: projects ?? this.projects,
-        selectedProject: selectedProject ?? this.selectedProject,
+        selectedProject: selectedProject,
         isLoading: isLoading ?? this.isLoading,
         errorMessage: errorMessage ?? this.errorMessage,
       );
@@ -35,8 +35,14 @@ class ProjectShellState {
 
 /// Notifier for project shell state
 class ProjectShellNotifier extends StateNotifier<ProjectShellState> {
-  ProjectShellNotifier(this.repository) : super(const ProjectShellState()) {
-    _init();
+  ProjectShellNotifier(
+    this.repository, {
+    bool skipInit = false,
+    ProjectShellState? initialState,
+  }) : super(initialState ?? const ProjectShellState()) {
+    if (!skipInit) {
+      _init();
+    }
   }
   final ProjectRepository repository;
 
