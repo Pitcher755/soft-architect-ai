@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests/flutter
+cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 
 echo "📊 Generando coverage con Flutter..."
 echo "⏳ Esto puede tomar 2-3 minutos..."

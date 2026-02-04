@@ -51,7 +51,7 @@ git clone https://github.com/YOUR_USER/soft-architect-ai.git
 cd soft-architect-ai
 
 # 2. Start all services (Docker required)
-./start_stack.sh
+scripts/start_stack.sh
 
 # 3. Access services:
 # - API: http://localhost:8000
@@ -60,7 +60,7 @@ cd soft-architect-ai
 # - Ollama: http://localhost:11434
 
 # 4. Stop services when done
-./stop_stack.sh
+scripts/stop_stack.sh
 ```
 
 **Requirements:** Docker 20.10+ and Docker Compose 2.0+ | **Time:** ~2 minutes (first-time pull)
@@ -142,22 +142,24 @@ All tests are centralized in the `tests/` directory with language-specific organ
 
 ```bash
 # Run Flutter tests (169 unit + 36 widget + 9 integration)
-./run_tests.sh flutter
+scripts/run_tests.sh flutter
 
 # Run Python tests
-./run_tests.sh python
+scripts/run_tests.sh python
 
 # Run all tests
-./run_tests.sh all
+scripts/run_tests.sh all
 
 # Generate coverage report
-./run_tests.sh flutter --coverage
+scripts/run_tests.sh flutter --coverage
 ```
 
 **Test Structure:**
-- `tests/flutter/test/` - Flutter unit/widget/integration tests
+- `tests/test/unit/` - Flutter unit tests
+- `tests/test/widget/` - Flutter widget tests
+- `tests/test/integration/` - Flutter integration tests
+- `tests/test/helpers/` - Shared test helpers & fixtures
 - `tests/python/unit/` - Python unit tests
-- `src/client/lib/tests/` - Shared test helpers & fixtures
 
 See [tests/README.md](tests/README.md) for detailed testing documentation and structure.
 

@@ -67,32 +67,32 @@ tests/
 
 ```bash
 # Run Flutter unit & widget tests
-./run_tests.sh flutter
+scripts/run_tests.sh flutter
 
 # Run Python tests
-./run_tests.sh python
+scripts/run_tests.sh python
 
 # Run integration tests
-./run_tests.sh integration
+scripts/run_tests.sh integration
 
 # Run all tests
-./run_tests.sh all
+scripts/run_tests.sh all
 
 # Run with coverage (Flutter only)
-./run_tests.sh flutter --coverage
+scripts/run_tests.sh flutter --coverage
 ```
 
 ### Direct Execution (For Debugging)
 
 ```bash
 # Flutter tests
-cd tests/flutter && flutter test
+cd tests && flutter test
 
 # Python tests
 cd tests/python/unit && python -m pytest . -v
 
 # Specific test
-cd tests/flutter && flutter test test/unit/features/project_shell/...
+cd tests && flutter test test/unit/features/project_shell/...
 ```
 
 ## 📊 Test Coverage
@@ -174,12 +174,12 @@ cd tests/flutter && flutter pub get
 **Solution:** Make sure you're in the monorepo root
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
-./run_tests.sh flutter
+scripts/run_tests.sh flutter
 ```
 
 ## 📖 Related Documentation
 
 - [REFACTOR_TESTS.md](../REFACTOR_TESTS.md) - Refactor summary
 - [README_REFACTOR.md](./README_REFACTOR.md) - Implementation details
-- [run_tests.sh](../run_tests.sh) - Test execution script
+- [run_tests.sh](../scripts/run_tests.sh) - Test execution script
 - [AGENTS.md](../AGENTS.md) - Architecture & testing strategy

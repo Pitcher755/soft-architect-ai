@@ -5,7 +5,7 @@ set -e
 
 # Ensure we're in the project root directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+cd "$SCRIPT_DIR/.."
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -27,17 +27,17 @@ fi
 case $TEST_TYPE in
   flutter|unit)
     echo -e "${YELLOW}Running Flutter Unit Tests...${NC}"
-    cd tests/flutter
-    flutter test --verbose $COVERAGE_FLAG --coverage-package=softarchitect_ai
-    cd ../..
+    cd tests
+    flutter test test/ --verbose $COVERAGE_FLAG --coverage-package=softarchitect_ai
+    cd ..
 
     # Si se pidió cobertura, generar reporte HTML
     if [[ "$COVERAGE_FLAG" == "--coverage" ]]; then
       echo -e "${YELLOW}Generating HTML coverage report...${NC}"
-      cd tests/flutter
+      cd tests
       mkdir -p coverage/html
       genhtml --synthesize-missing --ignore-errors source coverage/lcov.info -o coverage/html --title "SoftArchitect AI - Flutter Tests Coverage"
-      cd ../..
+      cd ..
     fi
 
     echo -e "${GREEN}✅ Flutter tests passed${NC}\n"
@@ -53,8 +53,8 @@ case $TEST_TYPE in
     ;;
   integration)
     echo -e "${YELLOW}Running Integration Tests...${NC}"
-    cd tests/flutter
-    flutter test --verbose $COVERAGE_FLAG
+    cd tests
+    flutter test test/integration --verbose $COVERAGE_FLAG
 
     # Si se pidió cobertura, copiar el archivo generado al directorio centralizado
     if [[ "$COVERAGE_FLAG" == "--coverage" ]]; then
@@ -63,14 +63,14 @@ case $TEST_TYPE in
       genhtml --synthesize-missing --ignore-errors source coverage/lcov.info -o coverage/html --title "SoftArchitect AI - Flutter Integration Tests Coverage"
     fi
 
-    cd ../..
+    cd ..
     echo -e "${GREEN}✅ Integration tests passed${NC}\n"
     ;;
   all)
     echo -e "${YELLOW}Running ALL Tests...${NC}"
     echo -e "${YELLOW}1. Flutter Tests (Unit + Widget + Integration)${NC}"
-    cd tests/flutter
-    flutter test --verbose $COVERAGE_FLAG || echo -e "${RED}❌ Flutter tests failed${NC}"
+    cd tests
+    flutter test test/ --verbose $COVERAGE_FLAG || echo -e "${RED}❌ Flutter tests failed${NC}"
 
     # Si se pidió cobertura, generar reporte HTML
     if [[ "$COVERAGE_FLAG" == "--coverage" ]]; then
@@ -79,7 +79,7 @@ case $TEST_TYPE in
       genhtml --synthesize-missing --ignore-errors source coverage/lcov.info -o coverage/html --title "SoftArchitect AI - Flutter Tests Coverage"
     fi
 
-    cd ../..
+    cd ..
 
     echo -e "\n${YELLOW}2. Python Tests${NC}"
     cd tests/python/unit
