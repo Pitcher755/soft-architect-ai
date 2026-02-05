@@ -1,9 +1,9 @@
 name: Monorepo CI Master (Orchestrator)
 
-# DISPARADOR: Solo en main/develop (donde los workflows reutilizables funcionan)
+# DISPARADOR: En main/develop y feature branches para PRs
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, feature/**]
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
@@ -45,13 +45,17 @@ jobs:
               - 'domain/**'
               - 'services/**'
               - 'utils/**'
+              - 'src/server/**'
               - 'main.py'
               - 'requirements.txt'
               - 'tests/**'
+              - 'pyrightconfig.json'
             frontend:
               - 'src/client/**'
+              - 'tests/**'
               - 'pubspec.yaml'
               - 'pubspec.lock'
+              - 'analysis_options.yaml'
             docker:
               - 'Dockerfile*'
               - 'infrastructure/**'
@@ -61,32 +65,34 @@ jobs:
               - 'doc/**'
               - 'context/**'
               - 'packages/knowledge_base/**'
+              - 'README.md'
+              - 'AGENTS.md'
 
   # ═══════════════════════════════════════════════════════════════════
-  # Backend Pipeline (only in main/develop)
+  # Backend Pipeline (always run on feature branches, conditional on main/develop)
   # ═══════════════════════════════════════════════════════════════════
   backend-ci:
     name: 🐍 Backend Pipeline
     needs: changes
-    if: needs.changes.outputs.backend == 'true'
+    if: needs.changes.outputs.backend == 'true' || startsWith(github.ref, 'refs/heads/feature/')
     uses: ./.github/workflows/backend-ci.yaml
 
   # ═══════════════════════════════════════════════════════════════════
-  # Frontend Pipeline (only in main/develop)
+  # Frontend Pipeline (always run on feature branches, conditional on main/develop)
   # ═══════════════════════════════════════════════════════════════════
   frontend-ci:
     name: 📱 Frontend Pipeline
     needs: changes
-    if: needs.changes.outputs.frontend == 'true'
+    if: needs.changes.outputs.frontend == 'true' || startsWith(github.ref, 'refs/heads/feature/')
     uses: ./.github/workflows/frontend-ci.yaml
 
   # ═══════════════════════════════════════════════════════════════════
-  # Docker Pipeline (only in main/develop)
+  # Docker Pipeline (always run on feature branches, conditional on main/develop)
   # ═══════════════════════════════════════════════════════════════════
   docker-build:
     name: 🐳 Docker Pipeline
     needs: changes
-    if: needs.changes.outputs.docker == 'true'
+    if: needs.changes.outputs.docker == 'true' || startsWith(github.ref, 'refs/heads/feature/')
     uses: ./.github/workflows/docker-build.yaml
 
   # ═══════════════════════════════════════════════════════════════════
@@ -96,7 +102,7 @@ jobs:
     name: 📊 CI Dashboard
     runs-on: ubuntu-latest
     if: always()
-    needs: [changes]
+    needs: [changes, backend-ci, frontend-ci, docker-build]
 
     steps:
       - name: ✅ Checkout Code
