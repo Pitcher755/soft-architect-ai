@@ -1,4 +1,4 @@
-name: 📱 Frontend CI Pipeline
+name: Frontend CI Pipeline
 
 on:
   push:
@@ -20,18 +20,17 @@ concurrency:
 
 jobs:
   flutter-tests:
-    name: 🎨 Flutter Analysis & Tests
+    name: Flutter Analysis & Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '' # 👈 IMPORTANTE: Dejar vacío.
-          # Al dejarlo vacío, la acción descarga automáticamente la última versión
-          # estable disponible (3.38.x), que traerá el Dart SDK 3.10.x correcto.
+          flutter-version: '' # Dejar vacío para usar la última versión estable
           cache: true
+      - run: cd src/client && flutter clean
       - run: cd src/client && flutter pub get
-      - run: cd src/client && flutter analyze || true
+      - run: cd src/client && flutter analyze
       - run: cd src/client && flutter test --coverage 2>/dev/null || echo "No tests found"
       - run: cd src/client && dart format --set-exit-if-changed . || true
