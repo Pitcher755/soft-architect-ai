@@ -162,6 +162,9 @@ packages/knowledge_base/
 
 ### 3.3 Arquitectura de Componentes
 
+> **📚 IMPORTANT:** All test files MUST be located in centralized monorepo structure.
+> See [MONOREPO_TEST_STRUCTURE.md](../../01-PROJECT_REPORT/MONOREPO_TEST_STRUCTURE.md) for official reference.
+
 #### Backend Structure
 
 ```
