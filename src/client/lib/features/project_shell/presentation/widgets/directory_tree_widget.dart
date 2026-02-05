@@ -34,7 +34,14 @@ class DirectoryTreeWidget extends StatefulWidget {
 
 class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
   /// Track expanded directories
-  final Set<String> _expandedDirs = {};
+  late final Set<String> _expandedDirs;
+
+  @override
+  void initState() {
+    super.initState();
+    // Expand root by default
+    _expandedDirs = {widget.root.id};
+  }
 
   @override
   Widget build(BuildContext context) =>
