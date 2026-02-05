@@ -74,7 +74,7 @@ jobs:
       - name: Run Backend Unit Tests
         run: |
           cd src/server
-          python -m pytest tests/ -v --cov=services --cov=core --cov-report=xml
+          python -m pytest ../../tests/python/ -v --cov=app --cov=services --cov=core --cov-report=xml
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
