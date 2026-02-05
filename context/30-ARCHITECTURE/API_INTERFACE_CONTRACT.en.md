@@ -36,7 +36,54 @@ All responses (except streaming) must follow this strict format. The Frontend wi
 
 ### 🧠 Chat & RAG (Streaming)
 
-* **POST** `/api/v1/chat/stream`
+#### POST /api/v1/chat/generate
+
+**Description:** Generates document content using RAG + LLM with SSE streaming.
+
+**Headers:** `Accept: text/event-stream`, `Content-Type: application/json`
+
+**Request:**
+```json
+{
+  "message": "Generate the Project Manifesto for an inventory management system",
+  "doc_type": "PROJECT_MANIFESTO",
+  "project_context": {
+    "name": "InventoryPro",
+    "description": "Inventory management system for retail",
+    "tech_stack": ["Flutter", "Python", "PostgreSQL"]
+  },
+  "chat_history": [
+    {"role": "user", "content": "I need a project..."},
+    {"role": "assistant", "content": "Perfect, let's start..."}
+  ]
+}
+```
+
+**Response:** `text/event-stream` (SSE)
+
+```
+event: token
+data: {"token": "# ", "index": 0}
+
+event: token
+data: {"token": "Project", "index": 1}
+
+event: token
+data: {"token": " Manifesto", "index": 2}
+
+event: done
+data: {"total_tokens": 450, "duration_ms": 3200}
+```
+
+**Error Codes:**
+- `RAG_001`: ChromaDB unavailable
+- `LLM_001`: Ollama timeout (>30s)
+- `STREAM_001`: SSE connection error
+
+---
+
+#### POST /api/v1/chat/stream (Legacy)
+
 * **Headers:** `Accept: text/event-stream`
 * **Body:**
 ```json
