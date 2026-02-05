@@ -1,0 +1,27 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "soft-architect-ai"
+version = "0.1.0"
+description = "Monorepo configuration for SoftArchitect AI"
+authors = ["SoftArchitect AI Team <team@softarchitect.local>"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests/python"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-ra",
+    "-q",
+    "--strict-markers",
+    "--tb=short",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "e2e: End-to-end tests",
+]
