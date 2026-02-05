@@ -24,7 +24,7 @@ void main() {
 
     tearDown(() async {
       // Clean up temp directory
-      if (await tempDir.exists()) {
+      if (tempDir.existsSync()) {
         await tempDir.delete(recursive: true);
       }
     });
@@ -36,7 +36,7 @@ void main() {
         p.join(projectRoot, 'context/40-PLANNING/.audit.log'),
       );
       expect(
-        await logFile.exists(),
+        logFile.existsSync(),
         true,
         reason: 'Log file should be created on first write',
       );
