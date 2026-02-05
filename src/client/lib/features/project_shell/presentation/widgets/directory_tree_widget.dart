@@ -45,10 +45,8 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
   }
 
   /// Recursively collect all directory nodes that should be initially expanded
-  Set<String> _getInitiallyExpandedNodes(FileNode node) {
-    // Start with no directories expanded initially
-    return <String>{};
-  }
+  Set<String> _getInitiallyExpandedNodes(FileNode node) =>
+    <String>{node.id};
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +64,11 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
     const primary = Color(0xFF0d0df2);
 
     if (node.isDirectory && node.children.isNotEmpty) {
-      final isExpanded = _expanded.contains(node.id);
+      final isExpanded =
+          _expanded.contains(node.id) || node.id == widget.root.id;
       developer.log(
-        'Building directory node: ${node.name}, isExpanded: $isExpanded, expanded set: $_expanded',
+        'Building directory node: ${node.name}, '
+        'isExpanded: $isExpanded, expanded set: $_expanded',
       );
 
       return ExpansionTile(

@@ -2,7 +2,7 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
 /// Widget: Markdown content preview
 /// Displays formatted markdown content or placeholder when no file is selected.
@@ -12,11 +12,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 /// - Text: #E6EDF3
 /// - Secondary text: #8b949e
 class MarkdownPreviewWidget extends StatelessWidget {
-  const MarkdownPreviewWidget({
-    super.key,
-    this.content,
-    this.filename,
-  });
+  const MarkdownPreviewWidget({super.key, this.content, this.filename});
 
   /// Markdown content to display
   final String? content;
@@ -58,9 +54,9 @@ class _EmptyPreview extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'Select a file to preview',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: textSecondary),
           ),
         ],
       ),
@@ -70,10 +66,7 @@ class _EmptyPreview extends StatelessWidget {
 
 /// Markdown content display
 class _MarkdownContent extends StatelessWidget {
-  const _MarkdownContent({
-    required this.content,
-    this.filename,
-  });
+  const _MarkdownContent({required this.content, this.filename});
   final String content;
   final String? filename;
 
@@ -89,11 +82,7 @@ class _MarkdownContent extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Color(0xFF30363d),
-                ),
-              ),
+              border: Border(bottom: BorderSide(color: Color(0xFF30363d))),
               color: Color(0xFF161B22),
             ),
             child: Row(
