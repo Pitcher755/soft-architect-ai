@@ -45,8 +45,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
   }
 
   /// Recursively collect all directory nodes that should be initially expanded
-  Set<String> _getInitiallyExpandedNodes(FileNode node) =>
-    <String>{node.id};
+  Set<String> _getInitiallyExpandedNodes(FileNode node) => <String>{node.id};
 
   @override
   Widget build(BuildContext context) {

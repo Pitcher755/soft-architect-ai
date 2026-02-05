@@ -18,8 +18,9 @@ class AppColors {
 
   // Border and divider
   static const Color border = Color(0xFF30363d); // Border color
-  static const Color borderLight =
-      Color(0x7F30363d); // Light border (with opacity)
+  static const Color borderLight = Color(
+    0x7F30363d,
+  ); // Light border (with opacity)
 
   // Text colors
   static const Color textMain = Color(0xFFE6EDF3); // Main text (off-white)

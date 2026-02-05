@@ -13,21 +13,21 @@ class ProjectModel extends Project {
 
   /// Convert from JSON (from database)
   factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        path: json['path'] as String,
-        createdAt: DateTime.parse(json['created_at'] as String),
-        lastOpened: json['last_opened'] != null
-            ? DateTime.parse(json['last_opened'] as String)
-            : null,
-      );
+    id: json['id'] as String,
+    name: json['name'] as String,
+    path: json['path'] as String,
+    createdAt: DateTime.parse(json['created_at'] as String),
+    lastOpened: json['last_opened'] != null
+        ? DateTime.parse(json['last_opened'] as String)
+        : null,
+  );
 
   /// Convert to JSON (for database)
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'path': path,
-        'created_at': createdAt.toIso8601String(),
-        'last_opened': lastOpened?.toIso8601String(),
-      };
+    'id': id,
+    'name': name,
+    'path': path,
+    'created_at': createdAt.toIso8601String(),
+    'last_opened': lastOpened?.toIso8601String(),
+  };
 }
