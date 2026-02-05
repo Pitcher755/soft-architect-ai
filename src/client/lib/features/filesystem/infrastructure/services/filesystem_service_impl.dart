@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_slow_async_io
+
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -9,9 +11,9 @@ import '../security/path_validator.dart';
 /// Concrete implementation of [FileSystemRepository] using dart:io.
 ///
 /// **Security:**
-/// - All paths validated by [PathValidator]
-/// - Operations logged via [AuditLogger]
+/// - All paths validated before I/O
 /// - Errors wrapped in domain exceptions
+/// - Idempotent operations for safety
 class FileSystemServiceImpl implements FileSystemRepository {
   FileSystemServiceImpl({required this.projectRoot}) {
     _validator = PathValidator(projectRoot: projectRoot);

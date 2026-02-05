@@ -1,10 +1,5 @@
 import 'dart:io';
 
-import '../../../project_shell/core/exceptions/project_shell_exceptions.dart'
-    show PathTraversalException;
-import '../../../project_shell/core/security/path_validator.dart'
-    show PathValidator;
-import '../../infrastructure/security/path_validator.dart' show PathValidator;
 import '../exceptions/filesystem_exceptions.dart'
     show
         PermissionDeniedException,
@@ -15,7 +10,7 @@ import '../exceptions/filesystem_exceptions.dart'
 /// Abstract repository for filesystem operations.
 ///
 /// This interface defines the contract for filesystem I/O operations.
-/// All implementations MUST use [PathValidator] for security.
+/// All implementations MUST validate paths before performing I/O.
 ///
 /// **Architectural Note:**
 /// - Domain layer (pure business logic)
@@ -76,7 +71,8 @@ abstract class FileSystemRepository {
   /// Lists all files in a directory recursively.
   ///
   /// @param relativePath Directory path relative to project root
-  /// @param extensions Optional filter by file extensions (e.g., ['.md', '.txt'])
+  /// @param extensions Optional filter by file extensions
+  ///   (e.g., ['.md', '.txt'])
   /// @throws [PathTraversalException] if path is invalid
   Future<List<String>> listFiles({
     required String relativePath,
