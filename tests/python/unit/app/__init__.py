@@ -1,1 +1,3 @@
-# Tests for app module
+"""
+Tests: Unit tests for core business logic.
+"""
