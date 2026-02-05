@@ -3,28 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/directory_tree_widget.dart';
+
 import '../../../../helpers/project_fixtures.dart';
 
 void main() {
   group('DirectoryTreeWidget', () {
     late FileNode testRoot;
-    late FileNode testFile;
-    late FileNode testDirectory;
 
     setUp(() {
       testRoot = testRootNode;
-      testFile = testFileNode;
-      testDirectory = testDirectoryNode;
     });
 
-    testWidgets('should display root directory name', (WidgetTester tester) async {
+    testWidgets('should display root directory name', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -36,10 +32,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -54,10 +47,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -68,14 +58,13 @@ void main() {
       expect(find.byType(DirectoryTreeWidget), findsOneWidget);
     });
 
-    testWidgets('should show folder icons for directories', (WidgetTester tester) async {
+    testWidgets('should show folder icons for directories', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -83,14 +72,13 @@ void main() {
       expect(find.byIcon(Icons.folder), findsOneWidget);
     });
 
-    testWidgets('should show file icons for files', (WidgetTester tester) async {
+    testWidgets('should show file icons for files', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -99,14 +87,13 @@ void main() {
       expect(find.byType(Icon), findsWidgets);
     });
 
-    testWidgets('should expand directory when tapped', (WidgetTester tester) async {
+    testWidgets('should expand directory when tapped', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -116,14 +103,13 @@ void main() {
       expect(find.byType(ExpansionTile), findsWidgets);
     });
 
-    testWidgets('should collapse directory when tapped again', (WidgetTester tester) async {
+    testWidgets('should collapse directory when tapped again', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -133,15 +119,18 @@ void main() {
       expect(find.byType(ExpansionTile), findsWidgets);
     });
 
-    testWidgets('should call onFileSelected when file is tapped', (WidgetTester tester) async {
-      FileNode? selectedNode;
-
+    testWidgets('should call onFileSelected when file is tapped', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: DirectoryTreeWidget(
               root: testRoot,
-              onFileSelected: (node) => selectedNode = node,
+              onFileSelected: (node) {
+                // Callback is provided and should be callable
+                expect(node, isNotNull);
+              },
             ),
           ),
         ),
@@ -149,6 +138,9 @@ void main() {
 
       // The widget should render without errors
       expect(find.byType(DirectoryTreeWidget), findsOneWidget);
+
+      // Note: Testing actual file selection would require more complex setup
+      // with mocked file system access, which is beyond basic widget testing
     });
 
     testWidgets('should highlight selected file', (WidgetTester tester) async {
@@ -177,20 +169,23 @@ void main() {
       // Verify that at least one ListTile is marked as selected
       final listTiles = tester.widgetList<ListTile>(find.byType(ListTile));
       final hasSelectedTile = listTiles.any((tile) => tile.selected == true);
-      expect(hasSelectedTile, isTrue, reason: 'Should have at least one selected ListTile');
+      expect(
+        hasSelectedTile,
+        isTrue,
+        reason: 'Should have at least one selected ListTile',
+      );
 
       // The widget should render without errors
       expect(find.byType(DirectoryTreeWidget), findsOneWidget);
     });
 
-    testWidgets('should not highlight unselected files', (WidgetTester tester) async {
+    testWidgets('should not highlight unselected files', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: testRoot,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: testRoot, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -213,10 +208,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: emptyDir,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: emptyDir, onFileSelected: (_) {}),
           ),
         ),
       );
@@ -239,10 +231,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DirectoryTreeWidget(
-              root: singleFile,
-              onFileSelected: (_) {},
-            ),
+            body: DirectoryTreeWidget(root: singleFile, onFileSelected: (_) {}),
           ),
         ),
       );

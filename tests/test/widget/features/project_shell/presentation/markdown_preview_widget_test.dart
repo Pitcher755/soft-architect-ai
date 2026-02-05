@@ -1,17 +1,28 @@
 // tests/widget/flutter/features/project_shell/presentation/markdown_preview_widget_test.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/markdown_preview_widget.dart';
 
 void main() {
   group('MarkdownPreviewWidget', () {
-    testWidgets('should display empty state when content is null', (WidgetTester tester) async {
+    testWidgets('should display empty state when content is null', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        const MaterialApp(home: Scaffold(body: MarkdownPreviewWidget())),
+      );
+
+      expect(find.text('Select a file to preview'), findsOneWidget);
+      expect(find.byIcon(Icons.description_outlined), findsOneWidget);
+    });
+
+    testWidgets('should display empty state when content is empty', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: MarkdownPreviewWidget(),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: '')),
         ),
       );
 
@@ -19,20 +30,9 @@ void main() {
       expect(find.byIcon(Icons.description_outlined), findsOneWidget);
     });
 
-    testWidgets('should display empty state when content is empty', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: MarkdownPreviewWidget(content: ''),
-          ),
-        ),
-      );
-
-      expect(find.text('Select a file to preview'), findsOneWidget);
-      expect(find.byIcon(Icons.description_outlined), findsOneWidget);
-    });
-
-    testWidgets('should display markdown content when provided', (WidgetTester tester) async {
+    testWidgets('should display markdown content when provided', (
+      WidgetTester tester,
+    ) async {
       const markdownContent = '# Hello World\n\nThis is a **bold** text.';
       const filename = 'test.md';
 
@@ -57,7 +57,9 @@ void main() {
       expect(find.text('Hello World'), findsOneWidget);
     });
 
-    testWidgets('should display header with filename when provided', (WidgetTester tester) async {
+    testWidgets('should display header with filename when provided', (
+      WidgetTester tester,
+    ) async {
       const markdownContent = '# Test Content';
       const filename = 'example.md';
 
@@ -79,16 +81,14 @@ void main() {
       expect(find.text('Test Content'), findsOneWidget);
     });
 
-    testWidgets('should not display header when filename is null', (WidgetTester tester) async {
+    testWidgets('should not display header when filename is null', (
+      WidgetTester tester,
+    ) async {
       const markdownContent = '# Test Content';
 
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: markdownContent,
-            ),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: markdownContent)),
         ),
       );
 
@@ -97,7 +97,9 @@ void main() {
       expect(find.text('Test Content'), findsOneWidget);
     });
 
-    testWidgets('should render complex markdown correctly', (WidgetTester tester) async {
+    testWidgets('should render complex markdown correctly', (
+      WidgetTester tester,
+    ) async {
       const markdownContent = '''
 # Header 1
 ## Header 2
@@ -154,7 +156,9 @@ void main() {
       expect(find.text('Long Content'), findsOneWidget);
     });
 
-    testWidgets('should handle special characters in content', (WidgetTester tester) async {
+    testWidgets('should handle special characters in content', (
+      WidgetTester tester,
+    ) async {
       const specialContent = '# Special Characters\n\n© ® ™ € £ ¥ § ¶ † ‡';
 
       await tester.pumpWidget(
@@ -173,8 +177,11 @@ void main() {
       expect(find.text('Special Characters'), findsOneWidget);
     });
 
-    testWidgets('should handle markdown with links', (WidgetTester tester) async {
-      const linkContent = '# Links\n\n[Google](https://google.com) and [GitHub](https://github.com)';
+    testWidgets('should handle markdown with links', (
+      WidgetTester tester,
+    ) async {
+      const linkContent =
+          '# Links\n\n[Google](https://google.com) and [GitHub](https://github.com)';
 
       await tester.pumpWidget(
         const MaterialApp(
@@ -191,8 +198,11 @@ void main() {
       expect(find.text('Links'), findsOneWidget);
     });
 
-    testWidgets('should handle markdown with images', (WidgetTester tester) async {
-      const imageContent = '# Images\n\n![Alt text](https://example.com/image.png)';
+    testWidgets('should handle markdown with images', (
+      WidgetTester tester,
+    ) async {
+      const imageContent =
+          '# Images\n\n![Alt text](https://example.com/image.png)';
 
       await tester.pumpWidget(
         const MaterialApp(
@@ -209,7 +219,9 @@ void main() {
       expect(find.text('Images'), findsOneWidget);
     });
 
-    testWidgets('should handle markdown with tables', (WidgetTester tester) async {
+    testWidgets('should handle markdown with tables', (
+      WidgetTester tester,
+    ) async {
       const tableContent = '''
 # Tables
 
@@ -236,7 +248,9 @@ void main() {
       expect(find.text('Data 1'), findsOneWidget);
     });
 
-    testWidgets('should have proper dark theme colors', (WidgetTester tester) async {
+    testWidgets('should have proper dark theme colors', (
+      WidgetTester tester,
+    ) async {
       const markdownContent = '# Test';
 
       await tester.pumpWidget(

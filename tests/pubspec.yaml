@@ -25,6 +25,9 @@ dependencies:
   # Testing & Mocking
   mockito: ^5.6.3
 
+  # Markdown rendering
+  flutter_markdown_plus: ^1.0.7
+
 # ============================================================================
 # DEVELOPMENT DEPENDENCIES
 # Tools for testing, integration testing, and code quality

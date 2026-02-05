@@ -88,10 +88,7 @@ void main() {
         ),
       );
 
-      // Expand root to show children
-      await tester.tap(find.text('complex-project'));
-      await tester.pumpAndSettle();
-
+      // Root is already expanded by default, so children should be visible
       // Then - Initially only root level items should be visible
       expect(find.text('README.md'), findsOneWidget);
       expect(find.text('src'), findsOneWidget);
@@ -179,9 +176,8 @@ void main() {
         ),
       );
 
-      // Expand root to show children
-      await tester.tap(find.text('test-project'));
-      await tester.pumpAndSettle();
+      // Root is expanded by default, docs should be visible
+      expect(find.text('docs'), findsOneWidget);
 
       // Initially no selection
       var listTiles = tester.widgetList<ListTile>(find.byType(ListTile));
@@ -189,10 +185,14 @@ void main() {
         expect(tile.selected, isFalse);
       }
 
-      // Expand directory and select file
+      // Expand docs to show architecture.md
       await tester.tap(find.text('docs'));
       await tester.pumpAndSettle();
 
+      // Verify docs is expanded and architecture.md is visible
+      expect(find.text('architecture.md'), findsOneWidget);
+
+      // Select file
       await tester.tap(find.text('architecture.md'));
       await tester.pumpAndSettle();
 
@@ -263,15 +263,7 @@ void main() {
         ),
       );
 
-      // Initially root is collapsed, only root visible
-      expect(find.text('level1'), findsOneWidget);
-      expect(find.text('level2'), findsNothing);
-
-      // Expand root to show level2
-      await tester.tap(find.text('level1'));
-      await tester.pumpAndSettle();
-
-      // Now level2 should be visible
+      // Root is expanded by default, level2 should be visible
       expect(find.text('level1'), findsOneWidget);
       expect(find.text('level2'), findsOneWidget);
       expect(find.text('level3'), findsNothing);
@@ -306,10 +298,7 @@ void main() {
         ),
       );
 
-      // Expand root to show docs
-      await tester.tap(find.text('test-project'));
-      await tester.pumpAndSettle();
-
+      // Root is expanded by default, docs is visible
       // Expand docs
       await tester.tap(find.text('docs'));
       await tester.pumpAndSettle();

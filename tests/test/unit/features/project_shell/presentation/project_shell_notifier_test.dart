@@ -82,12 +82,7 @@ class FakeProjectRepository implements ProjectRepository {
 
 void main() {
   group('ProjectShellNotifier', () {
-    late FakeProjectRepository repository;
     late ProjectShellNotifier notifier;
-
-    setUp(() {
-      repository = FakeProjectRepository();
-    });
 
     tearDown(() {
       // Only dispose if initialized (some tests may not create it)
