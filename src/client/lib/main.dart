@@ -20,9 +20,9 @@ void main() async {
   // (skip on web, optional on desktop)
   if (!kIsWeb) {
     try {
-      await dotenv.load();
+      await dotenv.load(isOptional: true);
       debugPrint('✅ .env file loaded successfully');
-    } catch (e) {
+    } on Exception catch (e) {
       // .env file not found or error loading, will use default values
       // from AppConfig
       debugPrint(
