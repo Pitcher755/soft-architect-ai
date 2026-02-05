@@ -2,13 +2,19 @@ name: 🐳 Docker Build Pipeline
 
 on:
   push:
+    branches: [main, develop, feature/**]
+    paths:
+      - 'Dockerfile*'
+      - 'infrastructure/**'
+      - 'docker-compose.yml'
+      - '.dockerignore'
+  pull_request:
     branches: [main, develop]
     paths:
       - 'Dockerfile*'
       - 'infrastructure/**'
       - 'docker-compose.yml'
-  pull_request:
-    branches: [main, develop]
+      - '.dockerignore'
   workflow_call:
 
 concurrency:
