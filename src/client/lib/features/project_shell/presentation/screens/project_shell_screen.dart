@@ -131,48 +131,55 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
           const SizedBox(width: 16),
 
           // Path display
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: mainBg,
-              border: Border.all(color: borderDark),
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: const Text(
-              '~/soft-architect-ai',
-              style: TextStyle(
-                color: textSecondary,
-                fontSize: 11,
-                fontFamily: 'monospace',
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: mainBg,
+                border: Border.all(color: borderDark),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: const Text(
+                '~/soft-architect-ai',
+                style: TextStyle(
+                  color: textSecondary,
+                  fontSize: 11,
+                  fontFamily: 'monospace',
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ),
 
-          const Spacer(),
+          const SizedBox(width: 12),
 
-          // Progress bar
-          SizedBox(
-            width: 300,
+          // Progress bar (responsive)
+          Expanded(
+            flex: 2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'ARCHITECTURE PROGRESS',
-                      style: TextStyle(
-                        color: textSecondary,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
+                    Expanded(
+                      child: Text(
+                        'PROGRESS',
+                        style: TextStyle(
+                          color: textSecondary,
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.3,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    SizedBox(width: 4),
                     Text(
-                      '12 / 25',
+                      '12/25',
                       style: TextStyle(
                         color: primary,
-                        fontSize: 10,
+                        fontSize: 9,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -192,7 +199,7 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
             ),
           ),
 
-          const Spacer(),
+          const SizedBox(width: 12),
 
           // Action buttons
           IconButton(
