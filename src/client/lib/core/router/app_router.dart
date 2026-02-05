@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/project_shell/presentation/screens/project_shell_screen.dart';
+
 /// Central routing configuration for the application.
 /// Uses GoRouter for declarative navigation.
 GoRouter createAppRouter() => GoRouter(
-  initialLocation: '/chat',
+  initialLocation: '/project-shell',
   routes: [
+    GoRoute(
+      path: '/project-shell',
+      name: 'project-shell',
+      builder: (context, state) => const ProjectShellScreen(),
+    ),
     GoRoute(
       path: '/chat',
       name: 'chat',

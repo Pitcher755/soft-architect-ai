@@ -1,30 +1,29 @@
-// lib/features/project_shell/presentation/widgets/directory_tree_widget.dart
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/file_node.dart';
 
-/// Widget: Expandable directory tree (VS Code style)
-/// Displays hierarchical file structure with expand/collapse functionality.
+/// A hierarchical file tree widget styled like VS Code Explorer.
 ///
-/// Design inspiration: GitHub Dark theme with primary accent #0d0df2
-/// - Sidebar background: #161B22
-/// - Border color: #30363d
-/// - Text secondary: #8b949e
+/// Features:
+/// - Expandable/collapsible directories
+/// - File/folder icons
+/// - Selection highlighting
+/// - Context menu support (future)
 class DirectoryTreeWidget extends StatefulWidget {
   const DirectoryTreeWidget({
     required this.root,
     required this.onFileSelected,
-    super.key,
     this.selectedNode,
+    super.key,
   });
 
   /// Root node of the file tree
   final FileNode root;
 
-  /// Callback when a file is selected
-  final ValueChanged<FileNode> onFileSelected;
+  /// Callback when file is selected
+  final void Function(FileNode) onFileSelected;
 
   /// Currently selected node
   final FileNode? selectedNode;
@@ -34,145 +33,154 @@ class DirectoryTreeWidget extends StatefulWidget {
 }
 
 class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
-  /// Tracks expanded directory nodes
-  late final Set<String> _expanded;
+  /// Track expanded directories
+  late final Set<String> _expandedDirs;
 
   @override
   void initState() {
     super.initState();
-    developer.log('DirectoryTreeWidget initialized with root expanded');
-    _expanded = _getInitiallyExpandedNodes(widget.root);
+    // Expand root by default
+    _expandedDirs = {widget.root.id};
   }
-
-  /// Recursively collect all directory nodes that should be initially expanded
-  Set<String> _getInitiallyExpandedNodes(FileNode node) => <String>{node.id};
 
   @override
-  Widget build(BuildContext context) {
-    developer.log(
-      'Building DirectoryTreeWidget with root: ${widget.root.name}',
-    );
+  Widget build(BuildContext context) =>
+      SingleChildScrollView(child: _buildTreeNode(widget.root));
 
-    return SingleChildScrollView(child: _buildTreeNode(widget.root));
-  }
-
-  /// Recursively builds tree nodes (directories and files)
+  /// Recursively build tree nodes
   Widget _buildTreeNode(FileNode node) {
-    const sidebarBg = Color(0xFF161B22);
-    const borderDark = Color(0xFF30363d);
-    const primary = Color(0xFF0d0df2);
+    const hoverBg = Color(0xFF21262d);
+    const selectedBg = Color(0xFF388bfd);
+    const selectedFg = Color(0xFFFFFFFF);
+    const textPrimary = Color(0xFFE6EDF3);
+    const textSecondary = Color(0xFF8b949e);
+    const iconColor = Color(0xFF79c0ff);
+    const folderColor = Color(0xFF79c0ff);
 
-    if (node.isDirectory && node.children.isNotEmpty) {
-      final isExpanded =
-          _expanded.contains(node.id) || node.id == widget.root.id;
-      developer.log(
-        'Building directory node: ${node.name}, '
-        'isExpanded: $isExpanded, expanded set: $_expanded',
-      );
-
-      return ExpansionTile(
-        key: ValueKey(node.id),
-        title: _buildNodeTitle(node, isExpanded),
-        leading: Icon(
-          isExpanded ? Icons.folder_open : Icons.folder,
-          size: 18,
-          color: primary,
-        ),
-        backgroundColor: sidebarBg.withValues(alpha: 0.5),
-        collapsedBackgroundColor: Colors.transparent,
-        tilePadding: const EdgeInsets.symmetric(horizontal: 8),
-        initiallyExpanded: isExpanded,
-        onExpansionChanged: (expanded) {
-          developer.log('Directory expanded: ${node.name} = $expanded');
-          setState(() {
-            if (expanded) {
-              _expanded.add(node.id);
-            } else {
-              _expanded.remove(node.id);
-            }
-          });
-        },
-        children: node.children.map(_buildTreeNode).toList(),
-      );
-    }
-    // File node
     final isSelected = widget.selectedNode?.id == node.id;
+    final isExpanded = _expandedDirs.contains(node.id);
 
-    return ListTile(
-      key: ValueKey(node.id),
-      title: _buildNodeTitle(node, false),
-      leading: _buildFileIcon(node.name),
-      selected: isSelected,
-      selectedTileColor: primary.withValues(alpha: 0.2),
-      selectedColor: primary,
-      tileColor: Colors.transparent,
-      hoverColor: borderDark.withValues(alpha: 0.5),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-      onTap: () {
-        developer.log('File selected: ${node.name}');
-        widget.onFileSelected(node);
-      },
-    );
-  }
-
-  /// Builds the title text for a node
-  Widget _buildNodeTitle(FileNode node, bool isExpanded) {
-    const textSecondary = Color(0xFF8b949e);
-    const textWhite = Color(0xFFE6EDF3);
-
-    return Text(
-      node.name,
-      style: TextStyle(
-        color: node.isDirectory ? textWhite : textSecondary,
-        fontSize: 13,
-        fontWeight: node.isDirectory ? FontWeight.w500 : FontWeight.w400,
-      ),
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-
-  /// Returns appropriate icon for file type
-  Widget _buildFileIcon(String filename) {
-    const textSecondary = Color(0xFF8b949e);
-    final ext = filename.split('.').last.toLowerCase();
-
-    IconData icon;
-    var color = textSecondary;
-
-    // Determine icon based on file extension
-    switch (ext) {
-      case 'md':
-        icon = Icons.description;
-        break;
-      case 'dart':
-        icon = Icons.code;
-        color = const Color(0xFF00D2FC); // Dart blue
-        break;
-      case 'py':
-        icon = Icons.code;
-        color = const Color(0xFF3776AB); // Python blue
-        break;
-      case 'json':
-      case 'yaml':
-      case 'yml':
-        icon = Icons.settings;
-        break;
-      case 'png':
-      case 'jpg':
-      case 'jpeg':
-      case 'gif':
-        icon = Icons.image;
-        break;
-      default:
-        icon = Icons.insert_drive_file;
+    if (!node.isDirectory) {
+      // File node
+      return Container(
+        color: isSelected ? selectedBg : Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            developer.log('File selected: ${node.name}');
+            widget.onFileSelected(node);
+          },
+          hoverColor: hoverBg,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: _getFileIcon(
+                    node.name,
+                    color: isSelected ? selectedFg : iconColor,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    node.name,
+                    style: TextStyle(
+                      color: isSelected ? selectedFg : textPrimary,
+                      fontSize: 12,
+                      fontWeight: isSelected
+                          ? FontWeight.w500
+                          : FontWeight.w400,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
     }
 
-    return Icon(icon, size: 16, color: color);
+    // Directory node
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          onTap: () {
+            setState(() {
+              if (_expandedDirs.contains(node.id)) {
+                _expandedDirs.remove(node.id);
+              } else {
+                _expandedDirs.add(node.id);
+              }
+            });
+            developer.log('Directory toggled: ${node.name}');
+          },
+          hoverColor: hoverBg,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Row(
+              children: [
+                // Expand/collapse icon
+                SizedBox(
+                  width: 20,
+                  child: Icon(
+                    isExpanded ? Icons.expand_more : Icons.chevron_right,
+                    size: 16,
+                    color: textSecondary,
+                  ),
+                ),
+                // Folder icon
+                const Icon(Icons.folder, size: 16, color: folderColor),
+                const SizedBox(width: 8),
+                // Folder name
+                Expanded(
+                  child: Text(
+                    node.name,
+                    style: const TextStyle(
+                      color: textPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        // Children (if expanded)
+        if (isExpanded && node.children.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: node.children.map(_buildTreeNode).toList(),
+            ),
+          ),
+      ],
+    );
   }
 
-  @override
-  void dispose() {
-    developer.log('DirectoryTreeWidget disposed');
-    super.dispose();
+  /// Get icon for file type
+  Widget _getFileIcon(String filename, {required Color color}) {
+    var icon = Icons.description;
+
+    if (filename.endsWith('.md')) {
+      icon = Icons.description;
+    } else if (filename.endsWith('.dart')) {
+      icon = Icons.code;
+    } else if (filename.endsWith('.py')) {
+      icon = Icons.code;
+    } else if (filename.endsWith('.json')) {
+      icon = Icons.data_object;
+    } else if (filename.endsWith('.yaml') || filename.endsWith('.yml')) {
+      icon = Icons.settings;
+    } else if (filename.endsWith('.txt')) {
+      icon = Icons.description;
+    }
+
+    return Icon(icon, size: 14, color: color);
   }
 }
