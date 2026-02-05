@@ -177,12 +177,20 @@ src/server/
 │           ├── sequential_orchestrator.py   # ⭐ NEW: Lógica de orquestación
 │           ├── template_loader.py           # ⭐ NEW: Carga templates RAG
 │           └── prompt_builder.py            # ⭐ NEW: Construye prompts dinámicos
-└── tests/
-    └── unit/
-        └── services/rag/
-            ├── test_orchestrator.py         # ⭐ TDD RED
-            ├── test_template_loader.py      # ⭐ TDD RED
-            └── test_streaming.py            # ⭐ TDD RED
+```
+
+#### Backend Tests (Centralized in Monorepo Root)
+
+```
+tests/python/
+├── unit/
+│   └── services/rag/
+│       ├── test_orchestrator.py         # ⭐ TDD RED
+│       ├── test_template_loader.py      # ⭐ TDD RED
+│       └── test_streaming.py            # ⭐ TDD RED
+└── integration/
+    └── services/rag/
+        └── test_chat_e2e.py             # ⭐ TDD GREEN (E2E)
 ```
 
 #### Frontend Structure
@@ -219,25 +227,29 @@ src/client/
 │       └── network/
 │           ├── sse_client.dart              # ⭐ NEW: SSE HTTP Client
 │           └── stream_decoder.dart          # ⭐ NEW: Parsing SSE
-└── tests/
-    ├── test/
-    │   ├── unit/
-    │   │   └── features/chat/
-    │   │       ├── domain/
-    │   │       │   └── entities/
-    │   │       │       └── chat_message_test.dart # ⭐ TDD RED
-    │   │       └── data/
-    │   │           └── repositories/
-    │   │               └── chat_repository_impl_test.dart # ⭐ TDD RED
-    │   ├── widget/
-    │   │   └── features/chat/
-    │   │       └── presentation/
-    │   │           └── widgets/
-    │   │               ├── proposal_card_test.dart    # ⭐ TDD RED
-    │   │               └── streaming_indicator_test.dart # ⭐ TDD RED
-    │   └── integration/
-    │       └── features/chat/
-    │           └── chat_flow_test.dart      # ⭐ TDD RED (E2E)
+```
+
+#### Frontend Tests (Centralized in Monorepo Root)
+
+```
+tests/test/
+├── unit/
+│   └── features/chat/
+│       ├── domain/
+│       │   └── entities/
+│       │       └── chat_message_test.dart # ⭐ TDD RED
+│       └── data/
+│           └── repositories/
+│               └── chat_repository_impl_test.dart # ⭐ TDD RED
+├── widget/
+│   └── features/chat/
+│       └── presentation/
+│           └── widgets/
+│               ├── proposal_card_test.dart    # ⭐ TDD RED
+│               └── streaming_indicator_test.dart # ⭐ TDD RED
+└── integration/
+    └── features/chat/
+        └── chat_flow_test.dart      # ⭐ TDD RED (E2E)
 ```
 
 ---
@@ -295,7 +307,7 @@ data: {"total_tokens": 450, "duration_ms": 3200}
 
 #### Test 1: Orchestrator Basic Flow
 
-**Archivo:** `src/server/tests/unit/services/rag/test_orchestrator.py`
+**Archivo:** `tests/python/unit/services/rag/test_orchestrator.py`
 
 ```python
 import pytest
@@ -411,7 +423,7 @@ class TestSequentialOrchestrator:
 
 #### Test 2: Template Loader
 
-**Archivo:** `src/server/tests/unit/services/rag/test_template_loader.py`
+**Archivo:** `tests/python/unit/services/rag/test_template_loader.py`
 
 ```python
 import pytest
@@ -486,7 +498,7 @@ class TestTemplateLoader:
 
 #### Test 3: SSE Streaming
 
-**Archivo:** `src/server/tests/unit/api/v1/test_chat_endpoints.py`
+**Archivo:** `tests/python/unit/api/v1/test_chat_endpoints.py`
 
 ```python
 import pytest
@@ -2176,7 +2188,7 @@ src/client/lib/core/network/sse_client.dart
 
 # Tests
 tests/test/integration/features/chat/chat_flow_test.dart
-src/server/tests/unit/services/rag/test_orchestrator.py
+tests/python/unit/services/rag/test_orchestrator.py
 ```
 
 ### 11.2 Comandos Útiles
