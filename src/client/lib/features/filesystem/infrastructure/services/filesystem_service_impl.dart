@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 
 import '../../domain/exceptions/filesystem_exceptions.dart';
 import '../../domain/repositories/filesystem_repository.dart';
+import '../logging/audit_logger.dart';
 import '../security/path_validator.dart';
 
 /// Concrete implementation of [FileSystemRepository] using dart:io.
@@ -14,12 +15,16 @@ import '../security/path_validator.dart';
 /// - All paths validated before I/O
 /// - Errors wrapped in domain exceptions
 /// - Idempotent operations for safety
+/// - All write operations logged to audit trail
 class FileSystemServiceImpl implements FileSystemRepository {
   FileSystemServiceImpl({required this.projectRoot}) {
     _validator = PathValidator(projectRoot: projectRoot);
+    _logger = AuditLogger(projectRoot: projectRoot);
   }
+
   final String projectRoot;
   late final PathValidator _validator;
+  late final AuditLogger _logger;
 
   /// Standard directory structure for new projects.
   static const List<String> _standardDirs = [
@@ -38,6 +43,9 @@ class FileSystemServiceImpl implements FileSystemRepository {
       if (!await rootDir.exists()) {
         await rootDir.create(recursive: true);
       }
+
+      // Log project creation
+      await _logger.logProjectCreation(projectRoot);
 
       // Create standard subdirectories
       for (final dirPath in _standardDirs) {
@@ -58,12 +66,16 @@ class FileSystemServiceImpl implements FileSystemRepository {
       final contextReadme = File(p.join(projectRoot, 'context/README.md'));
       if (!await contextReadme.exists()) {
         await contextReadme.writeAsString(_getContextReadmeTemplate());
+        final fileSize = await contextReadme.length();
+        await _logger.logWrite('context/README.md', fileSize);
       }
 
       // Create root README.md
       final rootReadme = File(p.join(projectRoot, 'README.md'));
       if (!await rootReadme.exists()) {
         await rootReadme.writeAsString(_getRootReadmeTemplate());
+        final fileSize = await rootReadme.length();
+        await _logger.logWrite('README.md', fileSize);
       }
     } on FileSystemException catch (e) {
       if (e.message.contains('Permission denied')) {
@@ -97,6 +109,9 @@ class FileSystemServiceImpl implements FileSystemRepository {
 
       // Write file (UTF-8 encoding)
       await file.writeAsString(content);
+
+      // Log the write operation
+      await _logger.logWrite(relativePath, content.length);
 
       return file;
     } on FileSystemException catch (e) {
@@ -179,6 +194,9 @@ class FileSystemServiceImpl implements FileSystemRepository {
 
     try {
       await file.delete();
+
+      // Log the delete operation
+      await _logger.logDelete(relativePath);
     } on FileSystemException catch (e) {
       if (e.message.contains('Permission denied')) {
         throw PermissionDeniedException(absolutePath);
@@ -189,7 +207,7 @@ class FileSystemServiceImpl implements FileSystemRepository {
 
   // Template generators
 
-  String _getContextReadmeTemplate() => '''# Documentación del Proyecto
+  String _getContextReadmeTemplate() => r'''# Documentación del Proyecto
 
 ## Estructura
 
@@ -204,7 +222,7 @@ class FileSystemServiceImpl implements FileSystemRepository {
 > Generado automáticamente por SoftArchitect AI
 ''';
 
-  String _getRootReadmeTemplate() => '''# Nuevo Proyecto
+  String _getRootReadmeTemplate() => r'''# Nuevo Proyecto
 
 ## Descripción
 
