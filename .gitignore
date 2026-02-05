@@ -15,7 +15,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -25,6 +24,10 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Python build artifacts (specific)
+src/server/lib/
+src/server/lib64/
 
 # Virtual environments
 venv/
@@ -88,3 +91,10 @@ GITHUB_ACTIONS_CHANGES_SUMMARY.md
 packages/docs/SOFT_ARCHITECT_DOCS/01-VISION_E_IDEACION/IDEAS.md
 context/40-ROADMAP/USER_STORIES_MASTER.*.json
 ROADMAP_DETAILED.*.md
+
+# ===== Coverage & Testing =====
+coverage/
+*.lcov
+.coverage
+.pytest_cache/
+htmlcov/

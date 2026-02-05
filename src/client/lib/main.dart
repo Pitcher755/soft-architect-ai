@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -5,15 +6,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/config/app_config.dart';
 import 'core/config/theme_config.dart';
+import 'core/database_initializer.dart';
 import 'core/router/app_router.dart';
 
 void main() async {
-  // Load environment variables from .env file (optional for development)
-  try {
-    await dotenv.load();
-  } on Exception catch (e) {
-    // .env file not found, will use default values from AppConfig
-    debugPrint('Note: .env file not found, using default configuration: $e');
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize database for current platform (Desktop/Web/Mobile)
+  await initializeSqfliteForDesktop();
+  debugPrint(getDatabaseInitStatus());
+
+  // Load environment variables from .env file
+  // (skip on web, optional on desktop)
+  if (!kIsWeb) {
+    try {
+      await dotenv.load();
+      debugPrint('✅ .env file loaded successfully');
+    } on Exception catch (e) {
+      // .env file not found or error loading, will use default values
+      // from AppConfig
+      debugPrint(
+        '⚠️  Note: .env file not found or error loading, '
+        'using default configuration: $e',
+      );
+    }
+  } else {
+    debugPrint('ℹ️  Web platform: skipping .env file loading');
   }
 
   runApp(const ProviderScope(child: SoftArchitectApp()));

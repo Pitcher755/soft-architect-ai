@@ -1,0 +1,34 @@
+name: softarchitect_ai_monorepo
+description: SoftArchitect AI - Monorepo root for testing and shared dependencies
+version: 0.1.0
+publish_to: 'none'
+
+# ============================================================================
+# ENVIRONMENT & PLATFORM CONFIGURATION
+# Required: Dart SDK 3.10.8+ (stable) | Flutter 3.38.0+
+# ============================================================================
+environment:
+  sdk: '>=3.10.8 <4.0.0'
+  flutter: '>=3.38.0'
+
+# ============================================================================
+# MONOREPO-LEVEL DEPENDENCIES
+# Shared dependencies for orchestration and shared utilities
+# ============================================================================
+dependencies:
+  flutter:
+    sdk: flutter
+
+# ============================================================================
+# DEVELOPMENT DEPENDENCIES
+# Tools for building, analyzing, and quality assurance
+# ============================================================================
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# ============================================================================
+# FLUTTER CONFIGURATION
+# ============================================================================
+flutter:
+  uses-material-design: true

@@ -119,76 +119,169 @@
         },
         {
             "id": "S3",
-            "name": "Sprint 3: Interfaz y Conversación (The Face)",
-            "goal": "Conectar al usuario con el cerebro a través de una UI fluida en Flutter.",
+            "name": "Sprint 3: Generación Secuencial de Documentos Guiada por Proyecto (Project-First)",
+            "goal": "Implementar el motor de generación secuencial de documentos mediante chat iterativo, guiado por templates RAG y estructurado en directorios de proyecto.",
             "epics": [
                 {
                     "epic_id": "E3",
-                    "name": "Experiencia de Chat Desktop",
+                    "name": "Gestión de Proyectos y Sistema de Archivos",
                     "user_stories": [
                         {
                             "hu_id": "HU-3.1",
-                            "name": "Como Usuario, quiero una interfaz de chat limpia que renderice Markdown, para leer código cómodamente.",
-                            "priority": "High",
-                            "estimation": "L",
-                            "branch_name": "feature/ui-chat-widget",
+                            "name": "Como Usuario, quiero una interfaz IDE-like para crear y gestionar proyectos, con persistencia local en SQLite (Flutter).",
+                            "priority": "Critical",
+                            "estimation": "XL",
+                            "points": 13,
+                            "branch_name": "feature/ui-project-shell",
                             "dependencies": [
                                 "context/30-ARCHITECTURE/DESIGN_SYSTEM.md",
-                                "context/30-ARCHITECTURE/UI_WIREFRAMES_AND_PROMPTS.md"
+                                "HU-3.2"
                             ],
+                            "description": "Client-Side Project Management: Dashboard principal con Sidebar (lista de proyectos), Modal de creación con selector de carpetas nativo del SO, Persistencia en sqflite (user_data.db) gestionado 100% por Flutter. El Backend NO participa en gestión de proyectos.",
                             "verification_criteria": [
-                                "✅ (Positivo) El chat sigue los colores del `DESIGN_SYSTEM.md` (Dark Mode).",
-                                "✅ (Positivo) Los bloques de código tienen resaltado de sintaxis y botón de copiar.",
-                                "✅ (Positivo) La UI es responsive al redimensionar la ventana.",
-                                "❌ (Negativo) El botón de enviar está deshabilitado si el campo de texto está vacío."
+                                "✅ (Positivo) La BD SQLite (sqflite) persiste lista de proyectos (nombre, ruta, timestamp) en el Host.",
+                                "✅ (Positivo) El botón 'Nuevo Proyecto' abre selector de carpetas nativo (file_picker package).",
+                                "✅ (Positivo) La Sidebar lista proyectos leyendo de sqflite, auto-actualiza tras crear proyecto.",
+                                "✅ (Positivo) Interfaz sigue DESIGN_SYSTEM.md (Dark Mode, responsive).",
+                                "✅ (Positivo) Seleccionar proyecto carga dashboard con barra de progreso (Doc N/25).",
+                                "❌ (Negativo) El Backend NO intenta acceder ni crear proyectos (es stateless)."
                             ],
                             "technical_tasks": [
-                                "Implementar `ChatScreen` usando el prompt de Stitch como referencia.",
-                                "Integrar paquete `flutter_markdown` y `flutter_highlighter`.",
-                                "Crear widgets burbuja de chat personalizados."
+                                "Implementar `database_helper.dart` para inicializar sqflite en Flutter.",
+                                "Crear schema SQLite: tabla 'projects' (id, name, path, created_at, updated_at).",
+                                "Integrar `file_picker` package para selector de carpetas nativo.",
+                                "Implementar `ProjectSidebarWidget` que lee proyectos de sqflite.",
+                                "Crear `CreateProjectDialog` modal con validación.",
+                                "Implementar `ProjectDashboard` widget (solo lectura de progreso).",
+                                "Tests unitarios: sqflite operations, file picker integration (>85%)."
                             ]
                         },
                         {
                             "hu_id": "HU-3.2",
-                            "name": "Como Usuario, quiero recibir la respuesta de la IA en tiempo real (Streaming), para reducir la sensación de espera.",
+                            "name": "Como Frontend (Dart), quiero un FileSystemService que maneje la creación de carpetas y persistencia de documentos en el Host.",
                             "priority": "Critical",
-                            "estimation": "XL",
-                            "branch_name": "feature/ui-api-connection",
+                            "estimation": "L",
+                            "points": 8,
+                            "branch_name": "feature/client-filesystem-service",
                             "dependencies": [
-                                "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md",
-                                "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
+                                "HU-3.1",
+                                "context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
                             ],
+                            "description": "Client-Side File I/O: Servicio Dart que crea estructura context/ (10-CONTEXT, 20-REQUIREMENTS, 30-ARCHITECTURE, 35-UX_UI, 40-PLANNING) al iniciar proyecto. El Backend Python NO participa en I/O. Todo es lógica dart:io.",
                             "verification_criteria": [
-                                "✅ (Positivo) Al enviar un mensaje, no hay bloqueo de UI (Optimistic UI).",
-                                "✅ (Positivo) El texto aparece token a token vía SSE.",
-                                "✅ (Positivo) El scroll baja automáticamente con nuevos mensajes.",
-                                "❌ (Negativo) Si el backend falla, se muestra un mensaje amigable según `ERROR_HANDLING_STANDARD.md` (no excepciones rojas)."
+                                "✅ (Positivo) Servicio FileSystemService crea estructura context/ idempotente (sin errores si existe).",
+                                "✅ (Positivo) Método saveDocument(path, content) escribe archivos Markdown/JSON en disco.",
+                                "✅ (Positivo) Validación de rutas (no permitir traversal attacks, no ../).",
+                                "✅ (Positivo) Manejo de permisos insuficientes con mensajes amigables.",
+                                "✅ (Positivo) Logging de operaciones en context/40-PLANNING/.audit.log.",
+                                "❌ (Negativo) Backend NUNCA intenta escribir en disco ni acceder a FileSystem del usuario."
                             ],
                             "technical_tasks": [
-                                "Implementar Repositorio `ChatRepository` en Dart.",
-                                "Gestionar estado con `Riverpod` (StreamProvider).",
-                                "Conectar con endpoint `/api/v1/chat/stream`."
+                                "Crear `services/file_system_service.dart` en Flutter.",
+                                "Implementar método `createProjectStructure(basePath) → void`.",
+                                "Implementar método `saveDocument(projectPath, section, filename, content) → Future<bool>`.",
+                                "Crear validador `PathValidator` para prevenir traversal attacks.",
+                                "Implementar audit logging en archivo `.audit.log`.",
+                                "Tests unitarios: File I/O, validación de rutas, permisos (>85%)."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "epic_id": "E4",
+                    "name": "Generación Secuencial de Documentos y RAG Guiado",
+                    "user_stories": [
+                        {
+                            "hu_id": "HU-3.3",
+                            "name": "Como Usuario, quiero un chat que me guíe secuencialmente para generar documentos (Doc 1→25) usando templates RAG e iteración conversacional.",
+                            "priority": "Critical",
+                            "estimation": "XXL",
+                            "points": 21,
+                            "branch_name": "feature/chat-sequential-docs",
+                            "dependencies": [
+                                "HU-3.1",
+                                "HU-3.2",
+                                "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Chat inicial pregunta descripción del proyecto y genera 'Propuesta Doc 1'.",
+                                "✅ (Positivo) Propuesta es JSON/Markdown temporal (NO persiste hasta 'Validar').",
+                                "✅ (Positivo) Control UX: Botón enviar (➤) deshabilitado si campo vacío o solo espacios.",
+                                "✅ (Positivo) Herramientas Código: Bloques código con botón 'Copiar' en cabecera → portapapeles.",
+                                "✅ (Positivo) Botón 'Validar y Guardar' llama a FileSystemService (HU-3.2) para persistencia en disco.",
+                                "✅ (Positivo) Streaming token-a-token usando SSE (<200ms TTF - Time To First Token).",
+                                "✅ (Positivo) Barra de progreso: Doc N/25 actualiza tras validar.",
+                                "✅ (Positivo) Flujo 100% secuencial (nunca 2 docs en paralelo).",
+                                "❌ (Negativo) Documentos NO se guardan si usuario no hace clic 'Validar'."
+                            ],
+                            "technical_tasks": [
+                                "Implementar widget `SequentialChatScreen` (UI principal).",
+                                "Crear listener `TextEditingController` para gestionar estado `isEnabled` del botón enviar.",
+                                "Implementar widget `CodeBlockHeader` con integración Clipboard para 'Copiar'.",
+                                "Implementar backend endpoint `POST /api/v1/chat/message` con RAG orchestrator.",
+                                "Backend devuelve 'Propuesta' en JSON format (structure + content placeholders).",
+                                "Frontend renderiza propuesta con botones: 'Validar y Guardar', 'Regenerar', 'Rechazar'.",
+                                "Botón 'Validar y Guardar' llama a FileSystemService.saveDocument() para persistencia.",
+                                "Implementar SSE streaming de respuesta backend para token-a-token real-time."
                             ]
                         },
                         {
-                            "hu_id": "HU-3.3",
-                            "name": "Como Usuario, quiero que los errores se muestren de forma clara y amigable, para entender qué salió mal sin ver stack traces.",
+                            "hu_id": "HU-3.4",
+                            "name": "Como Sistema, quiero manejo robusto de errores con gates de validación y fallback logic, para garantizar integridad de documentos.",
                             "priority": "High",
-                            "estimation": "S",
-                            "branch_name": "feature/ui-error-handling",
+                            "estimation": "M",
+                            "points": 5,
+                            "branch_name": "feature/error-handling-gates",
                             "dependencies": [
+                                "HU-3.3",
                                 "context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md"
                             ],
                             "verification_criteria": [
-                                "✅ (Positivo) Si el backend no responde, se muestra 'No hay conexión con el servidor'.",
-                                "✅ (Positivo) Si ChromaDB falla, se sugiere 'Reintentar' automáticamente.",
-                                "✅ (Positivo) Los errores desaparecen después de 5 segundos (autohide).",
-                                "❌ (Negativo) El usuario nunca ve un stack trace de Python en la UI."
+                                "✅ (Positivo) Errores no críticos (info, advertencias): Snackbar con autohide 5s.",
+                                "✅ (Positivo) Errores críticos (timeout, fallo RAG, fallo I/O): Snackbar sin autohide, botón 'Cerrar' manual.",
+                                "✅ (Positivo) Mensajes de error mapeados a lenguaje humano (NO stack traces).",
+                                "✅ (Positivo) RAG timeout (>30s): Retry automático 3 veces con backoff (1s, 2s, 4s).",
+                                "✅ (Positivo) Después de 3 reintentos: Mostrar template placeholder + mensaje 'RAG no disponible'.",
+                                "✅ (Positivo) Disco lleno: Mensaje 'Libera 500MB para continuar'.",
+                                "✅ (Positivo) Permiso denegado: 'Verifica permisos en directorio del proyecto'.",
+                                "❌ (Negativo) Usuario no ve stack traces (solo mensajes amigables en español)."
                             ],
                             "technical_tasks": [
-                                "Implementar widget `ErrorBanner` reusable.",
+                                "Implementar decorador `@retry_with_backoff` en Python para RAG calls.",
+                                "Crear widget `ErrorSnackbarWidget` (ScaffoldMessenger con duración parametrizable).",
                                 "Mapear códigos de error a mensajes en español.",
-                                "Crear `ErrorMiddleware` en Riverpod para capturar excepciones."
+                                "Implementar fallback logic: Si RAG falla 3 veces, usar template placeholder.",
+                                "Logging en context/40-PLANNING/.error.log con timestamp + error_code.",
+                                "Tests unitarios: Simular timeout RAG, disco lleno, permisos (>90%)."
+                            ]
+                        },
+                        {
+                            "hu_id": "HU-3.5",
+                            "name": "Como Usuario, quiero streaming optimizado y latencia <200ms, para una experiencia fluida sin esperas.",
+                            "priority": "High",
+                            "estimation": "M",
+                            "points": 8,
+                            "branch_name": "feature/streaming-optimization",
+                            "dependencies": [
+                                "HU-3.3",
+                                "context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md"
+                            ],
+                            "verification_criteria": [
+                                "✅ (Positivo) Primer token en <200ms (medido con chrono).",
+                                "✅ (Positivo) WebSocket para comunicación bidireccional.",
+                                "✅ (Positivo) Cache de embeddings en ChromaDB para RAG.",
+                                "✅ (Positivo) Compresión gzip en respuestas HTTP.",
+                                "✅ (Positivo) Batch de tokens: mínimo 50ms entre sends.",
+                                "✅ (Positivo) UI no se congela durante generación (async rendering).",
+                                "❌ (Negativo) Cero latencia de red visible al usuario."
+                            ],
+                            "technical_tasks": [
+                                "Implementar WebSocket en FastAPI.",
+                                "Optimizar queries ChromaDB (índices, batch size).",
+                                "Middleware de compresión gzip.",
+                                "Profiling de latencia con APM (OpenTelemetry).",
+                                "Tests de performance: medir latencia P95.",
+                                "Cache warming de embeddings frecuentes."
                             ]
                         }
                     ]
