@@ -1,18 +1,17 @@
-// lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
-/// Widget: Markdown content preview
-/// Displays formatted markdown content or placeholder when no file is selected.
+/// A markdown content preview widget styled like VS Code.
 ///
-/// Design inspiration: GitHub Dark theme
-/// - Background: #0D1117
-/// - Text: #E6EDF3
-/// - Secondary text: #8b949e
+/// Features:
+/// - Displays formatted markdown with syntax highlighting
+/// - Shows file header with icon and name
+/// - Empty state when no file is selected
+/// - Selectable text for copying content
 class MarkdownPreviewWidget extends StatelessWidget {
-  const MarkdownPreviewWidget({super.key, this.content, this.filename});
+  const MarkdownPreviewWidget({this.content, this.filename, super.key});
 
   /// Markdown content to display
   final String? content;
@@ -22,76 +21,62 @@ class MarkdownPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    developer.log('Building MarkdownPreviewWidget: filename=$filename');
+    developer.log(
+      'MarkdownPreviewWidget: filename=$filename, '
+      'hasContent=${content != null && content!.isNotEmpty}',
+    );
 
     if (content == null || content!.isEmpty) {
-      return const _EmptyPreview();
+      return _buildEmptyState();
     }
 
-    return _MarkdownContent(content: content!, filename: filename);
+    return _buildContentView();
   }
-}
 
-/// Empty state when no file is selected
-class _EmptyPreview extends StatelessWidget {
-  const _EmptyPreview();
-
-  @override
-  Widget build(BuildContext context) {
+  /// Build empty state UI
+  Widget _buildEmptyState() {
     const textSecondary = Color(0xFF8b949e);
+    const mainBg = Color(0xFF0D1117);
 
-    developer.log('Displaying empty markdown preview');
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.description_outlined,
-            size: 64,
-            color: textSecondary,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Select a file to preview',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: textSecondary),
-          ),
-        ],
+    return Container(
+      color: mainBg,
+      child: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.description_outlined, size: 64, color: textSecondary),
+            SizedBox(height: 16),
+            Text(
+              'Select a file to preview',
+              style: TextStyle(color: textSecondary, fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
   }
-}
 
-/// Markdown content display
-class _MarkdownContent extends StatelessWidget {
-  const _MarkdownContent({required this.content, this.filename});
-  final String content;
-  final String? filename;
-
-  @override
-  Widget build(BuildContext context) {
+  /// Build content preview view
+  Widget _buildContentView() {
     const mainBg = Color(0xFF0D1117);
+    const sidebarBg = Color(0xFF161B22);
+    const borderDark = Color(0xFF30363d);
     const textMain = Color(0xFFE6EDF3);
+    const primary = Color(0xFF0d0df2);
 
     return Column(
       children: [
-        // Optional file header
+        // Header with filename
         if (filename != null)
           Container(
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFF30363d))),
-              color: Color(0xFF161B22),
+              color: sidebarBg,
+              border: Border(bottom: BorderSide(color: borderDark)),
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.insert_drive_file,
-                  size: 18,
-                  color: Color(0xFF0d0df2),
-                ),
+                const Icon(Icons.insert_drive_file, size: 18, color: primary),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -112,23 +97,47 @@ class _MarkdownContent extends StatelessWidget {
           child: Container(
             color: mainBg,
             child: Markdown(
-              data: content,
+              data: content ?? '',
               selectable: true,
-              styleSheet: MarkdownStyleSheet.fromTheme(
-                Theme.of(context).copyWith(
-                  scaffoldBackgroundColor: mainBg,
-                  textTheme: const TextTheme(
-                    bodyMedium: TextStyle(
-                      color: textMain,
-                      fontSize: 14,
-                      height: 1.6,
-                    ),
-                  ),
+              styleSheet: MarkdownStyleSheet(
+                h1: const TextStyle(
+                  color: textMain,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
+                h2: const TextStyle(
+                  color: textMain,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                h3: const TextStyle(
+                  color: textMain,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                p: const TextStyle(color: textMain, fontSize: 14, height: 1.6),
+                code: const TextStyle(
+                  color: Color(0xFF79c0ff),
+                  fontFamily: 'monospace',
+                  fontSize: 13,
+                ),
+                codeblockDecoration: BoxDecoration(
+                  color: const Color(0xFF161B22),
+                  border: Border.all(color: borderDark),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                codeblockPadding: const EdgeInsets.all(12),
+                blockquote: const TextStyle(
+                  color: Color(0xFF8b949e),
+                  fontStyle: FontStyle.italic,
+                ),
+                em: const TextStyle(fontStyle: FontStyle.italic),
+                strong: const TextStyle(fontWeight: FontWeight.bold),
+                a: const TextStyle(color: Color(0xFF79c0ff)),
               ),
               onTapLink: (text, href, title) {
                 developer.log('Link tapped: $href');
-                // TODO: Implement link handling (open in browser, etc.)
+                // TODO: Implement link handling
               },
             ),
           ),

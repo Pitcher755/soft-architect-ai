@@ -1,24 +1,30 @@
-// lib/features/project_shell/presentation/screens/project_shell_screen.dart
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entities/file_node.dart';
-import '../notifiers/project_shell_notifier.dart';
-import '../providers/project_providers.dart';
 import '../widgets/directory_tree_widget.dart';
 import '../widgets/markdown_preview_widget.dart';
 
-/// Main screen: IDE-like project shell
+/// Main IDE-like project shell with 3-column layout.
 ///
-/// Layout:
-/// - Top header with app title and controls
-/// - Left sidebar: Directory tree view
-/// - Right panel: Markdown/file preview
-/// - Bottom: Status bar (optional)
+/// Layout Structure:
+/// ```
+/// ┌─────────────────────────────────────────────────┐
+/// │ Top Bar: Project Info & Progress               │
+/// ├────────┬──────────────────┬────────────────────┤
+/// │        │                  │                    │
+/// │ Files  │  Chat/Content    │  Preview Panel     │
+/// │ Tree   │  (Placeholder)   │  (Markdown)        │
+/// │        │                  │                    │
+/// └────────┴──────────────────┴────────────────────┘
+/// ```
 ///
-/// Design inspiration: GitHub/VS Code dark interface
+/// Color Scheme: GitHub Dark Theme
+/// - Background: #0D1117
+/// - Sidebar: #161B22
+/// - Primary: #0d0df2
 class ProjectShellScreen extends ConsumerStatefulWidget {
   const ProjectShellScreen({super.key});
 
@@ -43,228 +49,299 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   Widget build(BuildContext context) {
     developer.log('Building ProjectShellScreen');
 
-    final projectState = ref.watch(projectShellProvider);
-
     return Scaffold(
-      appBar: _buildAppBar(projectState),
-      body: projectState.selectedProject == null
-          ? _buildNoProjectView()
-          : _buildProjectView(projectState),
+      backgroundColor: const Color(0xFF0D1117),
+      body: Column(
+        children: [
+          // Top bar
+          _buildAppBar(),
+
+          // Main workspace (3 columns)
+          Expanded(
+            child: Row(
+              children: [
+                // Left: Directory tree
+                _buildLeftPanel(),
+
+                // Center: Chat placeholder
+                Expanded(
+                  child: Container(
+                    color: const Color(0xFF0D1117),
+                    child: const Center(
+                      child: Text(
+                        '[Chat Area - Sequential Chat Screen]',
+                        style: TextStyle(
+                          color: Color(0xFF8b949e),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Right: Preview panel
+                _buildRightPanel(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  /// Builds app bar with title and controls
-  PreferredSizeWidget _buildAppBar(ProjectShellState state) {
+  /// Build app bar with project info and progress
+  Widget _buildAppBar() {
     const mainBg = Color(0xFF0D1117);
+    const sidebarBg = Color(0xFF161B22);
     const borderDark = Color(0xFF30363d);
     const textMain = Color(0xFFE6EDF3);
+    const textSecondary = Color(0xFF8b949e);
     const primary = Color(0xFF0d0df2);
 
-    return AppBar(
-      title: Row(
+    return Container(
+      height: 56,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: const BoxDecoration(
+        color: sidebarBg,
+        border: Border(bottom: BorderSide(color: borderDark)),
+      ),
+      child: Row(
         children: [
+          // Project title
           const Icon(Icons.terminal, color: primary, size: 20),
           const SizedBox(width: 12),
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'SoftArchitect',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: textMain,
                 ),
               ),
-              if (state.selectedProject != null)
-                Text(
-                  state.selectedProject!.name,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF8b949e),
-                  ),
-                ),
+              Text(
+                'Project Shell',
+                style: TextStyle(fontSize: 11, color: textSecondary),
+              ),
             ],
           ),
-        ],
-      ),
-      backgroundColor: mainBg,
-      elevation: 0,
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
-        child: Container(color: borderDark, height: 1),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.info_outline),
-          onPressed: () => developer.log('Info button pressed'),
-          color: const Color(0xFF8b949e),
-        ),
-        const SizedBox(width: 8),
-      ],
-    );
-  }
+          const SizedBox(width: 16),
 
-  /// View when no project is selected
-  Widget _buildNoProjectView() {
-    const textSecondary = Color(0xFF8b949e);
-
-    developer.log('Displaying no project selected view');
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.folder_open_outlined,
-            size: 64,
-            color: textSecondary,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'No project selected',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(color: textSecondary),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Select or create a project to begin',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: textSecondary),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Main project view with sidebar and preview
-  Widget _buildProjectView(ProjectShellState state) {
-    const sidebarBg = Color(0xFF161B22);
-    const mainBg = Color(0xFF0D1117);
-    const borderDark = Color(0xFF30363d);
-
-    return Container(
-      color: mainBg,
-      child: Row(
-        children: [
-          // Left sidebar: Directory tree
+          // Path display
           Container(
-            width: 280,
-            decoration: const BoxDecoration(
-              color: sidebarBg,
-              border: Border(right: BorderSide(color: borderDark)),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: mainBg,
+              border: Border.all(color: borderDark),
+              borderRadius: BorderRadius.circular(3),
             ),
+            child: const Text(
+              '~/soft-architect-ai',
+              style: TextStyle(
+                color: textSecondary,
+                fontSize: 11,
+                fontFamily: 'monospace',
+              ),
+            ),
+          ),
+
+          const Spacer(),
+
+          // Progress bar
+          SizedBox(
+            width: 300,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Header
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: const BoxDecoration(
-                    border: Border(bottom: BorderSide(color: borderDark)),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.folder,
-                        size: 18,
-                        color: Color(0xFF0d0df2),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'ARCHITECTURE PROGRESS',
+                      style: TextStyle(
+                        color: textSecondary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          state.selectedProject!.name,
-                          style: const TextStyle(
-                            color: Color(0xFFE6EDF3),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    ),
+                    Text(
+                      '12 / 25',
+                      style: TextStyle(
+                        color: primary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                // Directory tree
-                Expanded(
-                  child: DirectoryTreeWidget(
-                    root: _buildMockTree(),
-                    onFileSelected: _onFileSelected,
-                    selectedNode: _selectedNode,
+                const SizedBox(height: 4),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: const LinearProgressIndicator(
+                    value: 12 / 25,
+                    backgroundColor: borderDark,
+                    color: primary,
+                    minHeight: 4,
                   ),
                 ),
               ],
             ),
           ),
-          // Divider
-          Container(width: 1, color: borderDark),
-          // Right panel: Preview
+
+          const Spacer(),
+
+          // Action buttons
+          IconButton(
+            icon: const Icon(
+              Icons.download_outlined,
+              color: textSecondary,
+              size: 20,
+            ),
+            onPressed: () => developer.log('Export clicked'),
+            tooltip: 'Export project',
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.info_outline,
+              color: textSecondary,
+              size: 20,
+            ),
+            onPressed: () => developer.log('Info clicked'),
+            tooltip: 'Project info',
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+    );
+  }
+
+  /// Build left panel with directory tree
+  Widget _buildLeftPanel() {
+    const sidebarBg = Color(0xFF161B22);
+    const borderDark = Color(0xFF30363d);
+    const primary = Color(0xFF0d0df2);
+    const textMain = Color(0xFFE6EDF3);
+
+    return Container(
+      width: 280,
+      decoration: const BoxDecoration(
+        color: sidebarBg,
+        border: Border(right: BorderSide(color: borderDark)),
+      ),
+      child: Column(
+        children: [
+          // Panel header
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: borderDark)),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.folder, size: 18, color: primary),
+                SizedBox(width: 8),
+                Text(
+                  'Explorer',
+                  style: TextStyle(
+                    color: textMain,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // File tree
           Expanded(
-            child: Container(
-              color: mainBg,
-              child: MarkdownPreviewWidget(
-                content: _fileContent,
-                filename: _selectedNode?.name,
-              ),
+            child: DirectoryTreeWidget(
+              root: _buildMockTree(),
+              onFileSelected: _onFileSelected,
+              selectedNode: _selectedNode,
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  /// Build right panel with markdown preview
+  Widget _buildRightPanel() {
+    const borderDark = Color(0xFF30363d);
+
+    return Container(
+      width: 350,
+      decoration: const BoxDecoration(
+        border: Border(left: BorderSide(color: borderDark)),
+      ),
+      child: MarkdownPreviewWidget(
+        content: _fileContent,
+        filename: _selectedNode?.name,
       ),
     );
   }
 
   /// Callback when file is selected
   void _onFileSelected(FileNode node) {
-    developer.log('File selected: ${node.name} (${node.path})');
-
+    developer.log('File selected: ${node.name}');
     setState(() {
       _selectedNode = node;
-      // TODO: Load file content asynchronously
-      // In real implementation, call repository to read file
-      _fileContent = _getMockContent(node.name);
+      _fileContent = _loadFileContent(node.name);
     });
   }
 
-  /// Mock content for demonstration
-  String _getMockContent(String filename) {
+  /// Load mock file content
+  String _loadFileContent(String filename) {
     if (filename.endsWith('.md')) {
       return '''# $filename
 
-## Introduction
-This is a mock markdown preview for **$filename**.
+## Welcome to SoftArchitect
 
-### Features
+This is a demonstration of the **Project Shell** interface.
+
+### Key Features
 - 📁 File tree navigation
 - 🔍 Full-text search
-- 📝 Real-time editing
+- 📝 Real-time preview
 - 🎨 Syntax highlighting
 
-> **Note:** This is demonstration content.
+### Architecture
+The system follows **Clean Architecture** principles with:
+
+1. **Domain Layer** - Pure business logic
+2. **Data Layer** - Repository implementations
+3. **Presentation Layer** - Flutter UI
+
+### Next Steps
+1. Implement file I/O
+2. Connect to document database
+3. Enable full-text search
+4. Add code editing capabilities
+
+> **Note:** This is demonstration content for the Project Shell.
 
 ```dart
 void main() {
-  print('Hello from SoftArchitect!');
+  print('Welcome to SoftArchitect!');
 }
 ```
 
-## Next Steps
-1. Implement file I/O
-2. Connect to database
-3. Add search functionality
-4. Enable code editing
+---
+
+**Learn more:** Check the [README.md](../README.md) file.
 ''';
     }
 
     return '''# $filename
 
-## Empty File
-Select a text or markdown file to preview its content.
+Select a markdown or text file to preview its contents here.
 ''';
   }
 
-  /// Mock file tree structure (replace with real data from repository)
+  /// Build mock file tree
   FileNode _buildMockTree() => const FileNode(
     id: 'root',
     name: 'Project Root',
@@ -279,20 +356,20 @@ Select a text or markdown file to preview its content.
       ),
       FileNode(
         id: 'dir-docs',
-        name: 'docs',
-        path: '/docs',
+        name: 'doc',
+        path: '/doc',
         isDirectory: true,
         children: [
           FileNode(
             id: 'file-arch',
             name: 'ARCHITECTURE.md',
-            path: '/docs/ARCHITECTURE.md',
+            path: '/doc/ARCHITECTURE.md',
             isDirectory: false,
           ),
           FileNode(
             id: 'file-setup',
             name: 'SETUP.md',
-            path: '/docs/SETUP.md',
+            path: '/doc/SETUP.md',
             isDirectory: false,
           ),
         ],
@@ -316,12 +393,26 @@ Select a text or markdown file to preview its content.
             isDirectory: true,
             children: [
               FileNode(
-                id: 'file-feature1',
-                name: 'feature.dart',
-                path: '/src/features/feature.dart',
-                isDirectory: false,
+                id: 'file-feature',
+                name: 'project_shell',
+                path: '/src/features/project_shell',
+                isDirectory: true,
               ),
             ],
+          ),
+        ],
+      ),
+      FileNode(
+        id: 'dir-context',
+        name: 'context',
+        path: '/context',
+        isDirectory: true,
+        children: [
+          FileNode(
+            id: 'file-manifesto',
+            name: 'PROJECT_MANIFESTO.md',
+            path: '/context/PROJECT_MANIFESTO.md',
+            isDirectory: false,
           ),
         ],
       ),
