@@ -64,19 +64,18 @@ class _DirectoryTreeView extends StatelessWidget {
   bool get isSelected => selectedFile == node.path;
 
   // Constants for styling
-  static const double _indentPerLevel = 16.0;
-  static const double _iconSize = 18.0;
-  static const double _horizontalPadding = 8.0;
-  static const double _verticalPadding = 4.0;
-  static const double _iconSpacing = 8.0;
+  static const double _indentPerLevel = 16;
+  static const double _iconSize = 18;
+  static const double _horizontalPadding = 8;
+  static const double _verticalPadding = 4;
+  static const double _iconSpacing = 8;
 
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       _buildNodeTile(),
-      if (node.isDirectory && isExpanded)
-        ...node.children.map((child) => _buildChildNode(child)),
+      if (node.isDirectory && isExpanded) ...node.children.map(_buildChildNode),
     ],
   );
 
@@ -108,11 +107,7 @@ class _DirectoryTreeView extends StatelessWidget {
         color: Colors.blue,
       );
     }
-    return const Icon(
-      Icons.description,
-      size: _iconSize,
-      color: Colors.grey,
-    );
+    return const Icon(Icons.description, size: _iconSize, color: Colors.grey);
   }
 
   Widget _buildNodeName() => Flexible(
@@ -120,23 +115,20 @@ class _DirectoryTreeView extends StatelessWidget {
       node.name,
       style: TextStyle(
         color: isSelected ? Colors.cyan : Colors.white,
-        backgroundColor:
-            isSelected ? Colors.blue.withOpacity(0.3) : null,
-        fontWeight:
-            isSelected ? FontWeight.bold : FontWeight.normal,
+        backgroundColor: isSelected ? Colors.blue.withOpacity(0.3) : null,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
     ),
   );
 
-  Widget _buildChildNode(DirectoryNode child) =>
-      _DirectoryTreeView(
-        node: child,
-        level: level + 1,
-        onFolderTap: onFolderTap,
-        onFileTap: onFileTap,
-        expandedPaths: expandedPaths,
-        selectedFile: selectedFile,
-      );
+  Widget _buildChildNode(DirectoryNode child) => _DirectoryTreeView(
+    node: child,
+    level: level + 1,
+    onFolderTap: onFolderTap,
+    onFileTap: onFileTap,
+    expandedPaths: expandedPaths,
+    selectedFile: selectedFile,
+  );
 
   void _handleNodeTap() {
     if (node.isDirectory) {
