@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../notifiers/chat_notifier.dart';
 import '../widgets/message_bubble_widget.dart';
+import '../widgets/proposal_card_widget.dart';
 import '../widgets/streaming_indicator_widget.dart';
 
 /// Main chat interface screen.
@@ -53,8 +54,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 : ListView.builder(
                     reverse: true,
                     padding: const EdgeInsets.all(16),
-                    itemCount: chatState.messages.length,
+                    itemCount: chatState.messages.length + (chatState.currentProposal != null ? 1 : 0),
                     itemBuilder: (context, index) {
+                      // Show proposal card at the top (reverse order)
+                      if (index == chatState.messages.length && chatState.currentProposal != null) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: ProposalCardWidget(
+                            proposal: chatState.currentProposal!,
+                            onValidate: () {
+                              chatNotifier.validateProposal();
+                            },
+                            onRefine: () {
+                              chatNotifier.regenerateProposal();
+                            },
+                            onReject: () {
+                              chatNotifier.rejectProposal();
+                            },
+                          ),
+                        );
+                      }
+
+                      // Show messages
                       final message = chatState
                           .messages[chatState.messages.length - 1 - index];
                       final messageUI = ChatMessageUI(
