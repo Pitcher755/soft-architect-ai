@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../domain/entities/directory_node.dart';
+import '../notifiers/markdown_preview_notifier.dart';
 
 /// FileSystemTreeWidget displays a collapsible directory tree structure.
 ///
@@ -31,7 +32,10 @@ class FileSystemTreeWidget extends ConsumerWidget {
           ref.read(fileSystemNotifierProvider.notifier).toggleFolder(path);
         },
         onFileTap: (path) {
+          // Select file in file system
           ref.read(fileSystemNotifierProvider.notifier).selectFile(path);
+          // Load preview in markdown preview widget
+          ref.read(markdownPreviewNotifierProvider.notifier).loadFile(path);
         },
         expandedPaths: expandedPaths,
         selectedFile: state.selectedFile,
