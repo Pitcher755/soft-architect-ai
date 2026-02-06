@@ -91,16 +91,40 @@ class ProjectWorkspaceScreen extends ConsumerWidget {
       backgroundColor: AppColors.sidebarBg,
       elevation: 1,
       shadowColor: Colors.black.withValues(alpha: 0.3),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          // Use context.go to navigate back to dashboard
+          // This will work with GoRouter
+          Navigator.of(context).pop();
+        },
+        tooltip: 'Back to Dashboard',
+      ),
       title: Row(
         children: [
-          // Project title
-          const Text(
-            'SoftArchitect AI',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMain,
-            ),
+          // Project title and ID
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'SoftArchitect AI',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textMain,
+                ),
+              ),
+              Text(
+                'Project: $projectPath',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textSecondary,
+                  fontFamily: 'Courier',
+                ),
+              ),
+            ],
           ),
           const SizedBox(width: 24),
 
@@ -168,27 +192,6 @@ class ProjectWorkspaceScreen extends ConsumerWidget {
       ),
       toolbarHeight: 80,
       centerTitle: false,
-      leading: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: AppColors.primary.withValues(alpha: 0.1),
-          ),
-          child: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: AppColors.textMain,
-              size: 20,
-            ),
-            onPressed: () {
-              // Will be handled by router
-              Navigator.of(context).pop();
-            },
-            tooltip: 'Back to Dashboard',
-          ),
-        ),
-      ),
     );
   }
 }
