@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:softarchitect_ai_tests/features/chat/presentation/widgets/streaming_indicator_widget.dart';
+import 'package:softarchitect_ai/features/chat/presentation/widgets/streaming_indicator_widget.dart';
 
 void main() {
   group('StreamingIndicatorWidget', () {

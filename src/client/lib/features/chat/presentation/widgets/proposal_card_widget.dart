@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/document_proposal.dart';
 
 /// Widget that displays a generated document proposal with action buttons.
@@ -18,27 +19,16 @@ class ProposalCardWidget extends StatelessWidget {
   final VoidCallback onRefine;
   final VoidCallback onReject;
 
-  // Design constants (from app_colors.dart)
-  static const Color _surfaceColor = Color(0xFF161B22); // sidebarBg
-  static const Color _borderColor = Color(0xFF30363d); // border
-  static const Color _editorBg = Color(0xFF0D1117); // mainBg
-  static const Color _headerBg = Color(0xFF1C2128);
-  static const Color _textSecondary = Color(0xFF8B949E); // textSecondary
-  static const Color _textMain = Color(0xFFE6EDF3); // textMain
-  static const Color _textContent = Color(0xFFC9D1D9);
-  static const Color _successColor = Color(0xFF238636); // success (design spec)
-  static const Color _errorColor = Color(0xFFDA3633); // error (design spec)
-
   @override
   Widget build(BuildContext context) => Container(
     margin: const EdgeInsets.symmetric(vertical: 12),
     decoration: BoxDecoration(
-      color: _surfaceColor,
-      border: Border.all(color: _borderColor),
+      color: AppColors.sidebarBg,
+      border: Border.all(color: AppColors.border),
       borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.2),
+          color: Colors.black.withValues(alpha: 0.2),
           blurRadius: 8,
           offset: const Offset(0, 4),
         ),
@@ -63,8 +53,8 @@ class ProposalCardWidget extends StatelessWidget {
   Widget _buildHeader(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     decoration: const BoxDecoration(
-      color: _headerBg,
-      border: Border(bottom: BorderSide(color: _borderColor)),
+      color: Color(0xFF1C2128),
+      border: Border(bottom: BorderSide(color: AppColors.border)),
       borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
     ),
     child: Row(
@@ -77,7 +67,7 @@ class ProposalCardWidget extends StatelessWidget {
             const Text(
               'Propuesta: ',
               style: TextStyle(
-                color: _textSecondary,
+                color: AppColors.textSecondary,
                 fontSize: 12,
                 fontFamily: 'Inter',
               ),
@@ -85,7 +75,7 @@ class ProposalCardWidget extends StatelessWidget {
             Text(
               _formatDocType(proposal.docType),
               style: const TextStyle(
-                color: _textMain,
+                color: AppColors.textMain,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 fontFamily: 'JetBrains Mono',
@@ -98,11 +88,11 @@ class ProposalCardWidget extends StatelessWidget {
           onTap: () => Clipboard.setData(ClipboardData(text: proposal.content)),
           child: const Row(
             children: [
-              Icon(Icons.copy, size: 14, color: _textSecondary),
+              Icon(Icons.copy, size: 14, color: AppColors.textSecondary),
               SizedBox(width: 4),
               Text(
                 'Copiar',
-                style: TextStyle(color: _textSecondary, fontSize: 11),
+                style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
               ),
             ],
           ),
@@ -113,13 +103,13 @@ class ProposalCardWidget extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) => Container(
     constraints: const BoxConstraints(maxHeight: 300),
-    color: _editorBg,
+    color: AppColors.mainBg,
     child: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: SelectableText(
         proposal.content,
         style: const TextStyle(
-          color: _textContent,
+          color: Color(0xFFC9D1D9),
           fontSize: 13,
           fontFamily: 'JetBrains Mono',
           height: 1.6,
@@ -139,8 +129,8 @@ class ProposalCardWidget extends StatelessWidget {
           icon: const Icon(Icons.close, size: 16),
           label: const Text('Rechazar'),
           style: TextButton.styleFrom(
-            foregroundColor: _errorColor,
-            backgroundColor: _errorColor.withOpacity(0.1),
+            foregroundColor: AppColors.error,
+            backgroundColor: AppColors.error.withValues(alpha: 0.1),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
         ),
@@ -152,8 +142,8 @@ class ProposalCardWidget extends StatelessWidget {
               icon: const Icon(Icons.edit, size: 16),
               label: const Text('Refinar'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: _textMain,
-                side: const BorderSide(color: _borderColor),
+                foregroundColor: AppColors.textMain,
+                side: const BorderSide(color: AppColors.border),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 12,
@@ -167,14 +157,14 @@ class ProposalCardWidget extends StatelessWidget {
               icon: const Icon(Icons.check_circle, size: 16),
               label: const Text('Validar y Guardar'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: _successColor,
+                backgroundColor: AppColors.success,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 12,
                 ),
                 elevation: 4,
-                shadowColor: _successColor.withOpacity(0.4),
+                shadowColor: AppColors.success.withValues(alpha: 0.4),
               ),
             ),
           ],
