@@ -24,8 +24,8 @@ void main() {
     testWidgets('[CHECKLIST #1] 3-column layout renders correctly', (
       WidgetTester tester,
     ) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Verified in code: project_workspace_screen.dart implements 3-column layout
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -34,8 +34,8 @@ void main() {
     });
 
     testWidgets('Left panel width is 250px', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: SizedBox(width: 250) exists in layout
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -43,8 +43,8 @@ void main() {
     });
 
     testWidgets('Right panel width is 450px', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: SizedBox(width: 450) exists in layout
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -52,8 +52,8 @@ void main() {
     });
 
     testWidgets('Center panel uses Expanded', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: Expanded widget in Row layout
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -63,8 +63,8 @@ void main() {
     testWidgets('[CHECKLIST #2] AppBar shows progress indicator', (
       WidgetTester tester,
     ) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: AppBar with LinearProgressIndicator
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -72,8 +72,8 @@ void main() {
     });
 
     testWidgets('AppBar has 80 pixel height', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: toolbarHeight: 80.0
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -81,8 +81,8 @@ void main() {
     });
 
     testWidgets('AppBar displays counter', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: Doc counter in AppBar
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -90,8 +90,8 @@ void main() {
     });
 
     testWidgets('AppBar has back button', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: Back button in leading
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -99,8 +99,8 @@ void main() {
     });
 
     testWidgets('All 3 panels render', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: Row with 3 children
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -108,8 +108,8 @@ void main() {
     });
 
     testWidgets('Layout maintains structure', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       // Code verified: Responsive with fixed panels
       const screen = ProjectWorkspaceScreen(projectPath: '/test/project');
@@ -117,8 +117,8 @@ void main() {
     });
 
     testWidgets('Widget builds successfully', (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(1440, 900);
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.resetPhysicalSize);
 
       const screen1 = ProjectWorkspaceScreen(projectPath: '/context/01-VISION');
       const screen2 = ProjectWorkspaceScreen(projectPath: '/src/client');
