@@ -11,6 +11,7 @@ class ChatState {
     this.isStreaming = false,
     this.hasError = false,
     this.errorMessage,
+    this.projectPath,
   });
   final List<ChatMessage> messages;
   final DocumentProposal? currentProposal;
@@ -19,6 +20,7 @@ class ChatState {
   final bool isStreaming;
   final bool hasError;
   final String? errorMessage;
+  final String? projectPath;
 
   /// Returns progress as "Doc X/25"
   String get progressText => 'Doc $currentDocIndex/$totalDocs';
@@ -35,14 +37,19 @@ class ChatState {
     bool? isStreaming,
     bool? hasError,
     String? errorMessage,
+    String? projectPath,
+    bool clearProposal = false,
   }) => ChatState(
     messages: messages ?? this.messages,
-    currentProposal: currentProposal ?? this.currentProposal,
+    currentProposal: clearProposal
+        ? null
+        : (currentProposal ?? this.currentProposal),
     currentDocIndex: currentDocIndex ?? this.currentDocIndex,
     totalDocs: totalDocs ?? this.totalDocs,
     isStreaming: isStreaming ?? this.isStreaming,
     hasError: hasError ?? this.hasError,
     errorMessage: errorMessage ?? this.errorMessage,
+    projectPath: projectPath ?? this.projectPath,
   );
 
   /// Clears error state
