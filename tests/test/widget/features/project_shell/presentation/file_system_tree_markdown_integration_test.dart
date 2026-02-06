@@ -45,12 +45,11 @@ void main() {
                     flex: 1,
                     child: Consumer(
                       builder: (context, ref, child) {
-                        capturedState =
-                            ref.watch(markdownPreviewNotifierProvider);
+                        capturedState = ref.watch(
+                          markdownPreviewNotifierProvider,
+                        );
                         return Center(
-                          child: Text(
-                            capturedState.filePath ?? 'No file',
-                          ),
+                          child: Text(capturedState.filePath ?? 'No file'),
                         );
                       },
                     ),
@@ -115,12 +114,11 @@ void main() {
                     flex: 1,
                     child: Consumer(
                       builder: (context, ref, child) {
-                        capturedState =
-                            ref.watch(markdownPreviewNotifierProvider);
+                        capturedState = ref.watch(
+                          markdownPreviewNotifierProvider,
+                        );
                         return Center(
-                          child: Text(
-                            capturedState.filePath ?? 'No file',
-                          ),
+                          child: Text(capturedState.filePath ?? 'No file'),
                         );
                       },
                     ),
@@ -188,12 +186,11 @@ void main() {
                     flex: 1,
                     child: Consumer(
                       builder: (context, ref, child) {
-                        capturedState =
-                            ref.watch(markdownPreviewNotifierProvider);
+                        capturedState = ref.watch(
+                          markdownPreviewNotifierProvider,
+                        );
                         return Center(
-                          child: Text(
-                            capturedState.filePath ?? 'No file',
-                          ),
+                          child: Text(capturedState.filePath ?? 'No file'),
                         );
                       },
                     ),
