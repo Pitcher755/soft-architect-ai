@@ -2,6 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../domain/entities/file_node.dart';
 import '../widgets/directory_tree_widget.dart';
@@ -202,6 +203,25 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
           const SizedBox(width: 12),
 
           // Action buttons
+          IconButton(
+            icon: const Icon(
+              Icons.chat_outlined,
+              color: textSecondary,
+              size: 20,
+            ),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Opening Chat Screen...'),
+                  duration: Duration(milliseconds: 500),
+                ),
+              );
+              Future.delayed(const Duration(milliseconds: 200), () {
+                GoRouter.of(context).go('/chat');
+              });
+            },
+            tooltip: 'Open Chat (HU-3.3)',
+          ),
           IconButton(
             icon: const Icon(
               Icons.download_outlined,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/chat/presentation/screens/chat_screen.dart';
 import '../../features/project_shell/presentation/screens/project_shell_screen.dart';
 
 /// Central routing configuration for the application.
@@ -16,7 +17,7 @@ GoRouter createAppRouter() => GoRouter(
     GoRoute(
       path: '/chat',
       name: 'chat',
-      builder: (context, state) => const _ChatScreen(),
+      builder: (context, state) => const ChatScreen(),
     ),
     GoRoute(
       path: '/settings',
@@ -25,17 +26,6 @@ GoRouter createAppRouter() => GoRouter(
     ),
   ],
 );
-
-// TODO: Replace with actual screens from presentation layers
-class _ChatScreen extends StatelessWidget {
-  const _ChatScreen();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Chat')),
-    body: const Center(child: Text('Chat Feature - Coming Soon')),
-  );
-}
 
 class _SettingsScreen extends StatelessWidget {
   const _SettingsScreen();
