@@ -2,15 +2,15 @@ import 'package:flutter_riverpod/legacy.dart';
 
 /// File system state - Immutable data class for file tree state
 class FileSystemState {
+  final String rootPath;
+  final String? selectedFile;
+  final Set<String> expandedPaths;
 
   const FileSystemState({
     this.rootPath = '',
     this.selectedFile,
     this.expandedPaths = const {},
   });
-  final String rootPath;
-  final String? selectedFile;
-  final Set<String> expandedPaths;
 
   /// Create a copy with modified fields
   FileSystemState copyWith({
@@ -18,10 +18,10 @@ class FileSystemState {
     String? selectedFile,
     Set<String>? expandedPaths,
   }) => FileSystemState(
-      rootPath: rootPath ?? this.rootPath,
-      selectedFile: selectedFile ?? this.selectedFile,
-      expandedPaths: expandedPaths ?? this.expandedPaths,
-    );
+    rootPath: rootPath ?? this.rootPath,
+    selectedFile: selectedFile ?? this.selectedFile,
+    expandedPaths: expandedPaths ?? this.expandedPaths,
+  );
 }
 
 /// File System Notifier - Manages file tree state
@@ -55,5 +55,6 @@ class FileSystemNotifier extends StateNotifier<FileSystemState> {
 
 /// Provider for file system notifier state
 final fileSystemNotifierProvider =
-    StateNotifierProvider<FileSystemNotifier, FileSystemState>((ref) => FileSystemNotifier());
-});
+    StateNotifierProvider<FileSystemNotifier, FileSystemState>(
+      (ref) => FileSystemNotifier(),
+    );
