@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../../../../features/filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../../project_shell/domain/exports.dart';
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/document_proposal.dart';
@@ -15,12 +16,14 @@ class ChatNotifier extends StateNotifier<ChatState> {
   ChatNotifier({
     required ChatRepository repository,
     required FileSystemService fileSystemService,
+    required this.ref,
   }) : _repository = repository,
        _fileSystemService = fileSystemService,
        super(const ChatState());
 
   final ChatRepository _repository;
   final FileSystemService _fileSystemService;
+  final Ref ref;
 
   /// Sets the project path for document saving.
   void setProjectPath(String path) {
@@ -141,6 +144,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
         relativePath: relativePath,
         content: proposal.content,
       );
+
+      // ✅ Trigger file tree refresh (2️⃣ criterion: auto-update tree)
+      ref.read(fileSystemNotifierProvider.notifier).refresh();
 
       // Update proposal state to validated
       // Note: validatedProposal can be used for logging or future audit trail
@@ -330,5 +336,6 @@ final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>(
   (ref) => ChatNotifier(
     repository: ref.watch(chatRepositoryProvider),
     fileSystemService: ref.watch(fileSystemServiceProvider),
+    ref: ref,
   ),
 );

@@ -6,21 +6,25 @@ class FileSystemState {
     this.rootPath = '',
     this.selectedFile,
     this.expandedPaths = const {},
+    this.refreshCounter = 0,
   });
 
   final String rootPath;
   final String? selectedFile;
   final Set<String> expandedPaths;
+  final int refreshCounter; // Triggers UI refresh when incremented
 
   /// Create a copy with modified fields
   FileSystemState copyWith({
     String? rootPath,
     String? selectedFile,
     Set<String>? expandedPaths,
+    int? refreshCounter,
   }) => FileSystemState(
     rootPath: rootPath ?? this.rootPath,
     selectedFile: selectedFile ?? this.selectedFile,
     expandedPaths: expandedPaths ?? this.expandedPaths,
+    refreshCounter: refreshCounter ?? this.refreshCounter,
   );
 }
 
@@ -50,6 +54,13 @@ class FileSystemNotifier extends StateNotifier<FileSystemState> {
   /// Set the root path
   void setRootPath(String rootPath) {
     state = state.copyWith(rootPath: rootPath);
+  }
+
+  /// Trigger file tree refresh (call after file changes detected)
+  void refresh() {
+    state = state.copyWith(
+      refreshCounter: state.refreshCounter + 1,
+    );
   }
 }
 
