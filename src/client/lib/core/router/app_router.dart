@@ -81,9 +81,9 @@ class _ProjectSelectionScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Interactive workspace for document generation',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[400],
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
               ),
               const SizedBox(height: 32),
 
@@ -150,14 +150,18 @@ class _ProjectSelectionScreen extends StatelessWidget {
       {
         'id': 'proj-001',
         'name': 'SoftArchitect - Main',
-        'desc': 'AI Architecture Assistant'
+        'desc': 'AI Architecture Assistant',
       },
       {
         'id': 'proj-002',
         'name': 'Document Generator',
-        'desc': 'Generate technical docs'
+        'desc': 'Generate technical docs',
       },
-      {'id': 'proj-003', 'name': 'Test Project', 'desc': 'Demo project for testing'},
+      {
+        'id': 'proj-003',
+        'name': 'Test Project',
+        'desc': 'Demo project for testing',
+      },
     ];
 
     return mockProjects
@@ -182,65 +186,61 @@ class _ProjectSelectionScreen extends StatelessWidget {
     required String name,
     required String description,
     required VoidCallback onTap,
-  }) =>
-      Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
+  }) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).dividerColor),
             borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).dividerColor),
-                borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.folder, size: 28),
               ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(name, style: Theme.of(context).textTheme.titleSmall),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
                     ),
-                    child: const Icon(Icons.folder, size: 28),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          description,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'ID: $id',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: Colors.grey[600],
-                            fontFamily: 'Courier',
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 4),
+                    Text(
+                      'ID: $id',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Colors.grey[600],
+                        fontFamily: 'Courier',
+                      ),
                     ),
-                  ),
-                  const Icon(Icons.arrow_forward),
-                ],
+                  ],
+                ),
               ),
-            ),
+              const Icon(Icons.arrow_forward),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   /// Build quick navigation card.
   Widget _buildQuickNavCard(
@@ -248,37 +248,34 @@ class _ProjectSelectionScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
-  }) =>
-      Expanded(
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
+  }) => SizedBox(
+    width: 120,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).dividerColor),
             borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
+          ),
+          child: Column(
+            children: [
+              Icon(icon, size: 32),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.labelMedium,
+                textAlign: TextAlign.center,
               ),
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).dividerColor),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                children: [
-                  Icon(icon, size: 32),
-                  const SizedBox(height: 8),
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.labelMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   /// Show create project dialog.
   void _showCreateProjectDialog(BuildContext context) {
@@ -286,7 +283,7 @@ class _ProjectSelectionScreen extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Create New Project'),
         content: TextField(
           controller: nameController,
@@ -297,13 +294,14 @@ class _ProjectSelectionScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
               final projectId = 'proj-${DateTime.now().millisecondsSinceEpoch}';
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
+              // Use the parent context (screen context) for navigation
               context.go('/workspace/$projectId');
             },
             child: const Text('Create'),
@@ -428,44 +426,42 @@ class _DashboardScreen extends StatelessWidget {
     required String title,
     required String description,
     required VoidCallback onPressed,
-  }) =>
-      Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
+  }) => Material(
+    color: Colors.transparent,
+    child: InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).dividerColor),
           borderRadius: BorderRadius.circular(8),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).dividerColor),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Icon(icon, size: 32),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title, style: Theme.of(context).textTheme.titleSmall),
-                      const SizedBox(height: 4),
-                      Text(
-                        description,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(color: Colors.grey[400]),
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.arrow_forward),
-              ],
-            ),
-          ),
         ),
-      );
+        child: Row(
+          children: [
+            Icon(icon, size: 32),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 class _SettingsScreen extends StatelessWidget {

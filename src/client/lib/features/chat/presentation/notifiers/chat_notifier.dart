@@ -324,12 +324,61 @@ class ChatNotifier extends StateNotifier<ChatState> {
   }
 }
 
+/// Mock implementation of ChatRepository for development.
+/// This allows the app to run without a backend service.
+/// Replace with actual implementation during backend integration.
+class _MockChatRepository implements ChatRepository {
+  @override
+  Stream<String> generateDocument(
+    String docType,
+    String userInput,
+    Map<String, dynamic> context,
+  ) async* {
+    // Simulate document generation with streaming tokens
+    final tokens = [
+      '# ',
+      docType,
+      '\n\n',
+      'Generated for user input: ',
+      userInput,
+      '\n\n',
+      'This is a mock response. ',
+      'The actual implementation will connect to the backend RAG system.',
+    ];
+
+    for (final token in tokens) {
+      await Future.delayed(const Duration(milliseconds: 50));
+      yield token;
+    }
+  }
+
+  @override
+  Future<void> saveProposal(DocumentProposal proposal) async {
+    // Mock implementation - does nothing
+  }
+
+  @override
+  Future<List<ChatMessage>> getChatHistory(String projectId) async {
+    // Mock implementation - returns empty list
+    return [];
+  }
+
+  @override
+  Future<void> clearChatHistory(String projectId) async {
+    // Mock implementation - does nothing
+  }
+}
+
 final chatRepositoryProvider = Provider<ChatRepository>((ref) {
-  throw UnimplementedError('ChatRepository must be provided in main.dart');
+  // Return a mock implementation for development
+  // In production, this will be provided via override in main.dart
+  return _MockChatRepository();
 });
 
 final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
-  throw UnimplementedError('FileSystemService must be provided in main.dart');
+  // Return a mock implementation for desktop
+  // In production, this will be provided via override in main.dart
+  return FileSystemServiceImpl();
 });
 
 final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>(

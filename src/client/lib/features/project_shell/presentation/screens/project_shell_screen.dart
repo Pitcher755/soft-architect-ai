@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../chat/presentation/notifiers/chat_notifier.dart';
+import '../../../chat/presentation/widgets/error_banner_widget.dart';
+import '../../../chat/presentation/widgets/message_bubble_widget.dart';
+import '../../../chat/presentation/widgets/proposal_card_widget.dart';
+import '../../../chat/presentation/widgets/streaming_indicator_widget.dart';
 import '../../domain/entities/file_node.dart';
 import '../widgets/directory_tree_widget.dart';
 import '../widgets/markdown_preview_widget.dart';
@@ -40,10 +46,17 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   /// Loaded file content
   String? _fileContent;
 
+  /// Dynamic column widths (left, right)
+  late double _leftColumnWidth;
+  late double _rightColumnWidth;
+
   @override
   void initState() {
     super.initState();
     developer.log('ProjectShellScreen initialized');
+    // Initialize column widths
+    _leftColumnWidth = 280;
+    _rightColumnWidth = 350;
   }
 
   @override
@@ -57,31 +70,82 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
           // Top bar
           _buildAppBar(),
 
-          // Main workspace (3 columns)
+          // Main workspace (3 columns with resizable dividers)
           Expanded(
             child: Row(
               children: [
                 // Left: Directory tree
-                _buildLeftPanel(),
+                SizedBox(width: _leftColumnWidth, child: _buildLeftPanel()),
 
-                // Center: Chat placeholder
+                // Left divider (resizable)
+                MouseRegion(
+                  cursor: SystemMouseCursors.resizeColumn,
+                  child: GestureDetector(
+                    onHorizontalDragUpdate: (details) {
+                      setState(() {
+                        _leftColumnWidth += details.delta.dx;
+                        // Min width: 180px, Max width: 60% of screen
+                        _leftColumnWidth = _leftColumnWidth.clamp(
+                          180,
+                          MediaQuery.of(context).size.width * 0.6,
+                        );
+                      });
+                    },
+                    child: Container(
+                      width: 4,
+                      color: const Color(0xFF30363d),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.drag_indicator,
+                            size: 16,
+                            color: Color(0xFF444c56),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Center: Chat widget
                 Expanded(
-                  child: Container(
-                    color: const Color(0xFF0D1117),
-                    child: const Center(
-                      child: Text(
-                        '[Chat Area - Sequential Chat Screen]',
-                        style: TextStyle(
-                          color: Color(0xFF8b949e),
-                          fontSize: 14,
-                        ),
+                  child: _ChatPanelWidget(onFileSelected: _onFileSelected),
+                ),
+
+                // Right divider (resizable)
+                MouseRegion(
+                  cursor: SystemMouseCursors.resizeColumn,
+                  child: GestureDetector(
+                    onHorizontalDragUpdate: (details) {
+                      setState(() {
+                        _rightColumnWidth -= details.delta.dx;
+                        // Min width: 180px, Max width: 60% of screen
+                        _rightColumnWidth = _rightColumnWidth.clamp(
+                          180,
+                          MediaQuery.of(context).size.width * 0.6,
+                        );
+                      });
+                    },
+                    child: Container(
+                      width: 4,
+                      color: const Color(0xFF30363d),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.drag_indicator,
+                            size: 16,
+                            color: Color(0xFF444c56),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
 
                 // Right: Preview panel
-                _buildRightPanel(),
+                SizedBox(width: _rightColumnWidth, child: _buildRightPanel()),
               ],
             ),
           ),
@@ -108,6 +172,16 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
       ),
       child: Row(
         children: [
+          // Back button to ProjectWorkspaceScreen
+          IconButton(
+            icon: const Icon(Icons.arrow_back, color: primary),
+            onPressed: () {
+              context.go('/');
+            },
+            tooltip: 'Back to Dashboard',
+          ),
+          const SizedBox(width: 8),
+
           // Project title
           const Icon(Icons.terminal, color: primary, size: 20),
           const SizedBox(width: 12),
@@ -212,16 +286,12 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
             onPressed: () async {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Opening Chat Screen...'),
+                  content: Text('Chat is active in center panel'),
                   duration: Duration(milliseconds: 500),
                 ),
               );
-              await Future.delayed(const Duration(milliseconds: 200));
-              if (mounted) {
-                GoRouter.of(context).go('/chat');
-              }
             },
-            tooltip: 'Open Chat (HU-3.3)',
+            tooltip: 'Chat (Active)',
           ),
           IconButton(
             icon: const Icon(
@@ -255,11 +325,7 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
     const textMain = Color(0xFFE6EDF3);
 
     return Container(
-      width: 280,
-      decoration: const BoxDecoration(
-        color: sidebarBg,
-        border: Border(right: BorderSide(color: borderDark)),
-      ),
+      decoration: const BoxDecoration(color: sidebarBg),
       child: Column(
         children: [
           // Panel header
@@ -297,20 +363,13 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   }
 
   /// Build right panel with markdown preview
-  Widget _buildRightPanel() {
-    const borderDark = Color(0xFF30363d);
-
-    return Container(
-      width: 350,
-      decoration: const BoxDecoration(
-        border: Border(left: BorderSide(color: borderDark)),
-      ),
-      child: MarkdownPreviewWidget(
-        content: _fileContent,
-        filename: _selectedNode?.name,
-      ),
-    );
-  }
+  Widget _buildRightPanel() => Container(
+    decoration: const BoxDecoration(color: Color(0xFF0D1117)),
+    child: MarkdownPreviewWidget(
+      content: _fileContent,
+      filename: _selectedNode?.name,
+    ),
+  );
 
   /// Callback when file is selected
   void _onFileSelected(FileNode node) {
@@ -451,5 +510,201 @@ Select a markdown or text file to preview its contents here.
   void dispose() {
     developer.log('ProjectShellScreen disposed');
     super.dispose();
+  }
+}
+
+/// Chat panel widget for ProjectShellScreen.
+/// Displays conversation, proposals, and message input.
+/// Supports sending messages with Enter key.
+class _ChatPanelWidget extends ConsumerStatefulWidget {
+  const _ChatPanelWidget({required this.onFileSelected});
+
+  final Function(FileNode) onFileSelected;
+
+  @override
+  ConsumerState<_ChatPanelWidget> createState() => _ChatPanelWidgetState();
+}
+
+class _ChatPanelWidgetState extends ConsumerState<_ChatPanelWidget> {
+  late TextEditingController _messageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _messageController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chatState = ref.watch(chatNotifierProvider);
+    final chatNotifier = ref.read(chatNotifierProvider.notifier);
+
+    return Column(
+      children: [
+        // Error banner
+        if (chatState.hasError)
+          ErrorBannerWidget(
+            message: chatState.errorMessage ?? 'An error occurred',
+            onDismiss: chatNotifier.clearError,
+          ),
+
+        // Conversation and proposals area
+        Expanded(
+          child: chatState.messages.isEmpty
+              ? _buildEmptyState()
+              : ListView.builder(
+                  reverse: true,
+                  padding: const EdgeInsets.all(16),
+                  itemCount:
+                      chatState.messages.length +
+                      (chatState.currentProposal != null ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    // Show proposal card at the top
+                    if (index == chatState.messages.length &&
+                        chatState.currentProposal != null) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: ProposalCardWidget(
+                          proposal: chatState.currentProposal!,
+                          onValidate: chatNotifier.validateProposal,
+                          onRefine: chatNotifier.regenerateProposal,
+                          onReject: chatNotifier.rejectProposal,
+                        ),
+                      );
+                    }
+
+                    // Show messages
+                    final message = chatState
+                        .messages[chatState.messages.length - 1 - index];
+                    final messageUI = ChatMessageUI(
+                      id: message.id,
+                      role: message.role.name,
+                      content: message.content,
+                      timestamp: DateTime.parse(message.timestamp),
+                    );
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: MessageBubbleWidget(message: messageUI),
+                    );
+                  },
+                ),
+        ),
+
+        // Streaming indicator
+        if (chatState.isStreaming)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: StreamingIndicatorWidget(
+              progress: 0.5,
+              documentIndex: 1,
+              totalDocuments: 3,
+            ),
+          ),
+
+        // Input area
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: const BoxDecoration(
+            color: AppColors.mainBg,
+            border: Border(top: BorderSide(color: AppColors.border)),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _messageController,
+                  enabled: !chatState.isStreaming,
+                  maxLines: null,
+                  textInputAction: TextInputAction.send,
+                  decoration: InputDecoration(
+                    hintText:
+                        'Ask a question or describe what you need... (Press Enter to send)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    suffixIcon: chatState.isStreaming
+                        ? const SizedBox(
+                            width: 40,
+                            child: Center(
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            ),
+                          )
+                        : null,
+                  ),
+                  onSubmitted: (value) {
+                    if (value.isNotEmpty && !chatState.isStreaming) {
+                      _sendMessage(chatNotifier);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              FloatingActionButton(
+                onPressed: chatState.isStreaming
+                    ? null
+                    : () {
+                        if (_messageController.text.isNotEmpty) {
+                          _sendMessage(chatNotifier);
+                        }
+                      },
+                tooltip: 'Send message',
+                child: const Icon(Icons.send),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Builds the empty state
+  Widget _buildEmptyState() => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(Icons.chat_outlined, size: 64, color: AppColors.border),
+        const SizedBox(height: 24),
+        Text(
+          'Welcome to SoftArchitect AI Chat',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Ask questions or describe what you need.\n'
+          'I will generate document proposals for you.',
+          textAlign: TextAlign.center,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+        ),
+      ],
+    ),
+  );
+
+  /// Sends a message
+  void _sendMessage(ChatNotifier chatNotifier) {
+    final message = _messageController.text.trim();
+    if (message.isEmpty) {
+      return;
+    }
+
+    _messageController.clear();
+    chatNotifier.sendMessage(message);
   }
 }
