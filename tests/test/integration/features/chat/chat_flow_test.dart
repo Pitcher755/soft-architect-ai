@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:softarchitect_ai/features/chat/presentation/widgets/'
-    'proposal_card_widget.dart';
-import 'package:softarchitect_ai/main.dart' as app;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -26,13 +22,12 @@ void main() {
     // 4. Click action buttons (Validar, Refinar, Rechazar)
     // 5. Verify success/error messages
 
-    testWidgets(
-      'Chat flow integration tests (reserved for PHASE-5)',
-      (WidgetTester tester) async {
-        // Placeholder test - actual tests will be implemented in PHASE-5
-        // when the navigation screen and chat interface are complete
-        expect(true, isTrue);
-      },
-    );
+    testWidgets('Chat flow integration tests (reserved for PHASE-5)', (
+      WidgetTester tester,
+    ) async {
+      // Placeholder test - actual tests will be implemented in PHASE-5
+      // when the navigation screen and chat interface are complete
+      expect(true, isTrue);
+    });
   });
 }
