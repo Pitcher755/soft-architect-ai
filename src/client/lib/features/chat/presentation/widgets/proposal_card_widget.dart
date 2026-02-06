@@ -5,7 +5,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/document_proposal.dart';
 
 /// Widget that displays a generated document proposal with action buttons.
-/// Implements GitHub Dark theme design with markdown preview and validation options.
+/// Implements GitHub Dark theme design with markdown preview and
+/// validation options.
 class ProposalCardWidget extends StatelessWidget {
   const ProposalCardWidget({
     required this.proposal,

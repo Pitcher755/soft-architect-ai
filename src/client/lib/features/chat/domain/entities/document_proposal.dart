@@ -1,12 +1,5 @@
 /// Represents a generated document proposal awaiting validation.
 class DocumentProposal {
-  final String id;
-  final String docType;
-  final String content;
-  final Map<String, dynamic> metadata;
-  final ValidationState validationState;
-  final DateTime createdAt;
-
   DocumentProposal({
     required this.id,
     required this.docType,
@@ -15,6 +8,13 @@ class DocumentProposal {
     required this.validationState,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
+
+  final String id;
+  final String docType;
+  final String content;
+  final Map<String, dynamic> metadata;
+  final ValidationState validationState;
+  final DateTime createdAt;
 
   bool get isPending => validationState == ValidationState.pending;
   bool get isValidated => validationState == ValidationState.validated;
@@ -34,16 +34,15 @@ class DocumentProposal {
     Map<String, dynamic>? metadata,
     ValidationState? validationState,
     DateTime? createdAt,
-  }) {
-    return DocumentProposal(
-      id: id ?? this.id,
-      docType: docType ?? this.docType,
-      content: content ?? this.content,
-      metadata: metadata ?? this.metadata,
-      validationState: validationState ?? this.validationState,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  }) =>
+      DocumentProposal(
+        id: id ?? this.id,
+        docType: docType ?? this.docType,
+        content: content ?? this.content,
+        metadata: metadata ?? this.metadata,
+        validationState: validationState ?? this.validationState,
+        createdAt: createdAt ?? this.createdAt,
+      );
 
   @override
   bool operator ==(Object other) =>

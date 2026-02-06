@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
-/// Widget que muestra el progreso de streaming en tiempo real durante la generación de documentos
+/// Widget que muestra el progreso de streaming en tiempo real durante
+/// la generación de documentos
 class StreamingIndicatorWidget extends StatefulWidget {
   const StreamingIndicatorWidget({
     required this.progress,

@@ -7,14 +7,10 @@ import '../../domain/repositories/chat_repository.dart';
 import 'streaming_state.dart';
 
 /// Simple UUID generator for demo purposes
-String generateId() {
-  return DateTime.now().millisecondsSinceEpoch.toString();
-}
+String generateId() => DateTime.now().millisecondsSinceEpoch.toString();
 
 /// Notifier for chat state management using state machine pattern.
 class ChatNotifier extends StateNotifier<ChatState> {
-  final ChatRepository _repository;
-
   ChatNotifier({
     required ChatRepository repository,
   })  : _repository = repository,
@@ -22,9 +18,13 @@ class ChatNotifier extends StateNotifier<ChatState> {
           const ChatState(),
         );
 
+  final ChatRepository _repository;
+
   /// Sends a user message and initiates document generation streaming.
   Future<void> sendMessage(String message) async {
-    if (message.trim().isEmpty) return;
+    if (message.trim().isEmpty) {
+      return;
+    }
 
     try {
       // Clear any previous errors
@@ -64,7 +64,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
         'chat_history': updatedMessages,
       };
 
-      var streamedContent = '';
+      final streamBuffer = StringBuffer();
       final stream = _repository.generateDocument(
         'PROJECT_MANIFESTO', // TODO: Make dynamic based on current doc
         message,
@@ -72,11 +72,11 @@ class ChatNotifier extends StateNotifier<ChatState> {
       );
 
       await for (final token in stream) {
-        streamedContent += token;
+        streamBuffer.write(token);
 
         // Update assistant message with streamed content
         final updatedAssistant = assistantMessage.copyWith(
-          content: streamedContent,
+          content: streamBuffer.toString(),
           isStreaming: true,
         );
 
@@ -93,7 +93,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
       // Mark streaming as complete and create proposal
       final completedAssistant = assistantMessage.copyWith(
-        content: streamedContent,
+        content: streamBuffer.toString(),
         isStreaming: false,
       );
 
@@ -105,8 +105,8 @@ class ChatNotifier extends StateNotifier<ChatState> {
       final proposal = DocumentProposal(
         id: generateId(),
         docType: 'PROJECT_MANIFESTO',
-        content: streamedContent,
-        metadata: {'source': 'llm_stream'},
+        content: streamBuffer.toString(),
+        metadata: const {'source': 'llm_stream'},
         validationState: ValidationState.pending,
       );
 
@@ -115,7 +115,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
         currentProposal: proposal,
         isStreaming: false,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         isStreaming: false,
         hasError: true,
@@ -126,7 +126,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   /// Validates the current proposal and advances to the next document.
   Future<void> validateProposal() async {
-    if (state.currentProposal == null) return;
+    if (state.currentProposal == null) {
+      return;
+    }
 
     try {
       final validatedProposal = state.currentProposal!.copyWith(
@@ -137,25 +139,27 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
       // Advance to next document
       state = state.copyWith(
-        currentProposal: null,
         currentDocIndex: state.currentDocIndex + 1,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         hasError: true,
-        errorMessage: 'Failed to save proposal: ${e.toString()}',
+        errorMessage: 'Failed to save proposal: $e',
       );
     }
   }
 
   /// Rejects the current proposal without advancing.
   void rejectProposal() {
-    state = state.copyWith(currentProposal: null);
+    // currentProposal already defaults to null in ChatState
+    state = state.copyWith();
   }
 
   /// Regenerates the current document proposal.
   Future<void> regenerateProposal() async {
-    if (state.messages.isEmpty) return;
+    if (state.messages.isEmpty) {
+      return;
+    }
 
     // Get the last user message
     final lastUserMessage = state.messages
@@ -166,7 +170,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
         .content;
 
     // Clear current proposal and re-stream
-    state = state.copyWith(currentProposal: null);
+    state = state.copyWith();
     await sendMessage(lastUserMessage);
   }
 
@@ -177,7 +181,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   /// Handles stream errors with retry logic.
   Future<void> retryLastMessage() async {
-    if (state.messages.length < 2) return;
+    if (state.messages.length < 2) {
+      return;
+    }
 
     final lastUserMessage = state.messages
         .lastWhere((msg) => msg.role == MessageRole.user)
@@ -194,8 +200,8 @@ final chatRepositoryProvider = Provider<ChatRepository>((ref) {
   throw UnimplementedError('ChatRepository must be provided in main.dart');
 });
 
-final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>((ref) {
-  return ChatNotifier(
+final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>(
+  (ref) => ChatNotifier(
     repository: ref.watch(chatRepositoryProvider),
-  );
-});
+  ),
+);

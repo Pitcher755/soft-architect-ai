@@ -22,7 +22,7 @@ void main() async {
     try {
       await dotenv.load(isOptional: true);
       debugPrint('✅ .env file loaded successfully');
-    } catch (e) {
+    } on Exception catch (e) {
       // .env file not found or error loading, will use default values
       // from AppConfig
       debugPrint(
