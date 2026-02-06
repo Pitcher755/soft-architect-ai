@@ -13,6 +13,7 @@ library;
 import 'package:flutter/foundation.dart';
 
 late final bool isWeb;
+bool _isWebInitialized = false;
 
 /// Initialize platform detection and logging.
 ///
@@ -28,7 +29,13 @@ late final bool isWeb;
 /// NOTE: Actual repository initialization is handled by Riverpod providers
 /// in project_providers.dart which safely detect Platform APIs.
 Future<void> initializeSqfliteForDesktop() async {
+  // Prevent re-initialization in tests (late field can only be set once)
+  if (_isWebInitialized) {
+    return;
+  }
+
   isWeb = kIsWeb;
+  _isWebInitialized = true;
 
   if (kIsWeb) {
     debugPrint('ℹ️  Web platform detected - using MockProjectRepository');
