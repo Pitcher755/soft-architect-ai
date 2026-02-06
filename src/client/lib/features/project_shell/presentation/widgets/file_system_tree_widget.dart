@@ -44,7 +44,8 @@ class FileSystemTreeWidget extends ConsumerWidget {
   }
 }
 
-/// _DirectoryTreeView is a recursive helper widget for displaying directory tree.
+/// _DirectoryTreeView is a recursive helper widget for displaying the directory
+/// tree.
 ///
 /// Renders a single node and its children (if expanded).
 class _DirectoryTreeView extends StatelessWidget {
@@ -119,7 +120,7 @@ class _DirectoryTreeView extends StatelessWidget {
       node.name,
       style: TextStyle(
         color: isSelected ? Colors.cyan : Colors.white,
-        backgroundColor: isSelected ? Colors.blue.withOpacity(0.3) : null,
+        backgroundColor: isSelected ? Colors.blue.withValues(alpha: 0.3) : null,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
     ),

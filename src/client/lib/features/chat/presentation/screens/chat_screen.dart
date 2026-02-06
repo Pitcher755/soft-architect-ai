@@ -55,7 +55,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     padding: const EdgeInsets.all(16),
                     itemCount: chatState.messages.length,
                     itemBuilder: (context, index) {
-                      final message = chatState.messages[chatState.messages.length - 1 - index];
+                      final message = chatState
+                          .messages[chatState.messages.length - 1 - index];
                       final messageUI = ChatMessageUI(
                         id: message.id,
                         role: message.role.name,
@@ -64,9 +65,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       );
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
-                        child: MessageBubbleWidget(
-                          message: messageUI,
-                        ),
+                        child: MessageBubbleWidget(message: messageUI),
                       );
                     },
                   ),
@@ -74,8 +73,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // Streaming indicator
           if (chatState.isStreaming)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: StreamingIndicatorWidget(
                 progress: 0.5,
                 documentIndex: 1,
@@ -89,10 +88,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               border: Border(
-                top: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: 1,
-                ),
+                top: BorderSide(color: Theme.of(context).dividerColor),
               ),
             ),
             child: Row(
@@ -174,8 +170,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           'I will generate document proposals for you.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).dividerColor,
-              ),
+            color: Theme.of(context).dividerColor,
+          ),
         ),
       ],
     ),
@@ -184,7 +180,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   /// Sends a message through the ChatNotifier.
   void _sendMessage(ChatNotifier chatNotifier) {
     final message = _messageController.text.trim();
-    if (message.isEmpty) return;
+    if (message.isEmpty) {
+      return;
+    }
 
     _messageController.clear();
     chatNotifier.sendMessage(message);

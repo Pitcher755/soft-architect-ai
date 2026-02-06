@@ -1,5 +1,12 @@
 /// Represents a node in the directory tree
 class DirectoryNode {
+  const DirectoryNode({
+    required this.name,
+    required this.path,
+    required this.isDirectory,
+    this.children = const [],
+  });
+
   /// Display name of the node (file or folder name)
   final String name;
 
@@ -12,27 +19,18 @@ class DirectoryNode {
   /// Children nodes if this is a directory
   final List<DirectoryNode> children;
 
-  const DirectoryNode({
-    required this.name,
-    required this.path,
-    required this.isDirectory,
-    this.children = const [],
-  });
-
   /// Create a copy with modified fields
   DirectoryNode copyWith({
     String? name,
     String? path,
     bool? isDirectory,
     List<DirectoryNode>? children,
-  }) {
-    return DirectoryNode(
-      name: name ?? this.name,
-      path: path ?? this.path,
-      isDirectory: isDirectory ?? this.isDirectory,
-      children: children ?? this.children,
-    );
-  }
+  }) => DirectoryNode(
+    name: name ?? this.name,
+    path: path ?? this.path,
+    isDirectory: isDirectory ?? this.isDirectory,
+    children: children ?? this.children,
+  );
 
   @override
   String toString() =>

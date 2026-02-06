@@ -209,16 +209,17 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
               color: textSecondary,
               size: 20,
             ),
-            onPressed: () {
+            onPressed: () async {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Opening Chat Screen...'),
                   duration: Duration(milliseconds: 500),
                 ),
               );
-              Future.delayed(const Duration(milliseconds: 200), () {
+              await Future.delayed(const Duration(milliseconds: 200));
+              if (mounted) {
                 GoRouter.of(context).go('/chat');
-              });
+              }
             },
             tooltip: 'Open Chat (HU-3.3)',
           ),

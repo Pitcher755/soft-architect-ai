@@ -20,13 +20,12 @@ class MarkdownPreviewState {
     String? filePath,
     bool? isLoading,
     String? error,
-  }) =>
-      MarkdownPreviewState(
-        content: content ?? this.content,
-        filePath: filePath ?? this.filePath,
-        isLoading: isLoading ?? this.isLoading,
-        error: error ?? this.error,
-      );
+  }) => MarkdownPreviewState(
+    content: content ?? this.content,
+    filePath: filePath ?? this.filePath,
+    isLoading: isLoading ?? this.isLoading,
+    error: error ?? this.error,
+  );
 }
 
 /// Markdown Preview Notifier - Manages preview state and file loading
@@ -37,7 +36,7 @@ class MarkdownPreviewNotifier extends StateNotifier<MarkdownPreviewState> {
   Future<void> loadFile(String filePath) async {
     try {
       // Start loading
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoading: true);
 
       // Simulate file read (in real app, read from file system)
       await Future.delayed(const Duration(milliseconds: 200));
@@ -51,7 +50,7 @@ class MarkdownPreviewNotifier extends StateNotifier<MarkdownPreviewState> {
         filePath: filePath,
         isLoading: false,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: 'Failed to load file: $e',
@@ -68,5 +67,5 @@ class MarkdownPreviewNotifier extends StateNotifier<MarkdownPreviewState> {
 /// Provider for markdown preview state
 final markdownPreviewNotifierProvider =
     StateNotifierProvider<MarkdownPreviewNotifier, MarkdownPreviewState>(
-  (ref) => MarkdownPreviewNotifier(),
-);
+      (ref) => MarkdownPreviewNotifier(),
+    );
