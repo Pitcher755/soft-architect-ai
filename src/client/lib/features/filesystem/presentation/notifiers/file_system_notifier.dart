@@ -2,15 +2,15 @@ import 'package:flutter_riverpod/legacy.dart';
 
 /// File system state - Immutable data class for file tree state
 class FileSystemState {
-  final String rootPath;
-  final String? selectedFile;
-  final Set<String> expandedPaths;
-
   const FileSystemState({
     this.rootPath = '',
     this.selectedFile,
     this.expandedPaths = const {},
   });
+
+  final String rootPath;
+  final String? selectedFile;
+  final Set<String> expandedPaths;
 
   /// Create a copy with modified fields
   FileSystemState copyWith({
