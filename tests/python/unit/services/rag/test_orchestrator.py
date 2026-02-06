@@ -11,7 +11,7 @@ Tests cover:
 import pytest
 from unittest.mock import Mock, AsyncMock
 from app.services.rag.sequential_orchestrator import SequentialOrchestrator
-from app.core.exceptions import RAGException
+from app.core.exceptions import RAGError, LLMError
 
 
 @pytest.fixture
@@ -72,8 +72,10 @@ class TestSequentialOrchestrator:
 
         # Assert
         orchestrator.vector_store.query.assert_called_once()
-        call_args = orchestrator.vector_store.query.call_args[0]
-        assert "Flutter" in str(call_args) or len(call_args) > 0
+        call_args = orchestrator.vector_store.query.call_args
+        assert call_args is not None
+        # Check that query was called with the user input
+        assert "Flutter" in str(call_args)
 
     @pytest.mark.asyncio
     async def test_generate_raises_exception_if_chromadb_unavailable(
@@ -86,7 +88,7 @@ class TestSequentialOrchestrator:
         )
 
         # Act & Assert
-        with pytest.raises(RAGException) as exc_info:
+        with pytest.raises(RAGError) as exc_info:
             async for _ in orchestrator.generate(
                 doc_type="PROJECT_MANIFESTO", user_input="Test", context={}
             ):
@@ -110,7 +112,7 @@ class TestSequentialOrchestrator:
         )
 
         # Act & Assert
-        with pytest.raises(RAGException) as exc_info:
+        with pytest.raises(LLMError) as exc_info:
             async for _ in orchestrator.generate(
                 doc_type="PROJECT_MANIFESTO", user_input="Test", context={}
             ):

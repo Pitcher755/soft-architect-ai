@@ -10,7 +10,7 @@ Tests cover:
 
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 from app.main import app
 
 
@@ -27,7 +27,9 @@ class TestChatEndpoints:
         """Test that endpoint returns SSE headers."""
         # Arrange
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
-            mock_orch.generate = AsyncMock(return_value=self._mock_async_gen(["test"]))
+            mock_orch.generate.side_effect = (
+                lambda *args, **kwargs: TestChatEndpoints._mock_async_gen(["test"])
+            )
 
             # Act
             response = client.post(
@@ -49,13 +51,11 @@ class TestChatEndpoints:
         """Test token streaming functionality."""
         # Arrange
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
-
-            async def mock_generator():
-                yield "Hello"
-                yield " "
-                yield "World"
-
-            mock_orch.generate = AsyncMock(return_value=mock_generator())
+            mock_orch.generate.side_effect = (
+                lambda *args, **kwargs: TestChatEndpoints._mock_async_gen(
+                    ["Hello", " ", "World"]
+                )
+            )
 
             # Act
             response = client.post(
@@ -115,7 +115,9 @@ class TestChatEndpoints:
         """Test that project_context can be empty."""
         # Arrange
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
-            mock_orch.generate = AsyncMock(return_value=self._mock_async_gen(["test"]))
+            mock_orch.generate.side_effect = (
+                lambda *args, **kwargs: TestChatEndpoints._mock_async_gen(["test"])
+            )
 
             # Act
             response = client.post(
@@ -134,7 +136,9 @@ class TestChatEndpoints:
         """Test that chat_history can be empty."""
         # Arrange
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
-            mock_orch.generate = AsyncMock(return_value=self._mock_async_gen(["test"]))
+            mock_orch.generate.side_effect = (
+                lambda *args, **kwargs: TestChatEndpoints._mock_async_gen(["test"])
+            )
 
             # Act
             response = client.post(
@@ -154,7 +158,9 @@ class TestChatEndpoints:
         """Test that request data is passed correctly to orchestrator."""
         # Arrange
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
-            mock_orch.generate = AsyncMock(return_value=self._mock_async_gen(["test"]))
+            mock_orch.generate.side_effect = (
+                lambda *args, **kwargs: TestChatEndpoints._mock_async_gen(["test"])
+            )
 
             request_data = {
                 "message": "Genera el Project Manifesto",
@@ -181,10 +187,10 @@ class TestChatEndpoints:
         """Test error handling when orchestrator raises exception."""
         # Arrange
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
-            from app.core.exceptions import RAGException
+            from app.core.exceptions import RAGError
 
-            mock_orch.generate = AsyncMock(
-                side_effect=RAGException(code="RAG_001", message="ChromaDB unavailable")
+            mock_orch.generate.side_effect = RAGError(
+                code="RAG_001", message="ChromaDB unavailable"
             )
 
             # Act
@@ -199,15 +205,20 @@ class TestChatEndpoints:
             )
 
             # Assert
-            assert response.status_code >= 400
-            error_data = response.json()
-            assert "error" in error_data or "message" in error_data
+            assert response.status_code == 200
+            assert "text/event-stream" in response.headers.get("content-type", "")
+            content = response.text
+            assert "event: error" in content
+            assert "RAG_001" in content
+            assert "ChromaDB unavailable" in content
 
     def test_generate_endpoint_sse_format_contains_event_field(self, client):
         """Test that SSE response contains event field."""
         # Arrange
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
-            mock_orch.generate = AsyncMock(return_value=self._mock_async_gen(["token"]))
+            mock_orch.generate.side_effect = (
+                lambda *args, **kwargs: TestChatEndpoints._mock_async_gen(["token"])
+            )
 
             # Act
             response = client.post(
@@ -231,7 +242,9 @@ class TestChatEndpoints:
         with patch("app.api.v1.chat.orchestrator") as mock_orch:
             # Create a sequence of 100 tokens
             tokens = [f"token_{i}" for i in range(100)]
-            mock_orch.generate = AsyncMock(return_value=self._mock_async_gen(tokens))
+            mock_orch.generate.side_effect = (
+                lambda *args, **kwargs: TestChatEndpoints._mock_async_gen(tokens)
+            )
 
             # Act
             response = client.post(

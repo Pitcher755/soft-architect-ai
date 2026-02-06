@@ -28,9 +28,11 @@ class AppColors {
   static const Color textMuted = Color(0xFF6e7681); // Muted text
 
   // Semantic colors
-  static const Color success = Color(0xFF3fb950); // Green
+  static const Color success = Color(0xFF238636); // Green (for proposals)
+  static const Color successAlt = Color(0xFF3fb950); // Alternative green
   static const Color warning = Color(0xFFd29922); // Yellow
-  static const Color error = Color(0xfff85149); // Red
+  static const Color error = Color(0xFFda3633); // Red (for rejection)
+  static const Color errorAlt = Color(0xfff85149); // Alternative red
   static const Color info = Color(0xFF58a6ff); // Blue
 
   // Language-specific colors

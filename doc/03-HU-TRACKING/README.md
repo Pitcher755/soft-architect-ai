@@ -42,8 +42,9 @@
 
 | HU | Name | Owner | Status | Progress | Docs |
 |----|------|-------|--------|----------|------|
-| HU-3.1 | Chat UI + Markdown | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.1-CHAT-UI/) |
-| HU-3.2 | Streaming + API Connection | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.2-STREAMING/) |
+| **HU-3.3** | Frontend State Machine (TDD RED) | Frontend | 🔴 RED ✅ | 30% | [→ Go](HU-3.3-FRONTEND-STATE-MACHINE/) |
+| HU-3.4 | Error Handling Gates | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.4_ERROR_HANDLING_GATES/) |
+| HU-3.5 | Streaming Optimization | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.5_STREAMING_OPTIMIZATION/) |
 
 ---
 
@@ -145,21 +146,20 @@ For each HU follow this flow:
 
 ### Documentation Coverage
 - ✅ HU-1.1: 100% (README, PROGRESS, ARTIFACTS)
+- ✅ HU-2.0: 100% (Knowledge Base Populated)
 - ⏳ HU-1.2: 0% (Pending)
 - ⏳ HU-2.1: 0% (Pending)
 - ⏳ HU-2.2: 0% (Pending)
-- ⏳ HU-3.1: 0% (Pending)
-- ⏳ HU-3.2: 0% (Pending)
+- ✅ HU-3.3: 100% (README, PHASE_3_RED_CHECKPOINT)
+- ⏳ HU-3.4: 0% (Pending)
+- ⏳ HU-3.5: 0% (Pending)
 
 ### Progress Overview
 ```
-Phase 0 (Prep):   ██████░░░░░░░░░░░░░░░░░░░░░░ 100% (HU-1.1)
-Phase 1 (TDD):    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Phase 2 (Code):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Phase 3 (Hard):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Phase 4 (Docs):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Phase 5 (Test):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Phase 6 (Git):    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+HU-1.1 (Infrastructure):  ██████░░░░░░░░░░░░░░░░░░░░░░ 25% (Phase 0 complete)
+HU-2.0 (Knowledge Base):  ████████████████████████████░░ 95% (Deployed)
+HU-3.3 (Frontend State):  ███░░░░░░░░░░░░░░░░░░░░░░░░░░ 30% (RED phase done)
+Overall:                  ████░░░░░░░░░░░░░░░░░░░░░░░░░░ 20% (MVP roadmap)
 ```
 
 ---
