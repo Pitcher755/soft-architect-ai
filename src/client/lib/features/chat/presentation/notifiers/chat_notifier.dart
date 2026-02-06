@@ -192,6 +192,12 @@ class ChatNotifier extends StateNotifier<ChatState> {
   }
 
   /// Resets chat state for a new project.
+  /// Clears any error state.
+  void clearError() {
+    state = state.clearError();
+  }
+
+  /// Resets chat state for a new project.
   void resetForNewProject({int totalDocs = 25}) {
     state = ChatState(totalDocs: totalDocs);
   }

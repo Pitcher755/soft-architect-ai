@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../notifiers/chat_notifier.dart';
+import '../widgets/error_banner_widget.dart';
 import '../widgets/message_bubble_widget.dart';
 import '../widgets/proposal_card_widget.dart';
 import '../widgets/streaming_indicator_widget.dart';
@@ -47,6 +48,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
       body: Column(
         children: [
+          // Error banner (displays when hasError=true)
+          if (chatState.hasError)
+            ErrorBannerWidget(
+              message: chatState.errorMessage ?? 'An error occurred',
+              onDismiss: () {
+                // Clear error state when user dismisses
+                chatNotifier.clearError();
+              },
+            ),
+
           // Conversation and proposals area
           Expanded(
             child: chatState.messages.isEmpty
@@ -54,23 +65,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 : ListView.builder(
                     reverse: true,
                     padding: const EdgeInsets.all(16),
-                    itemCount: chatState.messages.length + (chatState.currentProposal != null ? 1 : 0),
+                    itemCount:
+                        chatState.messages.length +
+                        (chatState.currentProposal != null ? 1 : 0),
                     itemBuilder: (context, index) {
                       // Show proposal card at the top (reverse order)
-                      if (index == chatState.messages.length && chatState.currentProposal != null) {
+                      if (index == chatState.messages.length &&
+                          chatState.currentProposal != null) {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16),
                           child: ProposalCardWidget(
                             proposal: chatState.currentProposal!,
-                            onValidate: () {
-                              chatNotifier.validateProposal();
-                            },
-                            onRefine: () {
-                              chatNotifier.regenerateProposal();
-                            },
-                            onReject: () {
-                              chatNotifier.rejectProposal();
-                            },
+                            onValidate: chatNotifier.validateProposal,
+                            onRefine: chatNotifier.regenerateProposal,
+                            onReject: chatNotifier.rejectProposal,
                           ),
                         );
                       }
