@@ -172,7 +172,7 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
     const borderDark = Color(0xFF30363d);
     const textMain = Color(0xFFE6EDF3);
     const textSecondary = Color(0xFF8b949e);
-    const primary = Color(0xFF0d0df2);
+    const primary = Color.fromARGB(255, 14, 165, 64);
 
     return Container(
       height: 56,
