@@ -33,7 +33,10 @@ import '../widgets/markdown_preview_widget.dart';
 /// - Sidebar: #161B22
 /// - Primary: #0d0df2
 class ProjectShellScreen extends ConsumerStatefulWidget {
-  const ProjectShellScreen({super.key});
+  const ProjectShellScreen({required this.projectPath, super.key});
+
+  /// Path to the project directory
+  final String projectPath;
 
   @override
   ConsumerState<ProjectShellScreen> createState() => _ProjectShellScreenState();
@@ -49,6 +52,10 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   /// Dynamic column widths (left, right)
   late double _leftColumnWidth;
   late double _rightColumnWidth;
+
+  /// Column visibility toggles
+  bool _showLeftPanel = true;
+  bool _showRightPanel = true;
 
   @override
   void initState() {
@@ -74,78 +81,82 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
           Expanded(
             child: Row(
               children: [
-                // Left: Directory tree
-                SizedBox(width: _leftColumnWidth, child: _buildLeftPanel()),
+                // Left: Directory tree (conditional)
+                if (_showLeftPanel)
+                  SizedBox(width: _leftColumnWidth, child: _buildLeftPanel()),
 
-                // Left divider (resizable)
-                MouseRegion(
-                  cursor: SystemMouseCursors.resizeColumn,
-                  child: GestureDetector(
-                    onHorizontalDragUpdate: (details) {
-                      setState(() {
-                        _leftColumnWidth += details.delta.dx;
-                        // Min width: 180px, Max width: 60% of screen
-                        _leftColumnWidth = _leftColumnWidth.clamp(
-                          180,
-                          MediaQuery.of(context).size.width * 0.6,
-                        );
-                      });
-                    },
-                    child: Container(
-                      width: 4,
-                      color: const Color(0xFF30363d),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.drag_indicator,
-                            size: 16,
-                            color: Color(0xFF444c56),
-                          ),
-                        ],
+                // Left divider (resizable - only if left panel visible)
+                if (_showLeftPanel)
+                  MouseRegion(
+                    cursor: SystemMouseCursors.resizeColumn,
+                    child: GestureDetector(
+                      onHorizontalDragUpdate: (details) {
+                        setState(() {
+                          _leftColumnWidth += details.delta.dx;
+                          // Min width: 180px, Max width: 60% of screen
+                          _leftColumnWidth = _leftColumnWidth.clamp(
+                            180,
+                            MediaQuery.of(context).size.width * 0.6,
+                          );
+                        });
+                      },
+                      child: Container(
+                        width: 4,
+                        color: const Color(0xFF30363d),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.drag_indicator,
+                              size: 16,
+                              color: Color(0xFF444c56),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
 
                 // Center: Chat widget
                 Expanded(
                   child: _ChatPanelWidget(onFileSelected: _onFileSelected),
                 ),
 
-                // Right divider (resizable)
-                MouseRegion(
-                  cursor: SystemMouseCursors.resizeColumn,
-                  child: GestureDetector(
-                    onHorizontalDragUpdate: (details) {
-                      setState(() {
-                        _rightColumnWidth -= details.delta.dx;
-                        // Min width: 180px, Max width: 60% of screen
-                        _rightColumnWidth = _rightColumnWidth.clamp(
-                          180,
-                          MediaQuery.of(context).size.width * 0.6,
-                        );
-                      });
-                    },
-                    child: Container(
-                      width: 4,
-                      color: const Color(0xFF30363d),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.drag_indicator,
-                            size: 16,
-                            color: Color(0xFF444c56),
-                          ),
-                        ],
+                // Right divider (resizable - only if right panel visible)
+                if (_showRightPanel)
+                  MouseRegion(
+                    cursor: SystemMouseCursors.resizeColumn,
+                    child: GestureDetector(
+                      onHorizontalDragUpdate: (details) {
+                        setState(() {
+                          _rightColumnWidth -= details.delta.dx;
+                          // Min width: 180px, Max width: 60% of screen
+                          _rightColumnWidth = _rightColumnWidth.clamp(
+                            180,
+                            MediaQuery.of(context).size.width * 0.6,
+                          );
+                        });
+                      },
+                      child: Container(
+                        width: 4,
+                        color: const Color(0xFF30363d),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.drag_indicator,
+                              size: 16,
+                              color: Color(0xFF444c56),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-                // Right: Preview panel
-                SizedBox(width: _rightColumnWidth, child: _buildRightPanel()),
+                // Right: Preview panel (conditional)
+                if (_showRightPanel)
+                  SizedBox(width: _rightColumnWidth, child: _buildRightPanel()),
               ],
             ),
           ),
@@ -172,13 +183,13 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
       ),
       child: Row(
         children: [
-          // Back button to ProjectWorkspaceScreen
+          // Back button to Projects Dashboard
           IconButton(
             icon: const Icon(Icons.arrow_back, color: primary),
             onPressed: () {
-              context.go('/');
+              context.go('/workspace');
             },
-            tooltip: 'Back to Dashboard',
+            tooltip: 'Back to Projects',
           ),
           const SizedBox(width: 8),
 
@@ -205,7 +216,7 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
           ),
           const SizedBox(width: 16),
 
-          // Path display
+          // Path display (from projectPath)
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -214,9 +225,9 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
                 border: Border.all(color: borderDark),
                 borderRadius: BorderRadius.circular(3),
               ),
-              child: const Text(
-                '~/soft-architect-ai',
-                style: TextStyle(
+              child: Text(
+                widget.projectPath.isEmpty ? '~/projects' : widget.projectPath,
+                style: const TextStyle(
                   color: textSecondary,
                   fontSize: 11,
                   fontFamily: 'monospace',
@@ -276,22 +287,32 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
 
           const SizedBox(width: 12),
 
-          // Action buttons
+          // Toggle panels buttons
           IconButton(
-            icon: const Icon(
-              Icons.chat_outlined,
-              color: textSecondary,
+            icon: Icon(
+              _showLeftPanel ? Icons.visibility : Icons.visibility_off,
+              color: _showLeftPanel ? textSecondary : const Color(0xFF444c56),
               size: 20,
             ),
-            onPressed: () async {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Chat is active in center panel'),
-                  duration: Duration(milliseconds: 500),
-                ),
-              );
+            onPressed: () {
+              setState(() {
+                _showLeftPanel = !_showLeftPanel;
+              });
             },
-            tooltip: 'Chat (Active)',
+            tooltip: 'Toggle Explorer',
+          ),
+          IconButton(
+            icon: Icon(
+              _showRightPanel ? Icons.visibility : Icons.visibility_off,
+              color: _showRightPanel ? textSecondary : const Color(0xFF444c56),
+              size: 20,
+            ),
+            onPressed: () {
+              setState(() {
+                _showRightPanel = !_showRightPanel;
+              });
+            },
+            tooltip: 'Toggle Preview',
           ),
           IconButton(
             icon: const Icon(

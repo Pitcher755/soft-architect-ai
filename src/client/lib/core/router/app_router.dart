@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/chat/presentation/screens/chat_screen.dart';
 import '../../features/project_shell/presentation/screens/project_shell_screen.dart';
 import '../../features/project_shell/presentation/screens/project_workspace_screen.dart';
 
@@ -10,9 +9,8 @@ import '../../features/project_shell/presentation/screens/project_workspace_scre
 ///
 /// Routes:
 /// - `/` → Project Selection/Dashboard
-/// - `/workspace/:projectId` → ProjectWorkspaceScreen with project context
-/// - `/project-shell` → Legacy ProjectShellScreen (for testing)
-/// - `/chat` → Chat screen
+/// - `/workspace` → Projects Management Dashboard
+/// - `/project-shell?path=...` → ProjectShellScreen for active project editing with path
 /// - `/settings` → Settings screen
 GoRouter createAppRouter() => GoRouter(
   initialLocation: '/',
@@ -23,22 +21,17 @@ GoRouter createAppRouter() => GoRouter(
       builder: (context, state) => const _ProjectSelectionScreen(),
     ),
     GoRoute(
-      path: '/workspace/:projectId',
+      path: '/workspace',
       name: 'workspace',
-      builder: (context, state) {
-        final projectId = state.pathParameters['projectId'] ?? 'unknown';
-        return ProjectWorkspaceScreen(projectPath: projectId);
-      },
+      builder: (context, state) => const ProjectWorkspaceScreen(),
     ),
     GoRoute(
       path: '/project-shell',
       name: 'project-shell',
-      builder: (context, state) => const ProjectShellScreen(),
-    ),
-    GoRoute(
-      path: '/chat',
-      name: 'chat',
-      builder: (context, state) => const ChatScreen(),
+      builder: (context, state) {
+        final path = state.uri.queryParameters['path'] ?? '';
+        return ProjectShellScreen(projectPath: path);
+      },
     ),
     GoRoute(
       path: '/settings',
@@ -128,12 +121,6 @@ class _ProjectSelectionScreen extends StatelessWidget {
                     icon: Icons.folder_open,
                     title: 'Project Shell',
                     onTap: () => context.go('/project-shell'),
-                  ),
-                  _buildQuickNavCard(
-                    context,
-                    icon: Icons.chat,
-                    title: 'Chat',
-                    onTap: () => context.go('/chat'),
                   ),
                 ],
               ),
@@ -280,188 +267,219 @@ class _ProjectSelectionScreen extends StatelessWidget {
   /// Show create project dialog.
   void _showCreateProjectDialog(BuildContext context) {
     final nameController = TextEditingController();
+    final descController = TextEditingController();
+    const selectedPath = '/home/Documents/SoftArchitectProjects';
 
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Create New Project'),
-        content: TextField(
-          controller: nameController,
-          decoration: const InputDecoration(
-            hintText: 'Project name',
-            border: OutlineInputBorder(),
+        title: const Text('Nuevo Proyecto'),
+        contentPadding: const EdgeInsets.all(24),
+        content: SizedBox(
+          width: 500,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Project name field
+                const Text(
+                  'Nombre del Proyecto',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFE6EDF3),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    hintText: 'Ej: MySuperApp',
+                    hintStyle: const TextStyle(color: Color(0xFF444c56)),
+                    filled: true,
+                    fillColor: const Color(0xFF0D1117),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF30363d)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF30363d)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF0d0df2),
+                        width: 2,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                  ),
+                  style: const TextStyle(color: Color(0xFFE6EDF3)),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Solo caracteres alfanuméricos, guiones y guiones bajos.',
+                  style: TextStyle(fontSize: 11, color: Color(0xFF8b949e)),
+                ),
+                const SizedBox(height: 24),
+
+                // Base path field
+                const Text(
+                  'Ruta Base (Local)',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFE6EDF3),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        readOnly: true,
+                        controller: TextEditingController(text: selectedPath),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: const Color(0xFF0D1117),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: Color(0xFF30363d),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: Color(0xFF30363d),
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                        ),
+                        style: const TextStyle(
+                          color: Color(0xFF8b949e),
+                          fontSize: 12,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // TODO: Implement file picker
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('File picker coming soon'),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.folder_open, size: 18),
+                      label: const Text('Examinar...'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF21262d),
+                        foregroundColor: const Color(0xFFE6EDF3),
+                        side: const BorderSide(color: Color(0xFF30363d)),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Se creará la carpeta automáticamente.',
+                  style: TextStyle(fontSize: 11, color: Color(0xFF8b949e)),
+                ),
+                const SizedBox(height: 24),
+
+                // Description field
+                const Text(
+                  'Descripción Corta',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFE6EDF3),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: descController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    hintText: '¿Qué vamos a construir hoy?',
+                    hintStyle: const TextStyle(color: Color(0xFF444c56)),
+                    filled: true,
+                    fillColor: const Color(0xFF0D1117),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF30363d)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFF30363d)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF0d0df2),
+                        width: 2,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                  ),
+                  style: const TextStyle(color: Color(0xFFE6EDF3)),
+                ),
+              ],
+            ),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Color(0xFFE6EDF3)),
+            ),
           ),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
-              final projectId = 'proj-${DateTime.now().millisecondsSinceEpoch}';
+              final projectName = nameController.text.trim();
+              if (projectName.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Por favor ingresa un nombre de proyecto'),
+                  ),
+                );
+                return;
+              }
               Navigator.pop(dialogContext);
-              // Use the parent context (screen context) for navigation
-              context.go('/workspace/$projectId');
+              context.go('/project-shell');
             },
-            child: const Text('Create'),
+            icon: const Icon(Icons.rocket_launch, size: 18),
+            label: const Text('Crear Proyecto'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF0d0df2),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            ),
           ),
         ],
       ),
     );
   }
-}
-
-class _DashboardScreen extends StatelessWidget {
-  const _DashboardScreen();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('SoftArchitect AI - Main Navigation'),
-      elevation: 0,
-    ),
-    body: SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Title
-              Text(
-                '🎯 Welcome to SoftArchitect AI',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'An interactive workspace for document generation',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
-              ),
-              const SizedBox(height: 32),
-
-              // Navigation buttons
-              Text(
-                'Available Screens:',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 16),
-
-              // Project Shell
-              _buildNavButton(
-                context,
-                icon: Icons.folder,
-                title: 'Project Shell (Basic)',
-                description: 'File tree view with preview panel',
-                onPressed: () => context.go('/project-shell'),
-              ),
-              const SizedBox(height: 12),
-
-              // Workspace (3-column IDE)
-              _buildNavButton(
-                context,
-                icon: Icons.dashboard,
-                title: '3-Column Workspace (Main)',
-                description: 'IDE-like interface with chat, files, and preview',
-                onPressed: () => context.go('/workspace'),
-              ),
-              const SizedBox(height: 12),
-
-              // Chat
-              _buildNavButton(
-                context,
-                icon: Icons.chat,
-                title: 'Chat Screen',
-                description: 'Sequential document generation chat',
-                onPressed: () => context.go('/chat'),
-              ),
-              const SizedBox(height: 12),
-
-              // Settings
-              _buildNavButton(
-                context,
-                icon: Icons.settings,
-                title: 'Settings',
-                description: 'Application configuration',
-                onPressed: () => context.go('/settings'),
-              ),
-              const SizedBox(height: 32),
-
-              // Info
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
-                  border: Border.all(color: Colors.blue),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '📋 About This Project',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'HU-3.3 implements a complete interactive IDE-like interface.',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-
-  static Widget _buildNavButton(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String description,
-    required VoidCallback onPressed,
-  }) => Material(
-    color: Colors.transparent,
-    child: InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).dividerColor),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, size: 32),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: Theme.of(context).textTheme.titleSmall),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.arrow_forward),
-          ],
-        ),
-      ),
-    ),
-  );
 }
 
 class _SettingsScreen extends StatelessWidget {
