@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/file_node.dart';
+import 'file_tree_node.dart';
 
-/// File tree widget - Displays project directory structure
+/// A widget that displays a hierarchical file tree structure.
 ///
 /// Features:
-/// - Recursive directory tree rendering with mock data
+/// - Recursive directory tree rendering
 /// - Expand/collapse directories
-/// - File selection with visual feedback
+/// - File/folder selection with visual feedback
 /// - Phase-colored folder icons
-/// - Navigable to any file/folder
+/// - Scrollable and responsive layout
 ///
-/// This widget is agnostic of data source and accepts file nodes as input.
+/// This widget is agnostic to the data source and accepts a root FileNode.
 class FileTreeWidget extends StatefulWidget {
   const FileTreeWidget({
     required this.onFileSelected,
@@ -20,21 +21,21 @@ class FileTreeWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Callback when a file/folder is selected
+  /// Callback triggered when a file or folder is selected.
   final ValueChanged<FileNode> onFileSelected;
 
-  /// Root file node to display
+  /// The root node of the file tree to display.
   final FileNode rootNode;
 
   @override
   State<FileTreeWidget> createState() => _FileTreeWidgetState();
 }
 
+/// State for FileTreeWidget. Manages selection and expansion state.
 class _FileTreeWidgetState extends State<FileTreeWidget> {
-  /// Currently selected file node
+  /// Currently selected file node.
   late FileNode _selectedNode;
-
-  /// Expanded folders (by id)
+  /// Set of expanded folder IDs.
   final Set<String> _expandedFolders = {};
 
   @override
@@ -44,6 +45,7 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
     _expandedFolders.add('root');
   }
 
+  /// Builds the main widget tree.
   @override
   Widget build(BuildContext context) => Container(
     decoration: const BoxDecoration(
@@ -80,7 +82,7 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
                 color: AppColors.textSecondary,
                 iconSize: 16,
                 onPressed: () {
-                  // Reload from backend
+                  // TODO: Implement reload from backend
                 },
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -99,7 +101,7 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
     ),
   );
 
-  /// Build recursive file tree widget
+  /// Recursively builds the file tree.
   Widget _buildFileTree(FileNode node, int depth) {
     final isFolder = node.children.isNotEmpty;
     final isExpanded = _expandedFolders.contains(node.id);
@@ -108,8 +110,11 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Node item
-        GestureDetector(
+        FileTreeNode(
+          node: node,
+          depth: depth,
+          isSelected: isSelected,
+          isExpanded: isExpanded,
           onTap: () {
             setState(() {
               _selectedNode = node;
@@ -123,168 +128,21 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
             });
             widget.onFileSelected(node);
           },
-          child: Container(
-            padding: EdgeInsets.only(
-              left: 6 + (depth * 18),
-              right: 6,
-              top: 2,
-              bottom: 2,
-            ),
-            color: isSelected ? AppColors.primary.withValues(alpha: 0.2) : null,
-            child: Row(
-              children: [
-                // Expand/collapse arrow
-                SizedBox(
-                  width: 16,
-                  child: isFolder
-                      ? GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (isExpanded) {
-                                _expandedFolders.remove(node.id);
-                              } else {
-                                _expandedFolders.add(node.id);
-                              }
-                            });
-                          },
-                          child: Icon(
-                            isExpanded
-                                ? Icons.keyboard_arrow_down
-                                : Icons.keyboard_arrow_right,
-                            size: 16,
-                            color: AppColors.textSecondary,
-                          ),
-                        )
-                      : const SizedBox(),
-                ),
-                const SizedBox(width: 4),
-
-                // Icon with phase color
-                _buildFolderIcon(node),
-                const SizedBox(width: 6),
-
-                // Name
-                Expanded(
-                  child: Text(
-                    node.name,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: isSelected
-                          ? AppColors.primary
-                          : AppColors.textSecondary,
-                      fontFamily: 'JetBrains Mono',
-                      fontWeight: isSelected
-                          ? FontWeight.w600
-                          : FontWeight.normal,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          onToggle: isFolder
+              ? () {
+                  setState(() {
+                    if (isExpanded) {
+                      _expandedFolders.remove(node.id);
+                    } else {
+                      _expandedFolders.add(node.id);
+                    }
+                  });
+                }
+              : null,
         ),
-
-        // Children
         if (isFolder && isExpanded)
           ...node.children.map((child) => _buildFileTree(child, depth + 1)),
       ],
     );
   }
-
-  /// Build folder icon with phase colors
-  /// Detects phase from path (e.g., "10-CONTEXT" → dirContext color)
-  Widget _buildFolderIcon(FileNode node) {
-    if (!node.isDirectory) {
-      return const Icon(
-        Icons.description,
-        size: 14,
-        color: AppColors.textSecondary,
-      );
-    }
-
-    final phaseColor = _getPhaseColorForPath(node.name);
-
-    // Custom folder icon: outline + semi-transparent fill
-    return CustomPaint(
-      size: const Size(14, 14),
-      painter: CustomFolderIconPainter(
-        strokeColor: phaseColor,
-        fillColor: phaseColor.withValues(alpha: 0.15),
-      ),
-    );
-  }
-
-  /// Get phase color from folder name
-  /// Examples: "10-CONTEXT" → dirContext (yellow)
-  Color _getPhaseColorForPath(String folderName) {
-    final name = folderName.toUpperCase();
-
-    if (name.contains('ROOT') || name.startsWith('00-')) {
-      return AppColors.dirRoot;
-    } else if (name.contains('CONTEXT') || name.startsWith('10-')) {
-      return AppColors.dirContext;
-    } else if (name.contains('REQUIREMENTS') || name.startsWith('20-')) {
-      return AppColors.dirRequirements;
-    } else if (name.contains('ARCHITECTURE') || name.startsWith('30-')) {
-      return AppColors.dirArchitecture;
-    } else if (name.contains('UI_UX') ||
-        name.contains('UI') ||
-        name.startsWith('35-')) {
-      return AppColors.dirUiUx;
-    } else if (name.contains('PLANNING') || name.startsWith('40-')) {
-      return AppColors.dirPlanning;
-    } else if (name.contains('META') || name.startsWith('99-')) {
-      return AppColors.dirMeta;
-    }
-    // Default: generic phase color
-    return AppColors.dirRoot;
-  }
-}
-
-/// Custom painter for folder icon with colored outline and transparent fill
-class CustomFolderIconPainter extends CustomPainter {
-  CustomFolderIconPainter({required this.strokeColor, required this.fillColor});
-  final Color strokeColor;
-  final Color fillColor;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Folder shape: top tab + main body
-    final paint = Paint()
-      ..color = fillColor
-      ..style = PaintingStyle.fill;
-
-    final strokePaint = Paint()
-      ..color = strokeColor
-      ..strokeWidth = 1.2
-      ..style = PaintingStyle.stroke;
-
-    // Main folder body (rounded rectangle)
-    final bodyRect = Rect.fromLTWH(1, 5, size.width - 2, size.height - 6);
-
-    // Draw filled folder
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(bodyRect, const Radius.circular(1)),
-      paint,
-    );
-
-    // Draw folder tab (small rectangle at top)
-    const tabRect = Rect.fromLTWH(1, 4, 6, 3);
-
-    canvas.drawRect(tabRect, paint);
-
-    // Draw outline
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(bodyRect, const Radius.circular(1)),
-      strokePaint,
-    );
-
-    canvas.drawRect(tabRect, strokePaint);
-  }
-
-  @override
-  bool shouldRepaint(CustomFolderIconPainter oldDelegate) =>
-      oldDelegate.strokeColor != strokeColor ||
-      oldDelegate.fillColor != fillColor;
 }

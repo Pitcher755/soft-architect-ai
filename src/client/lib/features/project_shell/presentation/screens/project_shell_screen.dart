@@ -84,22 +84,24 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
         const ProjectsSidebar(),
 
         // Column 1: File Explorer (resizable, collapsible)
-        if (_showFilesPanel) _buildResizableColumn(
-          width: _filesColumnWidth,
-          minWidth: 200,
-          maxWidth: 500,
-          onWidthChanged: (width) => setState(() => _filesColumnWidth = width),
-          child: FileTreeWidget(
-            onFileSelected: _onFileSelected,
-            rootNode: MockProjectData.mockProjectRoot,
+        if (_showFilesPanel)
+          _buildResizableColumn(
+            width: _filesColumnWidth,
+            minWidth: 200,
+            maxWidth: 1000,
+            onWidthChanged: (width) =>
+                setState(() => _filesColumnWidth = width),
+            child: FileTreeWidget(
+              onFileSelected: _onFileSelected,
+              rootNode: MockProjectData.mockProjectRoot,
+            ),
           ),
-        ),
 
         // Column 2: Chat Panel (resizable, expanded)
         _buildResizableColumn(
           width: null, // Expanded by default
           minWidth: 300,
-          maxWidth: 800,
+          maxWidth: 1200,
           onWidthChanged: (width) => setState(() {
             _filesColumnWidth = _filesColumnWidth;
             _markdownColumnWidth = _markdownColumnWidth;
@@ -109,7 +111,10 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
             children: [
               // Header with toggle buttons
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: const BoxDecoration(
                   color: AppColors.surfaceLight,
                   border: Border(bottom: BorderSide(color: AppColors.border)),
@@ -130,11 +135,11 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
                       children: [
                         IconButton(
                           icon: Icon(
-                            _showFilesPanel
-                                ? Icons.folder_open
-                                : Icons.folder,
+                            _showFilesPanel ? Icons.folder_open : Icons.folder,
                           ),
-                          tooltip: _showFilesPanel ? 'Ocultar archivos' : 'Mostrar archivos',
+                          tooltip: _showFilesPanel
+                              ? 'Ocultar archivos'
+                              : 'Mostrar archivos',
                           onPressed: () {
                             setState(() => _showFilesPanel = !_showFilesPanel);
                           },
@@ -147,9 +152,13 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
-                          tooltip: _showMarkdownPanel ? 'Ocultar preview' : 'Mostrar preview',
+                          tooltip: _showMarkdownPanel
+                              ? 'Ocultar preview'
+                              : 'Mostrar preview',
                           onPressed: () {
-                            setState(() => _showMarkdownPanel = !_showMarkdownPanel);
+                            setState(
+                              () => _showMarkdownPanel = !_showMarkdownPanel,
+                            );
                           },
                           iconSize: 18,
                           splashRadius: 20,
@@ -177,16 +186,18 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
         ),
 
         // Column 3: Markdown Preview (resizable, collapsible)
-        if (_showMarkdownPanel) _buildResizableColumn(
-          width: _markdownColumnWidth,
-          minWidth: 250,
-          maxWidth: 600,
-          onWidthChanged: (width) => setState(() => _markdownColumnWidth = width),
-          child: MarkdownPreviewWidget(
-            content: _fileContent,
-            filename: _selectedNode.name,
+        if (_showMarkdownPanel)
+          _buildResizableColumn(
+            width: _markdownColumnWidth,
+            minWidth: 250,
+            maxWidth: 1000,
+            onWidthChanged: (width) =>
+                setState(() => _markdownColumnWidth = width),
+            child: MarkdownPreviewWidget(
+              content: _fileContent,
+              filename: _selectedNode.name,
+            ),
           ),
-        ),
       ],
     ),
   );
@@ -230,10 +241,7 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
                         .toDouble();
                     onWidthChanged(clampedWidth);
                   },
-                  child: Container(
-                    width: 4,
-                    color: const Color(0xFF30363D),
-                  ),
+                  child: Container(width: 4, color: const Color(0xFF30363D)),
                 ),
               ),
             ),
