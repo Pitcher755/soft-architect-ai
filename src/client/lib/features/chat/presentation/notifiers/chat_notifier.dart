@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../../../../features/filesystem/presentation/notifiers/file_system_notifier.dart';
-import '../../../../project_shell/domain/exports.dart';
+import '../../../../features/project_shell/core/services/file_system_service.dart';
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';

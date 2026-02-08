@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../features/project_shell/presentation/widgets/projects_sidebar.dart';
+import '../../../../../../shared/presentation/widgets/projects_sidebar.dart';
 
 /// SettingsScreen - Application settings and configuration
 /// Features left sidebar for navigation
@@ -42,10 +42,7 @@ class SettingsScreen extends StatelessWidget {
                     SizedBox(height: 4),
                     Text(
                       'Ajustes de la aplicación (próximamente)',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF8b949e),
-                      ),
+                      style: TextStyle(fontSize: 14, color: Color(0xFF8b949e)),
                     ),
                   ],
                 ),
@@ -72,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Las opciones de configuración estarán disponibles próximamente.',
+                        'Las opciones de configuración estarán disponiblespróximamente.',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color(0xFF8b949e),

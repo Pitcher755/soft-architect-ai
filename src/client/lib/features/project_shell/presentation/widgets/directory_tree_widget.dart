@@ -3,7 +3,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/app_colors.dart';
-import '../../domain/entities/file_node.dart';
+import '../../../filesystem/domain/entities/file_node.dart';
 
 /// A hierarchical file tree widget styled like VS Code Explorer.
 ///
@@ -98,6 +98,8 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
     }
 
     // Directory node
+    final phaseColor = _getPhaseColor(node.name);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -126,11 +128,11 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                     color: AppColors.textSecondary,
                   ),
                 ),
-                // Folder icon
-                const Icon(
+                // Folder icon with phase color
+                Icon(
                   Icons.folder,
                   size: 16,
-                  color: AppColors.primaryLight,
+                  color: phaseColor,
                 ),
                 const SizedBox(width: 8),
                 // Folder name
@@ -160,6 +162,26 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
           ),
       ],
     );
+  }
+
+  /// Get phase color based on directory name
+  Color _getPhaseColor(String dirName) {
+    if (dirName.startsWith('00-')) {
+      return AppColors.dirRoot;
+    } else if (dirName.startsWith('10-')) {
+      return AppColors.dirContext;
+    } else if (dirName.startsWith('20-')) {
+      return AppColors.dirRequirements;
+    } else if (dirName.startsWith('30-')) {
+      return AppColors.dirArchitecture;
+    } else if (dirName.startsWith('35-')) {
+      return AppColors.dirUiUx;
+    } else if (dirName.startsWith('40-')) {
+      return AppColors.dirPlanning;
+    } else if (dirName.startsWith('99-')) {
+      return AppColors.dirMeta;
+    }
+    return AppColors.primaryLight;
   }
 
   /// Get icon for file type

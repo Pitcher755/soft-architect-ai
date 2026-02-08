@@ -3,11 +3,27 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 
-/// ProjectsSidebar - Left navigation sidebar for the projects dashboard
-/// Contains logo, navigation buttons, and settings
+/// ProjectsSidebar - Global navigation sidebar (64px fixed width)
+///
+/// Located in: lib/shared/presentation/widgets/ (global, not feature-specific)
+///
+/// Features:
+/// - 64px fixed left navigation bar
+/// - Logo with branding
+/// - Navigation buttons (Projects, Search, Settings)
+/// - Tooltips for accessibility
+/// - Bottom-anchored settings button
+///
+/// Used by: All main screens requiring project context
+/// Architecture: Presentation layer, no state management
+/// needed (stateful for search dialog)
 class ProjectsSidebar extends StatefulWidget {
   const ProjectsSidebar({this.onSearchTap, this.onSettingsTap, super.key});
+
+  /// Callback when search button is tapped
   final VoidCallback? onSearchTap;
+
+  /// Callback when settings button is tapped
   final VoidCallback? onSettingsTap;
 
   @override
@@ -15,13 +31,14 @@ class ProjectsSidebar extends StatefulWidget {
 }
 
 class _ProjectsSidebarState extends State<ProjectsSidebar> {
+  /// Handle search button tap - shows search dialog
   void _showSearchDialog(BuildContext context) {
     final searchController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Búsqueda Global'),
+        title: const Text('Global Search'),
         backgroundColor: AppColors.surfaceBg,
         titleTextStyle: const TextStyle(
           color: AppColors.textMain,
@@ -34,12 +51,12 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Search input field
+              // Search input
               TextField(
                 controller: searchController,
                 style: const TextStyle(color: AppColors.textMain),
                 decoration: InputDecoration(
-                  hintText: 'Escribe el término a buscar...',
+                  hintText: 'Search documents...',
                   hintStyle: const TextStyle(color: AppColors.textSecondary),
                   filled: true,
                   fillColor: AppColors.mainBg,
@@ -65,7 +82,7 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                 ),
                 onSubmitted: (value) {
                   if (value.isNotEmpty) {
-                    // TODO: Implement search logic with the search term
+                    // TODO: Implement search logic
                     debugPrint('Searching for: $value');
                     Navigator.pop(dialogContext);
                   }
@@ -73,41 +90,27 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                 autofocus: true,
               ),
               const SizedBox(height: 16),
-              // Buttons row
+
+              // Dialog buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(dialogContext),
                     child: const Text(
-                      'Cancelar',
+                      'Cancel',
                       style: TextStyle(color: AppColors.textSecondary),
                     ),
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton.icon(
                     onPressed: () {
-                      final searchTerm = searchController.text.trim();
-                      if (searchTerm.isNotEmpty) {
-                        // TODO: Implement search logic with the search term
-                        debugPrint('Searching for: $searchTerm');
+                      if (searchController.text.isNotEmpty) {
                         Navigator.pop(dialogContext);
                       }
                     },
                     icon: const Icon(Icons.search, size: 18),
-                    label: const Text('Buscar'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      elevation: 0,
-                    ),
+                    label: const Text('Search'),
                   ),
                 ],
               ),
@@ -127,7 +130,7 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
     ),
     child: Column(
       children: [
-        // Logo
+        // Logo / Brand
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 24),
           child: Container(
@@ -144,14 +147,15 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
             ),
           ),
         ),
-        // Navigation
+
+        // Navigation buttons
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             children: [
-              // Projects button (active)
+              // Projects button
               Tooltip(
-                message: 'Proyectos',
+                message: 'Projects',
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
@@ -161,11 +165,11 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.1),
+                        color: AppColors.primary.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
-                        Icons.folder_open,
+                        Icons.folder,
                         color: AppColors.primary,
                         size: 24,
                       ),
@@ -174,24 +178,22 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                 ),
               ),
               const SizedBox(height: 16),
+
               // Search button
               Tooltip(
-                message: 'Búsqueda Global',
+                message: 'Global Search',
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
                     onTap:
-                        widget.onSearchTap ??
-                        () {
-                          _showSearchDialog(context);
-                        },
+                        widget.onSearchTap ?? () => _showSearchDialog(context),
                     borderRadius: BorderRadius.circular(8),
-                    child: const SizedBox(
+                    child: SizedBox(
                       width: 48,
                       height: 48,
                       child: Icon(
                         Icons.search,
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondary.withValues(alpha: 0.7),
                         size: 24,
                       ),
                     ),
@@ -201,12 +203,14 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
             ],
           ),
         ),
+
         const Spacer(),
-        // Settings button
+
+        // Settings button (bottom)
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Tooltip(
-            message: 'Configuración',
+            message: 'Settings',
             child: Material(
               color: Colors.transparent,
               child: InkWell(

@@ -85,6 +85,43 @@ class AppColors {
   static const Color phase3Architecture = Color(0xFF60A5FA); // Blue
 
   // ==========================================================================
+  // DIRECTORY PHASE COLORS (por fase de proyecto)
+  // ==========================================================================
+  // Colores para directorios que representan diferentes fases del proyecto
+  // Usado en: Iconos de árbol de directorios, badges de fase
+  // Cantidad de archivos: 00-ROOT(4), 10-CONTEXT(3), 20-REQUIREMENTS(4),
+  // 30-ARCHITECTURE(6), 35-UI_UX(3), 40-PLANNING(4), 99-META(1)
+  // Total: 25 archivos
+
+  /// 00-ROOT: Root directory color (4 files)
+  /// Used in: Directory icon, folder accent
+  static const Color dirRoot = Color(0xFF94E2D5); // Teal/Cyan
+
+  /// 10-CONTEXT: Context phase directory (3 files)
+  /// Used in: Directory icon, folder accent (same as phase1Context)
+  static const Color dirContext = Color(0xFFFCD34D); // Yellow
+
+  /// 20-REQUIREMENTS: Requirements phase directory (4 files)
+  /// Used in: Directory icon, folder accent (same as phase2Requirements)
+  static const Color dirRequirements = Color(0xFF10B981); // Green
+
+  /// 30-ARCHITECTURE: Architecture phase directory (6 files)
+  /// Used in: Directory icon, folder accent (same as phase3Architecture)
+  static const Color dirArchitecture = Color(0xFF60A5FA); // Blue
+
+  /// 35-UI_UX: UI/UX design phase directory (3 files)
+  /// Used in: Directory icon, folder accent
+  static const Color dirUiUx = Color(0xFFEC4899); // Pink
+
+  /// 40-PLANNING: Planning phase directory (4 files)
+  /// Used in: Directory icon, folder accent
+  static const Color dirPlanning = Color(0xFFA855F7); // Purple
+
+  /// 99-META: Metadata/Meta directory (1 file)
+  /// Used in: Directory icon, folder accent
+  static const Color dirMeta = Color(0xFFFB923C); // Orange
+
+  // ==========================================================================
   // ICON COLORS
   // ==========================================================================
   // Project-specific icon colors from mock data

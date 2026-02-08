@@ -103,7 +103,8 @@ class _ProjectListViewState extends State<ProjectListView> {
   );
 }
 
-/// Mini card for project list - displays name, path, icon with phase color border
+/// Mini card for project list - displays name,
+/// path, icon with phase color border
 class _ProjectMiniCard extends StatelessWidget {
   const _ProjectMiniCard({
     required this.name,

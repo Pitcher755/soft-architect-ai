@@ -21,8 +21,7 @@ class ErrorBannerWidget extends StatelessWidget {
   final VoidCallback? onDismiss;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
+  Widget build(BuildContext context) => Material(
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
@@ -67,5 +66,4 @@ class ErrorBannerWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }

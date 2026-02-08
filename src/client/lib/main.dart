@@ -9,7 +9,7 @@ import 'core/config/theme_config.dart';
 import 'core/database_initializer.dart';
 import 'core/router/app_router.dart';
 import 'features/chat/presentation/notifiers/chat_notifier.dart';
-import 'project_shell/domain/services/file_system_service.dart';
+import 'features/project_shell/core/services/file_system_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

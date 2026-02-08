@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../shared/presentation/widgets/projects_sidebar.dart';
 import '../data/mock_projects_data.dart';
 import '../widgets/create_project_dialog.dart';
 import '../widgets/project_card.dart';
 import '../widgets/project_list_view.dart';
-import '../widgets/projects_sidebar.dart';
 
 /// ProjectWorkspaceScreen - Dashboard for managing projects
 /// Shows projects in a grid with options to expand and view all projects

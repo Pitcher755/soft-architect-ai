@@ -138,3 +138,12 @@ class FileSystemServiceImpl implements FileSystemService {
     }
   }
 }
+
+/// Custom exception for FileSystem operations
+class FileSystemException implements Exception {
+  FileSystemException(this.message);
+  final String message;
+
+  @override
+  String toString() => message;
+}
