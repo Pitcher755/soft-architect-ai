@@ -23,129 +23,226 @@ class ProjectCard extends StatelessWidget {
   final String modified;
   final VoidCallback onTap;
 
+  /// Acorta la ruta mostrando solo el nombre de la carpeta o últimos segmentos
+  String _getShortPath(String fullPath) {
+    if (fullPath.isEmpty) return '';
+
+    // Si contiene /, toma el último segmento (nombre de carpeta)
+    final segments = fullPath.split('/');
+    final lastSegment = segments.lastWhere(
+      (s) => s.isNotEmpty,
+      orElse: () => fullPath,
+    );
+
+    // Si el último segmento es muy largo, abrevia
+    if (lastSegment.length > 20) {
+      return '${lastSegment.substring(0, 17)}...';
+    }
+
+    return lastSegment;
+  }
+
   @override
-  Widget build(BuildContext context) => Material(
-    color: Colors.transparent,
-    child: InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF161B22),
-          border: Border.all(color: const Color(0xFF30363d)),
+  Widget build(BuildContext context) {
+    // Responsive sizing based on screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Determine sizing based on screen width
+    late double padding;
+    late double iconSize;
+    late double iconContainerSize;
+    late double nameFontSize;
+    late double pathFontSize;
+    late double dateFontSize;
+    late double pathIconSize;
+    late double arrowIconSize;
+    late double badgeFontSize;
+
+    if (screenWidth < 500) {
+      // Very small screens
+      padding = 10;
+      iconContainerSize = 24;
+      iconSize = 14;
+      nameFontSize = 11;
+      pathFontSize = 8;
+      dateFontSize = 7;
+      pathIconSize = 10;
+      arrowIconSize = 14;
+      badgeFontSize = 8;
+    } else if (screenWidth < 800) {
+      // Small to medium screens
+      padding = 12;
+      iconContainerSize = 28;
+      iconSize = 16;
+      nameFontSize = 13;
+      pathFontSize = 9;
+      dateFontSize = 8;
+      pathIconSize = 11;
+      arrowIconSize = 15;
+      badgeFontSize = 9;
+    } else {
+      // Large screens (default)
+      padding = 16;
+      iconContainerSize = 32;
+      iconSize = 18;
+      nameFontSize = 16;
+      pathFontSize = 11;
+      dateFontSize = 10;
+      pathIconSize = 12;
+      arrowIconSize = 16;
+      badgeFontSize = 10;
+    }
+
+    // AspectRatio asegura que la tarjeta mantenga la forma apaisada internamente
+    return AspectRatio(
+      aspectRatio: 1.9,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Top section
-            Column(
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF161B22),
+              border: Border.all(color: const Color(0xFF30363d)),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: EdgeInsets.all(padding),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Icon and phase badge
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: iconColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(6),
+                // --- Top section ---
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Icon and phase badge
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: iconContainerSize,
+                            height: iconContainerSize,
+                            decoration: BoxDecoration(
+                              color: iconColor.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Icon(icon, color: iconColor, size: iconSize),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: phaseColor.withValues(alpha: 0.1),
+                              border: Border.all(
+                                color: phaseColor.withValues(alpha: 0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              phase,
+                              style: TextStyle(
+                                fontSize: badgeFontSize,
+                                fontFamily: 'Courier',
+                                color: phaseColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Icon(icon, color: iconColor, size: 24),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: phaseColor.withValues(alpha: 0.1),
-                        border: Border.all(color: phaseColor.withValues(alpha: 0.3)),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        phase,
+                      const Spacer(), // Empuja el título al centro visual
+                      // Project name
+                      Text(
+                        name,
                         style: TextStyle(
-                          fontSize: 11,
-                          fontFamily: 'Courier',
-                          color: phaseColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                // Project name
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFE6EDF3),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 8),
-                // Project path
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.folder,
-                      size: 14,
-                      color: Color(0xFF8b949e),
-                    ),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        path,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'Courier',
-                          color: Color(0xFF8b949e),
+                          fontSize: nameFontSize,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFFE6EDF3),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      const SizedBox(height: 4),
+                      // Project path with tooltip
+                      Tooltip(
+                        message: path,
+                        child: SizedBox(
+                          height: pathFontSize + 4,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.folder_open,
+                                size: pathIconSize,
+                                color: const Color(0xFF8b949e),
+                              ),
+                              const SizedBox(width: 4),
+                              Flexible(
+                                child: Text(
+                                  _getShortPath(path),
+                                  style: TextStyle(
+                                    fontSize: pathFontSize,
+                                    fontFamily: 'Courier',
+                                    color: const Color(0xFF8b949e),
+                                    height: 1,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+                // --- Bottom section with metadata ---
+                Container(
+                  padding: EdgeInsets.only(
+                    top: screenWidth < 500
+                        ? 4
+                        : screenWidth < 800
+                        ? 6
+                        : 8,
+                  ),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Color(0xFF30363d), width: 0.5),
                     ),
-                  ],
+                  ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          'Mod: $modified',
+                          style: TextStyle(
+                            fontSize: dateFontSize,
+                            color: const Color(0xFF8b949e),
+                            height: 1,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward,
+                        size: arrowIconSize,
+                        color: const Color(0xFF8b949e),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            // Bottom section with metadata
-            Container(
-              padding: const EdgeInsets.only(top: 12),
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Color(0xFF30363d), width: 0.5),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Modificado: $modified',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: Color(0xFF8b949e),
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward,
-                    size: 18,
-                    color: Color(0xFF8b949e),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
