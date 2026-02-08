@@ -8,9 +8,9 @@ class AppColors {
   // Prevent instantiation
   AppColors._();
 
-  // ============================================================================
+  // ==========================================================================
   // PRIMARY ACCENT COLORS
-  // ============================================================================
+  // ==========================================================================
 
   /// Primary accent color - Used for buttons, active states, borders
   /// Used in: Buttons, selected states, primary borders, active sidebar items
@@ -18,9 +18,9 @@ class AppColors {
   static const Color primaryLight = Color(0xFF79C0FF); // Lighter blue
   static const Color primaryDark = Color(0xFF1F6FEB); // Darker blue
 
-  // ============================================================================
+  // ==========================================================================
   // BACKGROUND COLORS
-  // ============================================================================
+  // ==========================================================================
 
   /// Main scaffold background
   /// Used in: Scaffold, primary background
@@ -34,9 +34,9 @@ class AppColors {
   /// Used in: Nested containers, elevated surfaces
   static const Color surfaceLight = Color(0xFF21262D); // Lighter surface
 
-  // ============================================================================
+  // ==========================================================================
   // BORDER & DIVIDER COLORS
-  // ============================================================================
+  // ==========================================================================
 
   /// Default border color
   /// Used in: Card borders, dividers, subtle borders
@@ -46,9 +46,9 @@ class AppColors {
   /// Used in: Subtle separators, low-contrast borders
   static const Color borderLight = Color(0xFF6E7681); // Light gray
 
-  // ============================================================================
+  // ==========================================================================
   // TEXT COLORS
-  // ============================================================================
+  // ==========================================================================
 
   /// Primary text color (off-white)
   /// Used in: Headings, main content text, card titles
@@ -62,9 +62,9 @@ class AppColors {
   /// Used in: Disabled states, less important info
   static const Color textMuted = Color(0xFF6E7681); // Muted text
 
-  // ============================================================================
+  // ==========================================================================
   // PROJECT PHASE COLORS
-  // ============================================================================
+  // ==========================================================================
   // These represent different stages of a project lifecycle
   // Used in: Phase badges, cards, list items
   // Apply with: withValues(alpha: 0.1) for backgrounds, alpha: 0.4 for borders
@@ -84,9 +84,9 @@ class AppColors {
   /// Opacity: 0.1 (background), 0.4 (border), 0.6 (icon accent)
   static const Color phase3Architecture = Color(0xFF60A5FA); // Blue
 
-  // ============================================================================
+  // ==========================================================================
   // ICON COLORS
-  // ============================================================================
+  // ==========================================================================
   // Project-specific icon colors from mock data
   // Applied with: withValues(alpha: 0.1) for container backgrounds
 
@@ -130,9 +130,9 @@ class AppColors {
   /// Used in: Security Audit System icon
   static const Color iconOrangeRed = Color(0xFFF97316);
 
-  // ============================================================================
+  // ==========================================================================
   // SEMANTIC COLORS
-  // ============================================================================
+  // ==========================================================================
 
   /// Success/Approved color
   /// Used in: Positive actions, success states
@@ -152,17 +152,17 @@ class AppColors {
   /// Used in: Information, hints, tooltips
   static const Color info = Color(0xFF58A6FF); // Primary blue (accent)
 
-  // ============================================================================
+  // ==========================================================================
   // LANGUAGE-SPECIFIC COLORS
-  // ============================================================================
+  // ==========================================================================
 
   static const Color dartBlue = Color(0xFF00D2FC);
   static const Color pythonBlue = Color(0xFF3776AB);
   static const Color jsYellow = Color(0xFFF7DF1E);
 
-  // ============================================================================
+  // ==========================================================================
   // SYNTAX HIGHLIGHTING COLORS
-  // ============================================================================
+  // ==========================================================================
 
   static const Map<String, Color> syntaxColors = {
     'keyword': Color(0xFFFF7B72), // Red/Pink
@@ -174,9 +174,9 @@ class AppColors {
     'number': Color(0xFF79C0FF), // Blue
   };
 
-  // ============================================================================
+  // ==========================================================================
   // OPACITY REFERENCE GUIDE
-  // ============================================================================
+  // ==========================================================================
   // Use with: color.withValues(alpha: x)
   //
   // 0.1  → Very subtle backgrounds (icon containers, phase badges)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../core/theme/app_colors.dart';
 import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../domain/entities/directory_node.dart';
 import '../notifiers/markdown_preview_notifier.dart';
@@ -109,18 +110,24 @@ class _DirectoryTreeView extends StatelessWidget {
       return Icon(
         isExpanded ? Icons.folder_open : Icons.folder,
         size: _iconSize,
-        color: Colors.blue,
+        color: AppColors.primaryLight,
       );
     }
-    return const Icon(Icons.description, size: _iconSize, color: Colors.grey);
+    return const Icon(
+      Icons.description,
+      size: _iconSize,
+      color: AppColors.textSecondary,
+    );
   }
 
   Widget _buildNodeName() => Flexible(
     child: Text(
       node.name,
       style: TextStyle(
-        color: isSelected ? Colors.cyan : Colors.white,
-        backgroundColor: isSelected ? Colors.blue.withValues(alpha: 0.3) : null,
+        color: isSelected ? AppColors.primaryLight : AppColors.textMain,
+        backgroundColor: isSelected
+            ? AppColors.primary.withValues(alpha: 0.3)
+            : null,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
     ),

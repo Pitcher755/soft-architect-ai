@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/theme/app_colors.dart';
+
 /// CreateProjectDialog - Separated widget for creating new projects
 /// Encapsulates the entire dialog logic and UI
 class CreateProjectDialog {
@@ -15,7 +17,7 @@ class CreateProjectDialog {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        backgroundColor: const Color(0xFF161B22),
+        backgroundColor: AppColors.surfaceBg,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,7 +32,7 @@ class CreateProjectDialog {
             ),
             IconButton(
               onPressed: () => Navigator.pop(dialogContext),
-              icon: const Icon(Icons.close, color: Color(0xFF8b949e)),
+              icon: const Icon(Icons.close, color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -224,20 +226,20 @@ class CreateProjectDialog {
   /// Common input decoration for all text fields
   static InputDecoration _buildInputDecoration(String hint) => InputDecoration(
     hintText: hint,
-    hintStyle: const TextStyle(color: Color(0xFF444c56)),
+    hintStyle: const TextStyle(color: AppColors.textSecondary),
     filled: true,
-    fillColor: const Color(0xFF0D1117),
+    fillColor: AppColors.mainBg,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Color(0xFF30363d)),
+      borderSide: const BorderSide(color: AppColors.border),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Color(0xFF30363d)),
+      borderSide: const BorderSide(color: AppColors.border),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Color(0xFF0d0df2), width: 2),
+      borderSide: const BorderSide(color: AppColors.primary, width: 2),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
   );

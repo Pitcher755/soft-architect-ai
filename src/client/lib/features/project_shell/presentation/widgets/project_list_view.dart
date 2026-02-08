@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/theme/app_colors.dart';
+
 /// ProjectListView - Displays all projects in a scrollable list format
 /// Shows mini cards with project name, path, and phase color accent
 class ProjectListView extends StatefulWidget {
@@ -40,8 +42,8 @@ class _ProjectListViewState extends State<ProjectListView> {
         maxHeight: MediaQuery.of(context).size.height * 0.5,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFF161B22),
-        border: Border.all(color: const Color(0xFF58A6FF), width: 1.5),
+        color: AppColors.surfaceBg,
+        border: Border.all(color: AppColors.primary, width: 1.5),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -62,7 +64,7 @@ class _ProjectListViewState extends State<ProjectListView> {
                     child: const Icon(
                       Icons.close,
                       size: 18,
-                      color: Color(0xFF8b949e),
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ),
@@ -153,7 +155,7 @@ class _ProjectMiniCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFFE6EDF3),
+                    color: AppColors.textMain,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -167,7 +169,7 @@ class _ProjectMiniCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 11,
                     fontFamily: 'Courier',
-                    color: Color(0xFF8b949e),
+                    color: AppColors.textSecondary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

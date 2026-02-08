@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/theme/app_colors.dart';
+
 /// ProjectCard - Displays a single project in the dashboard grid
 /// Shows project icon, name, phase badge, path, and modification date
 class ProjectCard extends StatelessWidget {
@@ -103,8 +105,8 @@ class ProjectCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF161B22),
-              border: Border.all(color: const Color(0xFF30363d)),
+              color: AppColors.surfaceBg,
+              border: Border.all(color: AppColors.border),
               borderRadius: BorderRadius.circular(12),
             ),
             padding: EdgeInsets.all(padding),
@@ -139,7 +141,7 @@ class ProjectCard extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: phaseColor.withValues(alpha: 0.1),
                               border: Border.all(
-                                color: phaseColor.withValues(alpha: 0.3),
+                                color: phaseColor.withValues(alpha: 0.4),
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -162,7 +164,7 @@ class ProjectCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: nameFontSize,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xFFE6EDF3),
+                          color: AppColors.textMain,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -178,7 +180,7 @@ class ProjectCard extends StatelessWidget {
                               Icon(
                                 Icons.folder_open,
                                 size: pathIconSize,
-                                color: const Color(0xFF8b949e),
+                                color: AppColors.textSecondary,
                               ),
                               const SizedBox(width: 4),
                               Flexible(
@@ -187,7 +189,7 @@ class ProjectCard extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: pathFontSize,
                                     fontFamily: 'Courier',
-                                    color: const Color(0xFF8b949e),
+                                    color: AppColors.textSecondary,
                                     height: 1,
                                   ),
                                   maxLines: 1,
@@ -213,7 +215,7 @@ class ProjectCard extends StatelessWidget {
                   ),
                   decoration: const BoxDecoration(
                     border: Border(
-                      top: BorderSide(color: Color(0xFF30363d), width: 0.5),
+                      top: BorderSide(color: AppColors.border, width: 0.5),
                     ),
                   ),
                   child: Row(
@@ -223,7 +225,7 @@ class ProjectCard extends StatelessWidget {
                           'Mod: $modified',
                           style: TextStyle(
                             fontSize: dateFontSize,
-                            color: const Color(0xFF8b949e),
+                            color: AppColors.textSecondary,
                             height: 1,
                           ),
                           maxLines: 1,
@@ -233,7 +235,7 @@ class ProjectCard extends StatelessWidget {
                       Icon(
                         Icons.arrow_forward,
                         size: arrowIconSize,
-                        color: const Color(0xFF8b949e),
+                        color: AppColors.textSecondary,
                       ),
                     ],
                   ),

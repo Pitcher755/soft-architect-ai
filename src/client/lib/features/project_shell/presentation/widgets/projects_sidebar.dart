@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/theme/app_colors.dart';
+
 /// ProjectsSidebar - Left navigation sidebar for the projects dashboard
 /// Contains logo, navigation buttons, and settings
 class ProjectsSidebar extends StatefulWidget {
@@ -20,9 +22,9 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('Búsqueda Global'),
-        backgroundColor: const Color(0xFF161B22),
+        backgroundColor: AppColors.surfaceBg,
         titleTextStyle: const TextStyle(
-          color: Color(0xFFE6EDF3),
+          color: AppColors.textMain,
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
@@ -35,24 +37,24 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
               // Search input field
               TextField(
                 controller: searchController,
-                style: const TextStyle(color: Color(0xFFE6EDF3)),
+                style: const TextStyle(color: AppColors.textMain),
                 decoration: InputDecoration(
                   hintText: 'Escribe el término a buscar...',
-                  hintStyle: const TextStyle(color: Color(0xFF8b949e)),
+                  hintStyle: const TextStyle(color: AppColors.textSecondary),
                   filled: true,
-                  fillColor: const Color(0xFF0D1117),
+                  fillColor: AppColors.mainBg,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF30363d)),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF30363d)),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
-                      color: Color(0xFF58A6FF),
+                      color: AppColors.primary,
                       width: 1.5,
                     ),
                   ),
@@ -79,7 +81,7 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                     onPressed: () => Navigator.pop(dialogContext),
                     child: const Text(
                       'Cancelar',
-                      style: TextStyle(color: Color(0xFF8b949e)),
+                      style: TextStyle(color: AppColors.textSecondary),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -95,7 +97,7 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                     icon: const Icon(Icons.search, size: 18),
                     label: const Text('Buscar'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF58A6FF),
+                      backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -120,8 +122,8 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
   Widget build(BuildContext context) => Container(
     width: 64,
     decoration: const BoxDecoration(
-      color: Color(0xFF161B22),
-      border: Border(right: BorderSide(color: Color(0xFF30363d))),
+      color: AppColors.surfaceBg,
+      border: Border(right: BorderSide(color: AppColors.border)),
     ),
     child: Column(
       children: [
@@ -132,12 +134,12 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFF58A6FF).withValues(alpha: 0.2),
+              color: AppColors.primary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(
               Icons.terminal,
-              color: Color(0xFF58A6FF),
+              color: AppColors.primary,
               size: 24,
             ),
           ),
@@ -159,12 +161,12 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF58A6FF).withValues(alpha: 0.1),
+                        color: AppColors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
                         Icons.folder_open,
-                        color: Color(0xFF58A6FF),
+                        color: AppColors.primary,
                         size: 24,
                       ),
                     ),
@@ -189,7 +191,7 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                       height: 48,
                       child: Icon(
                         Icons.search,
-                        color: Color(0xFF8b949e),
+                        color: AppColors.textSecondary,
                         size: 24,
                       ),
                     ),
@@ -215,7 +217,7 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                   height: 48,
                   child: Icon(
                     Icons.settings,
-                    color: Color(0xFF8b949e),
+                    color: AppColors.textSecondary,
                     size: 24,
                   ),
                 ),

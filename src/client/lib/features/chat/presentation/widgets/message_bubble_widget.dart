@@ -88,7 +88,8 @@ class MessageBubbleWidget extends StatelessWidget {
 
   Color _getUserBubbleColor() => AppColors.primaryLight.withValues(alpha: 0.15);
 
-  Color _getAssistantBubbleColor() => AppColors.sidebarBg;
+  Color _getAssistantBubbleColor() =>
+      AppColors.primaryDark.withValues(alpha: 0.15);
 
   String _formatTime(DateTime dateTime) {
     final hour = dateTime.hour.toString().padLeft(2, '0');

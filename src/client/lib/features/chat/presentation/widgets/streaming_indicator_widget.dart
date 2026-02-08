@@ -70,7 +70,7 @@ class _StreamingIndicatorWidgetState extends State<StreamingIndicatorWidget>
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     decoration: const BoxDecoration(
-      color: AppColors.sidebarBg,
+      color: AppColors.phase3Architecture,
       border: Border(bottom: BorderSide(color: AppColors.border)),
     ),
     child: Column(

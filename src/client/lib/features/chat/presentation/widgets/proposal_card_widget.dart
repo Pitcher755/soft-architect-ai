@@ -24,7 +24,7 @@ class ProposalCardWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     margin: const EdgeInsets.symmetric(vertical: 12),
     decoration: BoxDecoration(
-      color: AppColors.sidebarBg,
+      color: AppColors.primaryDark.withValues(alpha: 0.15),
       border: Border.all(color: AppColors.border),
       borderRadius: BorderRadius.circular(12),
       boxShadow: [

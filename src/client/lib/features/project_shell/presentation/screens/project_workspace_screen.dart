@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/theme/app_colors.dart';
 import '../data/mock_projects_data.dart';
 import '../widgets/create_project_dialog.dart';
 import '../widgets/project_card.dart';
@@ -26,7 +27,7 @@ class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
     final displayedProjects = allProjects.take(8).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D1117),
+      backgroundColor: AppColors.mainBg,
       body: LayoutBuilder(
         builder: (context, windowConstraints) {
           const minWindowHeight = 500.0;
@@ -101,7 +102,7 @@ class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
                                   icon: const Icon(Icons.add, size: 20),
                                   label: const Text('Nuevo Proyecto'),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF58A6FF),
+                                    backgroundColor: AppColors.primary,
                                     foregroundColor: Colors.white,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 20,
@@ -193,11 +194,9 @@ class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
                                             : 'Ver todos los proyectos (${allProjects.length})',
                                       ),
                                       style: OutlinedButton.styleFrom(
-                                        foregroundColor: const Color(
-                                          0xFF58A6FF,
-                                        ),
+                                        foregroundColor: AppColors.primary,
                                         side: const BorderSide(
-                                          color: Color(0xFF30363d),
+                                          color: AppColors.border,
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 20,
