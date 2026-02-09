@@ -129,11 +129,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                   ),
                 ),
                 // Folder icon with phase color
-                Icon(
-                  Icons.folder,
-                  size: 16,
-                  color: phaseColor,
-                ),
+                Icon(Icons.folder, size: 16, color: phaseColor),
                 const SizedBox(width: 8),
                 // Folder name
                 Expanded(

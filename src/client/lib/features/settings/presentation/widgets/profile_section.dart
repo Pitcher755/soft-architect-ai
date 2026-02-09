@@ -75,8 +75,9 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                         color: avatarColors[settings.avatarIndex],
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: avatarColors[settings.avatarIndex]
-                              .withValues(alpha: 0.3),
+                          color: avatarColors[settings.avatarIndex].withValues(
+                            alpha: 0.3,
+                          ),
                           width: 3,
                         ),
                       ),
@@ -104,10 +105,7 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                     ),
                     label: const Text(
                       'Cambiar avatar',
-                      style: TextStyle(
-                        color: Color(0xFF58A6FF),
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Color(0xFF58A6FF), fontSize: 12),
                     ),
                   ),
                 ],
@@ -136,9 +134,7 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                       ),
                       decoration: InputDecoration(
                         hintText: 'Escribe tu nombre',
-                        hintStyle: const TextStyle(
-                          color: Color(0xFF8b949e),
-                        ),
+                        hintStyle: const TextStyle(color: Color(0xFF8b949e)),
                         filled: true,
                         fillColor: const Color(0xFF0D1117),
                         border: OutlineInputBorder(

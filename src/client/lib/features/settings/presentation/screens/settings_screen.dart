@@ -17,63 +17,56 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => const Scaffold(
-        backgroundColor: Color(0xFF0D1117),
-        body: Row(
-          children: [
-            // Left Sidebar
-            SizedBox(
-              width: 64,
-              height: double.infinity,
-              child: ProjectsSidebar(),
-            ),
+    backgroundColor: Color(0xFF0D1117),
+    body: Row(
+      children: [
+        // Left Sidebar
+        SizedBox(width: 64, height: double.infinity, child: ProjectsSidebar()),
 
-            // Main Content
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(32),
-                child: Column(
+        // Main Content
+        Expanded(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Configuración',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFE6EDF3),
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Personaliza tu experiencia en SoftArchitect AI',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF8b949e),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Configuración',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFE6EDF3),
+                        letterSpacing: -0.5,
+                      ),
                     ),
-                    SizedBox(height: 40),
-
-                    // Settings Sections (Modular Widgets)
-                    ProfileSection(),
-                    SizedBox(height: 32),
-                    StorageSection(),
-                    SizedBox(height: 32),
-                    AppearanceSection(),
-                    SizedBox(height: 32),
-                    AccessibilitySection(),
-                    SizedBox(height: 32),
-                    PerformanceSection(),
+                    SizedBox(height: 4),
+                    Text(
+                      'Personaliza tu experiencia en SoftArchitect AI',
+                      style: TextStyle(fontSize: 14, color: Color(0xFF8b949e)),
+                    ),
                   ],
                 ),
-              ),
+                SizedBox(height: 40),
+
+                // Settings Sections (Modular Widgets)
+                ProfileSection(),
+                SizedBox(height: 32),
+                StorageSection(),
+                SizedBox(height: 32),
+                AppearanceSection(),
+                SizedBox(height: 32),
+                AccessibilitySection(),
+                SizedBox(height: 32),
+                PerformanceSection(),
+              ],
             ),
-          ],
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }

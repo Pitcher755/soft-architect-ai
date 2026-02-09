@@ -34,15 +34,14 @@ class DocumentProposal {
     Map<String, dynamic>? metadata,
     ValidationState? validationState,
     DateTime? createdAt,
-  }) =>
-      DocumentProposal(
-        id: id ?? this.id,
-        docType: docType ?? this.docType,
-        content: content ?? this.content,
-        metadata: metadata ?? this.metadata,
-        validationState: validationState ?? this.validationState,
-        createdAt: createdAt ?? this.createdAt,
-      );
+  }) => DocumentProposal(
+    id: id ?? this.id,
+    docType: docType ?? this.docType,
+    content: content ?? this.content,
+    metadata: metadata ?? this.metadata,
+    validationState: validationState ?? this.validationState,
+    createdAt: createdAt ?? this.createdAt,
+  );
 
   @override
   bool operator ==(Object other) =>

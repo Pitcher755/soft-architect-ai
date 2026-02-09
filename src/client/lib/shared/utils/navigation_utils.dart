@@ -20,10 +20,7 @@ void showError(BuildContext context, String message) {
 /// Muestra un mensaje de éxito usando SnackBar
 void showSuccess(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      backgroundColor: AppColors.success,
-    ),
+    SnackBar(content: Text(message), backgroundColor: AppColors.success),
   );
 }
 

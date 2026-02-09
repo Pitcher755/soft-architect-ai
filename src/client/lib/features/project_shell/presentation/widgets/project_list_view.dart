@@ -28,9 +28,9 @@ class _ProjectListViewState extends State<ProjectListView> {
     // Sort projects alphabetically by name
     sortedProjects = List.from(widget.projects);
     sortedProjects.sort(
-      (a, b) => (a['name'] as String)
-          .toLowerCase()
-          .compareTo((b['name'] as String).toLowerCase()),
+      (a, b) => (a['name'] as String).toLowerCase().compareTo(
+        (b['name'] as String).toLowerCase(),
+      ),
     );
   }
 

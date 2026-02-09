@@ -58,9 +58,7 @@ class FileSystemNotifier extends StateNotifier<FileSystemState> {
 
   /// Trigger file tree refresh (call after file changes detected)
   void refresh() {
-    state = state.copyWith(
-      refreshCounter: state.refreshCounter + 1,
-    );
+    state = state.copyWith(refreshCounter: state.refreshCounter + 1);
   }
 }
 

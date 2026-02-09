@@ -17,36 +17,36 @@ class SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF161B22),
-          border: Border.all(color: const Color(0xFF30363d)),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Card Header
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  Icon(icon, size: 24, color: const Color(0xFF58A6FF)),
-                  const SizedBox(width: 12),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFFE6EDF3),
-                    ),
-                  ),
-                ],
+    decoration: BoxDecoration(
+      color: const Color(0xFF161B22),
+      border: Border.all(color: const Color(0xFF30363d)),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Card Header
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Icon(icon, size: 24, color: const Color(0xFF58A6FF)),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFFE6EDF3),
+                ),
               ),
-            ),
-            const Divider(color: Color(0xFF30363d), height: 1),
-            // Card Content
-            ...children,
-          ],
+            ],
+          ),
         ),
-      );
+        const Divider(color: Color(0xFF30363d), height: 1),
+        // Card Content
+        ...children,
+      ],
+    ),
+  );
 }

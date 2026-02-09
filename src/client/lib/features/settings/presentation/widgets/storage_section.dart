@@ -26,8 +26,10 @@ class StorageSection extends ConsumerWidget {
             children: [
               Container(
                 width: 220,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0D1117),
                   border: Border.all(color: const Color(0xFF30363d)),
@@ -68,7 +70,8 @@ class StorageSection extends ConsumerWidget {
     // TODO: Implement file_picker when package is added
     // For now, show a dialog to manually enter path
     final controller = TextEditingController(
-      text: ref.read(settingsProvider).projectDirectory ??
+      text:
+          ref.read(settingsProvider).projectDirectory ??
           '~/Documents/SoftArchitect',
     );
 

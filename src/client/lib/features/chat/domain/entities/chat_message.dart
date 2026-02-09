@@ -27,15 +27,14 @@ class ChatMessage {
     String? timestamp,
     bool? isStreaming,
     Map<String, dynamic>? metadata,
-  }) =>
-      ChatMessage(
-        id: id ?? this.id,
-        role: role ?? this.role,
-        content: content ?? this.content,
-        timestamp: timestamp ?? this.timestamp,
-        isStreaming: isStreaming ?? this.isStreaming,
-        metadata: metadata ?? this.metadata,
-      );
+  }) => ChatMessage(
+    id: id ?? this.id,
+    role: role ?? this.role,
+    content: content ?? this.content,
+    timestamp: timestamp ?? this.timestamp,
+    isStreaming: isStreaming ?? this.isStreaming,
+    metadata: metadata ?? this.metadata,
+  );
 
   @override
   bool operator ==(Object other) =>
