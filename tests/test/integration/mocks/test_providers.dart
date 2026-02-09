@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:softarchitect_ai/features/chat/domain/repositories/chat_repository.dart';
-import 'package:softarchitect_ai/project_shell/domain/services/file_system_service.dart';
+import 'package:softarchitect_ai/features/project_shell/core/services/file_system_service.dart';
 import 'mock_services.dart';
 
 /// Provides mocked dependencies for integration tests.

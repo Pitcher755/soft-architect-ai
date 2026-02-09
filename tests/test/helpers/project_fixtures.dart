@@ -1,5 +1,5 @@
 // tests/fixtures/project_fixtures.dart
-import 'package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart';
+import 'package:softarchitect_ai/features/filesystem/domain/entities/file_node.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project.dart';
 
 /// Test project entity

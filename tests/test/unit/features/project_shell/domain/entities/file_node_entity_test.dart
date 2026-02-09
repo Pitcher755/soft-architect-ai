@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart';
+import 'package:softarchitect_ai/features/filesystem/domain/entities/file_node.dart';
 
 void main() {
   group('FileNode Entity', () {

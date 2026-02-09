@@ -1,6 +1,6 @@
 import 'package:mockito/mockito.dart';
 import 'package:softarchitect_ai/features/chat/domain/repositories/chat_repository.dart';
-import 'package:softarchitect_ai/project_shell/domain/services/file_system_service.dart';
+import 'package:softarchitect_ai/features/project_shell/core/services/file_system_service.dart';
 
 // Generate mocks using: flutter pub run build_runner build
 class MockChatRepository extends Mock implements ChatRepository {
