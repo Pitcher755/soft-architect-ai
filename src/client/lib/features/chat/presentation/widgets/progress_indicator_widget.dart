@@ -2,14 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../project_shell/domain/models/project_phase.dart';
 import '../../../settings/presentation/providers/settings_provider.dart';
-
-class _PhaseDef {
-  const _PhaseDef(this.id, this.fileCount, this.color);
-  final String id;
-  final int fileCount;
-  final Color color;
-}
 
 class ProgressIndicatorWidget extends ConsumerStatefulWidget {
   const ProgressIndicatorWidget({
@@ -30,22 +24,12 @@ class _ProgressIndicatorWidgetState extends ConsumerState<ProgressIndicatorWidge
     with SingleTickerProviderStateMixin {
   AnimationController? _shimmerController;
 
-  final List<_PhaseDef> _phases = const [
-    _PhaseDef('ROOT', 4, AppColors.dirRoot),
-    _PhaseDef('CONTEXT', 3, AppColors.dirContext),
-    _PhaseDef('REQUIREMENTS', 4, AppColors.dirRequirements),
-    _PhaseDef('ARCHITECTURE', 6, AppColors.dirArchitecture),
-    _PhaseDef('UI_UX', 3, AppColors.dirUiUx),
-    _PhaseDef('PLANNING', 4, AppColors.dirPlanning),
-    _PhaseDef('META', 1, AppColors.dirMeta),
-  ];
-
   late int _totalFiles;
 
   @override
   void initState() {
     super.initState();
-    _totalFiles = _phases.fold(0, (sum, p) => sum + p.fileCount);
+    _totalFiles = ProjectPhase.totalFileCount;
   }
 
   @override
@@ -163,8 +147,8 @@ class _ProgressIndicatorWidgetState extends ConsumerState<ProgressIndicatorWidge
     final segments = <Widget>[];
     var accumulator = 0;
 
-    for (var i = 0; i < _phases.length; i++) {
-      final phase = _phases[i];
+    for (var i = 0; i < ProjectPhase.all.length; i++) {
+      final phase = ProjectPhase.all[i];
       final startRange = accumulator;
       final endRange = accumulator + phase.fileCount;
 
@@ -197,12 +181,12 @@ class _ProgressIndicatorWidgetState extends ConsumerState<ProgressIndicatorWidge
             shimmerController: _shimmerController,
             enableAnimations: enableAnimations,
             isFirst: i == 0,
-            isLast: i == _phases.length - 1,
+            isLast: i == ProjectPhase.all.length - 1,
           ),
         ),
       );
 
-      if (i < _phases.length - 1) {
+      if (i < ProjectPhase.all.length - 1) {
         segments.add(const SizedBox(width: 3));
       }
 

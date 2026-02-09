@@ -16,6 +16,7 @@ class ChatPanelWidget extends StatefulWidget {
     this.proposal,
     this.showError = false,
     this.errorMessage = '',
+    this.isGuideProject = false,
     super.key,
   });
 
@@ -33,6 +34,9 @@ class ChatPanelWidget extends StatefulWidget {
 
   /// Error message to display in the error banner.
   final String errorMessage;
+
+  /// Whether this is the guide project (shows help assistant message).
+  final bool isGuideProject;
 
   @override
   State<ChatPanelWidget> createState() => _ChatPanelWidgetState();
@@ -172,25 +176,35 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
   );
 
   /// Builds the empty state widget for the chat panel.
-  Widget _buildEmptyState() => Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.chat_outlined, size: 64, color: Colors.grey[600]),
-        const SizedBox(height: 24),
-        Text(
-          'Welcome to SoftArchitect AI Chat',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineSmall?.copyWith(color: const Color(0xFFC9D1D9)),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Ask questions or describe what you need.\nI will generate document proposals for you.',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey[400], fontSize: 14),
-        ),
-      ],
-    ),
-  );
+  Widget _buildEmptyState() {
+    final title = widget.isGuideProject
+        ? 'Asistente de Documentación'
+        : 'SoftArchitect AI Chat';
+    final subtitle = widget.isGuideProject
+        ? '¿Tienes alguna pregunta sobre el funcionamiento de SoftArchitect AI?\n¡Estoy aquí para ayudarte a comprender todo!'
+        : 'Describe lo que necesitas o haz preguntas.\nGeneraré propuestas de documentos para tu proyecto.';
+    final icon = widget.isGuideProject ? Icons.help_outline : Icons.chat_outlined;
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 64, color: Colors.grey[600]),
+          const SizedBox(height: 24),
+          Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(color: const Color(0xFFC9D1D9)),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey[400], fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
 }

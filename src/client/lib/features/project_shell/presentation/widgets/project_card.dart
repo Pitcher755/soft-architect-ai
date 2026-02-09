@@ -27,7 +27,9 @@ class ProjectCard extends StatelessWidget {
 
   /// Acorta la ruta mostrando solo el nombre de la carpeta o últimos segmentos
   String _getShortPath(String fullPath) {
-    if (fullPath.isEmpty) return '';
+    if (fullPath.isEmpty) {
+      return '';
+    }
 
     // Si contiene /, toma el último segmento (nombre de carpeta)
     final segments = fullPath.split('/');
@@ -95,7 +97,8 @@ class ProjectCard extends StatelessWidget {
       badgeFontSize = 10;
     }
 
-    // AspectRatio asegura que la tarjeta mantenga la forma apaisada internamente
+    // AspectRatio asegura que la tarjeta mantenga
+    //la forma apaisada internamente
     return AspectRatio(
       aspectRatio: 1.9,
       child: Material(

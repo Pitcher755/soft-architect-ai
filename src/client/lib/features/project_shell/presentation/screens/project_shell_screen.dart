@@ -178,6 +178,8 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
                             Expanded(
                               child: ChatPanelWidget(
                                 messages: MockProjectData.mockChatMessages,
+                                isGuideProject: widget.projectPath
+                                    .startsWith('mock://softarchitect-guide'),
                               ),
                             ),
                           ],

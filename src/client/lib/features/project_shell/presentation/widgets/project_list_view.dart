@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 
@@ -89,7 +90,14 @@ class _ProjectListViewState extends State<ProjectListView> {
                       iconColor: project['iconColor'] as Color,
                       phaseColor: project['phaseColor'] as Color,
                       onTap: () {
-                        // TODO: Navigate to project
+                        context.go(
+                          Uri(
+                            path: '/project-shell',
+                            queryParameters: {
+                              'path': project['path'] as String,
+                            },
+                          ).toString(),
+                        );
                       },
                     );
                   }),
