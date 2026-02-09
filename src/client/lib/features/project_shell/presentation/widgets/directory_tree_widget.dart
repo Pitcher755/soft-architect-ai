@@ -2,7 +2,8 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/file_node.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../filesystem/domain/entities/file_node.dart';
 
 /// A hierarchical file tree widget styled like VS Code Explorer.
 ///
@@ -49,27 +50,21 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
 
   /// Recursively build tree nodes
   Widget _buildTreeNode(FileNode node) {
-    const hoverBg = Color(0xFF21262d);
-    const selectedBg = Color(0xFF388bfd);
-    const selectedFg = Color(0xFFFFFFFF);
-    const textPrimary = Color(0xFFE6EDF3);
-    const textSecondary = Color(0xFF8b949e);
-    const iconColor = Color(0xFF79c0ff);
-    const folderColor = Color(0xFF79c0ff);
-
     final isSelected = widget.selectedNode?.id == node.id;
     final isExpanded = _expandedDirs.contains(node.id);
 
     if (!node.isDirectory) {
       // File node
       return Container(
-        color: isSelected ? selectedBg : Colors.transparent,
+        color: isSelected
+            ? AppColors.primary.withValues(alpha: 0.3)
+            : Colors.transparent,
         child: InkWell(
           onTap: () {
             developer.log('File selected: ${node.name}');
             widget.onFileSelected(node);
           },
-          hoverColor: hoverBg,
+          hoverColor: AppColors.surfaceLight,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
@@ -78,7 +73,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                   width: 20,
                   child: _getFileIcon(
                     node.name,
-                    color: isSelected ? selectedFg : iconColor,
+                    color: isSelected ? Colors.white : AppColors.primaryLight,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -86,7 +81,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                   child: Text(
                     node.name,
                     style: TextStyle(
-                      color: isSelected ? selectedFg : textPrimary,
+                      color: isSelected ? Colors.white : AppColors.textMain,
                       fontSize: 12,
                       fontWeight: isSelected
                           ? FontWeight.w500
@@ -103,6 +98,8 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
     }
 
     // Directory node
+    final phaseColor = _getPhaseColor(node.name);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -117,7 +114,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
             });
             developer.log('Directory toggled: ${node.name}');
           },
-          hoverColor: hoverBg,
+          hoverColor: AppColors.surfaceLight,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
@@ -128,18 +125,18 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                   child: Icon(
                     isExpanded ? Icons.expand_more : Icons.chevron_right,
                     size: 16,
-                    color: textSecondary,
+                    color: AppColors.textSecondary,
                   ),
                 ),
-                // Folder icon
-                const Icon(Icons.folder, size: 16, color: folderColor),
+                // Folder icon with phase color
+                Icon(Icons.folder, size: 16, color: phaseColor),
                 const SizedBox(width: 8),
                 // Folder name
                 Expanded(
                   child: Text(
                     node.name,
                     style: const TextStyle(
-                      color: textPrimary,
+                      color: AppColors.textMain,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -161,6 +158,26 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
           ),
       ],
     );
+  }
+
+  /// Get phase color based on directory name
+  Color _getPhaseColor(String dirName) {
+    if (dirName.startsWith('00-')) {
+      return AppColors.dirRoot;
+    } else if (dirName.startsWith('10-')) {
+      return AppColors.dirContext;
+    } else if (dirName.startsWith('20-')) {
+      return AppColors.dirRequirements;
+    } else if (dirName.startsWith('30-')) {
+      return AppColors.dirArchitecture;
+    } else if (dirName.startsWith('35-')) {
+      return AppColors.dirUiUx;
+    } else if (dirName.startsWith('40-')) {
+      return AppColors.dirPlanning;
+    } else if (dirName.startsWith('99-')) {
+      return AppColors.dirMeta;
+    }
+    return AppColors.primaryLight;
   }
 
   /// Get icon for file type

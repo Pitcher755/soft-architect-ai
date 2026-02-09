@@ -82,7 +82,14 @@ Para cada Feature, se deben crear obligatoriamente estos elementos:
 2. **Estilo de Código:**
 * Dart: `flutter_lints` (reglas estrictas).
 * Python: `flake8` y `black` formatter.
+* **Color Opacity en Dart/Flutter:** NEVER use deprecated `withOpacity()`. ALWAYS use `withValues(alpha: x.x)` for color opacity.
+  ```dart
+  // ❌ WRONG (deprecated)
+  color.withOpacity(0.5)
 
+  // ✅ CORRECT
+  color.withValues(alpha: 0.5)
+  ```
 
 3. **Manejo de Errores:** Nunca exponer stack traces al usuario. Usar `Either<Failure, Success>` en Dart.
 

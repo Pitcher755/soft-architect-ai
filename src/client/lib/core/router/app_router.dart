@@ -1,48 +1,36 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/project_shell/presentation/screens/project_shell_screen.dart';
+import '../../features/project_shell/presentation/screens/project_workspace_screen.dart';
+import '../../features/settings/presentation/screens/settings_screen.dart';
 
 /// Central routing configuration for the application.
 /// Uses GoRouter for declarative navigation.
+///
+/// Routes:
+/// - `/workspace` → Projects Management Dashboard (home)
+/// - `/project-shell?path=...` → ProjectShellScreen for active project editing with path
+/// - `/settings` → Settings screen
 GoRouter createAppRouter() => GoRouter(
-  initialLocation: '/project-shell',
+  initialLocation: '/workspace',
   routes: [
+    GoRoute(
+      path: '/workspace',
+      name: 'workspace',
+      builder: (context, state) => const ProjectWorkspaceScreen(),
+    ),
     GoRoute(
       path: '/project-shell',
       name: 'project-shell',
-      builder: (context, state) => const ProjectShellScreen(),
-    ),
-    GoRoute(
-      path: '/chat',
-      name: 'chat',
-      builder: (context, state) => const _ChatScreen(),
+      builder: (context, state) {
+        final path = state.uri.queryParameters['path'] ?? '';
+        return ProjectShellScreen(projectPath: path);
+      },
     ),
     GoRoute(
       path: '/settings',
       name: 'settings',
-      builder: (context, state) => const _SettingsScreen(),
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );
-
-// TODO: Replace with actual screens from presentation layers
-class _ChatScreen extends StatelessWidget {
-  const _ChatScreen();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Chat')),
-    body: const Center(child: Text('Chat Feature - Coming Soon')),
-  );
-}
-
-class _SettingsScreen extends StatelessWidget {
-  const _SettingsScreen();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Settings')),
-    body: const Center(child: Text('Settings Feature - Coming Soon')),
-  );
-}

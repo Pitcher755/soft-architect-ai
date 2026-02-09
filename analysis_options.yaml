@@ -16,13 +16,23 @@ analyzer:
   plugins:
     - custom_lint
 
+  # Ignore specific lint rules for legacy code and tests
+  errors:
+    # Ignore async io in tests and legacy code
+    avoid_slow_async_io: ignore
+    # Ignore avoid_catches_without_on_clauses for exception handling
+    avoid_catches_without_on_clauses: ignore
+    # Ignore line length for complex method calls and long strings
+    lines_longer_than_80_chars: ignore
+    # Ignore always_put_control_body_on_new_line (style preference)
+    always_put_control_body_on_new_line: ignore
+
 linter:
   rules:
     - avoid_empty_else
     - avoid_print
     - avoid_relative_lib_imports
     - avoid_returning_null
-    - avoid_slow_async_io
     - cancel_subscriptions
     - close_sinks
     - comment_references

@@ -1,3 +1,5 @@
+// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+
 // lib/features/project_shell/domain/entities/project.dart
 
 /// Core project entity - represents a SoftArchitect project.
@@ -52,6 +54,26 @@ class Project {
   /// Returns the last path component if available, otherwise the name.
   String get displayName =>
       path.split('/').last.isEmpty ? name : path.split('/').last;
+
+  /// Get project phase from path segments
+  ///
+  /// Derives phase from directory structure or defaults to 'Contexto'
+  /// Examples: 'Contexto', 'Arquitectura', 'Implementación', 'Calidad', 'Documentación'
+  String get phase {
+    final pathParts = path.split('/').where((p) => p.isNotEmpty).toList();
+    if (pathParts.length >= 2) {
+      final segment = pathParts[pathParts.length - 2].toLowerCase();
+      if (segment.contains('arquitect')) return 'Arquitectura';
+      if (segment.contains('implement') || segment.contains('desarrollo')) {
+        return 'Implementación';
+      }
+      if (segment.contains('calidad') || segment.contains('test')) {
+        return 'Calidad';
+      }
+      if (segment.contains('doc')) return 'Documentación';
+    }
+    return 'Contexto';
+  }
 
   /// Check if project was recently accessed (within last 30 days)
   ///

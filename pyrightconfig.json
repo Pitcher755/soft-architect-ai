@@ -3,7 +3,7 @@
     "src/server/app",
     "src/server/services",
     "src/server/core",
-    "src/server/tests"
+    "tests/python"
   ],
   "exclude": [
     "**/node_modules",

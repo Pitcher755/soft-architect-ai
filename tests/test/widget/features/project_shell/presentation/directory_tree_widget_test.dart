@@ -1,7 +1,7 @@
 // tests/widget/flutter/features/project_shell/presentation/directory_tree_widget_test.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart';
+import 'package:softarchitect_ai/features/filesystem/domain/entities/file_node.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/directory_tree_widget.dart';
 
 import '../../../../helpers/project_fixtures.dart';

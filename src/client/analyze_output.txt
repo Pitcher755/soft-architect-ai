@@ -1,0 +1,287 @@
+Analyzing client...
+
+   info • The line length exceeds the 80-character limit • lib/features/chat/presentation/screens/chat_screen.dart:58:81 • lines_longer_than_80_chars
+   info • Use 'const' with the constructor to improve performance • lib/features/chat/presentation/screens/chat_screen.dart:77:13 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/chat/presentation/screens/chat_screen.dart:79:22 • prefer_const_constructors
+   info • The value of the argument is redundant because it matches the default value • lib/features/chat/presentation/screens/chat_screen.dart:94:26 • avoid_redundant_argument_values
+   info • Statement should be on a separate line • lib/features/chat/presentation/screens/chat_screen.dart:187:26 • always_put_control_body_on_new_line
+   info • Unnecessary use of a block function body • lib/features/filesystem/presentation/screens/file_system_screen.dart:17:53 • prefer_expression_function_bodies
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/filesystem/presentation/screens/file_system_screen.dart:61:52 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps • lib/features/project_shell/presentation/screens/project_shell_screen.dart:220:29 • use_build_context_synchronously
+   info • Statement should be on a separate line • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:24:24 • always_put_control_body_on_new_line
+   info • Statement should be on a separate line • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:25:25 • always_put_control_body_on_new_line
+   info • Statement should be on a separate line • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:26:25 • always_put_control_body_on_new_line
+   info • Statement should be on a separate line • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:27:25 • always_put_control_body_on_new_line
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:85:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:124:50 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:126:52 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:152:41 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/project_shell/presentation/screens/project_workspace_screen.dart:168:38 • deprecated_member_use
+   info • Unnecessary 'late' modifier • test/helpers/project_fixtures.dart:6:1 • unnecessary_late
+   info • The value of the argument is redundant because it matches the default value • test/helpers/project_fixtures.dart:10:39 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/helpers/project_fixtures.dart:11:15 • avoid_redundant_argument_values
+   info • Unnecessary 'late' modifier • test/helpers/project_fixtures.dart:15:1 • unnecessary_late
+   info • Use 'const' with the constructor to improve performance • test/helpers/project_fixtures.dart:15:27 • prefer_const_constructors
+   info • Unnecessary 'late' modifier • test/helpers/project_fixtures.dart:24:1 • unnecessary_late
+   info • Unnecessary 'late' modifier • test/helpers/project_fixtures.dart:33:1 • unnecessary_late
+   info • Use 'const' with the constructor to improve performance • test/helpers/project_fixtures.dart:39:5 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/chat/chat_flow_test.dart:18:8 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/chat/chat_flow_test.dart:25:81 • lines_longer_than_80_chars
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/chat/chat_flow_test.dart:75:8 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/data/project_creation_flow_test.dart:85:81 • lines_longer_than_80_chars
+   info • Unnecessary type annotation on a local variable • test/integration/features/project_shell/data/project_creation_flow_test.dart:178:12 • omit_local_variable_types
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/debug_directory_test.dart:10:7 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/debug_directory_test.dart:13:26 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/debug_directory_test.dart:19:11 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:11:7 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:16:27 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:22:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:28:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:34:15 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:40:15 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:46:19 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:52:19 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:62:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:68:15 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:164:7 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:185:81 • lines_longer_than_80_chars
+   info • Local variables should be final • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:188:7 • prefer_final_locals
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:208:7 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:211:26 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:217:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:223:15 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:229:19 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart:270:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:8:70 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:8:81 • lines_longer_than_80_chars
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:44:9 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:45:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:46:19 • prefer_const_constructors
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:69:81 • lines_longer_than_80_chars
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:72:61 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:72:81 • lines_longer_than_80_chars
+   info • Unnecessary duplication of receiver • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:75:7 • cascade_invocations
+   info • Unnecessary duplication of receiver • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:76:7 • cascade_invocations
+   info • Unnecessary type annotation on a local variable • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:77:12 • omit_local_variable_types
+   info • Unnecessary duplication of receiver • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:79:9 • cascade_invocations
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:99:64 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:99:81 • lines_longer_than_80_chars
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:122:9 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:123:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:124:19 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:144:65 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:144:81 • lines_longer_than_80_chars
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:157:9 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:158:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:159:19 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:173:59 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:173:81 • lines_longer_than_80_chars
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:184:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:185:19 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:199:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:200:19 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:211:61 • avoid_types_on_closure_parameters
+   info • The line length exceeds the 80-character limit • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:211:81 • lines_longer_than_80_chars
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:216:9 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:217:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:218:19 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:234:9 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:235:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/markdown_preview_flow_test.dart:236:19 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:13:7 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:24:18 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:24:36 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:37:7 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:47:18 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:47:36 • prefer_const_constructors
+   info • Unnecessary use of a block function body • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:65:42 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:77:59 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/integration/features/project_shell/presentation/project_shell_screen_flow_test.dart:105:43 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/integration/mocks/mock_services.dart:12:5 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/integration/mocks/mock_services.dart:108:68 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/integration/mocks/test_providers.dart:7:67 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/integration/mocks/test_providers.dart:12:39 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/unit/features/chat/presentation/notifiers/chat_notifier_test.dart:33:62 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • test/unit/features/filesystem/infrastructure/logging/audit_logger_test.dart:158:81 • lines_longer_than_80_chars
+   info • Use a raw string to avoid using escapes • test/unit/features/filesystem/infrastructure/security/path_validator_test.dart:74:36 • use_raw_strings
+   info • Use 'const' with the constructor to improve performance • test/unit/features/filesystem/infrastructure/security/path_validator_test.dart:144:25 • prefer_const_constructors
+   info • Use interpolation to compose strings and values • test/unit/features/filesystem/infrastructure/security/path_validator_test.dart:145:24 • prefer_interpolation_to_compose_strings
+   info • Use 'const' with the constructor to improve performance • test/unit/features/filesystem/infrastructure/security/path_validator_test.dart:155:25 • prefer_const_constructors
+   info • Use 'const' for final variables initialized to a constant value • test/unit/features/filesystem/infrastructure/services/filesystem_service_test.dart:105:9 • prefer_const_declarations
+   info • Use 'const' for final variables initialized to a constant value • test/unit/features/filesystem/infrastructure/services/filesystem_service_test.dart:117:9 • prefer_const_declarations
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/filesystem/infrastructure/services/filesystem_service_test.dart:121:23 • avoid_redundant_argument_values
+   info • Use 'const' for final variables initialized to a constant value • test/unit/features/filesystem/infrastructure/services/filesystem_service_test.dart:143:9 • prefer_const_declarations
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/data/sqlite_data_source_test.dart:30:47 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/data/sqlite_data_source_test.dart:48:49 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/data/sqlite_data_source_test.dart:67:47 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/data/sqlite_data_source_test.dart:90:47 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/data/sqlite_data_source_test.dart:97:47 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/data/sqlite_data_source_test.dart:124:47 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/data/sqlite_data_source_test.dart:145:47 • avoid_redundant_argument_values
+   info • Use 'const' for final variables initialized to a constant value • test/unit/features/project_shell/domain/directory_tree_use_case_test.dart:9:7 • prefer_const_declarations
+   info • Use 'const' for final variables initialized to a constant value • test/unit/features/project_shell/domain/directory_tree_use_case_test.dart:15:7 • prefer_const_declarations
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:8:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:22:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:35:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:57:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:68:21 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:79:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:90:21 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:103:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:133:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:134:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:140:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:146:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:158:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:164:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:170:28 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:185:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:196:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:208:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:219:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:232:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:251:21 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:262:24 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:273:24 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:286:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:293:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:304:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:311:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:322:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:329:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:342:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:358:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:370:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:382:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:394:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:406:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/file_node_entity_test.dart:413:23 • prefer_const_constructors
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/domain/entities/project_entity_test.dart:24:43 • avoid_redundant_argument_values
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/entities/project_entity_test.dart:158:51 • prefer_const_constructors
+   info • The line length exceeds the 80-character limit • test/unit/features/project_shell/domain/entities/project_entity_test.dart:158:81 • lines_longer_than_80_chars
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/domain/entities/project_entity_test.dart:162:43 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/domain/entities/project_entity_test.dart:163:42 • avoid_redundant_argument_values
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:8:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:14:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:20:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:26:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:32:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:38:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:44:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:45:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:150:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:168:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart:174:11 • prefer_const_constructors
+   info • Use a raw string to avoid using escapes • test/unit/features/project_shell/infrastructure/validation/path_validator_test.dart:176:23 • use_raw_strings
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:38:23 • avoid_redundant_argument_values
+   info • Catch clause should use 'on' to specify the type of exception being caught • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:91:9 • avoid_catches_without_on_clauses
+   info • 'bool' parameters should be named parameters • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:100:7 • avoid_positional_boolean_parameters
+   info • Unnecessary type annotation on a local variable • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:117:15 • omit_local_variable_types
+   info • The line length exceeds the 80-character limit • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:155:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:156:81 • lines_longer_than_80_chars
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:168:47 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:214:47 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:239:49 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:288:21 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:289:28 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:290:22 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:291:25 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:310:21 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/unit/features/project_shell/presentation/project_shell_notifier_test.dart:311:28 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/message_bubble_test.dart:22:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/message_bubble_test.dart:39:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/message_bubble_test.dart:57:8 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/message_bubble_test.dart:77:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/message_bubble_test.dart:93:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/message_bubble_test.dart:111:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:8:52 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:38:48 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:69:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a local variable • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:72:7 • omit_local_variable_types
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:102:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a local variable • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:105:7 • omit_local_variable_types
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:135:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a local variable • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:138:7 • omit_local_variable_types
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:167:53 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/proposal_card_test.dart:199:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:8:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:27:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:48:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:70:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:94:7 • avoid_types_on_closure_parameters
+   info • Unnecessary use of a 'double' literal • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:100:25 • prefer_int_literals
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:114:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart:136:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:18:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:31:47 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:46:52 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:62:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:77:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:92:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:109:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:126:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:149:52 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:150:28 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:181:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:197:51 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:198:24 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:220:52 • avoid_types_on_closure_parameters
+   info • Use 'const' with the constructor to improve performance • test/widget/features/project_shell/presentation/directory_tree_widget_test.dart:221:26 • prefer_const_constructors
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:10:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:21:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:34:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:61:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:85:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:101:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:140:53 • avoid_types_on_closure_parameters
+   info • Use interpolation to compose strings and values • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:141:27 • prefer_interpolation_to_compose_strings
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:160:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:181:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:202:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:223:7 • avoid_types_on_closure_parameters
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart:252:7 • avoid_types_on_closure_parameters
+   info • Unnecessary use of a block function body • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:25:59 • prefer_expression_function_bodies
+   info • Parameter 'repository' could be a super parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:46:3 • use_super_parameters
+   info • The local variable '_buildApp' starts with an underscore • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:60:12 • no_leading_underscores_for_local_identifiers
+   info • Unnecessary use of a block function body • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:60:47 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:63:49 • prefer_expression_function_bodies
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:72:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:77:23 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:78:30 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:79:24 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:90:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:95:23 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:96:30 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:97:24 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:112:8 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:118:26 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:131:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:138:24 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:150:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:155:23 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:156:30 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:168:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:173:23 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:174:30 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:175:24 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:187:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:194:24 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:205:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:212:24 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:224:8 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:230:26 • avoid_redundant_argument_values
+   info • The line length exceeds the 80-character limit • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:239:81 • lines_longer_than_80_chars
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:245:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:252:24 • avoid_redundant_argument_values
+   info • The line length exceeds the 80-character limit • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:265:81 • lines_longer_than_80_chars
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:270:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:275:23 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:276:30 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:277:24 • avoid_redundant_argument_values
+   info • Unnecessary type annotation on a function expression parameter • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:287:7 • avoid_types_on_closure_parameters
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:292:23 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:293:30 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • test/widget/features/project_shell/presentation/project_shell_screen_test.dart:294:24 • avoid_redundant_argument_values
+   info • Missing a newline at the end of the file • test/widget/features/project_shell/presentation/project_workspace_screen_test.dart:95:2 • eol_at_end_of_file
+
+283 issues found. (ran in 2.4s)

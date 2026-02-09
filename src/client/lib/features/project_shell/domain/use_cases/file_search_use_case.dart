@@ -1,5 +1,5 @@
 // lib/features/project_shell/domain/use_cases/file_search_use_case.dart
-import '../entities/file_node.dart';
+import '../../../filesystem/domain/entities/file_node.dart';
 
 /// Use case: File search and filtering
 class FileSearchUseCase {

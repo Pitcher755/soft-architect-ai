@@ -6,13 +6,12 @@ Temporary RAG test endpoint for verification.
 """
 
 import logging
-from typing import Optional
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
 from app.core.exceptions import VectorStoreError
-from services.rag.vector_store import VectorStoreService
+from app.services.rag.vector_store import VectorStoreService
 
 logger = logging.getLogger(__name__)
 
@@ -27,10 +26,7 @@ class QueryRequest(BaseModel):
 
     model_config = {
         "json_schema_extra": {
-            "example": {
-                "question": "How do I set up Docker?",
-                "limit": 3
-            }
+            "example": {"question": "How do I set up Docker?", "limit": 3}
         }
     }
 
@@ -50,7 +46,7 @@ class QueryResponse(BaseModel):
     query: str = Field(..., description="Original query")
     matches: int = Field(..., ge=0, description="Number of matches found")
     data: list[RetrievalResult] = Field(..., description="Retrieval results")
-    warning: Optional[str] = Field(None, description="Optional warning message")
+    warning: str | None = Field(None, description="Optional warning message")
 
 
 @router.post(
@@ -58,7 +54,7 @@ class QueryResponse(BaseModel):
     response_model=QueryResponse,
     status_code=status.HTTP_200_OK,
     summary="Test RAG retrieval",
-    description="Temporary endpoint to validate RAG vector retrieval integration."
+    description="Temporary endpoint to validate RAG vector retrieval integration.",
 )
 async def test_rag_retrieval(body: QueryRequest) -> QueryResponse:
     """
@@ -104,7 +100,7 @@ async def test_rag_retrieval(body: QueryRequest) -> QueryResponse:
             docs = documents_list[0]
             metas = metadatas_list[0]
 
-            for doc, meta in zip(docs, metas):
+            for doc, meta in zip(docs, metas, strict=False):
                 # Ensure meta is dict (doc is guaranteed to be str from ChromaDB)
                 if not isinstance(meta, dict):
                     meta = {}
@@ -117,13 +113,9 @@ async def test_rag_retrieval(body: QueryRequest) -> QueryResponse:
 
                 # Type-safe conversions
                 source_str = (
-                    str(source_value)
-                    if source_value is not None
-                    else "unknown"
+                    str(source_value) if source_value is not None else "unknown"
                 )
-                path_str = (
-                    str(path_value) if path_value is not None else "unknown"
-                )
+                path_str = str(path_value) if path_value is not None else "unknown"
 
                 formatted_results.append(
                     RetrievalResult(
@@ -162,7 +154,7 @@ async def test_rag_retrieval(body: QueryRequest) -> QueryResponse:
     "/health",
     response_model=dict,
     status_code=status.HTTP_200_OK,
-    summary="Check RAG health"
+    summary="Check RAG health",
 )
 async def rag_health() -> dict:
     """
@@ -178,12 +170,12 @@ async def rag_health() -> dict:
         return {
             "status": "healthy",
             "heartbeat_ms": heartbeat,
-            "message": "RAG system is operational"
+            "message": "RAG system is operational",
         }
 
     except Exception as e:
         logger.error(f"Health check failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="RAG system is not available"
+            detail="RAG system is not available",
         ) from e

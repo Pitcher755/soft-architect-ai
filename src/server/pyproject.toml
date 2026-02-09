@@ -62,7 +62,7 @@ skip_glob = ["*/migrations/*"]
 known_first_party = ["app", "core", "services"]
 
 [tool.pytest.ini_options]
-# Pytest configuration
+# Pytest configuration (Centralized tests in monorepo)
 minversion = "8.0"
 addopts = [
     "-ra",
@@ -74,7 +74,8 @@ addopts = [
     "--cov-report=xml",
     "--cov-fail-under=80",
 ]
-testpaths = ["tests"]
+# Tests are now centralized in tests/python/ (monorepo root)
+testpaths = ["../../tests/python"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

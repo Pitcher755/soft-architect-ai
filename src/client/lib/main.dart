@@ -8,6 +8,8 @@ import 'core/config/app_config.dart';
 import 'core/config/theme_config.dart';
 import 'core/database_initializer.dart';
 import 'core/router/app_router.dart';
+import 'features/chat/presentation/notifiers/chat_notifier.dart';
+import 'features/project_shell/core/services/file_system_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +24,7 @@ void main() async {
     try {
       await dotenv.load(isOptional: true);
       debugPrint('✅ .env file loaded successfully');
-    } catch (e) {
+    } on Exception catch (e) {
       // .env file not found or error loading, will use default values
       // from AppConfig
       debugPrint(
@@ -34,7 +36,15 @@ void main() async {
     debugPrint('ℹ️  Web platform: skipping .env file loading');
   }
 
-  runApp(const ProviderScope(child: SoftArchitectApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        // Provide FileSystemService implementation
+        fileSystemServiceProvider.overrideWithValue(FileSystemServiceImpl()),
+      ],
+      child: const SoftArchitectApp(),
+    ),
+  );
 }
 
 class SoftArchitectApp extends ConsumerWidget {
