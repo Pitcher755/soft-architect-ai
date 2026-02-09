@@ -1,0 +1,56 @@
+{
+    "invalid_documents": [
+        {
+            "id": "too_short",
+            "content": "Short",
+            "expected_error": "VAL_001",
+            "reason": "Less than 50 characters"
+        },
+        {
+            "id": "malformed_markdown",
+            "content": "# Unclosed header [link](broken markdown structure with unbalanced brackets",
+            "expected_error": "VAL_002",
+            "reason": "Unbalanced brackets"
+        },
+        {
+            "id": "xss_script_tag",
+            "content": "<script>alert('XSS Attack')</script>\n\nThis document contains malicious JavaScript code that should be blocked.",
+            "expected_error": "VAL_004",
+            "reason": "XSS pattern detected"
+        },
+        {
+            "id": "xss_javascript_protocol",
+            "content": "# Click here\n\n[Malicious Link](javascript:alert('XSS'))\n\nThis link uses javascript: protocol.",
+            "expected_error": "VAL_004",
+            "reason": "JavaScript protocol detected"
+        },
+        {
+            "id": "xss_onerror_handler",
+            "content": "# Image with onerror\n\n<img src='invalid' onerror='alert(1)'>\n\nThis image has an onerror handler.",
+            "expected_error": "VAL_004",
+            "reason": "onerror handler detected"
+        }
+    ],
+    "valid_documents": [
+        {
+            "id": "minimal_valid",
+            "content": "# Valid Document\n\nThis is a valid Markdown document with at least 50 characters of content.",
+            "expected_result": true
+        },
+        {
+            "id": "complete_markdown",
+            "content": "# Software Architecture Guide\n\n## Introduction\n\nThis document provides guidelines for building scalable software systems.\n\n### Key Principles\n\n1. **Separation of Concerns:** Divide your application into distinct modules.\n2. **Dependency Injection:** Use IoC containers for loose coupling.\n3. **SOLID Principles:** Follow SOLID for maintainable code.\n\n## Implementation\n\n```python\nclass Service:\n    def __init__(self, repository):\n        self.repository = repository\n```\n\n**Note:** Always write tests first (TDD methodology).\n\n[Learn More](https://example.com/docs)",
+            "expected_result": true
+        },
+        {
+            "id": "spanish_content",
+            "content": "# Guía de Arquitectura de Software\n\n## Introducción\n\nEste documento proporciona directrices para construir sistemas de software escalables.\n\n### Principios Clave\n\n1. **Separación de Preocupaciones:** Divide tu aplicación en módulos distintos.\n2. **Inyección de Dependencias:** Usa contenedores IoC para acoplamiento débil.\n3. **Principios SOLID:** Sigue SOLID para código mantenible.\n\n## Implementación\n\n```dart\nclass Service {\n  final Repository repository;\n  Service(this.repository);\n}\n```\n\n**Nota:** Siempre escribe pruebas primero (metodología TDD).",
+            "expected_result": true
+        },
+        {
+            "id": "with_code_blocks",
+            "content": "# Code Examples\n\n## Python Example\n\n```python\ndef factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)\n```\n\n## Dart Example\n\n```dart\nint factorial(int n) {\n  if (n == 0) return 1;\n  return n * factorial(n - 1);\n}\n```\n\nThese examples demonstrate recursive functions in different languages.",
+            "expected_result": true
+        }
+    ]
+}
