@@ -1,5 +1,6 @@
 /// Utilidades de validación para formularios
 /// Contiene funciones reutilizables para validar inputs de usuario
+library;
 
 /// Valida si un nombre de proyecto es válido
 /// Solo permite letras, números, guiones y guiones bajos

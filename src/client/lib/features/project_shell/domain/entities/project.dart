@@ -62,10 +62,12 @@ class Project {
     if (pathParts.length >= 2) {
       final segment = pathParts[pathParts.length - 2].toLowerCase();
       if (segment.contains('arquitect')) return 'Arquitectura';
-      if (segment.contains('implement') || segment.contains('desarrollo'))
+      if (segment.contains('implement') || segment.contains('desarrollo')) {
         return 'Implementación';
-      if (segment.contains('calidad') || segment.contains('test'))
+      }
+      if (segment.contains('calidad') || segment.contains('test')) {
         return 'Calidad';
+      }
       if (segment.contains('doc')) return 'Documentación';
     }
     return 'Contexto';

@@ -16,12 +16,12 @@ class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
-        backgroundColor: const Color(0xFF0D1117),
+  Widget build(BuildContext context, WidgetRef ref) => const Scaffold(
+        backgroundColor: Color(0xFF0D1117),
         body: Row(
           children: [
             // Left Sidebar
-            const SizedBox(
+            SizedBox(
               width: 64,
               height: double.infinity,
               child: ProjectsSidebar(),
@@ -30,12 +30,12 @@ class SettingsScreen extends ConsumerWidget {
             // Main Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(32),
+                padding: EdgeInsets.all(32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Header
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -57,18 +57,18 @@ class SettingsScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40),
 
                     // Settings Sections (Modular Widgets)
-                    const ProfileSection(),
-                    const SizedBox(height: 32),
-                    const StorageSection(),
-                    const SizedBox(height: 32),
-                    const AppearanceSection(),
-                    const SizedBox(height: 32),
-                    const AccessibilitySection(),
-                    const SizedBox(height: 32),
-                    const PerformanceSection(),
+                    ProfileSection(),
+                    SizedBox(height: 32),
+                    StorageSection(),
+                    SizedBox(height: 32),
+                    AppearanceSection(),
+                    SizedBox(height: 32),
+                    AccessibilitySection(),
+                    SizedBox(height: 32),
+                    PerformanceSection(),
                   ],
                 ),
               ),

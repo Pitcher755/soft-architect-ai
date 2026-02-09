@@ -43,12 +43,12 @@ class FileTreeService {
     final stat = await entity.stat();
     final isDirectory = stat.type == FileSystemEntityType.directory;
     final name = p.basename(entity.path);
-    final List<FileNode> children = [];
+    final children = <FileNode>[];
 
     if (isDirectory) {
       try {
         final dir = Directory(entity.path);
-        final List<FileSystemEntity> entities = await dir.list().toList();
+        final entities = await dir.list().toList();
 
         // Ordenamiento: Carpetas primero, luego archivos (alfabéticamente)
         entities.sort((a, b) {
@@ -59,7 +59,7 @@ class FileTreeService {
           return p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
         });
 
-        for (var child in entities) {
+        for (final child in entities) {
           // Filtrar archivos ocultos (.git, .DS_Store, etc.)
           if (!p.basename(child.path).startsWith('.')) {
             children.add(await _buildNodeRecursive(child));

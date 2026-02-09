@@ -27,7 +27,7 @@ class AppearanceSection extends ConsumerWidget {
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateTheme(value ? ThemeMode.dark : ThemeMode.light),
-            activeColor: const Color(0xFF58A6FF),
+            activeThumbColor: const Color(0xFF58A6FF),
           ),
         ),
         const Divider(color: Color(0xFF30363d)),

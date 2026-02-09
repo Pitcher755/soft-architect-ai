@@ -27,7 +27,7 @@ class PerformanceSection extends ConsumerWidget {
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateAnimations(enableAnimations: value),
-            activeColor: const Color(0xFF58A6FF),
+            activeThumbColor: const Color(0xFF58A6FF),
           ),
         ),
         const Divider(color: Color(0xFF30363d)),
@@ -39,7 +39,7 @@ class PerformanceSection extends ConsumerWidget {
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateMemoryOptimization(enableMemoryOptimization: value),
-            activeColor: const Color(0xFF58A6FF),
+            activeThumbColor: const Color(0xFF58A6FF),
           ),
         ),
       ],

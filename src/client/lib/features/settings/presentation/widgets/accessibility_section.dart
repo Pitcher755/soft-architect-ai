@@ -52,7 +52,7 @@ class AccessibilitySection extends ConsumerWidget {
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateZoomShortcuts(enableZoomShortcuts: value),
-            activeColor: const Color(0xFF58A6FF),
+            activeThumbColor: const Color(0xFF58A6FF),
           ),
         ),
       ],
