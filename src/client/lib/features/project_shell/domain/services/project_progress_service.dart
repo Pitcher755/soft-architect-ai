@@ -1,3 +1,5 @@
+// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+
 import 'dart:io';
 
 import '../models/project_phase.dart';

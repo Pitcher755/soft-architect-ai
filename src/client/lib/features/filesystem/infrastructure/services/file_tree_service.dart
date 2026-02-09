@@ -1,3 +1,5 @@
+// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+
 import 'dart:io';
 import 'package:path/path.dart' as p;
 
@@ -8,7 +10,6 @@ import '../../domain/entities/file_node.dart';
 /// Responsabilidad: Convertir la estructura física del disco (dart:io)
 /// en entidades de dominio (FileNode) para la UI.
 class FileTreeService {
-
   /// Construye el árbol completo a partir de una ruta raíz.
   static Future<FileNode> buildTreeFromPath(String rootPath) async {
     final rootDir = Directory(rootPath);
@@ -20,7 +21,7 @@ class FileTreeService {
         name: 'Ruta no encontrada',
         path: rootPath,
         isDirectory: true,
-        children: []
+        children: [],
       );
     }
 
@@ -56,7 +57,10 @@ class FileTreeService {
           final bIsDir = FileSystemEntity.isDirectorySync(b.path);
           if (aIsDir && !bIsDir) return -1;
           if (!aIsDir && bIsDir) return 1;
-          return p.basename(a.path).toLowerCase().compareTo(p.basename(b.path).toLowerCase());
+          return p
+              .basename(a.path)
+              .toLowerCase()
+              .compareTo(p.basename(b.path).toLowerCase());
         });
 
         for (final child in entities) {

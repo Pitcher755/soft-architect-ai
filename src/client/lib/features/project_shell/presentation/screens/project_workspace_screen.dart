@@ -82,19 +82,17 @@ class _ProjectWorkspaceScreenState
                             ),
                             if (showAllProjects)
                               ProjectListView(
-                                projects: allProjects
-                                    .map((p) {
-                                      final phase =
-                                          ProjectPhaseService.getProjectPhase(p);
-                                      return {
-                                        'name': p.name,
-                                        'path': p.path,
-                                        'icon': phase.icon,
-                                        'iconColor': phase.color,
-                                        'phaseColor': phase.color,
-                                      };
-                                    })
-                                    .toList(),
+                                projects: allProjects.map((p) {
+                                  final phase =
+                                      ProjectPhaseService.getProjectPhase(p);
+                                  return {
+                                    'name': p.name,
+                                    'path': p.path,
+                                    'icon': phase.icon,
+                                    'iconColor': phase.color,
+                                    'phaseColor': phase.color,
+                                  };
+                                }).toList(),
                                 onClose: () {
                                   setState(() {
                                     showAllProjects = false;
@@ -133,5 +131,4 @@ class _ProjectWorkspaceScreenState
       ),
     );
   }
-
 }

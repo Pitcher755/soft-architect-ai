@@ -122,7 +122,8 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
               style: const TextStyle(color: AppColors.textMain, fontSize: 14),
               decoration: InputDecoration(
                 hintText:
-                    'Buscar por nombre, fase, o fecha (ej: "Alpha", "Root", "2026")...',
+                    'Buscar por nombre, fase, o fecha '
+                    '(ej: "Alpha", "Root", "2026")...',
                 hintStyle: TextStyle(
                   color: AppColors.textSecondary.withValues(alpha: 0.6),
                 ),

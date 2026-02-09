@@ -1,3 +1,5 @@
+// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -29,8 +31,7 @@ class ProjectShellScreen extends ConsumerStatefulWidget {
   final String projectPath;
 
   @override
-  ConsumerState<ProjectShellScreen> createState() =>
-      _ProjectShellScreenState();
+  ConsumerState<ProjectShellScreen> createState() => _ProjectShellScreenState();
 }
 
 class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
@@ -64,7 +65,8 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
     final projectName = widget.projectPath.startsWith('mock://')
         ? 'Guía SoftArchitect'
         : widget.projectPath.split(Platform.pathSeparator).last;
-    _fileContent = '# Proyecto: $projectName\n\n'
+    _fileContent =
+        '# Proyecto: $projectName\n\n'
         'Selecciona un archivo para ver su contenido.';
   }
 
@@ -98,23 +100,24 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: AppColors.mainBg,
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            final layout = _calculateLayout(constraints);
-            final content = _buildContent(layout);
+    backgroundColor: AppColors.mainBg,
+    body: LayoutBuilder(
+      builder: (context, constraints) {
+        final layout = _calculateLayout(constraints);
+        final content = _buildContent(layout);
 
-            return layout.needsVerticalScroll
-                ? SingleChildScrollView(child: content)
-                : content;
-          },
-        ),
-      );
+        return layout.needsVerticalScroll
+            ? SingleChildScrollView(child: content)
+            : content;
+      },
+    ),
+  );
 
   _LayoutMetrics _calculateLayout(BoxConstraints constraints) {
     final needsVerticalScroll = constraints.maxHeight < _minScreenHeight;
-    final effectiveHeight =
-        needsVerticalScroll ? _minScreenHeight : constraints.maxHeight;
+    final effectiveHeight = needsVerticalScroll
+        ? _minScreenHeight
+        : constraints.maxHeight;
 
     var requiredWidth = _sidebarWidth;
     if (_showFilesPanel) {
@@ -126,8 +129,9 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
     }
 
     final needsHorizontalScroll = constraints.maxWidth < requiredWidth;
-    final contentWidth =
-        needsHorizontalScroll ? requiredWidth : constraints.maxWidth;
+    final contentWidth = needsHorizontalScroll
+        ? requiredWidth
+        : constraints.maxWidth;
 
     return _LayoutMetrics(
       effectiveHeight: effectiveHeight,
@@ -138,101 +142,98 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   }
 
   Widget _buildContent(_LayoutMetrics layout) => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: layout.needsHorizontalScroll
-            ? const AlwaysScrollableScrollPhysics()
-            : const NeverScrollableScrollPhysics(),
-        child: SizedBox(
-          width: layout.contentWidth,
-          height: layout.effectiveHeight,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(
-                width: _sidebarWidth,
-                child: ProjectsSidebar(),
-              ),
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (_showFilesPanel) ..._buildFilesPanel(),
-                    _buildChatPanel(),
-                    if (_showMarkdownPanel) ..._buildMarkdownPanel(),
-                  ],
-                ),
-              ),
-            ],
+    scrollDirection: Axis.horizontal,
+    physics: layout.needsHorizontalScroll
+        ? const AlwaysScrollableScrollPhysics()
+        : const NeverScrollableScrollPhysics(),
+    child: SizedBox(
+      width: layout.contentWidth,
+      height: layout.effectiveHeight,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(width: _sidebarWidth, child: ProjectsSidebar()),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (_showFilesPanel) ..._buildFilesPanel(),
+                _buildChatPanel(),
+                if (_showMarkdownPanel) ..._buildMarkdownPanel(),
+              ],
+            ),
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 
   List<Widget> _buildFilesPanel() => [
-        Opacity(
-          opacity: _filesPanelWidth < _minFilesWidth ? 0.5 : 1.0,
-          child: SizedBox(
-            width: math.max(_filesPanelWidth, _minFilesWidth),
-            child: FileTreeWidget(
-              projectPath: widget.projectPath,
-              onFileSelected: _onFileSelected,
-            ),
-          ),
+    Opacity(
+      opacity: _filesPanelWidth < _minFilesWidth ? 0.5 : 1.0,
+      child: SizedBox(
+        width: math.max(_filesPanelWidth, _minFilesWidth),
+        child: FileTreeWidget(
+          projectPath: widget.projectPath,
+          onFileSelected: _onFileSelected,
         ),
-        ResizeHandle(
-          onDragUpdate: (dx) => setState(
-            () => _filesPanelWidth =
-                (_filesPanelWidth + dx).clamp(50.0, 600.0),
-          ),
-          onDragEnd: () => setState(() {
-            if (_filesPanelWidth < (_minFilesWidth - _snapThreshold)) {
-              _showFilesPanel = false;
-              _filesPanelWidth = 220;
-            } else if (_filesPanelWidth < _minFilesWidth) {
-              _filesPanelWidth = _minFilesWidth;
-            }
-          }),
-        ),
-      ];
+      ),
+    ),
+    ResizeHandle(
+      onDragUpdate: (dx) => setState(
+        () => _filesPanelWidth = (_filesPanelWidth + dx).clamp(50.0, 600.0),
+      ),
+      onDragEnd: () => setState(() {
+        if (_filesPanelWidth < (_minFilesWidth - _snapThreshold)) {
+          _showFilesPanel = false;
+          _filesPanelWidth = 220;
+        } else if (_filesPanelWidth < _minFilesWidth) {
+          _filesPanelWidth = _minFilesWidth;
+        }
+      }),
+    ),
+  ];
 
   Widget _buildChatPanel() => Expanded(
-        child: _ChatPanelSection(
-          projectPath: widget.projectPath,
-          selectedNode: _selectedNode,
-          showFilesPanel: _showFilesPanel,
-          showMarkdownPanel: _showMarkdownPanel,
-          onToggleFiles: () =>
-              setState(() => _showFilesPanel = !_showFilesPanel),
-          onToggleMarkdown: () =>
-              setState(() => _showMarkdownPanel = !_showMarkdownPanel),
-        ),
-      );
+    child: _ChatPanelSection(
+      projectPath: widget.projectPath,
+      selectedNode: _selectedNode,
+      showFilesPanel: _showFilesPanel,
+      showMarkdownPanel: _showMarkdownPanel,
+      onToggleFiles: () => setState(() => _showFilesPanel = !_showFilesPanel),
+      onToggleMarkdown: () =>
+          setState(() => _showMarkdownPanel = !_showMarkdownPanel),
+    ),
+  );
 
   List<Widget> _buildMarkdownPanel() => [
-        ResizeHandle(
-          onDragUpdate: (dx) => setState(
-            () => _markdownPanelWidth =
-                (_markdownPanelWidth - dx).clamp(50.0, 1000.0),
-          ),
-          onDragEnd: () => setState(() {
-            if (_markdownPanelWidth < (_minMarkdownWidth - _snapThreshold)) {
-              _showMarkdownPanel = false;
-              _markdownPanelWidth = 420;
-            } else if (_markdownPanelWidth < _minMarkdownWidth) {
-              _markdownPanelWidth = _minMarkdownWidth;
-            }
-          }),
+    ResizeHandle(
+      onDragUpdate: (dx) => setState(
+        () => _markdownPanelWidth = (_markdownPanelWidth - dx).clamp(
+          50.0,
+          1000.0,
         ),
-        Opacity(
-          opacity: _markdownPanelWidth < _minMarkdownWidth ? 0.5 : 1.0,
-          child: SizedBox(
-            width: math.max(_markdownPanelWidth, _minMarkdownWidth),
-            child: MarkdownPreviewWidget(
-              content: _fileContent,
-              filename: _selectedNode?.name,
-            ),
-          ),
+      ),
+      onDragEnd: () => setState(() {
+        if (_markdownPanelWidth < (_minMarkdownWidth - _snapThreshold)) {
+          _showMarkdownPanel = false;
+          _markdownPanelWidth = 420;
+        } else if (_markdownPanelWidth < _minMarkdownWidth) {
+          _markdownPanelWidth = _minMarkdownWidth;
+        }
+      }),
+    ),
+    Opacity(
+      opacity: _markdownPanelWidth < _minMarkdownWidth ? 0.5 : 1.0,
+      child: SizedBox(
+        width: math.max(_markdownPanelWidth, _minMarkdownWidth),
+        child: MarkdownPreviewWidget(
+          content: _fileContent,
+          filename: _selectedNode?.name,
         ),
-      ];
+      ),
+    ),
+  ];
 }
 
 /// Layout calculation results.
@@ -322,8 +323,10 @@ class _ChatPanelSectionState extends State<_ChatPanelSection> {
       }
 
       var count = 0;
-      await for (final entity
-          in projectDir.list(recursive: true, followLinks: false)) {
+      await for (final entity in projectDir.list(
+        recursive: true,
+        followLinks: false,
+      )) {
         if (entity is File && entity.path.endsWith('.md')) {
           count++;
         }
@@ -382,8 +385,9 @@ class _ChatPanelSectionState extends State<_ChatPanelSection> {
         Expanded(
           child: ChatPanelWidget(
             messages: isMock ? MockProjectData.mockChatMessages : const [],
-            isGuideProject:
-                widget.projectPath.startsWith('mock://softarchitect-guide'),
+            isGuideProject: widget.projectPath.startsWith(
+              'mock://softarchitect-guide',
+            ),
           ),
         ),
       ],

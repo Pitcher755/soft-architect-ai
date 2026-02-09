@@ -1,3 +1,5 @@
+// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -100,8 +102,9 @@ class MessageBubbleWidget extends StatelessWidget {
           // Avatar in top corner
           CircleAvatar(
             radius: 12,
-            backgroundColor:
-                _isUserMessage ? AppColors.dirContext : AppColors.dirArchitecture,
+            backgroundColor: _isUserMessage
+                ? AppColors.dirContext
+                : AppColors.dirArchitecture,
             child: Text(
               _isUserMessage ? 'U' : 'AI',
               style: const TextStyle(

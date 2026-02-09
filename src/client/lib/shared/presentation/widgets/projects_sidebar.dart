@@ -97,7 +97,8 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                     icon: Icons.search,
                     isActive: false, // Dialog, no navegación
                     color: AppColors.textSecondary,
-                    onTap: widget.onSearchTap ??
+                    onTap:
+                        widget.onSearchTap ??
                         () => GlobalSearchDialog.show(context),
                   ),
                 ),
@@ -115,7 +116,8 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
               child: _SidebarButton(
                 icon: Icons.settings_outlined,
                 isActive: isSettingsActive,
-                // CAMBIO CLAVE: Usamos primary para que se ilumine en azul al estar activo
+                // CAMBIO CLAVE: Usamos primary para que se ilumine en azul
+                // al estar activo
                 color: AppColors.primary,
                 onTap: widget.onSettingsTap ?? () => context.go('/settings'),
               ),

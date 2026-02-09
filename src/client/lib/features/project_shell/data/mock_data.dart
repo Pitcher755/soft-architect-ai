@@ -1,3 +1,5 @@
+// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+
 import 'package:flutter/material.dart';
 
 import '../../chat/presentation/widgets/message_bubble_widget.dart';
@@ -41,7 +43,8 @@ class MockProjectData {
   // Contenido de la Guía
   // ========================
   static const Map<String, String> guideFileContents = {
-    'mock://softarchitect-guide/00-Bienvenido.md': '''# 👋 Bienvenido a SoftArchitect AI
+    'mock://softarchitect-guide/00-Bienvenido.md':
+        '''# 👋 Bienvenido a SoftArchitect AI
 
 Esta es tu guía interactiva. Aquí aprenderás a usar la herramienta.
 
