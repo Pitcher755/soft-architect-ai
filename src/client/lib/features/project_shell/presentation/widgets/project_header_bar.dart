@@ -24,72 +24,64 @@ class ProjectHeaderBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        height: 40,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        decoration: const BoxDecoration(
-          color: AppColors.surfaceLight,
-          border: Border(bottom: BorderSide(color: AppColors.border)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    height: 40,
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    decoration: const BoxDecoration(
+      color: AppColors.surfaceLight,
+      border: Border(bottom: BorderSide(color: AppColors.border)),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                if (!showFilesPanel)
-                  IconButton(
-                    icon: const Icon(
-                      Icons.keyboard_double_arrow_right,
-                      size: 16,
-                    ),
-                    tooltip: 'Mostrar Explorador',
-                    onPressed: onToggleFiles,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 24,
-                      minHeight: 24,
-                    ),
-                  ),
-                const SizedBox(width: 8),
-                Text(
-                  fileName,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textMain,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    showFilesPanel ? Icons.width_normal : Icons.width_wide,
-                    size: 16,
-                    color: showFilesPanel
-                        ? AppColors.primary
-                        : AppColors.textSecondary,
-                  ),
-                  tooltip: 'Alternar Panel Archivos',
-                  onPressed: onToggleFiles,
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: Icon(
-                    showMarkdownPanel
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                    size: 16,
-                    color: showMarkdownPanel
-                        ? AppColors.primary
-                        : AppColors.textSecondary,
-                  ),
-                  tooltip: 'Alternar Vista Previa',
-                  onPressed: onToggleMarkdown,
-                ),
-              ],
+            if (!showFilesPanel)
+              IconButton(
+                icon: const Icon(Icons.keyboard_double_arrow_right, size: 16),
+                tooltip: 'Mostrar Explorador',
+                onPressed: onToggleFiles,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+              ),
+            const SizedBox(width: 8),
+            Text(
+              fileName,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textMain,
+              ),
             ),
           ],
         ),
-      );
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                showFilesPanel ? Icons.width_normal : Icons.width_wide,
+                size: 16,
+                color: showFilesPanel
+                    ? AppColors.primary
+                    : AppColors.textSecondary,
+              ),
+              tooltip: 'Alternar Panel Archivos',
+              onPressed: onToggleFiles,
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              icon: Icon(
+                showMarkdownPanel ? Icons.visibility : Icons.visibility_off,
+                size: 16,
+                color: showMarkdownPanel
+                    ? AppColors.primary
+                    : AppColors.textSecondary,
+              ),
+              tooltip: 'Alternar Vista Previa',
+              onPressed: onToggleMarkdown,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

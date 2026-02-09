@@ -26,30 +26,30 @@ class _ResizeHandleState extends State<ResizeHandle> {
 
   @override
   Widget build(BuildContext context) => MouseRegion(
-        cursor: SystemMouseCursors.resizeColumn,
-        onEnter: (_) => setState(() => _isHovering = true),
-        onExit: (_) => setState(() => _isHovering = false),
-        child: GestureDetector(
-          onHorizontalDragStart: (_) => setState(() => _isDragging = true),
-          onHorizontalDragEnd: (_) {
-            setState(() => _isDragging = false);
-            widget.onDragEnd();
-          },
-          onHorizontalDragUpdate: (details) =>
-              widget.onDragUpdate(details.delta.dx),
+    cursor: SystemMouseCursors.resizeColumn,
+    onEnter: (_) => setState(() => _isHovering = true),
+    onExit: (_) => setState(() => _isHovering = false),
+    child: GestureDetector(
+      onHorizontalDragStart: (_) => setState(() => _isDragging = true),
+      onHorizontalDragEnd: (_) {
+        setState(() => _isDragging = false);
+        widget.onDragEnd();
+      },
+      onHorizontalDragUpdate: (details) =>
+          widget.onDragUpdate(details.delta.dx),
+      child: Container(
+        width: 12,
+        color: Colors.transparent,
+        child: Center(
           child: Container(
-            width: 12,
-            color: Colors.transparent,
-            child: Center(
-              child: Container(
-                width: 1,
-                height: double.infinity,
-                color: (_isHovering || _isDragging)
-                    ? AppColors.primary
-                    : AppColors.border,
-              ),
-            ),
+            width: 1,
+            height: double.infinity,
+            color: (_isHovering || _isDragging)
+                ? AppColors.primary
+                : AppColors.border,
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

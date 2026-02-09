@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import 'global_search_dialog.dart';
 
 class ProjectsSidebar extends StatefulWidget {
   const ProjectsSidebar({this.onSearchTap, this.onSettingsTap, super.key});
@@ -14,30 +15,6 @@ class ProjectsSidebar extends StatefulWidget {
 }
 
 class _ProjectsSidebarState extends State<ProjectsSidebar> {
-  void _showSearchDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => const AlertDialog(
-        title: Text('Global Search'),
-        backgroundColor: AppColors.surfaceBg,
-        titleTextStyle: TextStyle(
-          color: AppColors.textMain,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-        content: SizedBox(
-          height: 100,
-          child: Center(
-            child: Text(
-              'Search Demo',
-              style: TextStyle(color: AppColors.textMain),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     // Obtenemos la ruta actual para resaltar el icono activo
@@ -120,8 +97,8 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
                     icon: Icons.search,
                     isActive: false, // Dialog, no navegación
                     color: AppColors.textSecondary,
-                    onTap:
-                        widget.onSearchTap ?? () => _showSearchDialog(context),
+                    onTap: widget.onSearchTap ??
+                        () => GlobalSearchDialog.show(context),
                   ),
                 ),
               ],

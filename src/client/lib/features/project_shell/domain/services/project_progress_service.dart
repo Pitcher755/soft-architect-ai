@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import '../entities/project.dart';
 import '../models/project_phase.dart';
 
 /// Service for calculating real project progress.
@@ -26,8 +25,10 @@ class ProjectProgressService {
       }
 
       var count = 0;
-      await for (final entity
-          in projectDir.list(recursive: true, followLinks: false)) {
+      await for (final entity in projectDir.list(
+        recursive: true,
+        followLinks: false,
+      )) {
         if (entity is File && entity.path.endsWith('.md')) {
           count++;
         }
@@ -60,7 +61,6 @@ class ProjectProgressService {
   }
 
   /// Checks if a project path is a mock/guide project.
-  static bool isMockProject(String projectPath) {
-    return projectPath.startsWith('mock://');
-  }
+  static bool isMockProject(String projectPath) =>
+      projectPath.startsWith('mock://');
 }
