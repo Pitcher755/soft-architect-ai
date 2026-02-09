@@ -5,6 +5,17 @@ import '../../../core/theme/app_colors.dart';
 /// Campo de texto etiquetado reutilizable
 /// Incluye label, hint, help text y validación básica
 class LabeledTextField extends StatelessWidget {
+  const LabeledTextField({
+    required this.label,
+    required this.controller,
+    required this.hint,
+    required this.helpText,
+    super.key,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.maxLines = 1,
+    this.validator,
+  });
   final String label;
   final TextEditingController controller;
   final String hint;
@@ -14,49 +25,35 @@ class LabeledTextField extends StatelessWidget {
   final int? maxLines;
   final String? Function(String?)? validator;
 
-  const LabeledTextField({
-    super.key,
-    required this.label,
-    required this.controller,
-    required this.hint,
-    required this.helpText,
-    this.obscureText = false,
-    this.keyboardType = TextInputType.text,
-    this.maxLines = 1,
-    this.validator,
-  });
-
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textMain,
-          ),
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: AppColors.textMain,
         ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          maxLines: maxLines,
-          validator: validator,
-          decoration: _buildInputDecoration(hint),
-          style: const TextStyle(color: AppColors.textMain),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          helpText,
-          style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
-        ),
-      ],
-    );
-  }
+      ),
+      const SizedBox(height: 8),
+      TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        validator: validator,
+        decoration: _buildInputDecoration(hint),
+        style: const TextStyle(color: AppColors.textMain),
+      ),
+      const SizedBox(height: 4),
+      Text(
+        helpText,
+        style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+      ),
+    ],
+  );
 
   InputDecoration _buildInputDecoration(String hint) => InputDecoration(
     hintText: hint,

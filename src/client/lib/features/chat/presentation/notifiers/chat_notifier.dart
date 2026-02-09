@@ -361,22 +361,16 @@ class _MockChatRepository implements ChatRepository {
   Future<List<ChatMessage>> getChatHistory(String projectId) async => [];
 
   @override
-  Future<void> clearChatHistory(String projectId) async {
-    // Mock implementation - does nothing
-  }
+  Future<void> clearChatHistory(String projectId) async {}
 }
 
-final chatRepositoryProvider = Provider<ChatRepository>((ref) {
-  // Return a mock implementation for development
-  // In production, this will be provided via override in main.dart
-  return _MockChatRepository();
-});
+final chatRepositoryProvider = Provider<ChatRepository>(
+  (ref) => _MockChatRepository(),
+);
 
-final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
-  // Return a mock implementation for desktop
-  // In production, this will be provided via override in main.dart
-  return FileSystemServiceImpl();
-});
+final fileSystemServiceProvider = Provider<FileSystemService>(
+  (ref) => FileSystemServiceImpl(),
+);
 
 final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>(
   (ref) => ChatNotifier(

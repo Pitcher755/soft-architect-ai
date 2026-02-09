@@ -5,42 +5,39 @@ import '../../../core/theme/app_colors.dart';
 /// Campo de texto multilínea etiquetado reutilizable
 /// Específicamente para áreas de texto con múltiples líneas
 class LabeledTextArea extends StatelessWidget {
+  const LabeledTextArea({
+    required this.label,
+    required this.controller,
+    required this.hint,
+    super.key,
+    this.maxLines = 3,
+  });
   final String label;
   final TextEditingController controller;
   final String hint;
   final int maxLines;
 
-  const LabeledTextArea({
-    super.key,
-    required this.label,
-    required this.controller,
-    required this.hint,
-    this.maxLines = 3,
-  });
-
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textMain,
-          ),
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: AppColors.textMain,
         ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          maxLines: maxLines,
-          decoration: _buildInputDecoration(hint),
-          style: const TextStyle(color: AppColors.textMain),
-        ),
-      ],
-    );
-  }
+      ),
+      const SizedBox(height: 8),
+      TextField(
+        controller: controller,
+        maxLines: maxLines,
+        decoration: _buildInputDecoration(hint),
+        style: const TextStyle(color: AppColors.textMain),
+      ),
+    ],
+  );
 
   InputDecoration _buildInputDecoration(String hint) => InputDecoration(
     hintText: hint,

@@ -6,75 +6,69 @@ import '../../../core/theme/app_colors.dart';
 /// Campo selector de ruta de directorio
 /// Permite al usuario seleccionar una carpeta usando un diálogo nativo
 class PathPickerField extends StatelessWidget {
+  const PathPickerField({
+    required this.label,
+    required this.controller,
+    required this.hint,
+    required this.helpText,
+    super.key,
+  });
   final String label;
   final TextEditingController controller;
   final String hint;
   final String helpText;
 
-  const PathPickerField({
-    super.key,
-    required this.label,
-    required this.controller,
-    required this.hint,
-    required this.helpText,
-  });
-
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textMain,
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: AppColors.textMain,
+        ),
+      ),
+      const SizedBox(height: 8),
+      Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controller,
+              readOnly: true,
+              decoration: _buildInputDecoration(hint),
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontFamily: 'JetBrains Mono',
+                fontSize: 12,
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: controller,
-                readOnly: true,
-                decoration: _buildInputDecoration(hint),
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
-                  fontFamily: 'JetBrains Mono',
-                  fontSize: 12,
-                ),
+          const SizedBox(width: 8),
+          ElevatedButton.icon(
+            onPressed: _pickDirectory,
+            icon: const Icon(Icons.folder_open, size: 18),
+            label: const Text('Examinar...'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.surfaceLight,
+              foregroundColor: AppColors.textMain,
+              side: const BorderSide(color: AppColors.border),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
-            const SizedBox(width: 8),
-            ElevatedButton.icon(
-              onPressed: () => _pickDirectory(),
-              icon: const Icon(Icons.folder_open, size: 18),
-              label: const Text('Examinar...'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.surfaceLight,
-                foregroundColor: AppColors.textMain,
-                side: const BorderSide(color: AppColors.border),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 20,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Text(
-          helpText,
-          style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
-        ),
-      ],
-    );
-  }
+          ),
+        ],
+      ),
+      const SizedBox(height: 4),
+      Text(
+        helpText,
+        style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+      ),
+    ],
+  );
 
   Future<void> _pickDirectory() async {
     final selectedDirectory = await FilePicker.platform.getDirectoryPath(

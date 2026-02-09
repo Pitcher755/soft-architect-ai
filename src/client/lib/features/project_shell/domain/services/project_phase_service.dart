@@ -27,11 +27,11 @@ class ProjectPhaseService {
   static double calculateProgress(Project project, int documentsCreated) {
     // Guide project doesn't track progress
     if (project.id == 'guide-softarchitect-01') {
-      return 1.0;
+      return 1;
     }
 
     final totalFiles = ProjectPhase.totalFileCount;
-    if (totalFiles == 0) return 0.0;
+    if (totalFiles == 0) return 0;
 
     return (documentsCreated / totalFiles).clamp(0.0, 1.0);
   }
@@ -74,7 +74,6 @@ class ProjectPhaseService {
   }
 
   /// Checks if a project is the guide project.
-  static bool isGuideProject(Project project) {
-    return project.id == 'guide-softarchitect-01';
-  }
+  static bool isGuideProject(Project project) =>
+      project.id == 'guide-softarchitect-01';
 }
