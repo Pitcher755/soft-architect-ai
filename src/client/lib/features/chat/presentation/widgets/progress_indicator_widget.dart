@@ -9,11 +9,13 @@ class ProgressIndicatorWidget extends ConsumerStatefulWidget {
   const ProgressIndicatorWidget({
     required this.documentsCreated,
     required this.currentPhase,
+    this.projectPath,
     super.key,
   });
 
   final int documentsCreated;
   final String currentPhase;
+  final String? projectPath;
 
   @override
   ConsumerState<ProgressIndicatorWidget> createState() =>
@@ -62,10 +64,10 @@ class _ProgressIndicatorWidgetState extends ConsumerState<ProgressIndicatorWidge
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
-    final globalPercentage = (widget.documentsCreated / _totalFiles).clamp(
-      0.0,
-      1.0,
-    );
+    final isGuideProject = widget.projectPath?.startsWith('mock://') ?? false;
+    final globalPercentage = isGuideProject
+        ? 1.0
+        : (widget.documentsCreated / _totalFiles).clamp(0.0, 1.0);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

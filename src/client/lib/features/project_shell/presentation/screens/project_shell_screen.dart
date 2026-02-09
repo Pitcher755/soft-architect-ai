@@ -169,15 +169,17 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
                         child: Column(
                           children: [
                             _buildHeaderBar(),
-                            // Progreso sigue siendo mock por ahora
-                            const ProgressIndicatorWidget(
+                            ProgressIndicatorWidget(
                               documentsCreated:
                                   MockProjectData.mockDocumentsCreated,
                               currentPhase: MockProjectData.mockCurrentPhase,
+                              projectPath: widget.projectPath,
                             ),
                             Expanded(
                               child: ChatPanelWidget(
-                                messages: MockProjectData.mockChatMessages,
+                                messages: widget.projectPath.startsWith('mock://')
+                                    ? MockProjectData.mockChatMessages
+                                    : const [],
                                 isGuideProject: widget.projectPath
                                     .startsWith('mock://softarchitect-guide'),
                               ),

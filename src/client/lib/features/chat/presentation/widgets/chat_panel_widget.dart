@@ -178,11 +178,11 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
   /// Builds the empty state widget for the chat panel.
   Widget _buildEmptyState() {
     final title = widget.isGuideProject
-        ? 'Asistente de Documentación'
-        : 'SoftArchitect AI Chat';
+        ? '📚 Asistente de Documentación'
+        : '🎯 SoftArchitect AI Chat';
     final subtitle = widget.isGuideProject
-        ? '¿Tienes alguna pregunta sobre el funcionamiento de SoftArchitect AI?\n¡Estoy aquí para ayudarte a comprender todo!'
-        : 'Describe lo que necesitas o haz preguntas.\nGeneraré propuestas de documentos para tu proyecto.';
+        ? '¡Bienvenido! Este es tu manual de instrucciones de SoftArchitect.\n¿No encuentras lo que buscas en los documentos? ¡Pregúntame lo que necesites!'
+        : 'Dime cuál es tu idea para este proyecto y le daremos forma.\nJuntos documentaremos todo el proceso.';
     final icon = widget.isGuideProject ? Icons.help_outline : Icons.chat_outlined;
 
     return Center(
