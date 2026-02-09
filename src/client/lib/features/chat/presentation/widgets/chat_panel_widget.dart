@@ -183,7 +183,9 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
     final subtitle = widget.isGuideProject
         ? '¡Bienvenido! Este es tu manual de instrucciones de SoftArchitect.\n¿No encuentras lo que buscas en los documentos? ¡Pregúntame lo que necesites!'
         : 'Dime cuál es tu idea para este proyecto y le daremos forma.\nJuntos documentaremos todo el proceso.';
-    final icon = widget.isGuideProject ? Icons.help_outline : Icons.chat_outlined;
+    final icon = widget.isGuideProject
+        ? Icons.help_outline
+        : Icons.chat_outlined;
 
     return Center(
       child: Column(

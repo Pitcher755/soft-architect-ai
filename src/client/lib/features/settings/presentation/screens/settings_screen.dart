@@ -57,6 +57,11 @@ class SettingsScreen extends ConsumerWidget {
                   const SizedBox(height: 40),
 
                   // Settings Sections
+
+                  // --- NUEVA SECCIÓN: ALMACENAMIENTO ---
+                  _buildStorageSection(context),
+                  const SizedBox(height: 32),
+
                   _buildAppearanceSection(ref, settings),
                   const SizedBox(height: 32),
                   _buildAccessibilitySection(ref, settings),
@@ -70,6 +75,64 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+
+  // --- NUEVA SECCIÓN IMPLEMENTADA ---
+  Widget _buildStorageSection(BuildContext context) => _SettingsCard(
+    title: 'Almacenamiento (DEMO)',
+    icon: Icons.folder_special,
+    children: [
+      _SettingItem(
+        title: 'Directorio de proyectos',
+        subtitle: 'Ubicación por defecto para guardar nuevos proyectos',
+        child: Row(
+          children: [
+            // Visualización de la ruta (Simulada)
+            Container(
+              width: 220,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0D1117), // Fondo más oscuro
+                border: Border.all(color: const Color(0xFF30363d)),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const Text(
+                '~/Documents/SoftArchitect',
+                style: TextStyle(
+                  color: Color(0xFF8b949e),
+                  fontSize: 12,
+                  fontFamily: 'Courier', // Fuente monoespaciada para rutas
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+            // Botón de acción
+            IconButton(
+              onPressed: () {
+                // TODO: Implementar file_picker para seleccionar directorio por defecto
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('TODO: Implementar selector de directorio'),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.folder_open, size: 20),
+              color: const Color(0xFF58A6FF),
+              tooltip: 'Cambiar directorio',
+              style: IconButton.styleFrom(
+                backgroundColor: const Color(0xFF21262D),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  side: const BorderSide(color: Color(0xFF30363d)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 
   Widget _buildAppearanceSection(WidgetRef ref, AppSettings settings) =>
       _SettingsCard(

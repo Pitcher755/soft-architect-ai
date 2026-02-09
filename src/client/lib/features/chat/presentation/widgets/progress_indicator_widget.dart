@@ -22,7 +22,8 @@ class ProgressIndicatorWidget extends ConsumerStatefulWidget {
       _ProgressIndicatorWidgetState();
 }
 
-class _ProgressIndicatorWidgetState extends ConsumerState<ProgressIndicatorWidget>
+class _ProgressIndicatorWidgetState
+    extends ConsumerState<ProgressIndicatorWidget>
     with SingleTickerProviderStateMixin {
   AnimationController? _shimmerController;
 
