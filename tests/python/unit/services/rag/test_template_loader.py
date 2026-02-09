@@ -10,7 +10,7 @@ Tests cover:
 
 import pytest
 from app.services.rag.template_loader import TemplateLoader, Template
-from app.core.exceptions import TemplateNotFoundException
+from app.core.exceptions import TemplateNotFoundError
 
 
 class TestTemplateLoader:
@@ -51,7 +51,7 @@ class TestTemplateLoader:
     def test_load_nonexistent_template_raises_exception(self, template_loader):
         """Test error handling for missing templates."""
         # Act & Assert
-        with pytest.raises(TemplateNotFoundException) as exc_info:
+        with pytest.raises(TemplateNotFoundError) as exc_info:
             template_loader.load("NONEXISTENT_DOC")
 
         assert "NONEXISTENT_DOC" in str(exc_info.value)

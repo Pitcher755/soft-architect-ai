@@ -5,7 +5,9 @@ library;
 /// Valida si un nombre de proyecto es válido
 /// Solo permite letras, números, guiones y guiones bajos
 bool isValidProjectName(String name) {
-  if (name.isEmpty) return false;
+  if (name.isEmpty) {
+    return false;
+  }
   final validNameExp = RegExp(r'^[a-zA-Z0-9_-]+$');
   return validNameExp.hasMatch(name);
 }
