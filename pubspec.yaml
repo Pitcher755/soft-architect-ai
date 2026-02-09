@@ -18,6 +18,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_highlighter: ^0.1.1
+  flutter_markdown_plus: ^1.0.7
 
 # ============================================================================
 # DEVELOPMENT DEPENDENCIES

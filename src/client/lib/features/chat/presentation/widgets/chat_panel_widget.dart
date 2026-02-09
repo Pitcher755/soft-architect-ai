@@ -6,9 +6,9 @@ import '../widgets/error_banner_widget.dart';
 import '../widgets/message_bubble_widget.dart';
 import '../widgets/proposal_card_widget.dart';
 
-/// Chat panel widget displaying chat interface for the project shell.
+/// Chat panel widget displaying the chat interface for the project shell.
 ///
-/// This widget integrates the sequential chat experience within the IDE layout.
+/// Integrates the sequential chat experience within the IDE layout.
 class ChatPanelWidget extends StatefulWidget {
   const ChatPanelWidget({
     this.onFileSelected,
@@ -19,19 +19,19 @@ class ChatPanelWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Callback when a file is selected from chat context (unused placeholder)
+  /// Callback when a file is selected from chat context (unused placeholder).
   final Function? onFileSelected;
 
-  /// Chat messages to display
+  /// List of chat messages to display.
   final List<ChatMessageUI> messages;
 
-  /// Current proposal being displayed
+  /// Current document proposal being displayed.
   final DocumentProposal? proposal;
 
-  /// Whether to show error banner
+  /// Whether to show the error banner.
   final bool showError;
 
-  /// Error message to display
+  /// Error message to display in the error banner.
   final String errorMessage;
 
   @override
@@ -41,18 +41,22 @@ class ChatPanelWidget extends StatefulWidget {
 class _ChatPanelWidgetState extends State<ChatPanelWidget> {
   late TextEditingController _messageController;
 
+  /// Initializes the chat input controller.
   @override
   void initState() {
     super.initState();
     _messageController = TextEditingController();
   }
 
+  /// Disposes the chat input controller.
   @override
   void dispose() {
     _messageController.dispose();
     super.dispose();
   }
 
+  /// Builds the chat panel layout including
+  /// error banner, messages, and input area.
   @override
   Widget build(BuildContext context) => Container(
     color: const Color(0xFF0D1117),
@@ -91,7 +95,7 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
                 ),
         ),
 
-        // Input area
+        // Input area (Fixed overflow issue)
         Container(
           padding: const EdgeInsets.all(16),
           decoration: const BoxDecoration(
@@ -99,43 +103,64 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
             border: Border(top: BorderSide(color: Color(0xFF30363D))),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment:
+                CrossAxisAlignment.end, // Alineado abajo si crece
             children: [
               Expanded(
-                child: TextField(
-                  controller: _messageController,
-                  maxLines: 8,
-                  minLines: 3,
-                  style: const TextStyle(
-                    color: Color(0xFFC9D1D9),
-                    fontSize: 13,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: 'Provide feedback or additional context...',
-                    hintStyle: const TextStyle(color: Color(0xFF8B949E)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF30363D)),
+                child: ConstrainedBox(
+                  // Limitar altura máxima
+                  constraints: const BoxConstraints(maxHeight: 120),
+                  child: TextField(
+                    controller: _messageController,
+                    maxLines: null, // Auto-grow
+                    minLines: 1, // Start small
+                    style: const TextStyle(
+                      color: Color(0xFFC9D1D9),
+                      fontSize: 13,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
+                    decoration: InputDecoration(
+                      hintText: 'Provide feedback or additional context...',
+                      hintStyle: const TextStyle(color: Color(0xFF8B949E)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: Color(0xFF30363D)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        // Consistent border color
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: Color(0xFF30363D)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        // Highlight on focus
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: AppColors.primary),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
-              SizedBox(
-                height: 48,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    // Send message logic
+              const SizedBox(width: 12),
+              // Send Button (Replaces FAB for better desktop alignment)
+              IconButton(
+                onPressed: () {
+                  // Send message logic
+                  if (_messageController.text.trim().isNotEmpty) {
                     _messageController.clear();
-                  },
-                  backgroundColor: AppColors.primaryLight,
-                  child: const Icon(
-                    Icons.send,
-                    color: Color(0xFF0D1117),
+                  }
+                },
+                icon: const Icon(Icons.send_rounded),
+                color: AppColors.primary,
+                iconSize: 24,
+                padding: const EdgeInsets.all(12),
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                  hoverColor: AppColors.primary.withValues(alpha: 0.2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
               ),
@@ -146,6 +171,7 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
     ),
   );
 
+  /// Builds the empty state widget for the chat panel.
   Widget _buildEmptyState() => Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

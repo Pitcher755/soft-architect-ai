@@ -1,51 +1,101 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../project_shell/data/mock_data.dart';
 import '../../domain/entities/file_node.dart';
+import '../../infrastructure/services/file_tree_service.dart';
 import 'file_tree_node.dart';
 
-/// A widget that displays a hierarchical file tree structure.
-///
-/// Features:
-/// - Recursive directory tree rendering
-/// - Expand/collapse directories
-/// - File/folder selection with visual feedback
-/// - Phase-colored folder icons
-/// - Scrollable and responsive layout
-///
-/// This widget is agnostic to the data source and accepts a root FileNode.
 class FileTreeWidget extends StatefulWidget {
   const FileTreeWidget({
     required this.onFileSelected,
-    required this.rootNode,
+    this.rootNode,
+    this.projectPath, // Nuevo parámetro para ruta real
     super.key,
   });
 
-  /// Callback triggered when a file or folder is selected.
   final ValueChanged<FileNode> onFileSelected;
-
-  /// The root node of the file tree to display.
-  final FileNode rootNode;
+  final FileNode? rootNode; // Para Mocks (opcional)
+  final String? projectPath; // Para Real (opcional)
 
   @override
   State<FileTreeWidget> createState() => _FileTreeWidgetState();
 }
 
-/// State for FileTreeWidget. Manages selection and expansion state.
 class _FileTreeWidgetState extends State<FileTreeWidget> {
-  /// Currently selected file node.
-  late FileNode _selectedNode;
-  /// Set of expanded folder IDs.
+  FileNode? _activeRootNode;
+  FileNode? _selectedNode;
   final Set<String> _expandedFolders = {};
+
+  // Estado de UI
+  bool _isLoading = false;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    _selectedNode = widget.rootNode;
-    _expandedFolders.add('root');
+    _loadData();
   }
 
-  /// Builds the main widget tree.
+  @override
+  void didUpdateWidget(FileTreeWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Si cambia la ruta del proyecto, recargamos
+    if (oldWidget.projectPath != widget.projectPath) {
+      _loadData();
+    }
+  }
+
+  Future<void> _loadData() async {
+    // LÓGICA HÍBRIDA: Detecta rutas mock:// vs rutas reales
+
+    // 1. MODO MOCK: Si la ruta es virtual (empieza con 'mock://')
+    if (widget.projectPath?.startsWith('mock://') ?? false) {
+      setState(() {
+        _activeRootNode = MockProjectData.guideRootNode;
+        _expandedFolders.add(_activeRootNode!.id);
+      });
+      return;
+    }
+
+    // 2. MODO REAL: Si hay projectPath, usamos el servicio de infraestructura
+    if (widget.projectPath != null) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      try {
+        final node = await FileTreeService.buildTreeFromPath(
+          widget.projectPath!,
+        );
+
+        if (mounted) {
+          setState(() {
+            _activeRootNode = node;
+            _expandedFolders.add(node.id); // Expandimos la raíz por defecto
+            _isLoading = false;
+          });
+        }
+      } catch (e) {
+        if (mounted) {
+          setState(() {
+            _errorMessage = 'Error cargando archivos: $e';
+            _isLoading = false;
+          });
+        }
+      }
+    }
+    // 3. MODO MOCK LEGACY: Usamos el rootNode pasado si existe
+    else if (widget.rootNode != null) {
+      setState(() {
+        _activeRootNode = widget.rootNode;
+        _expandedFolders.add(widget.rootNode!.id);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) => Container(
     decoration: const BoxDecoration(
@@ -77,13 +127,19 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
                 ),
               ),
               const Spacer(),
+              // Botón de refrescar real
               IconButton(
-                icon: const Icon(Icons.refresh),
+                icon: _isLoading
+                    ? const SizedBox(
+                        width: 12,
+                        height: 12,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.refresh),
                 color: AppColors.textSecondary,
                 iconSize: 16,
-                onPressed: () {
-                  // TODO: Implement reload from backend
-                },
+                tooltip: 'Recargar',
+                onPressed: _isLoading ? null : _loadData,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
               ),
@@ -91,54 +147,74 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
           ),
         ),
 
-        // File tree content (scrollable)
+        // Contenido del Árbol
         Expanded(
-          child: SingleChildScrollView(
-            child: _buildFileTree(widget.rootNode, 0),
-          ),
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _errorMessage != null
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      _errorMessage!,
+                      style: const TextStyle(
+                        color: AppColors.error,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ),
+                )
+              : _activeRootNode == null
+              ? const SizedBox()
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: _buildFileTree(_activeRootNode!, 0),
+                ),
         ),
       ],
     ),
   );
 
-  /// Recursively builds the file tree.
   Widget _buildFileTree(FileNode node, int depth) {
-    final isFolder = node.children.isNotEmpty;
+    final isFolder = node.isDirectory;
     final isExpanded = _expandedFolders.contains(node.id);
-    final isSelected = _selectedNode.id == node.id;
+    final isSelected = _selectedNode?.id == node.id;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FileTreeNode(
-          node: node,
-          depth: depth,
-          isSelected: isSelected,
-          isExpanded: isExpanded,
-          onTap: () {
-            setState(() {
-              _selectedNode = node;
-              if (isFolder) {
-                if (isExpanded) {
-                  _expandedFolders.remove(node.id);
-                } else {
-                  _expandedFolders.add(node.id);
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: FileTreeNode(
+            node: node,
+            depth: depth,
+            isSelected: isSelected,
+            isExpanded: isExpanded,
+            onTap: () {
+              setState(() {
+                _selectedNode = node;
+                if (isFolder) {
+                  if (isExpanded) {
+                    _expandedFolders.remove(node.id);
+                  } else {
+                    _expandedFolders.add(node.id);
+                  }
                 }
-              }
-            });
-            widget.onFileSelected(node);
-          },
-          onToggle: isFolder
-              ? () {
-                  setState(() {
-                    if (isExpanded) {
-                      _expandedFolders.remove(node.id);
-                    } else {
-                      _expandedFolders.add(node.id);
-                    }
-                  });
-                }
-              : null,
+              });
+              widget.onFileSelected(node);
+            },
+            onToggle: isFolder
+                ? () {
+                    setState(() {
+                      if (isExpanded) {
+                        _expandedFolders.remove(node.id);
+                      } else {
+                        _expandedFolders.add(node.id);
+                      }
+                    });
+                  }
+                : null,
+          ),
         ),
         if (isFolder && isExpanded)
           ...node.children.map((child) => _buildFileTree(child, depth + 1)),

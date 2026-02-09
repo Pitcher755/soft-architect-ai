@@ -16,9 +16,9 @@ class ProjectModel extends Project {
     id: json['id'] as String,
     name: json['name'] as String,
     path: json['path'] as String,
-    createdAt: DateTime.parse(json['created_at'] as String),
-    lastOpened: json['last_opened'] != null
-        ? DateTime.parse(json['last_opened'] as String)
+    createdAt: DateTime.parse(json['createdAt'] as String),
+    lastOpened: json['lastOpened'] != null
+        ? DateTime.parse(json['lastOpened'] as String)
         : null,
   );
 
@@ -27,7 +27,7 @@ class ProjectModel extends Project {
     'id': id,
     'name': name,
     'path': path,
-    'created_at': createdAt.toIso8601String(),
-    'last_opened': lastOpened?.toIso8601String(),
+    'createdAt': createdAt.toIso8601String(),
+    'lastOpened': lastOpened?.toIso8601String(),
   };
 }

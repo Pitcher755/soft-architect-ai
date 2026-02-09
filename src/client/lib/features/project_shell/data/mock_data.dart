@@ -6,7 +6,80 @@ import '../../filesystem/domain/entities/file_node.dart';
 /// Mock data for ProjectShellScreen demo
 class MockProjectData {
   // ========================
-  // File System Structure
+  // Guía del Usuario (Mock Guide)
+  // ========================
+  static const FileNode guideRootNode = FileNode(
+    id: 'root-guide',
+    name: 'SOFTARCHITECT-GUIDE',
+    path: 'mock://softarchitect-guide',
+    isDirectory: true,
+    children: [
+      FileNode(
+        id: 'welcome',
+        name: '00-Bienvenido.md',
+        path: 'mock://softarchitect-guide/00-Bienvenido.md',
+        isDirectory: false,
+      ),
+      FileNode(
+        id: 'features',
+        name: '01-Funcionalidades',
+        path: 'mock://softarchitect-guide/features',
+        isDirectory: true,
+        children: [
+          FileNode(
+            id: 'f1',
+            name: 'Chat-IA.md',
+            path: 'mock://softarchitect-guide/features/Chat-IA.md',
+            isDirectory: false,
+          ),
+        ],
+      ),
+    ],
+  );
+
+  // ========================
+  // Contenido de la Guía
+  // ========================
+  static const Map<String, String> guideFileContents = {
+    'mock://softarchitect-guide/00-Bienvenido.md': '''# 👋 Bienvenido a SoftArchitect AI
+
+Esta es tu guía interactiva. Aquí aprenderás a usar la herramienta.
+
+## Pasos:
+1. Crea un proyecto con el botón "+".
+2. Selecciona una carpeta vacía.
+3. Empieza a crear.
+
+## Características principales:
+- **Análisis de Arquitectura**: Diseña sistemas escalables
+- **Documentación Viva**: Genera documentos automáticamente
+- **Chat IA**: Interactúa con tus documentos
+- **Híbrido**: Funciona online y offline''',
+    'mock://softarchitect-guide/features/Chat-IA.md': '''# 🤖 Chat IA
+
+El panel central te permite hablar con tus documentos.
+
+## Funcionalidades:
+- Realiza preguntas sobre tu arquitectura
+- Genera archivos automáticamente
+- Obtén sugerencias de mejora
+- Crea documentación
+
+## Ejemplo:
+Prueba a pedir:
+- "Genera un README"
+- "Sugiere mejoras al diseño"
+- "Crea un diagrama de componentes"
+- "Explica la arquitectura actual"
+
+## Tips:
+- Sé específico en tus preguntas
+- Proporciona contexto si es necesario
+- Revisa siempre las sugerencias antes de aplicarlas''',
+  };
+
+  // ========================
+  // Legacy Mock Data (Proyecto de Ejemplo)
   // ========================
   static const FileNode mockProjectRoot = FileNode(
     id: 'root',
@@ -97,43 +170,77 @@ class MockProjectData {
   ];
 
   // ========================
-  // Markdown Preview Mock Data
+  // Markdown Preview Mock Data (RICH CONTENT)
   // ========================
-  static const String mockMarkdownContent = '''# 3. Architecture Overview
+  // Usamos r''' (raw string) para evitar conflictos con el símbolo $ en el código Dart
+  static const String mockMarkdownContent = r'''
 
-This document outlines the high-level architecture for **PROJECT-ALPHA**, focusing on the event-driven microservices interaction.
+# 🚀 Project Vision: SoftArchitect AI
 
-## System Context
+## 📋 Executive Summary
+This document outlines the architecture for the **SoftArchitect AI** MVP. We are aiming for a modular, scalable solution that prioritizes local execution and user privacy.
 
-The system follows a standard **Hexagonal Architecture** pattern to isolate core domain logic from external adapters.
+### Tech Stack Overview
+| Component | Technology | Version | Status |
+|-----------|------------|---------|--------|
+| Frontend  | Flutter    | 3.27    | ✅ Stable |
+| Backend   | FastAPI    | 0.109   | ✅ Stable |
+| Database  | ChromaDB   | 0.4     | 🚧 Beta   |
+| AI Model  | Ollama     | Latest  | 🚀 Active |
+
+## 💻 Implementation Example (Dart)
+The following code snippet demonstrates how we handle local file persistence safely within the file system shell:
+
+```dart
+import 'dart:io';
+
+Future<void> saveDocument(String path, String content) async {
+  final file = File(path);
+  try {
+    await file.writeAsString(content);
+    print('✅ File saved successfully at: $path');
+  } catch (e) {
+    print('❌ Error saving file: $e');
+  }
+}
 
 ```
-┌─────────────────────┐
-│   API Gateway       │
-└──────────┬──────────┘
-           │
-    ┌──────┴──────┐
-    │             │
-┌───▼──┐      ┌──▼────┐
-│ Auth │      │ Core  │
-└──────┘      └───────┘
+
+## 📊 Architecture Diagram (Mermaid)
+
+The system follows a standard **RAG (Retrieval-Augmented Generation)** pipeline designed for offline capability:
+
+```mermaid
+graph TD;
+    User[User] -->|1. Prompt| App(Flutter App);
+    App -->|2. API Request| API{FastAPI Gateway};
+    API -->|3. Query Vector DB| DB[(ChromaDB)];
+    DB -->|4. Return Context| API;
+    API -->|5. Send Context + Prompt| LLM[Ollama LLM];
+    LLM -->|6. Stream Response| App;
+
+    style User fill:#f9f,stroke:#333,stroke-width:2px
+    style DB fill:#bbf,stroke:#333,stroke-width:2px
+    style LLM fill:#dfd,stroke:#333,stroke-width:2px
+
 ```
 
-## Scalability Considerations
+## 📝 Key Constraints
 
-- **Horizontal Scaling:** Stateless services deployed via Kubernetes
-- **Database Sharding:** User data sharded by `tenant_id`
-- **Caching Strategy:** Redis cluster for session management
+> "Simplicity is the soul of efficiency." - Austin Freeman
 
-## Performance Targets
+1. **Offline First:** The system must work without internet for local models.
+2. **Low Latency:** UI updates must occur within 16ms frame budget.
+3. **Security:** API keys must never be logged or transmitted externally.
 
-| Metric | Target | Status |
-|--------|--------|--------|
-| API Latency | < 200ms | ✓ |
-| Throughput | 10k req/s | ✓ |
-| Availability | 99.9% | ⏳ |
+---
 
-> **Note:** This section is being refined based on your constraints feedback.
+*Last Updated: February 2026*
+
+
+
+```
+
 ''';
 
   // ========================

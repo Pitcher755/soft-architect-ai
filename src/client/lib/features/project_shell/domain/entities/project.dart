@@ -53,6 +53,24 @@ class Project {
   String get displayName =>
       path.split('/').last.isEmpty ? name : path.split('/').last;
 
+  /// Get project phase from path segments
+  ///
+  /// Derives phase from directory structure or defaults to 'Contexto'
+  /// Examples: 'Contexto', 'Arquitectura', 'Implementación', 'Calidad', 'Documentación'
+  String get phase {
+    final pathParts = path.split('/').where((p) => p.isNotEmpty).toList();
+    if (pathParts.length >= 2) {
+      final segment = pathParts[pathParts.length - 2].toLowerCase();
+      if (segment.contains('arquitect')) return 'Arquitectura';
+      if (segment.contains('implement') || segment.contains('desarrollo'))
+        return 'Implementación';
+      if (segment.contains('calidad') || segment.contains('test'))
+        return 'Calidad';
+      if (segment.contains('doc')) return 'Documentación';
+    }
+    return 'Contexto';
+  }
+
   /// Check if project was recently accessed (within last 30 days)
   ///
   /// Returns `true` if [lastOpened] is within 30 days, `false` otherwise.

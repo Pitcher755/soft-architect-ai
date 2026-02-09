@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../../domain/entities/project.dart';
 import '../../domain/repositories/project_repository.dart';
@@ -22,21 +22,18 @@ class WebMockProjectRepository implements ProjectRepository {
       name: 'SoftArchitect AI',
       path: '/home/demo/SoftArchitect AI',
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
-      lastOpened: DateTime.now(),
     ),
     Project(
       id: 'demo-002',
       name: 'Flutter UI Kit',
       path: '/home/demo/Flutter UI Kit',
       createdAt: DateTime.now().subtract(const Duration(days: 60)),
-      lastOpened: DateTime.now().subtract(const Duration(days: 5)),
     ),
     Project(
       id: 'demo-003',
       name: 'Python FastAPI Backend',
       path: '/home/demo/Python FastAPI Backend',
       createdAt: DateTime.now().subtract(const Duration(days: 90)),
-      lastOpened: DateTime.now().subtract(const Duration(days: 10)),
     ),
   ];
 
@@ -60,14 +57,11 @@ class WebMockProjectRepository implements ProjectRepository {
   Future<Project?> getLastOpenedProject() async {
     await Future.delayed(const Duration(milliseconds: 50));
     try {
-      return _projects.reduce(
-        (a, b) =>
-            (a.lastOpened ?? DateTime(1970)).isAfter(
-              b.lastOpened ?? DateTime(1970),
-            )
-            ? a
-            : b,
-      );
+      return _projects.reduce((a, b) {
+        final aTime = a.lastOpened ?? a.createdAt;
+        final bTime = b.lastOpened ?? b.createdAt;
+        return bTime.isAfter(aTime) ? b : a;
+      });
     } on Exception catch (_) {
       return null;
     }

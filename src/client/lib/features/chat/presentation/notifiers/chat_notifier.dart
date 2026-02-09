@@ -358,10 +358,7 @@ class _MockChatRepository implements ChatRepository {
   }
 
   @override
-  Future<List<ChatMessage>> getChatHistory(String projectId) async {
-    // Mock implementation - returns empty list
-    return [];
-  }
+  Future<List<ChatMessage>> getChatHistory(String projectId) async => [];
 
   @override
   Future<void> clearChatHistory(String projectId) async {

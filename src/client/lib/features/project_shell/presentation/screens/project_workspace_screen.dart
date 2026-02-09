@@ -1,33 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // IMPORT NECESARIO
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../shared/presentation/widgets/projects_sidebar.dart';
-import '../data/mock_projects_data.dart';
+import '../providers/project_providers.dart';
 import '../widgets/create_project_dialog.dart';
 import '../widgets/project_card.dart';
 import '../widgets/project_list_view.dart';
 
 /// ProjectWorkspaceScreen - Dashboard for managing projects
 /// Shows projects in a grid with options to expand and view all projects
-class ProjectWorkspaceScreen extends StatefulWidget {
+class ProjectWorkspaceScreen extends ConsumerStatefulWidget {
   const ProjectWorkspaceScreen({super.key});
 
   @override
-  State<ProjectWorkspaceScreen> createState() => _ProjectWorkspaceScreenState();
+  ConsumerState<ProjectWorkspaceScreen> createState() =>
+      _ProjectWorkspaceScreenState();
 }
 
-class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
+class _ProjectWorkspaceScreenState
+    extends ConsumerState<ProjectWorkspaceScreen> {
   bool showAllProjects = false;
 
   @override
   Widget build(BuildContext context) {
-    // Get mock projects data
-    final allProjects = getMockProjectsData();
+    // 1. CONEXIÓN CON RIVERPOD (Sustituye a getMockProjectsData)
+    // Esto escucha cambios automáticamente, sin FutureBuilder
+    final allProjects = ref.watch(projectsProvider);
     final displayedProjects = allProjects.take(8).toList();
 
     return Scaffold(
       backgroundColor: AppColors.mainBg,
+      // 2. ESTRUCTURA ORIGINAL EXACTA (LayoutBuilder -> Row -> ...)
       body: LayoutBuilder(
         builder: (context, windowConstraints) {
           const minWindowHeight = 500.0;
@@ -97,8 +102,9 @@ class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
                                   ),
                                 ),
                                 ElevatedButton.icon(
+                                  // CAMBIO CLAVE: Pasamos 'ref' al diálogo
                                   onPressed: () =>
-                                      CreateProjectDialog.show(context),
+                                      CreateProjectDialog.show(context, ref),
                                   icon: const Icon(Icons.add, size: 20),
                                   label: const Text('Nuevo Proyecto'),
                                   style: ElevatedButton.styleFrom(
@@ -119,51 +125,73 @@ class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
 
                             const SizedBox(height: 40),
 
-                            LayoutBuilder(
-                              builder: (context, gridConstraints) {
-                                const double minCardWidth = 280;
-                                final calculatedColumns =
-                                    (gridConstraints.maxWidth / minCardWidth)
-                                        .floor();
-                                final effectiveColumns = calculatedColumns
-                                    .clamp(1, 4);
-                                const childAspectRatio = 1.9;
-
-                                return SizedBox(
-                                  width: double.infinity,
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: effectiveColumns,
-                                          crossAxisSpacing: 24,
-                                          mainAxisSpacing: 24,
-                                          childAspectRatio: childAspectRatio,
-                                        ),
-                                    itemCount: displayedProjects.length,
-                                    itemBuilder: (context, index) {
-                                      final project = displayedProjects[index];
-                                      return ProjectCard(
-                                        name: project['name'] as String,
-                                        icon: project['icon'] as IconData,
-                                        iconColor:
-                                            project['iconColor'] as Color,
-                                        phase: project['phase'] as String,
-                                        phaseColor:
-                                            project['phaseColor'] as Color,
-                                        path: project['path'] as String,
-                                        modified: project['modified'] as String,
-                                        onTap: () => context.go(
-                                          '/project-shell?path=${Uri.encodeComponent(project['path'] as String)}',
-                                        ),
-                                      );
-                                    },
+                            // Si la lista está vacía (carga inicial)
+                            if (allProjects.isEmpty)
+                              const Padding(
+                                padding: EdgeInsets.all(40),
+                                child: Text(
+                                  'Cargando proyectos...',
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              )
+                            else
+                              LayoutBuilder(
+                                builder: (context, gridConstraints) {
+                                  const double minCardWidth = 280;
+                                  final calculatedColumns =
+                                      (gridConstraints.maxWidth / minCardWidth)
+                                          .floor();
+                                  final effectiveColumns = calculatedColumns
+                                      .clamp(1, 4);
+                                  const childAspectRatio = 1.9;
+
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: effectiveColumns,
+                                            crossAxisSpacing: 24,
+                                            mainAxisSpacing: 24,
+                                            childAspectRatio: childAspectRatio,
+                                          ),
+                                      itemCount: displayedProjects.length,
+                                      itemBuilder: (context, index) {
+                                        final project =
+                                            displayedProjects[index];
+                                        // CAMBIO CLAVE: Usamos sintaxis de Objeto (project.name) no Mapa (project['name'])
+                                        return ProjectCard(
+                                          name: project.name,
+                                          icon: Icons.folder,
+                                          iconColor: AppColors.primary,
+                                          phase: 'Proyecto',
+                                          phaseColor: _getPhaseColor(
+                                            'Proyecto',
+                                          ),
+                                          path: project.path,
+                                          modified: _formatDate(
+                                            project.lastOpened ??
+                                                project.createdAt,
+                                          ),
+                                          onTap: () => context.go(
+                                            Uri(
+                                              path: '/project-shell',
+                                              queryParameters: {
+                                                'path': project.path,
+                                              },
+                                            ).toString(),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
 
                             const SizedBox(height: 24),
 
@@ -215,7 +243,16 @@ class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
 
                             if (showAllProjects)
                               ProjectListView(
-                                projects: allProjects,
+                                projects: allProjects
+                                    .map(
+                                      (p) => {
+                                        'name': p.name,
+                                        'path': p.path,
+                                        'phase': 'Proyecto',
+                                        'createdAt': p.createdAt,
+                                      },
+                                    )
+                                    .toList(),
                                 onClose: () {
                                   setState(() {
                                     showAllProjects = false;
@@ -253,5 +290,26 @@ class _ProjectWorkspaceScreenState extends State<ProjectWorkspaceScreen> {
         },
       ),
     );
+  }
+
+  // --- HELPERS (Para mantener el diseño sin lógica compleja en el build) ---
+
+  Color _getPhaseColor(String phase) {
+    if (phase.toLowerCase().contains('documentación')) return AppColors.info;
+    if (phase.toLowerCase().contains('contexto')) return AppColors.dirContext;
+    if (phase.toLowerCase().contains('requisitos'))
+      return AppColors.dirRequirements;
+    if (phase.toLowerCase().contains('arquitectura'))
+      return AppColors.dirArchitecture;
+    return AppColors.primary;
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final diff = now.difference(date);
+    if (diff.inDays == 0) return 'Hoy';
+    if (diff.inDays == 1) return 'Ayer';
+    if (diff.inDays < 7) return 'Hace ${diff.inDays} días';
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

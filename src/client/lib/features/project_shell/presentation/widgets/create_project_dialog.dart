@@ -1,21 +1,31 @@
+import 'dart:io'; // Para crear directorios
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../shared/presentation/widgets/labeled_text_area.dart';
+import '../../../../../shared/presentation/widgets/labeled_text_field.dart';
+import '../../../../../shared/presentation/widgets/path_picker_field.dart';
+import '../../../../../shared/utils/navigation_utils.dart';
+import '../../../../../shared/utils/validation_utils.dart';
+import '../../../filesystem/data/services/filesystem_service.dart';
+import '../providers/project_providers.dart';
 
-/// CreateProjectDialog - Separated widget for creating new projects
-/// Encapsulates the entire dialog logic and UI
+/// CreateProjectDialog - Widget separado para crear nuevos proyectos
+/// Encapsula la lógica de diálogo, selección
+/// de archivos y creación de directorios.
 class CreateProjectDialog {
-  /// Shows the create project dialog modal
-  static void show(BuildContext context) {
+  /// Muestra el modal de creación de proyecto
+  static void show(BuildContext context, WidgetRef ref) {
     final nameController = TextEditingController();
-    final pathController = TextEditingController(
-      text: '~/Documents/SoftArchitectProjects',
-    );
+    // Ruta por defecto según el SO (puedes ajustarlo si quieres)
+    final pathController = TextEditingController(text: Directory.current.path);
     final descController = TextEditingController();
 
     showDialog(
       context: context,
+      barrierDismissible: false, // Evitar cerrar por error
       builder: (dialogContext) => AlertDialog(
         backgroundColor: AppColors.surfaceBg,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -25,7 +35,7 @@ class CreateProjectDialog {
             const Text(
               'Nuevo Proyecto',
               style: TextStyle(
-                color: Color(0xFFE6EDF3),
+                color: AppColors.textMain,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -43,22 +53,27 @@ class CreateProjectDialog {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Project name field
-                CreateProjectDialog._buildTextField(
+                // Campo Nombre del Proyecto
+                LabeledTextField(
                   label: 'Nombre del Proyecto',
                   controller: nameController,
-                  hint: 'Ej: MySuperApp',
+                  hint: 'Ej: SoftArchitect_V1',
                   helpText:
                       'Solo caracteres alfanuméricos, guiones y guiones bajos.',
                 ),
                 const SizedBox(height: 24),
 
-                // Base path field
-                CreateProjectDialog._buildPathField(pathController),
+                // Campo Ruta Base
+                PathPickerField(
+                  label: 'Ruta Base (Carpeta Contenedora)',
+                  controller: pathController,
+                  hint: 'Selecciona una ruta...',
+                  helpText: 'El proyecto se creará dentro de esta carpeta.',
+                ),
                 const SizedBox(height: 24),
 
-                // Description field
-                CreateProjectDialog._buildTextAreaField(
+                // Campo Descripción
+                LabeledTextArea(
                   label: 'Descripción Corta',
                   controller: descController,
                   hint: '¿Qué vamos a construir hoy?',
@@ -72,22 +87,27 @@ class CreateProjectDialog {
             onPressed: () => Navigator.pop(dialogContext),
             child: const Text(
               'Cancelar',
-              style: TextStyle(color: Color(0xFFE6EDF3)),
+              style: TextStyle(color: AppColors.textMain),
             ),
           ),
           ElevatedButton.icon(
             onPressed: () => CreateProjectDialog._handleCreateProject(
-              context,
-              dialogContext,
+              context, // Contexto padre (para navegación y snackbar)
+              dialogContext, // Contexto del diálogo (para cerrar)
+              ref, // Ref de Riverpod para actualizar estado
               nameController.text.trim(),
-              pathController.text,
+              pathController.text.trim(),
+              descController.text.trim(),
             ),
             icon: const Icon(Icons.rocket_launch, size: 18),
             label: const Text('Crear Proyecto'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0d0df2),
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ),
         ],
@@ -95,152 +115,60 @@ class CreateProjectDialog {
     );
   }
 
-  /// Handles the project creation logic
-  static void _handleCreateProject(
+  /// Maneja la lógica de validación y creación física de directorios
+  static Future<void> _handleCreateProject(
     BuildContext parentContext,
     BuildContext dialogContext,
+    WidgetRef ref,
     String projectName,
-    String projectPath,
-  ) {
-    if (projectName.isEmpty) {
-      ScaffoldMessenger.of(parentContext).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor ingresa un nombre de proyecto'),
-        ),
-      );
+    String basePath,
+    String description,
+  ) async {
+    // 1. Validaciones básicas usando el helper
+    final validationError = validateProjectInputs(
+      projectName: projectName,
+      basePath: basePath,
+    );
+
+    if (validationError != null) {
+      showError(parentContext, validationError);
       return;
     }
-    Navigator.pop(dialogContext);
-    // Navigate to ProjectShellScreen with the project path
-    parentContext.go('/project-shell?path=${Uri.encodeComponent(projectPath)}');
+
+    // 2. Construcción de rutas usando package:path para ser cross-platform
+    final fullProjectPath = '$basePath/$projectName';
+
+    try {
+      // 3. Usar el servicio para crear la estructura completa
+      final filesystemService = FilesystemService();
+      await filesystemService.createProjectStructure(
+        basePath,
+        projectName,
+        description,
+      );
+
+      // 4. ACTUALIZAR ESTADO GLOBAL (Riverpod)
+      // Esto hace que aparezca en la lista inmediatamente
+      await ref
+          .read(projectsProvider.notifier)
+          .addProject(projectName, fullProjectPath, description);
+
+      // 5. Cerrar diálogo y navegar
+      if (dialogContext.mounted) {
+        Navigator.pop(dialogContext); // Cierra el modal
+      }
+
+      if (parentContext.mounted) {
+        showSuccess(
+          parentContext,
+          'Proyecto "$projectName" creado exitosamente',
+        );
+        navigateToProjectShell(parentContext, fullProjectPath);
+      }
+    } on Exception catch (e) {
+      if (parentContext.mounted) {
+        showError(parentContext, 'Error al crear el proyecto: $e');
+      }
+    }
   }
-
-  /// Builds a standard text field for the dialog
-  static Widget _buildTextField({
-    required String label,
-    required TextEditingController controller,
-    required String hint,
-    required String helpText,
-  }) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          color: Color(0xFFE6EDF3),
-        ),
-      ),
-      const SizedBox(height: 8),
-      TextField(
-        controller: controller,
-        decoration: CreateProjectDialog._buildInputDecoration(hint),
-        style: const TextStyle(color: Color(0xFFE6EDF3)),
-      ),
-      const SizedBox(height: 4),
-      Text(
-        helpText,
-        style: const TextStyle(fontSize: 11, color: Color(0xFF8b949e)),
-      ),
-    ],
-  );
-
-  /// Builds a text area field (multi-line) for the dialog
-  static Widget _buildTextAreaField({
-    required String label,
-    required TextEditingController controller,
-    required String hint,
-  }) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          color: Color(0xFFE6EDF3),
-        ),
-      ),
-      const SizedBox(height: 8),
-      TextField(
-        controller: controller,
-        maxLines: 3,
-        decoration: CreateProjectDialog._buildInputDecoration(hint),
-        style: const TextStyle(color: Color(0xFFE6EDF3)),
-      ),
-    ],
-  );
-
-  /// Builds the path field with browse button
-  static Widget _buildPathField(TextEditingController pathController) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        'Ruta Base (Local)',
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          color: Color(0xFFE6EDF3),
-        ),
-      ),
-      const SizedBox(height: 8),
-      Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: pathController,
-              readOnly: true,
-              decoration: CreateProjectDialog._buildInputDecoration(''),
-              style: const TextStyle(
-                color: Color(0xFF444c56),
-                fontFamily: 'Courier',
-                fontSize: 12,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          ElevatedButton.icon(
-            onPressed: () {
-              // TODO: Implement file picker for path selection
-            },
-            icon: const Icon(Icons.folder_open, size: 18),
-            label: const Text('Examinar...'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF21262d),
-              foregroundColor: Colors.white,
-              side: const BorderSide(color: Color(0xFF30363d)),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 4),
-      const Text(
-        'Se creará la carpeta automáticamente.',
-        style: TextStyle(fontSize: 11, color: Color(0xFF8b949e)),
-      ),
-    ],
-  );
-
-  /// Common input decoration for all text fields
-  static InputDecoration _buildInputDecoration(String hint) => InputDecoration(
-    hintText: hint,
-    hintStyle: const TextStyle(color: AppColors.textSecondary),
-    filled: true,
-    fillColor: AppColors.mainBg,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: AppColors.border),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: AppColors.border),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: AppColors.primary, width: 2),
-    ),
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-  );
 }
