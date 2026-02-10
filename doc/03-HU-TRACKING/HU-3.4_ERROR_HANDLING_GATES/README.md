@@ -1,53 +1,64 @@
 # 📋 HU-3.4: Error Handling & Validation Gates
 
 > **Historia de Usuario:** Manejo robusto de errores con gates de validación
-> **Tipo:** Backend (Python)
-> **Prioridad:** 🟠 HIGH
+> **Tipo:** Full-Stack (Python + Flutter)
+> **Prioridad:** 🔥 **HIGH**
 > **Estimación:** M (5 pts)
 > **Rama:** `feature/error-handling-gates`
-> **Estado:** 📋 PENDIENTE
+> **Estado:** 🟢 **READY FOR PHASE 0**
 
 ---
 
-## 📝 Descripción
+<div align="center">
+
+[🇬🇧 English](#english) | [🇪🇸 Español](#español)
+
+</div>
+
+---
+
+<div id="english">
+
+## 📝 Description
 
 ### User Story
 
 ```
-Como Sistema,
-Quiero manejo robusto de errores con gates de validación y fallback logic,
-Para garantizar integridad de documentos y recuperación ante fallos.
+As a System,
+I want robust error handling with validation gates and fallback logic,
+To guarantee document integrity and recovery from failures.
 ```
 
-### Alcance
+### Scope
 
-Implementar **validación y recuperación** con:
+Implement **validation, retry, and recovery** with:
 
-- ✅ Gates de calidad (Flesch-Kincaid, PII, tokens incompletos)
-- 🔄 Retry automático con backoff exponencial
-- 🆘 Fallback a template genérico
-- ↩️ Rollback de documentos fallidos
-- 📝 Logging detallado para debugging
-
----
-
-## ✅ Criterios de Aceptación
-
-| # | Criterio | Status |
-|---|----------|--------|
-| 1 | ✅ Validación de contenido (no vacío, formato válido) | ⏳ |
-| 2 | ✅ Gates de calidad: Flesch-Kincaid >5, sin PII, tokens completos | ⏳ |
-| 3 | ✅ Retry automático 3x con backoff exponencial | ⏳ |
-| 4 | ✅ Fallback a template genérico si LLM falla | ⏳ |
-| 5 | ✅ Rollback de documento si validación falla | ⏳ |
-| 6 | ✅ Logging detallado de fallos | ⏳ |
-| 7 | ❌ Usuario NO ve stack traces (mensajes amigables en español) | ⏳ |
-| 8 | ✅ (UX) Las notificaciones de éxito/info (Snackbars) tienen 'Autohide' y desaparecen automáticamente a los 5 segundos | ⏳ |
-| 9 | ✅ (UX) Las notificaciones de error crítico requieren cierre manual o acción del usuario | ⏳ |
+- ✅ Validation Gates (minimum length, Markdown structure, UTF-8 encoding, XSS patterns, max size)
+- 🔄 Automatic retry with exponential backoff (max 3x)
+- ↩️ Rollback to previous document version on failure
+- 🎨 UX-optimized notifications (auto-hide for success, manual for errors)
+- 📝 Comprehensive logging without sensitive data exposure
+- 🌐 Error code mapping to Spanish messages
 
 ---
 
-## 🛠️ Tareas Técnicas
+## ✅ Acceptance Criteria
+
+| # | Criterion | Status |
+|---|-----------|--------|
+| 1 | ✅ Documents validated for length (>50 chars), structure, encoding | ⏳ Phase 0 |
+| 2 | ✅ Retry logic: max 3 attempts with exponential backoff (1s, 2s, 4s) | ⏳ Phase 0 |
+| 3 | ✅ Fallback: restore previous document version if generation fails | ⏳ Phase 0 |
+| 4 | ✅ Snackbar UX: success/info auto-hide in 5s, errors require manual close | ⏳ Phase 0 |
+| 5 | ✅ Error logging with context (operation, timestamp, error_code) | ⏳ Phase 0 |
+| 6 | ✅ Localized error messages in Spanish (no technical jargon) | ⏳ Phase 0 |
+| 7 | ✅ Test coverage >90% on validation gates and retry logic | ⏳ Phase 0 |
+| 8 | ❌ Users NEVER see stack traces (friendly messages only) | ⏳ Phase 0 |
+| 9 | ✅ Integration with HU-3.3 (Chat Sequential Docs) | ⏳ Phase 0 |
+
+---
+
+## 🛠️ Technical Tasks
 
 | # | Tarea | Status |
 |---|-------|--------|

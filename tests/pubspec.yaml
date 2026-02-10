@@ -61,3 +61,10 @@ dev_dependencies:
 dependency_overrides:
   softarchitect_ai:
     path: ../src/client
+
+# ============================================================================
+# FLUTTER CONFIGURATION
+# Material design support for tests
+# ============================================================================
+flutter:
+  uses-material-design: true

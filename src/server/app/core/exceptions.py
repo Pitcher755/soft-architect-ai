@@ -10,10 +10,16 @@ from typing import Any
 class BaseAppError(Exception):
     """Base class for all application errors."""
 
+    code: str
+    message: str
+    status_code: int
+    details: dict[str, Any]
+
     def __init__(
         self,
         code: str,
         message: str,
+        status_code: int = 500,
         details: dict[str, Any] | None = None,
     ):
         """
@@ -22,12 +28,23 @@ class BaseAppError(Exception):
         Args:
             code: Error code (e.g., "RAG_001", "SYS_001")
             message: Human-readable error message
+            status_code: HTTP status code (default: 500)
             details: Optional additional error details
         """
         self.code = code
         self.message = message
+        self.status_code = status_code
         self.details = details or {}
         super().__init__(self.message)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert exception to dictionary for API response."""
+        return {
+            "error_code": self.code,
+            "error_message": self.message,
+            "status_code": self.status_code,
+            "details": self.details,
+        }
 
 
 class VectorStoreError(BaseAppError):
@@ -37,6 +54,7 @@ class VectorStoreError(BaseAppError):
         self,
         code: str = "RAG_001",
         message: str = "Vector store operation failed",
+        status_code: int = 500,
         details: dict[str, Any] | None = None,
     ):
         """
@@ -45,9 +63,10 @@ class VectorStoreError(BaseAppError):
         Args:
             code: Error code (default: "RAG_001")
             message: Human-readable error message
+            status_code: HTTP status code (default: 500)
             details: Optional additional error details
         """
-        super().__init__(code, message, details)
+        super().__init__(code, message, status_code, details)
 
 
 class QueryError(BaseAppError):
@@ -57,6 +76,7 @@ class QueryError(BaseAppError):
         self,
         code: str = "RAG_002",
         message: str = "Query operation failed",
+        status_code: int = 500,
         details: dict[str, Any] | None = None,
     ):
         """
@@ -65,9 +85,10 @@ class QueryError(BaseAppError):
         Args:
             code: Error code (default: "RAG_002")
             message: Human-readable error message
+            status_code: HTTP status code (default: 500)
             details: Optional additional error details
         """
-        super().__init__(code, message, details)
+        super().__init__(code, message, status_code, details)
 
 
 class RAGError(BaseAppError):
@@ -77,6 +98,7 @@ class RAGError(BaseAppError):
         self,
         code: str = "RAG_001",
         message: str = "RAG operation failed",
+        status_code: int = 500,
         details: dict[str, Any] | None = None,
     ):
         """
@@ -85,9 +107,10 @@ class RAGError(BaseAppError):
         Args:
             code: Error code (default: "RAG_001")
             message: Human-readable error message
+            status_code: HTTP status code (default: 500)
             details: Optional additional error details
         """
-        super().__init__(code, message, details)
+        super().__init__(code, message, status_code, details)
 
 
 class LLMError(BaseAppError):
@@ -97,6 +120,7 @@ class LLMError(BaseAppError):
         self,
         code: str = "LLM_001",
         message: str = "LLM operation failed",
+        status_code: int = 500,
         details: dict[str, Any] | None = None,
     ):
         """
@@ -105,9 +129,10 @@ class LLMError(BaseAppError):
         Args:
             code: Error code (default: "LLM_001")
             message: Human-readable error message
+            status_code: HTTP status code (default: 500)
             details: Optional additional error details
         """
-        super().__init__(code, message, details)
+        super().__init__(code, message, status_code, details)
 
 
 class TemplateNotFoundError(BaseAppError):
@@ -118,6 +143,7 @@ class TemplateNotFoundError(BaseAppError):
         template_name: str,
         code: str = "TEMPLATE_001",
         message: str | None = None,
+        status_code: int = 500,
         details: dict[str, Any] | None = None,
     ):
         """
@@ -127,10 +153,13 @@ class TemplateNotFoundError(BaseAppError):
             template_name: Name of the missing template
             code: Error code (default: "TEMPLATE_001")
             message: Custom message (default: template-based)
+            status_code: HTTP status code (default: 500)
             details: Optional additional error details
         """
         final_message = message or f"Template '{template_name}' not found"
-        super().__init__(code, final_message, details or {"template": template_name})
+        final_details = details or {}
+        final_details["template"] = template_name
+        super().__init__(code, final_message, status_code, final_details)
 
 
 class StreamError(BaseAppError):
@@ -140,6 +169,7 @@ class StreamError(BaseAppError):
         self,
         code: str = "STREAM_001",
         message: str = "Stream operation failed",
+        status_code: int = 500,
         details: dict[str, Any] | None = None,
     ):
         """
@@ -148,6 +178,74 @@ class StreamError(BaseAppError):
         Args:
             code: Error code (default: "STREAM_001")
             message: Human-readable error message
+            status_code: HTTP status code (default: 500)
             details: Optional additional error details
         """
-        super().__init__(code, message, details)
+        super().__init__(code, message, status_code, details)
+
+
+class ValidationError(BaseAppError):
+    """Raised when document validation fails."""
+
+    operation: str
+
+    def __init__(
+        self,
+        code: str,
+        message: str,
+        operation: str,
+        status_code: int = 400,
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        """
+        Initialize validation error.
+
+        Args:
+            code: Error code (VAL_001, VAL_002, etc.)
+            message: Human-readable error message in Spanish
+            operation: Name of the validation operation that failed
+            status_code: HTTP status code (default: 400)
+            details: Optional additional error details
+        """
+        self.operation = operation
+        final_details = details or {}
+        final_details["operation"] = operation
+        super().__init__(code, message, status_code, final_details)
+
+
+class RetryExhaustedError(BaseAppError):
+    """Raised when all retry attempts are exhausted."""
+
+    operation: str
+    attempts: int
+    last_error: str
+
+    def __init__(
+        self,
+        operation: str,
+        attempts: int,
+        last_error: str,
+        status_code: int = 503,
+    ) -> None:
+        """
+        Initialize retry exhausted error.
+
+        Args:
+            operation: Name of the operation that failed
+            attempts: Number of retry attempts made
+            last_error: Error message from the last failed attempt
+            status_code: HTTP status code (default: 503)
+        """
+        self.operation = operation
+        self.attempts = attempts
+        self.last_error = last_error
+        super().__init__(
+            code="SYS_RETRY_EXHAUSTED",
+            message=f"Operación fallida después de {attempts} intentos: {last_error}",
+            status_code=status_code,
+            details={
+                "operation": operation,
+                "attempts": attempts,
+                "last_error": last_error,
+            },
+        )
