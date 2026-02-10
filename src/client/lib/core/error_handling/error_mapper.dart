@@ -68,11 +68,11 @@ class ErrorMapper {
   /// Retryable errors are typically transient (network, resources).
   /// Non-retryable errors require user action (authentication, validation).
   static bool isRetryable(String errorCode) => [
-        'SYS_001', // Connection error
-        'SYS_002', // Out of memory
-        'SYS_RETRY_EXHAUSTED', // Retry exhausted
-        'RAG_001', // Empty knowledge base
-        'VAL_001', // Document too short (regenerate)
-        'VAL_002', // Invalid Markdown (regenerate)
-      ].contains(errorCode);
+    'SYS_001', // Connection error
+    'SYS_002', // Out of memory
+    'SYS_RETRY_EXHAUSTED', // Retry exhausted
+    'RAG_001', // Empty knowledge base
+    'VAL_001', // Document too short (regenerate)
+    'VAL_002', // Invalid Markdown (regenerate)
+  ].contains(errorCode);
 }

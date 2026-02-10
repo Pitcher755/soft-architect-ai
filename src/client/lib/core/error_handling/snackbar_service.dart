@@ -80,11 +80,15 @@ class SnackbarService {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(message,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    message,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 4),
-                  Text('Código: $errorCode',
-                      style: const TextStyle(fontSize: 12)),
+                  Text(
+                    'Código: $errorCode',
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 ],
               ),
             ),

@@ -4,7 +4,6 @@ import 'error_mapper.dart';
 ///
 /// Stores metadata about errors for audit trail and user-friendly display.
 class ErrorContext {
-
   /// Creates an error context instance.
   ErrorContext({
     required this.errorCode,
@@ -20,14 +19,14 @@ class ErrorContext {
   factory ErrorContext.fromErrorCode(
     String errorCode, {
     Map<String, dynamic>? metadata,
-  }) =>
-      ErrorContext(
-        errorCode: errorCode,
-        message: _ErrorMapper.getUserMessage(errorCode),
-        suggestion: _ErrorMapper.getSuggestion(errorCode),
-        isRetryable: _ErrorMapper.isRetryable(errorCode),
-        metadata: metadata,
-      );
+  }) => ErrorContext(
+    errorCode: errorCode,
+    message: _ErrorMapper.getUserMessage(errorCode),
+    suggestion: _ErrorMapper.getSuggestion(errorCode),
+    isRetryable: _ErrorMapper.isRetryable(errorCode),
+    metadata: metadata,
+  );
+
   /// Technical error code (e.g., 'SYS_001', 'VAL_002')
   final String errorCode;
 
@@ -102,7 +101,11 @@ class _ErrorMapper {
   static String getSuggestion(String errorCode) =>
       _suggestions[errorCode] ?? 'Intenta nuevamente o contacta al soporte';
 
-  static bool isRetryable(String errorCode) =>
-      ['SYS_001', 'SYS_002', 'SYS_RETRY_EXHAUSTED', 'RAG_001', 'VAL_001']
-          .contains(errorCode);
+  static bool isRetryable(String errorCode) => [
+    'SYS_001',
+    'SYS_002',
+    'SYS_RETRY_EXHAUSTED',
+    'RAG_001',
+    'VAL_001',
+  ].contains(errorCode);
 }
