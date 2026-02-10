@@ -46,10 +46,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def load_multiformat_documents(knowledge_base_path: str) -> list[Document]:
+def load_multiformat_documents(  # noqa: C901
+    knowledge_base_path: str,
+) -> list[Document]:
     """
     Load multi-format documents from knowledge base directory.
-    
+
     Supported formats:
     - .md (Markdown)
     - .yaml/.yml (YAML)
@@ -69,7 +71,7 @@ def load_multiformat_documents(knowledge_base_path: str) -> list[Document]:
         return []
 
     documents = []
-    
+
     # Find all supported file types
     file_patterns = {
         "*.md": "markdown",
@@ -78,39 +80,41 @@ def load_multiformat_documents(knowledge_base_path: str) -> list[Document]:
         "*.json": "json",
         "*.tree": "tree",
     }
-    
+
     all_files = []
     for pattern, file_type in file_patterns.items():
         files = list(kb_path.rglob(pattern))
         all_files.extend([(f, file_type) for f in files])
-    
+
     logger.info(f"Found {len(all_files)} documents in {kb_path}")
 
     for file_path, file_type in all_files:
         try:
             content = None
             metadata_extra = {"file_type": file_type}
-            
+
             if file_type == "markdown":
                 with open(file_path, encoding="utf-8") as f:
                     content = f.read()
-            
+
             elif file_type == "yaml":
                 with open(file_path, encoding="utf-8") as f:
                     data = yaml.safe_load(f)
                     content = yaml.dump(data, default_flow_style=False) if data else ""
-                    metadata_extra["yaml_keys"] = list(data.keys()) if isinstance(data, dict) else "list"
-            
+                    metadata_extra["yaml_keys"] = (
+                        list(data.keys()) if isinstance(data, dict) else "list"
+                    )
+
             elif file_type == "json":
                 with open(file_path, encoding="utf-8") as f:
                     data = json.load(f)
                     content = json.dumps(data, indent=2, ensure_ascii=False)
                     metadata_extra["json_type"] = type(data).__name__
-            
+
             elif file_type == "tree":
                 with open(file_path, encoding="utf-8") as f:
                     content = f.read()
-            
+
             if not content or not content.strip():
                 logger.warning(f"Skipping empty file: {file_path}")
                 continue
@@ -132,7 +136,9 @@ def load_multiformat_documents(knowledge_base_path: str) -> list[Document]:
                 },
             )
             documents.append(doc)
-            logger.debug(f"Loaded: {file_path.name} ({len(content)} chars, type={file_type})")
+            logger.debug(
+                f"Loaded: {file_path.name} ({len(content)} chars, type={file_type})"
+            )
 
         except Exception as e:
             logger.error(f"Failed to load {file_path}: {e}")

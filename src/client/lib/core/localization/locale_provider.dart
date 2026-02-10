@@ -91,7 +91,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
       }
 
       debugPrint('✅ Locale loaded: $languageCode');
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('⚠️ Error loading locale preference: $e');
       state = _defaultLocale;
     }

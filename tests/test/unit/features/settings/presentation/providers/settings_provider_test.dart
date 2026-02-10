@@ -54,10 +54,7 @@ void main() {
 
     test('copyWith should update only specified fields', () {
       const original = AppSettings();
-      final updated = original.copyWith(
-        userName: 'NewName',
-        avatarIndex: 2,
-      );
+      final updated = original.copyWith(userName: 'NewName', avatarIndex: 2);
 
       expect(updated.userName, 'NewName');
       expect(updated.avatarIndex, 2);
@@ -115,7 +112,10 @@ void main() {
 
       final settings = AppSettings.fromJson(json);
 
-      expect(settings.themeMode, ThemeMode.light); // Default es 1 (light) en fromJson
+      expect(
+        settings.themeMode,
+        ThemeMode.light,
+      ); // Default es 1 (light) en fromJson
       expect(settings.fontSize, 1.0);
       expect(settings.userName, 'Architect');
       expect(settings.avatarIndex, 0);
@@ -243,48 +243,46 @@ void main() {
       final notifier = container.read(settingsProvider.notifier);
 
       notifier.updateMemoryOptimization(enableMemoryOptimization: false);
-      expect(
-        container.read(settingsProvider).enableMemoryOptimization,
-        false,
-      );
+      expect(container.read(settingsProvider).enableMemoryOptimization, false);
 
       notifier.updateMemoryOptimization(enableMemoryOptimization: true);
-      expect(
-        container.read(settingsProvider).enableMemoryOptimization,
-        true,
-      );
+      expect(container.read(settingsProvider).enableMemoryOptimization, true);
     });
 
     // TODO: This test requires a more sophisticated mock setup.
     // SharedPreferences.setMockInitialValues() can only be called once per test suite,
     // causing conflicts with the setUp() that initializes empty values.
     // Solution: Extract to separate test file or use integration test approach.
-    test('should load persisted settings on initialization',
-        () async {
-      // Setup persisted data (themeMode: 2 = ThemeMode.dark)
-      SharedPreferences.setMockInitialValues({
-        'app_settings_v2':
-            '{"themeMode":2,"fontSize":1.3,"globalZoom":1.5,"enableZoomShortcuts":false,"enableAnimations":false,"enableMemoryOptimization":false,"userName":"PersistedUser","avatarIndex":2,"projectDirectory":"/persisted/path"}',
-      });
+    test(
+      'should load persisted settings on initialization',
+      () async {
+        // Setup persisted data (themeMode: 2 = ThemeMode.dark)
+        SharedPreferences.setMockInitialValues({
+          'app_settings_v2':
+              '{"themeMode":2,"fontSize":1.3,"globalZoom":1.5,"enableZoomShortcuts":false,"enableAnimations":false,"enableMemoryOptimization":false,"userName":"PersistedUser","avatarIndex":2,"projectDirectory":"/persisted/path"}',
+        });
 
-      // Create new container to trigger initialization
-      final newContainer = ProviderContainer();
+        // Create new container to trigger initialization
+        final newContainer = ProviderContainer();
 
-      // Wait longer for async load to complete (SharedPreferences.getInstance + jsonDecode)
-      await Future<void>.delayed(const Duration(milliseconds: 500));
+        // Wait longer for async load to complete (SharedPreferences.getInstance + jsonDecode)
+        await Future<void>.delayed(const Duration(milliseconds: 500));
 
-      final settings = newContainer.read(settingsProvider);
+        final settings = newContainer.read(settingsProvider);
 
-      expect(settings.userName, 'PersistedUser');
-      expect(settings.themeMode, ThemeMode.dark); // themeMode:2 = dark
-      expect(settings.fontSize, 1.3);
-      expect(settings.globalZoom, 1.5);
-      expect(settings.enableZoomShortcuts, false);
-      expect(settings.avatarIndex, 2);
-      expect(settings.projectDirectory, '/persisted/path');
+        expect(settings.userName, 'PersistedUser');
+        expect(settings.themeMode, ThemeMode.dark); // themeMode:2 = dark
+        expect(settings.fontSize, 1.3);
+        expect(settings.globalZoom, 1.5);
+        expect(settings.enableZoomShortcuts, false);
+        expect(settings.avatarIndex, 2);
+        expect(settings.projectDirectory, '/persisted/path');
 
-      newContainer.dispose();
-    }, skip: 'Requires separate test file due to SharedPreferences mock limitations');
+        newContainer.dispose();
+      },
+      skip:
+          'Requires separate test file due to SharedPreferences mock limitations',
+    );
 
     test('should handle corrupted JSON gracefully', () async {
       // Setup corrupted data

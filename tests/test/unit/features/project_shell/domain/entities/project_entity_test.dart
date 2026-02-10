@@ -155,7 +155,10 @@ void main() {
           createdAt: now,
         );
 
-        expect(project.createdAt.isBefore(now.add(Duration(seconds: 1))), isTrue);
+        expect(
+          project.createdAt.isBefore(now.add(Duration(seconds: 1))),
+          isTrue,
+        );
       });
 
       test('lastOpened can be after createdAt', () {

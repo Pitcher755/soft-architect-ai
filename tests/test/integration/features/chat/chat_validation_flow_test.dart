@@ -93,10 +93,7 @@ void main() {
 
       // Assert
       expect(await file.exists(), true);
-      expect(
-        await Directory('$projectPath/30-ARCHITECTURE').exists(),
-        true,
-      );
+      expect(await Directory('$projectPath/30-ARCHITECTURE').exists(), true);
       expect(
         await Directory('$projectPath/30-ARCHITECTURE/database').exists(),
         true,
@@ -127,14 +124,20 @@ void main() {
 
       // Act: List files
       final contextDir = Directory('$projectPath/10-CONTEXT');
-      final files =
-          contextDir.listSync(recursive: false).whereType<File>().toList();
+      final files = contextDir
+          .listSync(recursive: false)
+          .whereType<File>()
+          .toList();
 
       // Assert
       expect(files.length, 3);
       expect(
         files.map((f) => f.path.split('/').last),
-        containsAll(['PROJECT_MANIFESTO.md', 'VISION_PROMISE.md', 'USER_JOURNEY.md']),
+        containsAll([
+          'PROJECT_MANIFESTO.md',
+          'VISION_PROMISE.md',
+          'USER_JOURNEY.md',
+        ]),
       );
     });
 

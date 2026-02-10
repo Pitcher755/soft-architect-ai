@@ -24,11 +24,7 @@ void main() {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: [Locale('en'), Locale('es')],
-            home: Scaffold(
-              body: Center(
-                child: Text('English Locale'),
-              ),
-            ),
+            home: Scaffold(body: Center(child: Text('English Locale'))),
           ),
         ),
       );
@@ -36,9 +32,7 @@ void main() {
       expect(find.text('English Locale'), findsOneWidget);
     });
 
-    testWidgets('Spanish locale is configurable', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('Spanish locale is configurable', (WidgetTester tester) async {
       await tester.pumpWidget(
         const ProviderScope(
           child: MaterialApp(
@@ -49,11 +43,7 @@ void main() {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: [Locale('en'), Locale('es')],
-            home: Scaffold(
-              body: Center(
-                child: Text('Locale Español'),
-              ),
-            ),
+            home: Scaffold(body: Center(child: Text('Locale Español'))),
           ),
         ),
       );
@@ -76,11 +66,7 @@ void main() {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: supportedLocales,
-            home: Scaffold(
-              body: Center(
-                child: Text('Locales Test'),
-              ),
-            ),
+            home: Scaffold(body: Center(child: Text('Locales Test'))),
           ),
         ),
       );

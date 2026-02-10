@@ -87,7 +87,8 @@ class SQLiteRepository:
             sqlite3.Error: If table creation fails
         """
         with self.tx_manager.transaction() as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS projects (
                     id TEXT PRIMARY KEY,
                     name TEXT NOT NULL UNIQUE,
@@ -97,7 +98,8 @@ class SQLiteRepository:
                     updated_at TEXT NOT NULL,
                     metadata TEXT
                 )
-                """)
+                """
+            )
             logger.debug("✅ Projects table initialized (idempotent)")
 
     def create_project(self, project: Project) -> None:
