@@ -1,0 +1,146 @@
+{
+    "@@locale": "en",
+    "@@description": "SoftArchitect AI - English Localization",
+    "appTitle": "SoftArchitect AI",
+    "@appTitle": {
+        "description": "The title of the application"
+    },
+    "projectsPageTitle": "Projects",
+    "@projectsPageTitle": {
+        "description": "Title of the projects list page"
+    },
+    "newProjectButton": "New Project",
+    "@newProjectButton": {
+        "description": "Button label for creating a new project"
+    },
+    "deleteProjectButton": "Delete",
+    "@deleteProjectButton": {
+        "description": "Button label for deleting a project"
+    },
+    "deleteProjectConfirm": "Are you sure you want to delete '{projectName}'?",
+    "@deleteProjectConfirm": {
+        "description": "Confirmation message for project deletion",
+        "placeholders": {
+            "projectName": {
+                "type": "String",
+                "example": "My Project"
+            }
+        }
+    },
+    "settingsPageTitle": "Settings",
+    "@settingsPageTitle": {
+        "description": "Title of the settings page"
+    },
+    "settingsLanguageLabel": "Language",
+    "@settingsLanguageLabel": {
+        "description": "Label for language selection in settings"
+    },
+    "selectLanguage": "Select Language",
+    "@selectLanguage": {
+        "description": "Dialog title for language selection"
+    },
+    "languageEnglish": "English",
+    "@languageEnglish": {
+        "description": "Language name: English"
+    },
+    "languageSpanish": "Spanish",
+    "@languageSpanish": {
+        "description": "Language name: Spanish"
+    },
+    "chatPageTitle": "AI Chat",
+    "@chatPageTitle": {
+        "description": "Title of the chat interface"
+    },
+    "sendMessage": "Send",
+    "@sendMessage": {
+        "description": "Button label for sending a message"
+    },
+    "clearHistory": "Clear History",
+    "@clearHistory": {
+        "description": "Button label for clearing chat history"
+    },
+    "newChat": "New Chat",
+    "@newChat": {
+        "description": "Button label for starting a new chat"
+    },
+    "errorLoadingProject": "Error loading project",
+    "@errorLoadingProject": {
+        "description": "Error message when project fails to load"
+    },
+    "errorLoadingProjects": "Error loading projects",
+    "@errorLoadingProjects": {
+        "description": "Error message when projects list fails to load"
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Button label for canceling an action"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Button label for saving changes"
+    },
+    "edit": "Edit",
+    "@edit": {
+        "description": "Button label for editing"
+    },
+    "close": "Close",
+    "@close": {
+        "description": "Button label for closing a dialog"
+    },
+    "confirmed": "Confirmed",
+    "@confirmed": {
+        "description": "Confirmation message"
+    },
+    "loading": "Loading...",
+    "@loading": {
+        "description": "Loading indicator message"
+    },
+    "empty": "No items",
+    "@empty": {
+        "description": "Empty state message"
+    },
+    "createProject": "Create Project",
+    "@createProject": {
+        "description": "Button label for creating a new project"
+    },
+    "browse": "Browse...",
+    "@browse": {
+        "description": "Button label for browsing files/directories"
+    },
+    "validateAndSave": "Validate & Save",
+    "@validateAndSave": {
+        "description": "Button label for validating and saving content"
+    },
+    "refine": "Refine",
+    "@refine": {
+        "description": "Button label for refining content"
+    },
+    "reject": "Reject",
+    "@reject": {
+        "description": "Button label for rejecting content"
+    },
+    "fileSaved": "File saved to: {outputFile}",
+    "@fileSaved": {
+        "description": "Success message when file is saved",
+        "placeholders": {
+            "outputFile": {
+                "type": "String",
+                "example": "/home/user/project.dart"
+            }
+        }
+    },
+    "contentCopied": "Content copied to clipboard",
+    "@contentCopied": {
+        "description": "Success message when content is copied"
+    },
+    "saveError": "Save error: {error}",
+    "@saveError": {
+        "description": "Error message when save fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    }
+}

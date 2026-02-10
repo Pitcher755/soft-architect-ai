@@ -62,6 +62,7 @@ dev_dependencies:
 # Asset and font configuration
 # ============================================================================
 flutter:
+  generate: true
   uses-material-design: true
 
   # Uncomment and configure when needed:
