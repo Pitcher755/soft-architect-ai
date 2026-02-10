@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../gen/app_localizations.dart';
 
 /// Header section of the workspace screen.
 ///
@@ -48,7 +49,7 @@ class WorkspaceHeader extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onNewProject,
             icon: const Icon(Icons.add, size: 20),
-            label: const Text('Nuevo Proyecto'),
+            label: Text(AppLocalizations.of(context).newProjectButton),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,

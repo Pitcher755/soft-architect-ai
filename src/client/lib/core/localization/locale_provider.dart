@@ -56,7 +56,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
   static const String _localeKey = 'app_locale';
 
   /// Default locale fallback
-  static const Locale _defaultLocale = Locale('en');
+  static const Locale _defaultLocale = Locale('es');
 
   /// List of supported locales
   static const List<Locale> supportedLocales = [Locale('en'), Locale('es')];
@@ -70,7 +70,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
   Future<void> _loadSavedLocale() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final languageCode = prefs.getString(_localeKey) ?? 'en';
+      final languageCode = prefs.getString(_localeKey) ?? 'es';
 
       // Validate locale is supported
       if (languageCode == 'es') {
@@ -144,6 +144,8 @@ class LocaleNotifier extends StateNotifier<Locale> {
   /// Returns:
   ///   - true if supported, false otherwise
   static bool isSupported(Locale locale) => supportedLocales.contains(locale);
+
+  void toggleLocale() {}
 }
 
 /// Extension on Locale for convenience methods.

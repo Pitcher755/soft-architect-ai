@@ -9,6 +9,7 @@ import '../../../../../shared/presentation/widgets/labeled_text_field.dart';
 import '../../../../../shared/presentation/widgets/path_picker_field.dart';
 import '../../../../../shared/utils/navigation_utils.dart';
 import '../../../../../shared/utils/validation_utils.dart';
+import '../../../../gen/app_localizations.dart';
 import '../../../filesystem/data/services/filesystem_service.dart';
 import '../providers/project_providers.dart';
 
@@ -32,9 +33,9 @@ class CreateProjectDialog {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Nuevo Proyecto',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(dialogContext).newProjectButton,
+              style: const TextStyle(
                 color: AppColors.textMain,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -100,7 +101,7 @@ class CreateProjectDialog {
               descController.text.trim(),
             ),
             icon: const Icon(Icons.rocket_launch, size: 18),
-            label: const Text('Crear Proyecto'),
+            label: Text(AppLocalizations.of(dialogContext).createProject),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
