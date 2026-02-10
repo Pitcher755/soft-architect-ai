@@ -10,6 +10,7 @@ import time
 import sqlite3
 import tempfile
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
@@ -20,7 +21,7 @@ from app.domain.models.project import Project
 
 
 @pytest.fixture
-def perf_repo() -> SQLiteRepository:
+def perf_repo() -> Generator[SQLiteRepository, None, None]:
     """Create isolated repository for performance testing."""
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "perf_test.db"

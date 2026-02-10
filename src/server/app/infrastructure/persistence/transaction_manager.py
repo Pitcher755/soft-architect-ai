@@ -9,7 +9,8 @@ Created: 2026-02-10
 
 import logging
 import sqlite3
-from contextlib import AbstractContextManager, contextmanager
+from collections.abc import Generator
+from contextlib import contextmanager
 
 from app.infrastructure.persistence.sqlite_config import configure_sqlite
 
@@ -42,7 +43,7 @@ class TransactionManager:
     @contextmanager
     def transaction(
         self, isolation_level: str = "DEFERRED"
-    ) -> AbstractContextManager[sqlite3.Connection]:
+    ) -> Generator[sqlite3.Connection, None, None]:
         """Provide a context manager for database transactions.
 
         Acquires a database connection and begins a transaction. On context
