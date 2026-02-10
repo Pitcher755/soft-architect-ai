@@ -4,17 +4,28 @@
 /// current locale and persists the user's language selection to
 /// SharedPreferences for restoration across app sessions.
 ///
+/// The provider ensures that all widgets have access to the current locale
+/// and can react to language changes in real-time. Language preferences are
+/// automatically saved and restored when the app restarts.
+///
 /// Author: ArchitectZero
 /// Created: 2026-02-10
 ///
 /// Example:
 /// ```dart
-/// // Watch current locale
+/// // Watch current locale in a widget
 /// final locale = ref.watch(localeProvider);
 ///
-/// // Change locale
+/// // Change locale manually
 /// ref.read(localeProvider.notifier).setLocale(Locale('es'));
+///
+/// // Get current language name
+/// final languageName = ref.watch(currentLanguageNameProvider);
 /// ```
+///
+/// Supported Locales:
+/// - English (en): Default fallback language
+/// - Spanish (es): Primary language
 library;
 
 import 'package:flutter/material.dart';
