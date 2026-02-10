@@ -11,6 +11,8 @@ import logging
 import sqlite3
 from contextlib import AbstractContextManager, contextmanager
 
+from app.infrastructure.persistence.sqlite_config import configure_sqlite
+
 logger = logging.getLogger(__name__)
 
 
@@ -66,6 +68,10 @@ class TransactionManager:
             ...     print("Constraint violated")
         """
         conn = sqlite3.connect(self.db_path)
+
+        # Apply performance optimizations
+        configure_sqlite(conn)
+
         conn.isolation_level = None  # Manual transaction control
 
         try:
