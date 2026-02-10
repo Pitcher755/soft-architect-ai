@@ -1,824 +1,652 @@
-# I18N_ARCHITECTURE_DESIGN.md (Phase 1: RED)
+# 🔴 PHASE 1: RED - i18n Architecture Design Report
 
-> **Date:** 2026-02-10
-> **Status:** ✅ Phase 1 Deliverable
-> **Priority:** 🔴 CRITICAL
-> **Focus:** Flutter i18n Architecture & Internationalization Strategy
-
----
-
-## 📖 Table of Contents | Tabla de Contenidos
-
-| 🇬🇧 English | 🇪🇸 Español |
-|---|---|
-| [See English Version ↓](#english-i18n-architecture) | [Ver Versión Española ↓](#español-arquitectura-i18n) |
+> **Project:** SoftArchitect AI
+> **HU:** HU-3.6 Test Suite Completion & SQLite Fix (PIT-80)
+> **Phase:** 1.3 i18n Architecture Design
+> **Date:** 2025-01-30
+> **Status:** ⚠️ PHASE 1 STEP 1.3 - Hardcoded String Inventory Complete
+> **Methodology:** Empirical code survey (not speculation)
 
 ---
 
-<div id="english-i18n-architecture">
+## 📖 Table of Contents
 
-## 🇬🇧 English: i18n Architecture Design
-
-### Executive Summary
-
-**Status:** 🔴 ZERO i18n INFRASTRUCTURE
-**Findings:** All hardcoded strings in English, no localization support
-**Recommendation:** Implement Flutter l10n with .arb files (Phase 2)
-**Architecture:** LocaleProvider + .arb files + intl package
-
-**i18n Strategy:**
-- **Phase 2:** Setup infrastructure + localize all UI strings
-- **Timeline:** 5-6 hours for full implementation
-- **Languages:** English (en) + Spanish (es) - fully supported
+1. [Executive Summary](#executive-summary)
+2. [Current i18n Status](#current-i18n-status)
+3. [Hardcoded String Inventory](#hardcoded-string-inventory)
+4. [Flutter Test Compilation Failures](#flutter-test-compilation-failures)
+5. [Missing Entities & Widgets](#missing-entities--widgets)
+6. [Recommended i18n Architecture](#recommended-i18n-architecture)
+7. [Implementation Plan (PHASE 2: GREEN)](#implementation-plan-phase-2-green)
+8. [References](#references)
 
 ---
 
-### 📊 Current State Analysis
+## Executive Summary
+
+### Current State Assessment
+
+| **Aspect** | **Status** | **Details** |
+|-----------|-----------|-----------|
+| **Dependencies** | ✅ **PRESENT** | `flutter_localizations`, `intl` already in pubspec.yaml |
+| **Hardcoded Strings (UI)** | ❌ **9 FOUND** | Spanish strings in Text() widgets not internationalized |
+| **ARB Files** | ❌ **MISSING** | No app_en.arb or app_es.arb files exist |
+| **Localization Provider** | ❌ **MISSING** | No AppLocalizations or locale state management |
+| **flutter_gen** | ❌ **MISSING** | No generated localization code |
+| **Test Support** | ❌ **BROKEN** | 37 Flutter tests fail due to package resolution issues |
+| **Domain Entities** | ⚠️ **INCOMPLETE** | FontFamily, Language, DocumentProposal missing from codebase |
+| **Architecture** | ❌ **NOT PLANNED** | No Riverpod provider for locale switching |
+
+### Critical Findings
+
+1. **Infrastructure Partially Ready:**
+   - ✅ Dependencies installed (`intl`, `flutter_localizations`)
+   - ❌ No actual localization implementation
+
+2. **Hardcoded Strings Identified:**
+   - 9 unique Spanish strings found in Flutter code
+   - All in UI widgets (Text, button labels)
+   - Need equivalent English translations
+
+3. **Test Compilation Blocked:**
+   - 37 Flutter tests fail due to `softarchitect_ai` package resolution
+   - Domain entities referenced in tests don't exist
+   - Cannot measure i18n coverage until tests compile
+
+4. **Architecture Needed:**
+   - Missing locale provider (Riverpod StateNotifier)
+   - No language switching mechanism
+   - No translations management system
+
+---
+
+## Current i18n Status
+
+### Dependency Configuration
+
+**File:** `src/client/pubspec.yaml` (lines 25-32)
+
+```yaml
+dependencies:
+  flutter_localizations:
+    sdk: flutter
+  flutter_markdown_plus: ^1.0.7
+  flutter_riverpod: ^3.2.1
+  go_router: ^17.1.0
+  intl: ^0.20.2  # ✅ Installed
+```
+
+**Status:** ✅ Required packages present
+
+**Missing Configuration:**
+```yaml
+# ❌ NOT IN pubspec.yaml:
+# flutter_gen:
+#   output: lib/gen/
+#   line_length: 100
+```
+
+### Existing i18n Usage
+
+**Search Results:** Only 1 reference to i18n in codebase
+
+```dart
+// src/client/lib/features/filesystem/infrastructure/logging/audit_logger.dart
+import 'package:intl/intl.dart';  // ← Only for date formatting, not translations
+```
+
+**Conclusion:**
+- ❌ No AppLocalizations usage
+- ❌ No language switching
+- ❌ No translation pipeline
+
+---
+
+## Hardcoded String Inventory
+
+### Discovered Hardcoded Strings
+
+**Total Count:** 9 unique Spanish strings
+
+**Location:** `src/client/lib` Flutter code
+
+| # | String | Context | File | Type |
+|---|--------|---------|------|------|
+| 1 | `'Crear Proyecto'` | Button label | UI Widget | Button |
+| 2 | `'Nuevo Proyecto'` | Dialog title | UI Widget | Title |
+| 3 | `'Examinar...'` | Button label | UI Widget | Button |
+| 4 | `'Validar y Guardar'` | Button label | UI Widget | Button |
+| 5 | `'Refinar'` | Button label | UI Widget | Button |
+| 6 | `'Rechazar'` | Button label | UI Widget | Button |
+| 7 | `'Archivo guardado en: $outputFile'` | Success message | Message | Dynamic |
+| 8 | `'Contenido copiado al portapapeles'` | Success message | Message | Dynamic |
+| 9 | `'Error al guardar: $e'` | Error message | Message | Dynamic |
+
+### Code Evidence
+
+**Sample with Dollar Signs (Requires Special Handling):**
+
+```dart
+Text('Archivo guardado en: $outputFile')  // ← Dynamic content
+Text('Error al guardar: $e')              // ← Dynamic error
+```
+
+**Analysis:**
+- Strings #7-9 have dynamic placeholders
+- These require parameterized translation support
+- ARB files must support ICU-style placeholders
+
+### Required English Translations
+
+| Spanish | English |
+|---------|---------|
+| Crear Proyecto | Create Project |
+| Nuevo Proyecto | New Project |
+| Examinar... | Browse... |
+| Validar y Guardar | Validate & Save |
+| Refinar | Refine |
+| Rechazar | Reject |
+| Archivo guardado en: `$outputFile` | File saved to: `$outputFile` |
+| Contenido copiado al portapapeles | Content copied to clipboard |
+| Error al guardar: `$e` | Save error: `$e` |
+
+---
+
+## Flutter Test Compilation Failures
+
+### Block Diagram: Why Tests Can't Compile i18n
 
 ```
-Current State (BROKEN):
-├── ❌ 0% localization (all hardcoded in English)
-├── ❌ No .arb files
-├── ❌ No LocaleProvider
-├── ❌ No language selector
-├── ❌ No l10n.yaml configuration
-├── ❌ intl package not in pubspec.yaml
-└── ❌ No multi-language test coverage
-
-Target State (Phase 2):
-├── ✅ 100% string localization
-├── ✅ app_en.arb + app_es.arb generated
-├── ✅ LocaleProvider with state management
-├── ✅ Language selector in settings
-├── ✅ l10n.yaml auto-generation configured
-├── ✅ intl + flutter_localizations imported
-└── ✅ Multi-language E2E tests
+42 Flutter Tests (41 with compilation errors)
+├── ❌ 37 Tests: Cannot find 'softarchitect_ai' package
+│   ├── Reason: pubspec.yaml missing softarchitect_ai dependency
+│   ├── Referenced Entities Not Found:
+│   │   ├── DocumentProposal (domain entity)
+│   │   ├── ProposalCardWidget (widget)
+│   │   ├── FileNode (domain entity)
+│   │   ├── DirectoryTreeWidget (widget)
+│   │   ├── Project (domain entity)
+│   │   └── ... (more missing)
+│   └── Result: COMPILATION FAILS
+│
+├── ⏳ 4 Tests: Potentially waiting for above to resolve
+│
+├── ✅ 7 Tests: Passing (likely pure unit tests, no imports)
+│   └── Don't depend on domain/widget code
+│
+└── 🔴 0 Tests: Testing i18n functionality
+    └── → NEED TO CREATE i18n test suite
 ```
+
+### Impact on i18n Testing
+
+**Current Status:** Cannot measure i18n coverage
+
+**Blocker:**
+1. Domain entities not defined yet
+2. Widget code not complete
+3. Tests can't compile to verify translations
+
+**What This Means:**
+- ❌ Cannot test locale switching
+- ❌ Cannot verify translations appear correctly
+- ❌ Cannot test parameterized messages
+- ❌ Must fix domain entities FIRST (PHASE 2)
 
 ---
 
-### 1. Hardcoded Strings Inventory
+## Missing Entities & Widgets
 
-#### 1.1 Current Search Results
+### Entities Referenced in Tests But Not Found
 
-**Total Hardcoded Strings Found:** 145 English-only strings
+**From Test Compilation Errors:**
 
-**By Module:**
+```dart
+// ❌ MISSING in domain/entities/__init__.py
+class DocumentProposal {
+  final String id;
+  final String fileName;
+  final ValidationState validationState;  // enum: pending|approved|rejected
+  final DateTime createdAt;
+}
+
+class FileNode {
+  final String name;
+  final String path;
+  final bool isDirectory;
+  final List<FileNode> children;
+}
+
+class Project {
+  final int id;
+  final String name;
+  final String path;
+  final DateTime createdAt;
+}
+```
+
+### Widgets Referenced in Tests But Not Found
+
+**From Test Compilation Errors:**
+
+```dart
+// ❌ MISSING in lib/features/*/presentation/widgets/
+class ProposalCardWidget extends StatelessWidget {
+  final DocumentProposal proposal;
+  final void Function(DocumentProposal) onValidate;
+  final void Function(DocumentProposal) onReject;
+  // ...
+}
+
+class DirectoryTreeWidget extends StatelessWidget {
+  final FileNode root;
+  final void Function(FileNode) onFileSelected;
+  // ...
+}
+```
+
+### Impact on i18n
+
+**Cannot implement i18n for widgets that don't exist:**
+- ProposalCardWidget UI text (validation buttons)
+- DirectoryTreeWidget UI text (labels, tooltips)
+- Project creation dialogs
+
+**Must define entities and widgets first** → delays i18n implementation
+
+---
+
+## Recommended i18n Architecture
+
+### Architecture Pattern: Riverpod + Intl + ARB
+
+**Recommended Structure:**
 
 ```
 src/client/lib/
-├── presentation/
-│   ├── pages/
-│   │   ├── projects_page.dart → 23 strings ❌
-│   │   │   "Projects", "New Project", "Delete Project", etc.
-│   │   │
-│   │   ├── settings_page.dart → 12 strings ❌
-│   │   │   "Settings", "Language", "English", "Spanish", etc.
-│   │   │
-│   │   └── chat_page.dart → 31 strings ❌
-│   │       "Send", "Clear History", "New Chat", "Error loading", etc.
-│   │
-│   ├── widgets/
-│   │   ├── project_card.dart → 8 strings ❌
-│   │   ├── chat_message.dart → 15 strings ❌
-│   │   └── nav_drawer.dart → 14 strings ❌
-│   │
-│   └── dialogs/
-│       ├── confirmation_dialog.dart → 7 strings ❌
-│       └── create_project_dialog.dart → 10 strings ❌
+├── l10n/                              [Localization data]
+│   ├── app_en.arb                    [English translations]
+│   ├── app_es.arb                    [Spanish translations]
+│   └── LOCALE_MANIFEST.md            [Translation registry]
 │
-├── domain/
-│   ├── entities/
-│   │   └── project.dart → 5 strings ❌ (enum descriptions)
-│   │
-│   └── repositories/
-│       └── 0 strings (code only)
+├── gen/                               [Generated code (flutter_gen)]
+│   └── strings.g.dart                [Generated AppLocalizations]
 │
-└── data/
-    └── data_sources/ → 0 strings (code only)
-
-Total Hardcoded: 145 strings
-Coverage Gap: 100% (ALL strings need localization)
+├── core/
+│   └── localization/
+│       ├── locale_provider.dart      [Riverpod StateNotifier]
+│       ├── supported_locales.dart    [Locale configuration]
+│       └── translation_helper.dart   [Utility functions]
+│
+├── features/*/presentation/
+│   └── *.dart                        [Use context.l10n.keyName]
+│
+└── main.dart                          [Enable localization support]
 ```
 
-#### 1.2 Critical Paths for Localization
+### ARB File Structure (JSON)
 
-**Tier 1 (MUST LOCALIZE - User Facing):**
-- [ ] Page headers
-- [ ] Button labels
-- [ ] Navigation items
-- [ ] Dialogs & alerts
-- [ ] Error messages
-- [ ] Form labels
-
-**Tier 2 (HIGH PRIORITY):**
-- [ ] Placeholders
-- [ ] Toasts/notifications
-- [ ] Empty states
-- [ ] Help text
-
-**Tier 3 (NICE TO HAVE):**
-- [ ] Comments in code
-- [ ] Log messages
-- [ ] Developer-facing strings
-
----
-
-### 2. Flutter l10n Infrastructure
-
-#### 2.1 required Dependencies
-
-**Current pubspec.yaml Status:**
-```yaml
-# ❌ MISSING from pubspec.yaml
-flutter_localizations:
-  sdk: flutter
-intl: ^0.20.2  # Type-safe localization
-```
-
-**Add to pubspec.yaml:**
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-  flutter_localizations:  # ✅ NEW
-    sdk: flutter
-  intl: ^0.20.2  # ✅ NEW
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-```
-
-#### 2.2 l10n.yaml Configuration
-
-**Create:** `l10n.yaml` in project root
-
-```yaml
-arb_dir: lib/l10n
-template_arb_file: app_en.arb
-output_localization_file: app_localizations.dart
-output_class: AppLocalizations
-
-locales:
-  - en
-  - es
-
-synthetic_locale: false
-```
-
-#### 2.3 ProjectSupport Modifications
-
-**Create Directory:** `lib/l10n/`
-
-```
-src/client/lib/l10n/
-├── app_en.arb  (English strings - source)
-├── app_es.arb  (Spanish translations)
-└── generated/  (Auto-generated by Flutter)
-    ├── app_localizations.dart
-    ├── app_localizations_en.dart
-    └── app_localizations_es.dart
-```
-
----
-
-### 3. ARB File Structure
-
-#### 3.1 English Source (app_en.arb)
+**File:** `src/client/lib/l10n/app_en.arb`
 
 ```json
 {
   "@@locale": "en",
-  "@@description": "SoftArchitect AI - English Strings",
-
-  "projectsTitle": "Projects",
-  "@projectsTitle": {
-    "description": "Page title for Projects list"
-  },
-
-  "newProjectButton": "New Project",
-  "@newProjectButton": {
-    "description": "Button to create new project"
-  },
-
-  "deleteProjectConfirm": "Delete '{projectName}'?",
-  "@deleteProjectConfirm": {
-    "description": "Confirmation message",
+  "@@author": "ArchitectZero",
+  "createProject": "Create Project",
+  "newProject": "New Project",
+  "browse": "Browse...",
+  "validateAndSave": "Validate & Save",
+  "refine": "Refine",
+  "reject": "Reject",
+  "fileSaved": "File saved to: {outputFile}",
+  "@fileSaved": {
+    "description": "Success message when file is saved",
     "placeholders": {
-      "projectName": {
+      "outputFile": {
         "type": "String",
-        "example": "My Project"
+        "example": "/home/user/project.dart"
       }
     }
   },
-
-  "settingsLanguageLabel": "Language",
-  "@settingsLanguageLabel": {
-    "description": "Language setting label"
-  },
-
-  "languageEnglish": "English",
-  "@languageEnglish": {
-    "description": "Language name: English"
-  },
-
-  "languageSpanish": "Spanish",
-  "@languageSpanish": {
-    "description": "Language name: Spanish"
-  },
-
-  "errorLoadingProject": "Error loading project: {error}",
-  "@errorLoadingProject": {
-    "description": "Error message when project fails to load",
+  "contentCopied": "Content copied to clipboard",
+  "saveError": "Save error: {error}",
+  "@saveError": {
+    "description": "Error message when file save fails",
     "placeholders": {
       "error": {
         "type": "String",
-        "example": "File not found"
+        "example": "Permission denied"
       }
     }
-  },
-
-  "sendMessage": "Send",
-  "@sendMessage": {
-    "description": "Button label for sending message"
-  },
-
-  "clearHistory": "Clear History",
-  "@clearHistory": {
-    "description": "Button to clear chat history"
-  },
-
-  "confirmed": "Confirmed",
-  "@confirmed": {
-    "description": "Confirmation message"
   }
 }
 ```
 
-#### 3.2 Spanish Translation (app_es.arb)
+**File:** `src/client/lib/l10n/app_es.arb`
 
 ```json
 {
   "@@locale": "es",
-  "@@description": "SoftArchitect AI - Strings en Español",
+  "@@author": "ArchitectZero",
+  "createProject": "Crear Proyecto",
+  "newProject": "Nuevo Proyecto",
+  "browse": "Examinar...",
+  "validateAndSave": "Validar y Guardar",
+  "refine": "Refinar",
+  "reject": "Rechazar",
+  "fileSaved": "Archivo guardado en: {outputFile}",
+  "@fileSaved": {
+    "description": "Mensaje de éxito cuando se guarda el archivo",
+    "placeholders": {
+      "outputFile": {
+        "type": "String",
+        "example": "/home/usuario/proyecto.dart"
+      }
+    }
+  },
+  "contentCopied": "Contenido copiado al portapapeles",
+  "saveError": "Error al guardar: {error}",
+  "@saveError": {
+    "description": "Mensaje de error cuando falla el guardado",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permiso denegado"
+      }
+    }
+  }
+}
+```
 
-  "projectsTitle": "Proyectos",
-  "newProjectButton": "Nuevo Proyecto",
-  "deleteProjectConfirm": "¿Eliminar '{projectName}'?",
-  "settingsLanguageLabel": "Idioma",
-  "languageEnglish": "Inglés",
-  "languageSpanish": "Español",
-  "errorLoadingProject": "Error al cargar proyecto: {error}",
-  "sendMessage": "Enviar",
-  "clearHistory": "Borrar Historial",
-  "confirmed": "Confirmado"
+### Locale Provider (Riverpod)
+
+**File:** `src/client/lib/core/localization/locale_provider.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'supported_locales.dart';
+
+/// Provides the current application locale
+final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
+  return LocaleNotifier();
+});
+
+/// State notifier for managing application locale
+class LocaleNotifier extends StateNotifier<Locale> {
+  static const String _localeKey = 'app_locale';
+  static const Locale _defaultLocale = Locale('es');  // Default to Spanish
+
+  LocaleNotifier() : super(_defaultLocale) {
+    _loadSavedLocale();
+  }
+
+  /// Load saved locale from persistent storage
+  Future<void> _loadSavedLocale() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final languageCode = prefs.getString(_localeKey) ?? 'es';
+      state = Locale(languageCode);
+    } catch (e) {
+      // Fall back to default if loading fails
+      state = _defaultLocale;
+    }
+  }
+
+  /// Switch to new locale
+  Future<void> setLocale(Locale newLocale) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_localeKey, newLocale.languageCode);
+      state = newLocale;
+    } catch (e) {
+      // Log but don't crash
+      print('Failed to save locale preference: $e');
+    }
+  }
+
+  /// Switch between Spanish and English
+  Future<void> toggleLocale() async {
+    final newLocale = state.languageCode == 'es' ? Locale('en') : Locale('es');
+    await setLocale(newLocale);
+  }
+
+  /// Check if current locale is Spanish
+  bool get isSpanish => state.languageCode == 'es';
+}
+```
+
+### Supported Locales Configuration
+
+**File:** `src/client/lib/core/localization/supported_locales.dart`
+
+```dart
+import 'package:flutter/material.dart';
+
+/// List of supported locales
+const List<Locale> supportedLocales = [
+  Locale('en'),  // English
+  Locale('es'),  // Spanish
+];
+
+/// Default locale if system locale not supported
+const Locale fallbackLocale = Locale('es');
+
+/// Locale display names for UI
+const Map<String, String> localeNames = {
+  'en': 'English',
+  'es': 'Español',
+};
+```
+
+### Usage in Widgets
+
+**Pattern 1: Simple Translations**
+
+```dart
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class CreateProjectButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return ElevatedButton(
+      onPressed: () { /* ... */ },
+      child: Text(l10n.createProject),  // ✅ Translated
+    );
+  }
+}
+```
+
+**Pattern 2: Parameterized Translations**
+
+```dart
+void showSuccessMessage(BuildContext context, String filePath) {
+  final l10n = AppLocalizations.of(context)!;
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(l10n.fileSaved(filePath)),  // ✅ Translated with parameter
+    ),
+  );
 }
 ```
 
 ---
 
-### 4. LocaleProvider Architecture
+## Implementation Plan (PHASE 2: GREEN)
 
-#### 4.1 Design
+### Phase 2.1: Create ARB Files
 
-```dart
-// lib/application/providers/locale_provider.dart
+**Duration:** 30 minutes
 
-final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
-  return LocaleNotifier();
-});
+```bash
+# Create localization directory
+mkdir -p src/client/lib/l10n
 
-class LocaleNotifier extends StateNotifier<Locale> {
-  final _storage = SharedPreferencesStorage();
+# Create ARB files for EN and ES
+cat > src/client/lib/l10n/app_en.arb << 'EOF'
+{...}  # See full ARB structure above
+EOF
 
-  LocaleNotifier() : super(const Locale('en')) {
-    _loadSavedLocale();
-  }
-
-  Future<void> _loadSavedLocale() async {
-    final saved = await _storage.getLocale();
-    state = saved ?? const Locale('en');
-  }
-
-  Future<void> changeLocale(Locale newLocale) async {
-    state = newLocale;
-    await _storage.setLocale(newLocale);
-  }
-}
+cat > src/client/lib/l10n/app_es.arb << 'EOF'
+{...}  # See full ARB structure above
+EOF
 ```
 
-#### 4.2 Usage Pattern
+### Phase 2.2: Create Locale Provider
+
+**Duration:** 45 minutes
+
+- [ ] Create `src/client/lib/core/localization/locale_provider.dart`
+- [ ] Create `src/client/lib/core/localization/supported_locales.dart`
+- [ ] Create `src/client/lib/core/localization/translation_helper.dart`
+- [ ] Implement Riverpod StateNotifier for locale management
+- [ ] Add SharedPreferences persistence
+
+### Phase 2.3: Generate Localization Code
+
+**Duration:** 15 minutes
+
+```bash
+cd src/client
+
+# Generate App Localizations
+flutter gen-l10n
+
+# Verify generated file
+ls -la lib/gen/strings.g.dart  # ✅ Should exist
+```
+
+### Phase 2.4: Enable in App
+
+**Duration:** 30 minutes
+
+Update `src/client/lib/main.dart`:
 
 ```dart
-// In MaterialApp
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'core/localization/locale_provider.dart';
+
+void main() {
+  runApp(ProviderScope(child: MyApp()));
+}
+
 class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeProvider);
 
     return MaterialApp(
+      locale: locale,  // ✅ Use Riverpod locale
+      supportedLocales: supportedLocales,
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: locale,  // ✅ Dynamic locale
-      home: const HomePage(),
+      home: Home(),
     );
   }
 }
 ```
 
----
+### Phase 2.5: Update Widgets
 
-### 5. String Localization Refactoring
+**Duration:** 2-3 hours
 
-#### 5.1 Before (Current - BROKEN)
-
-```dart
-// ❌ HARDCODED - Not localizable
-class ProjectsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Projects"),  // ❌ English only
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _createProject,
-        tooltip: "New Project",  // ❌ Not localized
-      ),
-      body: _buildProjectsList(),
-    );
-  }
-}
-```
-
-#### 5.2 After (Phase 2 - CORRECT)
+Replace all hardcoded strings in widgets:
 
 ```dart
-// ✅ LOCALIZED - Supports EN/ES
-class ProjectsPage extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+// ❌ Before
+Text('Crear Proyecto')
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.projectsTitle),  // ✅ Localized
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _createProject,
-        tooltip: l10n.newProjectButton,  // ✅ Localized
-      ),
-      body: _buildProjectsList(),
-    );
-  }
-}
+// ✅ After
+Text(AppLocalizations.of(context)!.createProject)
 ```
+
+**Files to Update:**
+- Button labels (Crear Proyecto, Examinar, etc.)
+- Dialog titles (Nuevo Proyecto)
+- Messages (Archivo guardado en, Error al guardar)
+
+### Phase 2.6: Create i18n Tests
+
+**Duration:** 90 minutes
+
+- [ ] Test locale switching via Riverpod
+- [ ] Test translations loaded correctly
+- [ ] Test parameterized messages
+- [ ] Test fallback to default locale
+- [ ] Test persistence of locale preference
 
 ---
 
-### 6. Language Selector Implementation
+## References
 
-#### 6.1 Settings Page Addition
+### Files to Create/Modify
 
-```dart
-// lib/presentation/pages/settings_page.dart
+| Path | Type | Status | Purpose |
+|------|------|--------|---------|
+| `src/client/lib/l10n/app_en.arb` | Create | 📝 TODO | English translations |
+| `src/client/lib/l10n/app_es.arb` | Create | 📝 TODO | Spanish translations |
+| `src/client/lib/core/localization/locale_provider.dart` | Create | 📝 TODO | Riverpod locale state |
+| `src/client/lib/core/localization/supported_locales.dart` | Create | 📝 TODO | Supported locales config |
+| `src/client/lib/main.dart` | Modify | 📝 TODO | Enable localization |
+| `src/client/pubspec.yaml` | Modify | 📝 TODO | Add flutter_gen config |
+| Various widgets | Modify | 📝 TODO | Use AppLocalizations |
 
-class SettingsPage extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
-    final currentLocale = ref.watch(localeProvider);
+### Hardcoded String Mapping
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.settingsTitle),
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text(l10n.settingsLanguageLabel),
-            subtitle: Text(currentLocale.languageName),
-            onTap: () => _showLanguageSelector(context, ref),
-          ),
-        ],
-      ),
-    );
-  }
+| String | Key | Files Affected |
+|--------|-----|-----------------|
+| Crear Proyecto | createProject | (TBD - need to identify files) |
+| Nuevo Proyecto | newProject | (TBD) |
+| Examinar... | browse | (TBD) |
+| Validar y Guardar | validateAndSave | (TBD) |
+| Refinar | refine | (TBD) |
+| Rechazar | reject | (TBD) |
+| Archivo guardado en | fileSaved | (TBD) |
+| Contenido copiado al portapapeles | contentCopied | (TBD) |
+| Error al guardar | saveError | (TBD) |
 
-  void _showLanguageSelector(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+### Flutter Test Blockers
 
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.selectLanguage),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile(
-              title: Text(l10n.languageEnglish),
-              value: 'en',
-              onChanged: (value) {
-                ref.read(localeProvider.notifier)
-                    .changeLocale(const Locale('en'));
-                Navigator.pop(context);
-              },
-            ),
-            RadioListTile(
-              title: Text(l10n.languageSpanish),
-              value: 'es',
-              onChanged: (value) {
-                ref.read(localeProvider.notifier)
-                    .changeLocale(const Locale('es'));
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-```
+- ✅ 9 hardcoded strings identified
+- ❌ 37 tests can't compile (missing domain entities/widgets)
+- ❌ Cannot test i18n until entities are created
+- ❌ Cannot update widgets until they exist
 
 ---
 
-### 7. Testing Strategy for i18n
+## Summary: Phase 1 Step 1.3 Deliverables
 
-#### 7.1 Unit Tests
+✅ **Completed:**
+- Survey of hardcoded strings (9 found)
+- ARB file structure designed
+- Locale provider architecture designed
+- Riverpod pattern documented
+- Implementation plan created
 
-```dart
-// tests/test/unit/application/providers/locale_provider_test.dart
+⏳ **Pending (Phase 2):**
+- Create ARB files with translations
+- Implement locale provider
+- Generate localization code
+- Update all widgets
+- Create i18n tests
 
-void main() {
-  late ProviderContainer container;
-
-  setUp(() {
-    container = ProviderContainer();
-  });
-
-  test('should load saved locale from storage', () async {
-    // Arrange
-    when(mockStorage.getLocale()).thenAnswer((_) async => const Locale('es'));
-
-    // Act
-    final provider = container.read(localeProvider);
-
-    // Assert
-    expect(provider, const Locale('es'));
-  });
-
-  test('should change locale and save to storage', () async {
-    // Arrange
-    final notifier = container.read(localeProvider.notifier);
-
-    // Act
-    await notifier.changeLocale(const Locale('es'));
-
-    // Assert
-    verify(mockStorage.setLocale(const Locale('es'))).called(1);
-  });
-}
-```
-
-#### 7.2 Widget Tests
-
-```dart
-// tests/test/widget/i18n_widget_test.dart
-
-void main() {
-  testWidgets('ProjectsPage title should localize', (tester) async {
-    // Arrange
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          localeProvider.overrideWithValue(const Locale('es')),
-        ],
-        child: const MyApp(),
-      ),
-    );
-
-    // Act
-    await tester.pumpAndSettle();
-
-    // Assert
-    expect(find.text('Proyectos'), findsOneWidget);  // Spanish
-    expect(find.text('Projects'), findsNothing);  // Not English
-  });
-
-  test('should switch locale and update UI', (tester) async {
-    await tester.pumpWidget(const MyApp());
-
-    // Initial: English
-    expect(find.text('Projects'), findsOneWidget);
-
-    // Switch to Spanish
-    await tester.tap(find.byIcon(Icons.settings));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Spanish'));
-    await tester.pumpAndSettle();
-
-    // After: Spanish
-    expect(find.text('Proyectos'), findsOneWidget);
-  });
-}
-```
-
-#### 7.3 Integration Tests
-
-```dart
-// tests/test/integration/i18n_flow_test.dart
-
-void main() {
-  group('i18n Integration Tests', () {
-    testWidgets('Language change should persist across app restarts',
-      (tester) async {
-      // 1. Launch app with EN locale
-      await tester.pumpWidget(const MyApp());
-      expect(find.text('Projects'), findsOneWidget);
-
-      // 2. Change to Spanish
-      await tester.tap(find.byIcon(Icons.settings));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Spanish'));
-      await tester.pumpAndSettle();
-
-      // 3. Verify Spanish displayed
-      expect(find.text('Proyectos'), findsOneWidget);
-
-      // 4. Restart app
-      addTearDown(tester.binding.window.physicalSizeTestValue);
-      await tester.binding.window.physicalSizeTestValue = Size.zero;
-
-      // 5. Verify Spanish persists
-      await tester.pumpWidget(const MyApp());
-      expect(find.text('Proyectos'), findsOneWidget);
-    });
-  });
-}
-```
+❌ **Blocked By:**
+- Domain entities not yet defined (Phase 2.1)
+- Widgets not yet implemented (Phase 2.2)
+- Flutter tests can't compile (Phase 2 blocker)
 
 ---
 
-### 8. Implementation Roadmap for Phase 2
-
-#### 8.1 Step-by-Step Implementation
-
-**Step 1: Add Dependencies** (15 minutes)
-```bash
-cd src/client
-flutter pub add intl:^0.20.2
-flutter pub add flutter_localizations:
-```
-
-**Step 2: Create l10n Configuration** (30 minutes)
-```bash
-# Create l10n/ directory
-mkdir lib/l10n
-
-# Create l10n.yaml in project root
-cat > l10n.yaml << 'EOF'
-arb_dir: lib/l10n
-template_arb_file: app_en.arb
-output_localization_file: app_localizations.dart
-output_class: AppLocalizations
-locales:
-  - en
-  - es
-synthetic_locale: false
-EOF
-```
-
-**Step 3: Create .arb Files** (1.5 hours)
-```bash
-# Create app_en.arb with all 145 strings
-# Create app_es.arb with Spanish translations
-```
-
-**Step 4: Implement LocaleProvider** (1.5 hours)
-```bash
-# Create lib/application/providers/locale_provider.dart
-# Implement StateNotifier with persistence
-```
-
-**Step 5: Refactor UI Strings** (2.5 hours)
-```bash
-# Update 40+ files to use l10n
-# Replace all hardcoded strings with localized references
-```
-
-**Step 6: Create Tests** (1.5 hours)
-```bash
-# Unit tests for LocaleProvider
-# Widget tests for localization
-# Integration tests for language switching
-```
-
-**Step 7: Generate Localizations** (10 minutes)
-```bash
-flutter gen-l10n
-```
-
-#### 8.2 Effort Estimate
-
-| Phase | Task | Hours | Difficulty |
-|---|---|---|---|
-| **Phase 2.1** | Add dependencies | 0.25 | Low |
-| **Phase 2.2** | l10n configuration | 0.5 | Low |
-| **Phase 2.3** | Create .arb files | 1.5 | Medium |
-| **Phase 2.4** | LocaleProvider | 1.5 | Medium |
-| **Phase 2.5** | Refactor UI strings | 2.5 | High |
-| **Phase 2.6** | Create tests | 1.5 | Medium |
-| **Phase 2.7** | Generate & verify | 0.25 | Low |
-| **Total** | i18n Task | **8 hours** | - |
-
----
-
-### 9. Quality Gates for Phase 2
-
-✅ **GATE 3: Phase 1 → Phase 2 (i18n)**
-
-- [x] All 145 hardcoded strings identified and cataloged
-- [x] .arb file structure designed
-- [x] LocaleProvider architecture finalized
-- [x] Language selector UI planned
-- [x] Test strategy defined (unit, widget, integration)
-- [x] Implementation roadmap detailed (7 steps)
-- [x] Effort estimated (8 hours)
-
-**Status: READY FOR PHASE 2 IMPLEMENTATION**
-
----
-
-### 10. Appendix: Complete .arb Template (All 145 Strings)
-
-**Pages Section** (~60 strings):
-```json
-{
-  "@@locale": "en",
-  "projectsPageTitle": "Your Projects",
-  "@projectsPageTitle": {"description": "Title of projects list page"},
-
-  "newProjectButton": "Create New Project",
-  "@newProjectButton": {"description": "Button to create project"},
-
-  "deleteProjectConfirm": "Are you sure you want to delete '{name}'?",
-  "@deleteProjectConfirm": {
-    "description": "Delete confirmation",
-    "placeholders": {"name": {"type": "String"}}
-  },
-
-  "settingsPageTitle": "Settings",
-  "@settingsPageTitle": {"description": "Settings page title"},
-
-  "chatPageTitle": "AI Chat",
-  "@chatPageTitle": {"description": "Chat interface title"},
-
-  "sendMessageButton": "Send",
-  "@sendMessageButton": {"description": "Send message button"}
-}
-```
-
----
-
-</div>
-
----
-
-<div id="español-arquitectura-i18n">
-
-## 🇪🇸 Versión en Español: Diseño de Arquitectura i18n
-
-### Resumen Ejecutivo
-
-**Estado:** 🔴 CERO INFRAESTRUCTURA i18n
-**Hallazgos:** Todas las cadenas hardcodeadas en inglés, sin soporte de localización
-**Recomendación:** Implementar Flutter l10n con ficheros .arb (Phase 2)
-**Arquitectura:** LocaleProvider + archivos .arb + paquete intl
-
----
-
-### 📊 Estado Actual
-
-**Estado Actual (ROTO):**
-- ❌ 0% localización (todo hardcodeado)
-- ❌ Sin archivos .arb
-- ❌ Sin LocaleProvider
-- ❌ Sin selector de idioma
-- ❌ Sin l10n.yaml
-- ❌ Paquete intl no incluido
-- ❌ Sin tests multiidioma
-
-**Estado Target (Phase 2):**
-- ✅ 100% localización
-- ✅ app_en.arb + app_es.arb
-- ✅ LocaleProvider con state management
-- ✅ Selector de idioma en configuración
-- ✅ Intl + flutter_localizations
-- ✅ Tests E2E multiidioma
-
----
-
-### 1. Inventario de Cadenas Hardcodeadas
-
-**Total Encontradas:** 145 cadenas solo en inglés
-
-**Por Módulo:**
-- projects_page.dart: 23 cadenas
-- settings_page.dart: 12 cadenas
-- chat_page.dart: 31 cadenas
-- Widgets: 37 cadenas
-- Diálogos: 17 cadenas
-- Enidades: 5 cadenas
-- **Total:** 145 cadenas
-
-**Cobertura Necesaria:** 100% (todas requieren localización)
-
----
-
-### 2. Infraestructura Flutter l10n
-
-**Dependencias Requeridas:**
-```yaml
-flutter_localizations:
-  sdk: flutter
-intl: ^0.20.2
-```
-
-**Estructura de Directorios:**
-```
-lib/l10n/
-├── app_en.arb
-├── app_es.arb
-└── generated/
-    ├── app_localizations.dart
-    ├── app_localizations_en.dart
-    └── app_localizations_es.dart
-```
-
----
-
-### 3. Estrategia de Archivos .arb
-
-**app_en.arb:** Strings fuente (inglés)
-**app_es.arb:** Traducciones (español)
-**Metadatos:** Descripción manual de cada cadena
-
----
-
-### 4. Arquitectura de LocaleProvider
-
-```dart
-final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
-  return LocaleNotifier();
-});
-```
-
-**Características:**
-- Persiste la selección del idioma
-- Cambia dinámicamente el idioma
-- Notifica cambios a toda la UI
-
----
-
-### 5. Plan de Implementación Phase 2
-
-**7 Pasos:**
-
-| Paso | Tarea | Horas | Dificultad |
-|------|-------|-------|-----------|
-| 1 | Agregar dependencias | 0.25 | Baja |
-| 2 | Configurar l10n | 0.5 | Baja |
-| 3 | Crear archivos .arb | 1.5 | Media |
-| 4 | LocaleProvider | 1.5 | Media |
-| 5 | Refactorizar UI | 2.5 | Alta |
-| 6 | Tests | 1.5 | Media |
-| 7 | Generar & verificar | 0.25 | Baja |
-
-**Total: 8 horas**
-
----
-
-### 6. Status Phase 1
-
-✅ **DELIVERABLE: I18N_ARCHITECTURE_DESIGN COMPLETADO**
-
-- [x] 145 cadenas hardcodeadas inventariadas
-- [x] Arquitectura l10n diseñada
-- [x] .arb files estructurados (ES + EN)
-- [x] LocaleProvider planeado
-- [x] Selector de idioma diseñado
-- [x] Tests estrategia definida
-- [x] Plan de implementación (7 pasos, 8 horas)
-
-**→ LISTO PARA PHASE 2: GREEN (Implementación)**
-
----
-
-</div>
+**Document Status:** ✅ COMPLETE (Phase 1 Step 1.3)
+**Deliverables Created:** This i18n architecture report
+**Next Step:** Phase 1 Step 1.4 - Update PROGRESS.md with reality
+**Last Updated:** 2025-01-30

@@ -1,402 +1,542 @@
-# TEST_FAILURE_ANALYSIS.md (Phase 1: RED)
+# 🔴 PHASE 1: RED - Test Failure Analysis Report
 
+> **Project:** SoftArchitect AI
+> **HU:** HU-3.6 Test Suite Completion & SQLite Fix (PIT-80)
 > **Date:** 2026-02-10
-> **Status:** ✅ Phase 1 Deliverable
-> **Agent:** ArchitectZero
-> **Methodology:** TDD Analysis + Root Cause Investigation
+> **Status:** ⚠️ PHASE 1: RED - Initial Test Execution Complete
+> **Methodology:** TDD Cycle (RED → GREEN → REFACTOR)
 
 ---
 
-## 📖 Tabla de Contenidos | Table of Contents
+## 📖 Table of Contents
 
-<table>
-<tr>
-<td><strong>🇪🇸 Español</strong></td>
-<td><strong>🇬🇧 English</strong></td>
-</tr>
-<tr>
-<td><a href="#español-análisis-de-fallos-de-tests">Ver en Español ↓</a></td>
-<td><a href="#english-test-failure-analysis">View in English ↓</a></td>
-</tr>
-</table>
-
----
-
-<div id="english-test-failure-analysis">
-
-## 🇬🇧 English Version
-
-### Executive Summary
-
-**Total Tests Analyzed:** 45
-**Failing Tests:** 12
-**Pass Rate:** 73.3%
-**Coverage Gaps:** >80% (Target)
-
-**Critical Findings:**
-- Type A (Logic Errors): 5 tests
-- Type B (Mock/Fixture Issues): 4 tests
-- Type C (Environment Issues): 2 tests
-- Type D (Missing Tests): 6 tests
+1. [Executive Summary](#executive-summary)
+2. [Test Execution Results](#test-execution-results)
+3. [Python Test Suite Analysis](#python-test-suite-analysis)
+4. [Flutter Test Suite Analysis](#flutter-test-suite-analysis)
+5. [Failure Classification Matrix](#failure-classification-matrix)
+6. [Root Cause Analysis](#root-cause-analysis)
+7. [Impact Assessment](#impact-assessment)
+8. [Next Steps (PHASE 2: GREEN)](#next-steps-phase-2-green)
+9. [References](#references)
 
 ---
 
-### 1. Python Backend Test Failures
+## Executive Summary
 
-#### 1.1 Type A: Logic Errors (5 tests)
+### Test Suite Health Snapshot
 
-| Test File | Test Name | Error | Root Cause | Fix Priority |
-|-----------|-----------|-------|------------|---|
-| `test_streaming_handler.py` | `test_websocket_connection_upgrade` | `AssertionError: expected 101, got 200` | WebSocket upgrade not properly mocked | **HIGH** |
-| `test_token_buffer.py` | `test_buffer_overflow_overwrites` | `AssertionError: [1,2,3] != [2,3,4]` | Off-by-one error in circular buffer | **HIGH** |
-| `test_metrics_collector.py` | `test_latency_aggregation` | `KeyError: 'min'` | Missing min/max calculation logic | **HIGH** |
-| `test_connection_manager.py` | `test_concurrent_connections` | `RuntimeError: Event loop closed` | Async lifecycle not managed properly | **MEDIUM** |
-| `test_stream_protocol.py` | `test_frame_serialization` | `ValueError: invalid length` | Protobuf message format wrong | **MEDIUM** |
+| **Metric** | **Python** | **Flutter** | **Combined** |
+|------------|------------|-------------|--------------|
+| Total Tests | 173 | 44 | **217** |
+| Passed | 160 (92.5%) | 7 (15.9%) | **167 (77.0%)** |
+| Failed | 13 (7.5%) | 37 (84.1%) | **50 (23.0%)** |
+| Coverage | 76% | N/A (compilation errors) | **76%** (Python only) |
+| Status | ⚠️ FIXABLE | ❌ CRITICAL | ⚠️ **REQUIRES ATTENTION** |
 
-**Fixes:**
-```python
-# test_token_buffer.py - OFF-BY-ONE FIX
-def test_buffer_overflow_overwrites():
-    buffer = CircularBuffer(maxSize=3)
-    buffer.add(1)
-    buffer.add(2)
-    buffer.add(3)
-    buffer.add(4)  # Should overwrite 1
+### Critical Findings
 
-    # FIXED: Check order is [2, 3, 4] not [1, 2, 3]
-    assert buffer.toList() == [2, 3, 4]
-    assert buffer.length == 3
+1. **Python Suite:**
+   - ❌ 13 failures in newly created `test_transaction_manager.py` (agent's premature Phase 2 code)
+   - ✅ 160 existing tests passing (core functionality stable)
+   - ⚠️ Coverage below 80% target (76%)
+
+2. **Flutter Suite:**
+   - ❌ 37 compilation failures due to package resolution errors
+   - ⚠️ Root cause: `pubspec.yaml` misconfiguration (package `softarchitect_ai` not defined)
+   - ✅ 7 tests passing (likely isolated unit tests without imports)
+
+3. **Overall Assessment:**
+   - **Severity:** HIGH
+   - **Impact:** Both Python and Flutter test suites have critical issues
+   - **Estimated Fix Time:** 2-3 hours (Python fixtures + Flutter pubspec)
+
+---
+
+## Test Execution Results
+
+### Execution Environment
+
+```bash
+# Python Test Command
+pytest tests/python/ \
+  --cov=src/server/app \
+  --cov-report=term-missing \
+  --cov-report=html:coverage_python_initial \
+  -v > python_test_results_initial.log 2>&1
+
+# Flutter Test Command
+flutter test \
+  --coverage \
+  --reporter=expanded \
+  tests/test/ > flutter_test_results_initial.log 2>&1
+```
+
+**System Context:**
+- OS: Linux
+- Python: 3.12.3
+- Flutter: 3.10.8
+- Pytest: 9.0.2
+- Branch: `feature/test-suite-sqlite-fix`
+
+### Raw Results Summary
+
+**Python Test Output (Excerpt):**
+```
+============================= test session starts ==============================
+collected 173 items
+
+tests/python/unit/... PASSED [ 92%]
+tests/python/unit/infrastructure/persistence/test_transaction_manager.py FAILED [100%]
+
+================================= FAILURES =====================================
+FAILED test_transaction_commits_on_success - sqlite3.OperationalError: no such table: test
+FAILED test_insert_commit - sqlite3.OperationalError: no such table: projects
+... (11 more failures)
+
+======================== 160 passed, 13 failed in 2.84s ========================
+```
+
+**Flutter Test Output (Excerpt):**
+```
+00:00 +0: loading .../proposal_card_test.dart
+Error: Couldn't resolve the package 'softarchitect_ai' in 'package:softarchitect_ai/...'
+tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart:3:8: Error: Not found: 'package:softarchitect_ai/...'
+... (36 more compilation errors)
+
+00:02 +7 -37: Some tests failed.
 ```
 
 ---
 
-#### 1.2 Type B: Mock/Fixture Issues (4 tests)
+## Python Test Suite Analysis
 
-| Test File | Test Name | Error | Root Cause | Fix Priority |
-|-----------|-----------|-------|------------|---|
-| `test_streaming_handler.py` | `test_websocket_message_parsing` | `MagicMock has no attribute 'send'` | Mock WebSocket missing methods | **HIGH** |
-| `test_sqlite_repository.py` | `test_create_project` | `sqlite3.OperationalError: no such table` | Test database not initialized | **HIGH** |
-| `test_persistence_layer.py` | `test_transaction_rollback` | `AttributeError: mock has no attribute 'rollback'` | Missing transaction mock setup | **MEDIUM** |
-| `test_file_system.py` | `test_move_file` | `FileNotFoundError` | Temp directory not created in fixture | **MEDIUM** |
+### Passed Tests (160)
 
-**Fixes:**
-```python
-# conftest.py - FIXTURE FIX
-@pytest.fixture
-def mock_websocket():
-    """Complete WebSocket mock with all required methods."""
-    mock = MagicMock()
-    mock.send = AsyncMock()
-    mock.receive = AsyncMock(return_value='{"type": "message"}')
-    mock.accept = AsyncMock()
-    mock.close = AsyncMock()
-    return mock
+**Modules with 100% Pass Rate:**
 
-@pytest.fixture
-def test_db(tmp_path):
-    """Initialize test database with schema."""
-    db_path = tmp_path / "test.db"
-    conn = sqlite3.connect(str(db_path))
-    conn.execute("CREATE TABLE projects (id INTEGER PRIMARY KEY, name TEXT)")
-    conn.commit()
-    conn.close()
-    return db_path
-```
+| Module | Tests | Status | Coverage |
+|--------|-------|--------|----------|
+| `test_rag_service.py` | 15 | ✅ ALL PASS | 91% |
+| `test_vector_store.py` | 12 | ✅ ALL PASS | 88% |
+| `test_hybrid_service.py` | 8 | ✅ ALL PASS | 85% |
+| `test_config.py` | 7 | ✅ ALL PASS | 100% |
+| `test_errors.py` | 5 | ✅ ALL PASS | 100% |
+| (Others) | 113 | ✅ ALL PASS | 72% avg |
 
----
+**Key Observations:**
+- Core RAG functionality is **stable** (35 tests, 100% pass rate)
+- Configuration and error handling are **solid** (12 tests, 100% pass rate)
+- Domain logic and business rules are **reliable** (113 tests passing)
 
-#### 1.3 Type C: Environment Issues (CI-specific) (2 tests)
+### Failed Tests (13) - NEW CODE ONLY
 
-| Test File | Test Name | Error | Root Cause | Fix Priority |
-|-----------|-----------|-------|------------|---|
-| `test_streaming_flow.py` | `test_token_streaming_incremental` | `AssertionError: 400 >= 500 (flaky in CI)` | CI environment timeout shorter | **HIGH** |
-| `test_performance_benchmark.py` | `test_ui_latency_under_200ms` | `AssertionError: 250ms > 200ms` | CI runners slower than local | **MEDIUM** |
+**ALL failures in `test_transaction_manager.py` (Agent's Premature Implementation)**
 
-**Fixes:**
-```python
-# test_streaming_flow.py - RELAXED ASSERTION FOR CI
-def test_token_streaming_incremental():
-    tokens = await stream_tokens("test query")
+| Test Name | Error Type | Reason |
+|-----------|------------|--------|
+| `test_transaction_commits_on_success` | `sqlite3.OperationalError` | `no such table: test` |
+| `test_insert_commit` | `sqlite3.OperationalError` | `no such table: projects` |
+| `test_update_commit` | `sqlite3.OperationalError` | `no such table: projects` |
+| `test_rollback_on_exception` | `sqlite3.OperationalError` | `no such table: test` |
+| `test_partial_changes_rollback` | `sqlite3.OperationalError` | `no such table: projects` |
+| `test_constraint_violation_rollback` | `sqlite3.OperationalError` | `no such table: project_metadata` |
+| `test_atomicity` | `sqlite3.OperationalError` | `no such table: projects` |
+| `test_isolation_level_deferred` | `sqlite3.OperationalError` | `no such table: test` |
+| `test_multiple_sequential_transactions` | `sqlite3.OperationalError` | `no such table: projects` |
+| `test_execute_multiple_operations` | `sqlite3.OperationalError` | `no such table: projects` |
+| `test_execute_transaction_rollback_on_error` | `sqlite3.OperationalError` | `no such table: projects` |
+| `test_double_close` | `sqlite3.OperationalError` | `no such table: test` |
+| `test_transaction_with_rollback_error` | `AssertionError` | `Fixture cleanup failed` |
 
-    # FIXED: Use >= instead of exact count (CI slower)
-    assert len(tokens) >= 400  # Not == 500
+**Failure Pattern:**
+- **100% of failures** are in agent-created code (NOT pre-existing tests)
+- **Consistent error:** `sqlite3.OperationalError: no such table: {table_name}`
+- **Root cause:** Test fixture `initialized_db` doesn't persist schema properly
 
-    # Use timeout margin in CI
-    import os
-    timeout = 5000 if os.getenv("CI") else 3000
-    assert stream_duration < timeout
-```
+### Coverage Analysis
 
----
+**Overall Coverage:** 76% (target: ≥80%)
 
-#### 1.4 Type D: Missing Tests (Coverage Gaps)
+**Modules Below Target:**
 
-**Uncovered Modules:**
-
-| Module | Coverage | Missing Tests | Priority |
+| Module | Coverage | Missing Lines | Priority |
 |--------|----------|---------------|----------|
-| `src/server/app/core/performance/metrics_collector.py` | 45% | Aggregation logic, edge cases | **HIGH** |
-| `src/server/app/services/streaming/connection_manager.py` | 52% | Connection pooling, error recovery | **HIGH** |
-| `src/server/app/infrastructure/persistence/` | 38% | Transaction handling, concurrency | **CRITICAL** |
-| `src/server/app/domain/streaming/stream_protocol.py` | 60% | Frame serialization edge cases | **MEDIUM** |
+| `logging_config.py` | 0% | 26 | LOW (infra) |
+| `rag_test.py` | 42% | 59 | MEDIUM (API endpoint) |
+| `entities/__init__.py` | 0% | 15 | LOW (imports only) |
+| `transaction_manager.py` | 81% | 8 | **HIGH** (new code) |
 
-**Tests to Create:**
+**Key Insight:**
+- Dropping coverage to 76% is caused by **agent's premature implementation**
+- Removing `transaction_manager.py` and its tests would restore coverage to ~78%
+- Still need +2% coverage to meet ≥80% target
+
+---
+
+## Flutter Test Suite Analysis
+
+### Passed Tests (7)
+
+**Tests That Compiled Successfully:**
+
+| Test File | Tests | Status | Reason for Success |
+|-----------|-------|--------|---------------------|
+| (Unknown - log doesn't show which 7 passed) | 7 | ✅ PASS | Likely isolated unit tests without external imports |
+
+**Hypothesis:**
+- These 7 tests are probably simple Dart unit tests (pure functions, models)
+- No dependencies on `softarchitect_ai` package imports
+- Likely in `tests/test/unit/` directory with local imports only
+
+### Failed Tests (37) - COMPILATION ERRORS
+
+**ALL failures are compilation errors due to package resolution**
+
+**Error Pattern (Consistent Across All 37 Failures):**
+
+```dart
+Error: Couldn't resolve the package 'softarchitect_ai' in 'package:softarchitect_ai/...'
+tests/test/.../[test_file].dart:X:8: Error: Not found: 'package:softarchitect_ai/...'
+import 'package:softarchitect_ai/.../[entity/widget/provider].dart';
+       ^
+[Test Name]: Error: Method not found: '[ClassName]'
+```
+
+**Affected Test Files (Sampled from 4949-line log):**
+
+1. **Widget Tests (UI Layer):**
+   - `proposal_card_test.dart` (7 test cases) - Cannot find `DocumentProposal` entity, `ProposalCardWidget`
+   - `directory_tree_widget_test.dart` (?) - Cannot find `FileNode` entity, `DirectoryTreeWidget`
+
+2. **Integration Tests:**
+   - `directory_navigation_flow_test.dart` (?) - Cannot find `FileNode`, `DirectoryTreeWidget`
+
+3. **Domain Tests (Entities):**
+   - `project_fixtures.dart` - Cannot resolve `Project`, `FileNode` entities
+
+**Root Cause:**
+```yaml
+# tests/pubspec.yaml (SUSPECTED ISSUE)
+name: tests
+dependencies:
+  flutter:
+    sdk: flutter
+  # ❌ MISSING: Reference to parent package
+  # softarchitect_ai:  <-- NOT DEFINED
+```
+
+**Why This Fails:**
+- Flutter tests in `tests/` directory have their own `pubspec.yaml`
+- Tests try to import `package:softarchitect_ai/...` but package is not declared
+- Should either:
+  1. Use relative imports: `import '../../../src/client/lib/...'`
+  2. OR add dependency: `softarchitect_ai: { path: ../../src/client }`
+
+**Missing Entities Referenced:**
+- `DocumentProposal` (domain entity)
+- `ProposalCardWidget` (presentation widget)
+- `FileNode` (domain entity)
+- `DirectoryTreeWidget` (presentation widget)
+- `Project` (domain entity)
+
+---
+
+## Failure Classification Matrix
+
+### Type A: Configuration Issues (HIGH PRIORITY)
+
+| Type | Count | Description | Examples |
+|------|-------|-------------|----------|
+| **A1: Package Resolution** | 37 | Flutter tests cannot resolve `softarchitect_ai` package | `proposal_card_test.dart`, `directory_navigation_flow_test.dart` |
+| **A2: Test Fixture Broken** | 13 | Pytest fixture doesn't persist SQLite schema | `test_transaction_manager.py` (all tests) |
+| **A3: Coverage Gap** | 1 | Overall coverage 76% < 80% target | Python backend modules |
+
+**Total Type A:** 51 failures (100% of all failures)
+
+### Type B: Logic Bugs (NONE FOUND)
+
+**Count:** 0
+
+No logic bugs detected in pre-existing codebase. All 160 existing Python tests pass.
+
+### Type C: Incomplete Implementations (NONE FOUND - YET)
+
+**Count:** 0
+
+No incomplete features detected (yet - SQLite and i18n not fully analyzed).
+
+### Type D: Technical Debt (DEFERRED)
+
+**Count:** Unknown
+
+- Hardcoded strings need cataloging (Phase 1.3)
+- SQLite persistence incomplete (Phase 1.2)
+
+---
+
+## Root Cause Analysis
+
+### Python Test Failures (13)
+
+**File:** `tests/python/unit/infrastructure/persistence/test_transaction_manager.py`
+
+**Problematic Fixture:**
+
 ```python
-# tests/python/unit/core/performance/test_metrics_collector.py
-class TestMetricsCollector:
-    def test_records_latency_metric(self):
-        """Should record UI latency."""
-        collector = MetricsCollector()
-        collector.record_latency("ui_render", 150.5)
+@pytest.fixture
+def initialized_db(tx_manager):
+    """Create a test database with schema."""
+    with tx_manager.transaction() as conn:
+        conn.execute(
+            """
+            CREATE TABLE projects (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE,
+                path TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        )
+        conn.execute(
+            """
+            CREATE TABLE project_metadata (
+                project_id INTEGER PRIMARY KEY,
+                last_accessed TIMESTAMP,
+                FOREIGN KEY (project_id) REFERENCES projects (id)
+            )
+            """
+        )
+    return tx_manager  # ❌ PROBLEM: Schema created but not visible to next transaction
+```
 
-        metrics = collector.get_metrics()
-        assert metrics["ui_render"]["avg"] == 150.5
-        assert metrics["ui_render"]["count"] == 1
+**Why It Fails:**
 
-    def test_aggregates_multiple_measurements(self):
-        """Should calculate min/max/avg correctly."""
-        collector = MetricsCollector()
-        for latency in [100, 150, 200, 250]:
-            collector.record_latency("query", latency)
+1. **`:memory:` database:** Each transaction context gets a NEW in-memory connection
+2. **Schema isolation:** Schema created in fixture's transaction context is lost
+3. **Subsequent tests:** Get fresh connections without the schema
+4. **Result:** `sqlite3.OperationalError: no such table: {table_name}`
 
-        metrics = collector.get_metrics()["query"]
-        assert metrics["min"] == 100
-        assert metrics["max"] == 250
-        assert metrics["avg"] == 175  # (100+150+200+250)/4
+**Evidence from Test Output:**
+
+```
+tests/python/unit/infrastructure/persistence/test_transaction_manager.py::test_transaction_commits_on_success
+FAILED - sqlite3.OperationalError: no such table: test
+
+tests/python/unit/infrastructure/persistence/test_transaction_manager.py::test_insert_commit
+FAILED - sqlite3.OperationalError: no such table: projects
+```
+
+**Solution Required:**
+
+```python
+@pytest.fixture
+def initialized_db():
+    """Create a persistent test database with schema."""
+    # Use shared in-memory connection (check_same_thread=False)
+    conn = sqlite3.connect(":memory:", check_same_thread=False)
+
+    # Create schema on persistent connection
+    conn.execute("CREATE TABLE projects (...)")
+    conn.execute("CREATE TABLE project_metadata (...)")
+    conn.commit()
+
+    # Create manager with reference to persistent connection
+    manager = TransactionManager(":memory:")
+    manager._connection = conn  # Inject shared connection
+
+    yield manager
+
+    conn.close()
 ```
 
 ---
 
-### 2. Flutter Widget Test Failures
+### Flutter Test Failures (37)
 
-#### 2.1 Type A: Logic Errors (3 tests)
+**File:** `tests/pubspec.yaml`
 
-| Test File | Test Name | Error | Root Cause | Fix Priority |
-|-----------|-----------|-------|------------|---|
-| `circular_buffer_test.dart` | `should handle overflow correctly` | `type 'List<int>' is not a subtype of 'List<dynamic>'` | Type mismatch in capacity check | **HIGH** |
-| `auto_scroll_controller_test.dart` | `should scroll to latest message` | `NoSuchMethodError: scroll position not set` | ScrollController not properly initialized | **HIGH** |
-| `streaming_provider_test.dart` | `should emit tokens incrementally` | `StateError: Future already completed` | Async state not properly managed | **MEDIUM** |
+**Suspected Configuration Issue:**
 
-**Fixes:**
+```yaml
+# tests/pubspec.yaml (CURRENT - INCORRECT)
+name: tests
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  # ❌ MISSING: softarchitect_ai package reference
+```
+
+**Why It Fails:**
+
+1. **Import statements use package syntax:**
+   ```dart
+   import 'package:softarchitect_ai/features/chat/domain/entities/document_proposal.dart';
+   ```
+
+2. **Package `softarchitect_ai` not defined:** Flutter cannot resolve the import
+
+3. **Compilation fails:** Tests cannot be executed without resolving imports
+
+**Evidence from Test Output:**
+
+```
+Error: Couldn't resolve the package 'softarchitect_ai' in 'package:softarchitect_ai/features/chat/domain/entities/document_proposal.dart'.
+tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart:3:8: Error: Not found: 'package:softarchitect_ai/...'
+```
+
+**Solution Required:**
+
+```yaml
+# tests/pubspec.yaml (FIX)
+name: tests
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+
+  # ✅ ADD: Reference to main client package
+  softarchitect_ai:
+    path: ../src/client  # Relative path to main Flutter app
+```
+
+**Alternative Solution (Relative Imports):**
+
 ```dart
-// circular_buffer_test.dart
-test('should handle overflow correctly', () {
-  final buffer = CircularBuffer<int>(maxSize: 3);
-  buffer.add(1);
-  buffer.add(2);
-  buffer.add(3);
-  buffer.add(4);
+// Instead of:
+import 'package:softarchitect_ai/features/chat/domain/entities/document_proposal.dart';
 
-  // FIXED: Proper type assertion
-  final result = buffer.toList() as List<int>;
-  expect(result, equals([2, 3, 4]));
-  expect(buffer.length, equals(3));
-});
+// Use:
+import '../../../src/client/lib/features/chat/domain/entities/document_proposal.dart';
+```
+
+**Recommendation:** Use `pubspec.yaml` fix (cleaner, more maintainable).
+
+---
+
+## Impact Assessment
+
+### Business Impact
+
+| Impact Area | Severity | Description |
+|-------------|----------|-------------|
+| **CI/CD Pipeline** | ❌ CRITICAL | GitHub Actions will fail (50/217 tests failing) |
+| **Test Coverage** | ⚠️ HIGH | Coverage 76% < 80% target (failing quality gate) |
+| **Development Velocity** | ⚠️ MEDIUM | Cannot implement new features until tests pass |
+| **Code Confidence** | ✅ LOW | Core functionality stable (160/173 Python tests pass) |
+
+### Technical Impact
+
+**Blocked Features:**
+- ❌ SQLite persistence layer (transaction_manager broken)
+- ❌ i18n implementation (Flutter tests blocked)
+- ❌ Any new feature development (test suite must be green)
+
+**Risk Analysis:**
+- **HIGH RISK:** Continuing development with 23% failing tests
+- **MEDIUM RISK:** Premature implementation (agent's Phase 2 code caused 13 failures)
+- **LOW RISK:** Core functionality regression (160 existing tests still pass)
+
+### Timeline Impact
+
+**Estimated Fix Time:**
+
+| Fix Category | Est. Time | Priority |
+|--------------|-----------|----------|
+| Python fixture repair | 30 min | 🔴 URGENT |
+| Flutter pubspec fix | 15 min | 🔴 URGENT |
+| Re-run tests & verify | 30 min | 🔴 URGENT |
+| Coverage improvement | 1-2 hours | ⚠️ HIGH |
+| **TOTAL** | **2-3 hours** | 🔴 **URGENT** |
+
+---
+
+## Next Steps (PHASE 2: GREEN)
+
+### Immediate Actions (Do NOT Implement Yet - RED Phase Still Active)
+
+**Phase 1 Remaining Steps:**
+
+1. ✅ **Step 1.1.1-1.1.2:** Test execution COMPLETE
+2. ✅ **Step 1.1.3:** Failure categorization COMPLETE (this document)
+3. ⏳ **Step 1.2:** SQLite investigation (survey actual codebase)
+4. ⏳ **Step 1.3:** i18n architecture design (count hardcoded strings)
+5. ⏳ **Step 1.4:** Update PROGRESS.md to reflect reality
+
+**Phase 2: GREEN (Future - NOT Started Yet):**
+
+Once Phase 1 complete, create implementation plan:
+
+```markdown
+## PHASE 2: GREEN - Implementation Plan (DRAFT)
+
+### 2.1 Python Fixture Repair
+- [ ] Modify `initialized_db` fixture to use persistent connection
+- [ ] Verify all 13 tests pass after fix
+- [ ] Coverage should increase to ~78%
+
+### 2.2 Flutter Package Configuration
+- [ ] Update `tests/pubspec.yaml` with `softarchitect_ai` dependency
+- [ ] Run `flutter pub get` in tests/ directory
+- [ ] Verify all 37 compilation errors resolved
+
+### 2.3 Re-Run Full Test Suite
+- [ ] Python: `pytest tests/python/ --cov=src/server/app`
+- [ ] Flutter: `flutter test tests/test/`
+- [ ] Target: 0 failures, coverage ≥80%
+
+### 2.4 Coverage Improvement
+- [ ] Identify modules < 80% coverage
+- [ ] Add tests for uncovered edge cases
+- [ ] Verify coverage ≥80% before Phase 3
 ```
 
 ---
 
-#### 2.2 Type B: Mock/Fixture Issues (2 tests)
+## References
 
-| Test File | Test Name | Error | Root Cause | Fix Priority |
-|-----------|-----------|-------|------------|---|
-| `streaming_message_widget_test.dart` | `should display message` | `StateError: No Material or Cupertino localizations found` | Missing ProviderScope wrapper | **HIGH** |
-| `markdown_preview_widget_test.dart` | `should render markdown` | `ProviderException: No ProviderContainer found` | Providers not available in test context | **MEDIUM** |
+### Test Logs
 
-**Fixes:**
-```dart
-// test_helper.dart - PROPER TEST WRAPPER
-Widget wrapWithProviders(Widget widget) {
-  return ProviderScope(
-    child: MaterialApp(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en'), Locale('es')],
-      home: Scaffold(body: widget),
-    ),
-  );
-}
+- **Python:** `python_test_results_initial.log` (184 lines)
+- **Flutter:** `flutter_test_results_initial.log` (4949 lines)
+- **Coverage:** `coverage_python_initial/index.html`
 
-// In test
-testWidgets('should display message', (tester) async {
-  await tester.pumpWidget(
-    wrapWithProviders(
-      const StreamingMessageWidget(message: 'Hello'),
-    ),
-  );
+### Related Documents
 
-  await tester.pumpAndSettle();
-  expect(find.text('Hello'), findsOneWidget);
-});
-```
+- [WORKFLOW_MASTER_DEFINITION.md](./WORKFLOW_MASTER_DEFINITION.md) - Full 6-phase methodology
+- [PROGRESS.md](./PROGRESS.md) - Phase tracking (needs update to reflect reality)
+- [ARTIFACTS.md](./ARTIFACTS.md) - Expected deliverables (~120 files)
+
+### Code References
+
+**Python (Broken):**
+- `tests/python/unit/infrastructure/persistence/test_transaction_manager.py` (13 failing tests)
+- `src/server/app/infrastructure/persistence/transaction_manager.py` (implementation - likely correct)
+
+**Flutter (Broken):**
+- `tests/pubspec.yaml` (needs `softarchitect_ai` dependency)
+- `tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart`
+- `tests/test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart`
+
+### Agent Rules
+
+- **TDD Principle:** Do NOT implement code until Phase 1 complete
+- **AGENTS.md Rule:** "Test execution FIRST, implementation SECOND"
+- **Lesson Learned:** Agent's premature Phase 2 implementation caused 13 immediate failures
 
 ---
 
-#### 2.3 Type D: Missing Tests (4 tests)
-
-**Uncovered Features:**
-
-| Feature | Current Coverage | Missing Tests |
-|---------|-----------------|---|
-| `LocaleProvider` | 0% | Locale persistence, switching |
-| `LanguageSelectorWidget` | 0% | UI interaction, state change |
-| `SettingsNotifier` | 35% | Preference persistence |
-| `FileSystemNotifier` | 42% | Concurrent operations |
-
-**Tests to Create:**
-```dart
-// tests/test/unit/core/localization/locale_provider_test.dart
-void main() {
-  group('LocaleProvider', () {
-    test('should load locale from SharedPreferences', () async {
-      final notifier = LocaleNotifier();
-      await notifier.loadLocale();
-
-      expect(notifier.state.languageCode, equals('en'));
-    });
-
-    test('should persist locale when changed', () async {
-      final notifier = LocaleNotifier();
-      await notifier.setLocale(const Locale('es'));
-
-      // Verify persisted
-      final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getString('locale'), equals('es'));
-    });
-  });
-}
-```
-
----
-
-### 3. Summary by Category
-
-**Type A (Logic Errors):** 8 tests
-→ **Action:** Fix implementation logic, add assertions
-
-**Type B (Mock/Fixture Issues):** 6 tests
-→ **Action:** Create proper test fixtures in conftest.py/test_helper.dart
-
-**Type C (Environment Issues):** 2 tests
-→ **Action:** Use relaxed assertions in CI, add timeout margins
-
-**Type D (Missing Tests):** 10 tests
-→ **Action:** Create comprehensive tests for uncovered modules
-
----
-
-### 4. Coverage Analysis
-
-**Current State:**
-```
-src/server/app/
-├── core/                    45% ❌ Below 80%
-├── domain/                  60% ❌ Below 80%
-├── services/               55% ❌ Below 80%
-├── infrastructure/         38% ❌ Below 80%  (CRITICAL)
-└── api/                    72% ⚠️ Below 80%
-```
-
-**Target:** All modules ≥80%
-
-**Effort Estimate for Phase 2:**
-- Type A fixes: 3 hours
-- Type B fixtures: 2 hours
-- Type C relaxation: 1 hour
-- Type D new tests: 5 hours
-- **Total: 11 hours**
-
----
-
-### 5. Quality Gates for Phase 2
-
-✅ **GATE 1: Phase 1 → Phase 2**
-
-- [x] All test failures documented with root causes
-- [x] Error stack traces captured
-- [x] Priority levels assigned
-- [x] Fixes designed for each category
-- [x] Coverage gaps identified
-- [x] Effort estimates calculated
-
-**Status: READY FOR PHASE 2 IMPLEMENTATION**
-
----
-
-</div>
-
----
-
-<div id="español-análisis-de-fallos-de-tests">
-
-## 🇪🇸 Versión en Español
-
-### Resumen Ejecutivo
-
-**Tests Analizados:** 45
-**Tests Fallando:** 12
-**Tasa de Aprobación:** 73.3%
-**Cobertura (Target):** ≥80%
-
-**Hallazgos Críticos:**
-- Tipo A (Errores de Lógica): 5 tests
-- Tipo B (Problemas Mock/Fixture): 4 tests
-- Tipo C (Problemas Ambiente): 2 tests
-- Tipo D (Tests Faltantes): 6 tests
-
----
-
-### 1. Fallos de Tests de Backend Python
-
-#### 1.1 Tipo A: Errores de Lógica (5 tests)
-
-| Archivo Test | Nombre Test | Error | Causa Raíz | Prioridad |
-|---|---|---|---|---|
-| `test_streaming_handler.py` | `test_websocket_connection_upgrade` | `AssertionError: expected 101, got 200` | WebSocket upgrade no mocked correctamente | **ALTA** |
-| `test_token_buffer.py` | `test_buffer_overflow_overwrites` | `AssertionError: [1,2,3] != [2,3,4]` | Error off-by-one en buffer circular | **ALTA** |
-| `test_metrics_collector.py` | `test_latency_aggregation` | `KeyError: 'min'` | Lógica min/max no implementada | **ALTA** |
-
----
-
-#### 1.2 Tipo B: Problemas Mock/Fixture (4 tests)
-
-**Causa Común:** Fixtures de test incompletos, mocks sin métodos requeridos
-
-**Acción:** Crear `conftest.py` con fixtures comprehensivos
-
----
-
-#### 1.3 Tipo C: Problemas Ambiente CI (2 tests)
-
-**Causa Común:** Tests flaky en CI, timeouts diferentes, assertions rígidas
-
-**Acción:** Usar assertions relajados (>=), márgenes de timeout
-
----
-
-#### 1.4 Tipo D: Tests Faltantes (Brechas de Cobertura)
-
-**Módulos Críticos Sin Cobertura:**
-- `persistence/` - 38% (CRÍTICO)
-- `migration scripts` - 0%
-- `transaction_manager` - No existe aún
-
----
-
-### 2. Status Analysis
-
-✅ **DELIVERABLE: TEST_FAILURE_ANALYSIS.md COMPLETADO**
-
-- [x] Todos los fallos documentados
-- [x] Causas raíz identificadas
-- [x] Prioridades asignadas
-- [x] Fixes diseñados
-- [x] Effort estimado
-
-**→ LISTO PARA PHASE 2: GREEN (Implementación)**
-
----
-
-</div>
+**Document Status:** ✅ COMPLETE (Phase 1 Step 1.1.3)
+**Next Document:** SQLITE_INVESTIGATION_REPORT.md (Phase 1 Step 1.2)
+**Last Updated:** 2025-01-30
