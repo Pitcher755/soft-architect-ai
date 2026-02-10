@@ -19,14 +19,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd src/server
-          pip install -r requirements.txt
+          pip install -r src/server/requirements.txt
           pip install pytest-benchmark
 
       - name: Run performance benchmarks
         run: |
-          cd tests/python
-          pytest integration/test_streaming_flow.py --benchmark-only
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/src/server
+          pytest tests/python/integration/test_streaming_flow.py --benchmark-only
 
   frontend-performance:
     runs-on: ubuntu-latest
