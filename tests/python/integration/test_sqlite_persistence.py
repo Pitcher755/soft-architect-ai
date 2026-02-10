@@ -73,7 +73,9 @@ def test_create_project_duplicate_raises_error(repo: SQLiteRepository) -> None:
 
     repo.create_project(project)
 
-    with pytest.raises(ValueError, match="already exists"):
+    from app.infrastructure.persistence.exceptions import DuplicateError
+
+    with pytest.raises(DuplicateError, match="already exists"):
         repo.create_project(project)
 
 
@@ -142,13 +144,15 @@ def test_update_project_success(repo: SQLiteRepository) -> None:
 
 def test_update_nonexistent_project_raises_error(repo: SQLiteRepository) -> None:
     """Should raise error when updating non-existent project."""
+    from app.infrastructure.persistence.exceptions import NotFoundError
+
     project = Project(
         id="doesnt-exist",
         name="Test",
         path="/tmp/test",
     )
 
-    with pytest.raises(ValueError, match="not found"):
+    with pytest.raises(NotFoundError, match="not found"):
         repo.update_project(project)
 
 
@@ -169,7 +173,9 @@ def test_delete_project_success(repo: SQLiteRepository) -> None:
 
 def test_delete_nonexistent_project_raises_error(repo: SQLiteRepository) -> None:
     """Should raise error when deleting non-existent project."""
-    with pytest.raises(ValueError, match="not found"):
+    from app.infrastructure.persistence.exceptions import NotFoundError
+
+    with pytest.raises(NotFoundError, match="not found"):
         repo.delete_project("doesnt-exist")
 
 

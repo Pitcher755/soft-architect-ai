@@ -87,8 +87,7 @@ class SQLiteRepository:
             sqlite3.Error: If table creation fails
         """
         with self.tx_manager.transaction() as conn:
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE IF NOT EXISTS projects (
                     id TEXT PRIMARY KEY,
                     name TEXT NOT NULL UNIQUE,
@@ -98,8 +97,7 @@ class SQLiteRepository:
                     updated_at TEXT NOT NULL,
                     metadata TEXT
                 )
-                """
-            )
+                """)
             logger.debug("✅ Projects table initialized (idempotent)")
 
     def create_project(self, project: Project) -> None:
@@ -156,23 +154,21 @@ class SQLiteRepository:
         except sqlite3.Error as e:
             raise TransactionError(f"Failed to create project: {e}") from e
 
-    def get_project(self, project_id: str) -> Project:
+    def get_project(self, project_id: str) -> Project | None:
         """Retrieve project by ID.
 
         Args:
             project_id: Unique project identifier
 
         Returns:
-            Project entity
+            Project entity or None if not found
 
         Raises:
-            NotFoundError: If project does not exist
             TransactionError: If database read fails
 
         Example:
-            >>> try:
-            ...     project = repo.get_project("proj_001")
-            ... except NotFoundError:
+            >>> project = repo.get_project("proj_001")
+            >>> if project is None:
             ...     print("Project not found")
         """
         try:
@@ -182,10 +178,7 @@ class SQLiteRepository:
                 ).fetchone()
 
                 if not row:
-                    raise NotFoundError(
-                        f"Project with ID '{project_id}' not found",
-                        entity_type="Project",
-                    )
+                    return None
 
                 return self._row_to_project(row)
         except sqlite3.Error as e:
