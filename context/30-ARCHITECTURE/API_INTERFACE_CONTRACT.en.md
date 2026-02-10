@@ -102,6 +102,81 @@ data: {"total_tokens": 450, "duration_ms": 3200}
 * `event: token` -> `data: "ment..."`
 * `event: end` -> `data: {"usage": 150 tokens}`
 
+---
+
+## WebSocket Streaming Endpoint
+
+### WS /api/v1/chat/stream
+
+**Purpose:** Real-time streaming of LLM tokens with <200ms latency.
+
+**Connection Flow:**
+1. Client: `ws://localhost:8000/api/v1/chat/stream`
+2. Server: Accept WebSocket
+3. Client: Send query as JSON `{"type":"query","content":"...","session_id":"uuid-v4"}`
+4. Server: Stream tokens incrementally
+5. Server: Send `{"type":"ping"}` every 30s
+6. Client: Respond `{"type":"pong"}`
+7. Server: Send `{"type":"done"}` on completion
+
+**Message Format:**
+
+**Client → Server (Query):**
+```json
+{
+  "type": "query",
+  "content": "User query text",
+  "session_id": "uuid-v4"
+}
+```
+
+**Server → Client (Token):**
+```json
+{
+  "type": "token",
+  "content": "single token",
+  "timestamp": "2026-02-10T12:00:00Z"
+}
+```
+
+**Server → Client (Heartbeat):**
+```json
+{
+  "type": "ping"
+}
+```
+
+**Client → Server (Heartbeat Response):**
+```json
+{
+  "type": "pong"
+}
+```
+
+**Server → Client (Completion):**
+```json
+{
+  "type": "done",
+  "total_tokens": 150,
+  "latency_ms": 185
+}
+```
+
+**Error Handling:**
+```json
+{
+  "type": "error",
+  "code": "WS_STREAM_FAILED",
+  "message": "Spanish user-facing error"
+}
+```
+
+**Performance Guarantees:**
+- TTFB: <200ms (p95)
+- Token Rate: 10+ tokens/sec
+- Max Message Size: 5MB
+- Keep-Alive: 30s interval
+- Idle Timeout: 5 minutes
 
 
 ### 📚 Knowledge Ingestion

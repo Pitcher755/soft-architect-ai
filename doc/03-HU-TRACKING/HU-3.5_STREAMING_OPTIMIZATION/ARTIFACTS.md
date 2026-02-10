@@ -1,10 +1,41 @@
 # 📦 Artefactos HU-3.5: Streaming Optimization
 
-## Archivos a Generar
+## Archivos Generados
 
-- `src/server/api/websocket_handler.py` (250 líneas)
-- `src/server/middleware/compression.py` (80 líneas)
-- `tests/performance/test_latency.py` (200 líneas)
-- `doc/PERFORMANCE_TUNING.md` (50 líneas)
+### Backend (Python)
+- `src/server/app/api/v1/websocket/streaming_handler.py`
+- `src/server/app/api/v1/websocket/router.py`
+- `src/server/app/services/streaming/token_buffer.py`
+- `src/server/app/services/streaming/connection_manager.py`
+- `src/server/app/core/performance/metrics_collector.py`
+- `src/server/app/domain/streaming/stream_protocol.py`
 
-**Total:** 4 archivos, ~580 líneas
+### Frontend (Dart/Flutter)
+- `src/client/lib/features/chat/presentation/providers/streaming_provider.dart`
+- `src/client/lib/features/chat/presentation/widgets/streaming_message_widget.dart`
+- `src/client/lib/features/chat/presentation/widgets/auto_scroll_controller.dart`
+- `src/client/lib/core/buffer/circular_buffer.dart`
+- `src/client/lib/core/network/websocket_client.dart`
+- `src/client/lib/core/models/stream_event.dart`
+
+### Tests
+- `tests/python/unit/api/websocket/test_streaming_handler.py`
+- `tests/python/unit/services/streaming/test_token_buffer.py`
+- `tests/python/integration/test_streaming_flow.py`
+- `tests/test/unit/features/chat/presentation/providers/streaming_provider_test.dart`
+- `tests/test/unit/core/buffer/circular_buffer_test.dart`
+- `tests/test/unit/features/chat/auto_scroll_controller_test.dart`
+- `tests/test/integration/features/chat/streaming_flow_test.dart`
+
+### Documentación
+- `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.es.md`
+- `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.en.md`
+- `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.es.md` (actualizado)
+- `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.en.md` (actualizado)
+- `doc/02-SETUP_DEV/STREAMING_OPTIMIZATION_GUIDE.es.md`
+- `doc/02-SETUP_DEV/STREAMING_OPTIMIZATION_GUIDE.en.md`
+- `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/PERFORMANCE_METRICS.md`
+- `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/COMPLETION_SUMMARY.es.md`
+- `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/COMPLETION_SUMMARY.en.md`
+
+**Estado:** ✅ Completo
