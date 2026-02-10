@@ -75,6 +75,12 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
 
+    # Streaming Configuration
+    WS_HEARTBEAT_INTERVAL_SECONDS: float = 30.0
+    WS_IDLE_TIMEOUT_SECONDS: float = 300.0
+    WS_TOKEN_DELAY_SECONDS: float = 0.05
+    WS_BACKPRESSURE_THRESHOLD_BYTES: int = 1024 * 100
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

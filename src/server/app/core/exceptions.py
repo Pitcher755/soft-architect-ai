@@ -184,6 +184,35 @@ class StreamError(BaseAppError):
         super().__init__(code, message, status_code, details)
 
 
+class StreamingError(BaseAppError):
+    """WebSocket streaming operation failed."""
+
+    operation: str
+
+    def __init__(
+        self,
+        code: str,
+        message: str,
+        operation: str,
+        status_code: int = 500,
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        """
+        Initialize streaming error.
+
+        Args:
+            code: Error code (e.g., "WS_STREAM_FAILED")
+            message: Human-readable error message
+            operation: Name of the streaming operation
+            status_code: HTTP status code (default: 500)
+            details: Optional additional error details
+        """
+        self.operation = operation
+        final_details = details or {}
+        final_details["operation"] = operation
+        super().__init__(code, message, status_code, final_details)
+
+
 class ValidationError(BaseAppError):
     """Raised when document validation fails."""
 

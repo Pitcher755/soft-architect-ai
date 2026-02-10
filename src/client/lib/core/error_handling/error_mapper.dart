@@ -31,6 +31,13 @@ class ErrorMapper {
     'VAL_003': '📝 El documento tiene problemas de codificación',
     'VAL_004': '⚠️ El documento contiene contenido sospechoso',
     'VAL_005': '📦 El documento es demasiado grande',
+
+    // WebSocket Streaming Errors
+    'WS_CONNECTION_FAILED':
+        '🔌 No se pudo conectar al streaming en tiempo real',
+    'WS_STREAM_FAILED': '📡 Falló la transmisión de tokens',
+    'WS_STREAM_ERROR': '⚠️ Error durante el streaming',
+    'WS_RECONNECTION_FAILED': '🔄 No se pudo reconectar al servidor',
   };
 
   /// Suggestions for each error code.
@@ -46,6 +53,10 @@ class ErrorMapper {
     'VAL_003': 'Asegúrate de usar texto en UTF-8',
     'VAL_004': 'Contacta al soporte si el problema persiste',
     'VAL_005': 'Reduce el tamaño del documento',
+    'WS_CONNECTION_FAILED': 'Verifica que el servidor local esté activo',
+    'WS_STREAM_FAILED': 'Intenta generar nuevamente',
+    'WS_STREAM_ERROR': 'Reinicia la conexión de streaming',
+    'WS_RECONNECTION_FAILED': 'Revisa tu red y vuelve a intentar',
   };
 
   /// Get user-friendly message for error code.
@@ -74,5 +85,8 @@ class ErrorMapper {
     'RAG_001', // Empty knowledge base
     'VAL_001', // Document too short (regenerate)
     'VAL_002', // Invalid Markdown (regenerate)
+    'WS_CONNECTION_FAILED', // Streaming connection error
+    'WS_STREAM_FAILED', // Token stream failed
+    'WS_RECONNECTION_FAILED', // Reconnection failed
   ].contains(errorCode);
 }

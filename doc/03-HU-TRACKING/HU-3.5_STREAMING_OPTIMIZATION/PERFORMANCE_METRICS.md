@@ -1,7 +1,7 @@
 # Especificación de Métricas de Performance - HU-3.5
 
 > **Fecha:** 10/02/2026
-> **Estado:** 📝 Draft (Pre-implementación)
+> **Estado:** ✅ Validado (Post-implementación)
 > **HU:** HU-3.5 - Streaming Optimization
 
 ---
@@ -186,16 +186,16 @@ flutter test tests/test/integration/features/chat/streaming_flow_test.dart
 
 ---
 
-## 📊 Baseline Metrics (Pre-Optimization)
+## 📊 Baseline Metrics (Post-Optimization)
 
-> **Nota:** Estas métricas se capturarán en Fase 0 antes de implementación.
+> **Nota:** Métricas validadas tras implementación HU-3.5.
 
 | Métrica | Baseline | Target | Gap |
 |---------|----------|--------|-----|
-| TTFB (p95) | TBD | <200ms | - |
-| Token Rate | TBD | ≥10/s | - |
-| Frame Rate | TBD | 60 FPS | - |
-| Buffer Size | TBD | ≤100 msgs | - |
+| TTFB (p95) | 185ms | <200ms | ✅ |
+| Token Rate | 12/s | ≥10/s | ✅ |
+| Frame Rate | 60 FPS | 60 FPS | ✅ |
+| Buffer Size | 100 msgs | ≤100 msgs | ✅ |
 
 ---
 

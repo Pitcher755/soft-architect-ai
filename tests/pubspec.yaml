@@ -33,6 +33,7 @@ dependencies:
 
   # Markdown rendering
   flutter_markdown_plus: ^1.0.7
+  web_socket_channel: ^3.0.3
 
 # ============================================================================
 # DEVELOPMENT DEPENDENCIES

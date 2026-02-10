@@ -1,0 +1,44 @@
+name: Performance Tests
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+
+jobs:
+  backend-performance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.3'
+
+      - name: Install dependencies
+        run: |
+          cd src/server
+          pip install -r requirements.txt
+          pip install pytest-benchmark
+
+      - name: Run performance benchmarks
+        run: |
+          cd tests/python
+          pytest integration/test_streaming_flow.py --benchmark-only
+
+  frontend-performance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.8'
+
+      - name: Run integration tests
+        run: |
+          cd tests
+          flutter test test/integration/features/chat/streaming_flow_test.dart
