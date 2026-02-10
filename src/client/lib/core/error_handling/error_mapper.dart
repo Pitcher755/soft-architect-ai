@@ -52,32 +52,27 @@ class ErrorMapper {
   ///
   /// Returns a localized Spanish message for the given error code.
   /// If the error code is unknown, returns a generic error message.
-  String getUserMessage(String errorCode) {
-    return _messages[errorCode] ?? '🤔 Ocurrió un error ($errorCode)';
-  }
+  static String getUserMessage(String errorCode) =>
+      _messages[errorCode] ?? '🤔 Ocurrió un error ($errorCode)';
 
   /// Get actionable suggestion for error code.
   ///
   /// Returns a localized Spanish suggestion for resolving the error.
   /// If the error code is unknown, returns a generic suggestion.
-  String getSuggestion(String errorCode) {
-    return _suggestions[errorCode] ??
-        'Intenta nuevamente o contacta al soporte';
-  }
+  static String getSuggestion(String errorCode) =>
+      _suggestions[errorCode] ?? 'Intenta nuevamente o contacta al soporte';
 
   /// Check if error is retryable.
   ///
   /// Returns true if the error can be retried by the user.
   /// Retryable errors are typically transient (network, resources).
   /// Non-retryable errors require user action (authentication, validation).
-  bool isRetryable(String errorCode) {
-    return [
-      'SYS_001', // Connection error
-      'SYS_002', // Out of memory
-      'SYS_RETRY_EXHAUSTED', // Retry exhausted
-      'RAG_001', // Empty knowledge base
-      'VAL_001', // Document too short (regenerate)
-      'VAL_002', // Invalid Markdown (regenerate)
-    ].contains(errorCode);
-  }
+  static bool isRetryable(String errorCode) => [
+        'SYS_001', // Connection error
+        'SYS_002', // Out of memory
+        'SYS_RETRY_EXHAUSTED', // Retry exhausted
+        'RAG_001', // Empty knowledge base
+        'VAL_001', // Document too short (regenerate)
+        'VAL_002', // Invalid Markdown (regenerate)
+      ].contains(errorCode);
 }

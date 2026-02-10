@@ -1,7 +1,33 @@
+import 'error_mapper.dart';
+
 /// Context information for error tracking and debugging.
 ///
 /// Stores metadata about errors for audit trail and user-friendly display.
 class ErrorContext {
+
+  /// Creates an error context instance.
+  ErrorContext({
+    required this.errorCode,
+    required this.message,
+    required this.suggestion,
+    required this.isRetryable,
+    this.metadata,
+  }) : timestamp = DateTime.now();
+
+  /// Creates an error context from an error code.
+  ///
+  /// Uses [ErrorMapper] to populate message and suggestion.
+  factory ErrorContext.fromErrorCode(
+    String errorCode, {
+    Map<String, dynamic>? metadata,
+  }) =>
+      ErrorContext(
+        errorCode: errorCode,
+        message: _ErrorMapper.getUserMessage(errorCode),
+        suggestion: _ErrorMapper.getSuggestion(errorCode),
+        isRetryable: _ErrorMapper.isRetryable(errorCode),
+        metadata: metadata,
+      );
   /// Technical error code (e.g., 'SYS_001', 'VAL_002')
   final String errorCode;
 
@@ -19,31 +45,6 @@ class ErrorContext {
 
   /// Optional additional context (operation name, user action, etc.)
   final Map<String, dynamic>? metadata;
-
-  /// Creates an error context instance.
-  ErrorContext({
-    required this.errorCode,
-    required this.message,
-    required this.suggestion,
-    required this.isRetryable,
-    this.metadata,
-  }) : timestamp = DateTime.now();
-
-  /// Creates an error context from an error code.
-  ///
-  /// Uses [ErrorMapper] to populate message and suggestion.
-  factory ErrorContext.fromErrorCode(
-    String errorCode, {
-    Map<String, dynamic>? metadata,
-  }) {
-    return ErrorContext(
-      errorCode: errorCode,
-      message: _ErrorMapper.getUserMessage(errorCode),
-      suggestion: _ErrorMapper.getSuggestion(errorCode),
-      isRetryable: _ErrorMapper.isRetryable(errorCode),
-      metadata: metadata,
-    );
-  }
 
   /// Converts to JSON for logging and analytics.
   Map<String, dynamic> toJson() {

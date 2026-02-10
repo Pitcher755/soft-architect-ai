@@ -29,6 +29,7 @@ class TestSettingsDefaults:
         assert test_settings.APP_VERSION == "0.1.0"
         assert test_settings.API_V1_STR == "/api/v1"
 
+    @patch.dict(os.environ, {"GROQ_API_KEY": ""})
     def test_default_llm_settings(self):
         """Test default LLM configuration values."""
         test_settings = Settings()
@@ -44,6 +45,7 @@ class TestSettingsDefaults:
         assert test_settings.CHROMADB_PATH == "./data/chromadb"
         assert test_settings.CHROMA_COLLECTION_NAME == "softarchitect"
 
+    @patch.dict(os.environ, {"LOG_LEVEL": "INFO"})
     def test_default_logging_settings(self):
         """Test default logging configuration values."""
         test_settings = Settings()

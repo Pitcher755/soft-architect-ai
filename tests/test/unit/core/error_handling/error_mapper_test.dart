@@ -16,18 +16,12 @@ import 'package:softarchitect_ai/core/error_handling/error_mapper.dart';
 
 void main() {
   group('ErrorMapper', () {
-    late ErrorMapper errorMapper;
-
-    setUp(() {
-      errorMapper = ErrorMapper();
-    });
-
     test('should map SYS_001 to Spanish message', () {
       // Arrange
       const errorCode = 'SYS_001';
 
       // Act
-      final message = errorMapper.getUserMessage(errorCode);
+      final message = ErrorMapper.getUserMessage(errorCode);
 
       // Assert
       expect(message, contains('servidor local'));
@@ -39,7 +33,7 @@ void main() {
       const errorCode = 'SYS_002';
 
       // Act
-      final message = errorMapper.getUserMessage(errorCode);
+      final message = ErrorMapper.getUserMessage(errorCode);
 
       // Assert
       expect(message, contains('memoria'));
@@ -51,7 +45,7 @@ void main() {
       const errorCode = 'VAL_001';
 
       // Act
-      final message = errorMapper.getUserMessage(errorCode);
+      final message = ErrorMapper.getUserMessage(errorCode);
 
       // Assert
       expect(message, contains('documento'));
@@ -63,7 +57,7 @@ void main() {
       const errorCode = 'VAL_002';
 
       // Act
-      final message = errorMapper.getUserMessage(errorCode);
+      final message = ErrorMapper.getUserMessage(errorCode);
 
       // Assert
       expect(message, contains('Markdown'));
@@ -74,7 +68,7 @@ void main() {
       const errorCode = 'RAG_001';
 
       // Act
-      final message = errorMapper.getUserMessage(errorCode);
+      final message = ErrorMapper.getUserMessage(errorCode);
 
       // Assert
       expect(message, contains('base de conocimiento'));
@@ -86,7 +80,7 @@ void main() {
       const errorCode = 'UNKNOWN_999';
 
       // Act
-      final message = errorMapper.getUserMessage(errorCode);
+      final message = ErrorMapper.getUserMessage(errorCode);
 
       // Assert
       expect(message, contains('error'));
@@ -98,7 +92,7 @@ void main() {
       const errorCode = 'SYS_001';
 
       // Act
-      final suggestion = errorMapper.getSuggestion(errorCode);
+      final suggestion = ErrorMapper.getSuggestion(errorCode);
 
       // Assert
       expect(suggestion, contains('Docker'));
@@ -109,7 +103,7 @@ void main() {
       const errorCode = 'AUTH_001';
 
       // Act
-      final suggestion = errorMapper.getSuggestion(errorCode);
+      final suggestion = ErrorMapper.getSuggestion(errorCode);
 
       // Assert
       expect(suggestion, contains('Configuración'));
@@ -121,7 +115,7 @@ void main() {
       const errorCode = 'UNKNOWN_999';
 
       // Act
-      final suggestion = errorMapper.getSuggestion(errorCode);
+      final suggestion = ErrorMapper.getSuggestion(errorCode);
 
       // Assert
       expect(suggestion, isNotEmpty);
@@ -132,7 +126,7 @@ void main() {
       const errorCode = 'SYS_001';
 
       // Act
-      final isRetryable = errorMapper.isRetryable(errorCode);
+      final isRetryable = ErrorMapper.isRetryable(errorCode);
 
       // Assert
       expect(isRetryable, isTrue);
@@ -143,7 +137,7 @@ void main() {
       const errorCode = 'VAL_001';
 
       // Act
-      final isRetryable = errorMapper.isRetryable(errorCode);
+      final isRetryable = ErrorMapper.isRetryable(errorCode);
 
       // Assert
       expect(isRetryable, isTrue);
@@ -154,7 +148,7 @@ void main() {
       const errorCode = 'AUTH_001';
 
       // Act
-      final isRetryable = errorMapper.isRetryable(errorCode);
+      final isRetryable = ErrorMapper.isRetryable(errorCode);
 
       // Assert
       expect(isRetryable, isFalse);
@@ -165,7 +159,7 @@ void main() {
       const errorCode = 'VAL_003';
 
       // Act
-      final isRetryable = errorMapper.isRetryable(errorCode);
+      final isRetryable = ErrorMapper.isRetryable(errorCode);
 
       // Assert
       expect(isRetryable, isFalse);

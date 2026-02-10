@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import '../../../../../src/client/lib/core/error_handling/error_mapper.dart';
-import '../../../../../src/client/lib/core/error_handling/snackbar_service.dart';
+import 'package:softarchitect_ai/core/error_handling/error_mapper.dart';
+import 'package:softarchitect_ai/core/error_handling/snackbar_service.dart';
 
 /// Integration tests for error handling flow (E2E).
 /// Tests complete error flow from error code to user feedback.
@@ -17,9 +17,8 @@ void main() {
         (WidgetTester tester) async {
       // Arrange: Setup widget with error display
       const errorCode = 'VAL_001';
-      final errorMapper = ErrorMapper();
-      final errorMessage = errorMapper.getUserMessage(errorCode);
-      final errorSuggestion = errorMapper.getSuggestion(errorCode);
+      final errorMessage = ErrorMapper.getUserMessage(errorCode);
+      final errorSuggestion = ErrorMapper.getSuggestion(errorCode);
 
       // Act: Build widget tree and show error
       await tester.pumpWidget(
@@ -92,8 +91,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const errorCode = 'RAG_001';
-      final errorMapper = ErrorMapper();
-      final isRetryable = errorMapper.isRetryable(errorCode);
+      final isRetryable = ErrorMapper.isRetryable(errorCode);
 
       // Act: Build retry button
       await tester.pumpWidget(
@@ -101,7 +99,7 @@ void main() {
           home: Scaffold(
             body: Column(
               children: [
-                Text(errorMapper.getUserMessage(errorCode)),
+                Text(ErrorMapper.getUserMessage(errorCode)),
                 if (isRetryable)
                   ElevatedButton(
                     onPressed: () {},
@@ -127,8 +125,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange: Use a non-retryable error code
       const errorCode = 'AUTH_001'; // Missing API key (user action required)
-      final errorMapper = ErrorMapper();
-      final isRetryable = errorMapper.isRetryable(errorCode);
+      final isRetryable = ErrorMapper.isRetryable(errorCode);
 
       // Act
       await tester.pumpWidget(
@@ -136,7 +133,7 @@ void main() {
           home: Scaffold(
             body: Column(
               children: [
-                Text(errorMapper.getUserMessage(errorCode)),
+                Text(ErrorMapper.getUserMessage(errorCode)),
                 if (isRetryable)
                   ElevatedButton(
                     onPressed: () {},
@@ -196,10 +193,9 @@ void main() {
         'VAL_004',
         'VAL_005'
       ];
-      final errorMapper = ErrorMapper();
 
       for (final code in validationCodes) {
-        final message = errorMapper.getUserMessage(code);
+        final message = ErrorMapper.getUserMessage(code);
         expect(message, isNotEmpty);
         expect(message, isNot('Error desconocido'));
       }
@@ -208,10 +204,9 @@ void main() {
     test('should classify system errors as retryable', () {
       // System errors should be retryable (infrastructure issues)
       const systemErrors = ['SYS_001', 'RAG_001', 'SYS_RETRY_EXHAUSTED'];
-      final errorMapper = ErrorMapper();
 
       for (final code in systemErrors) {
-        final isRetryable = errorMapper.isRetryable(code);
+        final isRetryable = ErrorMapper.isRetryable(code);
         expect(isRetryable, isTrue,
             reason: '$code should be retryable (system error)');
       }
@@ -220,10 +215,9 @@ void main() {
     test('should classify validation errors as non-retryable', () {
       // Validation errors should NOT be retryable (user errors)
       const validationErrors = ['VAL_003', 'VAL_004', 'VAL_005'];
-      final errorMapper = ErrorMapper();
 
       for (final code in validationErrors) {
-        final isRetryable = errorMapper.isRetryable(code);
+        final isRetryable = ErrorMapper.isRetryable(code);
         expect(isRetryable, isFalse,
             reason: '$code should NOT be retryable (validation error)');
       }
