@@ -19,8 +19,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r src/server/requirements.txt
-          pip install pytest-benchmark
+          pip install -r requirements.txt
+          pip install pytest pytest-benchmark httpx
 
       - name: Run performance benchmarks
         run: |
