@@ -727,6 +727,112 @@ Before submitting a PR:
 
 ---
 
+### L. Validation & Automation Scripts (`scripts/` Directory)
+
+#### 🎯 Master Script (MUST RUN BEFORE EVERY PUSH)
+
+**Path:** `scripts/PRE_PUSH_VALIDATION_MASTER.sh`
+
+This is the ONLY script you need to run before pushing. It orchestrates ALL validation:
+
+```bash
+./scripts/PRE_PUSH_VALIDATION_MASTER.sh
+```
+
+**What it does (8 phases):**
+1. ✅ Code Formatting (Black, Dart format)
+2. ✅ Linting (Ruff, Dart analysis, S-codes)
+3. ✅ Type Checking (Pyright, Dart)
+4. ✅ Unit Tests (Python, Flutter)
+5. ✅ Integration Tests (SQLite, Performance)
+6. ✅ Security Audit (Bandit, S-codes)
+7. ✅ Code Coverage (≥80%)
+8. ✅ Build Validation (Docker, Dependencies)
+
+**Exit Code:**
+- `0` = All checks passed ✅ SAFE TO PUSH
+- `1` = One or more checks failed ❌ DO NOT PUSH (fix and retry)
+
+---
+
+#### 📚 Individual Utility Scripts
+
+| Script | Purpose | When to Use |
+|--------|---------|------------|
+| `RUN_COMPLETE_TEST_SUITE.sh` | Execute all tests (unit, integration, performance) | After major changes |
+| `VALIDATE_PHASE6_CI_CD_GATES.sh` | Validate Phase 6 CI/CD gates and generate report | Before final merge |
+| `LAUNCH_FLUTTER_APP_DEV.sh` | Launch Flutter app for development/testing | During frontend development |
+| `validate-quality-gates.sh` | Quick validation of quality gates | After code changes |
+| `validate-workflows.sh` | Check GitHub Actions workflows syntax | When modifying `.github/workflows/` |
+| `verify-tests.sh` | Verify test suite is runnable | Troubleshooting test failures |
+| `generate_coverage_html.sh` | Generate HTML coverage report | Code review preparation |
+| `start_stack.sh` | Start Docker infrastructure | Development setup |
+| `stop_stack.sh` | Stop Docker infrastructure | Before switching branches |
+
+---
+
+#### 🚀 Recommended Development Workflow
+
+```bash
+# 1. Create feature branch
+git checkout -b feature/xyz develop
+
+# 2. Make code changes
+vim src/server/services/...
+
+# 3. BEFORE EVERY PUSH: Run master validation script
+./scripts/PRE_PUSH_VALIDATION_MASTER.sh
+
+# 4. If all checks pass (exit code 0), push safely
+git push origin feature/xyz
+
+# 5. If checks fail (exit code 1):
+#    - Fix the issues
+#    - Commit changes
+#    - Re-run ./scripts/PRE_PUSH_VALIDATION_MASTER.sh
+#    - Retry push
+```
+
+---
+
+#### ⚡ Quick Command Reference
+
+```bash
+# Run the FULL validation (recommended before EVERY push)
+./scripts/PRE_PUSH_VALIDATION_MASTER.sh
+
+# Run specific validations individually
+black --check src/server/                    # Check formatting
+ruff check src/server/                       # Check linting
+python -m pyright src/server/                # Check types
+pytest tests/python/ --cov=src/server --cov-fail-under=80  # Check coverage
+
+# Generate coverage report (HTML)
+./scripts/generate_coverage_html.sh
+
+# Run only Flutter tests
+cd src/client && flutter test test/
+
+# Validate GitHub Actions workflows
+./scripts/validate-workflows.sh
+
+# Start/stop Docker environment
+./scripts/start_stack.sh    # Start
+./scripts/stop_stack.sh     # Stop
+```
+
+---
+
+#### ❌ What NOT to Do
+
+- ❌ **NEVER push without running** `PRE_PUSH_VALIDATION_MASTER.sh`
+- ❌ **NEVER commit** with failing tests or code quality issues
+- ❌ **NEVER skip** the pre-commit hook validation
+- ❌ **NEVER force push** (`git push -f`) to develop/main branches
+- ❌ **NEVER ignore** low test coverage (<80%)
+
+---
+
 ## 🧾 9. Referencias y Contexto
 
 Los siguientes documentos son la fuente de verdad:

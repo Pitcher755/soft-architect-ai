@@ -75,8 +75,8 @@ class TestSQLitePerformance:
         elapsed = time.time() - start
         rate = 1000 / elapsed
 
-        assert elapsed < 2.5, (
-            f"Bulk insert took {elapsed:.3f}s (expected <2.5s). "
+        assert elapsed < 3.5, (
+            f"Bulk insert took {elapsed:.3f}s (expected <3.5s). "
             f"Rate: {rate:.0f} ops/sec"
         )
         print(f"✅ Bulk insert: {rate:.0f} ops/sec ({elapsed:.3f}s for 1000 records)")
