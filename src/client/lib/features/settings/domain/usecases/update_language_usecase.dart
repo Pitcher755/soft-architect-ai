@@ -24,10 +24,9 @@ class UpdateLanguageUseCase {
   /// [language]: The new language preference (en or es).
   /// [currentSettings]: The current settings entity to update.
   ///
-  /// Returns the updated [SettingsEntity] with the new language.
+  /// Returns the updated settings with the new language.
   ///
-  /// Throws:
-  /// - [StorageWriteException] if saving fails
+  /// Throws an exception if saving fails.
   Future<SettingsEntity> call(
     LanguagePreference language,
     SettingsEntity currentSettings,

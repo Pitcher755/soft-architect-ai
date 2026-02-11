@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import '../entities/settings_entity.dart';
-import '../exceptions/settings_exceptions.dart' show StorageWriteException;
 import '../repositories/i_settings_repository.dart';
 
 /// Use case for saving user settings to storage.
@@ -29,11 +28,9 @@ class SaveSettingsUseCase {
 
   /// Executes the use case to save settings.
   ///
-  /// Validates input (no-op if [settings] is identical to current state).
+  /// Validates input and persists settings to storage.
   ///
-  /// Throws:
-  /// - [StorageWriteException] if saving fails
-  /// - [SerializationException] if data cannot be serialized
+  /// Throws an exception if saving or validation fails.
   Future<void> call(SettingsEntity settings) async {
     // Validate storage path if set
     if (settings.storagePath.isNotEmpty) {
@@ -46,9 +43,10 @@ class SaveSettingsUseCase {
 
   /// Validates that the storage path exists and is a directory.
   ///
-  /// Throws [InvalidStoragePathException] if validation fails.
+  /// Throws an exception if validation fails.
   Future<void> _validateStoragePath(String path) async {
     final directory = Directory(path);
+    // ignore: avoid_slow_async_io
     if (!await directory.exists()) {
       throw InvalidStoragePathException('Storage path does not exist: $path');
     }

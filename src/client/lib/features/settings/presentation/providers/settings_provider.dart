@@ -1,6 +1,6 @@
 // ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
 
-import 'dart:convert'; // Para jsonEncode/jsonDecode
+import 'dart:convert'; // For jsonEncode/jsonDecode
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,7 @@ class AppSettings {
     this.enableZoomShortcuts = true,
     this.enableAnimations = true,
     this.enableMemoryOptimization = true,
-    this.userName = 'Architect', // Valor por defecto
+    this.userName = 'Architect', // Default value
     this.avatarIndex = 0,
     this.customAvatarPath,
     this.projectDirectory,
@@ -47,6 +47,9 @@ class AppSettings {
   final String? customAvatarPath;
   final String? projectDirectory;
 
+  /// Alias for projectDirectory to maintain backward compatibility.
+  String get storagePath => projectDirectory ?? '';
+
   AppSettings copyWith({
     ThemeMode? themeMode,
     double? fontSize,
@@ -72,10 +75,10 @@ class AppSettings {
     projectDirectory: projectDirectory ?? this.projectDirectory,
   );
 
-  // --- SERIALIZACIÓN PARA PERSISTENCIA ---
+  // --- SERIALIZATION FOR PERSISTENCE ---
 
   Map<String, dynamic> toJson() => {
-    'themeMode': themeMode.index, // Guardamos el índice del enum
+    'themeMode': themeMode.index, // Save enum index
     'fontSize': fontSize,
     'globalZoom': globalZoom,
     'enableZoomShortcuts': enableZoomShortcuts,
@@ -94,8 +97,8 @@ class SettingsNotifier extends Notifier<AppSettings> {
 
   @override
   AppSettings build() {
-    // 1. Iniciamos con valores por defecto
-    // 2. Cargamos asíncronamente las preferencias guardadas
+    // 1. Start with default values
+    // 2. Load saved preferences asynchronously
     _loadSettings();
     return const AppSettings();
   }
@@ -164,9 +167,20 @@ class SettingsNotifier extends Notifier<AppSettings> {
     _saveSettings();
   }
 
+  Future<void> updateCustomAvatarPath(String? path) async {
+    state = state.copyWith(customAvatarPath: path);
+    await _saveSettings();
+  }
+
   void updateProjectDirectory(String path) {
     state = state.copyWith(projectDirectory: path);
     _saveSettings();
+  }
+
+  /// Alias for updateProjectDirectory to maintain backward compatibility.
+  Future<void> updateStoragePath(String path) async {
+    updateProjectDirectory(path);
+    await _saveSettings();
   }
 }
 

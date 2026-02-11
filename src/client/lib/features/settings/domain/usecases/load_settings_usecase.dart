@@ -26,11 +26,9 @@ class LoadSettingsUseCase {
 
   /// Executes the use case to load settings.
   ///
-  /// Returns [SettingsEntity.defaultSettings()] on first launch.
+  /// Returns default settings on first launch.
   ///
-  /// Throws:
-  /// - [StorageReadException] if loading fails
-  /// - [SerializationException] if data is corrupted
+  /// Handles errors gracefully by returning default settings to avoid crashes.
   Future<SettingsEntity> call() async {
     try {
       return await _repository.loadSettings();

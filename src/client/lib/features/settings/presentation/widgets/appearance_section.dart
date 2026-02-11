@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../gen/app_localizations.dart';
 import '../providers/settings_provider.dart';
 import 'setting_item.dart';
 import 'settings_card.dart';
@@ -37,14 +38,15 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
+    final l10n = AppLocalizations.of(context);
 
     return SettingsCard(
-      title: 'Apariencia',
+      title: l10n.appearanceTitle,
       icon: Icons.palette,
       children: [
         SettingItem(
-          title: 'Tema',
-          subtitle: 'Cambia entre tema claro y oscuro',
+          title: l10n.themeModeTitle,
+          subtitle: l10n.themeModeSubtitle,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -76,8 +78,8 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
         ),
         const Divider(color: Color(0xFF30363d)),
         SettingItem(
-          title: 'Tamaño de fuente',
-          subtitle: 'Ajusta el tamaño del texto en la aplicación',
+          title: l10n.fontSizeTitle,
+          subtitle: l10n.fontSizeSubtitle,
           child: Row(
             children: [
               SizedBox(

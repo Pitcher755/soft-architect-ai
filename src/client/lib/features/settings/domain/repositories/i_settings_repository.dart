@@ -1,5 +1,4 @@
 import '../entities/settings_entity.dart';
-import '../exceptions/settings_exceptions.dart';
 
 /// Repository interface for settings persistence.
 ///
@@ -32,19 +31,15 @@ import '../exceptions/settings_exceptions.dart';
 abstract class ISettingsRepository {
   /// Loads the current settings from local storage.
   ///
-  /// Returns [SettingsEntity.defaultSettings()] if no settings exist yet.
+  /// Returns default settings if no settings exist yet.
   ///
-  /// Throws:
-  /// - [StorageReadException] if loading fails
-  /// - [SerializationException] if data is corrupted
+  /// Throws an exception if loading fails.
   Future<SettingsEntity> loadSettings();
 
   /// Saves the given settings to local storage.
   ///
   /// Overwrites existing settings completely.
   ///
-  /// Throws:
-  /// - [StorageWriteException] if saving fails
-  /// - [SerializationException] if data cannot be serialized
+  /// Throws an exception if saving fails.
   Future<void> saveSettings(SettingsEntity settings);
 }

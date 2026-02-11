@@ -25,11 +25,9 @@ class UpdateStoragePathUseCase {
   /// [path]: The new storage path (must be a valid directory).
   /// [currentSettings]: The current settings entity to update.
   ///
-  /// Returns the updated [SettingsEntity] with the new path.
+  /// Returns the updated settings with the new path.
   ///
-  /// Throws:
-  /// - [InvalidPathException] if path doesn't exist or isn't writable
-  /// - [StorageWriteException] if saving fails
+  /// Throws an exception if path is invalid or saving fails.
   Future<SettingsEntity> call(
     String path,
     SettingsEntity currentSettings,
@@ -48,13 +46,14 @@ class UpdateStoragePathUseCase {
 
   /// Validates that the given path exists and is a directory.
   ///
-  /// Throws [InvalidPathException] if validation fails.
+  /// Throws an exception if validation fails.
   Future<void> _validatePath(String path) async {
     if (path.isEmpty) {
       throw const InvalidPathException('Storage path cannot be empty');
     }
 
     final directory = Directory(path);
+    // ignore: avoid_slow_async_io
     if (!await directory.exists()) {
       throw InvalidPathException('Directory does not exist: $path');
     }
@@ -71,7 +70,9 @@ class UpdateStoragePathUseCase {
   Future<bool> _isDirectoryWritable(String path) async {
     try {
       final testFile = File('$path/.write_test_${DateTime.now().millisecondsSinceEpoch}');
+      // ignore: avoid_slow_async_io
       await testFile.writeAsString('test');
+      // ignore: avoid_slow_async_io
       await testFile.delete();
       return true;
     } on Exception {

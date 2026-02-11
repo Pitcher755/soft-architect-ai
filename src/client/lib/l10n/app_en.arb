@@ -142,5 +142,241 @@
                 "example": "Permission denied"
             }
         }
+    },
+    "loadingProjects": "Loading projects...",
+    "@loadingProjects": {
+        "description": "Loading message for projects grid"
+    },
+    "today": "Today",
+    "@today": {
+        "description": "Relative date: today"
+    },
+    "yesterday": "Yesterday",
+    "@yesterday": {
+        "description": "Relative date: yesterday"
+    },
+    "daysAgo": "{days} days ago",
+    "@daysAgo": {
+        "description": "Relative date: X days ago",
+        "placeholders": {
+            "days": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "languageTitle": "Language",
+    "@languageTitle": {
+        "description": "Settings section title for language"
+    },
+    "languageInterfaceTitle": "Interface language",
+    "@languageInterfaceTitle": {
+        "description": "Language setting item title"
+    },
+    "languageInterfaceSubtitle": "Change application language",
+    "@languageInterfaceSubtitle": {
+        "description": "Language setting item subtitle"
+    },
+    "storageTitle": "Storage",
+    "@storageTitle": {
+        "description": "Settings section title for storage"
+    },
+    "storageProjectDirTitle": "Projects directory",
+    "@storageProjectDirTitle": {
+        "description": "Storage setting for project directory"
+    },
+    "storageProjectDirSubtitle": "Default location to save new projects",
+    "@storageProjectDirSubtitle": {
+        "description": "Storage setting subtitle for project directory"
+    },
+    "changeDirectory": "Change directory",
+    "@changeDirectory": {
+        "description": "Tooltip for change directory button"
+    },
+    "directoryUpdated": "Directory updated: {path}",
+    "@directoryUpdated": {
+        "description": "Success message when directory is updated",
+        "placeholders": {
+            "path": {
+                "type": "String",
+                "example": "/home/user/projects"
+            }
+        }
+    },
+    "errorSelectingDirectory": "Error selecting directory: {error}",
+    "@errorSelectingDirectory": {
+        "description": "Error message when directory selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Permission denied"
+            }
+        }
+    },
+    "folderAlreadyExists": "A folder with that name already exists in the selected path",
+    "@folderAlreadyExists": {
+        "description": "Error message when project folder already exists"
+    },
+    "workspaceSectionTitle": "SoftArchitect AI Workspace",
+    "@workspaceSectionTitle": {
+        "description": "Title for the workspace section"
+    },
+    "workspaceSubtitle": "Interactive workspace for document generation",
+    "@workspaceSubtitle": {
+        "description": "Subtitle/description for the workspace"
+    },
+    "myProjects": "My Projects",
+    "@myProjects": {
+        "description": "Header for the projects list section"
+    },
+    "guideTitle": "Welcome to SoftArchitect AI",
+    "@guideTitle": {
+        "description": "Guide section title"
+    },
+    "guideDescription": "This is your interactive guide. Learn how to use the tool here.",
+    "@guideDescription": {
+        "description": "Guide section description"
+    },
+    "guideSteps": "Steps: 1. Create a project with the + button. 2. Select an empty folder. 3. Start creating.",
+    "@guideSteps": {
+        "description": "Guide steps text"
+    },
+    "guideFeatures": "Key features: Analysis of Architecture, Live Documentation, AI Chat, Hybrid",
+    "@guideFeatures": {
+        "description": "Guide features text"
+    },
+    "chatIATitle": "AI Chat",
+    "@chatIATitle": {
+        "description": "Chat IA section title"
+    },
+    "chatIADescription": "The central panel allows you to talk to your documents.",
+    "@chatIADescription": {
+        "description": "Chat IA description"
+    },
+    "projectAlpha": "PROJECT-ALPHA",
+    "@projectAlpha": {
+        "description": "Sample project name"
+    },
+    "projectContext": "Context",
+    "@projectContext": {
+        "description": "Project context phase"
+    },
+    "projectArchitecture": "Architecture",
+    "@projectArchitecture": {
+        "description": "Project architecture phase"
+    },
+    "projectImplementation": "Implementation",
+    "@projectImplementation": {
+        "description": "Project implementation phase"
+    },
+    "projectQuality": "Quality",
+    "@projectQuality": {
+        "description": "Project quality phase"
+    },
+    "projectDocumentation": "Documentation",
+    "@projectDocumentation": {
+        "description": "Project documentation phase"
+    },
+    "spanish": "Spanish",
+    "@spanish": {
+        "description": "Spanish language name"
+    },
+    "english": "English",
+    "@english": {
+        "description": "English language name"
+    },
+    "avatarUpdated": "Avatar updated successfully",
+    "@avatarUpdated": {
+        "description": "Success message when avatar is updated"
+    },
+    "avatarUpdateError": "Error selecting avatar: {error}",
+    "@avatarUpdateError": {
+        "description": "Error message when avatar selection fails",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "File not found"
+            }
+        }
+    },
+    "profileTitle": "Profile",
+    "@profileTitle": {
+        "description": "Settings section title for profile"
+    },
+    "nameTitle": "Full Name",
+    "@nameTitle": {
+        "description": "Label for user name input"
+    },
+    "avatarTitle": "Avatar",
+    "@avatarTitle": {
+        "description": "Label for avatar selection"
+    },
+    "appearanceTitle": "Appearance",
+    "@appearanceTitle": {
+        "description": "Settings section title for appearance"
+    },
+    "themeModeTitle": "Theme",
+    "@themeModeTitle": {
+        "description": "Label for theme selection"
+    },
+    "darkMode": "Dark",
+    "@darkMode": {
+        "description": "Dark theme option"
+    },
+    "lightMode": "Light",
+    "@lightMode": {
+        "description": "Light theme option"
+    },
+    "systemMode": "System",
+    "@systemMode": {
+        "description": "System theme option"
+    },
+    "fontSizeTitle": "Font Size",
+    "@fontSizeTitle": {
+        "description": "Label for font size adjustment"
+    },
+    "accessibilityTitle": "Accessibility",
+    "@accessibilityTitle": {
+        "description": "Settings section title for accessibility"
+    },
+    "zoomTitle": "Zoom",
+    "@zoomTitle": {
+        "description": "Label for zoom adjustment"
+    },
+    "enableZoomShortcuts": "Enable zoom keyboard shortcuts",
+    "@enableZoomShortcuts": {
+        "description": "Toggle for zoom shortcut keys (Ctrl+, Ctrl-, Ctrl+0)"
+    },
+    "performanceTitle": "Performance",
+    "@performanceTitle": {
+        "description": "Settings section title for performance"
+    },
+    "enableAnimations": "Enable animations",
+    "@enableAnimations": {
+        "description": "Toggle for UI animations"
+    },
+    "enableMemoryOptimization": "Memory optimization",
+    "@enableMemoryOptimization": {
+        "description": "Toggle for memory optimization features"
+    },
+    "themeModeSubtitle": "Change between light and dark theme",
+    "@themeModeSubtitle": {
+        "description": "Subtitle for theme mode selection"
+    },
+    "fontSizeSubtitle": "Adjust text size across the application",
+    "@fontSizeSubtitle": {
+        "description": "Subtitle for font size adjustment"
+    },
+    "zoomSubtitle": "Adjust zoom for the entire application",
+    "@zoomSubtitle": {
+        "description": "Subtitle for global zoom adjustment"
+    },
+    "settingsTitle": "Settings",
+    "@settingsTitle": {
+        "description": "Title for the settings page"
+    },
+    "settingsSubtitle": "Customize your SoftArchitect AI experience",
+    "@settingsSubtitle": {
+        "description": "Subtitle for the settings page"
     }
 }

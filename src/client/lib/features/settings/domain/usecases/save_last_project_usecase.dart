@@ -21,9 +21,7 @@ class SaveLastProjectUseCase {
   ///
   /// [projectPath]: The path to the currently opened project.
   ///
-  /// Throws:
-  /// - [StorageWriteException] if saving fails
-  /// - [ArgumentError] if [projectPath] is empty
+  /// Throws an exception if saving fails or project path is invalid.
   Future<void> call(String projectPath) async {
     if (projectPath.isEmpty) {
       throw ArgumentError('Project path cannot be empty');

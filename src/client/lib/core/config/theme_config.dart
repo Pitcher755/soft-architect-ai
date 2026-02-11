@@ -83,18 +83,107 @@ class AppTheme {
   static ThemeData lightTheme() => ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: const Color(0xFFFAFAFA),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFFF6F8FA),
+      backgroundColor: Color(0xFFF5F5F5),
       elevation: 0,
       centerTitle: true,
+      iconTheme: IconThemeData(color: Color(0xFF333333)),
     ),
     colorScheme: const ColorScheme.light(
-      primary: primary,
-      secondary: secondary,
-      tertiary: accent,
-      error: error,
-      surface: Color(0xFFF6F8FA),
+      primary: Color(0xFF0066CC),
+      secondary: Color(0xFF22C55E),
+      tertiary: Color(0xFF9333EA),
+      error: Color(0xFFEF4444),
+      surface: Color(0xFFF5F5F5),
+      surfaceContainer: Color(0xFFEEEEEE),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: const Color(0xFFFFFFFF),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Color(0xFF0066CC), width: 2),
+      ),
+      labelStyle: const TextStyle(color: Color(0xFF666666)),
+      hintStyle: const TextStyle(color: Color(0xFF999999)),
+    ),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(
+        color: Color(0xFF111827),
+        fontWeight: FontWeight.bold,
+      ),
+      displayMedium: TextStyle(
+        color: Color(0xFF111827),
+        fontWeight: FontWeight.bold,
+      ),
+      displaySmall: TextStyle(
+        color: Color(0xFF111827),
+        fontWeight: FontWeight.bold,
+      ),
+      headlineLarge: TextStyle(
+        color: Color(0xFF1F2937),
+        fontWeight: FontWeight.bold,
+      ),
+      headlineMedium: TextStyle(
+        color: Color(0xFF1F2937),
+        fontWeight: FontWeight.bold,
+      ),
+      headlineSmall: TextStyle(
+        color: Color(0xFF374151),
+        fontWeight: FontWeight.bold,
+      ),
+      titleLarge: TextStyle(
+        color: Color(0xFF1F2937),
+        fontWeight: FontWeight.w600,
+      ),
+      titleMedium: TextStyle(
+        color: Color(0xFF374151),
+        fontWeight: FontWeight.w500,
+      ),
+      titleSmall: TextStyle(color: Color(0xFF6B7280)),
+      bodyLarge: TextStyle(color: Color(0xFF1F2937)),
+      bodyMedium: TextStyle(color: Color(0xFF374151)),
+      bodySmall: TextStyle(color: Color(0xFF6B7280)),
+      labelLarge: TextStyle(
+        color: Color(0xFF111827),
+        fontWeight: FontWeight.w500,
+      ),
+      labelMedium: TextStyle(
+        color: Color(0xFF4B5563),
+        fontWeight: FontWeight.w500,
+      ),
+      labelSmall: TextStyle(color: Color(0xFF6B7280)),
+    ),
+    iconTheme: const IconThemeData(color: Color(0xFF374151)),
+    dividerColor: const Color(0xFFE5E7EB),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const Color(0xFF0066CC);
+        }
+        return const Color(0xFFD1D5DB);
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const Color(0xFF93C5FD);
+        }
+        return const Color(0xFFE5E7EB);
+      }),
+    ),
+    sliderTheme: const SliderThemeData(
+      activeTrackColor: Color(0xFF0066CC),
+      inactiveTrackColor: Color(0xFFE5E7EB),
+      thumbColor: Color(0xFF0066CC),
+      overlayColor: Color(0x1F0066CC),
     ),
   );
 }

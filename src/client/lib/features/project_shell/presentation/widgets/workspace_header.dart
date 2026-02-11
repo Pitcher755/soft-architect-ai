@@ -12,56 +12,62 @@ class WorkspaceHeader extends StatelessWidget {
   final VoidCallback onNewProject;
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      const Column(
-        children: [
-          Text(
-            '🎯 SoftArchitect AI Workspace',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFE6EDF3),
-              letterSpacing: -0.5,
-            ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            'Interactive workspace for document generation',
-            style: TextStyle(fontSize: 12, color: Color(0xFF8b949e)),
-          ),
-        ],
-      ),
-      const SizedBox(height: 40),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Mis Proyectos',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFE6EDF3),
-              letterSpacing: -0.5,
-            ),
-          ),
-          ElevatedButton.icon(
-            onPressed: onNewProject,
-            icon: const Icon(Icons.add, size: 20),
-            label: Text(AppLocalizations.of(context).newProjectButton),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Column(
+      children: [
+        Column(
+          children: [
+            Text(
+              '🎯 ${l10n.workspaceSectionTitle}',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFE6EDF3),
+                letterSpacing: -0.5,
               ),
-              elevation: 0,
             ),
-          ),
-        ],
-      ),
-    ],
-  );
+            const SizedBox(height: 4),
+            Text(
+              l10n.workspaceSubtitle,
+              style: const TextStyle(fontSize: 12, color: Color(0xFF8b949e)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 40),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.myProjects,
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFE6EDF3),
+                letterSpacing: -0.5,
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: onNewProject,
+              icon: const Icon(Icons.add, size: 20),
+              label: Text(l10n.newProjectButton),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 0,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

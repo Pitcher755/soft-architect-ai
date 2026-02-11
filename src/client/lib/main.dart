@@ -1,16 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'core/config/app_config.dart';
 import 'core/config/theme_config.dart';
 import 'core/database_initializer.dart';
 import 'core/localization/locale_provider.dart';
 import 'core/router/app_router.dart';
 import 'features/chat/presentation/notifiers/chat_notifier.dart';
 import 'features/project_shell/core/services/file_system_service.dart';
+import 'features/settings/presentation/providers/settings_provider.dart';
 import 'gen/app_localizations.dart';
 
 void main() async {
@@ -57,22 +58,140 @@ class SoftArchitectApp extends ConsumerWidget {
     final router = createAppRouter();
     final locale = ref.watch(localeProvider);
 
-    return MaterialApp.router(
-      title: 'SoftArchitect AI',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme(),
-      darkTheme: AppTheme.darkTheme(),
-      themeMode: AppConfig.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      routerConfig: router,
-      // Use dynamic locale from provider instead of static config
-      locale: locale,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: LocaleNotifier.supportedLocales,
+    // Watch ONLY the specific settings values needed, not the entire object
+    // This prevents unnecessary rebuilds when unrelated settings change
+    final themeMode = ref.watch(settingsProvider.select((s) => s.themeMode));
+    final fontSize = ref.watch(settingsProvider.select((s) => s.fontSize));
+    final globalZoom = ref.watch(settingsProvider.select((s) => s.globalZoom));
+    final enableZoomShortcuts = ref.watch(
+      settingsProvider.select((s) => s.enableZoomShortcuts),
     );
+
+    // Apply global zoom by wrapping the app in MediaQuery
+    // IMPORTANT: Use FocusScope to capture shortcuts without triggering
+    // navigation
+    return FocusScope(
+      onKey: (node, event) {
+        if (!enableZoomShortcuts) {
+          return KeyEventResult.ignored;
+        }
+
+        final isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
+        if (!isCtrlPressed) {
+          return KeyEventResult.ignored;
+        }
+
+        // Ctrl + Shift + Plus (En/US layout: Ctrl+Shift+=)
+        if (event.logicalKey == LogicalKeyboardKey.equal &&
+            HardwareKeyboard.instance.isShiftPressed) {
+          ref
+              .read(settingsProvider.notifier)
+              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
+          return KeyEventResult.handled;
+        }
+
+        // Ctrl + Equal/Plus (Spanish: Ctrl+= where + is Shift+=)
+        if (event.logicalKey == LogicalKeyboardKey.equal &&
+            !HardwareKeyboard.instance.isShiftPressed) {
+          ref
+              .read(settingsProvider.notifier)
+              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
+          return KeyEventResult.handled;
+        }
+
+        // Ctrl + Minus (works on all layouts)
+        if (event.logicalKey == LogicalKeyboardKey.minus) {
+          ref
+              .read(settingsProvider.notifier)
+              .updateGlobalZoom((globalZoom - 0.1).clamp(0.5, 2.0));
+          return KeyEventResult.handled;
+        }
+
+        // Ctrl + 0: Reset to 100%
+        if (event.logicalKey == LogicalKeyboardKey.digit0) {
+          ref.read(settingsProvider.notifier).updateGlobalZoom(1);
+          return KeyEventResult.handled;
+        }
+
+        return KeyEventResult.ignored;
+      },
+      child: Focus(
+        canRequestFocus: true,
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(globalZoom),
+          ),
+          child: MaterialApp.router(
+            title: 'SoftArchitect AI',
+            debugShowCheckedModeBanner: false,
+            theme: _buildThemeWithFontSize(AppTheme.lightTheme(), fontSize),
+            darkTheme: _buildThemeWithFontSize(
+              AppTheme.darkTheme(),
+              fontSize,
+            ),
+            themeMode: themeMode,
+            routerConfig: router,
+            locale: locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: LocaleNotifier.supportedLocales,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds theme with optional font size scaling.
+  ///
+  /// Manually scales each TextStyle to avoid assertions on themes
+  /// without explicit fontSize definitions.
+  ThemeData _buildThemeWithFontSize(ThemeData baseTheme, double fontSize) {
+    if (fontSize == 1.0) {
+      return baseTheme;
+    }
+
+    final scaledTextTheme = _scaleTextTheme(baseTheme.textTheme, fontSize);
+    return baseTheme.copyWith(textTheme: scaledTextTheme);
+  }
+
+  /// Manually scales TextTheme by multiplying font sizes.
+  ///
+  /// Avoids TextTheme.apply() assertion errors by building a new
+  /// TextTheme with each style's fontSize multiplied by the factor.
+  TextTheme _scaleTextTheme(
+    TextTheme baseTheme,
+    double scaleFactor,
+  ) =>
+      TextTheme(
+        displayLarge: _scaleTextStyle(baseTheme.displayLarge, scaleFactor),
+        displayMedium: _scaleTextStyle(baseTheme.displayMedium, scaleFactor),
+        displaySmall: _scaleTextStyle(baseTheme.displaySmall, scaleFactor),
+        headlineLarge: _scaleTextStyle(baseTheme.headlineLarge, scaleFactor),
+        headlineMedium: _scaleTextStyle(baseTheme.headlineMedium, scaleFactor),
+        headlineSmall: _scaleTextStyle(baseTheme.headlineSmall, scaleFactor),
+        titleLarge: _scaleTextStyle(baseTheme.titleLarge, scaleFactor),
+        titleMedium: _scaleTextStyle(baseTheme.titleMedium, scaleFactor),
+        titleSmall: _scaleTextStyle(baseTheme.titleSmall, scaleFactor),
+        bodyLarge: _scaleTextStyle(baseTheme.bodyLarge, scaleFactor),
+        bodyMedium: _scaleTextStyle(baseTheme.bodyMedium, scaleFactor),
+        bodySmall: _scaleTextStyle(baseTheme.bodySmall, scaleFactor),
+        labelLarge: _scaleTextStyle(baseTheme.labelLarge, scaleFactor),
+        labelMedium: _scaleTextStyle(baseTheme.labelMedium, scaleFactor),
+        labelSmall: _scaleTextStyle(baseTheme.labelSmall, scaleFactor),
+      );
+
+  /// Scales a single TextStyle by multiplying its fontSize.
+  ///
+  /// Returns original style if fontSize is null.
+  TextStyle? _scaleTextStyle(TextStyle? style, double scaleFactor) {
+    if (style == null) {
+      return null;
+    }
+    final fontSize = style.fontSize ?? 14.0; // Default size if not defined
+    return style.copyWith(fontSize: fontSize * scaleFactor);
   }
 }

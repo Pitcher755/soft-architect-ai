@@ -1,6 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../gen/app_localizations.dart';
 import '../providers/settings_provider.dart';
 import 'settings_card.dart';
 
@@ -232,7 +234,9 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                   final isSelected = index == selectedIndex;
                   return GestureDetector(
                     onTap: () {
-                      ref.read(settingsProvider.notifier).updateAvatarIndex(index);
+                      ref
+                          .read(settingsProvider.notifier)
+                          .updateAvatarIndex(index);
                       Navigator.of(ctx).pop();
                     },
                     child: Container(
@@ -249,7 +253,11 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                         ),
                       ),
                       child: const Center(
-                        child: Icon(Icons.person, size: 30, color: Colors.white),
+                        child: Icon(
+                          Icons.person,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   );
@@ -261,8 +269,7 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
               TextButton.icon(
                 onPressed: () async {
                   Navigator.of(ctx).pop();
-                  // TODO: Implement custom avatar picker with file_picker
-                  // await _pickCustomAvatar(context, ref);
+                  await _pickCustomAvatar(context, ref);
                 },
                 icon: const Icon(Icons.image, color: Color(0xFF58A6FF)),
                 label: const Text(
@@ -275,5 +282,47 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
         ),
       ),
     );
+  }
+
+  /// Opens file picker for custom avatar image selection.
+  ///
+  /// Allows users to select an image file from their system to use as avatar.
+  /// Supported formats: PNG, JPG, JPEG.
+  Future<void> _pickCustomAvatar(BuildContext context, WidgetRef ref) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg', 'jpeg'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        final imagePath = result.files.single.path!;
+        await ref
+            .read(settingsProvider.notifier)
+            .updateCustomAvatarPath(imagePath);
+
+        if (context.mounted) {
+          final l10n = AppLocalizations.of(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.avatarUpdated),
+              backgroundColor: const Color(0xFF238636),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    } on Exception catch (e) {
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.avatarUpdateError(e.toString())),
+            backgroundColor: const Color(0xFFF85149),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 }

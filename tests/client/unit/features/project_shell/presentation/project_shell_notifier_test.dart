@@ -1,4 +1,5 @@
 // tests/unit/flutter/features/project_shell/presentation/project_shell_notifier_test.dart
+// ignore_for_file: invalid_use_of_protected_member,invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/repositories/project_repository.dart';
@@ -130,9 +131,9 @@ void main() {
         // Wait for initialization to complete
         await Future.delayed(Duration.zero);
 
-        expect(notifier.debugState.projects, equals(projects));
-        expect(notifier.debugState.isLoading, isFalse);
-        expect(notifier.debugState.errorMessage, isNull);
+        expect(notifier.state.projects, equals(projects));
+        expect(notifier.state.isLoading, isFalse);
+        expect(notifier.state.errorMessage, isNull);
       });
 
       test('should handle initialization error', () async {
@@ -142,10 +143,10 @@ void main() {
         // Wait for initialization to complete
         await Future.delayed(Duration.zero);
 
-        expect(notifier.debugState.projects, isEmpty);
-        expect(notifier.debugState.isLoading, isFalse);
+        expect(notifier.state.projects, isEmpty);
+        expect(notifier.state.isLoading, isFalse);
         expect(
-          notifier.debugState.errorMessage,
+          notifier.state.errorMessage,
           contains('Failed to load projects'),
         );
       });
@@ -160,15 +161,15 @@ void main() {
         await notifier.selectProject(testProject);
 
         // Verify selected project
-        expect(notifier.debugState.selectedProject, isNotNull);
+        expect(notifier.state.selectedProject, isNotNull);
         expect(
-          notifier.debugState.selectedProject!.id,
+          notifier.state.selectedProject!.id,
           equals(testProject.id),
         );
 
         // Verify lastOpened was updated
         expect(
-          notifier.debugState.selectedProject!.lastOpened,
+          notifier.state.selectedProject!.lastOpened,
           isNotNull,
         );
       });
@@ -191,9 +192,9 @@ void main() {
 
         await notifier.createProject(name, path);
 
-        expect(notifier.debugState.projects, contains(newProject));
-        expect(notifier.debugState.selectedProject, equals(newProject));
-        expect(notifier.debugState.errorMessage, isNull);
+        expect(notifier.state.projects, contains(newProject));
+        expect(notifier.state.selectedProject, equals(newProject));
+        expect(notifier.state.errorMessage, isNull);
       });
 
       test('should handle create project error', () async {
@@ -212,10 +213,10 @@ void main() {
 
         await notifier.createProject(name, path);
 
-        expect(notifier.debugState.projects, isEmpty);
-        expect(notifier.debugState.selectedProject, isNull);
+        expect(notifier.state.projects, isEmpty);
+        expect(notifier.state.selectedProject, isNull);
         expect(
-          notifier.debugState.errorMessage,
+          notifier.state.errorMessage,
           contains('Failed to create project'),
         );
       });
@@ -240,12 +241,12 @@ void main() {
 
         await notifier.deleteProject(projectToDelete.id);
 
-        expect(notifier.debugState.projects, equals([otherProject]));
+        expect(notifier.state.projects, equals([otherProject]));
         expect(
-          notifier.debugState.selectedProject,
+          notifier.state.selectedProject,
           isNull,
         ); // Should be deselected
-        expect(notifier.debugState.errorMessage, isNull);
+        expect(notifier.state.errorMessage, isNull);
       });
 
       test(
@@ -268,12 +269,12 @@ void main() {
 
           await notifier.deleteProject(projectToDelete.id);
 
-          expect(notifier.debugState.projects, equals([otherProject]));
+          expect(notifier.state.projects, equals([otherProject]));
           expect(
-            notifier.debugState.selectedProject,
+            notifier.state.selectedProject,
             equals(otherProject),
           ); // Should remain selected
-          expect(notifier.debugState.errorMessage, isNull);
+          expect(notifier.state.errorMessage, isNull);
         },
       );
 
@@ -292,11 +293,11 @@ void main() {
         await notifier.deleteProject(projectToDelete.id);
 
         expect(
-          notifier.debugState.projects,
+          notifier.state.projects,
           equals([projectToDelete]),
         ); // Should remain
         expect(
-          notifier.debugState.errorMessage,
+          notifier.state.errorMessage,
           contains('Failed to delete project'),
         );
       });

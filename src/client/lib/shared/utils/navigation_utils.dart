@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
-import '../../features/settings/presentation/providers/settings_providers.dart';
+import '../../features/settings/presentation/providers/settings_providers.dart'
+    show lastProjectProvider;
 
-/// Utilidades para navegación y feedback al usuario
-/// Centraliza la lógica de mostrar mensajes y navegar
-
-/// Muestra un mensaje de error usando SnackBar
+/// Navigation and user feedback utilities.
+///
+/// Centralizes logic for showing messages and navigation.
 void showError(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -26,8 +26,9 @@ void showSuccess(BuildContext context, String message) {
   );
 }
 
-/// Navega al shell del proyecto con la ruta especificada
-/// Guarda el proyecto como el último abierto antes de navegar
+/// Navigates to project shell with specified path.
+///
+/// Saves the project as last opened before navigating.
 Future<void> navigateToProjectShell(
   BuildContext context,
   WidgetRef ref,

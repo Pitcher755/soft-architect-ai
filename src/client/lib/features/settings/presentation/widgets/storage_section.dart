@@ -2,7 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/settings_providers.dart';
+import '../../../../../gen/app_localizations.dart';
+import '../providers/settings_provider.dart';
 import 'setting_item.dart';
 import 'settings_card.dart';
 
@@ -15,15 +16,16 @@ class StorageSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsProvider);
 
     return SettingsCard(
-      title: 'Almacenamiento',
+      title: l10n.storageTitle,
       icon: Icons.folder_special,
       children: [
         SettingItem(
-          title: 'Directorio de proyectos',
-          subtitle: 'Ubicación por defecto para guardar nuevos proyectos',
+          title: l10n.storageProjectDirTitle,
+          subtitle: l10n.storageProjectDirSubtitle,
           child: Row(
             children: [
               Container(
@@ -54,7 +56,7 @@ class StorageSection extends ConsumerWidget {
                 onPressed: () => _selectDirectory(context, ref),
                 icon: const Icon(Icons.folder_open, size: 20),
                 color: const Color(0xFF58A6FF),
-                tooltip: 'Cambiar directorio',
+                tooltip: l10n.changeDirectory,
                 style: IconButton.styleFrom(
                   backgroundColor: const Color(0xFF21262D),
                   shape: RoundedRectangleBorder(
@@ -74,6 +76,8 @@ class StorageSection extends ConsumerWidget {
   ///
   /// Uses file_picker package for platform-native folder selection.
   Future<void> _selectDirectory(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+
     try {
       // Open native folder picker dialog
       final selectedPath = await FilePicker.platform.getDirectoryPath();
@@ -90,7 +94,7 @@ class StorageSection extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Directorio actualizado: $selectedPath'),
+            content: Text(l10n.directoryUpdated(selectedPath)),
             backgroundColor: const Color(0xFF238636),
             duration: const Duration(seconds: 2),
           ),
@@ -101,7 +105,7 @@ class StorageSection extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al seleccionar directorio: $e'),
+            content: Text(l10n.errorSelectingDirectory(e.toString())),
             backgroundColor: const Color(0xFFDA3633),
             duration: const Duration(seconds: 3),
           ),
