@@ -18,7 +18,9 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
   @override
   Widget build(BuildContext context) {
     // Obtenemos la ruta actual para resaltar el icono activo
-    final location = GoRouterState.of(context).uri.toString();
+    // En tests sin GoRouter, usa '/' por defecto
+    final router = GoRouter.maybeOf(context);
+    final location = router?.routerDelegate.currentConfiguration.uri.toString() ?? '/';
 
     // Lógica de detección de ruta activa
     final isSettingsActive = location.startsWith('/settings');

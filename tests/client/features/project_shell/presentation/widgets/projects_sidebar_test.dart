@@ -5,7 +5,7 @@ import 'package:softarchitect_ai/shared/presentation/widgets/projects_sidebar.da
 
 void main() {
   group('ProjectsSidebar', () {
-    testWidgets('should display sidebar with projects list',
+    testWidgets('should display sidebar with navigation buttons',
         (WidgetTester tester) async {
       // Arrange & Act
       await tester.pumpWidget(
@@ -19,11 +19,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Assert
+      // Assert - Sidebar has navigation buttons, not a ListView
       expect(find.byType(ProjectsSidebar), findsOneWidget,
           reason: 'ProjectsSidebar should be rendered');
-      expect(find.byType(ListView), findsOneWidget,
-          reason: 'Sidebar should have ListView for projects list');
+      expect(find.byType(Icon), findsWidgets,
+          reason: 'Sidebar should have icon navigation buttons');
+      // Sidebar has 5 icons: logo, workspace, project, search, settings
+      expect(find.byType(Icon).evaluate().length, greaterThanOrEqualTo(4),
+          reason: 'Should have at least 4 navigation icons');
     });
 
     testWidgets('should display last project button when available',
@@ -95,7 +98,7 @@ void main() {
           reason: 'Sidebar should display icons for projects');
     });
 
-    testWidgets('should display project names or paths',
+    testWidgets('should display navigation tooltips',
         (WidgetTester tester) async {
       // Arrange & Act
       await tester.pumpWidget(
@@ -109,9 +112,12 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Assert: Should display text labels
-      expect(find.byType(Text), findsWidgets,
-          reason: 'Sidebar should display project names or descriptions');
+      // Assert - Sidebar uses Tooltips for button labels, not Text widgets
+      expect(find.byType(Tooltip), findsWidgets,
+          reason: 'Sidebar should display tooltips for navigation buttons');
+      // Sidebar has 4 tooltips: workspace, project, search, settings
+      expect(find.byType(Tooltip).evaluate().length, greaterThanOrEqualTo(4),
+          reason: 'Should have tooltips for all navigation buttons');
     });
 
     testWidgets('should update current project highlight',
