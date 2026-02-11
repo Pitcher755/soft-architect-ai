@@ -89,6 +89,28 @@ class SQLiteDataSource {
     }
   }
 
+  /// Update entire project
+  Future<void> updateProject(ProjectModel project) async {
+    try {
+      developer.log(
+        'Updating project: ${project.id}',
+        name: 'SQLiteDataSource',
+      );
+      await database.update(
+        _projectTableName,
+        project.toJson(),
+        where: 'id = ?',
+        whereArgs: [project.id],
+      );
+    } catch (e, st) {
+      throw DatabaseException(
+        'Failed to update project: $e',
+        originalError: e,
+        stackTrace: st,
+      );
+    }
+  }
+
   /// Delete project
   Future<void> deleteProject(String projectId) async {
     try {

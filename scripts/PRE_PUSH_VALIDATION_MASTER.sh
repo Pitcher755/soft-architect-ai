@@ -133,10 +133,10 @@ run_check "Dart type checking" \
 print_header "PHASE 4️⃣: UNIT TESTS"
 
 run_check "Python Unit Tests" \
-    "python3 -m pytest tests/python/unit/ -q --tb=no 2>/dev/null"
+    "python3 -m pytest tests/server/unit/ -q --tb=no 2>/dev/null"
 
 run_check "Flutter Widget Tests" \
-    "cd src/client && flutter test test/unit/ -q 2>/dev/null || echo 'Flutter not available'"
+    "cd tests && flutter test client/unit/ -q 2>/dev/null || echo 'Flutter not available'"
 
 ################################################################################
 # 5. INTEGRATION TESTS & PERFORMANCE
@@ -145,10 +145,10 @@ run_check "Flutter Widget Tests" \
 print_header "PHASE 5️⃣: INTEGRATION TESTS & PERFORMANCE"
 
 run_check "SQLite Integration Tests" \
-    "python3 -m pytest tests/python/integration/test_sqlite_*.py -q --tb=no 2>/dev/null"
+    "python3 -m pytest tests/server/integration/test_sqlite_*.py -q --tb=no 2>/dev/null"
 
 run_check "Performance Benchmarks" \
-    "python3 -m pytest tests/python/integration/test_sqlite_performance.py -q --tb=no 2>/dev/null"
+    "python3 -m pytest tests/server/integration/test_sqlite_performance.py -q --tb=no 2>/dev/null"
 
 ################################################################################
 # 6. SECURITY AUDIT
@@ -160,7 +160,7 @@ run_check "Bandit (Python security)" \
     "python3 -m bandit -r src/server/ -q 2>/dev/null || echo 'Bandit not available'"
 
 run_check "SQL Injection Protection" \
-    "python3 -m pytest tests/python/unit/test_security_*.py -q --tb=no 2>/dev/null || echo 'Security tests optional'"
+    "python3 -m pytest tests/server/unit/test_security_*.py -q --tb=no 2>/dev/null || echo 'Security tests optional'"
 
 ################################################################################
 # 7. CODE COVERAGE
@@ -169,7 +169,7 @@ run_check "SQL Injection Protection" \
 print_header "PHASE 7️⃣: CODE COVERAGE"
 
 run_check "Coverage ≥80%" \
-    "python3 -m pytest tests/python/ --cov=src/server --cov-fail-under=80 -q --tb=no 2>/dev/null"
+    "python3 -m pytest tests/server/ --cov=src/server --cov-fail-under=80 -q --tb=no 2>/dev/null"
 
 ################################################################################
 # 8. BUILD VALIDATION

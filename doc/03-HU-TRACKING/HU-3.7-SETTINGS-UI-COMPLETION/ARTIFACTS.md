@@ -64,7 +64,7 @@
 |------|------|--------|-------------|
 | `src/client/lib/features/settings/data/datasources/settings_local_datasource.dart` | NEW | ⏳ Pending | SharedPreferences wrapper |
 | `src/client/lib/features/settings/data/datasources/file_picker_datasource.dart` | NEW | ⏳ Pending | file_picker package wrapper |
-| `src/client/lib/features/settings/data/datasources/last_project_local_datasource.dart` | NEW | ✅ Created | Last project persistence |
+| `src/client/lib/features/settings/data/datasources/last_project_local_datasource.dart` | NEW | ⏳ Pending | Last project persistence |
 
 ### DTOs (Data Transfer Objects)
 | File | Type | Status | Description |
@@ -97,17 +97,17 @@
 ### Widgets - Settings Sections
 | File | Type | Status | Description |
 |------|------|--------|-------------|
-| `src/client/lib/features/settings/presentation/widgets/profile_section.dart` | MODIFIED | ✅ Updated | Provider-connected user name field |
+| `src/client/lib/features/settings/presentation/widgets/profile_section.dart` | MODIFIED | ⏳ Pending | Add persistence logic |
 | `src/client/lib/features/settings/presentation/widgets/storage_section.dart` | MODIFIED | ⏳ Pending | Implement file_picker (TODO-2) |
-| `src/client/lib/features/settings/presentation/widgets/appearance_section.dart` | MODIFIED | ✅ Verified | Theme toggle + font size controls |
-| `src/client/lib/features/settings/presentation/widgets/accessibility_section.dart` | MODIFIED | ✅ Verified | Global zoom + shortcuts controls |
-| `src/client/lib/features/settings/presentation/widgets/performance_section.dart` | MODIFIED | ✅ Verified | Animations + memory optimization controls |
+| `src/client/lib/features/settings/presentation/widgets/appearance_section.dart` | MODIFIED | ⏳ Pending | Add persistence + language selector |
+| `src/client/lib/features/settings/presentation/widgets/accessibility_section.dart` | MODIFIED | ⏳ Pending | Add persistence logic |
+| `src/client/lib/features/settings/presentation/widgets/performance_section.dart` | MODIFIED | ⏳ Pending | Add persistence logic |
 | `src/client/lib/features/settings/presentation/widgets/language_selector_widget.dart` | NEW | ⏳ Pending | 🇬🇧 / 🇪🇸 toggle widget |
 
 ### Widgets - Navigation
 | File | Type | Status | Description |
 |------|------|--------|-------------|
-| `src/client/lib/shared/presentation/widgets/global_search_dialog.dart` | MODIFIED | ✅ Updated | Add navigation + last project persistence |
+| `src/client/lib/shared/presentation/widgets/global_search_dialog.dart` | MODIFIED | ⏳ Pending | Add navigation on result click |
 | `src/client/lib/shared/presentation/widgets/projects_sidebar.dart` | MODIFIED | ⏳ Pending | Show last opened project |
 
 ---
@@ -135,18 +135,18 @@
 ### Widget Tests - Settings UI (7 tests - T-3)
 | File | Type | Status | Description |
 |------|------|--------|-------------|
-| `tests/test/features/settings/presentation/widgets/profile_section_test.dart` | NEW | ✅ Created | Test user name field + key |
+| `tests/test/features/settings/presentation/widgets/profile_section_test.dart` | NEW | ⏳ Pending | Test user profile editing |
 | `tests/test/features/settings/presentation/widgets/storage_section_test.dart` | NEW | ⏳ Pending | Test folder picker |
-| `tests/test/features/settings/presentation/widgets/appearance_section_test.dart` | NEW | ✅ Created | Test theme toggle + font size slider |
-| `tests/test/features/settings/presentation/widgets/accessibility_section_test.dart` | NEW | ✅ Created | Test global zoom + shortcuts |
-| `tests/test/features/settings/presentation/widgets/performance_section_test.dart` | NEW | ✅ Created | Test performance toggles |
+| `tests/test/features/settings/presentation/widgets/appearance_section_test.dart` | NEW | ⏳ Pending | Test theme toggle |
+| `tests/test/features/settings/presentation/widgets/accessibility_section_test.dart` | NEW | ⏳ Pending | Test accessibility controls |
+| `tests/test/features/settings/presentation/widgets/performance_section_test.dart` | NEW | ⏳ Pending | Test performance controls |
 | `tests/test/features/settings/presentation/screens/settings_screen_test.dart` | NEW | ⏳ Pending | Test full screen integration |
 | `tests/test/features/settings/presentation/widgets/language_selector_widget_test.dart` | NEW | ⏳ Pending | Test language toggle (ES/EN) |
 
 ### Widget Test - GlobalSearchDialog (1 test - T-4)
 | File | Type | Status | Description |
 |------|------|--------|-------------|
-| `tests/test/shared/presentation/widgets/global_search_dialog_test.dart` | NEW | ✅ Created | Test dialog render + navigation + last project |
+| `tests/test/shared/presentation/widgets/global_search_dialog_test.dart` | NEW | ⏳ Pending | Test search + navigation |
 
 ### Widget Tests - MarkdownPreview (Fix 10 failing - T-2)
 | File | Type | Status | Description |

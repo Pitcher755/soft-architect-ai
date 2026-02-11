@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -76,7 +78,8 @@ final saveLastProjectUseCaseProvider = Provider((ref) {
 
 /// Provides the application settings state.
 ///
-/// This is the main provider for accessing and updating settings throughout the app.
+/// This is the main provider for accessing and
+/// updating settings throughout the app.
 ///
 /// Example usage:
 /// ```dart
@@ -148,7 +151,7 @@ class LastProjectNotifier extends StateNotifier<String?> {
     try {
       final path = await _loadLastProjectUseCase.call();
       state = path;
-    } catch (e) {
+    } on Exception {
       // On error, keep null state
     }
   }
@@ -158,8 +161,12 @@ class LastProjectNotifier extends StateNotifier<String?> {
     try {
       await _saveLastProjectUseCase.call(path);
       state = path;
-    } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+    } on Exception catch (e) {
+      developer.log(
+        'Failed to update last project path: $e',
+        name: 'LastProjectNotifier',
+      );
+      rethrow;
     }
   }
 }

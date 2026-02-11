@@ -1,5 +1,5 @@
 import '../../data/datasources/last_project_local_datasource.dart' show StorageReadException;
-import '../../data/datasources/settings_local_datasource.dart' show StorageReadException;
+
 import '../repositories/i_last_project_repository.dart';
 
 /// Use case for loading the last opened project path.
@@ -28,7 +28,7 @@ class LoadLastProjectUseCase {
   Future<String?> call() async {
     try {
       return await _repository.loadLastProjectPath();
-    } catch (e) {
+    } on Exception {
       // On error, return null to indicate no last project
       // Log error for debugging (handled by repository layer)
       return null;

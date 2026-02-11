@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import '../../domain/repositories/i_last_project_repository.dart';
 import '../datasources/last_project_local_datasource.dart';
 
@@ -24,9 +26,9 @@ class LastProjectRepositoryImpl implements ILastProjectRepository {
   Future<String?> loadLastProjectPath() async {
     try {
       return await _dataSource.loadLastProjectPath();
-    } catch (e) {
+    } on Exception catch (e) {
       // On error, return null to indicate no last project
-      // TODO: Add proper logging here
+      developer.log('Failed to load last project path: $e', name: 'LastProjectRepository');
       return null;
     }
   }

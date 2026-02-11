@@ -1,6 +1,5 @@
-import '../../data/datasources/last_project_local_datasource.dart' show StorageReadException, StorageWriteException;
-import '../../data/datasources/settings_local_datasource.dart' show StorageReadException, StorageWriteException;
 import '../entities/settings_entity.dart';
+import '../exceptions/settings_exceptions.dart';
 
 /// Repository interface for settings persistence.
 ///
@@ -8,7 +7,8 @@ import '../entities/settings_entity.dart';
 /// Implementations should handle persistence via SharedPreferences, JSON files,
 /// or other local storage mechanisms.
 ///
-/// This is a **pure interface** with no dependencies on concrete implementations.
+/// This is a **pure interface** with no
+/// dependencies on concrete implementations.
 /// Follows the Dependency Inversion Principle (SOLID).
 ///
 /// Example implementation:

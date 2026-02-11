@@ -16,10 +16,19 @@ class ProjectModel extends Project {
     id: json['id'] as String,
     name: json['name'] as String,
     path: json['path'] as String,
-    createdAt: DateTime.parse(json['createdAt'] as String),
-    lastOpened: json['lastOpened'] != null
-        ? DateTime.parse(json['lastOpened'] as String)
+    createdAt: DateTime.parse(json['created_at'] as String),
+    lastOpened: json['last_opened'] != null
+        ? DateTime.parse(json['last_opened'] as String)
         : null,
+  );
+
+  /// Convert from Project entity
+  factory ProjectModel.fromProject(Project project) => ProjectModel(
+    id: project.id,
+    name: project.name,
+    path: project.path,
+    createdAt: project.createdAt,
+    lastOpened: project.lastOpened,
   );
 
   /// Convert to JSON (for database)
@@ -27,7 +36,7 @@ class ProjectModel extends Project {
     'id': id,
     'name': name,
     'path': path,
-    'createdAt': createdAt.toIso8601String(),
-    'lastOpened': lastOpened?.toIso8601String(),
+    'created_at': createdAt.toIso8601String(),
+    'last_opened': lastOpened?.toIso8601String(),
   };
 }

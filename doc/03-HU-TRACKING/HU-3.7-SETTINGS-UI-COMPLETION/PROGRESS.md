@@ -1,7 +1,7 @@
 # HU-3.7: Progress Tracking (6-Phase Workflow)
 
 > **Historia de Usuario:** Settings UI Completion & Widget Tests
-> **Estado Actual:** 🚧 Phase 4/5 - Presentation + Testing (TDD cycles in progress)
+> **Estado Actual:** 🚧 Phase 1 - Setup & Analysis (RED)
 > **Última Actualización:** 11/02/2026
 
 ---
@@ -10,14 +10,14 @@
 
 | Phase | Status | Progress | ETA |
 |-------|--------|----------|-----|
-| **Phase 1:** Setup & Analysis (RED) | 🚧 In Progress | 40% | 11/02/2026 |
+| **Phase 1:** Setup & Analysis (RED) | 🚧 In Progress | 20% | 11/02/2026 |
 | **Phase 2:** Domain Layer | ⏳ Pending | 0% | TBD |
-| **Phase 3:** Data Layer | 🚧 In Progress | 20% | TBD |
-| **Phase 4:** Presentation Layer | 🚧 In Progress | 55% | TBD |
-| **Phase 5:** Testing (GREEN) | 🚧 In Progress | 40% | TBD |
+| **Phase 3:** Data Layer | ⏳ Pending | 0% | TBD |
+| **Phase 4:** Presentation Layer | ⏳ Pending | 0% | TBD |
+| **Phase 5:** Testing (GREEN) | ⏳ Pending | 0% | TBD |
 | **Phase 6:** Documentation & CI/CD | ⏳ Pending | 0% | TBD |
 
-**Global Progress:** 35% (21/60 tasks completed)
+**Global Progress:** 3% (2/60 tasks completed)
 
 ---
 
@@ -49,8 +49,8 @@
 - [ ] Define file_picker integration points
 
 ### 1.4 TDD: Write Failing Tests (RED)
-- [ ] Write widget tests for Settings UI (4/7 created)
-- [x] Write widget test for GlobalSearchDialog
+- [ ] Write 7 failing widget tests for Settings UI
+- [ ] Write 1 failing widget test for GlobalSearchDialog
 - [ ] Write failing unit tests for SettingsEntity
 - [ ] Write failing unit tests for use cases
 - [ ] Write failing tests for repository implementations
@@ -140,10 +140,10 @@
   - [ ] Handle platform-specific dialogs
   - [ ] Add error handling
   - [ ] Add DartDoc
-- [x] Create `LastProjectLocalDataSource` (SharedPreferences)
-  - [x] `Future<String?> loadLastProjectPath()`
-  - [x] `Future<void> saveLastProjectPath(String path)`
-  - [x] Add DartDoc
+- [ ] Create `LastProjectLocalDataSource` (SharedPreferences)
+  - [ ] `Future<String?> loadLastProjectPath()`
+  - [ ] `Future<void> saveLastProjectPath(String path)`
+  - [ ] Add DartDoc
 
 ### 3.2 DTOs (Data Transfer Objects)
 - [ ] Create `SettingsDto` class
@@ -201,8 +201,8 @@
   - [ ] Add DartDoc
 
 ### 4.2 UI Widgets - Settings Sections
-- [x] **ProfileSection** (`profile_section.dart`)
-  - [x] Connect to `settingsProvider`
+- [ ] **ProfileSection** (`profile_section.dart`)
+  - [ ] Connect to `settingsProvider`
   - [ ] Text fields for name/email
   - [ ] Avatar upload (mock for now)
   - [ ] Save button → Call `updateUserProfile()`
@@ -216,27 +216,27 @@
   - [ ] Save selected path → Call `updateStoragePath()`
   - [ ] Add DartDoc
 
-- [x] **AppearanceSection** (`appearance_section.dart`)
-  - [x] Connect to `settingsProvider`
-  - [x] Theme toggle (Dark/Light/System)
+- [ ] **AppearanceSection** (`appearance_section.dart`)
+  - [ ] Connect to `settingsProvider`
+  - [ ] Theme toggle (Dark/Light/System)
   - [ ] Color scheme selector
-  - [x] Save on change → Call `updateTheme()`
+  - [ ] Save on change → Call `updateTheme()`
   - [ ] Add DartDoc
 
-- [x] **AccessibilitySection** (`accessibility_section.dart`)
-  - [x] Connect to `settingsProvider`
+- [ ] **AccessibilitySection** (`accessibility_section.dart`)
+  - [ ] Connect to `settingsProvider`
   - [ ] Font size slider
   - [ ] High contrast toggle
   - [ ] Screen reader toggle
-  - [x] Save on change → Call `updateAccessibility()`
+  - [ ] Save on change → Call `updateAccessibility()`
   - [ ] Add DartDoc
 
-- [x] **PerformanceSection** (`performance_section.dart`)
-  - [x] Connect to `settingsProvider`
+- [ ] **PerformanceSection** (`performance_section.dart`)
+  - [ ] Connect to `settingsProvider`
   - [ ] Cache size limit
   - [ ] Memory limit
   - [ ] Clear cache button
-  - [x] Save on change → Call `updatePerformance()`
+  - [ ] Save on change → Call `updatePerformance()`
   - [ ] Add DartDoc
 
 - [ ] **LanguageSelectorWidget** (NEW: `language_selector_widget.dart`)
@@ -248,10 +248,10 @@
   - [ ] Add DartDoc
 
 ### 4.3 UI Enhancements - Navigation
-- [x] **GlobalSearchDialog** (`global_search_dialog.dart`)
-  - [x] Add navigation on result click
-  - [x] `onTap: () => context.go('/project-shell?path=${project.path}')`
-  - [x] Close dialog after navigation
+- [ ] **GlobalSearchDialog** (`global_search_dialog.dart`)
+  - [ ] Add navigation on result click
+  - [ ] `onTap: () => context.go('/project-shell?path=${project.path}')`
+  - [ ] Close dialog after navigation
   - [ ] Add DartDoc
 
 - [ ] **ProjectsSidebar** (`projects_sidebar.dart`)
@@ -267,7 +267,7 @@
 - ⏳ All settings persist via Riverpod + SharedPreferences
 - ⏳ file_picker dialog opens native OS dialog
 - ⏳ Language selector displays flags and toggles ES/EN
-- ✅ GlobalSearchDialog navigates to selected project
+- ⏳ GlobalSearchDialog navigates to selected project
 - ⏳ ProjectsSidebar shows last opened project
 - ⏳ DartDoc on all presentation layer classes (100% coverage)
 
@@ -296,9 +296,11 @@
 - [ ] Verify all data tests pass (GREEN)
 
 ### 5.3 Widget Tests - Settings UI (7 tests)
-- [x] **Test 1:** `profile_section_test.dart`
-  - [x] Renders user name field with `ValueKey`
-  - [x] TextField exists for user name input
+- [ ] **Test 1:** `profile_section_test.dart`
+  - [ ] Renders user name and email fields
+  - [ ] User can edit name/email
+  - [ ] Save button updates provider
+  - [ ] Verify state persists
 
 - [ ] **Test 2:** `storage_section_test.dart`
   - [ ] Renders current storage path
@@ -306,20 +308,23 @@
   - [ ] Selected path updates provider
   - [ ] Verify persistence
 
-- [x] **Test 3:** `appearance_section_test.dart`
-  - [x] Renders theme toggle
-  - [x] Renders font size slider
-  - [x] Displays font size percentage text
+- [ ] **Test 3:** `appearance_section_test.dart`
+  - [ ] Renders theme toggle
+  - [ ] User can toggle Dark/Light/System
+  - [ ] Theme change updates provider
+  - [ ] Verify persistence
 
-- [x] **Test 4:** `accessibility_section_test.dart`
-  - [x] Renders global zoom slider
-  - [x] Renders zoom shortcuts switch
-  - [x] Displays zoom percentage text
+- [ ] **Test 4:** `accessibility_section_test.dart`
+  - [ ] Renders font size slider
+  - [ ] Renders high contrast toggle
+  - [ ] User interactions update provider
+  - [ ] Verify persistence
 
-- [x] **Test 5:** `performance_section_test.dart`
-  - [x] Renders animations toggle switch
-  - [x] Renders memory optimization switch
-  - [x] Displays performance settings text
+- [ ] **Test 5:** `performance_section_test.dart`
+  - [ ] Renders cache/memory controls
+  - [ ] User can adjust limits
+  - [ ] Clear cache button works
+  - [ ] Verify persistence
 
 - [ ] **Test 6:** `settings_screen_test.dart`
   - [ ] Full screen renders all sections
@@ -333,12 +338,13 @@
   - [ ] Verify persistence
 
 ### 5.4 Widget Test - GlobalSearchDialog
-- [x] **Test 8:** `global_search_dialog_test.dart`
-  - [x] Dialog opens with search field
-  - [x] Results list renders
-  - [x] Close button renders
-  - [x] Results count text renders
-  - [x] Clicking result navigates to project and updates last project
+- [ ] **Test 8:** `global_search_dialog_test.dart`
+  - [ ] Dialog opens with search field
+  - [ ] Empty state renders correctly
+  - [ ] Search filters projects by name/phase/date
+  - [ ] Clicking result navigates to project (mock GoRouter)
+  - [ ] Clear button clears search
+  - [ ] Close button dismisses dialog
 
 ### 5.5 Fix MarkdownPreview Tests (T-2)
 - [ ] Identify root cause of 10 failing tests
@@ -364,7 +370,7 @@
 
 **Phase 5 Acceptance Criteria:**
 - ⏳ All unit tests pass (domain + data layers)
-- 🚧 5/8 widget tests passing (Profile, Appearance, Accessibility, Performance, GlobalSearchDialog)
+- ⏳ All 8 widget tests pass (7 Settings + 1 GlobalSearchDialog)
 - ⏳ All 10 MarkdownPreview tests pass (0 failures)
 - ⏳ All integration tests pass
 - ⏳ Coverage verified >90% for Settings feature

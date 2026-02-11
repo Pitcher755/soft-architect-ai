@@ -1,5 +1,3 @@
-import '../../data/datasources/last_project_local_datasource.dart' show StorageReadException;
-import '../../data/datasources/settings_local_datasource.dart' show StorageReadException;
 import '../entities/settings_entity.dart';
 import '../repositories/i_settings_repository.dart';
 
@@ -36,7 +34,7 @@ class LoadSettingsUseCase {
   Future<SettingsEntity> call() async {
     try {
       return await _repository.loadSettings();
-    } catch (e) {
+    } on Exception {
       // On error, return default settings to avoid crashes
       // Log error for debugging (handled by repository layer)
       return SettingsEntity.defaultSettings();

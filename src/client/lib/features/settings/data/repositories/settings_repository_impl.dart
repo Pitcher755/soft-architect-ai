@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import '../../domain/entities/settings_entity.dart';
 import '../../domain/repositories/i_settings_repository.dart';
 import '../datasources/settings_local_datasource.dart';
@@ -33,9 +35,9 @@ class SettingsRepositoryImpl implements ISettingsRepository {
 
       // Deserialize JSON to entity
       return SettingsEntity.fromJson(json);
-    } catch (e) {
+    } on Exception catch (e) {
       // On any error, return default settings to avoid crashes
-      // TODO: Add proper logging here
+      developer.log('Failed to load settings: $e', name: 'SettingsRepository');
       return SettingsEntity.defaultSettings();
     }
   }
@@ -48,7 +50,7 @@ class SettingsRepositoryImpl implements ISettingsRepository {
 
       // Save to storage
       await _dataSource.saveSettings(json);
-    } catch (e) {
+    } on Exception catch (e) {
       // Re-throw as repository-level exception
       throw RepositorySaveException('Failed to save settings: $e');
     }

@@ -1,6 +1,7 @@
-import '../../data/datasources/last_project_local_datasource.dart' show StorageWriteException;
-import '../../data/datasources/settings_local_datasource.dart' show StorageWriteException;
+import 'dart:io';
+
 import '../entities/settings_entity.dart';
+import '../exceptions/settings_exceptions.dart' show StorageWriteException;
 import '../repositories/i_settings_repository.dart';
 
 /// Use case for saving user settings to storage.
@@ -34,14 +35,33 @@ class SaveSettingsUseCase {
   /// - [StorageWriteException] if saving fails
   /// - [SerializationException] if data cannot be serialized
   Future<void> call(SettingsEntity settings) async {
-    // Validate input (basic sanity check)
+    // Validate storage path if set
     if (settings.storagePath.isNotEmpty) {
-      // TODO: Add path validation logic here in future
-      // - Check if path exists
-      // - Check if path is writable
+      await _validateStoragePath(settings.storagePath);
     }
 
     // Delegate persistence to repository
     await _repository.saveSettings(settings);
   }
+
+  /// Validates that the storage path exists and is a directory.
+  ///
+  /// Throws [InvalidStoragePathException] if validation fails.
+  Future<void> _validateStoragePath(String path) async {
+    final directory = Directory(path);
+    if (!await directory.exists()) {
+      throw InvalidStoragePathException('Storage path does not exist: $path');
+    }
+  }
+}
+
+/// Exception thrown when storage path validation fails.
+class InvalidStoragePathException implements Exception {
+  /// Creates an [InvalidStoragePathException] with the given message.
+  const InvalidStoragePathException(this.message);
+
+  /// Error message describing the validation failure.
+  final String message;
+  @override
+  String toString() => 'InvalidStoragePathException: $message';
 }

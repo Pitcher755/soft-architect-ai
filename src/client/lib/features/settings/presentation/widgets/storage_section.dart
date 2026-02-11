@@ -96,7 +96,7 @@ class StorageSection extends ConsumerWidget {
           ),
         );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       // Show error feedback
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -128,7 +128,7 @@ case $TEST_TYPE in
 
   python)
     print_section "PYTHON BACKEND TESTS"
-    if [ -d "src/server/tests" ] || [ -d "tests/python" ]; then
+    if [ -d "src/server/tests" ] || [ -d "tests/server" ]; then
       if [ -d "src/server" ]; then
         cd src/server
         python -m pytest tests/ -v --tb=short 2>&1 | tee /tmp/python_output.txt
@@ -231,7 +231,7 @@ case $TEST_TYPE in
     if [ -f "src/client/lib/project_shell/domain/services/file_system_service.dart" ]; then
       print_success "FileSystemService (157 lines) ✓"
     fi
-    if [ -f "tests/test/integration/mocks/mock_services.dart" ]; then
+    if [ -f "tests/client/integration/mocks/mock_services.dart" ]; then
       print_success "Mock Services (167 lines) ✓"
     fi
 

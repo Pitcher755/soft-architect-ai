@@ -1,5 +1,5 @@
-import '../../data/datasources/last_project_local_datasource.dart' show StorageReadException, StorageWriteException;
-import '../../data/datasources/settings_local_datasource.dart' show StorageReadException, StorageWriteException;
+import '../../data/datasources/last_project_local_datasource.dart'
+    show StorageReadException, StorageWriteException;
 
 /// Repository interface for last opened project persistence.
 ///
@@ -7,7 +7,8 @@ import '../../data/datasources/settings_local_datasource.dart' show StorageReadE
 /// project opened by the user. Used by the ProjectsSidebar to show the
 /// "Active Project" button with the correct navigation target.
 ///
-/// This is a **pure interface** with no dependencies on concrete implementations.
+/// This is a **pure interface** with no
+/// dependencies on concrete implementations.
 /// Follows the Dependency Inversion Principle (SOLID).
 ///
 /// Example implementation:

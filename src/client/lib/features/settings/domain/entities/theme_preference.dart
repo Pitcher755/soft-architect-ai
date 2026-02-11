@@ -60,8 +60,9 @@ enum ThemePreference {
   /// ```dart
   /// final pref = ThemePreference.fromString('light'); // returns ThemePreference.light
   /// ```
-  static ThemePreference fromString(String value) => ThemePreference.values.firstWhere(
-      (pref) => pref.name == value,
-      orElse: () => ThemePreference.dark,
-    );
+  static ThemePreference fromString(String value) =>
+      ThemePreference.values.firstWhere(
+        (pref) => pref.name == value,
+        orElse: () => ThemePreference.dark,
+      );
 }

@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../../domain/entities/accessibility_settings.dart';
@@ -43,9 +45,12 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
     try {
       final settings = await _loadSettingsUseCase.call();
       state = settings;
-    } catch (e) {
+    } on Exception catch (e) {
       // On error, keep default settings
-      // TODO: Add proper error handling/logging
+      developer.log(
+        'Failed to load initial settings: $e',
+        name: 'SettingsNotifier',
+      );
     }
   }
 
@@ -58,7 +63,11 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
       await _saveSettingsUseCase.call(updated);
       state = updated;
     } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+      developer.log(
+        'Failed to update user profile: $e',
+        name: 'SettingsNotifier',
+      );
+      rethrow;
     }
   }
 
@@ -71,7 +80,11 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
       await _saveSettingsUseCase.call(updated);
       state = updated;
     } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+      developer.log(
+        'Failed to update storage path: $e',
+        name: 'SettingsNotifier',
+      );
+      rethrow;
     }
   }
 
@@ -84,7 +97,8 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
       await _saveSettingsUseCase.call(updated);
       state = updated;
     } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+      developer.log('Failed to update language: $e', name: 'SettingsNotifier');
+      rethrow;
     }
   }
 
@@ -97,7 +111,8 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
       await _saveSettingsUseCase.call(updated);
       state = updated;
     } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+      developer.log('Failed to update theme: $e', name: 'SettingsNotifier');
+      rethrow;
     }
   }
 
@@ -110,7 +125,11 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
       await _saveSettingsUseCase.call(updated);
       state = updated;
     } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+      developer.log(
+        'Failed to update accessibility: $e',
+        name: 'SettingsNotifier',
+      );
+      rethrow;
     }
   }
 
@@ -123,7 +142,11 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
       await _saveSettingsUseCase.call(updated);
       state = updated;
     } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+      developer.log(
+        'Failed to update performance settings: $e',
+        name: 'SettingsNotifier',
+      );
+      rethrow;
     }
   }
 
@@ -136,7 +159,11 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
       await _saveSettingsUseCase.call(defaults);
       state = defaults;
     } catch (e) {
-      // TODO: Handle error (show snackbar, log, etc.)
+      developer.log(
+        'Failed to reset settings to defaults: $e',
+        name: 'SettingsNotifier',
+      );
+      rethrow;
     }
   }
 }

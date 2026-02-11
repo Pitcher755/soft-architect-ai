@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import '../../data/datasources/last_project_local_datasource.dart' show StorageWriteException;
-import '../../data/datasources/settings_local_datasource.dart' show StorageWriteException;
 import '../entities/settings_entity.dart';
 import '../repositories/i_settings_repository.dart';
 
@@ -61,8 +59,24 @@ class UpdateStoragePathUseCase {
       throw InvalidPathException('Directory does not exist: $path');
     }
 
-    // TODO: Add writability check (platform-dependent)
-    // For now, we assume if directory exists, it's writable
+    // Check if directory is writable by attempting to create a test file
+    if (!await _isDirectoryWritable(path)) {
+      throw InvalidPathException('Directory is not writable: $path');
+    }
+  }
+
+  /// Checks if a directory is writable by creating a temporary test file.
+  ///
+  /// Returns true if a test file can be created and deleted successfully.
+  Future<bool> _isDirectoryWritable(String path) async {
+    try {
+      final testFile = File('$path/.write_test_${DateTime.now().millisecondsSinceEpoch}');
+      await testFile.writeAsString('test');
+      await testFile.delete();
+      return true;
+    } on Exception {
+      return false;
+    }
   }
 }
 

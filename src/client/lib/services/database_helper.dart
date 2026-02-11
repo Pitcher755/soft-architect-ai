@@ -152,7 +152,7 @@ class DatabaseHelper {
           name TEXT NOT NULL,
           path TEXT NOT NULL UNIQUE,
           created_at TEXT NOT NULL,
-          updated_at TEXT NOT NULL
+          last_opened TEXT
         )
       ''');
     } catch (e) {

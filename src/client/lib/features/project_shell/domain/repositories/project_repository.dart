@@ -15,6 +15,9 @@ abstract class ProjectRepository {
   /// Get last opened project
   Future<Project?> getLastOpenedProject();
 
+  /// Update a project
+  Future<void> updateProject(Project project);
+
   /// Update last opened timestamp
   Future<void> updateLastOpened(String projectId);
 

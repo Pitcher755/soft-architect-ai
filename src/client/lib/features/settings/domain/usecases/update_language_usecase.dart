@@ -1,5 +1,3 @@
-import '../../data/datasources/last_project_local_datasource.dart' show StorageWriteException;
-import '../../data/datasources/settings_local_datasource.dart' show StorageWriteException;
 import '../entities/language_preference.dart';
 import '../entities/settings_entity.dart';
 import '../repositories/i_settings_repository.dart';

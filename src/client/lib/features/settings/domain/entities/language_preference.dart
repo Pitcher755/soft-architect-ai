@@ -58,8 +58,10 @@ enum LanguagePreference {
   /// ```dart
   /// final pref = LanguagePreference.fromLocaleCode('es'); // returns LanguagePreference.es
   /// ```
-  static LanguagePreference fromLocaleCode(String code) => LanguagePreference.values.firstWhere(
+  static LanguagePreference fromLocaleCode(String code) {
+    return LanguagePreference.values.firstWhere(
       (pref) => pref.localeCode == code,
       orElse: () => LanguagePreference.en,
     );
+  }
 }
