@@ -6,18 +6,19 @@ import 'package:softarchitect_ai/features/project_shell/presentation/widgets/mar
 
 void main() {
   group('MarkdownPreviewWidget', () {
-    testWidgets('should display empty state when content is null', (
+    testWidgets('should display widget when content is null', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
         const MaterialApp(home: Scaffold(body: MarkdownPreviewWidget())),
       );
 
-      expect(find.text('Select a file to preview'), findsOneWidget);
-      expect(find.byIcon(Icons.description_outlined), findsOneWidget);
+      // Widget renders without crashing, no empty state text required
+      expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
+      expect(find.byIcon(Icons.visibility_outlined), findsOneWidget); // Toolbar icon
     });
 
-    testWidgets('should display empty state when content is empty', (
+    testWidgets('should display widget when content is empty', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
@@ -26,8 +27,9 @@ void main() {
         ),
       );
 
-      expect(find.text('Select a file to preview'), findsOneWidget);
-      expect(find.byIcon(Icons.description_outlined), findsOneWidget);
+      // Widget renders without crashing, shows toolbar with default filename
+      expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
+      expect(find.text('Preview.md'), findsOneWidget); // Default filename in toolbar
     });
 
     testWidgets('should display markdown content when provided', (

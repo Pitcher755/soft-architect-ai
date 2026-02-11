@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../features/settings/presentation/providers/settings_providers.dart';
 import 'global_search_dialog.dart';
 
-class ProjectsSidebar extends StatefulWidget {
+class ProjectsSidebar extends ConsumerStatefulWidget {
   const ProjectsSidebar({this.onSearchTap, this.onSettingsTap, super.key});
 
   final VoidCallback? onSearchTap;
   final VoidCallback? onSettingsTap;
 
   @override
-  State<ProjectsSidebar> createState() => _ProjectsSidebarState();
+  ConsumerState<ProjectsSidebar> createState() => _ProjectsSidebarState();
 }
 
-class _ProjectsSidebarState extends State<ProjectsSidebar> {
+class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
   @override
   Widget build(BuildContext context) {
     // Obtenemos la ruta actual para resaltar el icono activo
     // En tests sin GoRouter, usa '/' por defecto
     final router = GoRouter.maybeOf(context);
-    final location = router?.routerDelegate.currentConfiguration.uri.toString() ?? '/';
+    final location =
+        router?.routerDelegate.currentConfiguration.uri.toString() ?? '/';
+
+    // Obtenemos el último proyecto abierto
+    final lastProjectPath = ref.watch(lastProjectProvider);
 
     // Lógica de detección de ruta activa
     final isSettingsActive = location.startsWith('/settings');
@@ -72,21 +78,26 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
 
                 const SizedBox(height: 16),
 
-                // 2. BOTÓN DE PROYECTO ACTIVO (SoftArchitect)
+                // 2. BOTÓN DE PROYECTO ACTIVO (Último proyecto abierto)
                 Tooltip(
-                  message: 'Proyecto Activo (SoftArchitect)',
+                  message: lastProjectPath != null
+                      ? 'Proyecto: ${_extractProjectName(lastProjectPath)}'
+                      : 'Ningún proyecto abierto',
                   child: _SidebarButton(
                     icon: Icons.smart_toy_outlined,
                     isActive: isProjectShellActive,
                     color: AppColors.primary,
-                    onTap: () {
-                      context.go(
-                        Uri(
-                          path: '/project-shell',
-                          queryParameters: {'path': 'PROJECT-ALPHA'},
-                        ).toString(),
-                      );
-                    },
+                    onTap: lastProjectPath != null && !isProjectShellActive
+                        ? () {
+                            // Solo navega si NO está ya en un proyecto
+                            context.go(
+                              Uri(
+                                path: '/project-shell',
+                                queryParameters: {'path': lastProjectPath},
+                              ).toString(),
+                            );
+                          }
+                        : () {}, // Si ya está en proyecto o no hay último, no hace nada
                   ),
                 ),
 
@@ -128,6 +139,13 @@ class _ProjectsSidebarState extends State<ProjectsSidebar> {
         ],
       ),
     );
+  }
+
+  /// Extrae el nombre del proyecto del path completo.
+  /// Ejemplo: '/home/user/projects/my-project' -> 'my-project'
+  String _extractProjectName(String path) {
+    final parts = path.split('/');
+    return parts.isNotEmpty ? parts.last : path;
   }
 }
 
