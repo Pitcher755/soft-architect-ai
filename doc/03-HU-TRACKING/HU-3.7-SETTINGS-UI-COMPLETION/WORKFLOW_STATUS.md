@@ -7,10 +7,22 @@
 
 ---
 
+## 📋 Documentación del Workflow
+
+**✅ WORKFLOW_MASTER_DEFINITION.md creado** - Documento completo con:
+- 6 fases TDD (RED → GREEN → REFACTOR → OPTIMIZE → DOCUMENT → VALIDATE)
+- Comandos bash específicos para cada tarea
+- Deliverables esperados por fase
+- Checklists detallados (26 tests, 45 archivos)
+- Quality gates y acceptance criteria
+- Métricas y status tracking
+
+---
+
 ## ✅ Trabajo Completado (Phases 1-3 + Partial 4)
 
 ### Phase 1: Setup & Analysis ✅ COMPLETE
-- ✅ Documentación HU creada (README, PROGRESS, ARTIFACTS)
+- ✅ Documentación HU creada (README, PROGRESS, ARTIFACTS, WORKFLOW_MASTER_DEFINITION)
 - ✅ Rama feature/settings-ui-completion creada y actualizada
 - ✅ Dependencias verificadas (file_picker, shared_preferences ya disponibles)
 - ✅ Arquitectura Clean Architecture diseñada
@@ -247,7 +259,7 @@
 
 ## 🚀 Próximos Pasos Inmediatos
 
-1. ✅ Commit progreso actual (DONE - e08a70d)
+1. ✅ Commit progreso actual y crear WORKFLOW_MASTER_DEFINITION.md (DONE - e08a70d + workflow)
 2. ⏳ Modificar widgets de Settings (profile, appearance, accessibility, performance)
 3. ⏳ Añadir language_selector a appearance_section
 4. ⏳ Implementar navegación en global_search_dialog
@@ -298,6 +310,7 @@ lastProject.path -> String path del último proyecto
 - [README.md](./README.md) - Descripción completa HU-3.7
 - [PROGRESS.md](./PROGRESS.md) - Checklist detallado 6 fases
 - [ARTIFACTS.md](./ARTIFACTS.md) - Manifest de archivos
+- [WORKFLOW_MASTER_DEFINITION.md](./WORKFLOW_MASTER_DEFINITION.md) - Workflow TDD completo (6 fases, bash commands, deliverables)
 - [AGENTS.md](../../../AGENTS.md) - Estándares del proyecto
 - [context/](../../../context/) - Requisitos y especificaciones
 
