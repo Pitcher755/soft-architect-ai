@@ -35,31 +35,32 @@ class PerformanceSettings {
   ///
   /// Reduces cache size, memory limit, and disables preloading.
   factory PerformanceSettings.lowPerformance() => const PerformanceSettings(
-      cacheSize: 128,
-      memoryLimit: 256,
-      enablePreloading: false,
-      maxConcurrentRequests: 2,
-    );
+    cacheSize: 128,
+    memoryLimit: 256,
+    enablePreloading: false,
+    maxConcurrentRequests: 2,
+  );
 
   /// Creates a high-performance preset for powerful systems.
   ///
   /// Increases cache size, memory limit, and enables all optimizations.
   factory PerformanceSettings.highPerformance() => const PerformanceSettings(
-      cacheSize: 1024,
-      memoryLimit: 2048,
-      maxConcurrentRequests: 8,
-    );
+    cacheSize: 1024,
+    memoryLimit: 2048,
+    maxConcurrentRequests: 8,
+  );
 
   /// Creates a [PerformanceSettings] from a JSON map.
   ///
   /// Returns default settings if JSON is invalid or missing fields.
-  factory PerformanceSettings.fromJson(Map<String, dynamic> json) => PerformanceSettings(
-      cacheSize: json['cacheSize'] as int? ?? 256,
-      memoryLimit: json['memoryLimit'] as int? ?? 512,
-      enableCaching: json['enableCaching'] as bool? ?? true,
-      enablePreloading: json['enablePreloading'] as bool? ?? true,
-      maxConcurrentRequests: json['maxConcurrentRequests'] as int? ?? 4,
-    );
+  factory PerformanceSettings.fromJson(Map<String, dynamic> json) =>
+      PerformanceSettings(
+        cacheSize: json['cacheSize'] as int? ?? 256,
+        memoryLimit: json['memoryLimit'] as int? ?? 512,
+        enableCaching: json['enableCaching'] as bool? ?? true,
+        enablePreloading: json['enablePreloading'] as bool? ?? true,
+        maxConcurrentRequests: json['maxConcurrentRequests'] as int? ?? 4,
+      );
 
   /// Maximum cache size in MB (megabytes).
   ///
@@ -107,24 +108,23 @@ class PerformanceSettings {
     bool? enablePreloading,
     int? maxConcurrentRequests,
   }) => PerformanceSettings(
-      cacheSize: cacheSize ?? this.cacheSize,
-      memoryLimit: memoryLimit ?? this.memoryLimit,
-      enableCaching: enableCaching ?? this.enableCaching,
-      enablePreloading: enablePreloading ?? this.enablePreloading,
-      maxConcurrentRequests:
-          maxConcurrentRequests ?? this.maxConcurrentRequests,
-    );
+    cacheSize: cacheSize ?? this.cacheSize,
+    memoryLimit: memoryLimit ?? this.memoryLimit,
+    enableCaching: enableCaching ?? this.enableCaching,
+    enablePreloading: enablePreloading ?? this.enablePreloading,
+    maxConcurrentRequests: maxConcurrentRequests ?? this.maxConcurrentRequests,
+  );
 
   /// Converts this settings object to a JSON map.
   ///
   /// Used for serialization to storage (SharedPreferences, JSON files).
   Map<String, dynamic> toJson() => {
-      'cacheSize': cacheSize,
-      'memoryLimit': memoryLimit,
-      'enableCaching': enableCaching,
-      'enablePreloading': enablePreloading,
-      'maxConcurrentRequests': maxConcurrentRequests,
-    };
+    'cacheSize': cacheSize,
+    'memoryLimit': memoryLimit,
+    'enableCaching': enableCaching,
+    'enablePreloading': enablePreloading,
+    'maxConcurrentRequests': maxConcurrentRequests,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -146,11 +146,12 @@ class PerformanceSettings {
       maxConcurrentRequests.hashCode;
 
   @override
-  String toString() => 'PerformanceSettings('
-        'cacheSize: ${cacheSize}MB, '
-        'memoryLimit: ${memoryLimit}MB, '
-        'enableCaching: $enableCaching, '
-        'enablePreloading: $enablePreloading, '
-        'maxConcurrentRequests: $maxConcurrentRequests'
-        ')';
+  String toString() =>
+      'PerformanceSettings('
+      'cacheSize: ${cacheSize}MB, '
+      'memoryLimit: ${memoryLimit}MB, '
+      'enableCaching: $enableCaching, '
+      'enablePreloading: $enablePreloading, '
+      'maxConcurrentRequests: $maxConcurrentRequests'
+      ')';
 }

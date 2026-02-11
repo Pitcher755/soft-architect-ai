@@ -8,7 +8,8 @@ import 'theme_preference.dart';
 /// Main settings entity aggregating all user preferences.
 ///
 /// Immutable domain entity following Clean Architecture principles.
-/// Contains user profile, storage, appearance, accessibility, and performance settings.
+/// Contains user profile, storage, appearance,
+/// accessibility, and performance settings.
 ///
 /// This entity is **pure business logic** with no dependencies on Flutter UI,
 /// databases, or external packages (except for @immutable annotation).
@@ -38,9 +39,9 @@ class SettingsEntity {
     this.performance = const PerformanceSettings(),
   });
 
-  // ============================================================================
+  // ===========================================================================
   // FACTORY CONSTRUCTORS
-  // ============================================================================
+  // ===========================================================================
 
   /// Creates default settings for a new user.
   ///
@@ -51,29 +52,29 @@ class SettingsEntity {
   ///
   /// Returns default settings if JSON is invalid or missing fields.
   factory SettingsEntity.fromJson(Map<String, dynamic> json) => SettingsEntity(
-      userName: json['userName'] as String? ?? '',
-      email: json['email'] as String? ?? '',
-      avatarUrl: json['avatarUrl'] as String?,
-      storagePath: json['storagePath'] as String? ?? '',
-      language: LanguagePreference.fromLocaleCode(
-        json['language'] as String? ?? 'en',
-      ),
-      theme: ThemePreference.fromString(json['theme'] as String? ?? 'dark'),
-      accessibility: json['accessibility'] != null
-          ? AccessibilitySettings.fromJson(
-              json['accessibility'] as Map<String, dynamic>,
-            )
-          : const AccessibilitySettings(),
-      performance: json['performance'] != null
-          ? PerformanceSettings.fromJson(
-              json['performance'] as Map<String, dynamic>,
-            )
-          : const PerformanceSettings(),
-    );
+    userName: json['userName'] as String? ?? '',
+    email: json['email'] as String? ?? '',
+    avatarUrl: json['avatarUrl'] as String?,
+    storagePath: json['storagePath'] as String? ?? '',
+    language: LanguagePreference.fromLocaleCode(
+      json['language'] as String? ?? 'en',
+    ),
+    theme: ThemePreference.fromString(json['theme'] as String? ?? 'dark'),
+    accessibility: json['accessibility'] != null
+        ? AccessibilitySettings.fromJson(
+            json['accessibility'] as Map<String, dynamic>,
+          )
+        : const AccessibilitySettings(),
+    performance: json['performance'] != null
+        ? PerformanceSettings.fromJson(
+            json['performance'] as Map<String, dynamic>,
+          )
+        : const PerformanceSettings(),
+  );
 
-  // ============================================================================
+  // ===========================================================================
   // USER PROFILE
-  // ============================================================================
+  // ===========================================================================
 
   /// User's display name.
   ///
@@ -92,9 +93,9 @@ class SettingsEntity {
   /// Null if no avatar set (use default placeholder).
   final String? avatarUrl;
 
-  // ============================================================================
+  // ===========================================================================
   // STORAGE
-  // ============================================================================
+  // ===========================================================================
 
   /// Default storage path for project files and databases.
   ///
@@ -102,7 +103,7 @@ class SettingsEntity {
   /// Empty string if not configured (uses app default directory).
   final String storagePath;
 
-  // ============================================================================
+  // ===========================================================================
   // APPEARANCE
   // ===========================================================================
 
@@ -154,29 +155,29 @@ class SettingsEntity {
     AccessibilitySettings? accessibility,
     PerformanceSettings? performance,
   }) => SettingsEntity(
-      userName: userName ?? this.userName,
-      email: email ?? this.email,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      storagePath: storagePath ?? this.storagePath,
-      language: language ?? this.language,
-      theme: theme ?? this.theme,
-      accessibility: accessibility ?? this.accessibility,
-      performance: performance ?? this.performance,
-    );
+    userName: userName ?? this.userName,
+    email: email ?? this.email,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+    storagePath: storagePath ?? this.storagePath,
+    language: language ?? this.language,
+    theme: theme ?? this.theme,
+    accessibility: accessibility ?? this.accessibility,
+    performance: performance ?? this.performance,
+  );
 
   /// Converts this entity to a JSON map.
   ///
   /// Used for serialization to storage (via DTOs in the data layer).
   Map<String, dynamic> toJson() => {
-      'userName': userName,
-      'email': email,
-      'avatarUrl': avatarUrl,
-      'storagePath': storagePath,
-      'language': language.localeCode,
-      'theme': theme.name,
-      'accessibility': accessibility.toJson(),
-      'performance': performance.toJson(),
-    };
+    'userName': userName,
+    'email': email,
+    'avatarUrl': avatarUrl,
+    'storagePath': storagePath,
+    'language': language.localeCode,
+    'theme': theme.name,
+    'accessibility': accessibility.toJson(),
+    'performance': performance.toJson(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -204,14 +205,15 @@ class SettingsEntity {
       performance.hashCode;
 
   @override
-  String toString() => 'SettingsEntity('
-        'userName: $userName, '
-        'email: $email, '
-        'avatarUrl: $avatarUrl, '
-        'storagePath: $storagePath, '
-        'language: ${language.displayName}, '
-        'theme: ${theme.displayName}, '
-        'accessibility: $accessibility, '
-        'performance: $performance'
-        ')';
+  String toString() =>
+      'SettingsEntity('
+      'userName: $userName, '
+      'email: $email, '
+      'avatarUrl: $avatarUrl, '
+      'storagePath: $storagePath, '
+      'language: ${language.displayName}, '
+      'theme: ${theme.displayName}, '
+      'accessibility: $accessibility, '
+      'performance: $performance'
+      ')';
 }

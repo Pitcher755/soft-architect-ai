@@ -28,7 +28,10 @@ class LastProjectRepositoryImpl implements ILastProjectRepository {
       return await _dataSource.loadLastProjectPath();
     } on Exception catch (e) {
       // On error, return null to indicate no last project
-      developer.log('Failed to load last project path: $e', name: 'LastProjectRepository');
+      developer.log(
+        'Failed to load last project path: $e',
+        name: 'LastProjectRepository',
+      );
       return null;
     }
   }
@@ -52,7 +55,8 @@ class LastProjectRepositoryImpl implements ILastProjectRepository {
   }
 }
 
-/// Exception thrown when saving last project path fails at the repository level.
+/// Exception thrown when saving last project
+/// path fails at the repository level.
 class RepositorySaveException implements Exception {
   /// Creates a [RepositorySaveException] with the given message.
   const RepositorySaveException(this.message);

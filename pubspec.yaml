@@ -1,7 +1,16 @@
 name: softarchitect_ai_monorepo
-description: SoftArchitect AI - Monorepo root for testing and shared dependencies
+description: SoftArchitect AI - Monorepo root for CI/CD orchestration
 version: 0.1.0
 publish_to: 'none'
+
+# ============================================================================
+# PURPOSE: Monorepo root configuration
+# USAGE: flutter test tests/client/ (from root for CI/CD)
+# DEPENDENCIES: Minimal (only Flutter SDK required)
+# ============================================================================
+# For actual app dependencies, see: src/client/pubspec.yaml
+# For test dependencies, see: tests/pubspec.yaml
+# ============================================================================
 
 # ============================================================================
 # ENVIRONMENT & PLATFORM CONFIGURATION
@@ -12,20 +21,17 @@ environment:
   flutter: '>=3.38.0'
 
 # ============================================================================
-# MONOREPO-LEVEL DEPENDENCIES
-# Shared dependencies for orchestration and shared utilities
+# MINIMAL DEPENDENCIES FOR CI/CD ORCHESTRATION
+# All app dependencies are managed in src/client/pubspec.yaml
+# Test-specific dependencies are in tests/pubspec.yaml
 # ============================================================================
 dependencies:
   flutter:
     sdk: flutter
-  flutter_highlighter: ^0.1.1
-  flutter_markdown_plus: ^1.0.7
-  flutter_riverpod: ^3.2.1
-  web_socket_channel: ^3.0.3
 
 # ============================================================================
 # DEVELOPMENT DEPENDENCIES
-# Tools for building, analyzing, and quality assurance
+# Minimal tooling for root-level test execution
 # ============================================================================
 dev_dependencies:
   flutter_test:

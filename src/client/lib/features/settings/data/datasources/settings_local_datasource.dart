@@ -8,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// This class is responsible for the technical details of storage,
 /// while the repository handles business logic.
 ///
-/// **Keys Namespace:** All keys use the `settings.*` prefix to avoid collisions.
+/// **Keys Namespace:** All keys use the
+/// `settings.*` prefix to avoid collisions.
 ///
 /// Example usage:
 /// ```dart
@@ -60,7 +61,9 @@ class SettingsLocalDataSource {
 
       final success = await prefs.setString(_kSettingsKey, jsonString);
       if (!success) {
-        throw const StorageWriteException('Failed to save settings to SharedPreferences');
+        throw const StorageWriteException(
+          'Failed to save settings to SharedPreferences',
+        );
       }
     } catch (e) {
       throw StorageWriteException('Failed to save settings: $e');
