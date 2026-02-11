@@ -8,13 +8,13 @@ Security: Validates path traversal, symlinks, and file permissions.
 
 from __future__ import annotations
 
+import logging
 import os
 import re
-import logging
-from pathlib import Path
-from typing import Generator, Optional
+from collections.abc import Generator
 from dataclasses import dataclass, field
 from datetime import datetime
+from pathlib import Path
 
 from .markdown_cleaner import MarkdownCleaner
 
@@ -32,7 +32,7 @@ class DocumentMetadata:
     size_bytes: int
     modified_at: datetime
     depth: int  # Folder depth in knowledge base hierarchy
-    category: Optional[str] = None  # From folder structure (e.g., "02-TECH-PACKS")
+    category: str | None = None  # From folder structure (e.g., "02-TECH-PACKS")
     tags: list = field(default_factory=list)
 
 
@@ -45,7 +45,7 @@ class DocumentChunk:
     chunk_index: int
     total_chunks: int
     char_count: int
-    header_level: Optional[int] = None  # H1, H2, H3, etc. if part of structure
+    header_level: int | None = None  # H1, H2, H3, etc. if part of structure
 
 
 class DocumentLoader:
@@ -79,7 +79,7 @@ class DocumentLoader:
 
     def __init__(
         self,
-        knowledge_base_dir: Optional[Path] = None,
+        knowledge_base_dir: Path | None = None,
         max_chunk_size: int = DEFAULT_MAX_CHUNK_SIZE,
         min_chunk_size: int = DEFAULT_MIN_CHUNK_SIZE,
         validate_security: bool = True,
@@ -149,8 +149,7 @@ class DocumentLoader:
         for md_file in self._find_markdown_files():
             try:
                 chunks = self.load_document(md_file)
-                for chunk in chunks:
-                    yield chunk
+                yield from chunks
             except Exception as e:
                 logger.error(f"Error processing {md_file}: {e}")
                 continue
@@ -189,7 +188,7 @@ class DocumentLoader:
 
         # Read and clean content
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
+            with open(filepath, encoding="utf-8") as f:
                 raw_content = f.read()
         except UnicodeDecodeError as e:
             logger.error(f"Unicode decode error in {filepath}: {e}")
@@ -223,7 +222,7 @@ class DocumentLoader:
         except ValueError:
             raise ValueError(
                 f"Path traversal detected: {filepath} is outside knowledge base"
-            )
+            ) from None
 
         # Check for symlinks
         if filepath.is_symlink():
@@ -300,7 +299,7 @@ class DocumentLoader:
         2. Filename without extension
         """
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
+            with open(filepath, encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if line.startswith("# "):
@@ -464,7 +463,7 @@ class DocumentLoader:
         paragraphs = content.split("\n\n")
         return [p.strip() for p in paragraphs if p.strip()]
 
-    def _detect_header_level(self, chunk: str) -> Optional[int]:
+    def _detect_header_level(self, chunk: str) -> int | None:
         """Detect header level of chunk (if starts with header).
 
         Args:
