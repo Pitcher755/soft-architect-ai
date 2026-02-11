@@ -1,3 +1,5 @@
+import '../../data/datasources/last_project_local_datasource.dart' show StorageReadException;
+import '../../data/datasources/settings_local_datasource.dart' show StorageReadException;
 import '../repositories/i_last_project_repository.dart';
 
 /// Use case for loading the last opened project path.

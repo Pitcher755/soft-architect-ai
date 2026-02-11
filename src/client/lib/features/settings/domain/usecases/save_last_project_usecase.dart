@@ -1,3 +1,5 @@
+import '../../data/datasources/last_project_local_datasource.dart' show StorageWriteException;
+import '../../data/datasources/settings_local_datasource.dart' show StorageWriteException;
 import '../repositories/i_last_project_repository.dart';
 
 /// Use case for saving the currently opened project path.

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../features/project_shell/domain/entities/project.dart';
 import '../../../features/project_shell/domain/services/project_phase_service.dart';
 import '../../../features/project_shell/presentation/providers/project_providers.dart';
 import '../../../features/project_shell/presentation/widgets/project_card.dart';
+import '../../../features/settings/presentation/providers/settings_providers.dart';
 
 /// Global search dialog for finding projects.
 ///
@@ -214,8 +216,17 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
                           path: project.path,
                           modified: modified,
                           onTap: () {
+                            final router = GoRouter.of(context);
+                            ref
+                                .read(lastProjectProvider.notifier)
+                                .updateLastProject(project.path);
                             Navigator.of(context).pop();
-                            // Navigation is handled by the card itself
+                            router.go(
+                              Uri(
+                                path: '/project-shell',
+                                queryParameters: {'path': project.path},
+                              ).toString(),
+                            );
                           },
                         );
                       },

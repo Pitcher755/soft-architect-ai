@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../../domain/entities/accessibility_settings.dart';
@@ -27,9 +26,9 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
   SettingsNotifier({
     required LoadSettingsUseCase loadSettingsUseCase,
     required SaveSettingsUseCase saveSettingsUseCase,
-  })  : _loadSettingsUseCase = loadSettingsUseCase,
-        _saveSettingsUseCase = saveSettingsUseCase,
-        super(SettingsEntity.defaultSettings()) {
+  }) : _loadSettingsUseCase = loadSettingsUseCase,
+       _saveSettingsUseCase = saveSettingsUseCase,
+       super(SettingsEntity.defaultSettings()) {
     // Load settings on initialization
     _loadInitialSettings();
   }
@@ -55,10 +54,7 @@ class SettingsNotifier extends StateNotifier<SettingsEntity> {
   /// Automatically persists the change to storage.
   Future<void> updateUserProfile({String? name, String? email}) async {
     try {
-      final updated = state.copyWith(
-        userName: name,
-        email: email,
-      );
+      final updated = state.copyWith(userName: name, email: email);
       await _saveSettingsUseCase.call(updated);
       state = updated;
     } catch (e) {

@@ -1,3 +1,5 @@
+import '../../data/datasources/last_project_local_datasource.dart' show StorageReadException, StorageWriteException;
+import '../../data/datasources/settings_local_datasource.dart' show StorageReadException, StorageWriteException;
 import '../entities/settings_entity.dart';
 
 /// Repository interface for settings persistence.

@@ -52,12 +52,12 @@ This HU completes the Settings feature by:
 |---|-----------|--------|
 | AC-1 | `file_picker` package integrated (native folder selector) | ⏳ Pending |
 | AC-2 | 10 MarkdownPreview tests refactored and passing | ⏳ Pending |
-| AC-3 | 7 Settings UI widget tests created | ⏳ Pending |
-| AC-4 | GlobalSearchDialog widget test created | ⏳ Pending |
+| AC-3 | 7 Settings UI widget tests created | 🚧 In Progress (4/7) |
+| AC-4 | GlobalSearchDialog widget test created | 🚧 In Progress (render + navigation) |
 | AC-5 | Settings coverage >90% (current: 85%) | ⏳ Pending |
 | AC-6 | All settings persistent via SharedPreferences | ⏳ Pending |
 | AC-7 | Language selector with flag icons functional | ⏳ Pending |
-| AC-8 | GlobalSearchDialog navigates to selected project | ⏳ Pending |
+| AC-8 | GlobalSearchDialog navigates to selected project | ✅ Done |
 | AC-9 | ProjectsSidebar shows last opened project | ⏳ Pending |
 
 ---
@@ -83,13 +83,13 @@ This HU completes the Settings feature by:
 
 ### T-3: Create 7 Settings UI Widget Tests
 **Target Files:**
-- `profile_section.dart` → Test user info, avatar, edit mode
-- `storage_section.dart` → Test folder picker, path display
-- `appearance_section.dart` → Test theme toggle, color schemes
-- `accessibility_section.dart` → Test font size, contrast, screen reader
-- `performance_section.dart` → Test cache controls, performance toggles
-- `settings_screen.dart` → Test full screen integration, navigation
-- Language selector → Test ES/EN toggle with flags
+- ✅ `profile_section.dart` → Keyed user name field present
+- ⏳ `storage_section.dart` → Test folder picker, path display
+- ✅ `appearance_section.dart` → Theme toggle + font size slider
+- ✅ `accessibility_section.dart` → Global zoom + shortcuts
+- ✅ `performance_section.dart` → Animations + memory optimization
+- ⏳ `settings_screen.dart` → Test full screen integration, navigation
+- ⏳ Language selector → Test ES/EN toggle with flags
 
 **Test Coverage:**
 - User interactions (taps, text input)
@@ -103,12 +103,12 @@ This HU completes the Settings feature by:
 **Location:** `tests/test/shared/presentation/widgets/global_search_dialog_test.dart`
 
 **Test Cases:**
-1. **Render:** Dialog opens with search field
-2. **Empty State:** Search with no results shows empty state
-3. **Search Results:** Projects filtered correctly by name/phase/date
-4. **Navigation:** Clicking result navigates to project (GoRouter)
-5. **Clear Search:** X button clears search query
-6. **Close Dialog:** ESC key / close button dismisses dialog
+1. ✅ **Render:** Dialog opens with search field
+2. ⏳ **Empty State:** Search with no results shows empty state
+3. ⏳ **Search Results:** Projects filtered correctly by name/phase/date
+4. ✅ **Navigation:** Clicking result navigates to project (GoRouter)
+5. ⏳ **Clear Search:** X button clears search query
+6. ✅ **Close Dialog:** ESC key / close button dismisses dialog
 
 ---
 
