@@ -127,11 +127,17 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                     ),
                     const SizedBox(height: 8),
                     TextField(
+                      key: const ValueKey('userName_field'),
                       controller: _nameController,
                       style: const TextStyle(
                         color: Color(0xFFE6EDF3),
                         fontSize: 14,
                       ),
+                      onChanged: (value) {
+                        ref
+                            .read(settingsProvider.notifier)
+                            .updateUserName(value);
+                      },
                       decoration: InputDecoration(
                         hintText: 'Escribe tu nombre',
                         hintStyle: const TextStyle(color: Color(0xFF8b949e)),
