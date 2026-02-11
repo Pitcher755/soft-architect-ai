@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../shared/presentation/widgets/projects_sidebar.dart';
 import '../widgets/accessibility_section.dart';
 import '../widgets/appearance_section.dart';
+import '../widgets/language_section.dart';
 import '../widgets/performance_section.dart';
 import '../widgets/profile_section.dart';
 import '../widgets/storage_section.dart';
@@ -58,6 +59,8 @@ class SettingsScreen extends ConsumerWidget {
                 StorageSection(),
                 SizedBox(height: 32),
                 AppearanceSection(),
+                SizedBox(height: 32),
+                LanguageSection(),
                 SizedBox(height: 32),
                 AccessibilitySection(),
                 SizedBox(height: 32),

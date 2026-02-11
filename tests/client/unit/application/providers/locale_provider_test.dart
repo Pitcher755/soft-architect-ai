@@ -11,8 +11,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/core/localization/locale_provider.dart';
+
+import '../../../test_helpers/shared_preferences_mock.dart';
 
 // Import would be: import 'package:softarchitect_ai/core/localization/locale_provider.dart';
 // For testing purposes, we'll use a mock setup
@@ -21,7 +22,7 @@ void main() {
   // Setup SharedPreferences mock before tests
   setUp(() {
     // In real tests, this would initialize the SharedPreferences mock
-    SharedPreferences.setMockInitialValues({});
+    initMockSharedPreferences({});
   });
 
   group('LocaleNotifier Tests', () {

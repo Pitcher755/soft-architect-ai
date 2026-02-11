@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../test_helpers/shared_preferences_mock.dart';
 
 void main() {
   group('i18n Localization Integration Tests', () {
     setUp(() {
       // Clear SharedPreferences before each test
-      SharedPreferences.setMockInitialValues({});
+      initMockSharedPreferences({});
     });
 
     testWidgets('Locale provider supports English and Spanish', (

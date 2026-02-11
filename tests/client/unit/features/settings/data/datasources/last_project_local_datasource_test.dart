@@ -2,12 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/features/settings/data/datasources/last_project_local_datasource.dart';
 
+import '../../../../test_helpers/shared_preferences_mock.dart';
+
 void main() {
   late LastProjectLocalDataSource dataSource;
 
   setUp(() async {
     // Mock SharedPreferences
-    SharedPreferences.setMockInitialValues({});
+    initMockSharedPreferences({});
     dataSource = LastProjectLocalDataSource();
   });
 

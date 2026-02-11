@@ -41,11 +41,7 @@ void main() {
         const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
-              body: Column(
-                children: [
-                  GlobalSearchDialog(),
-                ],
-              ),
+              body: GlobalSearchDialog(),
             ),
           ),
         ),
@@ -54,17 +50,14 @@ void main() {
 
       // Act: Find and tap close button
       final closeButton = find.byIcon(Icons.close);
-      if (closeButton.evaluate().isNotEmpty) {
-        await tester.tap(closeButton.first);
-        await tester.pumpAndSettle();
+      expect(
+        closeButton,
+        findsOneWidget,
+        reason: 'Close button should be present in dialog',
+      );
 
-        // Assert: Dialog should handle close action
-        expect(
-          closeButton,
-          findsWidgets,
-          reason: 'Close button should be present in dialog',
-        );
-      }
+      await tester.tap(closeButton);
+      await tester.pumpAndSettle();
     });
 
     testWidgets('should filter projects based on search query', (

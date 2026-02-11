@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/features/settings/presentation/providers/settings_provider.dart';
 
+import '../../../../../test_helpers/shared_preferences_mock.dart';
+
 /// Unit tests for SettingsNotifier and AppSettings.
 ///
 /// Tests persistence, state management, and all update methods.
@@ -126,7 +128,7 @@ void main() {
     late ProviderContainer container;
 
     setUp(() async {
-      SharedPreferences.setMockInitialValues({});
+      initMockSharedPreferences({});
       container = ProviderContainer();
     });
 
@@ -250,7 +252,7 @@ void main() {
     });
 
     /// NOTE: This test requires a more sophisticated mock setup.
-    /// SharedPreferences.setMockInitialValues() can only be called once per test suite,
+    /// initMockSharedPreferences() can only be called once per test suite,
     /// causing conflicts with the setUp() that initializes empty values.
     /// Workaround: Extract to separate test file or use integration test approach.
     /// Consider as enhancement for PHASE-6+
@@ -258,7 +260,7 @@ void main() {
       'should load persisted settings on initialization',
       () async {
         // Setup persisted data (themeMode: 2 = ThemeMode.dark)
-        SharedPreferences.setMockInitialValues({
+        initMockSharedPreferences({
           'app_settings_v2':
               '{"themeMode":2,"fontSize":1.3,"globalZoom":1.5,"enableZoomShortcuts":false,"enableAnimations":false,"enableMemoryOptimization":false,"userName":"PersistedUser","avatarIndex":2,"projectDirectory":"/persisted/path"}',
         });
@@ -287,7 +289,7 @@ void main() {
 
     test('should handle corrupted JSON gracefully', () async {
       // Setup corrupted data
-      SharedPreferences.setMockInitialValues({
+      initMockSharedPreferences({
         'app_settings_v2': '{invalid json}',
       });
 

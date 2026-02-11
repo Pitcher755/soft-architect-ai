@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../utils/navigation_utils.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../features/project_shell/domain/entities/project.dart';
 import '../../../features/project_shell/domain/services/project_phase_service.dart';
@@ -214,8 +215,8 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
                           path: project.path,
                           modified: modified,
                           onTap: () {
-                            Navigator.of(context).pop();
-                            // Navigation is handled by the card itself
+                            Navigator.of(context).pop(); // Close dialog first
+                            navigateToProjectShell(context, ref, project.path);
                           },
                         );
                       },

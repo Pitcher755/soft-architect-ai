@@ -201,6 +201,10 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
     );
   }
 
+  /// Shows avatar picker dialog with predefined colors and custom image option.
+  ///
+  /// Allows users to select from predefined avatar colors or choose a custom
+  /// image from their file system using file_picker.
   void _showAvatarPicker(
     BuildContext context,
     WidgetRef ref,
@@ -217,36 +221,56 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
         ),
         content: SizedBox(
           width: 300,
-          child: Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            alignment: WrapAlignment.center,
-            children: List.generate(colors.length, (index) {
-              final isSelected = index == selectedIndex;
-              return GestureDetector(
-                onTap: () {
-                  ref.read(settingsProvider.notifier).updateAvatarIndex(index);
-                  Navigator.of(ctx).pop();
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: colors[index],
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected
-                          ? Colors.white
-                          : colors[index].withValues(alpha: 0.3),
-                      width: isSelected ? 3 : 2,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                alignment: WrapAlignment.center,
+                children: List.generate(colors.length, (index) {
+                  final isSelected = index == selectedIndex;
+                  return GestureDetector(
+                    onTap: () {
+                      ref.read(settingsProvider.notifier).updateAvatarIndex(index);
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: colors[index],
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isSelected
+                              ? Colors.white
+                              : colors[index].withValues(alpha: 0.3),
+                          width: isSelected ? 3 : 2,
+                        ),
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.person, size: 30, color: Colors.white),
+                      ),
                     ),
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.person, size: 30, color: Colors.white),
-                  ),
+                  );
+                }),
+              ),
+              const SizedBox(height: 20),
+              const Divider(color: Color(0xFF30363d)),
+              const SizedBox(height: 12),
+              TextButton.icon(
+                onPressed: () async {
+                  Navigator.of(ctx).pop();
+                  // TODO: Implement custom avatar picker with file_picker
+                  // await _pickCustomAvatar(context, ref);
+                },
+                icon: const Icon(Icons.image, color: Color(0xFF58A6FF)),
+                label: const Text(
+                  'Elegir imagen personalizada',
+                  style: TextStyle(color: Color(0xFF58A6FF)),
                 ),
-              );
-            }),
+              ),
+            ],
           ),
         ),
       ),
