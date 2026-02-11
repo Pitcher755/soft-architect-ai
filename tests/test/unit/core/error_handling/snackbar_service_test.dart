@@ -40,7 +40,9 @@ void main() {
       );
       await tester.pump(); // Trigger initial build
       await tester.pump(); // Process post-frame callback
-      await tester.pump(const Duration(milliseconds: 500)); // Allow snackbar to appear
+      await tester.pump(
+        const Duration(milliseconds: 500),
+      ); // Allow snackbar to appear
 
       // Assert - Just verify the snackbar appears with correct content
       expect(find.text('Operation successful'), findsOneWidget);
@@ -69,7 +71,9 @@ void main() {
       );
       await tester.pump(); // Trigger initial build
       await tester.pump(); // Process post-frame callback
-      await tester.pump(const Duration(milliseconds: 500)); // Allow snackbar to appear
+      await tester.pump(
+        const Duration(milliseconds: 500),
+      ); // Allow snackbar to appear
 
       // Assert - Just verify the snackbar appears with correct content
       expect(find.text('Information message'), findsOneWidget);
@@ -87,7 +91,11 @@ void main() {
               builder: (context) {
                 // Act (post-frame callback)
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  snackbarService.showError(context, 'Critical error', 'SYS_001');
+                  snackbarService.showError(
+                    context,
+                    'Critical error',
+                    'SYS_001',
+                  );
                 });
                 return const SizedBox.shrink();
               },
@@ -119,7 +127,11 @@ void main() {
               builder: (context) {
                 // Act (post-frame callback)
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  snackbarService.showError(context, 'Error message', 'VAL_001');
+                  snackbarService.showError(
+                    context,
+                    'Error message',
+                    'VAL_001',
+                  );
                 });
                 return const SizedBox.shrink();
               },
@@ -143,7 +155,9 @@ void main() {
       expect(find.text('Error message'), findsNothing);
     });
 
-    testWidgets('should show retry button for retryable errors', (tester) async {
+    testWidgets('should show retry button for retryable errors', (
+      tester,
+    ) async {
       // Arrange
       var retryPressed = false;
       await tester.pumpWidget(
@@ -218,7 +232,9 @@ void main() {
       expect(find.text('Retryable error'), findsOneWidget);
     });
 
-    testWidgets('retry button should dismiss snackbar after retry', (tester) async {
+    testWidgets('retry button should dismiss snackbar after retry', (
+      tester,
+    ) async {
       // Arrange
       await tester.pumpWidget(
         MaterialApp(

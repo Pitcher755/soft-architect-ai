@@ -13,8 +13,9 @@ void main() {
       snackbarService = SnackbarService();
     });
 
-    testWidgets('should display error with Spanish message and suggestion',
-        (WidgetTester tester) async {
+    testWidgets('should display error with Spanish message and suggestion', (
+      WidgetTester tester,
+    ) async {
       // Arrange: Setup widget with error display
       const errorCode = 'VAL_001';
       final errorMessage = ErrorMapper.getUserMessage(errorCode);
@@ -30,10 +31,7 @@ void main() {
                   snackbarService.showError(context, '', errorMessage);
                 });
                 return Column(
-                  children: [
-                    Text(errorMessage),
-                    Text('💡 $errorSuggestion'),
-                  ],
+                  children: [Text(errorMessage), Text('💡 $errorSuggestion')],
                 );
               },
             ),
@@ -53,8 +51,9 @@ void main() {
       expect(find.byType(SnackBar), findsOneWidget);
     });
 
-    testWidgets('should persist critical error snackbar (no auto-hide)',
-        (WidgetTester tester) async {
+    testWidgets('should persist critical error snackbar (no auto-hide)', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const errorMessage = 'Error: No hay conexión';
 
@@ -87,8 +86,9 @@ void main() {
       expect(find.byType(SnackBar), findsOneWidget);
     });
 
-    testWidgets('should support retry with retryable errors',
-        (WidgetTester tester) async {
+    testWidgets('should support retry with retryable errors', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const errorCode = 'RAG_001';
       final isRetryable = ErrorMapper.isRetryable(errorCode);
@@ -121,8 +121,9 @@ void main() {
       await tester.pump();
     });
 
-    testWidgets('should not show retry button for non-retryable errors',
-        (WidgetTester tester) async {
+    testWidgets('should not show retry button for non-retryable errors', (
+      WidgetTester tester,
+    ) async {
       // Arrange: Use a non-retryable error code
       const errorCode = 'AUTH_001'; // Missing API key (user action required)
       final isRetryable = ErrorMapper.isRetryable(errorCode);
@@ -151,8 +152,9 @@ void main() {
       expect(find.text('🔄 Reintentar'), findsNothing);
     });
 
-    testWidgets('should show success feedback after recovery',
-        (WidgetTester tester) async {
+    testWidgets('should show success feedback after recovery', (
+      WidgetTester tester,
+    ) async {
       // Arrange: Simulate error recovery scenario
       const successMessage = '✅ Operación completada correctamente';
 
@@ -191,7 +193,7 @@ void main() {
         'VAL_002',
         'VAL_003',
         'VAL_004',
-        'VAL_005'
+        'VAL_005',
       ];
 
       for (final code in validationCodes) {
@@ -207,8 +209,11 @@ void main() {
 
       for (final code in systemErrors) {
         final isRetryable = ErrorMapper.isRetryable(code);
-        expect(isRetryable, isTrue,
-            reason: '$code should be retryable (system error)');
+        expect(
+          isRetryable,
+          isTrue,
+          reason: '$code should be retryable (system error)',
+        );
       }
     });
 
@@ -218,8 +223,11 @@ void main() {
 
       for (final code in validationErrors) {
         final isRetryable = ErrorMapper.isRetryable(code);
-        expect(isRetryable, isFalse,
-            reason: '$code should NOT be retryable (validation error)');
+        expect(
+          isRetryable,
+          isFalse,
+          reason: '$code should NOT be retryable (validation error)',
+        );
       }
     });
   });

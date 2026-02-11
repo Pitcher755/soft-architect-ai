@@ -42,15 +42,11 @@ class FakeChatRepository implements ChatRepository {
 
 void main() {
   group('ChatNotifier State Machine - TDD RED', () {
-    test(
-      'PENDING: should initialize with empty state',
-      skip: true,
-      () async {
-        // TODO: Implement ChatNotifier and verify initial state
-        // Expected: messages.isEmpty, currentDocIndex=1, totalDocs=25
-        expect(true, true);
-      },
-    );
+    test('PENDING: should initialize with empty state', skip: true, () async {
+      // TODO: Implement ChatNotifier and verify initial state
+      // Expected: messages.isEmpty, currentDocIndex=1, totalDocs=25
+      expect(true, true);
+    });
 
     test(
       'PENDING: should add user message and start streaming',

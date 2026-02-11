@@ -7,9 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/config/app_config.dart';
 import 'core/config/theme_config.dart';
 import 'core/database_initializer.dart';
+import 'core/localization/locale_provider.dart';
 import 'core/router/app_router.dart';
 import 'features/chat/presentation/notifiers/chat_notifier.dart';
 import 'features/project_shell/core/services/file_system_service.dart';
+import 'gen/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,7 @@ class SoftArchitectApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = createAppRouter();
+    final locale = ref.watch(localeProvider);
 
     return MaterialApp.router(
       title: 'SoftArchitect AI',
@@ -61,13 +64,15 @@ class SoftArchitectApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme(),
       themeMode: AppConfig.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       routerConfig: router,
-      locale: const Locale(AppConfig.language),
+      // Use dynamic locale from provider instead of static config
+      locale: locale,
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [Locale('en'), Locale('es')],
+      supportedLocales: LocaleNotifier.supportedLocales,
     );
   }
 }

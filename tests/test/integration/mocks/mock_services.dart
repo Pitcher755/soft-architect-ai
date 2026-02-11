@@ -10,9 +10,7 @@ class MockChatRepository extends Mock implements ChatRepository {
     String prompt,
     Map<String, dynamic> context,
   ) {
-    return Stream<String>.fromIterable(
-      _generateMockResponse(docType),
-    );
+    return Stream<String>.fromIterable(_generateMockResponse(docType));
   }
 
   @override

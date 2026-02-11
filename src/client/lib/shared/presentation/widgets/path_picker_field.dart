@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../gen/app_localizations.dart';
 
 /// Campo selector de ruta de directorio
 /// Permite al usuario seleccionar una carpeta usando un diálogo nativo
@@ -49,7 +50,7 @@ class PathPickerField extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: _pickDirectory,
             icon: const Icon(Icons.folder_open, size: 18),
-            label: const Text('Examinar...'),
+            label: Text(AppLocalizations.of(context).browse),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.surfaceLight,
               foregroundColor: AppColors.textMain,

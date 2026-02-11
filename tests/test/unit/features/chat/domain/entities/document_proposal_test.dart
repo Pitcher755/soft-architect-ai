@@ -11,7 +11,7 @@ void main() {
         content: '# Project Title\n\nDescription...',
         metadata: {
           'estimated_pages': 5,
-          'sections': ['Vision', 'Goals', 'Scope']
+          'sections': ['Vision', 'Goals', 'Scope'],
         },
         validationState: ValidationState.pending,
       );

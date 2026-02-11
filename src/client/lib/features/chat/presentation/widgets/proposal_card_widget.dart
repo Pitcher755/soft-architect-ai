@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../gen/app_localizations.dart';
 import '../../domain/entities/document_proposal.dart';
 
 /// Widget that displays a generated document proposal with action buttons.
@@ -128,7 +129,7 @@ class ProposalCardWidget extends StatelessWidget {
         TextButton.icon(
           onPressed: onReject,
           icon: const Icon(Icons.close, size: 16),
-          label: const Text('Rechazar'),
+          label: Text(AppLocalizations.of(context).reject),
           style: TextButton.styleFrom(
             foregroundColor: AppColors.error,
             backgroundColor: AppColors.error.withValues(alpha: 0.1),
@@ -141,7 +142,7 @@ class ProposalCardWidget extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: onRefine,
               icon: const Icon(Icons.edit, size: 16),
-              label: const Text('Refinar'),
+              label: Text(AppLocalizations.of(context).refine),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.textMain,
                 side: const BorderSide(color: AppColors.border),
@@ -156,7 +157,7 @@ class ProposalCardWidget extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: onValidate,
               icon: const Icon(Icons.check_circle, size: 16),
-              label: const Text('Validar y Guardar'),
+              label: Text(AppLocalizations.of(context).validateAndSave),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.success,
                 foregroundColor: Colors.white,

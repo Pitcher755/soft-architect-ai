@@ -28,6 +28,10 @@ dependencies:
   # Persistence
   shared_preferences: ^2.3.4
 
+  # Local package for testing
+  softarchitect_ai:
+    path: ../src/client
+
   # Testing & Mocking
   mockito: ^5.6.3
 
@@ -57,8 +61,6 @@ dev_dependencies:
 # MONOREPO PATH DEPENDENCIES
 # Link to the main Flutter app for testing
 # ============================================================================
-  softarchitect_ai: any
-  path: any
 dependency_overrides:
   softarchitect_ai:
     path: ../src/client

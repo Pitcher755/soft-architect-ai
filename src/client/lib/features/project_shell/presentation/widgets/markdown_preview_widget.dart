@@ -10,6 +10,8 @@ import 'package:flutter_highlighter/themes/atom-one-dark.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:markdown/markdown.dart' as md;
 
+import '../../../../gen/app_localizations.dart';
+
 /// Markdown preview widget displaying rendered markdown content.
 class MarkdownPreviewWidget extends StatelessWidget {
   const MarkdownPreviewWidget({super.key, this.content, this.filename});
@@ -27,7 +29,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Contenido copiado al portapapeles'),
+          content: Text(AppLocalizations.of(context).contentCopied),
           backgroundColor: const Color(0xFF238636), // Verde GitHub
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 2),
@@ -80,7 +82,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Archivo guardado en: $outputFile'),
+            content: Text(AppLocalizations.of(context).fileSaved(outputFile)),
             backgroundColor: const Color(0xFF1F6FEB), // Azul GitHub
             behavior: SnackBarBehavior.floating,
           ),
@@ -90,7 +92,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al guardar: $e'),
+            content: Text(AppLocalizations.of(context).saveError(e.toString())),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
           ),

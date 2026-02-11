@@ -78,7 +78,7 @@ def health(ctx: click.Context) -> None:
     try:
         # Try to get collection stats to verify connection
         stats_data = store.get_collection_stats()
-        
+
         click.echo("✅ ChromaDB is healthy")
         click.echo(f"   Collection: {stats_data.get('collection_name', 'unknown')}")
         click.echo(f"   Documents: {stats_data.get('document_count', 0)}")
@@ -95,7 +95,12 @@ def health(ctx: click.Context) -> None:
 @click.option("--limit", "-l", default=3, type=int, help="Number of results to return")
 @click.option("--json-output", is_flag=True, help="Output results as JSON")
 @click.pass_context
-def query(ctx: click.Context, query_text: str, limit: int, json_output: bool) -> None:
+def query(  # noqa: C901
+    ctx: click.Context,
+    query_text: str,
+    limit: int,
+    json_output: bool,
+) -> None:
     """
     Query the vector database.
 
@@ -118,33 +123,45 @@ def query(ctx: click.Context, query_text: str, limit: int, json_output: bool) ->
             documents = results.get("documents")
             metadatas = results.get("metadatas")
             distances = results.get("distances")
-            
+
             # Validate we have document results
             if documents and len(documents) > 0:
                 doc_list = documents[0]
                 meta_list = metadatas[0] if metadatas else []
                 dist_list = distances[0] if distances else []
-                
+
                 if len(doc_list) > 0:
                     output["matches"] = len(doc_list)
 
                     for idx, doc in enumerate(doc_list):
                         meta = meta_list[idx] if idx < len(meta_list) else {}
                         distance = dist_list[idx] if idx < len(dist_list) else None
-                        
+
                         distance_value: float | None = None
                         if distance is not None:
                             try:
                                 distance_value = float(distance)
                             except (ValueError, TypeError):
                                 distance_value = None
-                        
+
                         output["results"].append(
                             {
                                 "content": doc[:300],
-                                "filename": meta.get("filename", "unknown") if isinstance(meta, dict) else "unknown",
-                                "source": meta.get("source", "unknown") if isinstance(meta, dict) else "unknown",
-                                "file_type": meta.get("file_type", "unknown") if isinstance(meta, dict) else "unknown",
+                                "filename": (
+                                    meta.get("filename", "unknown")
+                                    if isinstance(meta, dict)
+                                    else "unknown"
+                                ),
+                                "source": (
+                                    meta.get("source", "unknown")
+                                    if isinstance(meta, dict)
+                                    else "unknown"
+                                ),
+                                "file_type": (
+                                    meta.get("file_type", "unknown")
+                                    if isinstance(meta, dict)
+                                    else "unknown"
+                                ),
                                 "distance": distance_value,
                             }
                         )
@@ -158,36 +175,52 @@ def query(ctx: click.Context, query_text: str, limit: int, json_output: bool) ->
             documents = results.get("documents")
             metadatas = results.get("metadatas")
             distances = results.get("distances")
-            
+
             if documents and len(documents) > 0:
                 doc_list = documents[0]
                 meta_list = metadatas[0] if metadatas else []
                 dist_list = distances[0] if distances else []
-                
+
                 if len(doc_list) > 0:
                     for idx, doc in enumerate(doc_list, 1):
                         meta = meta_list[idx - 1] if idx - 1 < len(meta_list) else {}
-                        distance = dist_list[idx - 1] if idx - 1 < len(dist_list) else None
-                        
+                        distance = (
+                            dist_list[idx - 1] if idx - 1 < len(dist_list) else None
+                        )
+
                         distance_str = "N/A"
                         if distance is not None:
                             try:
                                 distance_str = f"{float(distance):.4f}"
                             except (ValueError, TypeError):
                                 distance_str = "N/A"
-                        
-                        filename = meta.get("filename", "unknown") if isinstance(meta, dict) else "unknown"
-                        source = meta.get("source", "unknown") if isinstance(meta, dict) else "unknown"
-                        file_type = meta.get("file_type", "unknown") if isinstance(meta, dict) else "unknown"
-                        
+
+                        filename = (
+                            meta.get("filename", "unknown")
+                            if isinstance(meta, dict)
+                            else "unknown"
+                        )
+                        source = (
+                            meta.get("source", "unknown")
+                            if isinstance(meta, dict)
+                            else "unknown"
+                        )
+                        file_type = (
+                            meta.get("file_type", "unknown")
+                            if isinstance(meta, dict)
+                            else "unknown"
+                        )
+
                         click.echo(f"[{idx}] 📄 {filename}")
                         click.echo(f"    📍 {source}")
                         click.echo(f"    Type: {file_type}")
                         click.echo(f"    Distance: {distance_str}")
-                        click.echo(f"    Content:\n")
-                        
+                        click.echo("    Content:\n")
+
                         doc_str = doc
-                        content = doc_str[:500] + "..." if len(doc_str) > 500 else doc_str
+                        content = (
+                            doc_str[:500] + "..." if len(doc_str) > 500 else doc_str
+                        )
                         for line in content.split("\n"):
                             click.echo(f"       {line}")
                         click.echo()

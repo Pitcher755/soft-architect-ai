@@ -97,13 +97,15 @@ Este es un proyecto de prueba para validar el FileSystemService.
       expect(allFiles, anyElement(contains('FUNCTIONAL_REQUIREMENTS.md')));
 
       // Step 8: User reads a document
-      final readDoc =
-          await repository.readFile('context/10-CONTEXT/PROJECT_MANIFESTO.md');
+      final readDoc = await repository.readFile(
+        'context/10-CONTEXT/PROJECT_MANIFESTO.md',
+      );
       expect(readDoc, doc1Content);
 
       // Step 9: User deletes a document
-      await repository
-          .deleteFile('context/20-REQUIREMENTS/FUNCTIONAL_REQUIREMENTS.md');
+      await repository.deleteFile(
+        'context/20-REQUIREMENTS/FUNCTIONAL_REQUIREMENTS.md',
+      );
       expect(
         await repository.fileExists(
           'context/20-REQUIREMENTS/FUNCTIONAL_REQUIREMENTS.md',

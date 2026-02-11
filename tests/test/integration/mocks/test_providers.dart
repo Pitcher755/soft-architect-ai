@@ -8,8 +8,7 @@ final testChatRepositoryProvider = Provider<ChatRepository>((ref) {
   return MockChatRepository();
 });
 
-final testFileSystemServiceProvider =
-    Provider<FileSystemService>((ref) {
+final testFileSystemServiceProvider = Provider<FileSystemService>((ref) {
   return MockFileSystemService();
 });
 

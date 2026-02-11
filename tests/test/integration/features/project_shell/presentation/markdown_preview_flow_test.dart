@@ -5,7 +5,9 @@ import 'package:softarchitect_ai/features/project_shell/presentation/widgets/mar
 
 void main() {
   group('Markdown Preview Flow Integration Test', () {
-    testWidgets('should handle complete markdown preview workflow', (WidgetTester tester) async {
+    testWidgets('should handle complete markdown preview workflow', (
+      WidgetTester tester,
+    ) async {
       const testMarkdown = '''
 # Project Title
 
@@ -42,11 +44,7 @@ void main() {
       // When - Render markdown preview
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: testMarkdown,
-            ),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: testMarkdown)),
         ),
       );
 
@@ -66,10 +64,15 @@ void main() {
       expect(find.text('Link to Google'), findsOneWidget);
 
       // Code block should be present
-      expect(find.text("void main() {\n  print('Hello, World!');\n}"), findsOneWidget);
+      expect(
+        find.text("void main() {\n  print('Hello, World!');\n}"),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('should handle large content efficiently', (WidgetTester tester) async {
+    testWidgets('should handle large content efficiently', (
+      WidgetTester tester,
+    ) async {
       // Create moderately large markdown content
       final largeContent = StringBuffer();
       largeContent.writeln('# Large Document\n');
@@ -83,9 +86,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: largeContent.toString(),
-            ),
+            body: MarkdownPreviewWidget(content: largeContent.toString()),
           ),
         ),
       );
@@ -96,7 +97,9 @@ void main() {
       expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
     });
 
-    testWidgets('should handle special characters correctly', (WidgetTester tester) async {
+    testWidgets('should handle special characters correctly', (
+      WidgetTester tester,
+    ) async {
       const specialCharsMarkdown = '''
 # Special Characters
 
@@ -121,9 +124,7 @@ E = mc²
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: specialCharsMarkdown,
-            ),
+            body: MarkdownPreviewWidget(content: specialCharsMarkdown),
           ),
         ),
       );
@@ -141,7 +142,9 @@ E = mc²
       expect(find.text('résumé'), findsOneWidget);
     });
 
-    testWidgets('should handle markdown with links correctly', (WidgetTester tester) async {
+    testWidgets('should handle markdown with links correctly', (
+      WidgetTester tester,
+    ) async {
       const linksMarkdown = '''
 # Links Test
 
@@ -155,11 +158,7 @@ Content here.
       // When - Render markdown with links
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: linksMarkdown,
-            ),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: linksMarkdown)),
         ),
       );
 
@@ -170,7 +169,9 @@ Content here.
       expect(find.text('Content here.'), findsOneWidget);
     });
 
-    testWidgets('should handle theme changes correctly', (WidgetTester tester) async {
+    testWidgets('should handle theme changes correctly', (
+      WidgetTester tester,
+    ) async {
       const themedMarkdown = '''
 # Themed Content
 
@@ -181,11 +182,7 @@ This content should adapt to theme changes.
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData.light(),
-          home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: themedMarkdown,
-            ),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: themedMarkdown)),
         ),
       );
 
@@ -196,11 +193,7 @@ This content should adapt to theme changes.
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData.dark(),
-          home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: themedMarkdown,
-            ),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: themedMarkdown)),
         ),
       );
 
@@ -208,17 +201,15 @@ This content should adapt to theme changes.
       expect(find.text('Themed Content'), findsOneWidget);
     });
 
-    testWidgets('should handle content updates correctly', (WidgetTester tester) async {
+    testWidgets('should handle content updates correctly', (
+      WidgetTester tester,
+    ) async {
       // Initial content
       const initialContent = '# Initial Content\n\nSome text here.';
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: initialContent,
-            ),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: initialContent)),
         ),
       );
 
@@ -232,11 +223,7 @@ This content should adapt to theme changes.
       // When - Update content
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: MarkdownPreviewWidget(
-              content: updatedContent,
-            ),
-          ),
+          home: Scaffold(body: MarkdownPreviewWidget(content: updatedContent)),
         ),
       );
 

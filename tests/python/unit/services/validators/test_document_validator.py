@@ -20,7 +20,6 @@ import pytest
 from app.services.validators.document_validator import DocumentValidator
 from app.core.exceptions import ValidationError
 
-
 # Load fixtures
 FIXTURES_PATH = (
     Path(__file__).parent.parent.parent / "fixtures" / "document_fixtures.json"
