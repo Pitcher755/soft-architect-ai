@@ -2,6 +2,8 @@
 
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
+
 import '../../core/constants/project_structure_constants.dart';
 import '../../core/security/path_validator.dart';
 import '../../domain/entities/project.dart';
@@ -21,11 +23,61 @@ class ProjectPhaseProgress {
   final double progress;
 }
 
+typedef ProjectFileScanner = List<String> Function(String projectPath);
+
+class LocalProjectFileScanner {
+  const LocalProjectFileScanner();
+
+  List<String> getProjectFiles(String projectPath) {
+    try {
+      final root = Directory(projectPath);
+      if (!root.existsSync()) {
+        return const [];
+      }
+
+      final normalizedRootPath = ProjectPhaseService.normalizePath(projectPath);
+
+      return root
+          .listSync(recursive: true, followLinks: false)
+          .whereType<File>()
+          .map((file) {
+            final normalizedFilePath = ProjectPhaseService.normalizePath(
+              file.path,
+            );
+            if (!normalizedFilePath.startsWith('$normalizedRootPath/')) {
+              return '';
+            }
+
+            final relativePath = p.relative(
+              normalizedFilePath,
+              from: normalizedRootPath,
+            );
+
+            return ProjectPhaseService.normalizePath(relativePath);
+          })
+          .where(
+            (relativePath) =>
+                relativePath.isNotEmpty && !relativePath.endsWith('.DS_Store'),
+          )
+          .toList();
+    } catch (_) {
+      return const [];
+    }
+  }
+}
+
 /// Service for managing project phase state and progress calculation.
 ///
 /// Provides methods to determine current phase of a project,
 /// calculate progress, and track completed documents.
 class ProjectPhaseService {
+  ProjectPhaseService({ProjectFileScanner? fileScanner})
+    : _fileScanner =
+          fileScanner ?? const LocalProjectFileScanner().getProjectFiles;
+
+  final ProjectFileScanner _fileScanner;
+  static final ProjectPhaseService _defaultInstance = ProjectPhaseService();
+
   static String getPhaseNameFromIndex(int phaseIndex) {
     switch (phaseIndex) {
       case 6:
@@ -45,7 +97,10 @@ class ProjectPhaseService {
     }
   }
 
-  static ProjectPhaseProgress analyzeProject(String projectPath) {
+  static ProjectPhaseProgress analyzeProject(String projectPath) =>
+      _defaultInstance.analyzeProjectPath(projectPath);
+
+  ProjectPhaseProgress analyzeProjectPath(String projectPath) {
     try {
       PathValidator.validateProjectPath(projectPath);
     } catch (_) {
@@ -57,15 +112,18 @@ class ProjectPhaseService {
       );
     }
 
-    final files = _listProjectFiles(projectPath);
-    return calculateProgressFromFiles(files);
+    final files = _fileScanner(projectPath);
+    return calculateProgressForFiles(files);
   }
+
+  ProjectPhaseProgress calculateProgressForFiles(List<String> filePaths) =>
+      calculateProgressFromFiles(filePaths);
 
   static ProjectPhaseProgress calculateProgressFromFiles(
     List<String> filePaths,
   ) {
     final normalizedFiles = filePaths
-        .map(_normalizePath)
+        .map(normalizePath)
         .where((path) => path.isNotEmpty)
         .toSet();
 
@@ -227,32 +285,7 @@ class ProjectPhaseService {
   static bool isGuideProject(Project project) =>
       project.id == 'guide-softarchitect-01';
 
-  static List<String> _listProjectFiles(String projectPath) {
-    try {
-      final root = Directory(projectPath);
-      if (!root.existsSync()) {
-        return const [];
-      }
-
-      return root
-          .listSync(recursive: true, followLinks: false)
-          .whereType<File>()
-          .map((file) {
-            final normalizedFilePath = _normalizePath(file.path);
-            final normalizedRootPath = _normalizePath(projectPath);
-            if (!normalizedFilePath.startsWith('$normalizedRootPath/')) {
-              return '';
-            }
-            return normalizedFilePath.substring(normalizedRootPath.length + 1);
-          })
-          .where((relativePath) => relativePath.isNotEmpty)
-          .toList();
-    } catch (_) {
-      return const [];
-    }
-  }
-
-  static String _normalizePath(String path) =>
+  static String normalizePath(String path) =>
       path.replaceAll(RegExp(r'\\'), '/').replaceAll(RegExp(r'/+'), '/').trim();
 
   static bool _documentExists(
@@ -261,10 +294,10 @@ class ProjectPhaseService {
     required String documentName,
   }) {
     for (final folder in folders) {
-      final normalizedFolder = _normalizePath(folder);
+      final normalizedFolder = normalizePath(folder);
       final candidate = normalizedFolder.isEmpty
-          ? _normalizePath(documentName)
-          : _normalizePath('$normalizedFolder/$documentName');
+          ? normalizePath(documentName)
+          : normalizePath('$normalizedFolder/$documentName');
       if (normalizedFiles.contains(candidate)) {
         return true;
       }

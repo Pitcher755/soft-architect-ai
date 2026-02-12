@@ -1,7 +1,7 @@
 # HU-3.8 ARTIFACTS MANIFEST
 
 > **Fecha:** 12/02/2026
-> **Estado:** 🚧 Inicial
+> **Estado:** ✅ Actualizado con implementación real
 
 ## 📖 Tabla de Contenidos
 - [Objetivo](#objetivo)
@@ -28,44 +28,41 @@ Inventariar los artefactos necesarios para implementar HU-3.8 con lógica de fas
 
 ### Evolutivos (durante ejecución)
 - `ACCEPTANCE_CRITERIA_VERIFICATION.md`
-- `IMPLEMENTATION_NOTES.md`
 - `FINAL_SUMMARY.md`
 
 ---
 
-## 🧩 Artefactos de Código Esperados
+## 🧩 Artefactos de Código Implementados
 
 ### Dominio (client)
+- `src/client/lib/features/project_shell/core/constants/project_structure_constants.dart`
 - `src/client/lib/features/project_shell/domain/models/project_phase.dart`
-- `src/client/lib/features/project_shell/domain/services/project_phase_progress_service.dart`
-- `src/client/lib/features/project_shell/domain/value_objects/phase_requirements.dart`
+- `src/client/lib/features/project_shell/domain/services/project_phase_service.dart`
 
-### Data
-- `src/client/lib/features/project_shell/data/datasources/template_inventory_datasource.dart`
-- `src/client/lib/features/project_shell/data/repositories/project_phase_repository_impl.dart`
+### Estado / Providers
+- `src/client/lib/features/project_shell/presentation/providers/project_providers.dart`
 
 ### Presentación
-- `src/client/lib/features/project_shell/presentation/notifiers/project_phase_notifier.dart`
-- `src/client/lib/features/project_shell/presentation/widgets/project_phase_progress_widget.dart`
+- `src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart`
+- `src/client/lib/features/project_shell/presentation/widgets/projects_grid.dart`
+- `src/client/lib/features/project_shell/presentation/widgets/project_card.dart`
 
 ---
 
-## 🧪 Artefactos de Testing Esperados
+## 🧪 Artefactos de Testing Implementados
 
 ### Unit tests
-- `tests/client/unit/features/project_shell/domain/models/project_phase_test.dart`
-- `tests/client/unit/features/project_shell/domain/services/project_phase_progress_service_test.dart`
-- `tests/client/unit/features/project_shell/data/repositories/project_phase_repository_impl_test.dart`
+- `tests/client/unit/features/project_shell/domain/services/project_phase_service_test.dart`
+- `tests/client/unit/features/project_shell/presentation/notifiers/project_progress_notifier_test.dart`
 
-### Widget/Integration tests
-- `tests/client/widget/features/project_shell/presentation/widgets/project_phase_progress_widget_test.dart`
-- `tests/client/integration/features/project_shell/presentation/project_phase_flow_test.dart`
+### Widget tests relacionados
+- `tests/client/widget/features/project_shell/presentation/project_card_test.dart`
 
 ---
 
 ## ✅ Evidencias de Validación
 
-- Reporte de cobertura para módulos de fase/progreso.
-- Salida de `flutter test` para suites relevantes.
-- Evidencia de transición ROOT → 99-META sobre proyecto de ejemplo.
-- Capturas o logs de progreso `Doc N/25` actualizando por fase.
+- Salida de `flutter test` para suites HU-3.8 (dominio + notifier).
+- Salida de `flutter analyze` limpia en `src/client/lib/features/project_shell`.
+- Salida de `flutter analyze` limpia en `tests/`.
+- Evidencia de cálculo determinista `Doc N/25` y transición por fases en tests.

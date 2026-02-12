@@ -6,6 +6,20 @@ import 'package:softarchitect_ai/features/project_shell/domain/models/project_ph
 import 'package:softarchitect_ai/features/project_shell/domain/services/project_phase_service.dart';
 import 'package:softarchitect_ai/features/project_shell/core/constants/project_structure_constants.dart';
 
+class FakeProjectFileScanner {
+  FakeProjectFileScanner(this.files);
+
+  final List<String> files;
+  int calls = 0;
+  String? lastPath;
+
+  List<String> getProjectFiles(String projectPath) {
+    calls++;
+    lastPath = projectPath;
+    return files;
+  }
+}
+
 void main() {
   group('ProjectPhaseService', () {
     Project buildProject(String path, {String id = 'proj-1'}) {
@@ -38,6 +52,37 @@ void main() {
       expect(result.docsCompleted, 0);
       expect(result.totalDocs, ProjectStructureConstants.totalExpectedDocs);
       expect(result.progress, 0);
+    });
+
+    test('fetches files from scanner and calculates progress', () {
+      final scanner = FakeProjectFileScanner(const [
+        'AGENTS.md',
+        'README.md',
+      ]);
+      final service = ProjectPhaseService(fileScanner: scanner.getProjectFiles);
+
+      final result = service.analyzeProjectPath('/tmp/test_project');
+
+      expect(scanner.calls, 1);
+      expect(scanner.lastPath, '/tmp/test_project');
+      expect(result.docsCompleted, 2);
+      expect(result.currentPhase, 0);
+      expect(result.progress, closeTo(2 / 25, 0.0001));
+    });
+
+    test('instance calculator computes deterministic doc N/25', () {
+      final scanner = FakeProjectFileScanner(const []);
+      final service = ProjectPhaseService(fileScanner: scanner.getProjectFiles);
+
+      final result = service.calculateProgressForFiles(const [
+        'AGENTS.md',
+        'README.md',
+        'context/10-CONTEXT/DOMAIN_LANGUAGE.md',
+      ]);
+
+      expect(result.docsCompleted, 3);
+      expect(result.progress, closeTo(3 / 25, 0.0001));
+      expect(result.currentPhase, 0);
     });
 
     test('calculates phase 1 when root and context docs are completed', () {
