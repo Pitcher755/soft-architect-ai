@@ -14,40 +14,40 @@ NC='\033[0m' # No Color
 cd "$(dirname "$0")/.."
 
 echo -e "${YELLOW}[1/5] Verificando estructura de tests...${NC}"
-if [ -d "tests/python/unit" ] && [ -d "tests/python/integration" ]; then
-    echo -e "${GREEN}✓ Estructura tests/python/ existe${NC}"
+if [ -d "tests/server/unit" ] && [ -d "tests/server/integration" ]; then
+    echo -e "${GREEN}✓ Estructura tests/server/ existe${NC}"
 else
-    echo -e "${RED}✗ Estructura tests/python/ incompleta${NC}"
+    echo -e "${RED}✗ Estructura tests/server/ incompleta${NC}"
     exit 1
 fi
 
 echo ""
 echo -e "${YELLOW}[2/5] Verificando conftest.py centralizado...${NC}"
-if [ -f "tests/python/conftest.py" ]; then
-    echo -e "${GREEN}✓ tests/python/conftest.py existe${NC}"
+if [ -f "tests/server/conftest.py" ]; then
+    echo -e "${GREEN}✓ tests/server/conftest.py existe${NC}"
     echo "   Contenido clave:"
-    grep -A 2 "server_root" tests/python/conftest.py | head -3 || true
+    grep -A 2 "server_root" tests/server/conftest.py | head -3 || true
 else
-    echo -e "${RED}✗ tests/python/conftest.py no encontrado${NC}"
+    echo -e "${RED}✗ tests/server/conftest.py no encontrado${NC}"
     exit 1
 fi
 
 echo ""
 echo -e "${YELLOW}[3/5] Contando tests migrados...${NC}"
 OLD_TESTS=$(find src/server/tests -name "test_*.py" 2>/dev/null | wc -l || echo "0")
-NEW_TESTS=$(find tests/python -name "test_*.py" 2>/dev/null | wc -l)
+NEW_TESTS=$(find tests/server -name "test_*.py" 2>/dev/null | wc -l)
 echo -e "   Tests en src/server/tests/: ${OLD_TESTS}"
-echo -e "   Tests en tests/python/: ${NEW_TESTS}"
+echo -e "   Tests en tests/server/: ${NEW_TESTS}"
 if [ "$NEW_TESTS" -gt 0 ]; then
     echo -e "${GREEN}✓ Tests migrados correctamente ($NEW_TESTS archivos)${NC}"
 else
-    echo -e "${RED}✗ No se encontraron tests en tests/python/${NC}"
+    echo -e "${RED}✗ No se encontraron tests en tests/server/${NC}"
     exit 1
 fi
 
 echo ""
 echo -e "${YELLOW}[4/5] Verificando configuración pytest...${NC}"
-if grep -q "testpaths.*tests/python" src/server/pyproject.toml; then
+if grep -q "testpaths.*tests/server" src/server/pyproject.toml; then
     echo -e "${GREEN}✓ pyproject.toml actualizado (testpaths apunta a tests/python)${NC}"
 else
     echo -e "${RED}✗ pyproject.toml no actualizado${NC}"

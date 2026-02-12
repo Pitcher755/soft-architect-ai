@@ -90,4 +90,10 @@ class WebSocketClient {
     }
     return null;
   }
+
+  /// Test-only hook to validate message parsing logic.
+  String? testExtractToken(String message) => _extractToken(message);
+
+  /// Test-only hook to validate incoming event handling.
+  void testHandleIncoming(dynamic event) => _handleIncoming(event);
 }

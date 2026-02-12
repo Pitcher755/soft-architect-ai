@@ -98,3 +98,25 @@ coverage/
 .coverage
 .pytest_cache/
 htmlcov/
+
+# ============================================================================
+# Python Backend Duplicates (Centralized in src/server/)
+# Added: 2026-02-11 - Structure cleanup
+# ============================================================================
+# Coverage reports (use src/server/htmlcov/ instead)
+/coverage/
+/coverage_python_initial/
+/htmlcov/
+
+# Services directory (migrated to src/server/services/)
+/services/
+
+# Python config files (use src/server/pyproject.toml, etc.)
+/pyproject.toml
+/pyrightconfig.json
+/requirements.txt
+
+# Prevent accidental root-level Python files
+/*.py
+!setup.py
+!build.py

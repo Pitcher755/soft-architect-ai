@@ -28,9 +28,9 @@ class LanguageSelectorWidget extends ConsumerWidget {
       title: Text(l10n.settingsLanguageLabel),
       trailing: DropdownButton<String>(
         value: locale.languageCode,
-        items: const [
-          DropdownMenuItem(value: 'en', child: Text('English')),
-          DropdownMenuItem(value: 'es', child: Text('Español')),
+        items: [
+          DropdownMenuItem(value: 'en', child: Text(l10n.english)),
+          DropdownMenuItem(value: 'es', child: Text(l10n.spanish)),
         ],
         onChanged: (newLanguageCode) {
           if (newLanguageCode != null) {

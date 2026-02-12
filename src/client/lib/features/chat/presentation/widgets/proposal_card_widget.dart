@@ -127,6 +127,7 @@ class ProposalCardWidget extends StatelessWidget {
       children: [
         // Reject button
         TextButton.icon(
+          key: const Key('proposal_reject_button'),
           onPressed: onReject,
           icon: const Icon(Icons.close, size: 16),
           label: Text(AppLocalizations.of(context).reject),
@@ -140,6 +141,7 @@ class ProposalCardWidget extends StatelessWidget {
           children: [
             // Refine button
             OutlinedButton.icon(
+              key: const Key('proposal_refine_button'),
               onPressed: onRefine,
               icon: const Icon(Icons.edit, size: 16),
               label: Text(AppLocalizations.of(context).refine),
@@ -155,6 +157,7 @@ class ProposalCardWidget extends StatelessWidget {
             const SizedBox(width: 12),
             // Validate and save button (Primary Action)
             ElevatedButton.icon(
+              key: const Key('proposal_validate_button'),
               onPressed: onValidate,
               icon: const Icon(Icons.check_circle, size: 16),
               label: Text(AppLocalizations.of(context).validateAndSave),

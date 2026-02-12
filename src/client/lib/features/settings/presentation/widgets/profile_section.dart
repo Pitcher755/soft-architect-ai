@@ -1,7 +1,9 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/settings_provider.dart';
+import '../../../../../gen/app_localizations.dart';
+import '../providers/settings_providers.dart';
 import 'settings_card.dart';
 
 /// Profile section widget - manages user profile settings.
@@ -127,11 +129,17 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                     ),
                     const SizedBox(height: 8),
                     TextField(
+                      key: const ValueKey('userName_field'),
                       controller: _nameController,
                       style: const TextStyle(
                         color: Color(0xFFE6EDF3),
                         fontSize: 14,
                       ),
+                      onChanged: (value) {
+                        ref
+                            .read(settingsProvider.notifier)
+                            .updateUserName(value);
+                      },
                       decoration: InputDecoration(
                         hintText: 'Escribe tu nombre',
                         hintStyle: const TextStyle(color: Color(0xFF8b949e)),
@@ -195,6 +203,10 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
     );
   }
 
+  /// Shows avatar picker dialog with predefined colors and custom image option.
+  ///
+  /// Allows users to select from predefined avatar colors or choose a custom
+  /// image from their file system using file_picker.
   void _showAvatarPicker(
     BuildContext context,
     WidgetRef ref,
@@ -211,39 +223,106 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
         ),
         content: SizedBox(
           width: 300,
-          child: Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            alignment: WrapAlignment.center,
-            children: List.generate(colors.length, (index) {
-              final isSelected = index == selectedIndex;
-              return GestureDetector(
-                onTap: () {
-                  ref.read(settingsProvider.notifier).updateAvatarIndex(index);
-                  Navigator.of(ctx).pop();
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: colors[index],
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected
-                          ? Colors.white
-                          : colors[index].withValues(alpha: 0.3),
-                      width: isSelected ? 3 : 2,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                alignment: WrapAlignment.center,
+                children: List.generate(colors.length, (index) {
+                  final isSelected = index == selectedIndex;
+                  return GestureDetector(
+                    onTap: () {
+                      ref
+                          .read(settingsProvider.notifier)
+                          .updateAvatarIndex(index);
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: colors[index],
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isSelected
+                              ? Colors.white
+                              : colors[index].withValues(alpha: 0.3),
+                          width: isSelected ? 3 : 2,
+                        ),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.person,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.person, size: 30, color: Colors.white),
-                  ),
+                  );
+                }),
+              ),
+              const SizedBox(height: 20),
+              const Divider(color: Color(0xFF30363d)),
+              const SizedBox(height: 12),
+              TextButton.icon(
+                onPressed: () async {
+                  Navigator.of(ctx).pop();
+                  await _pickCustomAvatar(context, ref);
+                },
+                icon: const Icon(Icons.image, color: Color(0xFF58A6FF)),
+                label: const Text(
+                  'Elegir imagen personalizada',
+                  style: TextStyle(color: Color(0xFF58A6FF)),
                 ),
-              );
-            }),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  /// Opens file picker for custom avatar image selection.
+  ///
+  /// Allows users to select an image file from their system to use as avatar.
+  /// Supported formats: PNG, JPG, JPEG.
+  Future<void> _pickCustomAvatar(BuildContext context, WidgetRef ref) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg', 'jpeg'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        final imagePath = result.files.single.path!;
+        await ref
+            .read(settingsProvider.notifier)
+            .updateCustomAvatarPath(imagePath);
+
+        if (context.mounted) {
+          final l10n = AppLocalizations.of(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.avatarUpdated),
+              backgroundColor: const Color(0xFF238636),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    } on Object catch (e) {
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.avatarUpdateError(e.toString())),
+            backgroundColor: const Color(0xFFF85149),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 }

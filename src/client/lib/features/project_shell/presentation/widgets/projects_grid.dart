@@ -1,31 +1,48 @@
 // ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../gen/app_localizations.dart';
+import '../../../../../shared/utils/navigation_utils.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/services/project_phase_service.dart';
 import 'project_card.dart';
 
-/// Grid view displaying project cards.
+/// Grid view displaying recent project cards with Quick Start option.
 ///
+/// Displays the most recently used 7 projects sorted by last opened date,
+/// plus a Quick Start card for creating new projects.
 /// Handles responsive layout and project card generation.
-class ProjectsGrid extends StatelessWidget {
+class ProjectsGrid extends ConsumerWidget {
   const ProjectsGrid({required this.projects, super.key});
 
   final List<Project> projects;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+
     if (projects.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(40),
+      return Padding(
+        padding: const EdgeInsets.all(40),
         child: Text(
-          'Cargando proyectos...',
-          style: TextStyle(color: Color(0xFF8B949E)),
+          l10n.loadingProjects,
+          style: const TextStyle(color: Color(0xFF8B949E)),
         ),
       );
     }
+
+    // Sort projects by last opened date (most recent first)
+    // and take only the last 8 projects
+    final sortedProjects = List<Project>.from(projects)
+      ..sort((a, b) {
+        final aDate = a.lastOpened ?? a.createdAt;
+        final bDate = b.lastOpened ?? b.createdAt;
+        return bDate.compareTo(aDate); // Descending order
+      });
+
+    final recentProjects = sortedProjects.take(8).toList();
 
     return LayoutBuilder(
       builder: (context, gridConstraints) {
@@ -46,9 +63,9 @@ class ProjectsGrid extends StatelessWidget {
               mainAxisSpacing: 24,
               childAspectRatio: childAspectRatio,
             ),
-            itemCount: projects.length,
+            itemCount: recentProjects.length,
             itemBuilder: (context, index) {
-              final project = projects[index];
+              final project = recentProjects[index];
               final phase = ProjectPhaseService.getProjectPhase(project);
 
               return ProjectCard(
@@ -58,13 +75,11 @@ class ProjectsGrid extends StatelessWidget {
                 phase: phase.name,
                 phaseColor: phase.color,
                 path: project.path,
-                modified: _formatDate(project.lastOpened ?? project.createdAt),
-                onTap: () => context.go(
-                  Uri(
-                    path: '/project-shell',
-                    queryParameters: {'path': project.path},
-                  ).toString(),
+                modified: _formatDate(
+                  context,
+                  project.lastOpened ?? project.createdAt,
                 ),
+                onTap: () => navigateToProjectShell(context, ref, project.path),
               );
             },
           ),
@@ -73,12 +88,16 @@ class ProjectsGrid extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  /// Formats a date into a human-readable relative string.
+  ///
+  /// Returns localized strings like "Today", "Yesterday", or formatted dates.
+  String _formatDate(BuildContext context, DateTime date) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final diff = now.difference(date);
-    if (diff.inDays == 0) return 'Hoy';
-    if (diff.inDays == 1) return 'Ayer';
-    if (diff.inDays < 7) return 'Hace ${diff.inDays} días';
+    if (diff.inDays == 0) return l10n.today;
+    if (diff.inDays == 1) return l10n.yesterday;
+    if (diff.inDays < 7) return l10n.daysAgo(diff.inDays);
     return '${date.day}/${date.month}/${date.year}';
   }
 }

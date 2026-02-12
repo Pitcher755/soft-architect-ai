@@ -92,6 +92,16 @@ class WebMockProjectRepository implements ProjectRepository {
   }
 
   @override
+  Future<void> updateProject(Project project) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    final index = _projects.indexWhere((p) => p.id == project.id);
+    if (index >= 0) {
+      _projects[index] = project;
+      debugPrint('✅ Project updated: ${project.id}');
+    }
+  }
+
+  @override
   Future<void> deleteProject(String id) async {
     await Future.delayed(const Duration(milliseconds: 100));
     _projects.removeWhere((p) => p.id == id);

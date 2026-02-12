@@ -6,6 +6,7 @@ import '../../../features/project_shell/domain/entities/project.dart';
 import '../../../features/project_shell/domain/services/project_phase_service.dart';
 import '../../../features/project_shell/presentation/providers/project_providers.dart';
 import '../../../features/project_shell/presentation/widgets/project_card.dart';
+import '../../utils/navigation_utils.dart';
 
 /// Global search dialog for finding projects.
 ///
@@ -214,8 +215,8 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
                           path: project.path,
                           modified: modified,
                           onTap: () {
-                            Navigator.of(context).pop();
-                            // Navigation is handled by the card itself
+                            Navigator.of(context).pop(); // Close dialog first
+                            navigateToProjectShell(context, ref, project.path);
                           },
                         );
                       },

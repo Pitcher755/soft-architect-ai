@@ -32,7 +32,6 @@ class _ProjectWorkspaceScreenState
 
     return Scaffold(
       backgroundColor: AppColors.mainBg,
-      // 2. ESTRUCTURA ORIGINAL EXACTA (LayoutBuilder -> Row -> ...)
       body: LayoutBuilder(
         builder: (context, windowConstraints) {
           const minWindowHeight = 500.0;

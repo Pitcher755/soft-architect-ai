@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../features/settings/presentation/providers/settings_provider.dart';
+import '../../../features/settings/presentation/providers/settings_providers.dart';
 
 class KeyboardZoomWrapper extends ConsumerWidget {
   const KeyboardZoomWrapper({required this.child, super.key});

@@ -31,11 +31,11 @@ echo "" >> "$REPORT_FILE"
 # 6.1.1 Python Tests
 echo "#### 6.1.1 Full Python Test Suite"  >> "$REPORT_FILE"
 echo ""  >> "$REPORT_FILE"
-echo "Executing: $PYTHON_CMD -m pytest tests/python/ --cov=services --cov-report=term-missing"  >> "$REPORT_FILE"
+echo "Executing: $PYTHON_CMD -m pytest tests/server/ --cov=services --cov-report=term-missing"  >> "$REPORT_FILE"
 echo ""  >> "$REPORT_FILE"
 echo '```'  >> "$REPORT_FILE"
 
-if timeout 180 $PYTHON_CMD -m pytest tests/python/ --cov=services --cov-report=term-missing -v 2>&1 | tee -a "$REPORT_FILE"; then
+if timeout 180 $PYTHON_CMD -m pytest tests/server/ --cov=services --cov-report=term-missing -v 2>&1 | tee -a "$REPORT_FILE"; then
     PYTHON_TEST_STATUS="✅ PASSED"
 else
     PYTHON_TEST_STATUS="⚠️ FAILED OR NOT FOUND"

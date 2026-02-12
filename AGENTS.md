@@ -127,7 +127,7 @@ Para cada Feature, se deben crear obligatoriamente estos elementos:
 
 ### Comandos de Ejecución:
 
-* Unit Tests (All): `cd src/client && flutter test && cd ../server && pytest`
+* Unit Tests (All): `cd tests && flutter test client/ && cd ../src/server && pytest`
 
 ---
 
@@ -413,7 +413,7 @@ ruff check src/server/
 #### Pre-Commit Verification
 ```bash
 # Before pushing, run locally:
-cd src/server && pytest tests/ --cov=services --cov=core \
+cd src/server && pytest ../../tests/server/ --cov=services --cov=core \
   --cov-report=term-missing --cov-fail-under=80
 # MUST report: Coverage >= 80%
 ```
@@ -805,13 +805,13 @@ git push origin feature/xyz
 black --check src/server/                    # Check formatting
 ruff check src/server/                       # Check linting
 python -m pyright src/server/                # Check types
-pytest tests/python/ --cov=src/server --cov-fail-under=80  # Check coverage
+pytest tests/server/ --cov=src/server --cov-fail-under=80  # Check coverage
 
 # Generate coverage report (HTML)
 ./scripts/generate_coverage_html.sh
 
 # Run only Flutter tests
-cd src/client && flutter test test/
+cd tests && flutter test client/
 
 # Validate GitHub Actions workflows
 ./scripts/validate-workflows.sh

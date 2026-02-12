@@ -1,27 +1,38 @@
-import 'dart:io'; // Para crear directorios
+import 'dart:io'; // For creating directories
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../gen/app_localizations.dart';
 import '../../../../../shared/presentation/widgets/labeled_text_area.dart';
 import '../../../../../shared/presentation/widgets/labeled_text_field.dart';
 import '../../../../../shared/presentation/widgets/path_picker_field.dart';
 import '../../../../../shared/utils/navigation_utils.dart';
 import '../../../../../shared/utils/validation_utils.dart';
-import '../../../../gen/app_localizations.dart';
 import '../../../filesystem/data/services/filesystem_service.dart';
+import '../../../settings/presentation/providers/settings_providers.dart';
 import '../providers/project_providers.dart';
 
-/// CreateProjectDialog - Widget separado para crear nuevos proyectos
-/// Encapsula la lógica de diálogo, selección
-/// de archivos y creación de directorios.
+/// CreateProjectDialog - Separated widget for creating new projects.
+///
+/// Encapsulates dialog logic, file selection, and directory creation.
+/// Integrates with Settings to use the configured default project directory.
 class CreateProjectDialog {
-  /// Muestra el modal de creación de proyecto
+  /// Shows the project creation modal with default path from Settings.
+  ///
+  /// Automatically populates the base path with the user's configured
+  /// project directory from Settings, or falls back to user home directory.
   static void show(BuildContext context, WidgetRef ref) {
     final nameController = TextEditingController();
-    // Ruta por defecto según el SO (puedes ajustarlo si quieres)
-    final pathController = TextEditingController(text: Directory.current.path);
+
+    // Get default project path from Settings or fallback to current directory
+    final settings = ref.read(settingsProvider);
+    final defaultPath = settings.storagePath.isEmpty
+        ? Directory.current.path
+        : settings.storagePath;
+
+    final pathController = TextEditingController(text: defaultPath);
     final descController = TextEditingController();
 
     showDialog(
@@ -116,7 +127,13 @@ class CreateProjectDialog {
     );
   }
 
-  /// Maneja la lógica de validación y creación física de directorios
+  /// Handles validation and physical directory creation logic.
+  ///
+  /// Validates project inputs, creates directory structure using
+  /// FilesystemService, updates global state via Riverpod, and navigates
+  /// to the newly created project shell screen.
+  ///
+  /// Displays appropriate success/error feedback to the user.
   static Future<void> _handleCreateProject(
     BuildContext parentContext,
     BuildContext dialogContext,
@@ -164,7 +181,7 @@ class CreateProjectDialog {
           parentContext,
           'Proyecto "$projectName" creado exitosamente',
         );
-        navigateToProjectShell(parentContext, fullProjectPath);
+        await navigateToProjectShell(parentContext, ref, fullProjectPath);
       }
     } on Exception catch (e) {
       if (parentContext.mounted) {

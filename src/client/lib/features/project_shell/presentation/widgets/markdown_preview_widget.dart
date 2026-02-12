@@ -88,7 +88,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
           ),
         );
       }
-    } on Exception catch (e) {
+    } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

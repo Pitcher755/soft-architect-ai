@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/settings_provider.dart';
+import '../../../../../gen/app_localizations.dart';
+import '../providers/settings_providers.dart';
 import 'setting_item.dart';
 import 'settings_card.dart';
 
@@ -14,14 +15,15 @@ class AccessibilitySection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
+    final l10n = AppLocalizations.of(context);
 
     return SettingsCard(
-      title: 'Accesibilidad',
+      title: l10n.accessibilityTitle,
       icon: Icons.accessibility,
       children: [
         SettingItem(
-          title: 'Zoom global',
-          subtitle: 'Ajusta el zoom de toda la aplicación',
+          title: l10n.zoomTitle,
+          subtitle: l10n.zoomSubtitle,
           child: SizedBox(
             width: 200,
             child: Slider(
@@ -45,7 +47,7 @@ class AccessibilitySection extends ConsumerWidget {
         ),
         const Divider(color: Color(0xFF30363d)),
         SettingItem(
-          title: 'Atajos de teclado para zoom',
+          title: l10n.enableZoomShortcuts,
           subtitle: 'Ctrl + / Ctrl - para zoom, Ctrl + 0 para reset',
           child: Switch(
             value: settings.enableZoomShortcuts,

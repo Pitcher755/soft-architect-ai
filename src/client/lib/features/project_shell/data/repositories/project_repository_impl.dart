@@ -80,6 +80,25 @@ class ProjectRepositoryImpl implements ProjectRepository {
       sqliteDataSource.updateLastOpened(projectId);
 
   @override
+  Future<void> updateProject(Project project) async {
+    try {
+      developer.log(
+        'Updating project: ${project.id}',
+        name: 'ProjectRepository',
+      );
+      final model = ProjectModel.fromProject(project);
+      await sqliteDataSource.updateProject(model);
+    } catch (e) {
+      developer.log(
+        'Error updating project: $e',
+        name: 'ProjectRepository',
+        error: e,
+      );
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> deleteProject(String projectId) =>
       sqliteDataSource.deleteProject(projectId);
 

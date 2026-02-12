@@ -66,8 +66,14 @@ class ProjectShellNotifier extends StateNotifier<ProjectShellState> {
   /// Select project
   Future<void> selectProject(Project project) async {
     developer.log('Selecting project: ${project.id}');
-    state = state.copyWith(selectedProject: project);
-    // TODO: Update last opened timestamp
+    final updatedProject = project.copyWith(lastOpened: DateTime.now());
+    state = state.copyWith(selectedProject: updatedProject);
+    // Persist the updated timestamp to storage
+    try {
+      await repository.updateProject(updatedProject);
+    } on Exception catch (e) {
+      developer.log('Error updating project timestamp: $e');
+    }
   }
 
   /// Create project

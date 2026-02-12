@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../project_shell/domain/models/project_phase.dart';
-import '../../../settings/presentation/providers/settings_provider.dart';
+import '../../../settings/presentation/providers/settings_providers.dart';
 
 class ProgressIndicatorWidget extends ConsumerStatefulWidget {
   const ProgressIndicatorWidget({

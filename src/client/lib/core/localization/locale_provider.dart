@@ -156,7 +156,12 @@ class LocaleNotifier extends StateNotifier<Locale> {
   ///   - true if supported, false otherwise
   static bool isSupported(Locale locale) => supportedLocales.contains(locale);
 
-  void toggleLocale() {}
+  Future<void> toggleLocale() async {
+    final next = state.languageCode == 'es'
+        ? const Locale('en')
+        : const Locale('es');
+    await setLocale(next);
+  }
 }
 
 /// Extension on Locale for convenience methods.

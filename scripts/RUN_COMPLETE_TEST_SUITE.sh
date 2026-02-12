@@ -28,7 +28,7 @@ echo -e "${YELLOW}════════════════════�
 cd tests
 
 # Run Flutter tests and capture results
-FLUTTER_OUTPUT=$(flutter test test/ --verbose 2>&1)
+FLUTTER_OUTPUT=$(flutter test client/ --verbose 2>&1)
 FLUTTER_PASSED=$(echo "$FLUTTER_OUTPUT" | grep -o "All tests passed" | wc -l)
 
 if [ $FLUTTER_PASSED -eq 1 ]; then
@@ -55,7 +55,7 @@ echo -e "${YELLOW}════════════════════�
 source venv/bin/activate
 
 # Run Python unit tests
-PYTHON_OUTPUT=$(python -m pytest tests/python/unit/ -v 2>&1)
+PYTHON_OUTPUT=$(python -m pytest tests/server/unit/ -v 2>&1)
 PYTHON_PASSED=$(echo "$PYTHON_OUTPUT" | grep -c "PASSED" || echo "0")
 PYTHON_FAILED=$(echo "$PYTHON_OUTPUT" | grep -c "FAILED" || echo "0")
 
@@ -75,7 +75,7 @@ echo -e "${YELLOW}════════════════════�
 
 # Python Coverage
 echo -e "${BLUE}Python Backend Coverage:${NC}"
-python -m pytest tests/python/unit/ --cov=services --cov-report=term-missing -q 2>&1 | tail -20
+python -m pytest tests/server/unit/ --cov=services --cov-report=term-missing -q 2>&1 | tail -20
 
 # =====================================================================
 # FINAL SUMMARY
