@@ -47,5 +47,45 @@ void main() {
       expect(find.byType(Icon), findsAtLeastNWidgets(1));
       expect(find.byType(Text), findsAtLeastNWidgets(1));
     });
+
+    testWidgets('opens dropdown and shows EN/ES options', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const LanguageSelectorWidget())),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DropdownButton<String>));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Inglés'), findsWidgets);
+      expect(find.text('Español'), findsWidgets);
+    });
+  });
+
+  group('LanguageToggleButton', () {
+    testWidgets('renders with uppercase locale code', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const LanguageToggleButton())),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('ES'), findsOneWidget);
+      expect(find.byType(IconButton), findsOneWidget);
+      expect(find.byType(Tooltip), findsOneWidget);
+    });
+
+    testWidgets('toggles language when pressed', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const LanguageToggleButton())),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(IconButton));
+      await tester.pumpAndSettle();
+
+      expect(find.text('EN'), findsOneWidget);
+    });
   });
 }

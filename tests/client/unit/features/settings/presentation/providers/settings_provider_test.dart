@@ -122,6 +122,16 @@ void main() {
       expect(settings.userName, 'Architect');
       expect(settings.avatarIndex, 0);
     });
+
+    test('storagePath should fallback to empty string when null', () {
+      const settings = AppSettings(projectDirectory: null);
+      expect(settings.storagePath, '');
+    });
+
+    test('storagePath should mirror projectDirectory when set', () {
+      const settings = AppSettings(projectDirectory: '/tmp/projects');
+      expect(settings.storagePath, '/tmp/projects');
+    });
   });
 
   group('SettingsNotifier', () {
@@ -178,6 +188,26 @@ void main() {
 
       final settings = container.read(settingsProvider);
       expect(settings.projectDirectory, '/new/project/path');
+    });
+
+    test('updateCustomAvatarPath should update state and allow null', () async {
+      final notifier = container.read(settingsProvider.notifier);
+
+      await notifier.updateCustomAvatarPath('/tmp/avatar.png');
+      expect(container.read(settingsProvider).customAvatarPath, '/tmp/avatar.png');
+
+      await notifier.updateCustomAvatarPath(null);
+      expect(container.read(settingsProvider).customAvatarPath, isNull);
+    });
+
+    test('updateStoragePath should update projectDirectory alias', () async {
+      final notifier = container.read(settingsProvider.notifier);
+
+      await notifier.updateStoragePath('/tmp/storage');
+
+      final settings = container.read(settingsProvider);
+      expect(settings.projectDirectory, '/tmp/storage');
+      expect(settings.storagePath, '/tmp/storage');
     });
 
     test('updateTheme should update state', () {
@@ -305,6 +335,57 @@ void main() {
       expect(settings.themeMode, ThemeMode.dark);
 
       newContainer.dispose();
+    });
+
+    test('granular providers should expose selected values', () {
+      final notifier = container.read(settingsProvider.notifier);
+
+      notifier.updateTheme(ThemeMode.light);
+      notifier.updateFontSize(1.3);
+      notifier.updateGlobalZoom(1.7);
+      notifier.updateZoomShortcuts(enableZoomShortcuts: false);
+      notifier.updateAnimations(enableAnimations: false);
+      notifier.updateMemoryOptimization(enableMemoryOptimization: false);
+      notifier.updateUserName('Granular');
+      notifier.updateAvatarIndex(4);
+      notifier.updateProjectDirectory('/tmp/granular');
+
+      expect(container.read(themeModeProvider), ThemeMode.light);
+      expect(container.read(fontSizeProvider), 1.3);
+      expect(container.read(globalZoomProvider), 1.7);
+      expect(container.read(enableZoomShortcutsProvider), false);
+      expect(container.read(enableAnimationsProvider), false);
+      expect(container.read(enableMemoryOptimizationProvider), false);
+      expect(container.read(userNameProvider), 'Granular');
+      expect(container.read(avatarIndexProvider), 4);
+      expect(container.read(projectDirectoryProvider), '/tmp/granular');
+    });
+  });
+
+  group('LastProjectNotifier', () {
+    late ProviderContainer container;
+
+    setUp(() {
+      initMockSharedPreferences({'lastProject.path': '/initial/path'});
+      container = ProviderContainer();
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('provider initializes without throwing', () {
+      expect(() => container.read(lastProjectProvider), returnsNormally);
+    });
+
+    test('updateLastProject persists and updates state', () async {
+      await container
+          .read(lastProjectProvider.notifier)
+          .updateLastProject('/updated/path');
+
+      expect(container.read(lastProjectProvider), '/updated/path');
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString('lastProject.path'), '/updated/path');
     });
   });
 }

@@ -1,0 +1,38 @@
+{
+    "backlog_name": "SoftArchitect AI - Roadmap v0.2.0 (Post-MVP)",
+    "description": "Mejoras de rendimiento, seguridad profunda y optimizaciones no críticas para el lanzamiento inicial.",
+    "items": [
+        {
+            "hu_id": "HU-4.5",
+            "name": "Optimización Avanzada de Streaming y Caché",
+            "priority": "Low",
+            "type": "Optimization",
+            "description": "Implementar caché de Redis para embeddings y compresión Gzip agresiva.",
+            "reason_for_delay": "El MVP funciona bien con ChromaDB local y streaming básico. La optimización prematura retrasaría el lanzamiento."
+        },
+        {
+            "hu_id": "HU-5.2",
+            "name": "Hardening de Seguridad y Cumplimiento OWASP Completo",
+            "priority": "Medium",
+            "type": "Security",
+            "description": "Auditoría profunda, rotación de secretos automatizada y headers de seguridad estrictos.",
+            "reason_for_delay": "El MVP es una herramienta local/offline. La superficie de ataque es mínima comparada con un SaaS público. Se aplicará saneamiento básico en v0.1.0."
+        },
+        {
+            "hu_id": "HU-5.3",
+            "name": "Profiling de Rendimiento Profundo (APM)",
+            "priority": "Low",
+            "type": "Performance",
+            "description": "Integración con OpenTelemetry y dashboards de métricas en tiempo real.",
+            "reason_for_delay": "No crítico para un MVP monousuario local."
+        },
+        {
+            "hu_id": "HU-8.2",
+            "name": "Despliegue Web SaaS Multi-tenant",
+            "priority": "Future",
+            "type": "Feature",
+            "description": "Adaptar la variante web para soportar múltiples usuarios con autenticación en la nube.",
+            "reason_for_delay": "Fuera del alcance del TFM y del caso de uso de privacidad local."
+        }
+    ]
+}

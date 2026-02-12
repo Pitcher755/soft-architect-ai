@@ -74,5 +74,56 @@ void main() {
       expect(updated.id, original.id);
       expect(updated.isStreaming, original.isStreaming);
     });
+
+    test('should identify system role as neither user nor assistant', () {
+      const message = ChatMessage(
+        id: '3',
+        role: MessageRole.system,
+        content: 'System message',
+        timestamp: '2026-02-05T10:00:10Z',
+      );
+
+      expect(message.isUser, isFalse);
+      expect(message.isAssistant, isFalse);
+      expect(message.isComplete, isTrue);
+    });
+
+    test('copyWith should update role, timestamp and metadata', () {
+      const original = ChatMessage(
+        id: '4',
+        role: MessageRole.user,
+        content: 'Hola',
+        timestamp: '2026-02-05T10:00:00Z',
+      );
+
+      final updated = original.copyWith(
+        role: MessageRole.assistant,
+        timestamp: '2026-02-05T10:00:01Z',
+        metadata: const {'tokens': 10},
+      );
+
+      expect(updated.role, MessageRole.assistant);
+      expect(updated.timestamp, '2026-02-05T10:00:01Z');
+      expect(updated.metadata?['tokens'], 10);
+      expect(updated.id, original.id);
+    });
+
+    test('equality depends on id role and content', () {
+      const base = ChatMessage(
+        id: 'same',
+        role: MessageRole.user,
+        content: 'X',
+        timestamp: 't1',
+      );
+      const different = ChatMessage(
+        id: 'same',
+        role: MessageRole.assistant,
+        content: 'X',
+        timestamp: 't1',
+      );
+
+      expect(base == different, isFalse);
+      expect(base.hashCode == different.hashCode, isFalse);
+    });
   });
 }

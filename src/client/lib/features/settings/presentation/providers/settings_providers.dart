@@ -38,6 +38,7 @@ class AppSettings {
     customAvatarPath: json['customAvatarPath'],
     projectDirectory: json['projectDirectory'],
   );
+  static const Object _unset = Object();
 
   final ThemeMode themeMode;
   final double fontSize;
@@ -62,8 +63,8 @@ class AppSettings {
     bool? enableMemoryOptimization,
     String? userName,
     int? avatarIndex,
-    String? customAvatarPath,
-    String? projectDirectory,
+    Object? customAvatarPath = _unset,
+    Object? projectDirectory = _unset,
   }) => AppSettings(
     themeMode: themeMode ?? this.themeMode,
     fontSize: fontSize ?? this.fontSize,
@@ -74,8 +75,12 @@ class AppSettings {
         enableMemoryOptimization ?? this.enableMemoryOptimization,
     userName: userName ?? this.userName,
     avatarIndex: avatarIndex ?? this.avatarIndex,
-    customAvatarPath: customAvatarPath ?? this.customAvatarPath,
-    projectDirectory: projectDirectory ?? this.projectDirectory,
+    customAvatarPath: identical(customAvatarPath, _unset)
+        ? this.customAvatarPath
+        : customAvatarPath as String?,
+    projectDirectory: identical(projectDirectory, _unset)
+        ? this.projectDirectory
+        : projectDirectory as String?,
   );
 
   Map<String, dynamic> toJson() => {
@@ -252,8 +257,14 @@ class LastProjectNotifier extends Notifier<String?> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final path = prefs.getString('lastProject.path');
+      if (!ref.mounted) {
+        return;
+      }
       state = path;
     } on Exception {
+      if (!ref.mounted) {
+        return;
+      }
       state = null;
     }
   }

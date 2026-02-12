@@ -312,7 +312,7 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
           );
         }
       }
-    } on Exception catch (e) {
+    } on Object catch (e) {
       if (context.mounted) {
         final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(

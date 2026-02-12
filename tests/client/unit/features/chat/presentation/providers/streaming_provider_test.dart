@@ -27,13 +27,23 @@ class MockWebSocketClient implements WebSocketClient {
   }
 
   @override
-  Future<void> send(String message) async {
+  void send(String message) {
     // Mock send
   }
 
   @override
-  Future<void> sendJson(Map<String, dynamic> json) async {
+  void sendJson(Map<String, dynamic> json) {
     // Mock sendJson
+  }
+
+  @override
+  String? testExtractToken(String message) => message;
+
+  @override
+  void testHandleIncoming(dynamic event) {
+    if (event is String) {
+      _streamController.add(event);
+    }
   }
 
   void addToken(String token) => _streamController.add(token);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/profile_section.dart';
+import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 
 void main() {
   group('ProfileSection', () {
@@ -50,6 +51,62 @@ void main() {
       // Verify it's a TextField widget (which would have onChanged capability)
       expect(find.byType(TextField), findsWidgets,
           reason: 'ProfileSection should contain TextField widgets');
+    });
+
+    testWidgets('updates user name when text changes and submits',
+        (WidgetTester tester) async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(
+            home: Scaffold(body: ProfileSection()),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final field = find.byKey(const ValueKey('userName_field'));
+      await tester.enterText(field, '  NuevoNombre  ');
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pumpAndSettle();
+
+      expect(container.read(settingsProvider).userName, contains('NuevoNombre'));
+    });
+
+    testWidgets('opens avatar dialog and selects predefined avatar',
+        (WidgetTester tester) async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(
+            home: Scaffold(body: ProfileSection()),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Cambiar avatar'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Elige un avatar'), findsOneWidget);
+      final before = container.read(settingsProvider).avatarIndex;
+      expect(before, equals(0));
+
+      final dialogAvatarIcons = find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.byIcon(Icons.person),
+      );
+      await tester.tap(dialogAvatarIcons.last);
+      await tester.pumpAndSettle();
+
+      final after = container.read(settingsProvider).avatarIndex;
+      expect(after, equals(5));
     });
   });
 }

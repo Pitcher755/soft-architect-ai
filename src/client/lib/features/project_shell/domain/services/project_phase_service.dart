@@ -10,6 +10,17 @@ import '../../domain/models/project_phase.dart';
 /// Provides methods to determine current phase of a project,
 /// calculate progress, and track completed documents.
 class ProjectPhaseService {
+  static bool _hasDirectoryWithPrefix(String basePath, String prefix) {
+    final docDir = Directory(basePath);
+    if (!docDir.existsSync()) {
+      return false;
+    }
+
+    return docDir.listSync().whereType<Directory>().any(
+      (directory) => directory.path.split('/').last.startsWith(prefix),
+    );
+  }
+
   /// Determines the current phase of a project.
   ///
   /// For the guide project, always returns [ProjectPhase.quickStart].
@@ -36,25 +47,24 @@ class ProjectPhaseService {
       }
 
       // Check for key indicators of different phases
-      final hasContext =
-          Directory('${project.path}/context').existsSync();
+      final hasContext = Directory('${project.path}/context').existsSync();
       final hasRequirements =
-          Directory('${project.path}/doc/20-REQUIREMENTS_AND_SPEC')
-              .existsSync() ||
-          Directory('${project.path}/doc/20-*').listSync().isNotEmpty;
+          Directory(
+            '${project.path}/doc/20-REQUIREMENTS_AND_SPEC',
+          ).existsSync() ||
+          _hasDirectoryWithPrefix('${project.path}/doc', '20-');
       final hasArchitecture =
           Directory('${project.path}/doc/30-ARCHITECTURE').existsSync() ||
-          Directory('${project.path}/doc/30-*').listSync().isNotEmpty ||
+          _hasDirectoryWithPrefix('${project.path}/doc', '30-') ||
           Directory('${project.path}/src').existsSync();
       final hasInfrastructure =
           Directory('${project.path}/infrastructure').existsSync() ||
           Directory('${project.path}/doc/40-ROADMAP').existsSync() ||
-          Directory('${project.path}/doc/40-*').listSync().isNotEmpty;
+          _hasDirectoryWithPrefix('${project.path}/doc', '40-');
       final hasTests =
           Directory('${project.path}/tests').existsSync() ||
           Directory('${project.path}/test').existsSync();
-      final hasCI =
-          Directory('${project.path}/.github').existsSync();
+      final hasCI = Directory('${project.path}/.github').existsSync();
 
       // Return the most advanced phase detected
       if (hasCI || (hasTests && hasInfrastructure)) {

@@ -1,8 +1,23 @@
 // tests/widget/flutter/features/project_shell/presentation/markdown_preview_widget_test.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_highlighter/flutter_highlighter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/markdown_preview_widget.dart';
+import 'package:softarchitect_ai/gen/app_localizations.dart';
+
+Widget createLocalizedApp(Widget child) => MaterialApp(
+  localizationsDelegates: const [
+    AppLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ],
+  supportedLocales: AppLocalizations.supportedLocales,
+  locale: const Locale('es'),
+  home: Scaffold(body: child),
+);
 
 void main() {
   group('MarkdownPreviewWidget', () {
@@ -15,7 +30,10 @@ void main() {
 
       // Widget renders without crashing, no empty state text required
       expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
-      expect(find.byIcon(Icons.visibility_outlined), findsOneWidget); // Toolbar icon
+      expect(
+        find.byIcon(Icons.visibility_outlined),
+        findsOneWidget,
+      ); // Toolbar icon
     });
 
     testWidgets('should display widget when content is empty', (
@@ -29,7 +47,10 @@ void main() {
 
       // Widget renders without crashing, shows toolbar with default filename
       expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
-      expect(find.text('Preview.md'), findsOneWidget); // Default filename in toolbar
+      expect(
+        find.text('Preview.md'),
+        findsOneWidget,
+      ); // Default filename in toolbar
     });
 
     testWidgets('should display markdown content when provided', (
@@ -268,6 +289,72 @@ void main() {
 
       // The widget should render with proper theming
       expect(find.byType(Markdown), findsOneWidget);
+    });
+
+    testWidgets('should render JSON view when filename ends with .json', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createLocalizedApp(
+          const MarkdownPreviewWidget(
+            content: '{"name":"test"}',
+            filename: 'data.json',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HighlightView), findsOneWidget);
+      expect(find.byType(Markdown), findsNothing);
+      expect(find.text('data.json'), findsOneWidget);
+    });
+
+    testWidgets('copy button should execute action without crashing', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createLocalizedApp(
+          const MarkdownPreviewWidget(content: '# Título', filename: 'doc.md'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.copy_rounded));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
+    });
+
+    testWidgets('download button should execute action without crashing', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createLocalizedApp(
+          const MarkdownPreviewWidget(content: '# Save me', filename: 'doc.md'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.download_rounded));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
+    });
+
+    testWidgets('copy should do nothing when content is empty', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createLocalizedApp(
+          const MarkdownPreviewWidget(content: '', filename: 'empty.md'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.copy_rounded));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SnackBar), findsNothing);
     });
   });
 }

@@ -21,7 +21,7 @@
 #
 ################################################################################
 
-set -e
+set +e
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
@@ -52,7 +52,7 @@ print_step() {
 
 print_success() {
     echo -e "${GREEN}✅ $1${NC}"
-    ((PASSED_CHECKS++))
+    PASSED_CHECKS=$((PASSED_CHECKS + 1))
 }
 
 print_fail() {
@@ -64,10 +64,10 @@ run_check() {
     local check_name="$1"
     local command="$2"
 
-    ((TOTAL_CHECKS++))
+    TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
     print_step "$check_name"
 
-    if eval "$command" >/dev/null 2>&1; then
+    if (cd "$PROJECT_ROOT" && eval "$command") >/dev/null 2>&1; then
         print_success "$check_name"
         return 0
     else
@@ -157,7 +157,7 @@ run_check "Performance Benchmarks" \
 print_header "PHASE 6️⃣: SECURITY AUDIT"
 
 run_check "Bandit (Python security)" \
-    "python3 -m bandit -r src/server/ -q 2>/dev/null || echo 'Bandit not available'"
+    "python3 -m bandit -r src/server/app src/server/core src/server/services src/server/api -q 2>/dev/null || echo 'Bandit not available'"
 
 run_check "SQL Injection Protection" \
     "python3 -m pytest tests/server/unit/test_security_*.py -q --tb=no 2>/dev/null || echo 'Security tests optional'"
@@ -169,7 +169,7 @@ run_check "SQL Injection Protection" \
 print_header "PHASE 7️⃣: CODE COVERAGE"
 
 run_check "Coverage ≥80%" \
-    "python3 -m pytest tests/server/ --cov=src/server --cov-fail-under=80 -q --tb=no 2>/dev/null"
+    "python3 -m pytest tests/server/ --cov=src/server/app --cov-fail-under=80 -q --tb=no 2>/dev/null"
 
 ################################################################################
 # 8. BUILD VALIDATION

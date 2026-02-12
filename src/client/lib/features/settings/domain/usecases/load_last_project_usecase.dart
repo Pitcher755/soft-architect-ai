@@ -1,4 +1,5 @@
-import '../../data/datasources/last_project_local_datasource.dart' show StorageReadException;
+import '../../data/datasources/last_project_local_datasource.dart'
+    show StorageReadException;
 
 import '../repositories/i_last_project_repository.dart';
 

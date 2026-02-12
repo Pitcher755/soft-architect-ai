@@ -32,9 +32,10 @@
 - [Automation & DevOps](doc/02-SETUP_DEV/AUTOMATION.en.md)
 - **⭐ NEW:** [Knowledge Base Completion Report](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
 - **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
+- **✅ VERIFIED:** [Pre-Push Validation Report (2026-02-12)](doc/01-PROJECT_REPORT/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 gates passed
 - **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
-- **� IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - Phase 5 (11 widget tests) 🟢
-- **�📊 TEST COVERAGE:** [Coverage Reports Package](COVERAGE_REPORT.md) - 95.3% (202/212 tests) ✅
+- **🚧 IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests stabilized, coverage uplift in progress
+- **📊 TEST COVERAGE:** Client Flutter 86.88% (full suite green) + Server app 82.72% (pytest --cov gate ≥80% passed)
 
 #### 📖 Vision
 
@@ -191,8 +192,10 @@ See [tests/README.md](tests/README.md) for detailed testing documentation and st
 - [Stack Tecnológico](doc/02-SETUP_DEV/TOOLS_AND_STACK.es.md)
 - [Automatización y DevOps](doc/02-SETUP_DEV/AUTOMATION.es.md)
 - **⭐ NUEVO:** [Reporte de Knowledge Base Completada](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Fases 0-6 (29 archivos, 934 líneas)
+- **✅ VERIFICADO:** [Reporte de Validación Pre-Push (2026-02-12)](doc/01-PROJECT_REPORT/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 compuertas aprobadas
 - **🚀 COMPLETADO:** [HU-3.1: Implementación Shell UI del Proyecto](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - Todas 4 Fases + Seguridad ✅
-- **🚀 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - Fase 5 (11 tests widget) 🟢
+- **🚧 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests estabilizados, cobertura en subida
+- **📊 COBERTURA TESTS:** Cliente Flutter 86.88% (suite completa en verde) + Server app 82.72% (gate pytest --cov ≥80% aprobado)
 
 #### 📖 Visión
 

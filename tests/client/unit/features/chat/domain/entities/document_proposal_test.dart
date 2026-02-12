@@ -43,6 +43,20 @@ void main() {
       expect(validated.isPending, false);
     });
 
+    test('should support rejected state flag', () {
+      final proposal = DocumentProposal(
+        id: 'prop-2',
+        docType: 'ADR',
+        content: 'Rejected content',
+        metadata: const {},
+        validationState: ValidationState.rejected,
+      );
+
+      expect(proposal.isRejected, true);
+      expect(proposal.isValidated, false);
+      expect(proposal.isPending, false);
+    });
+
     test('should extract sections from markdown content', () {
       // Arrange
       final proposal = DocumentProposal(
@@ -68,6 +82,59 @@ Goals content
       expect(sections.length, greaterThanOrEqualTo(2));
       expect(sections, contains('Vision'));
       expect(sections, contains('Goals'));
+    });
+
+    test('extractSections should return empty list when no headers', () {
+      final proposal = DocumentProposal(
+        id: 'prop-3',
+        docType: 'README',
+        content: 'Plain text without markdown headers',
+        metadata: const {},
+        validationState: ValidationState.pending,
+      );
+
+      expect(proposal.extractSections(), isEmpty);
+    });
+
+    test('copyWith updates metadata and keeps defaults', () {
+      final original = DocumentProposal(
+        id: 'prop-4',
+        docType: 'SPEC',
+        content: '# Spec',
+        metadata: const {'a': 1},
+        validationState: ValidationState.pending,
+      );
+
+      final updated = original.copyWith(
+        metadata: const {'a': 2, 'b': true},
+        content: '# New Spec',
+      );
+
+      expect(updated.id, original.id);
+      expect(updated.docType, original.docType);
+      expect(updated.content, '# New Spec');
+      expect(updated.metadata['a'], 2);
+      expect(updated.metadata['b'], true);
+    });
+
+    test('equality and hashCode ignore metadata', () {
+      final a = DocumentProposal(
+        id: 'same',
+        docType: 'SPEC',
+        content: 'X',
+        metadata: const {'version': 1},
+        validationState: ValidationState.pending,
+      );
+      final b = DocumentProposal(
+        id: 'same',
+        docType: 'SPEC',
+        content: 'X',
+        metadata: const {'version': 2},
+        validationState: ValidationState.validated,
+      );
+
+      expect(a, equals(b));
+      expect(a.hashCode, equals(b.hashCode));
     });
   });
 }

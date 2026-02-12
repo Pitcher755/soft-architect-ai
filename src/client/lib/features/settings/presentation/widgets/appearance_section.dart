@@ -142,8 +142,9 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
                           .read(settingsProvider.notifier)
                           .updateFontSize(intValue / 100);
                     } else {
-                      _fontSizeController.text =
-                          (settings.fontSize * 100).round().toString();
+                      _fontSizeController.text = (settings.fontSize * 100)
+                          .round()
+                          .toString();
                     }
                   },
                 ),

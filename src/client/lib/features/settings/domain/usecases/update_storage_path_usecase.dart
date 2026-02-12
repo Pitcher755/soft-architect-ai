@@ -69,7 +69,9 @@ class UpdateStoragePathUseCase {
   /// Returns true if a test file can be created and deleted successfully.
   Future<bool> _isDirectoryWritable(String path) async {
     try {
-      final testFile = File('$path/.write_test_${DateTime.now().millisecondsSinceEpoch}');
+      final testFile = File(
+        '$path/.write_test_${DateTime.now().millisecondsSinceEpoch}',
+      );
       // ignore: avoid_slow_async_io
       await testFile.writeAsString('test');
       // ignore: avoid_slow_async_io

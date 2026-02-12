@@ -146,5 +146,55 @@ void main() {
             reason: 'ProjectsSidebar should still display projects');
       }
     });
+
+    testWidgets('should invoke custom onSearchTap callback',
+        (WidgetTester tester) async {
+      var searchTapped = false;
+
+      await tester.pumpWidget(
+        ProviderScope(
+          child: MaterialApp(
+            home: Scaffold(
+              body: ProjectsSidebar(
+                onSearchTap: () {
+                  searchTapped = true;
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.search));
+      await tester.pumpAndSettle();
+
+      expect(searchTapped, isTrue);
+    });
+
+    testWidgets('should invoke custom onSettingsTap callback',
+        (WidgetTester tester) async {
+      var settingsTapped = false;
+
+      await tester.pumpWidget(
+        ProviderScope(
+          child: MaterialApp(
+            home: Scaffold(
+              body: ProjectsSidebar(
+                onSettingsTap: () {
+                  settingsTapped = true;
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.settings_outlined));
+      await tester.pumpAndSettle();
+
+      expect(settingsTapped, isTrue);
+    });
   });
 }

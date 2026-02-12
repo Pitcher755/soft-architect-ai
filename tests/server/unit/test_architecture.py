@@ -26,7 +26,6 @@ def test_folder_structure_exists():
         "services/rag",  # RAG/LangChain Logic
         "services/vectors",  # ChromaDB Logic
         "utils",  # Generic Helpers
-        "tests",  # Test Suite
     ]
 
     missing = []

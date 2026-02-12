@@ -60,5 +60,18 @@ void main() {
       // Assert
       expect(find.byType(Text), findsAtLeastNWidgets(1));
     });
+
+    testWidgets('should show default storage path when none configured', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const StorageSection())),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('~/Documents/SoftArchitect'), findsOneWidget);
+    });
+
+
   });
 }

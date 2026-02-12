@@ -85,26 +85,26 @@ class SoftArchitectApp extends ConsumerWidget {
         // Ctrl + Shift + Plus (En/US layout: Ctrl+Shift+=)
         if (event.logicalKey == LogicalKeyboardKey.equal &&
             HardwareKeyboard.instance.isShiftPressed) {
-          ref.read(settingsProvider.notifier).updateGlobalZoom(
-                (globalZoom + 0.1).clamp(0.5, 2.0),
-              );
+          ref
+              .read(settingsProvider.notifier)
+              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
           return KeyEventResult.handled;
         }
 
         // Ctrl + Equal/Plus (Spanish: Ctrl+= where + is Shift+=)
         if (event.logicalKey == LogicalKeyboardKey.equal &&
             !HardwareKeyboard.instance.isShiftPressed) {
-          ref.read(settingsProvider.notifier).updateGlobalZoom(
-                (globalZoom + 0.1).clamp(0.5, 2.0),
-              );
+          ref
+              .read(settingsProvider.notifier)
+              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
           return KeyEventResult.handled;
         }
 
         // Ctrl + Minus (works on all layouts)
         if (event.logicalKey == LogicalKeyboardKey.minus) {
-          ref.read(settingsProvider.notifier).updateGlobalZoom(
-                (globalZoom - 0.1).clamp(0.5, 2.0),
-              );
+          ref
+              .read(settingsProvider.notifier)
+              .updateGlobalZoom((globalZoom - 0.1).clamp(0.5, 2.0));
           return KeyEventResult.handled;
         }
 
@@ -119,17 +119,14 @@ class SoftArchitectApp extends ConsumerWidget {
       child: Focus(
         canRequestFocus: true,
         child: MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(globalZoom),
-          ),
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(globalZoom)),
           child: MaterialApp.router(
             title: 'SoftArchitect AI',
             debugShowCheckedModeBanner: false,
             theme: _buildThemeWithFontSize(AppTheme.lightTheme(), fontSize),
-            darkTheme: _buildThemeWithFontSize(
-              AppTheme.darkTheme(),
-              fontSize,
-            ),
+            darkTheme: _buildThemeWithFontSize(AppTheme.darkTheme(), fontSize),
             themeMode: themeMode,
             routerConfig: router,
             locale: locale,
@@ -163,10 +160,7 @@ class SoftArchitectApp extends ConsumerWidget {
   ///
   /// Avoids TextTheme.apply() assertion errors by building a new
   /// TextTheme with each style's fontSize multiplied by the factor.
-  TextTheme _scaleTextTheme(
-    TextTheme baseTheme,
-    double scaleFactor,
-  ) =>
+  TextTheme _scaleTextTheme(TextTheme baseTheme, double scaleFactor) =>
       TextTheme(
         displayLarge: _scaleTextStyle(baseTheme.displayLarge, scaleFactor),
         displayMedium: _scaleTextStyle(baseTheme.displayMedium, scaleFactor),

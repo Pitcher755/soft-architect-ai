@@ -74,5 +74,94 @@ void main() {
       expect(find.byType(Container), findsAtLeastNWidgets(1));
       expect(find.byType(Text), findsAtLeastNWidgets(1));
     });
+
+    testWidgets('should show empty state for unknown query', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const GlobalSearchDialog())),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), 'zzz-not-found-123');
+      await tester.pumpAndSettle();
+
+      expect(find.text('No se encontraron resultados'), findsOneWidget);
+      expect(find.text('Intenta con otro término de búsqueda'), findsOneWidget);
+    });
+
+    testWidgets('should clear query when clear icon is tapped', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const GlobalSearchDialog())),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), 'guia');
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.clear), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.clear), findsNothing);
+      expect(find.textContaining('proyectos totales'), findsOneWidget);
+    });
+
+    testWidgets('show() should open dialog from parent widget', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          child: createTestApp(
+            Builder(
+              builder: (context) => Center(
+                child: ElevatedButton(
+                  onPressed: () => GlobalSearchDialog.show(context),
+                  child: const Text('Open'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(GlobalSearchDialog), findsOneWidget);
+      expect(find.text('Búsqueda Global'), findsOneWidget);
+    });
+
+    testWidgets('close icon should dismiss dialog', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const GlobalSearchDialog())),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(GlobalSearchDialog), findsNothing);
+    });
+
+    testWidgets('should show resultados encontrados label for matching query', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const GlobalSearchDialog())),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), 'guía');
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('resultados encontrados'), findsOneWidget);
+    });
+
   });
 }
