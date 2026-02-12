@@ -13,6 +13,8 @@ import '../../../chat/presentation/widgets/progress_indicator_widget.dart';
 import '../../../filesystem/domain/entities/file_node.dart';
 import '../../../filesystem/presentation/widgets/file_tree_widget.dart';
 import '../../data/mock_data.dart';
+import '../../domain/services/project_phase_service.dart';
+import '../providers/project_providers.dart';
 import '../widgets/markdown_preview_widget.dart';
 import '../widgets/project_header_bar.dart';
 import '../widgets/resize_handle.dart';
@@ -255,7 +257,7 @@ class _LayoutMetrics {
 ///
 /// Encapsulates the center panel with real progress calculation.
 /// Replaces mock data with actual filesystem scanning.
-class _ChatPanelSection extends StatefulWidget {
+class _ChatPanelSection extends ConsumerStatefulWidget {
   const _ChatPanelSection({
     required this.projectPath,
     required this.selectedNode,
@@ -273,97 +275,38 @@ class _ChatPanelSection extends StatefulWidget {
   final VoidCallback onToggleMarkdown;
 
   @override
-  State<_ChatPanelSection> createState() => _ChatPanelSectionState();
+  ConsumerState<_ChatPanelSection> createState() => _ChatPanelSectionState();
 }
 
-class _ChatPanelSectionState extends State<_ChatPanelSection> {
-  int _documentsCreated = 0;
-  String _currentPhase = 'Inicial';
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadProgress();
-  }
-
+class _ChatPanelSectionState extends ConsumerState<_ChatPanelSection> {
   @override
   void didUpdateWidget(_ChatPanelSection oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.projectPath != widget.projectPath) {
-      _loadProgress();
+      ref
+          .read(projectProgressProvider(widget.projectPath).notifier)
+          .loadProgress(widget.projectPath);
     }
-  }
-
-  Future<void> _loadProgress() async {
-    setState(() => _isLoading = true);
-
-    final isMock = widget.projectPath.startsWith('mock://');
-
-    if (isMock) {
-      // Mock project: use mock data
-      setState(() {
-        _documentsCreated = MockProjectData.mockDocumentsCreated;
-        _currentPhase = MockProjectData.mockCurrentPhase;
-        _isLoading = false;
-      });
-      return;
-    }
-
-    // Real project: calculate real progress
-    try {
-      final projectDir = Directory(widget.projectPath);
-      if (!await projectDir.exists()) {
-        setState(() {
-          _documentsCreated = 0;
-          _currentPhase = 'Root';
-          _isLoading = false;
-        });
-        return;
-      }
-
-      var count = 0;
-      await for (final entity in projectDir.list(
-        recursive: true,
-        followLinks: false,
-      )) {
-        if (entity is File && entity.path.endsWith('.md')) {
-          count++;
-        }
-      }
-
-      if (mounted) {
-        setState(() {
-          _documentsCreated = count;
-          _currentPhase = _calculatePhase(count);
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _documentsCreated = 0;
-          _currentPhase = 'Root';
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  String _calculatePhase(int docs) {
-    if (docs == 0) return 'Root';
-    if (docs <= 4) return 'Root';
-    if (docs <= 7) return 'Contexto';
-    if (docs <= 11) return 'Requisitos';
-    if (docs <= 17) return 'Arquitectura';
-    if (docs <= 20) return 'UI/UX';
-    if (docs <= 24) return 'Planificación';
-    return 'Meta';
   }
 
   @override
   Widget build(BuildContext context) {
     final isMock = widget.projectPath.startsWith('mock://');
+    final progressState = ref.watch(projectProgressProvider(widget.projectPath));
+
+    final progressData = progressState.maybeWhen(
+      data: (data) => data,
+      orElse: () => null,
+    );
+
+    final documentsCreated = isMock
+        ? MockProjectData.mockDocumentsCreated
+        : (progressData?.docsCompleted ?? 0);
+    final currentPhase = isMock
+        ? MockProjectData.mockCurrentPhase
+        : ProjectPhaseService.getPhaseNameFromIndex(
+            progressData?.currentPhase ?? 0,
+          );
 
     return Column(
       children: [
@@ -374,12 +317,12 @@ class _ChatPanelSectionState extends State<_ChatPanelSection> {
           onToggleFiles: widget.onToggleFiles,
           onToggleMarkdown: widget.onToggleMarkdown,
         ),
-        if (_isLoading)
+        if (progressState.isLoading && !isMock)
           const LinearProgressIndicator()
         else
           ProgressIndicatorWidget(
-            documentsCreated: _documentsCreated,
-            currentPhase: _currentPhase,
+            documentsCreated: documentsCreated,
+            currentPhase: currentPhase,
             projectPath: widget.projectPath,
           ),
         Expanded(

@@ -5,9 +5,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart' as legacy;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/entities/project.dart';
+import '../../domain/models/project_phase.dart';
+import '../../domain/services/project_phase_service.dart';
 
 // ╔════════════════════════════════════════════════╗
 // ║      PROJECTS NOTIFIER (STATE MANAGEMENT)      ║
@@ -126,3 +129,47 @@ class ProjectsNotifier extends Notifier<List<Project>> {
 final projectsProvider = NotifierProvider<ProjectsNotifier, List<Project>>(
   ProjectsNotifier.new,
 );
+
+class ProjectProgressNotifier
+  extends legacy.StateNotifier<AsyncValue<ProjectPhaseProgress>> {
+  ProjectProgressNotifier({
+    ProjectPhaseProgress Function(String projectPath)? analyzer,
+  }) : _analyzer = analyzer ?? ProjectPhaseService.analyzeProject,
+       super(const AsyncLoading());
+
+  final ProjectPhaseProgress Function(String projectPath) _analyzer;
+
+  Future<void> loadProgress(String projectPath) async {
+    state = const AsyncLoading();
+
+    try {
+      if (projectPath.startsWith('mock://')) {
+        state = AsyncData(
+          ProjectPhaseProgress(
+            currentPhase: 6,
+            docsCompleted: ProjectPhase.totalFileCount,
+            totalDocs: ProjectPhase.totalFileCount,
+            progress: 1,
+          ),
+        );
+        return;
+      }
+
+      final progress = _analyzer(projectPath);
+      state = AsyncData(progress);
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+    }
+  }
+}
+
+final projectProgressProvider =
+    legacy.StateNotifierProvider.family<
+      ProjectProgressNotifier,
+      AsyncValue<ProjectPhaseProgress>,
+      String
+    >((ref, projectPath) {
+      final notifier = ProjectProgressNotifier();
+      notifier.loadProgress(projectPath);
+      return notifier;
+    });

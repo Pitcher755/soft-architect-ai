@@ -26,6 +26,25 @@ class ProjectPhaseProgress {
 /// Provides methods to determine current phase of a project,
 /// calculate progress, and track completed documents.
 class ProjectPhaseService {
+  static String getPhaseNameFromIndex(int phaseIndex) {
+    switch (phaseIndex) {
+      case 6:
+        return 'Meta';
+      case 5:
+        return 'Planificación';
+      case 4:
+        return 'UI/UX';
+      case 3:
+        return 'Arquitectura';
+      case 2:
+        return 'Requisitos';
+      case 1:
+        return 'Contexto';
+      default:
+        return 'Raíz';
+    }
+  }
+
   static ProjectPhaseProgress analyzeProject(String projectPath) {
     try {
       PathValidator.validateProjectPath(projectPath);
@@ -108,17 +127,6 @@ class ProjectPhaseService {
     );
   }
 
-  static bool _hasDirectoryWithPrefix(String basePath, String prefix) {
-    final docDir = Directory(basePath);
-    if (!docDir.existsSync()) {
-      return false;
-    }
-
-    return docDir.listSync().whereType<Directory>().any(
-      (directory) => directory.path.split('/').last.startsWith(prefix),
-    );
-  }
-
   /// Determines the current phase of a project.
   ///
   /// For the guide project, always returns [ProjectPhase.quickStart].
@@ -160,7 +168,7 @@ class ProjectPhaseService {
       return 1;
     }
 
-    final totalFiles = ProjectStructureConstants.totalExpectedDocs;
+    const totalFiles = ProjectStructureConstants.totalExpectedDocs;
     if (totalFiles == 0) return 0;
 
     return (documentsCreated / totalFiles).clamp(0.0, 1.0);
@@ -243,7 +251,7 @@ class ProjectPhaseService {
   }
 
   static String _normalizePath(String path) =>
-      path.replaceAll('\\', '/').replaceAll(RegExp(r'/+'), '/').trim();
+      path.replaceAll(RegExp(r'\\'), '/').replaceAll(RegExp(r'/+'), '/').trim();
 
   static bool _documentExists(
     Set<String> normalizedFiles, {

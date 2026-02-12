@@ -7,6 +7,7 @@ import '../../../../../gen/app_localizations.dart';
 import '../../../../../shared/utils/navigation_utils.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/services/project_phase_service.dart';
+import '../providers/project_providers.dart';
 import 'project_card.dart';
 
 /// Grid view displaying recent project cards with Quick Start option.
@@ -67,6 +68,11 @@ class ProjectsGrid extends ConsumerWidget {
             itemBuilder: (context, index) {
               final project = recentProjects[index];
               final phase = ProjectPhaseService.getProjectPhase(project);
+              final progressState = ref.watch(projectProgressProvider(project.path));
+              final cardProgress = progressState.maybeWhen(
+                data: (progress) => progress.progress,
+                orElse: () => null,
+              );
 
               return ProjectCard(
                 name: project.name,
@@ -74,6 +80,7 @@ class ProjectsGrid extends ConsumerWidget {
                 iconColor: phase.color,
                 phase: phase.name,
                 phaseColor: phase.color,
+                progress: cardProgress,
                 path: project.path,
                 modified: _formatDate(
                   context,
