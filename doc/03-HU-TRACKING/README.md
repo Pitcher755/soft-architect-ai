@@ -45,6 +45,7 @@
 | **HU-3.3** | Frontend State Machine (TDD RED) | Frontend | 🔴 RED ✅ | 30% | [→ Go](HU-3.3-FRONTEND-STATE-MACHINE/) |
 | HU-3.4 | Error Handling Gates | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.4_ERROR_HANDLING_GATES/) |
 | HU-3.5 | Streaming Optimization | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.5_STREAMING_OPTIMIZATION/) |
+| **HU-3.8** | Real project phase logic (Doc N/25 progress) | Frontend/Architecture | 🚧 IN PROGRESS | 8% | [→ Go](HU-3.8-PROJECT-PHASE-LOGIC/) |
 
 ---
 
@@ -205,6 +206,7 @@ Overall:                  ████░░░░░░░░░░░░░░
 |----|--------|-------|--------|----------|------|
 | HU-3.1 | Chat UI + Markdown | Frontend | ⏳ PENDIENTE | 0% | [→ Ir](HU-3.1-CHAT-UI/) |
 | HU-3.2 | Streaming + API Connection | Frontend | ⏳ PENDIENTE | 0% | [→ Ir](HU-3.2-STREAMING/) |
+| **HU-3.8** | Lógica real de fases de proyecto (Doc N/25 progress) | Frontend/Arquitectura | 🚧 EN PROGRESO | 8% | [→ Ir](HU-3.8-PROJECT-PHASE-LOGIC/) |
 
 ---
 
@@ -311,6 +313,7 @@ Para cada HU seguir este flujo:
 - ⏳ HU-2.2: 0% (Pendiente)
 - ⏳ HU-3.1: 0% (Pendiente)
 - ⏳ HU-3.2: 0% (Pendiente)
+- 🚧 HU-3.8: 8% (Documentación inicial + workflow maestro)
 
 ### Progress Overview
 ```
