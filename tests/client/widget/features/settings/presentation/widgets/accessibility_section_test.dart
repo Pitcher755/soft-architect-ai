@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/accessibility_section.dart';
+import 'package:softarchitect_ai/gen/app_localizations.dart';
+
+/// Helper to create MaterialApp with proper i18n setup for tests
+Widget createTestApp(Widget child) => MaterialApp(
+  localizationsDelegates: const [
+    AppLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ],
+  supportedLocales: AppLocalizations.supportedLocales,
+  locale: const Locale('es'),
+  home: Scaffold(body: child),
+);
 
 void main() {
   group('AccessibilitySection', () {
     testWidgets('should render global zoom slider', (WidgetTester tester) async {
       // Arrange & Act
       await tester.pumpWidget(
-        const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: AccessibilitySection(),
-            ),
-          ),
-        ),
+        ProviderScope(child: createTestApp(const AccessibilitySection())),
       );
       await tester.pumpAndSettle();
 
@@ -26,13 +35,7 @@ void main() {
     testWidgets('should render zoom shortcuts switch', (WidgetTester tester) async {
       // Arrange & Act
       await tester.pumpWidget(
-        const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: AccessibilitySection(),
-            ),
-          ),
-        ),
+        ProviderScope(child: createTestApp(const AccessibilitySection())),
       );
       await tester.pumpAndSettle();
 
@@ -43,18 +46,12 @@ void main() {
     testWidgets('should display zoom percentage', (WidgetTester tester) async {
       // Arrange & Act
       await tester.pumpWidget(
-        const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: AccessibilitySection(),
-            ),
-          ),
-        ),
+        ProviderScope(child: createTestApp(const AccessibilitySection())),
       );
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(Text), findsWidgets,
+      expect(find.byType(Text), findsAtLeastNWidgets(2),
           reason: 'Should have text widgets including zoom percentage');
     });
   });
