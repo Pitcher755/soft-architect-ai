@@ -11,7 +11,7 @@ import '../../../../../shared/presentation/widgets/path_picker_field.dart';
 import '../../../../../shared/utils/navigation_utils.dart';
 import '../../../../../shared/utils/validation_utils.dart';
 import '../../../filesystem/data/services/filesystem_service.dart';
-import '../../../settings/presentation/providers/settings_providers_unified.dart';
+import '../../../settings/presentation/providers/settings_providers.dart';
 import '../providers/project_providers.dart';
 
 /// CreateProjectDialog - Separated widget for creating new projects.

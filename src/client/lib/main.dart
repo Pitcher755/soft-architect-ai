@@ -11,7 +11,7 @@ import 'core/localization/locale_provider.dart';
 import 'core/router/app_router.dart';
 import 'features/chat/presentation/notifiers/chat_notifier.dart';
 import 'features/project_shell/core/services/file_system_service.dart';
-import 'features/settings/presentation/providers/settings_providers_unified.dart';
+import 'features/settings/presentation/providers/settings_providers.dart';
 import 'gen/app_localizations.dart';
 
 void main() async {

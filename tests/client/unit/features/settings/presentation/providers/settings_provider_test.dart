@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers_unified.dart';
+import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 
 import '../../../../../test_helpers/shared_preferences_mock.dart';
 

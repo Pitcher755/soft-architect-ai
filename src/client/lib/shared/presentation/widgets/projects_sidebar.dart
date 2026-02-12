@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../features/settings/presentation/providers/settings_providers_unified.dart'
+import '../../../features/settings/presentation/providers/settings_providers.dart'
     show lastProjectProvider;
 import 'global_search_dialog.dart';
 
