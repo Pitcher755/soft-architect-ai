@@ -14,6 +14,8 @@
 - [6. Quality & Security Gates](#6-quality--security-gates)
 - [7. Criterios de Aceptación HU-3.8 → Pruebas](#7-criterios-de-aceptación-hu-38--pruebas)
 - [8. Entregables de Cierre](#8-entregables-de-cierre)
+- [9. Plan de Implementación por Archivo](#9-plan-de-implementación-por-archivo)
+- [10. Primera Iteración Ejecutable](#10-primera-iteración-ejecutable)
 
 ---
 
@@ -104,6 +106,21 @@ Regla de progreso:
 ---
 
 ## 5. Plan de Ejecución TDD por Fases
+
+> **Fuente de verdad de HU-3.8:** `context/40-ROADMAP/USER_STORIES_MASTER.es.json`
+>
+> **Criterios HU-3.8 a cumplir sin ambigüedad:**
+> 1) `ProjectPhaseService` detecta fase actual (0-6) escaneando carpetas `context/`.
+> 2) Barra de progreso `Doc N/25` se actualiza dinámicamente en Dashboard.
+> 3) Badge de fase en ProjectShell refleja estado real.
+> 4) Tests unitarios de detección de fases >90% cobertura (módulo HU).
+
+### Reglas de ejecución de esta HU
+
+- Cada sub-fase RED debe terminar con tests fallando por la razón correcta.
+- Cada sub-fase GREEN debe introducir el mínimo código para pasar.
+- Cada sub-fase REFACTOR debe mantener tests verdes y mejorar diseño.
+- Ningún paso de UI puede iniciarse sin tener dominio validado.
 
 ## Fase A — RED 1 (Modelo de fases)
 
@@ -196,6 +213,30 @@ Regla de progreso:
 5. Sin exponer errores internos en capa UI.
 6. Cumplimiento de documentación `doc as code`.
 
+### Comandos obligatorios por iteración
+
+```bash
+# 1) Lint/analysis cliente
+cd src/client && flutter analyze
+
+# 2) Test unitarios enfocados HU-3.8 (ir ampliando patrón)
+cd ../../tests && flutter test client/unit/features/project_shell/
+
+# 3) Test widget/integration de project shell relacionados a progreso
+flutter test client/widget/features/project_shell/
+flutter test client/integration/features/project_shell/
+
+# 4) Gate maestro antes de push
+cd .. && ./scripts/PRE_PUSH_VALIDATION_MASTER.sh
+```
+
+### Reglas de calidad HU-3.8
+
+- Cobertura de módulo de detección de fases/progreso: objetivo mínimo interno **90%**.
+- Sin acoplar lógica de negocio en widgets (solo notifier/providers consumen servicios).
+- Errores tipados y mensajes de UI amigables (sin stack trace).
+- Mantenibilidad: mapeo de fases/documentos en un único punto de verdad.
+
 ---
 
 ## 7. Criterios de Aceptación HU-3.8 → Pruebas
@@ -207,6 +248,19 @@ Regla de progreso:
 - **AC-7:** tests de mapeo de errores a mensajes controlados.
 - **AC-8:** reporte de cobertura sobre servicios de fase/progreso.
 
+### Matriz detallada AC ↔ Caso de prueba
+
+| AC | Tipo de test | Caso mínimo | Resultado esperado |
+|---|---|---|---|
+| AC-1 | Unit (domain) | `detect_phase_from_context_tree` con estructura parcial/completa | Devuelve fase correcta 0-6 |
+| AC-2 | Unit (domain/data) | `compute_doc_progress` con documentos crecientes | `N` avanza de forma monotónica válida |
+| AC-3 | Widget | Dashboard con provider mockeado en cambios de snapshot | Texto `Doc N/25` se refresca en UI |
+| AC-4 | Widget/Unit | Badge de fase con estado in-progress/completed/blocked | Badge refleja fase actual real |
+| AC-5 | Unit | Comparativa `existing vs expected` por fase | Identifica faltantes exactos |
+| AC-6 | Unit | Doble ejecución sobre mismo estado | Mismo resultado sin efectos colaterales |
+| AC-7 | Unit/UI | Error de path inválido / estructura corrupta | Mensaje amigable y código de dominio |
+| AC-8 | Coverage | Suite HU-3.8 dedicada | Cobertura módulo objetivo ≥90% |
+
 ---
 
 ## 8. Entregables de Cierre
@@ -215,3 +269,63 @@ Regla de progreso:
 - Suite de tests HU-3.8 estable y repetible.
 - Actualización del índice de HU tracking.
 - PR con resumen técnico, riesgos y plan de rollback.
+
+---
+
+## 9. Plan de Implementación por Archivo
+
+> El siguiente inventario define el orden recomendado de trabajo para cumplir las tareas técnicas del roadmap HU-3.8.
+
+### 9.1 Dominio
+
+1. `src/client/lib/features/project_shell/domain/services/project_phase_service.dart`
+  - Incorporar escaneo real de carpetas/documentos.
+  - Exponer API pura para detección de fase y progreso.
+2. `src/client/lib/features/project_shell/domain/repositories/project_repository.dart`
+  - Asegurar contrato para recuperación de estado necesario (paths/context).
+
+### 9.2 Data
+
+1. `src/client/lib/features/project_shell/data/repositories/project_repository_impl.dart`
+  - Implementar consulta de artefactos existentes vs esperados.
+2. `src/client/lib/features/project_shell/data/data_sources/sqlite_data_source.dart`
+  - Persistir estado de fase actual y timestamp de validación.
+3. `src/client/lib/features/project_shell/data/models/project_model.dart`
+  - Añadir/ajustar campos de fase/progreso si aplica.
+
+### 9.3 Presentación
+
+1. `src/client/lib/features/project_shell/presentation/notifiers/project_shell_notifier.dart`
+  - Conectar `ProjectPhaseService` y refresco dinámico de progreso.
+2. `src/client/lib/features/project_shell/presentation/widgets/workspace_header.dart`
+  - Mostrar `Doc N/25` y badge de fase actual.
+3. `src/client/lib/features/project_shell/presentation/widgets/projects_grid.dart`
+  - Reflejar estado resumido por proyecto si aplica.
+
+### 9.4 Tests objetivo
+
+1. `tests/client/unit/features/project_shell/domain/services/project_phase_service_test.dart`
+2. `tests/client/unit/features/project_shell/presentation/providers/project_providers_test.dart`
+3. `tests/client/widget/features/project_shell/presentation/project_card_test.dart`
+4. `tests/client/widget/features/project_shell/presentation/widgets/global_search_dialog_test.dart` (solo si impacto indirecto)
+
+---
+
+## 10. Primera Iteración Ejecutable
+
+### Objetivo de la iteración 1
+
+Entregar un primer corte vertical que cumpla AC-1 + AC-2 + AC-8 en dominio/data, dejando UI para iteración 2.
+
+### Alcance iteración 1
+
+1. Tests RED de detección de fase y cálculo `Doc N/25`.
+2. Implementación mínima en `ProjectPhaseService`.
+3. Ajuste de repositorio/data source para obtener snapshot de artefactos.
+4. Cobertura de módulo HU ≥90% en suite unitaria de dominio.
+
+### Criterio de salida iteración 1
+
+- Tests unitarios HU-3.8 en verde.
+- Cobertura de lógica de fase/progreso reportada y documentada.
+- Sin cambios de UI aún (evita mezclar capas prematuramente).
