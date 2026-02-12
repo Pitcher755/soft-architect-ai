@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:softarchitect_ai/core/localization/locale_provider.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/language_selector_widget.dart';
 import 'package:softarchitect_ai/gen/app_localizations.dart';
 
@@ -61,6 +62,28 @@ void main() {
 
       expect(find.text('Inglés'), findsWidgets);
       expect(find.text('Español'), findsWidgets);
+    });
+
+    testWidgets('selecting dropdown value updates locale provider', (
+      WidgetTester tester,
+    ) async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: createTestApp(const LanguageSelectorWidget()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DropdownButton<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Inglés').last);
+      await tester.pumpAndSettle();
+
+      expect(container.read(localeProvider).languageCode, 'en');
     });
   });
 

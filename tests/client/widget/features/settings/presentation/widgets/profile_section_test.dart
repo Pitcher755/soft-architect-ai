@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/profile_section.dart';
 import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
+import 'package:softarchitect_ai/gen/app_localizations.dart';
+
+Widget createTestApp(Widget child) => MaterialApp(
+  localizationsDelegates: const [
+    AppLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ],
+  supportedLocales: AppLocalizations.supportedLocales,
+  locale: const Locale('es'),
+  home: Scaffold(body: child),
+);
 
 void main() {
   group('ProfileSection', () {
@@ -61,9 +75,7 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: Scaffold(body: ProfileSection()),
-          ),
+          child: createTestApp(const ProfileSection()),
         ),
       );
       await tester.pumpAndSettle();
@@ -107,6 +119,51 @@ void main() {
 
       final after = container.read(settingsProvider).avatarIndex;
       expect(after, equals(5));
+    });
+
+    testWidgets('editing complete trims and persists user name',
+        (WidgetTester tester) async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(
+            home: Scaffold(body: ProfileSection()),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final field = find.byKey(const ValueKey('userName_field'));
+      await tester.enterText(field, '  Arquitecta  ');
+      await tester.tap(find.byType(Scaffold));
+      await tester.pumpAndSettle();
+
+      expect(container.read(settingsProvider).userName, contains('Arquitecta'));
+    });
+
+    testWidgets('custom avatar selection failure shows snackbar',
+        (WidgetTester tester) async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: createTestApp(const ProfileSection()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Cambiar avatar'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.image));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SnackBar), findsOneWidget);
     });
   });
 }

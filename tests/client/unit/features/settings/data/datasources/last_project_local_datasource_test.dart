@@ -51,5 +51,18 @@ void main() {
       final cleared = prefs.getString('lastProject.path');
       expect(cleared, isNull);
     });
+
+    test('should return null when no last project is stored', () async {
+      final result = await dataSource.loadLastProjectPath();
+      expect(result, isNull);
+    });
+
+    test('storage exceptions should format message in toString', () {
+      const readEx = StorageReadException('read failed');
+      const writeEx = StorageWriteException('write failed');
+
+      expect(readEx.toString(), contains('StorageReadException: read failed'));
+      expect(writeEx.toString(), contains('StorageWriteException: write failed'));
+    });
   });
 }

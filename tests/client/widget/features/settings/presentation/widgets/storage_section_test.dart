@@ -72,6 +72,20 @@ void main() {
       expect(find.text('~/Documents/SoftArchitect'), findsOneWidget);
     });
 
+    testWidgets('tapping folder button handles picker error gracefully', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(child: createTestApp(const StorageSection())),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.folder_open));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SnackBar), findsOneWidget);
+    });
+
 
   });
 }
