@@ -2,14 +2,112 @@
 
 import 'dart:io';
 
+import '../../core/constants/project_structure_constants.dart';
+import '../../core/security/path_validator.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/models/project_phase.dart';
+
+class ProjectPhaseProgress {
+  const ProjectPhaseProgress({
+    required this.currentPhase,
+    required this.docsCompleted,
+    required this.totalDocs,
+    required this.progress,
+  });
+
+  final int currentPhase;
+  final int docsCompleted;
+  final int totalDocs;
+  final double progress;
+}
 
 /// Service for managing project phase state and progress calculation.
 ///
 /// Provides methods to determine current phase of a project,
 /// calculate progress, and track completed documents.
 class ProjectPhaseService {
+  static ProjectPhaseProgress analyzeProject(String projectPath) {
+    try {
+      PathValidator.validateProjectPath(projectPath);
+    } catch (_) {
+      return const ProjectPhaseProgress(
+        currentPhase: 0,
+        docsCompleted: 0,
+        totalDocs: ProjectStructureConstants.totalExpectedDocs,
+        progress: 0,
+      );
+    }
+
+    final files = _listProjectFiles(projectPath);
+    return calculateProgressFromFiles(files);
+  }
+
+  static ProjectPhaseProgress calculateProgressFromFiles(
+    List<String> filePaths,
+  ) {
+    final normalizedFiles = filePaths
+        .map(_normalizePath)
+        .where((path) => path.isNotEmpty)
+        .toSet();
+
+    var docsCompleted = 0;
+    var currentPhase = 0;
+
+    for (final phase in ProjectStructureConstants.phaseDefinitions) {
+      final index = phase['index'] as int;
+      final folders = (phase['folders'] as List<Object>).cast<String>();
+      final mandatoryDocs =
+          (phase['mandatoryDocs'] as List<Object>).cast<String>();
+      final optionalDocs = ((phase['optionalDocs'] as List<Object>?) ?? const [])
+          .cast<String>();
+
+      var isPhaseComplete = true;
+
+      for (final doc in mandatoryDocs) {
+        final exists = _documentExists(
+          normalizedFiles,
+          folders: folders,
+          documentName: doc,
+        );
+        if (exists) {
+          docsCompleted++;
+        } else {
+          isPhaseComplete = false;
+        }
+      }
+
+      for (final doc in optionalDocs) {
+        final exists = _documentExists(
+          normalizedFiles,
+          folders: folders,
+          documentName: doc,
+        );
+        if (exists) {
+          docsCompleted++;
+        }
+      }
+
+      if (isPhaseComplete && index > currentPhase - 1) {
+        currentPhase = index;
+      } else if (!isPhaseComplete) {
+        break;
+      }
+    }
+
+    final progress =
+        (docsCompleted / ProjectStructureConstants.totalExpectedDocs).clamp(
+          0.0,
+          1.0,
+        );
+
+    return ProjectPhaseProgress(
+      currentPhase: currentPhase,
+      docsCompleted: docsCompleted,
+      totalDocs: ProjectStructureConstants.totalExpectedDocs,
+      progress: progress,
+    );
+  }
+
   static bool _hasDirectoryWithPrefix(String basePath, String prefix) {
     final docDir = Directory(basePath);
     if (!docDir.existsSync()) {
@@ -45,46 +143,8 @@ class ProjectPhaseService {
       if (!projectDir.existsSync()) {
         return ProjectPhase.root;
       }
-
-      // Check for key indicators of different phases
-      final hasContext = Directory('${project.path}/context').existsSync();
-      final hasRequirements =
-          Directory(
-            '${project.path}/doc/20-REQUIREMENTS_AND_SPEC',
-          ).existsSync() ||
-          _hasDirectoryWithPrefix('${project.path}/doc', '20-');
-      final hasArchitecture =
-          Directory('${project.path}/doc/30-ARCHITECTURE').existsSync() ||
-          _hasDirectoryWithPrefix('${project.path}/doc', '30-') ||
-          Directory('${project.path}/src').existsSync();
-      final hasInfrastructure =
-          Directory('${project.path}/infrastructure').existsSync() ||
-          Directory('${project.path}/doc/40-ROADMAP').existsSync() ||
-          _hasDirectoryWithPrefix('${project.path}/doc', '40-');
-      final hasTests =
-          Directory('${project.path}/tests').existsSync() ||
-          Directory('${project.path}/test').existsSync();
-      final hasCI = Directory('${project.path}/.github').existsSync();
-
-      // Return the most advanced phase detected
-      if (hasCI || (hasTests && hasInfrastructure)) {
-        return ProjectPhase.meta;
-      }
-      if (hasInfrastructure || hasTests) {
-        return ProjectPhase.planning;
-      }
-      if (hasArchitecture) {
-        return ProjectPhase.architecture;
-      }
-      if (hasRequirements) {
-        return ProjectPhase.requirements;
-      }
-      if (hasContext) {
-        return ProjectPhase.context;
-      }
-
-      // Default to root if no specific indicators found
-      return ProjectPhase.root;
+      final phaseProgress = analyzeProject(project.path);
+      return _mapPhaseIndexToModel(phaseProgress.currentPhase);
     } catch (e) {
       // If error reading directory, default to root
       return ProjectPhase.root;
@@ -100,7 +160,7 @@ class ProjectPhaseService {
       return 1;
     }
 
-    final totalFiles = ProjectPhase.totalFileCount;
+    final totalFiles = ProjectStructureConstants.totalExpectedDocs;
     if (totalFiles == 0) return 0;
 
     return (documentsCreated / totalFiles).clamp(0.0, 1.0);
@@ -112,16 +172,20 @@ class ProjectPhaseService {
       return 'Quick start';
     }
 
-    // Determine phase based on document count
     var accumulated = 0;
-    for (final phase in ProjectPhase.all) {
-      accumulated += phase.fileCount;
+    for (final phase in ProjectStructureConstants.phaseDefinitions) {
+      final phaseName = phase['name'] as String;
+      final mandatoryDocs =
+          (phase['mandatoryDocs'] as List<Object>).cast<String>().length;
+      final optionalDocs =
+          ((phase['optionalDocs'] as List<Object>?) ?? const []).length;
+      accumulated += mandatoryDocs + optionalDocs;
       if (documentsCreated < accumulated) {
-        return phase.name;
+        return phaseName;
       }
     }
 
-    return ProjectPhase.all.last.name;
+    return 'Meta';
   }
 
   /// Gets the number of documents completed in the current phase.
@@ -131,9 +195,15 @@ class ProjectPhaseService {
     }
 
     var accumulated = 0;
-    for (final phase in ProjectPhase.all) {
+    for (final phase in ProjectStructureConstants.phaseDefinitions) {
+      final mandatoryDocs =
+          (phase['mandatoryDocs'] as List<Object>).cast<String>().length;
+      final optionalDocs =
+          ((phase['optionalDocs'] as List<Object>?) ?? const []).length;
+      final phaseCount = mandatoryDocs + optionalDocs;
+
       final phaseStart = accumulated;
-      accumulated += phase.fileCount;
+      accumulated += phaseCount;
 
       if (documentsCreated < accumulated) {
         return documentsCreated - phaseStart;
@@ -146,4 +216,68 @@ class ProjectPhaseService {
   /// Checks if a project is the guide project.
   static bool isGuideProject(Project project) =>
       project.id == 'guide-softarchitect-01';
+
+  static List<String> _listProjectFiles(String projectPath) {
+    try {
+      final root = Directory(projectPath);
+      if (!root.existsSync()) {
+        return const [];
+      }
+
+      return root
+          .listSync(recursive: true, followLinks: false)
+          .whereType<File>()
+          .map((file) {
+            final normalizedFilePath = _normalizePath(file.path);
+            final normalizedRootPath = _normalizePath(projectPath);
+            if (!normalizedFilePath.startsWith('$normalizedRootPath/')) {
+              return '';
+            }
+            return normalizedFilePath.substring(normalizedRootPath.length + 1);
+          })
+          .where((relativePath) => relativePath.isNotEmpty)
+          .toList();
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  static String _normalizePath(String path) =>
+      path.replaceAll('\\', '/').replaceAll(RegExp(r'/+'), '/').trim();
+
+  static bool _documentExists(
+    Set<String> normalizedFiles, {
+    required List<String> folders,
+    required String documentName,
+  }) {
+    for (final folder in folders) {
+      final normalizedFolder = _normalizePath(folder);
+      final candidate = normalizedFolder.isEmpty
+          ? _normalizePath(documentName)
+          : _normalizePath('$normalizedFolder/$documentName');
+      if (normalizedFiles.contains(candidate)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static ProjectPhase _mapPhaseIndexToModel(int phaseIndex) {
+    switch (phaseIndex) {
+      case 6:
+        return ProjectPhase.meta;
+      case 5:
+        return ProjectPhase.planning;
+      case 4:
+        return ProjectPhase.uiUx;
+      case 3:
+        return ProjectPhase.architecture;
+      case 2:
+        return ProjectPhase.requirements;
+      case 1:
+        return ProjectPhase.context;
+      default:
+        return ProjectPhase.root;
+    }
+  }
 }
