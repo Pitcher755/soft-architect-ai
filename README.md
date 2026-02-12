@@ -33,7 +33,8 @@
 - **⭐ NEW:** [Knowledge Base Completion Report](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
 - **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
 - **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
-- **📊 TEST COVERAGE:** [Coverage Reports Package](COVERAGE_REPORT.md) - 95.3% (202/212 tests) ✅
+- **� IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - Phase 5 (11 widget tests) 🟢
+- **�📊 TEST COVERAGE:** [Coverage Reports Package](COVERAGE_REPORT.md) - 95.3% (202/212 tests) ✅
 
 #### 📖 Vision
 
@@ -190,6 +191,8 @@ See [tests/README.md](tests/README.md) for detailed testing documentation and st
 - [Stack Tecnológico](doc/02-SETUP_DEV/TOOLS_AND_STACK.es.md)
 - [Automatización y DevOps](doc/02-SETUP_DEV/AUTOMATION.es.md)
 - **⭐ NUEVO:** [Reporte de Knowledge Base Completada](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Fases 0-6 (29 archivos, 934 líneas)
+- **🚀 COMPLETADO:** [HU-3.1: Implementación Shell UI del Proyecto](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - Todas 4 Fases + Seguridad ✅
+- **🚀 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - Fase 5 (11 tests widget) 🟢
 
 #### 📖 Visión
 
