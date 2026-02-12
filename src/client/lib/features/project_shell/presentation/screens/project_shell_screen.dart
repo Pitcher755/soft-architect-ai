@@ -292,7 +292,9 @@ class _ChatPanelSectionState extends ConsumerState<_ChatPanelSection> {
   @override
   Widget build(BuildContext context) {
     final isMock = widget.projectPath.startsWith('mock://');
-    final progressState = ref.watch(projectProgressProvider(widget.projectPath));
+    final progressState = ref.watch(
+      projectProgressProvider(widget.projectPath),
+    );
 
     final progressData = progressState.maybeWhen(
       data: (data) => data,

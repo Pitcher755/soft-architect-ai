@@ -1,5 +1,4 @@
 {
-  // Python Configuration
   "python.defaultInterpreterPath": "${workspaceFolder}/src/server/venv/bin/python",
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
@@ -19,8 +18,6 @@
       "source.organizeImports": "explicit"
     }
   },
-  
-  // Pylance Configuration
   "pylance.typeCheckingMode": "basic",
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.extraPaths": [
@@ -28,16 +25,12 @@
     "${workspaceFolder}/src/server"
   ],
   "python.analysis.venvPath": "${workspaceFolder}/src/server",
-  
-  // Dart Configuration (for Flutter client)
   "[dart]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.fixAll": "explicit"
     }
   },
-  
-  // General Editor Settings
   "files.exclude": {
     "**/__pycache__": true,
     "**/*.pyc": true,
@@ -46,6 +39,9 @@
     "**/.flutter": true
   },
   "editor.formatOnSave": true,
-  "editor.rulers": [120],
-  "editor.wordWrap": "on"
+  "editor.rulers": [
+    120
+  ],
+  "editor.wordWrap": "on",
+  "cmake.sourceDirectory": "/home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client/linux"
 }

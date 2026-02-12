@@ -68,7 +68,9 @@ class ProjectsGrid extends ConsumerWidget {
             itemBuilder: (context, index) {
               final project = recentProjects[index];
               final phase = ProjectPhaseService.getProjectPhase(project);
-              final progressState = ref.watch(projectProgressProvider(project.path));
+              final progressState = ref.watch(
+                projectProgressProvider(project.path),
+              );
               final cardProgress = progressState.maybeWhen(
                 data: (progress) => progress.progress,
                 orElse: () => null,

@@ -131,7 +131,7 @@ final projectsProvider = NotifierProvider<ProjectsNotifier, List<Project>>(
 );
 
 class ProjectProgressNotifier
-  extends legacy.StateNotifier<AsyncValue<ProjectPhaseProgress>> {
+    extends legacy.StateNotifier<AsyncValue<ProjectPhaseProgress>> {
   ProjectProgressNotifier({
     ProjectPhaseProgress Function(String projectPath)? analyzer,
   }) : _analyzer = analyzer ?? ProjectPhaseService.analyzeProject,

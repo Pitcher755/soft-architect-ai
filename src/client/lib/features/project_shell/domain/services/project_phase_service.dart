@@ -75,10 +75,10 @@ class ProjectPhaseService {
     for (final phase in ProjectStructureConstants.phaseDefinitions) {
       final index = phase['index'] as int;
       final folders = (phase['folders'] as List<Object>).cast<String>();
-      final mandatoryDocs =
-          (phase['mandatoryDocs'] as List<Object>).cast<String>();
-      final optionalDocs = ((phase['optionalDocs'] as List<Object>?) ?? const [])
+      final mandatoryDocs = (phase['mandatoryDocs'] as List<Object>)
           .cast<String>();
+      final optionalDocs =
+          ((phase['optionalDocs'] as List<Object>?) ?? const []).cast<String>();
 
       var isPhaseComplete = true;
 
@@ -183,8 +183,9 @@ class ProjectPhaseService {
     var accumulated = 0;
     for (final phase in ProjectStructureConstants.phaseDefinitions) {
       final phaseName = phase['name'] as String;
-      final mandatoryDocs =
-          (phase['mandatoryDocs'] as List<Object>).cast<String>().length;
+      final mandatoryDocs = (phase['mandatoryDocs'] as List<Object>)
+          .cast<String>()
+          .length;
       final optionalDocs =
           ((phase['optionalDocs'] as List<Object>?) ?? const []).length;
       accumulated += mandatoryDocs + optionalDocs;
@@ -204,8 +205,9 @@ class ProjectPhaseService {
 
     var accumulated = 0;
     for (final phase in ProjectStructureConstants.phaseDefinitions) {
-      final mandatoryDocs =
-          (phase['mandatoryDocs'] as List<Object>).cast<String>().length;
+      final mandatoryDocs = (phase['mandatoryDocs'] as List<Object>)
+          .cast<String>()
+          .length;
       final optionalDocs =
           ((phase['optionalDocs'] as List<Object>?) ?? const []).length;
       final phaseCount = mandatoryDocs + optionalDocs;
