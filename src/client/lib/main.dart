@@ -11,7 +11,7 @@ import 'core/localization/locale_provider.dart';
 import 'core/router/app_router.dart';
 import 'features/chat/presentation/notifiers/chat_notifier.dart';
 import 'features/project_shell/core/services/file_system_service.dart';
-import 'features/settings/presentation/providers/settings_provider.dart';
+import 'features/settings/presentation/providers/settings_providers_unified.dart';
 import 'gen/app_localizations.dart';
 
 void main() async {
@@ -58,14 +58,15 @@ class SoftArchitectApp extends ConsumerWidget {
     final router = createAppRouter();
     final locale = ref.watch(localeProvider);
 
-    // Watch ONLY the specific settings values needed, not the entire object
-    // This prevents unnecessary rebuilds when unrelated settings change
-    final themeMode = ref.watch(settingsProvider.select((s) => s.themeMode));
-    final fontSize = ref.watch(settingsProvider.select((s) => s.fontSize));
-    final globalZoom = ref.watch(settingsProvider.select((s) => s.globalZoom));
-    final enableZoomShortcuts = ref.watch(
-      settingsProvider.select((s) => s.enableZoomShortcuts),
-    );
+    // CRITICAL: Watch ONLY theme and font size
+    // Do NOT watch globalZoom - it would cause entire app rebuild
+    final themeMode = ref.watch(themeModeProvider);
+    final fontSize = ref.watch(fontSizeProvider);
+
+    // Read zoom without watching (no rebuild when zoom changes)
+    // This is read fresh on every build, but that's OK for MediaQuery
+    final globalZoom = ref.read(globalZoomProvider);
+    final enableZoomShortcuts = ref.read(enableZoomShortcutsProvider);
 
     // Apply global zoom by wrapping the app in MediaQuery
     // IMPORTANT: Use FocusScope to capture shortcuts without triggering
@@ -84,26 +85,26 @@ class SoftArchitectApp extends ConsumerWidget {
         // Ctrl + Shift + Plus (En/US layout: Ctrl+Shift+=)
         if (event.logicalKey == LogicalKeyboardKey.equal &&
             HardwareKeyboard.instance.isShiftPressed) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
+          ref.read(settingsProvider.notifier).updateGlobalZoom(
+                (globalZoom + 0.1).clamp(0.5, 2.0),
+              );
           return KeyEventResult.handled;
         }
 
         // Ctrl + Equal/Plus (Spanish: Ctrl+= where + is Shift+=)
         if (event.logicalKey == LogicalKeyboardKey.equal &&
             !HardwareKeyboard.instance.isShiftPressed) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
+          ref.read(settingsProvider.notifier).updateGlobalZoom(
+                (globalZoom + 0.1).clamp(0.5, 2.0),
+              );
           return KeyEventResult.handled;
         }
 
         // Ctrl + Minus (works on all layouts)
         if (event.logicalKey == LogicalKeyboardKey.minus) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom - 0.1).clamp(0.5, 2.0));
+          ref.read(settingsProvider.notifier).updateGlobalZoom(
+                (globalZoom - 0.1).clamp(0.5, 2.0),
+              );
           return KeyEventResult.handled;
         }
 

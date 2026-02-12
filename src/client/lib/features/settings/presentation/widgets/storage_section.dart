@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../gen/app_localizations.dart';
-import '../providers/settings_provider.dart';
+import '../providers/settings_providers_unified.dart';
 import 'setting_item.dart';
 import 'settings_card.dart';
 
