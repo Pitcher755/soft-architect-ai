@@ -12,9 +12,9 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from src.server.app.core.exceptions import LLMConnectionError, LLMTimeoutError
-from src.server.app.infrastructure.llm.groq_client import GroqClient
-from src.server.app.infrastructure.llm.ollama_client import OllamaClient
+from app.core.exceptions import LLMConnectionError, LLMTimeoutError
+from app.infrastructure.llm.groq_client import GroqClient
+from app.infrastructure.llm.ollama_client import OllamaClient
 
 
 class TestOllamaClient:
@@ -77,6 +77,65 @@ class TestOllamaClient:
         with pytest.raises(LLMConnectionError):
             await client.generate("Test prompt")
 
+    @pytest.mark.asyncio
+    @patch("httpx.AsyncClient.post")
+    async def test_ollama_non_200_status_raises_connection_error(self, mock_post):
+        """Non-200 status should map to LLMConnectionError."""
+        mock_response = AsyncMock()
+        mock_response.status_code = 500
+        mock_response.text = "internal error"
+        mock_post.return_value = mock_response
+
+        client = OllamaClient(base_url="http://localhost:11434")
+
+        with pytest.raises(LLMConnectionError) as exc_info:
+            await client.generate("Test prompt")
+
+        assert "status 500" in str(exc_info.value)
+
+    @pytest.mark.asyncio
+    @patch("httpx.AsyncClient.post")
+    async def test_ollama_empty_response_raises_connection_error(self, mock_post):
+        """Empty response body should map to LLMConnectionError."""
+        mock_response = AsyncMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"response": ""}
+        mock_post.return_value = mock_response
+
+        client = OllamaClient(base_url="http://localhost:11434")
+
+        with pytest.raises(LLMConnectionError, match="empty response"):
+            await client.generate("Test prompt")
+
+    @pytest.mark.asyncio
+    @patch("httpx.AsyncClient.post")
+    async def test_ollama_request_error_raises_connection_error(self, mock_post):
+        """RequestError should map to LLMConnectionError."""
+        import httpx
+
+        mock_post.side_effect = httpx.RequestError("network down")
+        client = OllamaClient(base_url="http://localhost:11434")
+
+        with pytest.raises(LLMConnectionError, match="Failed to connect to Ollama"):
+            await client.generate("Test prompt")
+
+    @pytest.mark.asyncio
+    @patch("httpx.AsyncClient.post")
+    async def test_ollama_generate_sends_options(self, mock_post):
+        """Should include num_predict and temperature in options payload."""
+        mock_response = AsyncMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"response": "ok"}
+        mock_post.return_value = mock_response
+
+        client = OllamaClient(base_url="http://localhost:11434")
+        await client.generate("Test prompt", max_tokens=128, temperature=0.2)
+
+        _, kwargs = mock_post.call_args
+        payload = kwargs["json"]
+        assert payload["options"]["num_predict"] == 128
+        assert payload["options"]["temperature"] == 0.2
+
 
 class TestGroqClient:
     """Test Groq cloud LLM client (stub implementation for now)."""
@@ -92,7 +151,7 @@ class TestGroqClient:
     @pytest.mark.asyncio
     async def test_groq_respects_base_protocol(self):
         """Type check: GroqClient conforms to BaseLLMClient protocol."""
-        from src.server.app.infrastructure.llm.base import BaseLLMClient
+        from app.infrastructure.llm.base import BaseLLMClient
 
         client = GroqClient(api_key="test_key")
         assert isinstance(client, BaseLLMClient)
