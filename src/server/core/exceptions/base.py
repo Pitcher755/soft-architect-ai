@@ -116,9 +116,7 @@ class ConnectionError(VectorStoreError):
         if reason:
             details["reason"] = reason
         message = f"Failed to connect to ChromaDB at {host}:{port}"
-        super().__init__(
-            code="SYS_001", message=message, details=details, status_code=503
-        )
+        super().__init__(code="SYS_001", message=message, details=details, status_code=503)
 
 
 class DatabaseWriteError(VectorStoreError):
@@ -132,9 +130,7 @@ class DatabaseWriteError(VectorStoreError):
         if reason:
             details["reason"] = reason
         message = "Database write operation failed"
-        super().__init__(
-            code="DB_WRITE_ERR", message=message, details=details, status_code=500
-        )
+        super().__init__(code="DB_WRITE_ERR", message=message, details=details, status_code=500)
 
 
 class DatabaseReadError(VectorStoreError):
@@ -148,9 +144,7 @@ class DatabaseReadError(VectorStoreError):
         if reason:
             details["reason"] = reason
         message = "Database read operation failed"
-        super().__init__(
-            code="DB_READ_ERR", message=message, details=details, status_code=500
-        )
+        super().__init__(code="DB_READ_ERR", message=message, details=details, status_code=500)
 
 
 class ValidationError(BaseAppError):
@@ -162,9 +156,7 @@ class ValidationError(BaseAppError):
         if field:
             err_details["field"] = field
         err_msg = message or "Validation failed"
-        super().__init__(
-            code="VAL_ERR", message=err_msg, details=err_details, status_code=400
-        )
+        super().__init__(code="VAL_ERR", message=err_msg, details=err_details, status_code=400)
 
 
 class ConfigurationError(BaseAppError):

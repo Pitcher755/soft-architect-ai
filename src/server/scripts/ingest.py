@@ -40,9 +40,7 @@ from core.exceptions import ConnectionError as ChromaConnectionError
 from services.rag.vector_store import VectorStoreService
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -101,9 +99,7 @@ def load_multiformat_documents(  # noqa: C901
                 with open(file_path, encoding="utf-8") as f:
                     data = yaml.safe_load(f)
                     content = yaml.dump(data, default_flow_style=False) if data else ""
-                    metadata_extra["yaml_keys"] = (
-                        list(data.keys()) if isinstance(data, dict) else "list"
-                    )
+                    metadata_extra["yaml_keys"] = list(data.keys()) if isinstance(data, dict) else "list"
 
             elif file_type == "json":
                 with open(file_path, encoding="utf-8") as f:
@@ -136,9 +132,7 @@ def load_multiformat_documents(  # noqa: C901
                 },
             )
             documents.append(doc)
-            logger.debug(
-                f"Loaded: {file_path.name} ({len(content)} chars, type={file_type})"
-            )
+            logger.debug(f"Loaded: {file_path.name} ({len(content)} chars, type={file_type})")
 
         except Exception as e:
             logger.error(f"Failed to load {file_path}: {e}")
@@ -150,17 +144,13 @@ def load_multiformat_documents(  # noqa: C901
 
 def main():
     """Main ingestion workflow."""
-    parser = argparse.ArgumentParser(
-        description="Ingest Markdown documents into ChromaDB for SoftArchitect AI"
-    )
+    parser = argparse.ArgumentParser(description="Ingest Markdown documents into ChromaDB for SoftArchitect AI")
     parser.add_argument(
         "--host",
         default="localhost",
         help="ChromaDB server hostname (default: localhost)",
     )
-    parser.add_argument(
-        "--port", type=int, default=8000, help="ChromaDB server port (default: 8000)"
-    )
+    parser.add_argument("--port", type=int, default=8000, help="ChromaDB server port (default: 8000)")
     parser.add_argument(
         "--knowledge-base",
         default="packages/knowledge_base",

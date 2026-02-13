@@ -78,10 +78,7 @@ class TemplateLoader:
         """
         if templates_path is None:
             # Default to knowledge base templates directory
-            templates_path = (
-                Path(__file__).parent.parent.parent.parent
-                / "packages/knowledge_base/03-TEMPLATES"
-            )
+            templates_path = Path(__file__).parent.parent.parent.parent / "packages/knowledge_base/03-TEMPLATES"
         else:
             templates_path = Path(templates_path)
 
@@ -109,6 +106,4 @@ class TemplateLoader:
             content = template_file.read_text(encoding="utf-8")
             return Template(name=template_name, content=content)
         except Exception as e:
-            raise TemplateNotFoundError(
-                template_name, message=f"Failed to load template: {str(e)}"
-            ) from e
+            raise TemplateNotFoundError(template_name, message=f"Failed to load template: {str(e)}") from e
