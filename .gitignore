@@ -120,3 +120,5 @@ htmlcov/
 /*.py
 !setup.py
 !build.py
+.venv-ci/
+.venv-ci/
