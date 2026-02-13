@@ -2,7 +2,7 @@
 
 > **Purpose:** Complete inventory of all files created, modified, or related to HU-4.1
 > **Last Updated:** 2026-02-13
-> **Status:** 🚧 In Progress
+> **Status:** 🚧 In Progress (Phases 0-3 completed)
 
 ---
 
@@ -42,7 +42,7 @@
 ### Schemas (Pydantic Models)
 | File | Status | Purpose | Test Coverage |
 |------|--------|---------|---------------|
-| `src/server/app/domain/schemas/chat.py` | ⏳ Pending | Request/Response models | Target: >95% |
+| `src/server/app/domain/schemas/chat.py` | ✅ Implemented | Request/Response models | ✅ Covered |
 
 **Classes to Implement:**
 ```python
@@ -55,12 +55,13 @@
 ### Domain Exceptions
 | File | Status | Purpose |
 |------|--------|---------|
-| `src/server/app/core/exceptions/chat.py` | ⏳ Pending | Custom chat-related exceptions |
+| `src/server/app/core/exceptions.py` | ✅ Implemented | Custom chat/RAG/LLM domain exceptions |
 
 **Exceptions to Define:**
 ```python
-# src/server/app/core/exceptions/chat.py
+# src/server/app/core/exceptions.py
 - class LLMConnectionError(BaseAppError)
+- class LLMTimeoutError(BaseAppError)
 - class RAGRetrievalError(BaseAppError)
 - class PromptInjectionDetected(BaseAppError)
 - class TemplateMissingError(BaseAppError)
@@ -73,17 +74,17 @@
 ### LLM Clients (Strategy Pattern)
 | File | Status | Purpose | Test Coverage |
 |------|--------|---------|---------------|
-| `src/server/app/infrastructure/llm/base.py` | ⏳ Pending | Abstract base class | Target: 100% |
-| `src/server/app/infrastructure/llm/ollama_client.py` | ⏳ Pending | Ollama integration | Target: >90% |
-| `src/server/app/infrastructure/llm/groq_client.py` | ⏳ Pending | Groq stub (future) | Target: >80% |
-| `src/server/app/infrastructure/llm/__init__.py` | ⏳ Pending | Exports & factory | - |
+| `src/server/app/infrastructure/llm/base.py` | ✅ Implemented | Abstract base class | ✅ 100% |
+| `src/server/app/infrastructure/llm/ollama_client.py` | ✅ Implemented | Ollama integration | ✅ 100% |
+| `src/server/app/infrastructure/llm/groq_client.py` | ✅ Implemented | Groq stub (future) | ✅ 100% |
+| `src/server/app/infrastructure/llm/factory.py` | ✅ Implemented | Runtime provider switching | ✅ 95% |
+| `src/server/app/infrastructure/llm/__init__.py` | ✅ Implemented | Exports & factory | ✅ 100% |
 
 **Classes to Implement:**
 ```python
 # base.py
 - class BaseLLMClient(ABC)
-  - async def generate(prompt: str, context: list[str]) -> str
-  - async def health_check() -> bool
+  - async def generate(prompt: str, max_tokens: int | None, temperature: float | None) -> str
 
 # ollama_client.py
 - class OllamaClient(BaseLLMClient)
@@ -109,19 +110,17 @@
 ### RAG Orchestrator
 | File | Status | Purpose | Test Coverage |
 |------|--------|---------|---------------|
-| `src/server/app/services/rag/orchestrator.py` | ⏳ Pending | Main orchestration logic | Target: >90% |
-| `src/server/app/services/rag/__init__.py` | ⏳ Pending | Exports | - |
+| `src/server/app/services/rag/orchestrator.py` | ✅ Implemented | Main orchestration logic | ✅ 100% |
+| `src/server/app/services/rag/vector_store_protocol.py` | ✅ Implemented | Vector store protocol stub | ✅ 100% |
+| `src/server/app/services/rag/template_builder_protocol.py` | ✅ Implemented | Template builder protocol stub | ✅ 100% |
+| `src/server/app/services/rag/__init__.py` | ✅ Implemented | Exports | ✅ Covered |
 
 **Class Structure:**
 ```python
 # orchestrator.py
 - class RAGOrchestrator:
-  - __init__(vector_store, template_loader, llm_client)
-  - async def process_message(message, project_id) -> ChatResponse
-  - async def _search_knowledge_base(query) -> list[str]
-  - async def _load_template(phase_id) -> str
-  - async def _build_prompt(template, context, user_input) -> str
-  - async def _call_llm(prompt) -> str
+  - __init__(vector_store, template_builder, llm_client)
+  - async def process_message(request: ChatRequest) -> ChatResponse
 ```
 
 ---
@@ -191,10 +190,8 @@ Layer
 ### Unit Tests - Infrastructure Layer
 | File | Status | Purpose | Coverage Target |
 |------|--------|---------|-----------------|
-| `tests/server/unit/infrastructure/llm/test_base_client.py` | ⏳ Pending | Abstract class tests | 100% |
-| `tests/server/unit/infrastructure/llm/test_ollama_client.py` | ⏳ Pending | Ollama client tests | >90% |
-| `tests/server/unit/infrastructure/llm/test_groq_client.py` | ⏳ Pending | Groq stub tests | >80% |
-| `tests/server/unit/infrastructure/llm/test_retry.py` | ⏳ Pending | Retry logic tests | >90% |
+| `tests/server/unit/infrastructure/llm/test_llm_clients.py` | ✅ Implemented | Base/Ollama/Groq client tests | ✅ >90% |
+| `tests/server/unit/infrastructure/llm/test_llm_factory.py` | ✅ Implemented | Factory selection tests | ✅ Covered |
 
 **Test Cases:**
 ```python
@@ -210,7 +207,8 @@ Layer
 ### Unit Tests - Service Layer
 | File | Status | Purpose | Coverage Target |
 |------|--------|---------|-----------------|
-| `tests/server/unit/services/rag/test_orchestrator.py` | ⏳ Pending | Orchestrator logic tests | >90% |
+| `tests/server/unit/services/rag/test_orchestrator.py` | ✅ Implemented | RAGOrchestrator business logic tests | ✅ 100% (module) |
+| `tests/server/unit/services/rag/test_sequential_orchestrator.py` | ✅ Preserved | Legacy sequential orchestrator regression tests | ✅ Covered |
 
 **Test Cases:**
 ```python

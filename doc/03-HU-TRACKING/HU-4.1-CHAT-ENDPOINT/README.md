@@ -2,7 +2,7 @@
 
 > **Sprint:** S4 - Inteligencia Artificial y Chat (The Brain)
 > **Epic:** E4 - Backend IA & RAG
-> **Status:** 🚧 In Progress
+> **Status:** 🚧 In Progress (Phase 4 pending)
 > **Priority:** 🔴 Critical
 > **Estimation:** L (Large)
 > **Branch:** `feature/backend-chat-endpoint`
@@ -102,23 +102,23 @@ The endpoint must:
 ### 🔧 Technical Tasks
 
 #### Phase 1: Domain & Security (TDD Red)
-- [ ] Define Pydantic schemas (`ChatRequest`, `ChatResponse`)
-- [ ] Implement input sanitization (HTML tags, length limits)
-- [ ] Write validation tests (XSS, prompt injection, DOS prevention)
+- [x] Define Pydantic schemas (`ChatRequest`, `ChatResponse`)
+- [x] Implement input sanitization (HTML tags, length limits)
+- [x] Write validation tests (XSS, prompt injection, DOS prevention)
 
 #### Phase 2: Infrastructure (TDD Green)
-- [ ] Implement `BaseLLMClient` abstract class (Strategy pattern)
-- [ ] Create `OllamaClient` implementation
-- [ ] Create `GroqClient` stub (ready for future integration)
-- [ ] Write unit tests for LLM clients (mock external calls)
+- [x] Implement `BaseLLMClient` abstract class (Strategy pattern)
+- [x] Create `OllamaClient` implementation
+- [x] Create `GroqClient` stub (ready for future integration)
+- [x] Write unit tests for LLM clients (mock external calls)
 
 #### Phase 3: RAG Orchestrator (TDD Refactor)
-- [ ] Implement `RAGOrchestrator` service
-  - Vector search integration
-  - Template loader integration
-  - Context injection logic
-  - LLM client invocation
-- [ ] Write unit tests for orchestration logic
+- [x] Implement `RAGOrchestrator` service
+  - [x] Vector search integration
+  - [x] Template builder integration
+  - [x] Context injection logic
+  - [x] LLM client invocation
+- [x] Write unit tests for orchestration logic
 
 #### Phase 4: FastAPI Endpoint
 - [ ] Implement `/api/v1/chat/message` POST route
@@ -255,23 +255,23 @@ El endpoint debe:
 ### 🔧 Tareas Técnicas
 
 #### Fase 1: Dominio & Seguridad (TDD Red)
-- [ ] Definir schemas Pydantic (`ChatRequest`, `ChatResponse`)
-- [ ] Implementar sanitización de input (etiquetas HTML, límites de longitud)
-- [ ] Escribir tests de validación (XSS, inyección de prompts, prevención DOS)
+- [x] Definir schemas Pydantic (`ChatRequest`, `ChatResponse`)
+- [x] Implementar sanitización de input (etiquetas HTML, límites de longitud)
+- [x] Escribir tests de validación (XSS, inyección de prompts, prevención DOS)
 
 #### Fase 2: Infraestructura (TDD Green)
-- [ ] Implementar clase abstracta `BaseLLMClient` (Patrón Strategy)
-- [ ] Crear implementación `OllamaClient`
-- [ ] Crear stub `GroqClient` (listo para integración futura)
-- [ ] Escribir tests unitarios para clientes LLM (mockear llamadas externas)
+- [x] Implementar clase abstracta `BaseLLMClient` (Patrón Strategy)
+- [x] Crear implementación `OllamaClient`
+- [x] Crear stub `GroqClient` (listo para integración futura)
+- [x] Escribir tests unitarios para clientes LLM (mockear llamadas externas)
 
 #### Fase 3: Orquestador RAG (TDD Refactor)
-- [ ] Implementar servicio `RAGOrchestrator`
-  - Integración de búsqueda vectorial
-  - Integración de cargador de templates
-  - Lógica de inyección de contexto
-  - Invocación de cliente LLM
-- [ ] Escribir tests unitarios para lógica de orquestación
+- [x] Implementar servicio `RAGOrchestrator`
+  - [x] Integración de búsqueda vectorial
+  - [x] Integración de constructor de prompts
+  - [x] Lógica de inyección de contexto
+  - [x] Invocación de cliente LLM
+- [x] Escribir tests unitarios para lógica de orquestación
 
 #### Fase 4: Endpoint FastAPI
 - [ ] Implementar ruta POST `/api/v1/chat/message`
