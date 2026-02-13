@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/profile_section.dart';
 import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 import 'package:softarchitect_ai/gen/app_localizations.dart';
@@ -19,13 +20,28 @@ Widget createTestApp(Widget child) => MaterialApp(
 );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() async {
+    // Initialize mock SharedPreferences before each test
+    SharedPreferences.setMockInitialValues({});
+  });
+
   group('ProfileSection', () {
     testWidgets('should display userName field with ValueKey',
         (WidgetTester tester) async {
-      // Arrange & Act: Build ProfileSection widget
+      // Arrange: Create container and wait for async initialization
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
+      // Act
       await tester.pumpWidget(
-        const ProviderScope(
-          child: MaterialApp(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(
             home: Scaffold(
               body: ProfileSection(),
             ),
@@ -45,10 +61,18 @@ void main() {
 
     testWidgets('should have onChanged handler for userName field',
         (WidgetTester tester) async {
-      // Arrange & Act: Build ProfileSection widget
+      // Arrange: Create container and wait for async initialization
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
+      // Act
       await tester.pumpWidget(
-        const ProviderScope(
-          child: MaterialApp(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(
             home: Scaffold(
               body: ProfileSection(),
             ),
@@ -72,6 +96,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
@@ -79,8 +106,6 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-
-      await container.read(settingsProvider.future);
 
       final field = find.byKey(const ValueKey('userName_field'));
       await tester.enterText(field, '  NuevoNombre  ');
@@ -95,6 +120,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
@@ -104,8 +132,6 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-
-      await container.read(settingsProvider.future);
 
       await tester.tap(find.text('Cambiar avatar'));
       await tester.pumpAndSettle();
@@ -130,6 +156,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
@@ -139,8 +168,6 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-
-      await container.read(settingsProvider.future);
 
       final field = find.byKey(const ValueKey('userName_field'));
       await tester.enterText(field, '  Arquitecta  ');
@@ -154,6 +181,9 @@ void main() {
         (WidgetTester tester) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
 
       await tester.pumpWidget(
         UncontrolledProviderScope(

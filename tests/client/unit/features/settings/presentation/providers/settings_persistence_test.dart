@@ -14,11 +14,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('SettingsNotifier - Persistence Integration', () {
-    test('should load persisted settings on initialization',
-        skip: 'BLOCKED: Requires SettingsNotifier refactor to AsyncNotifier.'
-        ' Current sync build() returns defaults before async _loadSettings() completes.'
-        ' See AGENTS.md §8 "Async/Sync Race Condition" for solution strategies.',
-        () async {
+    test('should load persisted settings on initialization', () async {
       // Initialize mock with pre-populated data
       initMockSharedPreferences({
         'app_settings_v2':
@@ -95,9 +91,6 @@ void main() {
     });
 
     test('should handle partial JSON data with fallback for missing fields',
-        skip: 'BLOCKED: Same async/sync race condition as test 1.'
-        ' _loadSettings() completes after test reads state.'
-        ' Requires architectural change to AsyncNotifier pattern.',
         () async {
       // JSON with only some fields
       initMockSharedPreferences({
