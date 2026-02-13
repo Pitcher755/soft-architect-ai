@@ -146,8 +146,9 @@ void main() {
       container.dispose();
     });
 
-    test('should initialize with default AppSettings', () {
-      final settings = container.read(settingsProvider);
+    test('should initialize with default AppSettings', () async {
+      await container.read(settingsProvider.future);
+      final settings = container.read(settingsProvider).requireValue;
 
       expect(settings.userName, 'Architect');
       expect(settings.themeMode, ThemeMode.dark);
@@ -155,11 +156,12 @@ void main() {
     });
 
     test('updateUserName should update state and persist', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateUserName('NewUser');
+      await notifier.updateUserName('NewUser');
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
       expect(settings.userName, 'NewUser');
 
       // Wait for persistence
@@ -172,183 +174,138 @@ void main() {
       expect(savedJson, contains('NewUser'));
     });
 
-    test('updateAvatarIndex should update state', () {
+    test('updateAvatarIndex should update state', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateAvatarIndex(3);
+      await notifier.updateAvatarIndex(3);
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
       expect(settings.avatarIndex, 3);
     });
 
-    test('updateProjectDirectory should update state', () {
+    test('updateProjectDirectory should update state', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateProjectDirectory('/new/project/path');
+      await notifier.updateProjectDirectory('/new/project/path');
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
       expect(settings.projectDirectory, '/new/project/path');
     });
 
     test('updateCustomAvatarPath should update state and allow null', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
       await notifier.updateCustomAvatarPath('/tmp/avatar.png');
-      expect(container.read(settingsProvider).customAvatarPath, '/tmp/avatar.png');
+      expect(container.read(settingsProvider).requireValue.customAvatarPath, '/tmp/avatar.png');
 
       await notifier.updateCustomAvatarPath(null);
-      expect(container.read(settingsProvider).customAvatarPath, isNull);
+      expect(container.read(settingsProvider).requireValue.customAvatarPath, isNull);
     });
 
     test('updateStoragePath should update projectDirectory alias', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
       await notifier.updateStoragePath('/tmp/storage');
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
       expect(settings.projectDirectory, '/tmp/storage');
       expect(settings.storagePath, '/tmp/storage');
     });
 
-    test('updateTheme should update state', () {
+    test('updateTheme should update state', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateTheme(ThemeMode.light);
+      await notifier.updateTheme(ThemeMode.light);
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
       expect(settings.themeMode, ThemeMode.light);
     });
 
-    test('updateFontSize should clamp values to valid range', () {
+    test('updateFontSize should clamp values to valid range', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
       // Test lower bound
-      notifier.updateFontSize(0.5);
-      expect(container.read(settingsProvider).fontSize, 0.8);
+      await notifier.updateFontSize(0.5);
+      expect(container.read(settingsProvider).requireValue.fontSize, 0.8);
 
       // Test upper bound
-      notifier.updateFontSize(2.0);
-      expect(container.read(settingsProvider).fontSize, 1.4);
+      await notifier.updateFontSize(2.0);
+      expect(container.read(settingsProvider).requireValue.fontSize, 1.4);
 
       // Test valid value
-      notifier.updateFontSize(1.2);
-      expect(container.read(settingsProvider).fontSize, 1.2);
+      await notifier.updateFontSize(1.2);
+      expect(container.read(settingsProvider).requireValue.fontSize, 1.2);
     });
 
-    test('updateGlobalZoom should clamp values to valid range', () {
+    test('updateGlobalZoom should clamp values to valid range', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
       // Test lower bound
-      notifier.updateGlobalZoom(0.3);
-      expect(container.read(settingsProvider).globalZoom, 0.5);
+      await notifier.updateGlobalZoom(0.3);
+      expect(container.read(settingsProvider).requireValue.globalZoom, 0.5);
 
       // Test upper bound
-      notifier.updateGlobalZoom(3.0);
-      expect(container.read(settingsProvider).globalZoom, 2.0);
+      await notifier.updateGlobalZoom(3.0);
+      expect(container.read(settingsProvider).requireValue.globalZoom, 2.0);
 
       // Test valid value
-      notifier.updateGlobalZoom(1.5);
-      expect(container.read(settingsProvider).globalZoom, 1.5);
+      await notifier.updateGlobalZoom(1.5);
+      expect(container.read(settingsProvider).requireValue.globalZoom, 1.5);
     });
 
-    test('updateZoomShortcuts should toggle state', () {
+    test('updateZoomShortcuts should toggle state', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateZoomShortcuts(enableZoomShortcuts: false);
-      expect(container.read(settingsProvider).enableZoomShortcuts, false);
+      await notifier.updateZoomShortcuts(enableZoomShortcuts: false);
+      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, false);
 
-      notifier.updateZoomShortcuts(enableZoomShortcuts: true);
-      expect(container.read(settingsProvider).enableZoomShortcuts, true);
+      await notifier.updateZoomShortcuts(enableZoomShortcuts: true);
+      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, true);
     });
 
-    test('updateAnimations should toggle state', () {
+    test('updateAnimations should toggle state', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateAnimations(enableAnimations: false);
-      expect(container.read(settingsProvider).enableAnimations, false);
+      await notifier.updateAnimations(enableAnimations: false);
+      expect(container.read(settingsProvider).requireValue.enableAnimations, false);
 
-      notifier.updateAnimations(enableAnimations: true);
-      expect(container.read(settingsProvider).enableAnimations, true);
+      await notifier.updateAnimations(enableAnimations: true);
+      expect(container.read(settingsProvider).requireValue.enableAnimations, true);
     });
 
-    test('updateMemoryOptimization should toggle state', () {
+    test('updateMemoryOptimization should toggle state', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateMemoryOptimization(enableMemoryOptimization: false);
-      expect(container.read(settingsProvider).enableMemoryOptimization, false);
+      await notifier.updateMemoryOptimization(enableMemoryOptimization: false);
+      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, false);
 
-      notifier.updateMemoryOptimization(enableMemoryOptimization: true);
-      expect(container.read(settingsProvider).enableMemoryOptimization, true);
+      await notifier.updateMemoryOptimization(enableMemoryOptimization: true);
+      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, true);
     });
 
-    /// NOTE: This test requires a more sophisticated mock setup.
-    /// initMockSharedPreferences() can only be called once per test suite,
-    /// causing conflicts with the setUp() that initializes empty values.
-    /// Workaround: Extract to separate test file or use integration test approach.
-    /// Consider as enhancement for PHASE-6+
-    test(
-      'should load persisted settings on initialization',
-      () async {
-        // Setup persisted data (themeMode: 2 = ThemeMode.dark)
-        initMockSharedPreferences({
-          'app_settings_v2':
-              '{"themeMode":2,"fontSize":1.3,"globalZoom":1.5,"enableZoomShortcuts":false,"enableAnimations":false,"enableMemoryOptimization":false,"userName":"PersistedUser","avatarIndex":2,"projectDirectory":"/persisted/path"}',
-        });
-
-        // Create new container to trigger initialization
-        final newContainer = ProviderContainer();
-
-        // Wait longer for async load to complete (SharedPreferences.getInstance + jsonDecode)
-        await Future<void>.delayed(const Duration(milliseconds: 500));
-
-        final settings = newContainer.read(settingsProvider);
-
-        expect(settings.userName, 'PersistedUser');
-        expect(settings.themeMode, ThemeMode.dark); // themeMode:2 = dark
-        expect(settings.fontSize, 1.3);
-        expect(settings.globalZoom, 1.5);
-        expect(settings.enableZoomShortcuts, false);
-        expect(settings.avatarIndex, 2);
-        expect(settings.projectDirectory, '/persisted/path');
-
-        newContainer.dispose();
-      },
-      skip:
-          'Requires separate test file due to SharedPreferences mock limitations',
-    );
-
-    test('should handle corrupted JSON gracefully', () async {
-      // Setup corrupted data
-      initMockSharedPreferences({
-        'app_settings_v2': '{invalid json}',
-      });
-
-      final newContainer = ProviderContainer();
-
-      // Wait for async load attempt
-      await Future<void>.delayed(const Duration(milliseconds: 200));
-
-      final settings = newContainer.read(settingsProvider);
-
-      // Should fallback to defaults
-      expect(settings.userName, 'Architect');
-      expect(settings.themeMode, ThemeMode.dark);
-
-      newContainer.dispose();
-    });
-
-    test('granular providers should expose selected values', () {
+    test('granular providers should reflect settingsProvider state', () async {
+      await container.read(settingsProvider.future);
       final notifier = container.read(settingsProvider.notifier);
 
-      notifier.updateTheme(ThemeMode.light);
-      notifier.updateFontSize(1.3);
-      notifier.updateGlobalZoom(1.7);
-      notifier.updateZoomShortcuts(enableZoomShortcuts: false);
-      notifier.updateAnimations(enableAnimations: false);
-      notifier.updateMemoryOptimization(enableMemoryOptimization: false);
-      notifier.updateUserName('Granular');
-      notifier.updateAvatarIndex(4);
-      notifier.updateProjectDirectory('/tmp/granular');
+      await notifier.updateTheme(ThemeMode.light);
+      await notifier.updateFontSize(1.3);
+      await notifier.updateGlobalZoom(1.7);
+      await notifier.updateZoomShortcuts(enableZoomShortcuts: false);
+      await notifier.updateAnimations(enableAnimations: false);
+      await notifier.updateMemoryOptimization(enableMemoryOptimization: false);
+      await notifier.updateUserName('Granular');
+      await notifier.updateAvatarIndex(4);
+      await notifier.updateProjectDirectory('/tmp/granular');
 
       expect(container.read(themeModeProvider), ThemeMode.light);
       expect(container.read(fontSizeProvider), 1.3);
@@ -360,6 +317,10 @@ void main() {
       expect(container.read(avatarIndexProvider), 4);
       expect(container.read(projectDirectoryProvider), '/tmp/granular');
     });
+
+    /// NOTE: Persistence tests have been moved to a separate file
+    /// (settings_persistence_test.dart) to avoid SharedPreferences mock conflicts.
+    /// See that file for comprehensive persistence loading tests.
   });
 
   group('LastProjectNotifier', () {

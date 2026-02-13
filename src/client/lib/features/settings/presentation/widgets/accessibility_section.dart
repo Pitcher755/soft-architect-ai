@@ -14,7 +14,8 @@ class AccessibilitySection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider);
+    final globalZoom = ref.watch(globalZoomProvider);
+    final enableZoomShortcuts = ref.watch(enableZoomShortcutsProvider);
     final l10n = AppLocalizations.of(context);
 
     return SettingsCard(
@@ -27,7 +28,7 @@ class AccessibilitySection extends ConsumerWidget {
           child: SizedBox(
             width: 200,
             child: Slider(
-              value: settings.globalZoom,
+              value: globalZoom,
               min: 0.5,
               max: 2,
               divisions: 15,
@@ -41,7 +42,7 @@ class AccessibilitySection extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
           child: Text(
-            '${(settings.globalZoom * 100).round()}%',
+            '${(globalZoom * 100).round()}%',
             style: const TextStyle(fontSize: 12, color: Color(0xFF8b949e)),
           ),
         ),
@@ -50,7 +51,7 @@ class AccessibilitySection extends ConsumerWidget {
           title: l10n.enableZoomShortcuts,
           subtitle: 'Ctrl + / Ctrl - para zoom, Ctrl + 0 para reset',
           child: Switch(
-            value: settings.enableZoomShortcuts,
+            value: enableZoomShortcuts,
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateZoomShortcuts(enableZoomShortcuts: value),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/appearance_section.dart';
 import 'package:softarchitect_ai/gen/app_localizations.dart';
@@ -20,6 +21,13 @@ Widget createTestApp(Widget child) => MaterialApp(
 );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() async {
+    // Initialize mock SharedPreferences before each test
+    SharedPreferences.setMockInitialValues({});
+  });
+
   group('AppearanceSection', () {
     testWidgets('should render theme toggle switch', (WidgetTester tester) async {
       // Arrange & Act
@@ -60,6 +68,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
+      // Wait for AsyncNotifier initialization BEFORE pumping widget
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
@@ -67,18 +78,20 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-
-      expect(container.read(settingsProvider).themeMode, ThemeMode.dark);
+      expect(container.read(settingsProvider).requireValue.themeMode, ThemeMode.dark);
 
       await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).themeMode, ThemeMode.light);
+      expect(container.read(settingsProvider).requireValue.themeMode, ThemeMode.light);
     });
 
     testWidgets('slider and text submit update and validate font size', (WidgetTester tester) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
+
+      // Wait for AsyncNotifier initialization BEFORE pumping widget
+      await container.read(settingsProvider.future);
 
       await tester.pumpWidget(
         UncontrolledProviderScope(
@@ -90,14 +103,14 @@ void main() {
 
       await tester.drag(find.byType(Slider), const Offset(120, 0));
       await tester.pumpAndSettle();
-      expect(container.read(settingsProvider).fontSize, greaterThan(1.0));
+      expect(container.read(settingsProvider).requireValue.fontSize, greaterThan(1.0));
 
       final textField = find.byType(TextField);
       await tester.enterText(textField, '999');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).fontSize, lessThanOrEqualTo(1.4));
+      expect(container.read(settingsProvider).requireValue.fontSize, lessThanOrEqualTo(1.4));
     });
   });
 }

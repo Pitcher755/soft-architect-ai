@@ -38,11 +38,7 @@ class StreamingHandler:
             if heartbeat_interval_seconds is not None
             else settings.WS_HEARTBEAT_INTERVAL_SECONDS
         )
-        self._token_delay = (
-            token_delay_seconds
-            if token_delay_seconds is not None
-            else settings.WS_TOKEN_DELAY_SECONDS
-        )
+        self._token_delay = token_delay_seconds if token_delay_seconds is not None else settings.WS_TOKEN_DELAY_SECONDS
         self._metrics = MetricsCollector()
 
     @property
@@ -57,9 +53,7 @@ class StreamingHandler:
                 await websocket.accept()
             except RuntimeError as exc:
                 self._metrics.record_connection_failure()
-                logger.error(
-                    "WebSocket accept failed", extra={"error_code": "WS_ACCEPT"}
-                )
+                logger.error("WebSocket accept failed", extra={"error_code": "WS_ACCEPT"})
                 raise StreamingError(
                     code="WS_CONNECTION_FAILED",
                     message="Failed to establish WebSocket connection",
@@ -68,9 +62,7 @@ class StreamingHandler:
 
         self._connections.add(websocket)
         self._metrics.record_connection_success()
-        logger.info(
-            "WebSocket connected", extra={"active_connections": self.active_connections}
-        )
+        logger.info("WebSocket connected", extra={"active_connections": self.active_connections})
 
     async def disconnect(self, websocket: WebSocket) -> None:
         """Close WebSocket connection and clean up resources."""
@@ -107,9 +99,7 @@ class StreamingHandler:
                     await asyncio.sleep(delay)
 
             total_ms = (time.perf_counter() - start_time) * 1000
-            done_message = DoneMessage(
-                total_tokens=token_count, latency_ms=round(total_ms, 2)
-            )
+            done_message = DoneMessage(total_tokens=token_count, latency_ms=round(total_ms, 2))
             await websocket.send_text(json.dumps(done_message.to_dict()))
 
         except WebSocketDisconnect:

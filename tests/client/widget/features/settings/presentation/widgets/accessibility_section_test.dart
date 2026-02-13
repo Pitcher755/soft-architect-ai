@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/accessibility_section.dart';
 import 'package:softarchitect_ai/gen/app_localizations.dart';
@@ -20,6 +21,13 @@ Widget createTestApp(Widget child) => MaterialApp(
 );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() async {
+    // Initialize mock SharedPreferences before each test
+    SharedPreferences.setMockInitialValues({});
+  });
+
   group('AccessibilitySection', () {
     testWidgets('should render global zoom slider', (WidgetTester tester) async {
       // Arrange & Act
@@ -60,6 +68,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
+      // Wait for AsyncNotifier initialization BEFORE pumping widget
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
@@ -67,9 +78,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-
-      expect(container.read(settingsProvider).enableZoomShortcuts, isTrue);
-      expect(container.read(settingsProvider).globalZoom, 1.0);
+      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, isTrue);
+      expect(container.read(settingsProvider).requireValue.globalZoom, 1.0);
 
       await tester.drag(find.byType(Slider), const Offset(140, 0));
       await tester.pumpAndSettle();
@@ -77,8 +87,8 @@ void main() {
       await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).globalZoom, greaterThan(1.0));
-      expect(container.read(settingsProvider).enableZoomShortcuts, isFalse);
+      expect(container.read(settingsProvider).requireValue.globalZoom, greaterThan(1.0));
+      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, isFalse);
     });
   });
 }

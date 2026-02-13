@@ -35,7 +35,7 @@
 - **✅ VERIFIED:** [Pre-Push Validation Report (2026-02-12)](doc/01-PROJECT_REPORT/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 gates passed
 - **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
 - **🚧 IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests stabilized, coverage uplift in progress
-- **📊 TEST COVERAGE:** Client Flutter 86.88% (full suite green) + Server app 82.72% (pytest --cov gate ≥80% passed)
+- **📊 TEST STATUS:** Client Flutter full suite green + Server app coverage gate ≥80% passing
 
 #### 📖 Vision
 
@@ -53,7 +53,7 @@ git clone https://github.com/YOUR_USER/soft-architect-ai.git
 cd soft-architect-ai
 
 # 2. Start all services (Docker required)
-scripts/start_stack.sh
+scripts/devops/start_stack.sh
 
 # 3. Access services:
 # - API: http://localhost:8000
@@ -62,7 +62,7 @@ scripts/start_stack.sh
 # - Ollama: http://localhost:11434
 
 # 4. Stop services when done
-scripts/stop_stack.sh
+scripts/devops/stop_stack.sh
 ```
 
 **Requirements:** Docker 20.10+ and Docker Compose 2.0+ | **Time:** ~2 minutes (first-time pull)
@@ -143,25 +143,25 @@ docker compose -f infrastructure/docker-compose.yml up -d
 All tests are centralized in the `tests/` directory with language-specific organization:
 
 ```bash
-# Run Flutter tests (169 unit + 36 widget + 9 integration)
-scripts/run_tests.sh flutter
+# Run Flutter tests
+scripts/testing/run_tests.sh flutter
 
 # Run Python tests
-scripts/run_tests.sh python
+scripts/testing/run_tests.sh python
 
 # Run all tests
-scripts/run_tests.sh all
+scripts/testing/run_tests.sh all
 
 # Generate coverage report
-scripts/run_tests.sh flutter --coverage
+scripts/testing/run_tests.sh all --coverage
 ```
 
 **Test Structure:**
-- `tests/test/unit/` - Flutter unit tests
-- `tests/test/widget/` - Flutter widget tests
-- `tests/test/integration/` - Flutter integration tests
-- `tests/test/helpers/` - Shared test helpers & fixtures
-- `tests/python/unit/` - Python unit tests
+- `tests/client/unit/` - Flutter unit tests
+- `tests/client/widget/` - Flutter widget tests
+- `tests/client/integration/` - Flutter integration tests
+- `tests/client/e2e/` - Flutter E2E tests
+- `tests/server/` - Python tests (unit/integration)
 
 See [tests/README.md](tests/README.md) for detailed testing documentation and structure.
 
@@ -195,7 +195,7 @@ See [tests/README.md](tests/README.md) for detailed testing documentation and st
 - **✅ VERIFICADO:** [Reporte de Validación Pre-Push (2026-02-12)](doc/01-PROJECT_REPORT/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 compuertas aprobadas
 - **🚀 COMPLETADO:** [HU-3.1: Implementación Shell UI del Proyecto](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - Todas 4 Fases + Seguridad ✅
 - **🚧 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests estabilizados, cobertura en subida
-- **📊 COBERTURA TESTS:** Cliente Flutter 86.88% (suite completa en verde) + Server app 82.72% (gate pytest --cov ≥80% aprobado)
+- **📊 ESTADO TESTS:** Cliente Flutter suite completa en verde + Server app con gate de cobertura ≥80% aprobado
 
 #### 📖 Visión
 
@@ -213,7 +213,7 @@ git clone https://github.com/TU_USUARIO/soft-architect-ai.git
 cd soft-architect-ai
 
 # 2. Levantar todos los servicios (requiere Docker)
-./start_stack.sh
+scripts/devops/start_stack.sh
 
 # 3. Acceder a los servicios:
 # - API: http://localhost:8000
@@ -222,7 +222,7 @@ cd soft-architect-ai
 # - Ollama: http://localhost:11434
 
 # 4. Detener servicios al terminar
-./stop_stack.sh
+scripts/devops/stop_stack.sh
 ```
 
 **Requisitos:** Docker 20.10+ y Docker Compose 2.0+ | **Tiempo:** ~2 minutos (primer descargar)
@@ -303,23 +303,25 @@ docker compose -f infrastructure/docker-compose.yml up -d
 Todos los tests están centralizados en el directorio `tests/` con organización específica por lenguaje:
 
 ```bash
-# Ejecutar tests de Flutter (169 unit + 36 widget + 9 integration)
-./run_tests.sh flutter
+# Ejecutar tests de Flutter
+scripts/testing/run_tests.sh flutter
 
 # Ejecutar tests de Python
-./run_tests.sh python
+scripts/testing/run_tests.sh python
 
 # Ejecutar todos los tests
-./run_tests.sh all
+scripts/testing/run_tests.sh all
 
 # Generar reporte de cobertura
-./run_tests.sh flutter --coverage
+scripts/testing/run_tests.sh all --coverage
 ```
 
 **Estructura de Tests:**
-- `tests/flutter/test/` - Tests unitarios/widget/integración de Flutter
-- `tests/python/unit/` - Tests unitarios de Python
-- `src/client/lib/tests/` - Helpers y fixtures compartidos
+- `tests/client/unit/` - Tests unitarios de Flutter
+- `tests/client/widget/` - Tests widget de Flutter
+- `tests/client/integration/` - Tests de integración de Flutter
+- `tests/client/e2e/` - Tests E2E de Flutter
+- `tests/server/` - Tests Python (unit/integration)
 
 Consulta [tests/README.md](tests/README.md) para documentación detallada sobre testing y estructura.
 

@@ -78,9 +78,7 @@ class ConnectionPool:
             logger.debug(f"Connection acquired (pool size: {self.pool.qsize()})")
             return conn
         except Empty as err:
-            raise TimeoutError(
-                f"No database connection available after {self.timeout}s timeout"
-            ) from err
+            raise TimeoutError(f"No database connection available after {self.timeout}s timeout") from err
 
     def return_connection(self, conn: sqlite3.Connection) -> None:
         """Return connection to pool for reuse.

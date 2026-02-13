@@ -1,5 +1,38 @@
 # 📋 Script Organization Log
 
+> **Actualización:** 13 Feb 2026
+> **Estado:** ✅ Reorganización v2 aplicada
+
+## 🔄 Update 2026-02-13 (Current Layout)
+
+Se consolidó la organización por categoría dentro de `scripts/` y se actualizaron los comandos operativos.
+
+### 📁 Estructura vigente
+
+| Categoría | Ubicación | Scripts principales |
+|-----------|-----------|---------------------|
+| Testing | `scripts/testing/` | `PRE_PUSH_VALIDATION_MASTER.sh`, `run_tests.sh`, `RUN_COMPLETE_TEST_SUITE.sh`, `generate_coverage_html.sh` |
+| Quality | `scripts/quality/` | `validate-quality-gates.sh`, `VALIDATE_PHASE6_CI_CD_GATES.sh` |
+| DevOps | `scripts/devops/` | `start_stack.sh`, `stop_stack.sh`, `LAUNCH_FLUTTER_APP_DEV.sh` |
+| Workflows | `scripts/workflows/` | `validate-workflows.sh`, `test-workflows-locally.sh` |
+| Maintenance | `scripts/maintenance/` | `STATUS_DASHBOARD.sh`, `organize_docs.sh` |
+
+### 🧭 Comandos canónicos
+
+```bash
+# Validación obligatoria antes de push
+./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh
+
+# Suite unificada de tests
+./scripts/testing/run_tests.sh all --coverage
+
+# Infraestructura local
+./scripts/devops/start_stack.sh
+./scripts/devops/stop_stack.sh
+```
+
+---
+
 > **Fecha:** 04 Feb 2025
 > **Estado:** ✅ Completado
 > **Commit:** c7b7932 - `refactor(scripts): organize executable scripts to scripts/ directory`

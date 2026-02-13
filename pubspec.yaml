@@ -5,11 +5,12 @@ publish_to: 'none'
 
 # ============================================================================
 # PURPOSE: Monorepo root configuration
-# USAGE: flutter test tests/client/ (from root for CI/CD)
+# USAGE: DO NOT RUN TESTS FROM ROOT. Use: cd tests && flutter test client/
 # DEPENDENCIES: Minimal (only Flutter SDK required)
 # ============================================================================
 # For actual app dependencies, see: src/client/pubspec.yaml
 # For test dependencies, see: tests/pubspec.yaml
+# IMPORTANT: Tests MUST be executed from tests/ directory to resolve deps
 # ============================================================================
 
 # ============================================================================

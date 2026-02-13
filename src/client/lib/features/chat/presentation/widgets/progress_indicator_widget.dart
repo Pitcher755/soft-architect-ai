@@ -38,8 +38,8 @@ class _ProgressIndicatorWidgetState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final settings = ref.watch(settingsProvider);
-    _updateAnimationController(settings.enableAnimations);
+    final enableAnimations = ref.watch(enableAnimationsProvider);
+    _updateAnimationController(enableAnimations);
   }
 
   void _updateAnimationController(bool enableAnimations) {
@@ -64,7 +64,7 @@ class _ProgressIndicatorWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final enableAnimations = ref.watch(enableAnimationsProvider);
     final isGuideProject = widget.projectPath?.startsWith('mock://') ?? false;
     final globalPercentage = isGuideProject
         ? 1.0
@@ -95,7 +95,7 @@ class _ProgressIndicatorWidgetState
                           strokeWidth: 2,
                           color: AppColors.primary,
                           // Solo animar si las animaciones están habilitadas
-                          value: settings.enableAnimations ? null : 0.0,
+                          value: enableAnimations ? null : 0.0,
                         ),
                       ),
                     ),
@@ -125,7 +125,7 @@ class _ProgressIndicatorWidgetState
           // Barra Segmentada
           SizedBox(
             height: 8,
-            child: Row(children: _buildSegments(settings.enableAnimations)),
+            child: Row(children: _buildSegments(enableAnimations)),
           ),
 
           const SizedBox(height: 4),

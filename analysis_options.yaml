@@ -26,6 +26,8 @@ analyzer:
     lines_longer_than_80_chars: ignore
     # Ignore always_put_control_body_on_new_line (style preference)
     always_put_control_body_on_new_line: ignore
+    # Allow @visibleForTesting members in test files (setMockInitialValues, etc.)
+    invalid_use_of_visible_for_testing_member: ignore
 
 linter:
   rules:

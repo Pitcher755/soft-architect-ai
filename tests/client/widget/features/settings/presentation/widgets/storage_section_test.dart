@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/storage_section.dart';
 import 'package:softarchitect_ai/gen/app_localizations.dart';
 
@@ -19,13 +21,30 @@ Widget createTestApp(Widget child) => MaterialApp(
 );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('StorageSection', () {
+    setUp(() async {
+      // Initialize mock SharedPreferences before each test
+      SharedPreferences.setMockInitialValues({});
+    });
+
     testWidgets('should render storage section with folder icon', (
       WidgetTester tester,
     ) async {
-      // Arrange & Act
+      // Arrange: Create container and wait for async initialization
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
+      // Act
       await tester.pumpWidget(
-        ProviderScope(child: createTestApp(const StorageSection())),
+        UncontrolledProviderScope(
+          container: container,
+          child: createTestApp(const StorageSection()),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -37,9 +56,19 @@ void main() {
     testWidgets('should display folder open button for directory selection', (
       WidgetTester tester,
     ) async {
-      // Arrange & Act
+      // Arrange: Create container and wait for async initialization
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
+      // Act
       await tester.pumpWidget(
-        ProviderScope(child: createTestApp(const StorageSection())),
+        UncontrolledProviderScope(
+          container: container,
+          child: createTestApp(const StorageSection()),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -51,9 +80,19 @@ void main() {
     testWidgets('should have text content and interactive elements', (
       WidgetTester tester,
     ) async {
-      // Arrange & Act
+      // Arrange: Create container and wait for async initialization
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
+      // Act
       await tester.pumpWidget(
-        ProviderScope(child: createTestApp(const StorageSection())),
+        UncontrolledProviderScope(
+          container: container,
+          child: createTestApp(const StorageSection()),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -64,8 +103,18 @@ void main() {
     testWidgets('should show default storage path when none configured', (
       WidgetTester tester,
     ) async {
+      // Arrange: Create container and wait for async initialization
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
-        ProviderScope(child: createTestApp(const StorageSection())),
+        UncontrolledProviderScope(
+          container: container,
+          child: createTestApp(const StorageSection()),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -75,8 +124,18 @@ void main() {
     testWidgets('tapping folder button handles picker error gracefully', (
       WidgetTester tester,
     ) async {
+      // Arrange: Create container and wait for async initialization
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Wait for settingsProvider to initialize
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
-        ProviderScope(child: createTestApp(const StorageSection())),
+        UncontrolledProviderScope(
+          container: container,
+          child: createTestApp(const StorageSection()),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -85,7 +144,5 @@ void main() {
 
       expect(find.byType(SnackBar), findsOneWidget);
     });
-
-
   });
 }

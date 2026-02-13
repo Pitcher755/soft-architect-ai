@@ -107,9 +107,7 @@ class MarkdownCleaner:
                 normalized_lines.append(line)
             else:
                 # Normalize spaces in regular content
-                normalized_lines.append(
-                    MarkdownCleaner.MULTIPLE_SPACES_PATTERN.sub(" ", line)
-                )
+                normalized_lines.append(MarkdownCleaner.MULTIPLE_SPACES_PATTERN.sub(" ", line))
 
         text = "\n".join(normalized_lines)
 
@@ -132,14 +130,10 @@ class MarkdownCleaner:
         text = re.sub(r"data:[^,]*,", "", text, flags=re.IGNORECASE)
 
         # Remove iframe tags and content
-        text = re.sub(
-            r"<iframe[^>]*>.*?</iframe>", "", text, flags=re.IGNORECASE | re.DOTALL
-        )
+        text = re.sub(r"<iframe[^>]*>.*?</iframe>", "", text, flags=re.IGNORECASE | re.DOTALL)
 
         # Remove script tags and content
-        text = re.sub(
-            r"<script[^>]*>.*?</script>", "", text, flags=re.IGNORECASE | re.DOTALL
-        )
+        text = re.sub(r"<script[^>]*>.*?</script>", "", text, flags=re.IGNORECASE | re.DOTALL)
 
         return text
 

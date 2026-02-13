@@ -13,7 +13,10 @@ class PerformanceSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider);
+    final enableAnimations = ref.watch(enableAnimationsProvider);
+    final enableMemoryOptimization = ref.watch(
+      enableMemoryOptimizationProvider,
+    );
 
     return SettingsCard(
       title: 'Rendimiento',
@@ -23,7 +26,7 @@ class PerformanceSection extends ConsumerWidget {
           title: 'Animaciones',
           subtitle: 'Habilita o deshabilita las animaciones de la UI',
           child: Switch(
-            value: settings.enableAnimations,
+            value: enableAnimations,
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateAnimations(enableAnimations: value),
@@ -35,7 +38,7 @@ class PerformanceSection extends ConsumerWidget {
           title: 'Optimización de memoria',
           subtitle: 'Libera memoria automáticamente cuando sea necesario',
           child: Switch(
-            value: settings.enableMemoryOptimization,
+            value: enableMemoryOptimization,
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateMemoryOptimization(enableMemoryOptimization: value),

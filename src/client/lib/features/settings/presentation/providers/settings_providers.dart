@@ -105,87 +105,134 @@ class AppSettings {
 ///
 /// CRITICAL: Do NOT watch this directly at app root.
 /// Use granular providers instead to avoid app-wide rebuilds.
-class SettingsNotifier extends Notifier<AppSettings> {
+///
+/// REFACTORED: Now uses AsyncNotifier to properly load persisted settings
+/// before returning initial state (fixes async/sync race condition).
+class SettingsNotifier extends AsyncNotifier<AppSettings> {
   static const String _storageKey = 'app_settings_v2';
 
   @override
-  AppSettings build() {
-    _loadSettings();
-    return const AppSettings();
-  }
-
-  Future<void> _loadSettings() async {
+  Future<AppSettings> build() async {
+    // Load persisted settings synchronously during initialization
     final prefs = await SharedPreferences.getInstance();
     final settingsJson = prefs.getString(_storageKey);
+
     if (settingsJson != null) {
       try {
         final Map<String, dynamic> decoded = jsonDecode(settingsJson);
-        state = AppSettings.fromJson(decoded);
+        return AppSettings.fromJson(decoded);
       } catch (e) {
         developer.log('Error loading settings: $e', name: 'SettingsNotifier');
+        return const AppSettings(); // Return defaults on error
       }
     }
+
+    return const AppSettings(); // Return defaults if no saved settings
   }
 
-  Future<void> _saveSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_storageKey, jsonEncode(state.toJson()));
+  Future<void> updateTheme(ThemeMode themeMode) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(currentState.copyWith(themeMode: themeMode));
+    await _saveSettings();
   }
 
-  void updateTheme(ThemeMode themeMode) {
-    state = state.copyWith(themeMode: themeMode);
-    _saveSettings();
-  }
+  Future<void> updateFontSize(double fontSize) async {
+    final currentState = state.value;
+    if (currentState == null) return;
 
-  void updateFontSize(double fontSize) {
-    state = state.copyWith(fontSize: fontSize.clamp(0.8, 1.4));
-    _saveSettings();
+    state = AsyncValue.data(
+      currentState.copyWith(fontSize: fontSize.clamp(0.8, 1.4)),
+    );
+    await _saveSettings();
   }
 
   /// CRITICAL: Does NOT trigger app-level rebuilds.
-  void updateGlobalZoom(double globalZoom) {
-    state = state.copyWith(globalZoom: globalZoom.clamp(0.5, 2.0));
-    _saveSettings();
+  Future<void> updateGlobalZoom(double globalZoom) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(
+      currentState.copyWith(globalZoom: globalZoom.clamp(0.5, 2.0)),
+    );
+    await _saveSettings();
   }
 
-  void updateZoomShortcuts({required bool enableZoomShortcuts}) {
-    state = state.copyWith(enableZoomShortcuts: enableZoomShortcuts);
-    _saveSettings();
+  Future<void> updateZoomShortcuts({required bool enableZoomShortcuts}) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(
+      currentState.copyWith(enableZoomShortcuts: enableZoomShortcuts),
+    );
+    await _saveSettings();
   }
 
-  void updateAnimations({required bool enableAnimations}) {
-    state = state.copyWith(enableAnimations: enableAnimations);
-    _saveSettings();
+  Future<void> updateAnimations({required bool enableAnimations}) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(
+      currentState.copyWith(enableAnimations: enableAnimations),
+    );
+    await _saveSettings();
   }
 
-  void updateMemoryOptimization({required bool enableMemoryOptimization}) {
-    state = state.copyWith(enableMemoryOptimization: enableMemoryOptimization);
-    _saveSettings();
+  Future<void> updateMemoryOptimization({
+    required bool enableMemoryOptimization,
+  }) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(
+      currentState.copyWith(enableMemoryOptimization: enableMemoryOptimization),
+    );
+    await _saveSettings();
   }
 
-  void updateUserName(String name) {
-    state = state.copyWith(userName: name);
-    _saveSettings();
+  Future<void> updateUserName(String name) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(currentState.copyWith(userName: name));
+    await _saveSettings();
   }
 
-  void updateAvatarIndex(int index) {
-    state = state.copyWith(avatarIndex: index);
-    _saveSettings();
+  Future<void> updateAvatarIndex(int index) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(currentState.copyWith(avatarIndex: index));
+    await _saveSettings();
   }
 
   Future<void> updateCustomAvatarPath(String? path) async {
-    state = state.copyWith(customAvatarPath: path);
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(currentState.copyWith(customAvatarPath: path));
     await _saveSettings();
   }
 
-  void updateProjectDirectory(String path) {
-    state = state.copyWith(projectDirectory: path);
-    _saveSettings();
+  Future<void> updateProjectDirectory(String path) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(currentState.copyWith(projectDirectory: path));
+    await _saveSettings();
   }
 
   Future<void> updateStoragePath(String path) async {
-    updateProjectDirectory(path);
-    await _saveSettings();
+    await updateProjectDirectory(path);
+  }
+
+  Future<void> _saveSettings() async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_storageKey, jsonEncode(currentState.toJson()));
   }
 }
 
@@ -193,7 +240,7 @@ class SettingsNotifier extends Notifier<AppSettings> {
 // INTERNAL PROVIDER (USE GRANULAR PROVIDERS INSTEAD)
 // ============================================================================
 
-final settingsProvider = NotifierProvider<SettingsNotifier, AppSettings>(
+final settingsProvider = AsyncNotifierProvider<SettingsNotifier, AppSettings>(
   SettingsNotifier.new,
 );
 
@@ -202,44 +249,54 @@ final settingsProvider = NotifierProvider<SettingsNotifier, AppSettings>(
 // ============================================================================
 
 final themeModeProvider = Provider<ThemeMode>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.themeMode)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.themeMode ?? ThemeMode.dark),
+  ),
 );
 
 final fontSizeProvider = Provider<double>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.fontSize)),
+  (ref) => ref.watch(settingsProvider.select((s) => s.value?.fontSize ?? 1.0)),
 );
 
 final globalZoomProvider = Provider<double>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.globalZoom)),
+  (ref) =>
+      ref.watch(settingsProvider.select((s) => s.value?.globalZoom ?? 1.0)),
 );
 
 final enableZoomShortcutsProvider = Provider<bool>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.enableZoomShortcuts)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.enableZoomShortcuts ?? true),
+  ),
 );
 
 final enableAnimationsProvider = Provider<bool>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.enableAnimations)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.enableAnimations ?? true),
+  ),
 );
 
 final enableMemoryOptimizationProvider = Provider<bool>(
-  (ref) =>
-      ref.watch(settingsProvider.select((s) => s.enableMemoryOptimization)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.enableMemoryOptimization ?? true),
+  ),
 );
 
 final userNameProvider = Provider<String>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.userName)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.userName ?? 'Architect'),
+  ),
 );
 
 final avatarIndexProvider = Provider<int>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.avatarIndex)),
+  (ref) => ref.watch(settingsProvider.select((s) => s.value?.avatarIndex ?? 0)),
 );
 
 final customAvatarPathProvider = Provider<String?>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.customAvatarPath)),
+  (ref) => ref.watch(settingsProvider.select((s) => s.value?.customAvatarPath)),
 );
 
 final projectDirectoryProvider = Provider<String?>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.projectDirectory)),
+  (ref) => ref.watch(settingsProvider.select((s) => s.value?.projectDirectory)),
 );
 
 // ============================================================================

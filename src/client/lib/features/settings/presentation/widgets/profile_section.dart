@@ -22,7 +22,8 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
   @override
   void initState() {
     super.initState();
-    final currentName = ref.read(settingsProvider).userName;
+    final currentName =
+        ref.read(settingsProvider).value?.userName ?? 'Architect';
     _nameController = TextEditingController(text: currentName);
   }
 
@@ -34,7 +35,10 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final settings = ref.watch(settingsProvider).value;
+    if (settings == null) {
+      return const SizedBox.shrink();
+    }
 
     // Update controller if state changes externally
     if (settings.userName != _nameController.text &&

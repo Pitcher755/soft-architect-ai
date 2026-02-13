@@ -32,11 +32,11 @@ if command -v flutter &> /dev/null; then
         cat /tmp/flutter_analysis.txt | head -20
         ((ERRORS++))
     fi
-    
+
     # Verificar que no hay comentarios en español
     SPANISH_COMMENTS=$(find src/client/lib -name "*.dart" -type f \
         -exec grep -l "// .*[áéíóúñ¡¿]" {} \; 2>/dev/null || true)
-    
+
     if [ -z "$SPANISH_COMMENTS" ]; then
         echo "✅ No Spanish comments found"
         ((PASSED++))
@@ -151,11 +151,11 @@ fi
         cat /tmp/flutter_analysis.txt | head -20
         ((ERRORS++))
     fi
-    
+
     # Verificar que no hay comentarios en español
     SPANISH_COMMENTS=$(find lib -name "*.dart" -type f \
         -exec grep -l "// .*[áéíóúñ¡¿]" {} \; 2>/dev/null || true)
-    
+
     if [ -z "$SPANISH_COMMENTS" ]; then
         echo "✅ No Spanish comments found"
         ((PASSED++))
@@ -164,7 +164,7 @@ fi
         echo "$SPANISH_COMMENTS"
         ((WARNINGS++))
     fi
-    
+
     cd - > /dev/null
 else
     echo "⚠️  Flutter not installed, skipping Flutter checks"

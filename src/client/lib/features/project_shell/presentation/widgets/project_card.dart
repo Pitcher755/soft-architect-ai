@@ -14,6 +14,7 @@ class ProjectCard extends StatelessWidget {
     required this.path,
     required this.modified,
     required this.onTap,
+    this.progress,
     super.key,
   });
   final String name;
@@ -21,6 +22,7 @@ class ProjectCard extends StatelessWidget {
   final Color iconColor;
   final String phase;
   final Color phaseColor;
+  final double? progress;
   final String path;
   final String modified;
   final VoidCallback onTap;
@@ -160,6 +162,18 @@ class ProjectCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      if (progress != null) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          'Doc ${(progress!.clamp(0.0, 1.0) * 100).toInt()}%',
+                          style: TextStyle(
+                            fontSize: badgeFontSize,
+                            fontFamily: 'Courier',
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                       const Spacer(), // Empuja el título al centro visual
                       // Project name
                       Text(
