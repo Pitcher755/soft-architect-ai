@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/accessibility_section.dart';
 import 'package:softarchitect_ai/gen/app_localizations.dart';
@@ -20,6 +21,13 @@ Widget createTestApp(Widget child) => MaterialApp(
 );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() async {
+    // Initialize mock SharedPreferences before each test
+    SharedPreferences.setMockInitialValues({});
+  });
+
   group('AccessibilitySection', () {
     testWidgets('should render global zoom slider', (WidgetTester tester) async {
       // Arrange & Act
@@ -60,6 +68,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
+      // Wait for AsyncNotifier initialization BEFORE pumping widget
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
@@ -67,8 +78,6 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-
-      await container.read(settingsProvider.future);
       expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, isTrue);
       expect(container.read(settingsProvider).requireValue.globalZoom, 1.0);
 

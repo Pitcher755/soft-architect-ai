@@ -142,7 +142,9 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     final currentState = state.value;
     if (currentState == null) return;
 
-    state = AsyncValue.data(currentState.copyWith(fontSize: fontSize.clamp(0.8, 1.4)));
+    state = AsyncValue.data(
+      currentState.copyWith(fontSize: fontSize.clamp(0.8, 1.4)),
+    );
     await _saveSettings();
   }
 
@@ -151,7 +153,9 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     final currentState = state.value;
     if (currentState == null) return;
 
-    state = AsyncValue.data(currentState.copyWith(globalZoom: globalZoom.clamp(0.5, 2.0)));
+    state = AsyncValue.data(
+      currentState.copyWith(globalZoom: globalZoom.clamp(0.5, 2.0)),
+    );
     await _saveSettings();
   }
 
@@ -159,7 +163,9 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     final currentState = state.value;
     if (currentState == null) return;
 
-    state = AsyncValue.data(currentState.copyWith(enableZoomShortcuts: enableZoomShortcuts));
+    state = AsyncValue.data(
+      currentState.copyWith(enableZoomShortcuts: enableZoomShortcuts),
+    );
     await _saveSettings();
   }
 
@@ -167,15 +173,21 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     final currentState = state.value;
     if (currentState == null) return;
 
-    state = AsyncValue.data(currentState.copyWith(enableAnimations: enableAnimations));
+    state = AsyncValue.data(
+      currentState.copyWith(enableAnimations: enableAnimations),
+    );
     await _saveSettings();
   }
 
-  Future<void> updateMemoryOptimization({required bool enableMemoryOptimization}) async {
+  Future<void> updateMemoryOptimization({
+    required bool enableMemoryOptimization,
+  }) async {
     final currentState = state.value;
     if (currentState == null) return;
 
-    state = AsyncValue.data(currentState.copyWith(enableMemoryOptimization: enableMemoryOptimization));
+    state = AsyncValue.data(
+      currentState.copyWith(enableMemoryOptimization: enableMemoryOptimization),
+    );
     await _saveSettings();
   }
 
@@ -237,7 +249,9 @@ final settingsProvider = AsyncNotifierProvider<SettingsNotifier, AppSettings>(
 // ============================================================================
 
 final themeModeProvider = Provider<ThemeMode>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.value?.themeMode ?? ThemeMode.dark)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.themeMode ?? ThemeMode.dark),
+  ),
 );
 
 final fontSizeProvider = Provider<double>(
@@ -245,24 +259,32 @@ final fontSizeProvider = Provider<double>(
 );
 
 final globalZoomProvider = Provider<double>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.value?.globalZoom ?? 1.0)),
+  (ref) =>
+      ref.watch(settingsProvider.select((s) => s.value?.globalZoom ?? 1.0)),
 );
 
 final enableZoomShortcutsProvider = Provider<bool>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.value?.enableZoomShortcuts ?? true)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.enableZoomShortcuts ?? true),
+  ),
 );
 
 final enableAnimationsProvider = Provider<bool>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.value?.enableAnimations ?? true)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.enableAnimations ?? true),
+  ),
 );
 
 final enableMemoryOptimizationProvider = Provider<bool>(
-  (ref) =>
-      ref.watch(settingsProvider.select((s) => s.value?.enableMemoryOptimization ?? true)),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.enableMemoryOptimization ?? true),
+  ),
 );
 
 final userNameProvider = Provider<String>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.value?.userName ?? 'Architect')),
+  (ref) => ref.watch(
+    settingsProvider.select((s) => s.value?.userName ?? 'Architect'),
+  ),
 );
 
 final avatarIndexProvider = Provider<int>(

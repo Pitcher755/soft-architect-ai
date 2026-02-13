@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softarchitect_ai/features/settings/presentation/providers/settings_providers.dart';
 import 'package:softarchitect_ai/features/settings/presentation/widgets/performance_section.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() async {
+    // Initialize mock SharedPreferences before each test
+    SharedPreferences.setMockInitialValues({});
+  });
+
   group('PerformanceSection', () {
     testWidgets('should render animations toggle switch', (WidgetTester tester) async {
       // Arrange & Act
@@ -66,6 +74,9 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
+      // Wait for AsyncNotifier initialization BEFORE pumping widget
+      await container.read(settingsProvider.future);
+
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
@@ -81,7 +92,7 @@ void main() {
       final switches = find.byType(Switch);
       expect(switches, findsNWidgets(2));
 
-      await container.read(settingsProvider.future);
+      // Verify initial state
       expect(container.read(settingsProvider).requireValue.enableAnimations, isTrue);
       expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, isTrue);
 
