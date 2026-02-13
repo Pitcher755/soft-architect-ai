@@ -218,7 +218,7 @@ python -c "from src.server.app.domain.schemas.chat import ChatRequest, ChatRespo
 
 Create OpenAPI-style documentation:
 
-```markdown
+#
 # API Contract: POST /api/v1/chat/message
 
 ## Endpoint
