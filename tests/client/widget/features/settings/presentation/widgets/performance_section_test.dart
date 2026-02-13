@@ -81,8 +81,9 @@ void main() {
       final switches = find.byType(Switch);
       expect(switches, findsNWidgets(2));
 
-      expect(container.read(settingsProvider).enableAnimations, isTrue);
-      expect(container.read(settingsProvider).enableMemoryOptimization, isTrue);
+      await container.read(settingsProvider.future);
+      expect(container.read(settingsProvider).requireValue.enableAnimations, isTrue);
+      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, isTrue);
 
       await tester.tap(switches.first);
       await tester.pumpAndSettle();
@@ -90,8 +91,8 @@ void main() {
       await tester.tap(switches.last);
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).enableAnimations, isFalse);
-      expect(container.read(settingsProvider).enableMemoryOptimization, isFalse);
+      expect(container.read(settingsProvider).requireValue.enableAnimations, isFalse);
+      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, isFalse);
     });
   });
 }

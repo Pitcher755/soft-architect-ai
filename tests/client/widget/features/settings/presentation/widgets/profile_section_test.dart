@@ -80,12 +80,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      await container.read(settingsProvider.future);
+
       final field = find.byKey(const ValueKey('userName_field'));
       await tester.enterText(field, '  NuevoNombre  ');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).userName, contains('NuevoNombre'));
+      expect(container.read(settingsProvider).requireValue.userName, contains('NuevoNombre'));
     });
 
     testWidgets('opens avatar dialog and selects predefined avatar',
@@ -103,11 +105,13 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      await container.read(settingsProvider.future);
+
       await tester.tap(find.text('Cambiar avatar'));
       await tester.pumpAndSettle();
 
       expect(find.text('Elige un avatar'), findsOneWidget);
-      final before = container.read(settingsProvider).avatarIndex;
+      final before = container.read(settingsProvider).requireValue.avatarIndex;
       expect(before, equals(0));
 
       final dialogAvatarIcons = find.descendant(
@@ -117,7 +121,7 @@ void main() {
       await tester.tap(dialogAvatarIcons.last);
       await tester.pumpAndSettle();
 
-      final after = container.read(settingsProvider).avatarIndex;
+      final after = container.read(settingsProvider).requireValue.avatarIndex;
       expect(after, equals(5));
     });
 
@@ -136,12 +140,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      await container.read(settingsProvider.future);
+
       final field = find.byKey(const ValueKey('userName_field'));
       await tester.enterText(field, '  Arquitecta  ');
       await tester.tap(find.byType(Scaffold));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).userName, contains('Arquitecta'));
+      expect(container.read(settingsProvider).requireValue.userName, contains('Arquitecta'));
     });
 
     testWidgets('custom avatar selection failure shows snackbar',

@@ -27,10 +27,10 @@ class CreateProjectDialog {
     final nameController = TextEditingController();
 
     // Get default project path from Settings or fallback to current directory
-    final settings = ref.read(settingsProvider);
-    final defaultPath = settings.storagePath.isEmpty
+    final settings = ref.read(settingsProvider).value;
+    final defaultPath = (settings?.storagePath.isEmpty ?? true)
         ? Directory.current.path
-        : settings.storagePath;
+        : settings!.storagePath;
 
     final pathController = TextEditingController(text: defaultPath);
     final descController = TextEditingController();

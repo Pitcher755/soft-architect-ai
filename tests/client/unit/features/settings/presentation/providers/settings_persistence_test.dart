@@ -28,10 +28,10 @@ void main() {
       // Create new container to trigger initialization from SharedPreferences
       final container = ProviderContainer();
 
-      // CRITICAL: Wait longer for async SharedPreferences load (_loadSettings is async but build() doesn't await)
-      await Future<void>.delayed(const Duration(milliseconds: 1000));
+      // Wait for async initialization to complete
+      await container.read(settingsProvider.future);
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
 
       // Verify all persisted values were loaded
       expect(settings.userName, 'PersistedUser');
@@ -56,10 +56,10 @@ void main() {
 
       final container = ProviderContainer();
 
-      // Wait for async load attempt (longer delay for race condition)
-      await Future<void>.delayed(const Duration(milliseconds: 800));
+      // Wait for async initialization
+      await container.read(settingsProvider.future);
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
 
       // Verify fallback to default values
       expect(settings.userName, 'Architect');
@@ -80,9 +80,9 @@ void main() {
 
       final container = ProviderContainer();
 
-      await Future<void>.delayed(const Duration(milliseconds: 300));
+      await container.read(settingsProvider.future);
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
 
       // Verify default initialization
       expect(settings.userName, 'Architect');
@@ -106,9 +106,9 @@ void main() {
 
       final container = ProviderContainer();
 
-      await Future<void>.delayed(const Duration(milliseconds: 300));
+      await container.read(settingsProvider.future);
 
-      final settings = container.read(settingsProvider);
+      final settings = container.read(settingsProvider).requireValue;
 
       // Verify partial load + defaults for missing fields
       expect(settings.userName, 'PartialUser'); // From JSON

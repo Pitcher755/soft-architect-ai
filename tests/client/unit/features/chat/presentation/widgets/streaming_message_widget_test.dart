@@ -125,8 +125,8 @@ void main() {
       final color = decoration.color!;
 
       // Check it's blue-based with low opacity
-      expect(color.blue, greaterThan(100));
-      expect(color.alpha / 255.0, lessThan(0.2));
+      expect((color.b * 255.0).round().clamp(0, 255), greaterThan(100));
+      expect((color.a * 255.0).round().clamp(0, 255) / 255.0, lessThan(0.2));
     });
 
     testWidgets('should display both text and indicator when streaming', (

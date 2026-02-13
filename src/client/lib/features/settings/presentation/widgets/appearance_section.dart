@@ -23,9 +23,9 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
   @override
   void initState() {
     super.initState();
-    final settings = ref.read(settingsProvider);
+    final fontSize = ref.read(fontSizeProvider);
     _fontSizeController = TextEditingController(
-      text: (settings.fontSize * 100).round().toString(),
+      text: (fontSize * 100).round().toString(),
     );
   }
 
@@ -37,7 +37,8 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final themeMode = ref.watch(themeModeProvider);
+    final fontSize = ref.watch(fontSizeProvider);
     final l10n = AppLocalizations.of(context);
 
     return SettingsCard(
@@ -53,13 +54,13 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
               Icon(
                 Icons.light_mode,
                 size: 20,
-                color: settings.themeMode == ThemeMode.light
+                color: themeMode == ThemeMode.light
                     ? const Color(0xFF58A6FF)
                     : const Color(0xFF8b949e),
               ),
               const SizedBox(width: 8),
               Switch(
-                value: settings.themeMode == ThemeMode.dark,
+                value: themeMode == ThemeMode.dark,
                 onChanged: (value) => ref
                     .read(settingsProvider.notifier)
                     .updateTheme(value ? ThemeMode.dark : ThemeMode.light),
@@ -69,7 +70,7 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
               Icon(
                 Icons.dark_mode,
                 size: 20,
-                color: settings.themeMode == ThemeMode.dark
+                color: themeMode == ThemeMode.dark
                     ? const Color(0xFF58A6FF)
                     : const Color(0xFF8b949e),
               ),
@@ -85,7 +86,7 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
               SizedBox(
                 width: 200,
                 child: Slider(
-                  value: settings.fontSize,
+                  value: fontSize,
                   min: 0.8,
                   max: 1.4,
                   divisions: 6,
@@ -142,7 +143,7 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
                           .read(settingsProvider.notifier)
                           .updateFontSize(intValue / 100);
                     } else {
-                      _fontSizeController.text = (settings.fontSize * 100)
+                      _fontSizeController.text = (fontSize * 100)
                           .round()
                           .toString();
                     }

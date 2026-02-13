@@ -17,7 +17,10 @@ class StorageSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final settings = ref.watch(settingsProvider);
+    final settings = ref.watch(settingsProvider).value;
+    if (settings == null) {
+      return const SizedBox.shrink();
+    }
 
     return SettingsCard(
       title: l10n.storageTitle,

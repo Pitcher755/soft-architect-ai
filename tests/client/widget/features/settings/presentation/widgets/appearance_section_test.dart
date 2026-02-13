@@ -68,12 +68,13 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).themeMode, ThemeMode.dark);
+      await container.read(settingsProvider.future);
+      expect(container.read(settingsProvider).requireValue.themeMode, ThemeMode.dark);
 
       await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).themeMode, ThemeMode.light);
+      expect(container.read(settingsProvider).requireValue.themeMode, ThemeMode.light);
     });
 
     testWidgets('slider and text submit update and validate font size', (WidgetTester tester) async {
@@ -88,16 +89,18 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      await container.read(settingsProvider.future);
+
       await tester.drag(find.byType(Slider), const Offset(120, 0));
       await tester.pumpAndSettle();
-      expect(container.read(settingsProvider).fontSize, greaterThan(1.0));
+      expect(container.read(settingsProvider).requireValue.fontSize, greaterThan(1.0));
 
       final textField = find.byType(TextField);
       await tester.enterText(textField, '999');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).fontSize, lessThanOrEqualTo(1.4));
+      expect(container.read(settingsProvider).requireValue.fontSize, lessThanOrEqualTo(1.4));
     });
   });
 }

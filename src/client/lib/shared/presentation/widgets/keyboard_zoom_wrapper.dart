@@ -11,7 +11,7 @@ class KeyboardZoomWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider);
+    final globalZoom = ref.watch(globalZoomProvider);
     final notifier = ref.read(settingsProvider.notifier);
 
     return CallbackShortcuts(
@@ -19,17 +19,17 @@ class KeyboardZoomWrapper extends ConsumerWidget {
         // Ctrl + '+' (Numpad y Teclado estándar)
         const SingleActivator(LogicalKeyboardKey.add, control: true): () =>
             notifier.updateGlobalZoom(
-              (settings.globalZoom + 0.1).clamp(0.5, 2.0),
+              (globalZoom + 0.1).clamp(0.5, 2.0),
             ),
         const SingleActivator(LogicalKeyboardKey.equal, control: true): () =>
             notifier.updateGlobalZoom(
-              (settings.globalZoom + 0.1).clamp(0.5, 2.0),
+              (globalZoom + 0.1).clamp(0.5, 2.0),
             ),
 
         // Ctrl + '-'
         const SingleActivator(LogicalKeyboardKey.minus, control: true): () =>
             notifier.updateGlobalZoom(
-              (settings.globalZoom - 0.1).clamp(0.5, 2.0),
+              (globalZoom - 0.1).clamp(0.5, 2.0),
             ),
 
         // Ctrl + '0' (Resetear Zoom)
@@ -42,7 +42,7 @@ class KeyboardZoomWrapper extends ConsumerWidget {
           // La magia del Zoom: Escala todo el texto de la app
           data: MediaQuery.of(
             context,
-          ).copyWith(textScaler: TextScaler.linear(settings.globalZoom)),
+          ).copyWith(textScaler: TextScaler.linear(globalZoom)),
           child: child,
         ),
       ),

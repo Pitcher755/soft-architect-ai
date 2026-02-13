@@ -68,8 +68,9 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).enableZoomShortcuts, isTrue);
-      expect(container.read(settingsProvider).globalZoom, 1.0);
+      await container.read(settingsProvider.future);
+      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, isTrue);
+      expect(container.read(settingsProvider).requireValue.globalZoom, 1.0);
 
       await tester.drag(find.byType(Slider), const Offset(140, 0));
       await tester.pumpAndSettle();
@@ -77,8 +78,8 @@ void main() {
       await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).globalZoom, greaterThan(1.0));
-      expect(container.read(settingsProvider).enableZoomShortcuts, isFalse);
+      expect(container.read(settingsProvider).requireValue.globalZoom, greaterThan(1.0));
+      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, isFalse);
     });
   });
 }
