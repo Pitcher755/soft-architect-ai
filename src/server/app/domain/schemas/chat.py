@@ -15,6 +15,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, field_validator
 
+from app.domain.utils.sanitizer import InputSanitizer
+
 
 class ChatRequest(BaseModel):
     """Input schema for chat message endpoint.
@@ -28,40 +30,27 @@ class ChatRequest(BaseModel):
         project_id: Reference to the SoftArchitect AI project context
     """
 
-    conversation_id: UUID = Field(
-        ...,
-        description="Unique identifier for the conversation thread",
-        example="550e8400-e29b-41d4-a716-446655440000",
-    )
-    message: str = Field(
-        ...,
-        max_length=2000,
-        description="User message with security sanitization",
-        example="How do I implement unit tests in Python?",
-    )
-    project_id: UUID = Field(
-        ...,
-        description="Reference to the SoftArchitect AI project",
-        example="7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    )
+    conversation_id: UUID = Field()
+    message: str = Field()
+    project_id: UUID = Field()
 
     @field_validator("message")
     @classmethod
     def sanitize_message(cls, v: str) -> str:
-        """Basic sanitization (Phase 0 placeholder).
+        """Full security sanitization (Phase 1).
 
-        TODO (Phase 1): Implement full security validation:
-        - HTML entity escaping (html.escape)
-        - Prompt injection detection
-        - Developer Tool Trap fix (preserve code snippets)
+        Pipeline:
+        - Strip whitespace
+        - HTML entity escaping (html.escape - preserves code)
+        - Prompt injection detection (logging)
 
         Args:
             v: Raw message string
 
         Returns:
-            str: Sanitized message (Phase 0: only strips whitespace)
+            str: Sanitized message (XSS-safe, code-preserved)
         """
-        return v.strip()
+        return InputSanitizer.sanitize_message(v)
 
 
 class ChatResponse(BaseModel):
@@ -77,16 +66,8 @@ class ChatResponse(BaseModel):
         metadata: Optional additional information (e.g., confidence score)
     """
 
-    ai_response: str = Field(
-        ...,
-        description="AI-generated response to user query",
-        example="To implement unit tests in Python, use pytest or unittest...",
-    )
-    template_used: str = Field(
-        ...,
-        description="Name of the SystemPromptTemplate applied",
-        example="software_architecture_expert",
-    )
+    ai_response: str = Field()
+    template_used: str = Field()
     sources: list[str] = Field(
         default_factory=list,
         description="Knowledge base documents retrieved for context",
@@ -117,20 +98,12 @@ class RAGContext(BaseModel):
     """
 
     query: str = Field(..., description="Sanitized user query after validation")
-    project_phase: str = Field(
-        ...,
-        description="Current phase of the user's project",
-        example="implementation",
-    )
+    project_phase: str = Field()
     retrieved_docs: list[str] = Field(
         default_factory=list,
         description="Raw knowledge base documents from ChromaDB",
     )
-    template: str = Field(
-        ...,
-        description="Selected SystemPromptTemplate name",
-        example="software_architecture_expert",
-    )
+    template: str = Field()
     constructed_prompt: str = Field(
         ...,
         description="Final prompt sent to LLM (query + context + template)",
