@@ -38,6 +38,7 @@ NC='\033[0m'
 # Python virtualenv paths
 PYTHON_TEST_BIN="$PROJECT_ROOT/tests/venv/bin/python"
 PYTHON_SERVER_BIN="$PROJECT_ROOT/src/server/venv/bin/python"
+BLACK_BIN="$PROJECT_ROOT/venv/bin/black"
 
 # Track results
 declare -a FAILED_CHECKS=()
@@ -116,7 +117,7 @@ echo ""
 print_header "PHASE 1️⃣: CODE FORMATTING"
 
 run_check "Black (Python formatting)" \
-    "black --check src/server/ --exclude '/(venv|\.venv|build|dist|__pycache__|site-packages)/'"
+    "$BLACK_BIN --check src/server/ --exclude '/(venv|\.venv|build|dist|__pycache__|site-packages)/'"
 
 run_check "Dart formatting" \
     "dart format --set-exit-if-changed src/client/"
