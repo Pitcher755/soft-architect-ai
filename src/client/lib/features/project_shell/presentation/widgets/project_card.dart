@@ -163,7 +163,7 @@ class ProjectCard extends StatelessWidget {
                         ],
                       ),
                       if (progress != null) ...[
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 4),
                         Text(
                           'Doc ${(progress!.clamp(0.0, 1.0) * 100).toInt()}%',
                           style: TextStyle(
@@ -186,12 +186,12 @@ class ProjectCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 4),
-                      // Project path with tooltip
+                      const SizedBox(height: 3),
+
                       Tooltip(
                         message: path,
                         child: SizedBox(
-                          height: pathFontSize + 4,
+                          height: pathFontSize,
                           child: Row(
                             children: [
                               Icon(
@@ -199,7 +199,7 @@ class ProjectCard extends StatelessWidget {
                                 size: pathIconSize,
                                 color: AppColors.textSecondary,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: 3),
                               Flexible(
                                 child: Text(
                                   _getShortPath(path),
