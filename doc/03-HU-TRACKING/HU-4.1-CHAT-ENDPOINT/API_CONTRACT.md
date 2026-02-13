@@ -185,9 +185,10 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 
 ```json
 {
-  "detail": "LLM service unavailable",
-  "error_code": "LLM_CONNECTION_ERROR",
-  "retry_after": 60
+  "error": "LLM_CONNECTION_ERROR",
+  "message": "Unable to connect to local AI engine",
+  "code": "AI_001",
+  "retry_after": 30
 }
 ```
 
@@ -208,9 +209,9 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 
 ```json
 {
-  "detail": "Internal server error",
-  "error_code": "RAG_ORCHESTRATION_FAILURE",
-  "incident_id": "inc_20250108_143215_abc123"
+  "error": "RAG_RETRIEVAL_ERROR",
+  "message": "Knowledge base search failed (fallback response used)",
+  "code": "RAG_001"
 }
 ```
 
@@ -232,6 +233,12 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 | **Response Time (p99)** | <1000ms | End-to-end latency | Worst-case scenarios |
 | **Availability** | >99.5% | Uptime (local Ollama) | Excludes user's system downtime |
 | **Throughput** | 50 req/sec | Single worker | Limited by LLM token generation speed |
+
+### Hard Limits
+
+- **Target:** <500ms (p95)
+- **Timeout:** 10s (hard limit)
+- **Retry Policy:** 3x with exponential backoff (client-side)
 
 ### Latency Breakdown (Target)
 

@@ -1,16 +1,12 @@
-"""Chat domain schemas for HU-4.1 Backend Chat Endpoint.
+"""Chat domain schemas for HU-4.1.
 
-This module provides the core data models for the chat feature:
-- ChatRequest: Input validation schema for user messages
-- ChatResponse: Output schema for AI responses
-- RAGContext: Internal DTO for RAG orchestration pipeline
-
-Author: ArchitectZero
-Created: 2025-01-08
-Version: 0.1.0 (Phase 0 - Skeleton)
+Security considerations:
+- Input sanitization (HTML entity escaping, length limits)
+- XSS prevention (escape user content, NOT removal)
+- Prompt injection prevention (pattern detection)
 """
 
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import UUID
 
 from pydantic import BaseModel, Field, field_validator
@@ -19,95 +15,67 @@ from app.domain.utils.sanitizer import InputSanitizer
 
 
 class ChatRequest(BaseModel):
-    """Input schema for chat message endpoint.
+    """Incoming chat message request."""
 
-    Validates and sanitizes user input before processing.
-    Security features will be implemented in Phase 1 (TDD RED/GREEN cycle).
-
-    Attributes:
-        conversation_id: Unique identifier for the conversation thread
-        message: User's message (max 2000 chars to prevent DOS)
-        project_id: Reference to the SoftArchitect AI project context
-    """
-
-    conversation_id: UUID = Field()
-    message: str = Field()
-    project_id: UUID = Field()
+    conversation_id: UUID = Field(
+        ...,
+        description="Unique conversation identifier",
+        json_schema_extra={"examples": ["550e8400-e29b-41d4-a716-446655440000"]},
+    )
+    message: str = Field(
+        ...,
+        max_length=2000,
+        description="User message (max 2000 chars for DOS prevention)",
+        json_schema_extra={
+            "examples": ["How do I implement authentication in Flutter?"]
+        },
+    )
+    project_id: UUID = Field(
+        ...,
+        description="Associated project identifier for context",
+        json_schema_extra={"examples": ["7c9e6679-7425-40de-944b-e07fc1f90ae7"]},
+    )
 
     @field_validator("message")
     @classmethod
     def sanitize_message(cls, v: str) -> str:
-        """Full security sanitization (Phase 1).
-
-        Pipeline:
-        - Strip whitespace
-        - HTML entity escaping (html.escape - preserves code)
-        - Prompt injection detection (logging)
-
-        Args:
-            v: Raw message string
-
-        Returns:
-            str: Sanitized message (XSS-safe, code-preserved)
-        """
+        """Sanitize user input using security utility."""
         return InputSanitizer.sanitize_message(v)
 
 
 class ChatResponse(BaseModel):
-    """Output schema for chat endpoint.
+    """AI-generated response with metadata."""
 
-    Contains the AI-generated response with metadata for transparency.
-
-    Attributes:
-        ai_response: LLM-generated answer to user's query
-        template_used: Name of the SystemPromptTemplate applied
-        sources: List of knowledge base documents used for context
-        timestamp: UTC timestamp of response generation
-        metadata: Optional additional information (e.g., confidence score)
-    """
-
-    ai_response: str = Field()
-    template_used: str = Field()
+    ai_response: str = Field(
+        ...,
+        description="Generated AI response text",
+    )
+    template_used: str = Field(
+        ...,
+        description="Template identifier that was used for this response",
+    )
     sources: list[str] = Field(
         default_factory=list,
-        description="Knowledge base documents retrieved for context",
-        example=["doc://tech-packs/python-testing.md", "doc://workflows/tdd-guide.md"],
+        description="Knowledge base sources used (file paths or IDs)",
     )
     timestamp: datetime = Field(
-        default_factory=datetime.utcnow,
-        description="UTC timestamp of response generation",
+        default_factory=lambda: datetime.now(UTC),
+        description="Response generation timestamp (UTC)",
     )
     metadata: dict | None = Field(
         default=None,
-        description="Optional metadata (e.g., confidence score, token count)",
-        example={"confidence": 0.92, "tokens": 150, "latency_ms": 420},
+        description="Optional debug metadata (only in dev mode)",
     )
 
 
 class RAGContext(BaseModel):
-    """Internal DTO for RAG orchestration pipeline.
+    """Internal DTO for RAG pipeline state (not exposed via API)."""
 
-    Not exposed through API - used for internal passage between RAG components.
-
-    Attributes:
-        query: Sanitized user query after validation
-        project_phase: Current phase of the user's project (e.g., "design", "implementation")
-        retrieved_docs: Raw knowledge base documents from ChromaDB
-        template: Selected SystemPromptTemplate name
-        constructed_prompt: Final prompt sent to LLM (query + context + template)
-    """
-
-    query: str = Field(..., description="Sanitized user query after validation")
-    project_phase: str = Field()
-    retrieved_docs: list[str] = Field(
-        default_factory=list,
-        description="Raw knowledge base documents from ChromaDB",
-    )
-    template: str = Field()
-    constructed_prompt: str = Field(
-        ...,
-        description="Final prompt sent to LLM (query + context + template)",
-    )
+    query: str
+    project_phase: str
+    retrieved_docs: list[str]
+    template: str
+    constructed_prompt: str
 
 
 # Version metadata for Phase 0
