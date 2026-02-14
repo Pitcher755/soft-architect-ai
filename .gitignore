@@ -122,3 +122,4 @@ htmlcov/
 !build.py
 .venv-ci/
 .venv-ci/
+conversations.db

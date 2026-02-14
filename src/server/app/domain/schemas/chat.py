@@ -26,7 +26,9 @@ class ChatRequest(BaseModel):
         ...,
         max_length=2000,
         description="User message (max 2000 chars for DOS prevention)",
-        json_schema_extra={"examples": ["How do I implement authentication in Flutter?"]},
+        json_schema_extra={
+            "examples": ["How do I implement authentication in Flutter?"]
+        },
     )
     project_id: UUID = Field(
         ...,

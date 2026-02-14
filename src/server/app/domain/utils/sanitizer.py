@@ -116,7 +116,8 @@ class InputSanitizer:
         detected_pattern = InputSanitizer.detect_prompt_injection(text)
         if detected_pattern:
             logger.warning(
-                f"User input flagged for prompt injection: " f"pattern='{detected_pattern}', length={len(text)}"
+                f"User input flagged for prompt injection: "
+                f"pattern='{detected_pattern}', length={len(text)}"
             )
 
         return text

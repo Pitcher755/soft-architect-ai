@@ -147,10 +147,20 @@ def query(  # noqa: C901
                         output["results"].append(
                             {
                                 "content": doc[:300],
-                                "filename": (meta.get("filename", "unknown") if isinstance(meta, dict) else "unknown"),
-                                "source": (meta.get("source", "unknown") if isinstance(meta, dict) else "unknown"),
+                                "filename": (
+                                    meta.get("filename", "unknown")
+                                    if isinstance(meta, dict)
+                                    else "unknown"
+                                ),
+                                "source": (
+                                    meta.get("source", "unknown")
+                                    if isinstance(meta, dict)
+                                    else "unknown"
+                                ),
                                 "file_type": (
-                                    meta.get("file_type", "unknown") if isinstance(meta, dict) else "unknown"
+                                    meta.get("file_type", "unknown")
+                                    if isinstance(meta, dict)
+                                    else "unknown"
                                 ),
                                 "distance": distance_value,
                             }
@@ -174,7 +184,9 @@ def query(  # noqa: C901
                 if len(doc_list) > 0:
                     for idx, doc in enumerate(doc_list, 1):
                         meta = meta_list[idx - 1] if idx - 1 < len(meta_list) else {}
-                        distance = dist_list[idx - 1] if idx - 1 < len(dist_list) else None
+                        distance = (
+                            dist_list[idx - 1] if idx - 1 < len(dist_list) else None
+                        )
 
                         distance_str = "N/A"
                         if distance is not None:
@@ -183,9 +195,21 @@ def query(  # noqa: C901
                             except (ValueError, TypeError):
                                 distance_str = "N/A"
 
-                        filename = meta.get("filename", "unknown") if isinstance(meta, dict) else "unknown"
-                        source = meta.get("source", "unknown") if isinstance(meta, dict) else "unknown"
-                        file_type = meta.get("file_type", "unknown") if isinstance(meta, dict) else "unknown"
+                        filename = (
+                            meta.get("filename", "unknown")
+                            if isinstance(meta, dict)
+                            else "unknown"
+                        )
+                        source = (
+                            meta.get("source", "unknown")
+                            if isinstance(meta, dict)
+                            else "unknown"
+                        )
+                        file_type = (
+                            meta.get("file_type", "unknown")
+                            if isinstance(meta, dict)
+                            else "unknown"
+                        )
 
                         click.echo(f"[{idx}] 📄 {filename}")
                         click.echo(f"    📍 {source}")
@@ -194,7 +218,9 @@ def query(  # noqa: C901
                         click.echo("    Content:\n")
 
                         doc_str = doc
-                        content = doc_str[:500] + "..." if len(doc_str) > 500 else doc_str
+                        content = (
+                            doc_str[:500] + "..." if len(doc_str) > 500 else doc_str
+                        )
                         for line in content.split("\n"):
                             click.echo(f"       {line}")
                         click.echo()
