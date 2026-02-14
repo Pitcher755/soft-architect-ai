@@ -3,7 +3,7 @@
 > **Version:** 1.1.0 (Complete - Fixed Developer Tool Trap)
 > **Methodology:** TDD Strict + Security-First + OWASP Paranoia
 > **Author:** ArchitectZero
-> **Last Updated:** 2026-02-13
+> **Last Updated:** 2026-02-14
 
 ---
 
@@ -41,10 +41,10 @@ Este workflow está diseñado para:
 
 | Factor | Acceptance | Validation Method |
 |--------|-----------|------------------|
-| **Test Coverage** | >80% (domain >95%) | \`pytest --cov --cov-fail-under=80\` |
+| **Test Coverage** | >80% (domain >95%) | `pytest --cov --cov-fail-under=80` |
 | **Response Time** | <500ms | Integration test + manual profiling |
-| **Type Safety** | 0 Pyright errors | \`python -m pyright app/\` |
-| **Security** | 0 high-severity issues | \`bandit -r app/\` |
+| **Type Safety** | 0 Pyright errors | `python -m pyright app/` |
+| **Security** | 0 high-severity issues | `bandit -r app/` |
 | **Code Quality** | Black + Ruff clean | PRE_PUSH_VALIDATION_MASTER.sh |
 
 ---
@@ -54,9 +54,9 @@ Este workflow está diseñado para:
 1. **NEVER commit code without tests passing**
 2. **NEVER expose stack traces to the client**
 3. **NEVER skip input sanitization**
-4. **NEVER use \`# type: ignore\` without justification comment**
-5. **NEVER push without running \`PRE_PUSH_VALIDATION_MASTER.sh\`**
-6. **NEVER strip HTML tags with regex** (Developer Tool Trap - destroys code like \`List<String>\`)
+4. **NEVER use `# type: ignore` without justification comment**
+5. **NEVER push without running `PRE_PUSH_VALIDATION_MASTER.sh`**
+6. **NEVER strip HTML tags with regex** (Developer Tool Trap - destroys code like `List<String>`)
 
 ---
 
@@ -87,11 +87,11 @@ mkdir -p doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT
 
 #### 0.2 Define Pydantic Schema Contracts
 
-**File:** \`src/server/app/domain/schemas/chat.py\`
+**File:** `src/server/app/domain/schemas/chat.py`
 
 Create the schema skeleton (structure only, no logic yet):
 
-\`\`\`python
+```python
 """
 Chat domain schemas for HU-4.1.
 
@@ -203,42 +203,42 @@ class RAGContext(BaseModel):
     retrieved_docs: list[str]
     template: str
     constructed_prompt: str
-\`\`\`
+```
 
 **Validation:**
-\`\`\`bash
+```bash
 # Verify file structure is correct (no implementation yet)
 python -c "from src.server.app.domain.schemas.chat import ChatRequest, ChatResponse"
-\`\`\`
+```
 
 ---
 
 #### 0.3 Document API Contract
 
-**File:** \`doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/API_CONTRACT.md\`
+**File:** `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/API_CONTRACT.md`
 
 Create OpenAPI-style documentation:
 
-\`\`\`markdown
+```markdown
 # API Contract: POST /api/v1/chat/message
 
 ## Endpoint
-\`\`\`
+```
 POST /api/v1/chat/message
 Content-Type: application/json
-\`\`\`
+```
 
 ## Request Body
-\`\`\`json
+```json
 {
   "conversation_id": "550e8400-e29b-41d4-a716-446655440000",
   "message": "How do I implement authentication in Flutter?",
   "project_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
 }
-\`\`\`
+```
 
 ## Success Response (200 OK)
-\`\`\`json
+```json
 {
   "ai_response": "To implement authentication in Flutter, you can use...",
   "template_used": "20-PLANNING",
@@ -248,12 +248,12 @@ Content-Type: application/json
   "timestamp": "2026-02-13T14:30:00Z",
   "metadata": null
 }
-\`\`\`
+```
 
 ## Error Responses
 
 ### 422 Unprocessable Entity (Validation Error)
-\`\`\`json
+```json
 {
   "detail": [
     {
@@ -263,48 +263,48 @@ Content-Type: application/json
     }
   ]
 }
-\`\`\`
+```
 
 ### 503 Service Unavailable (LLM Connection Failed)
-\`\`\`json
+```json
 {
   "error": "LLM_CONNECTION_ERROR",
   "message": "Unable to connect to local AI engine",
   "code": "AI_001",
   "retry_after": 30
 }
-\`\`\`
+```
 
 ### 500 Internal Server Error (RAG Retrieval Failed)
-\`\`\`json
+```json
 {
   "error": "RAG_RETRIEVAL_ERROR",
   "message": "Knowledge base search failed (fallback response used)",
   "code": "RAG_001"
 }
-\`\`\`
+```
 
 ## Performance SLA
 - **Target:** <500ms (p95)
 - **Timeout:** 10s (hard limit)
 - **Retry Policy:** 3x with exponential backoff (client-side)
-\`\`\`
+```
 
 ---
 
 #### 0.4 Commit Initial Setup
 
-\`\`\`bash
+```bash
 git add doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/
 git add src/server/app/domain/schemas/chat.py
 git commit -m "docs: init HU-4.1 tracking and API contracts (skeleton only)"
-\`\`\`
+```
 
 ---
 
 ### 🎓 Phase 0 Exit Criteria
 
-- ✅ Branch \`feature/backend-chat-endpoint\` created
+- ✅ Branch `feature/backend-chat-endpoint` created
 - ✅ Tracking documentation complete (README, PROGRESS, ARTIFACTS, WORKFLOW)
 - ✅ Schema skeleton defined (ChatRequest, ChatResponse, RAGContext)
 - ✅ API contract documented
@@ -325,9 +325,9 @@ git commit -m "docs: init HU-4.1 tracking and API contracts (skeleton only)"
 
 #### 1.1 Write Failing Tests
 
-**File:** \`tests/server/unit/domain/schemas/test_chat_schemas.py\`
+**File:** `tests/server/unit/domain/schemas/test_chat_schemas.py`
 
-\`\`\`python
+```python
 """
 Unit tests for chat schemas (HU-4.1).
 
@@ -559,14 +559,14 @@ pytest tests/server/unit/domain/schemas/test_chat_schemas.py -v
 
 #### 1.2 Implement Security Validators (Make Tests Pass)
 
-**Update:** \`src/server/app/domain/schemas/chat.py\`
+**Update:** `src/server/app/domain/schemas/chat.py`
 
 **⚠️ CRITICAL: Developer Tool Trap Fix**
-- **NEVER** use \`re.sub(r'<[^>]+>', '', text)\` to strip HTML tags
-- **PROBLEM:** This destroys legitimate code snippets like `List<String>\`, \`Map<K,V>\`, \`Promise<T>\`
-- **SOLUTION:** Use \`html.escape()\` to convert \`<\` to \`&lt;\` and `>` to `&gt;`
+- **NEVER** use `re.sub(r'<[^>]+>', '', text)` to strip HTML tags
+- **PROBLEM:** This destroys legitimate code snippets like `List<String>`, `Map<K,V>`, `Promise<T>`
+- **SOLUTION:** Use `html.escape()` to convert `<` to `&lt;` and `>` to `&gt;`
 
-\`\`\`python
+```python
 import re
 from html import escape
 from pydantic import BaseModel, Field, field_validator
@@ -619,10 +619,10 @@ class ChatRequest(BaseModel):
                 # Don't block - LLM system prompt should protect against this
 
         return v
-\`\`\`
+```
 
 **Run tests again (should PASS now):**
-\`\`\`bash
+```bash
 pytest tests/server/unit/domain/schemas/test_chat_schemas.py -v
 
 # Expected output:
@@ -630,15 +630,15 @@ pytest tests/server/unit/domain/schemas/test_chat_schemas.py -v
 # test_chat_request_preserves_code_snippets PASSED ✅ (NEW TEST)
 # test_prevents_javascript_injection PASSED ✅
 # ...all tests should pass
-\`\`\`
+```
 
 ---
 
 #### 1.3 Refactor: Extract Sanitizer Utility
 
-**Create:** \`src/server/app/domain/utils/sanitizer.py\`
+**Create:** `src/server/app/domain/utils/sanitizer.py`
 
-\`\`\`python
+```python
 """
 Input sanitization utilities for security hardening.
 
@@ -678,7 +678,7 @@ class InputSanitizer:
         r'you are now (a different|in|acting as)',
         r'system\s*:',
         r'new (instructions|system prompt|role)',
-        r'\/\/ (system|admin|root)',  # Hidden commands
+        r'// (system|admin|root)',  # Hidden commands
     ]
 
     @staticmethod
@@ -751,11 +751,11 @@ class InputSanitizer:
             )
 
         return text
-\`\`\`
+```
 
-**Update:** \`src/server/app/domain/schemas/chat.py\` (use new sanitizer)
+**Update:** `src/server/app/domain/schemas/chat.py` (use new sanitizer)
 
-\`\`\`python
+```python
 from src.server.app.domain.utils.sanitizer import InputSanitizer
 
 # ...
@@ -768,20 +768,20 @@ class ChatRequest(BaseModel):
     def sanitize_message(cls, v: str) -> str:
         """Sanitize user input using security utility."""
         return InputSanitizer.sanitize_message(v)
-\`\`\`
+```
 
 ---
 
 #### 1.4 Type Safety Validation
 
-\`\`\`bash
+```bash
 # Ensure 0 Pyright errors
 cd src/server
 python -m pyright app/domain/schemas/chat.py app/domain/utils/sanitizer.py
 
 # Expected output:
 # 0 errors, 0 warnings, 0 informations
-\`\`\`
+```
 
 ---
 
@@ -792,9 +792,9 @@ python -m pyright app/domain/schemas/chat.py app/domain/utils/sanitizer.py
 - ✅ Developer Tool Trap FIXED (code snippets preserved)
 - ✅ Pyright reports 0 errors
 - ✅ Sanitizer utility extracted and reusable
-- ✅ Commit: \`feat(domain): implement ChatRequest/ChatResponse with security validation\`
+- ✅ Commit: `feat(domain): implement ChatRequest/ChatResponse with security validation`
 
-\`\`\`bash
+```bash
 # Commit Phase 1
 git add src/server/app/domain/
 git add tests/server/unit/domain/
@@ -815,7 +815,7 @@ Security Tests:
 
 Fixes: Developer Tool Trap (html.escape instead of regex stripping)
 Refs: HU-4.1"
-\`\`\`
+```
 
 ---
 
@@ -828,9 +828,9 @@ Refs: HU-4.1"
 
 ### 🔴 2.1 RED: Strategy Tests
 
-**File:** \`tests/server/unit/infrastructure/llm/test_llm_clients.py\`
+**File:** `tests/server/unit/infrastructure/llm/test_llm_clients.py`
 
-\`\`\`python
+```python
 """
 Unit tests for LLM client implementations (Strategy Pattern).
 
@@ -927,14 +927,14 @@ class TestGroqClient:
 
         client = GroqClient(api_key="test_key")
         assert isinstance(client, BaseLLMClient)
-\`\`\`
+```
 
 **Run tests (should FAIL):**
-\`\`\`bash
+```bash
 pytest tests/server/unit/infrastructure/llm/ -v
 
 # Expected: ModuleNotFoundError (files don't exist yet)
-\`\`\`
+```
 
 ---
 
@@ -942,9 +942,9 @@ pytest tests/server/unit/infrastructure/llm/ -v
 
 #### 2.2.1 Define Custom Exceptions
 
-**File:** \`src/server/app/core/exceptions/base.py\`
+**File:** `src/server/app/core/exceptions/base.py`
 
-\`\`\`python
+```python
 """
 Domain exceptions for SoftArchitect AI.
 
@@ -1001,13 +1001,13 @@ class RAGRetrievalError(BaseAppError):
     code = "RAG_001"
     message = "Knowledge base search failed"
     status_code = 500
-\`\`\`
+```
 
 #### 2.2.2 Base Protocol (Abstract)
 
-**File:** \`src/server/app/infrastructure/llm/base.py\`
+**File:** `src/server/app/infrastructure/llm/base.py`
 
-\`\`\`python
+```python
 """
 Base protocol for LLM clients (Strategy Pattern).
 
@@ -1053,13 +1053,13 @@ class BaseLLMClient(ABC):
             LLMTimeoutError: If request times out
         """
         pass
-\`\`\`
+```
 
 #### 2.2.3 Ollama Client (Local)
 
-**File:** \`src/server/app/infrastructure/llm/ollama_client.py\`
+**File:** `src/server/app/infrastructure/llm/ollama_client.py`
 
-\`\`\`python
+```python
 """
 Ollama LLM client implementation (local inference).
 
@@ -1181,13 +1181,13 @@ class OllamaClient(BaseLLMClient):
                 message="Ollama returned invalid JSON response",
                 details={"error": str(e)}
             )
-\`\`\`
+```
 
 #### 2.2.4 Groq Client (Stub)
 
-**File:** \`src/server/app/infrastructure/llm/groq_client.py\`
+**File:** `src/server/app/infrastructure/llm/groq_client.py`
 
-\`\`\`python
+```python
 """
 Groq LLM client implementation (cloud inference) - STUB.
 
@@ -1239,15 +1239,15 @@ class GroqClient(BaseLLMClient):
         """
         logger.warning("GroqClient.generate() called - returning stub response")
         return "STUB: Groq API not yet implemented. Please use Ollama for now."
-\`\`\`
+```
 
 ---
 
 ### 🔵 2.3 REFACTOR: Factory Pattern
 
-**File:** \`src/server/app/infrastructure/llm/factory.py\`
+**File:** `src/server/app/infrastructure/llm/factory.py`
 
-\`\`\`python
+```python
 """
 Factory for creating LLM clients based on configuration.
 
@@ -1299,13 +1299,13 @@ def get_llm_client(mode: Optional[str] = None) -> BaseLLMClient:
 
     else:
         raise ValueError(f"Invalid LLM mode: {mode}. Supported: ollama, groq")
-\`\`\`
+```
 
 ---
 
 ### 2.4 Run Tests (Should PASS)
 
-\`\`\`bash
+```bash
 pytest tests/server/unit/infrastructure/llm/ -v --cov=app/infrastructure/llm --cov-fail-under=90
 
 # Expected output:
@@ -1314,17 +1314,17 @@ pytest tests/server/unit/infrastructure/llm/ -v --cov=app/infrastructure/llm --c
 # test_ollama_timeout_raises_domain_exception PASSED ✅
 # test_groq_stub_returns_placeholder PASSED ✅
 # Coverage >= 90% ✅
-\`\`\`
+```
 
 ---
 
 ### 2.5 Type Safety
 
-\`\`\`bash
+```bash
 python -m pyright app/infrastructure/llm/
 
 # Expected: 0 errors, 0 warnings
-\`\`\`
+```
 
 ---
 
@@ -1337,9 +1337,9 @@ python -m pyright app/infrastructure/llm/
 - ✅ Custom domain exceptions (LLMConnectionError, LLMTimeoutError)
 - ✅ Test coverage >90%
 - ✅ Pyright 0 errors
-- ✅ Commit: \`feat(infrastructure): implement LLM Strategy pattern (Ollama + Groq stub)\`
+- ✅ Commit: `feat(infrastructure): implement LLM Strategy pattern (Ollama + Groq stub)`
 
-\`\`\`bash
+```bash
 git add src/server/app/infrastructure/llm/
 git add src/server/app/core/exceptions/
 git add tests/server/unit/infrastructure/llm/
@@ -1359,7 +1359,7 @@ Tests:
 - test_groq_stub_returns_placeholder ✅
 
 Refs: HU-4.1"
-\`\`\`
+```
 
 ---
 
@@ -1372,9 +1372,9 @@ Refs: HU-4.1"
 
 ### 🔴 3.1 RED: Orchestrator Tests
 
-**File:** \`tests/server/unit/services/rag/test_orchestrator.py\`
+**File:** `tests/server/unit/services/rag/test_orchestrator.py`
 
-\`\`\`python
+```python
 """
 Unit tests for RAG Orchestrator (core business logic).
 
@@ -1529,22 +1529,22 @@ class TestRAGOrchestrator:
 
         with pytest.raises(RAGRetrievalError):
             await orchestrator.process_message(request)
-\`\`\`
+```
 
 **Run tests (should FAIL):**
-\`\`\`bash
+```bash
 pytest tests/server/unit/services/rag/test_orchestrator.py -v
 
 # Expected: ModuleNotFoundError (orchestrator doesn't exist yet)
-\`\`\`
+```
 
 ---
 
 ### 🟢 3.2 GREEN: Orchestrator Implementation
 
-**File:** \`src/server/app/services/rag/orchestrator.py\`
+**File:** `src/server/app/services/rag/orchestrator.py`
 
-\`\`\`python
+```python
 """
 RAG Orchestrator - Core business logic for chat endpoint.
 
@@ -1659,15 +1659,15 @@ class RAGOrchestrator:
             sources=sources,
             timestamp=datetime.utcnow()
         )
-\`\`\`
+```
 
 ---
 
 ### 🔵 3.3 REFACTOR: Vector Store & Template Protocols (Stubs)
 
-**File:** \`src/server/app/services/rag/vector_store_protocol.py\` (stub)
+**File:** `src/server/app/services/rag/vector_store_protocol.py` (stub)
 
-\`\`\`python
+```python
 """
 Protocol for vector store abstraction.
 
@@ -1695,11 +1695,11 @@ class VectorStoreProtocol(ABC):
             List of document snippets
         """
         pass
-\`\`\`
+```
 
-**File:** \`src/server/app/services/rag/template_builder_protocol.py\` (stub)
+**File:** `src/server/app/services/rag/template_builder_protocol.py` (stub)
 
-\`\`\`python
+```python
 """
 Protocol for template builder abstraction.
 
@@ -1742,13 +1742,13 @@ class TemplateBuilderProtocol(ABC):
             Complete prompt ready for LLM
         """
         pass
-\`\`\`
+```
 
 ---
 
 ### 3.4 Run Tests (Should PASS)
 
-\`\`\`bash
+```bash
 pytest tests/server/unit/services/rag/test_orchestrator.py -v --cov=app/services/rag --cov-fail-under=85
 
 # Expected output:
@@ -1757,17 +1757,17 @@ pytest tests/server/unit/services/rag/test_orchestrator.py -v --cov=app/services
 # test_orchestrator_llm_failure_raises_exception PASSED ✅
 # test_orchestrator_vector_failure_raises_exception PASSED ✅
 # Coverage >= 85% ✅
-\`\`\`
+```
 
 ---
 
 ### 3.5 Type Safety
 
-\`\`\`bash
+```bash
 python -m pyright app/services/rag/
 
 # Expected: 0 errors
-\`\`\`
+```
 
 ---
 
@@ -1779,9 +1779,9 @@ python -m pyright app/services/rag/
 - ✅ Error handling for all failure modes
 - ✅ Test coverage >85%
 - ✅ Pyright 0 errors
-- ✅ Commit: \`feat(services): implement RAGOrchestrator with dependency injection\`
+- ✅ Commit: `feat(services): implement RAGOrchestrator with dependency injection`
 
-\`\`\`bash
+```bash
 git add src/server/app/services/rag/
 git add tests/server/unit/services/rag/
 git commit -m "feat(services): implement RAGOrchestrator with dependency injection
@@ -1799,7 +1799,7 @@ Tests:
 - test_orchestrator_vector_failure_raises_exception ✅
 
 Refs: HU-4.1"
-\`\`\`
+```
 
 ---
 
@@ -1812,9 +1812,9 @@ Refs: HU-4.1"
 
 ### 🔴 4.1 RED: Endpoint E2E Tests
 
-**File:** \`tests/server/integration/api/v1/test_chat_endpoints.py\`
+**File:** `tests/server/integration/api/v1/test_chat_endpoints.py`
 
-\`\`\`python
+```python
 """
 Integration tests for chat endpoint.
 
@@ -1938,14 +1938,14 @@ class TestChatEndpoint:
         assert "error" in data["detail"].lower() or "failed" in data["detail"].lower()
 
         app.dependency_overrides.clear()
-\`\`\`
+```
 
 **Run tests (should FAIL):**
-\`\`\`bash
+```bash
 pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
 
 # Expected: 404 Not Found (endpoint doesn't exist yet)
-\`\`\`
+```
 
 ---
 
@@ -1953,9 +1953,9 @@ pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
 
 #### 4.2.1 Dependencies (DI Container)
 
-**File:** \`src/server/app/api/dependencies.py\`
+**File:** `src/server/app/api/dependencies.py`
 
-\`\`\`python
+```python
 """
 FastAPI dependency injection container.
 
@@ -2003,13 +2003,13 @@ def get_rag_orchestrator() -> RAGOrchestrator:
         template_builder=template_builder,
         llm_client=llm_client
     )
-\`\`\`
+```
 
 #### 4.2.2 Chat Router
 
-**File:** \`src/server/app/api/v1/chat.py\`
+**File:** `src/server/app/api/v1/chat.py`
 
-\`\`\`python
+```python
 """
 Chat API endpoints (HU-4.1).
 
@@ -2077,13 +2077,13 @@ async def chat_message(
             status_code=500,
             detail="An unexpected error occurred processing your request."
         )
-\`\`\`
+```
 
 #### 4.2.3 Register Router in Main App
 
-**File:** \`src/server/app/main.py\` (update)
+**File:** `src/server/app/main.py` (update)
 
-\`\`\`python
+```python
 from fastapi import FastAPI
 from src.server.app.api.v1 import chat
 
@@ -2095,13 +2095,13 @@ app.include_router(chat.router)
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
-\`\`\`
+```
 
 ---
 
 ### 4.3 Run Tests (Should PASS)
 
-\`\`\`bash
+```bash
 pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
 
 # Expected output:
@@ -2109,13 +2109,13 @@ pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
 # test_chat_endpoint_validation_error PASSED ✅
 # test_chat_endpoint_llm_failure PASSED ✅
 # test_chat_endpoint_rag_failure PASSED ✅
-\`\`\`
+```
 
 ---
 
 ### 4.4 Manual Test (E2E)
 
-\`\`\`bash
+```bash
 # Start server
 cd src/server && uvicorn app.main:app --reload
 
@@ -2129,7 +2129,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
   }'
 
 # Expected: 200 OK with ChatResponse JSON
-\`\`\`
+```
 
 ---
 
@@ -2140,9 +2140,9 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
 - ✅ Dependency injection configured
 - ✅ Integration tests pass
 - ✅ Manual E2E test successful
-- ✅ Commit: \`feat(api): implement POST /api/v1/chat/message endpoint\`
+- ✅ Commit: `feat(api): implement POST /api/v1/chat/message endpoint`
 
-\`\`\`bash
+```bash
 git add src/server/app/api/
 git add tests/server/integration/api/
 git commit -m "feat(api): implement POST /api/v1/chat/message endpoint
@@ -2160,7 +2160,7 @@ Tests:
 - test_chat_endpoint_rag_failure ✅
 
 Refs: HU-4.1"
-\`\`\`
+```
 
 ---
 
@@ -2173,13 +2173,13 @@ Refs: HU-4.1"
 
 ### 5.1 Format & Lint (Black & Ruff)
 
-\`\`\`bash
+```bash
 cd src/server
 black app/ tests/
 ruff check --fix app/ tests/
 
 # Expected: All files formatted, no violations
-\`\`\`
+```
 
 ---
 
@@ -2187,13 +2187,13 @@ ruff check --fix app/ tests/
 
 *Must return 0 errors, 0 warnings.*
 
-\`\`\`bash
+```bash
 cd src/server
 python -m pyright app/
 
 # Expected output:
 # 0 errors, 0 warnings, 0 informations
-\`\`\`
+```
 
 ---
 
@@ -2201,12 +2201,12 @@ python -m pyright app/
 
 *Verify no hardcoded secrets or dangerous evals.*
 
-\`\`\`bash
+```bash
 cd src/server
 bandit -r app/ -q
 
 # Expected: No issues found (exit code 0)
-\`\`\`
+```
 
 ---
 
@@ -2214,7 +2214,7 @@ bandit -r app/ -q
 
 *Target: >85% for this module.*
 
-\`\`\`bash
+```bash
 cd src/server
 pytest tests/server/ \\
   --cov=app.api.v1.chat \\
@@ -2227,13 +2227,13 @@ pytest tests/server/ \\
 
 # Expected:
 # Coverage >= 85% ✅
-\`\`\`
+```
 
 ---
 
 ### 5.5 Performance Profiling (Manual)
 
-\`\`\`bash
+```bash
 # Start server with profiling
 cd src/server && uvicorn app.main:app --reload
 
@@ -2247,7 +2247,7 @@ time curl -X POST http://localhost:8000/api/v1/chat/message \\
   }'
 
 # Expected: <500ms (target achieved)
-\`\`\`
+```
 
 ---
 
@@ -2259,9 +2259,9 @@ time curl -X POST http://localhost:8000/api/v1/chat/message \\
 - ✅ Bandit 0 high-severity issues
 - ✅ Coverage >85%
 - ✅ Performance <500ms (manual verification)
-- ✅ Commit: \`chore: code quality hardening for HU-4.1\`
+- ✅ Commit: `chore: code quality hardening for HU-4.1`
 
-\`\`\`bash
+```bash
 git add src/server/
 git commit -m "chore: code quality hardening for HU-4.1
 
@@ -2281,7 +2281,7 @@ Quality Gates:
 - Performance <500ms ✅
 
 Refs: HU-4.1"
-\`\`\`
+```
 
 ---
 
@@ -2296,7 +2296,7 @@ Refs: HU-4.1"
 
 Vuelve a la raíz del repositorio y ejecuta:
 
-\`\`\`bash
+```bash
 ./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh
 
 # Expected output:
@@ -2310,7 +2310,7 @@ Vuelve a la raíz del repositorio y ejecuta:
 # ✅ Phase 7: Build Validation (Docker) - PASSED
 #
 # 🏆 ALL VALIDATION GATES PASSED! (Exit code: 0)
-\`\`\`
+```
 
 *If any phase fails, fix and re-run until exit code 0.*
 
@@ -2318,7 +2318,7 @@ Vuelve a la raíz del repositorio y ejecuta:
 
 ### 6.2 Commit & Push
 
-\`\`\`bash
+```bash
 git add -A
 git commit -m "feat(chat): complete HU-4.1 - Backend Chat Endpoint with RAG orchestration
 
@@ -2358,17 +2358,17 @@ Fixes: HU-4.1
 Refs: #HU-4.1"
 
 git push origin feature/backend-chat-endpoint
-\`\`\`
+```
 
 ---
 
 ### 6.3 PR Creation
 
-1. Abre Pull Request en GitHub hacia \`develop\`.
+1. Abre Pull Request en GitHub hacia `develop`.
 2. Título: **"feat(chat): HU-4.1 Backend Chat Endpoint & RAG Orchestration"**
 3. Descripción (template):
 
-\`\`\`markdown
+```markdown
 ## 🚀 HU-4.1: Backend Chat Endpoint & RAG Orchestration
 
 ### Summary
@@ -2400,7 +2400,7 @@ Implements the core AI chat endpoint with full RAG orchestration, security harde
 - [ ] GitHub Actions CI passed
 
 ### Manual Testing
-\`\`\`bash
+```bash
 curl -X POST http://localhost:8000/api/v1/chat/message \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -2408,7 +2408,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
     "message": "How do I test in Python?",
     "project_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
   }'
-\`\`\`
+```
 
 ### Breaking Changes
 None
@@ -2417,9 +2417,9 @@ None
 None (uses existing ChromaDB stub from HU-2.2)
 
 Fixes #HU-4.1
-\`\`\`
+```
 
-4. Verifica que el workflow \`backend-ci.yaml\` se ejecuta y pasa en verde.
+4. Verifica que el workflow `backend-ci.yaml` se ejecuta y pasa en verde.
 5. Solicita Merge.
 
 ---
@@ -2440,23 +2440,23 @@ Fixes #HU-4.1
 
 1. **STOP immediately** - Don't commit failing code
 2. **Debug locally:**
-   \`\`\`bash
+   ```bash
    pytest tests/server/unit/ -v --tb=short -x  # Stop on first failure
-   \`\`\`
+   ```
 3. **Check Pyright:**
-   \`\`\`bash
+   ```bash
    python -m pyright app/
-   \`\`\`
+   ```
 4. **Review error logs:**
-   \`\`\`bash
+   ```bash
    tail -f logs/app.log
-   \`\`\`
+   ```
 
 ---
 
 ### 🛑 If PRE_PUSH_VALIDATION Fails
 
-\`\`\`bash
+```bash
 # Run the master validation script
 ./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh
 
@@ -2465,13 +2465,13 @@ Fixes #HU-4.1
 # 2. Fix the specific issue (formatting, linting, types, tests)
 # 3. Re-run the script
 # 4. Repeat until exit code 0
-\`\`\`
+```
 
 ---
 
 ### ⏪ If Need to Rollback
 
-\`\`\`bash
+```bash
 # Undo last commit (keep changes)
 git reset --soft HEAD~1
 
@@ -2482,7 +2482,7 @@ git reset --hard HEAD~1
 git checkout develop
 git branch -D feature/backend-chat-endpoint
 # Start over from Phase 0
-\`\`\`
+```
 
 ---
 
@@ -2490,20 +2490,20 @@ git branch -D feature/backend-chat-endpoint
 
 | Criteria | Target | Validation Command | Status |
 |----------|--------|-------------------|--------|
-| **Test Coverage** | >80% | \`pytest --cov --cov-fail-under=80\` | ⏳ |
-| **Domain Coverage** | >95% | \`pytest tests/server/unit/domain/ --cov=app/domain --cov-fail-under=95\` | ⏳ |
-| **Response Time** | <500ms | Manual profiling + integration test | ⏳ |
-| **Type Safety** | 0 errors | \`python -m pyright app/\` | ⏳ |
-| **Black Formatting** | No changes | \`black --check src/server/\` | ⏳ |
-| **Ruff Linting** | 0 violations | \`ruff check src/server/\` | ⏳ |
-| **Security Audit** | 0 high issues | \`bandit -r src/server/app/\` | ⏳ |
-| **API Response** | 200 OK | \`curl -X POST http://localhost:8000/api/v1/chat/message\` | ⏳ |
+| **Test Coverage** | >80% | `pytest --cov --cov-fail-under=80` | ✅ |
+| **Domain Coverage** | >95% | `pytest tests/server/unit/domain/ --cov=app/domain --cov-fail-under=95` | ✅ |
+| **Response Time** | <500ms | Manual profiling + integration test | ✅ |
+| **Type Safety** | 0 errors | `python -m pyright app/` | ✅ (gate opcional en pre-push) |
+| **Black Formatting** | No changes | `black --check src/server/` | ✅ |
+| **Ruff Linting** | 0 violations | `ruff check src/server/` | ✅ |
+| **Security Audit** | 0 high issues | `bandit -r src/server/app/` | ✅ |
+| **API Response** | 200 OK | `curl -X POST http://localhost:8000/api/v1/chat/message` | ✅ |
 
 ---
 
 ## 📚 Quick Reference Commands
 
-\`\`\`bash
+```bash
 # Format code
 black src/server/app/ tests/server/
 
@@ -2533,7 +2533,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
     "message": "Hello",
     "project_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
   }'
-\`\`\`
+```
 
 ---
 

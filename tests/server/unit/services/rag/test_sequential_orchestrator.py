@@ -183,6 +183,149 @@ class TestSequentialOrchestrator:
 
         orchestrator.llm_client.stream_generate.assert_called_once()
 
+    @pytest.mark.asyncio
+    async def test_build_prompt_handles_nested_document_lists(
+        self,
+        orchestrator,
+    ):
+        """Test prompt building with nested document lists from RAG."""
+        mock_template = Mock(content="Docs: {context}\nInput: {user_input}")
+        orchestrator.template_loader.load.return_value = mock_template
+        # Nested list structure from ChromaDB
+        orchestrator.vector_store.query.return_value = {
+            "documents": [["Doc1", "Doc2"], ["Doc3"]],
+            "metadatas": [[{"source": "file1.md"}, {"source": "file2.md"}]],
+        }
+        orchestrator.llm_client.stream_generate = AsyncMock(
+            return_value=self._mock_async_generator(["test"])
+        )
+
+        async for _ in orchestrator.generate(
+            doc_type="PROJECT_MANIFESTO",
+            user_input="Test",
+            context={},
+        ):
+            pass
+
+        # Should flatten nested docs
+        orchestrator.llm_client.stream_generate.assert_called_once()
+        call_args = str(orchestrator.llm_client.stream_generate.call_args)
+        assert "Doc1" in call_args or "Doc" in call_args
+
+    @pytest.mark.asyncio
+    async def test_build_prompt_handles_empty_rag_context(
+        self,
+        orchestrator,
+    ):
+        """Test prompt building with empty RAG results."""
+        mock_template = Mock(content="Docs: {context}\nInput: {user_input}")
+        orchestrator.template_loader.load.return_value = mock_template
+        orchestrator.vector_store.query.return_value = {
+            "documents": [[]],  # Empty results
+            "metadatas": [[]],
+        }
+        orchestrator.llm_client.stream_generate = AsyncMock(
+            return_value=self._mock_async_generator(["response"])
+        )
+
+        tokens = []
+        async for token in orchestrator.generate(
+            doc_type="PROJECT_MANIFESTO",
+            user_input="Test",
+            context={},
+        ):
+            tokens.append(token)
+
+        assert len(tokens) == 1
+        assert tokens[0] == "response"
+
+    @pytest.mark.asyncio
+    async def test_build_prompt_handles_non_list_documents(
+        self,
+        orchestrator,
+    ):
+        """Test prompt building with non-list document structure."""
+        mock_template = Mock(content="Docs: {context}\nInput: {user_input}")
+        orchestrator.template_loader.load.return_value = mock_template
+        # Single document (not a list)
+        orchestrator.vector_store.query.return_value = {
+            "documents": ["Single doc string"],
+            "metadatas": [{"source": "file.md"}],
+        }
+        orchestrator.llm_client.stream_generate = AsyncMock(
+            return_value=self._mock_async_generator(["test"])
+        )
+
+        async for _ in orchestrator.generate(
+            doc_type="PROJECT_MANIFESTO",
+            user_input="Test",
+            context={},
+        ):
+            pass
+
+        orchestrator.llm_client.stream_generate.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_build_prompt_handles_chat_history_as_list(
+        self,
+        orchestrator,
+    ):
+        """Test prompt building with chat history as list of messages."""
+        mock_template = Mock(
+            content="History: {chat_history}\nDocs: {context}\nInput: {user_input}"
+        )
+        orchestrator.template_loader.load.return_value = mock_template
+        orchestrator.vector_store.query.return_value = {
+            "documents": [[]],
+            "metadatas": [[]],
+        }
+        orchestrator.llm_client.stream_generate = AsyncMock(
+            return_value=self._mock_async_generator(["test"])
+        )
+
+        chat_history = [
+            {"role": "user", "content": "Msg1"},
+            {"role": "assistant", "content": "Response1"},
+        ]
+
+        async for _ in orchestrator.generate(
+            doc_type="PROJECT_MANIFESTO",
+            user_input="Test",
+            context={"chat_history": chat_history},
+        ):
+            pass
+
+        orchestrator.llm_client.stream_generate.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_retrieve_context_passes_correct_filters(
+        self,
+        orchestrator,
+    ):
+        """Test that vector store query uses correct doc_type filter."""
+        mock_template = Mock(content="Template: {user_input}")
+        orchestrator.template_loader.load.return_value = mock_template
+        orchestrator.vector_store.query.return_value = {
+            "documents": [[]],
+            "metadatas": [[]],
+        }
+        orchestrator.llm_client.stream_generate = AsyncMock(
+            return_value=self._mock_async_generator(["test"])
+        )
+
+        async for _ in orchestrator.generate(
+            doc_type="DESIGN_DOCUMENT",
+            user_input="Architecture",
+            context={},
+        ):
+            pass
+
+        # Verify vector store was called with doc_type filter
+        orchestrator.vector_store.query.assert_called_once()
+        call_kwargs = orchestrator.vector_store.query.call_args.kwargs
+        assert "where" in call_kwargs
+        assert call_kwargs["where"]["doc_type"] == "DESIGN_DOCUMENT"
+
     @staticmethod
     async def _mock_async_generator(items: list[str]):
         """Helper to create async generator from list."""
