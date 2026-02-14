@@ -12,10 +12,10 @@ Created: 2025-01-08
 Version: 0.1.0 (Phase 1 - RED)
 """
 
-import pytest
 from uuid import uuid4
 
-from src.server.app.domain.schemas.chat import ChatRequest, ChatResponse, RAGContext
+import pytest
+from app.domain.schemas.chat import ChatRequest, ChatResponse, RAGContext
 
 
 class TestChatRequestValidation:

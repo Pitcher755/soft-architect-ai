@@ -9,8 +9,9 @@ Tests cover:
 """
 
 import pytest
-from app.services.rag.template_loader import TemplateLoader, Template
+
 from app.core.exceptions import TemplateNotFoundError
+from app.services.rag.template_loader import Template, TemplateLoader
 
 
 class TestTemplateLoader:

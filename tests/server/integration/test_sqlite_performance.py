@@ -6,18 +6,18 @@ Validates that database operations meet performance targets:
 - Sequential queries: < 100ms for 100 records
 """
 
-import time
 import sqlite3
 import tempfile
+import time
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import pytest
 
-from app.infrastructure.persistence.sqlite_repository import SQLiteRepository
-from app.infrastructure.persistence.sqlite_config import configure_sqlite
-from app.infrastructure.persistence.transaction_manager import TransactionManager
 from app.domain.models.project import Project
+from app.infrastructure.persistence.sqlite_config import configure_sqlite
+from app.infrastructure.persistence.sqlite_repository import SQLiteRepository
+from app.infrastructure.persistence.transaction_manager import TransactionManager
 
 
 @pytest.fixture
@@ -31,8 +31,7 @@ def perf_repo() -> Generator[SQLiteRepository, None, None]:
         configure_sqlite(conn)
 
         # Initialize schema
-        conn.executescript(
-            """
+        conn.executescript("""
             CREATE TABLE IF NOT EXISTS projects (
                 id TEXT PRIMARY KEY,
                 name TEXT NOT NULL UNIQUE,
@@ -42,8 +41,7 @@ def perf_repo() -> Generator[SQLiteRepository, None, None]:
                 updated_at TEXT NOT NULL,
                 metadata TEXT
             );
-            """
-        )
+            """)
         conn.commit()
         conn.close()
 

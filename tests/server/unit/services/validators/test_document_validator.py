@@ -17,8 +17,8 @@ from pathlib import Path
 
 import pytest
 
-from app.services.validators.document_validator import DocumentValidator
 from app.core.exceptions import ValidationError
+from app.services.validators.document_validator import DocumentValidator
 
 # Load fixtures
 FIXTURES_PATH = (
