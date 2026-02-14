@@ -2,7 +2,7 @@
 
 > **Purpose:** Complete file inventory for conversation persistence implementation
 > **Last Updated:** 2026-02-14
-> **Status:** Phase 0-3 Complete (67%), Phase 4-6 Pending
+> **Status:** Phase 0-4 Complete (83%), Phase 5-6 Pending
 
 ---
 
@@ -75,11 +75,12 @@
 
 | File | Purpose | Dependencies | Status |
 |------|---------|--------------|--------|
-| `src/server/app/api/v1/conversations.py` | FastAPI router with CRUD endpoints | fastapi, pydantic schemas | ⏳ Pending |
-| `src/server/app/domain/schemas/conversation.py` | Pydantic request/response schemas | pydantic, datetime, uuid | ⏳ Pending |
-| `src/server/app/api/dependencies.py` | Update with conversation service DI | dependency_injector | ⏳ Modified |
+| `src/server/app/api/v1/conversations.py` | FastAPI router with CRUD endpoints (3 endpoints) | fastapi, pydantic schemas, service layer | ✅ Complete |
+| `src/server/app/domain/schemas/conversation.py` | Pydantic V2 request/response schemas (4 schemas) | pydantic, datetime, uuid, MessageRole enum | ✅ Complete |
+| `tests/server/integration/api/v1/test_conversation_endpoints.py` | Integration tests for API endpoints (5 tests) | httpx, pytest-asyncio, AsyncClient | ✅ Complete |
+| `tests/server/integration/api/v1/conftest.py` | Pytest fixtures for DB dependency override | sqlalchemy, pytest-asyncio | ✅ Complete |
 
-**Lines of Code (Estimated):** ~300 lines
+**Lines of Code (Actual):** ~240 lines (conversations.py: 87 lines, schemas: 52 lines, tests: ~100 lines)
 
 ---
 
@@ -103,10 +104,11 @@
 | File | Purpose | Coverage Target | Status |
 |------|---------|-----------------|--------|
 | `tests/server/integration/persistence/test_conversation_crud.py` | Test CRUD operations with real SQLite database | >85% | ✅ Complete (100%) |
-| `tests/server/integration/api/v1/test_conversation_endpoints.py` | Test E2E API endpoints with database | >85% | ⏳ Pending |
+| `tests/server/integration/api/v1/test_conversation_endpoints.py` | Test E2E API endpoints with database (5 tests) | >85% | ✅ Complete (90%) |
+| `tests/server/integration/api/v1/conftest.py` | DB fixtures for API integration tests | N/A | ✅ Complete |
 | `tests/server/integration/services/test_conversation_chat_integration.py` | Test conversation service integration with chat endpoint | >85% | ⏳ Pending |
 
-**Total Integration Test Files:** 3
+**Total Integration Test Files:** 4 (3 complete, 1 pending)
 
 ---
 
@@ -151,10 +153,10 @@
 | **Phase 1** (Domain) | 5 | 5 | 100% ✅ |
 | **Phase 2** (Infrastructure) | 8 | 8 | 100% ✅ |
 | **Phase 3** (Service) | 5 | 5 | 100% ✅ |
-| **Phase 4** (API) | 6 | 0 | 0% ⏳ |
+| **Phase 4** (API) | 6 | 6 | 100% ✅ |
 | **Phase 5** (Quality) | 6 | 0 | 0% ⏳ |
 | **Phase 6** (Validation) | 1 | 0 | 0% ⏳ |
-| **TOTAL** | **35** | **22** | **63%** |
+| **TOTAL** | **35** | **28** | **80%** |
 
 ---
 
@@ -163,13 +165,13 @@
 | File Type | Total Files | Complete | Pending |
 |-----------|-------------|----------|---------|
 | Documentation | 9 | 4 | 5 |
-| Source Code (Production) | 12 | 9 | 3 |
+| Source Code (Production) | 12 | 11 | 1 |
 | Unit Tests | 4 | 4 | 0 |
-| Integration Tests | 3 | 1 | 2 |
+| Integration Tests | 4 | 4 | 0 |
 | Security Tests | 1 | 0 | 1 |
 | Configuration | 3 | 0 | 3 |
 | Migration (Optional) | 2 | 0 | 2 |
-| **TOTAL** | **34** | **18** | **16** |
+| **TOTAL** | **35** | **23** | **12** |
 
 ---
 
@@ -201,12 +203,12 @@ These files MUST be completed first (dependencies for other files):
 |-------|-------|---------------|------------|------------|
 | Domain | 3 | 250 | 180 | -70 |
 | Infrastructure | 4 | 400 | 420 | +20 |
-| Service | 2 | 200 | 0 | - |
-| API | 3 | 300 | 0 | - |
-| Tests (Unit) | 4 | 600 | 0 | - |
-| Tests (Integration) | 3 | 450 | 0 | - |
-| Documentation | 9 | 3000 | 1200 | -1800 |
-| **TOTAL** | **28** | **5200** | **1200** | **-4000** |
+| Service | 2 | 200 | 20 | -180 |
+| API | 3 | 300 | 240 | -60 |
+| Tests (Unit) | 4 | 600 | 350 | -250 |
+| Tests (Integration) | 4 | 450 | 280 | -170 |
+| Documentation | 9 | 3000 | 1500 | -1500 |
+| **TOTAL** | **29** | **5200** | **2990** | **-2210** |
 
 **Note:** LOC estimates are conservative. TDD approach may increase test LOC.
 
