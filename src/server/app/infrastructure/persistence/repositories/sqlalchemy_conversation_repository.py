@@ -102,17 +102,17 @@ class SQLAlchemyConversationRepository:
         stmt = (
             select(MessageModel)
             .where(MessageModel.conversation_id == conversation_id)
-            .order_by(MessageModel.created_at)
+            .order_by(desc(MessageModel.created_at))
             .limit(n)
         )
 
         result = await self.session.execute(stmt)
         models = result.scalars().all()
 
-        # Get last N (slice from end)
-        last_n = list(models)[-n:]
+        # Reverse to chronological order (oldest first)
+        messages = [self._message_model_to_entity(model) for model in reversed(models)]
 
-        return [self._message_model_to_entity(model) for model in last_n]
+        return messages
 
     def _model_to_entity(self, model: ConversationModel) -> Conversation:
         """Convert SQLAlchemy model to domain entity."""
