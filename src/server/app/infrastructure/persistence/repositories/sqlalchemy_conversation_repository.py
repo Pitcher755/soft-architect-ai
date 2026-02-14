@@ -90,7 +90,7 @@ class SQLAlchemyConversationRepository:
         stmt = select(ConversationModel).where(ConversationModel.id == conversation_id)
         result = await self.session.execute(stmt)
         conv_model = result.scalar_one()
-        conv_model.updated_at = datetime.now(UTC)
+        conv_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]  # SQLAlchemy runtime type
         await self.session.commit()
 
         return self._message_model_to_entity(model)
@@ -119,20 +119,20 @@ class SQLAlchemyConversationRepository:
         messages = [self._message_model_to_entity(msg) for msg in model.messages]
 
         return Conversation(
-            id=model.id,
-            project_id=model.project_id,
-            title=model.title,
+            id=model.id,  # type: ignore[arg-type]  # SQLAlchemy runtime type
+            project_id=model.project_id,  # type: ignore[arg-type]
+            title=model.title,  # type: ignore[arg-type]
             messages=messages,
-            created_at=model.created_at,
-            updated_at=model.updated_at,
+            created_at=model.created_at,  # type: ignore[arg-type]
+            updated_at=model.updated_at,  # type: ignore[arg-type]
         )
 
     def _message_model_to_entity(self, model: MessageModel) -> Message:
         """Convert SQLAlchemy MessageModel to domain Message entity."""
         return Message(
-            id=model.id,
-            conversation_id=model.conversation_id,
-            role=MessageRole(model.role),
-            content=model.content,
-            created_at=model.created_at,
+            id=model.id,  # type: ignore[arg-type]  # SQLAlchemy runtime type
+            conversation_id=model.conversation_id,  # type: ignore[arg-type]
+            role=MessageRole(model.role),  # type: ignore[arg-type]
+            content=model.content,  # type: ignore[arg-type]
+            created_at=model.created_at,  # type: ignore[arg-type]
         )

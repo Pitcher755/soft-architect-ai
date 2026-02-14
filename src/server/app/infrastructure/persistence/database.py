@@ -35,7 +35,7 @@ async_session_maker = async_sessionmaker(
 Base = declarative_base()
 
 
-async def get_db_session() -> AsyncSession:
+async def get_db_session():  # type: ignore[misc]  # AsyncGenerator return type
     """
     Dependency injection for FastAPI.
 
