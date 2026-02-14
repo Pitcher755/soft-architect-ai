@@ -2,7 +2,7 @@
 Domain layer: Core business entities.
 """
 
-from datetime import datetime
+from datetime import UTC, datetime
 
 # `List` and `Optional` from `typing` are not required because
 # we use modern annotations (PEP 585/604) like `list[...]` and
@@ -33,7 +33,7 @@ class ChatMessage:
         self.session_id = session_id
         self.role = role
         self.content = content
-        self.timestamp = timestamp or datetime.utcnow()
+        self.timestamp = timestamp or datetime.now(UTC)
 
 
 class ChatSession:
@@ -59,5 +59,5 @@ class ChatSession:
         self.id = id
         self.title = title
         self.messages = messages or []
-        self.created_at = created_at or datetime.utcnow()
-        self.updated_at = updated_at or datetime.utcnow()
+        self.created_at = created_at or datetime.now(UTC)
+        self.updated_at = updated_at or datetime.now(UTC)
