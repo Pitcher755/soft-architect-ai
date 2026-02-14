@@ -35,9 +35,9 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# Python virtualenv paths
-PYTHON_TEST_BIN="$PROJECT_ROOT/tests/venv/bin/python"
-PYTHON_SERVER_BIN="$PROJECT_ROOT/src/server/venv/bin/python"
+# Python virtualenv paths (unified venv in project root)
+PYTHON_TEST_BIN="$PROJECT_ROOT/venv/bin/python"
+PYTHON_SERVER_BIN="$PROJECT_ROOT/venv/bin/python"
 BLACK_BIN="$PROJECT_ROOT/venv/bin/black"
 
 # Track results

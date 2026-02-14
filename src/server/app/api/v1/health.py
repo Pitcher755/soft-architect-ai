@@ -45,7 +45,8 @@ class HealthResponse(BaseModel):
     response_model=HealthResponse,
     status_code=status.HTTP_200_OK,
     summary="Health Check",
-    description="Verify that the API is running and responsive. " "Used for Docker and Kubernetes liveness probes.",
+    description="Verify that the API is running and responsive. "
+    "Used for Docker and Kubernetes liveness probes.",
 )
 async def health_check() -> HealthResponse:
     """

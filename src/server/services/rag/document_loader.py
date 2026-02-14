@@ -69,7 +69,9 @@ class DocumentLoader:
     DEFAULT_MAX_CHUNK_SIZE = 2000  # characters
     DEFAULT_MIN_CHUNK_SIZE = 500  # characters
     SYSTEM_FILES = {".DS_Store", ".gitkeep", "Thumbs.db"}
-    KNOWLEDGE_BASE_DIR = Path(__file__).parent.parent.parent / "packages" / "knowledge_base"
+    KNOWLEDGE_BASE_DIR = (
+        Path(__file__).parent.parent.parent / "packages" / "knowledge_base"
+    )
 
     # Security limits
     MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
@@ -99,7 +101,9 @@ class DocumentLoader:
         self.validate_security = validate_security
 
         if not self.knowledge_base_dir.exists():
-            raise ValueError(f"Knowledge base directory not found: {self.knowledge_base_dir}")
+            raise ValueError(
+                f"Knowledge base directory not found: {self.knowledge_base_dir}"
+            )
 
         # Resolve to absolute path to prevent traversal
         self.knowledge_base_dir = self.knowledge_base_dir.resolve()
@@ -117,7 +121,9 @@ class DocumentLoader:
         """
         # Check for symlinks
         if self.knowledge_base_dir.is_symlink():
-            raise ValueError(f"Knowledge base directory is a symlink: {self.knowledge_base_dir}")
+            raise ValueError(
+                f"Knowledge base directory is a symlink: {self.knowledge_base_dir}"
+            )
 
         # Check for path traversal attempts (.. in path)
         if ".." in str(self.knowledge_base_dir):
@@ -125,7 +131,9 @@ class DocumentLoader:
 
         # Check readability
         if not os.access(self.knowledge_base_dir, os.R_OK):
-            raise ValueError(f"Knowledge base directory not readable: {self.knowledge_base_dir}")
+            raise ValueError(
+                f"Knowledge base directory not readable: {self.knowledge_base_dir}"
+            )
 
     def load_all_documents(self) -> Generator[DocumentChunk, None, None]:
         """Yield all document chunks from knowledge base.
@@ -212,7 +220,9 @@ class DocumentLoader:
         try:
             resolved_file.relative_to(self.knowledge_base_dir)
         except ValueError:
-            raise ValueError(f"Path traversal detected: {filepath} is outside knowledge base") from None
+            raise ValueError(
+                f"Path traversal detected: {filepath} is outside knowledge base"
+            ) from None
 
         # Check for symlinks
         if filepath.is_symlink():
@@ -328,7 +338,9 @@ class DocumentLoader:
 
         return list(set(tags))  # Remove duplicates
 
-    def _semantic_split(self, content: str, metadata: DocumentMetadata) -> list[DocumentChunk]:
+    def _semantic_split(
+        self, content: str, metadata: DocumentMetadata
+    ) -> list[DocumentChunk]:
         """Perform semantic splitting on document content.
 
         Strategy:
@@ -381,7 +393,13 @@ class DocumentLoader:
                         content=sub_chunk,
                         metadata=metadata,
                         chunk_index=chunk_index,
-                        total_chunks=len([x for x in sub_chunks if len(x.strip()) >= self.min_chunk_size]),
+                        total_chunks=len(
+                            [
+                                x
+                                for x in sub_chunks
+                                if len(x.strip()) >= self.min_chunk_size
+                            ]
+                        ),
                         char_count=len(sub_chunk),
                         header_level=header_level,
                     )

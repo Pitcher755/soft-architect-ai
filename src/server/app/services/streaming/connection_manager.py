@@ -29,12 +29,16 @@ class ConnectionManager:
     async def add(self, websocket: WebSocket) -> None:
         """Add a WebSocket connection."""
         self._connections.add(websocket)
-        logger.info("WebSocket registered", extra={"active_connections": self.active_count})
+        logger.info(
+            "WebSocket registered", extra={"active_connections": self.active_count}
+        )
 
     async def remove(self, websocket: WebSocket) -> None:
         """Remove a WebSocket connection."""
         self._connections.discard(websocket)
-        logger.info("WebSocket removed", extra={"active_connections": self.active_count})
+        logger.info(
+            "WebSocket removed", extra={"active_connections": self.active_count}
+        )
 
     async def broadcast(self, message: str) -> None:
         """Broadcast message to all active connections."""
