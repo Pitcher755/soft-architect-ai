@@ -8,11 +8,19 @@ import json
 from collections.abc import AsyncGenerator
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from app.core.exceptions import LLMError, RAGError
+from app.api.dependencies import get_rag_orchestrator
+from app.core.exceptions import (
+    LLMConnectionError,
+    LLMError,
+    RAGError,
+    RAGRetrievalError,
+)
+from app.domain.schemas.chat import ChatRequest, ChatResponse
+from app.services.rag.orchestrator import RAGOrchestrator
 from app.services.rag.sequential_orchestrator import SequentialOrchestrator
 from app.services.rag.template_loader import TemplateLoader
 
@@ -45,6 +53,31 @@ class GenerateRequest(BaseModel):
         default_factory=list,
         description="Previous chat messages for context",
     )
+
+
+@router.post("/message", response_model=ChatResponse, status_code=200)
+async def chat_message(
+    request: ChatRequest,
+    orchestrator: RAGOrchestrator = Depends(get_rag_orchestrator),
+) -> ChatResponse:
+    """Process a chat message using RAG orchestration."""
+    try:
+        return await orchestrator.process_message(request)
+    except LLMConnectionError as error:
+        raise HTTPException(
+            status_code=503,
+            detail="AI Engine is currently unreachable. Please try again later.",
+        ) from error
+    except RAGRetrievalError as error:
+        raise HTTPException(
+            status_code=500,
+            detail="Knowledge base search failed. Please contact support.",
+        ) from error
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred processing your request.",
+        ) from error
 
 
 def get_orchestrator() -> SequentialOrchestrator:
