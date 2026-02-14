@@ -106,3 +106,105 @@ def test_conversation_can_have_messages():
     # Assert
     assert len(conversation.messages) == 1
     assert conversation.messages[0].content == "Hello"
+
+
+def test_conversation_add_message_updates_timestamp():
+    """Test that add_message() updates updated_at timestamp."""
+    # Arrange
+    conv_id = uuid4()
+    project_id = uuid4()
+    conversation = Conversation(
+        id=conv_id,
+        project_id=project_id,
+        title="Test",
+        messages=[],
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
+    )
+    initial_updated_at = conversation.updated_at
+
+    # Wait a tiny bit to ensure timestamp difference
+    import time
+
+    time.sleep(0.01)
+
+    msg1 = Message(
+        id=uuid4(),
+        conversation_id=conv_id,
+        role=MessageRole.USER,
+        content="Hello",
+        created_at=datetime.now(UTC),
+    )
+
+    # Act
+    conversation.add_message(msg1)
+
+    # Assert
+    assert len(conversation.messages) == 1
+    assert conversation.updated_at > initial_updated_at
+
+
+def test_conversation_get_last_n_messages_with_less_than_n():
+    """Test get_last_n_messages() when conversation has < N messages."""
+    # Arrange
+    conv_id = uuid4()
+    project_id = uuid4()
+    conversation = Conversation(
+        id=conv_id,
+        project_id=project_id,
+        title="Test",
+        messages=[],
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
+    )
+
+    # Add 5 messages
+    for i in range(5):
+        msg = Message(
+            id=uuid4(),
+            conversation_id=conv_id,
+            role=MessageRole.USER,
+            content=f"Message {i}",
+            created_at=datetime.now(UTC),
+        )
+        conversation.add_message(msg)
+
+    # Act: Request 10 messages (but only have 5)
+    last_messages = conversation.get_last_n_messages(n=10)
+
+    # Assert: Should return all 5
+    assert len(last_messages) == 5
+
+
+def test_conversation_get_last_n_messages_with_more_than_n():
+    """Test get_last_n_messages() when conversation has > N messages."""
+    # Arrange
+    conv_id = uuid4()
+    project_id = uuid4()
+    conversation = Conversation(
+        id=conv_id,
+        project_id=project_id,
+        title="Test",
+        messages=[],
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
+    )
+
+    # Add 15 messages
+    for i in range(15):
+        msg = Message(
+            id=uuid4(),
+            conversation_id=conv_id,
+            role=MessageRole.USER,
+            content=f"Message {i}",
+            created_at=datetime.now(UTC),
+        )
+        conversation.add_message(msg)
+
+    # Act: Request last 10 messages
+    last_messages = conversation.get_last_n_messages(n=10)
+
+    # Assert: Should return last 10
+    assert len(last_messages) == 10
+    assert last_messages[0].content == "Message 5"  # 6th message (0-indexed)
+    assert last_messages[-1].content == "Message 14"  # Last message
