@@ -35,3 +35,7 @@ class VectorStoreService:
         """
         # TDD RED: Placeholder implementation
         raise NotImplementedError("TDD RED: Test first!")
+
+    def health_check(self) -> int:
+        """Return a stub heartbeat value in milliseconds."""
+        return 1

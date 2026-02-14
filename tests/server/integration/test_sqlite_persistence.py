@@ -11,14 +11,14 @@ Created: 2026-02-10
 import os
 import tempfile
 import threading
-from datetime import datetime, timezone
-from typing import Generator
+from collections.abc import Generator
+from datetime import UTC, datetime
 
 import pytest
 
+from app.domain.models.project import Project
 from app.infrastructure.persistence.sqlite_repository import SQLiteRepository
 from app.infrastructure.persistence.transaction_manager import TransactionManager
-from app.domain.models.project import Project
 
 
 @pytest.fixture
@@ -390,6 +390,6 @@ def test_project_timestamps(repo: SQLiteRepository) -> None:
     assert retrieved.updated_at is not None
 
     # Timestamps should be close to now
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     assert retrieved.created_at < now
     assert retrieved.updated_at < now

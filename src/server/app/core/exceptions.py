@@ -278,3 +278,51 @@ class RetryExhaustedError(BaseAppError):
                 "last_error": last_error,
             },
         )
+
+
+class LLMConnectionError(BaseAppError):
+    """LLM engine is unreachable or connection failed."""
+
+    def __init__(
+        self,
+        message: str = "Unable to connect to AI engine",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="LLM_001",
+            message=message,
+            status_code=503,
+            details=details,
+        )
+
+
+class LLMTimeoutError(BaseAppError):
+    """LLM request timed out."""
+
+    def __init__(
+        self,
+        message: str = "AI engine request timed out",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="LLM_002",
+            message=message,
+            status_code=504,
+            details=details,
+        )
+
+
+class RAGRetrievalError(BaseAppError):
+    """Knowledge base search failed."""
+
+    def __init__(
+        self,
+        message: str = "Knowledge base search failed",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="RAG_001",
+            message=message,
+            status_code=500,
+            details=details,
+        )

@@ -222,7 +222,7 @@ if __name__ == "__main__":
         # accepts external connections. This is intentional for
         # Docker deployments where the service must be reachable
         # from the host and other containers.
-        host="0.0.0.0",  # noqa: S104  (intentional for Docker exposure)
+        host="0.0.0.0",  # noqa: S104  # nosec B104 (intentional for Docker exposure)
         port=8000,
         reload=settings.DEBUG,
         log_level=settings.LOG_LEVEL.lower(),

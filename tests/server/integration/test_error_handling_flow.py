@@ -10,8 +10,9 @@ Test Coverage:
 - XSS content triggers security validation
 """
 
-import pytest
 from unittest.mock import Mock
+
+import pytest
 
 # Mock imports for testing without full API setup
 # In production, these would import from actual FastAPI app
@@ -60,8 +61,8 @@ class TestErrorHandlingFlow:
 
     def test_validation_error_short_content(self):
         """Should raise VAL_001 for documents shorter than 50 chars."""
-        from app.services.validators.document_validator import DocumentValidator
         from app.core.exceptions import ValidationError
+        from app.services.validators.document_validator import DocumentValidator
 
         validator = DocumentValidator()
         short_content = "Too short"  # <50 chars
@@ -75,8 +76,8 @@ class TestErrorHandlingFlow:
 
     def test_validation_error_xss_content(self):
         """Should raise VAL_004 for content with XSS patterns."""
-        from app.services.validators.document_validator import DocumentValidator
         from app.core.exceptions import ValidationError
+        from app.services.validators.document_validator import DocumentValidator
 
         validator = DocumentValidator()
         # Valid length but contains XSS
@@ -118,8 +119,8 @@ class TestErrorHandlingFlow:
 
     def test_retry_exhausted_after_failures(self):
         """Should raise RetryExhaustedError after max retry attempts."""
-        from app.core.retry import with_retry
         from app.core.exceptions import RetryExhaustedError
+        from app.core.retry import with_retry
 
         mock_func = Mock(side_effect=ConnectionError("Persistent failure"))
         mock_func.__name__ = "test_operation"
@@ -150,8 +151,8 @@ class TestErrorHandlingFlow:
 
     def test_complete_validation_pipeline(self):
         """Test complete validation pipeline with all gates."""
-        from app.services.validators.document_validator import DocumentValidator
         from app.core.exceptions import ValidationError
+        from app.services.validators.document_validator import DocumentValidator
 
         validator = DocumentValidator()
 

@@ -47,6 +47,17 @@
 | HU-3.5 | Streaming Optimization | Frontend | ⏳ PENDING | 0% | [→ Go](HU-3.5_STREAMING_OPTIMIZATION/) |
 | **HU-3.8** | Real project phase logic (Doc N/25 progress) | Frontend/Architecture | 🚧 IN PROGRESS | 8% | [→ Go](HU-3.8-PROJECT-PHASE-LOGIC/) |
 
+### Sprint 4: Artificial Intelligence & Chat (The Brain)
+
+**Goal:** Implement functional AI core: RAG, History, Streaming.
+
+| HU | Name | Owner | Status | Progress | Docs |
+|----|------|-------|--------|----------|------|
+| **HU-4.1** | Backend Chat Endpoint & RAG Orchestration | Backend | 🚧 IN PROGRESS | 7% | [→ Go](HU-4.1-CHAT-ENDPOINT/) |
+| HU-4.2 | Conversation History Persistence | Backend | ⏳ PENDING | 0% | - |
+| HU-4.3 | SSE (Server-Sent Events) Streaming | Backend | ⏳ PENDING | 0% | - |
+| HU-4.4 | Error Handling & Resilience Gates | Backend | ⏳ PENDING | 0% | - |
+
 ---
 
 ## 🔍 HOW TO USE THIS DIRECTORY
@@ -154,12 +165,14 @@ For each HU follow this flow:
 - ✅ HU-3.3: 100% (README, PHASE_3_RED_CHECKPOINT)
 - ⏳ HU-3.4: 0% (Pending)
 - ⏳ HU-3.5: 0% (Pending)
+- ✅ HU-4.1: 100% (README, PROGRESS, ARTIFACTS, WORKFLOW)
 
 ### Progress Overview
 ```
 HU-1.1 (Infrastructure):  ██████░░░░░░░░░░░░░░░░░░░░░░ 25% (Phase 0 complete)
 HU-2.0 (Knowledge Base):  ████████████████████████████░░ 95% (Deployed)
 HU-3.3 (Frontend State):  ███░░░░░░░░░░░░░░░░░░░░░░░░░░ 30% (RED phase done)
+HU-4.1 (Chat Endpoint):   █░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 7% (Phase 0 in progress)
 Overall:                  ████░░░░░░░░░░░░░░░░░░░░░░░░░░ 20% (MVP roadmap)
 ```
 
@@ -207,6 +220,17 @@ Overall:                  ████░░░░░░░░░░░░░░
 | HU-3.1 | Chat UI + Markdown | Frontend | ⏳ PENDIENTE | 0% | [→ Ir](HU-3.1-CHAT-UI/) |
 | HU-3.2 | Streaming + API Connection | Frontend | ⏳ PENDIENTE | 0% | [→ Ir](HU-3.2-STREAMING/) |
 | **HU-3.8** | Lógica real de fases de proyecto (Doc N/25 progress) | Frontend/Arquitectura | 🚧 EN PROGRESO | 8% | [→ Ir](HU-3.8-PROJECT-PHASE-LOGIC/) |
+
+### Sprint 4: Inteligencia Artificial y Chat (The Brain)
+
+**Goal:** Implementar el núcleo funcional de IA: RAG, Historial y Streaming.
+
+| HU | Nombre | Owner | Status | Progreso | Docs |
+|----|--------|-------|--------|----------|------|
+| **HU-4.1** | Backend Chat Endpoint & RAG Orchestration | Backend | 🚧 EN PROGRESO | 7% | [→ Ir](HU-4.1-CHAT-ENDPOINT/) |
+| HU-4.2 | Persistencia e Historial de Conversaciones | Backend | ⏳ PENDIENTE | 0% | - |
+| HU-4.3 | Streaming SSE (Server-Sent Events) Real-time | Backend | ⏳ PENDIENTE | 0% | - |
+| HU-4.4 | Manejo de Errores y Resilience Gates | Backend | ⏳ PENDIENTE | 0% | - |
 
 ---
 
@@ -314,16 +338,15 @@ Para cada HU seguir este flujo:
 - ⏳ HU-3.1: 0% (Pendiente)
 - ⏳ HU-3.2: 0% (Pendiente)
 - 🚧 HU-3.8: 8% (Documentación inicial + workflow maestro)
+- ✅ HU-4.1: 100% (README, PROGRESS, ARTIFACTS, WORKFLOW)
 
 ### Progress Overview
 ```
-Fase 0 (Prep):   ██████░░░░░░░░░░░░░░░░░░░░░░ 100% (HU-1.1)
-Fase 1 (TDD):    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Fase 2 (Code):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Fase 3 (Hard):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Fase 4 (Docs):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Fase 5 (Test):   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
-Fase 6 (Git):    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0% (All)
+HU-1.1 (Infraestructura): ██████░░░░░░░░░░░░░░░░░░░░░░ 25% (Fase 0 completa)
+HU-2.0 (Base Conocimiento):████████████████████████████░░ 95% (Desplegado)
+HU-3.3 (Frontend State):  ███░░░░░░░░░░░░░░░░░░░░░░░░░░ 30% (Fase RED)
+HU-4.1 (Chat Endpoint):   █░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 7% (Fase 0 en progreso)
+Overall:                  ████░░░░░░░░░░░░░░░░░░░░░░░░░░ 20% (Roadmap MVP)
 ```
 
 ---

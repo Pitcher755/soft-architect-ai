@@ -8,14 +8,14 @@ Validates that the database layer is protected against:
 
 import os
 import tempfile
-from typing import Generator
+from collections.abc import Generator
 
 import pytest
 
 from app.domain.models.project import Project
+from app.infrastructure.persistence.exceptions import ValidationError
 from app.infrastructure.persistence.sqlite_repository import SQLiteRepository
 from app.infrastructure.persistence.transaction_manager import TransactionManager
-from app.infrastructure.persistence.exceptions import ValidationError
 
 
 @pytest.fixture

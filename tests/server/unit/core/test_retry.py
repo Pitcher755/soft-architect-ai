@@ -15,8 +15,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from app.core.retry import with_retry
 from app.core.exceptions import RetryExhaustedError
+from app.core.retry import with_retry
 
 
 class TestRetryDecorator:
