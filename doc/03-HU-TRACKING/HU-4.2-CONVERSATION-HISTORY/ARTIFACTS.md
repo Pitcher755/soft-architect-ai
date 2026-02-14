@@ -39,11 +39,11 @@
 
 | File | Purpose | Dependencies | Status |
 |------|---------|--------------|--------|
-| `src/server/app/domain/entities/conversation.py` | `Conversation` entity with validation (Pydantic) | pydantic, datetime, uuid | ⏳ Pending |
-| `src/server/app/domain/entities/message.py` | `Message` entity with role enum validation | pydantic, enum, datetime | ⏳ Pending |
-| `src/server/app/domain/repositories/conversation_repository.py` | Repository protocol (port) - interface only | typing.Protocol, ABC | ⏳ Pending |
+| `src/server/app/domain/entities/conversation.py` | `Conversation` entity with validation (dataclass) | dataclasses, datetime, uuid, typing | ✅ Complete |
+| `src/server/app/domain/entities/message.py` | `Message` entity with role enum validation | dataclasses, enum, datetime, uuid | ✅ Complete |
+| `src/server/app/domain/repositories/conversation_repository.py` | Repository protocol (port) - interface only | typing.Protocol, UUID, domain entities | ✅ Complete |
 
-**Lines of Code (Estimated):** ~250 lines
+**Lines of Code (Actual):** ~180 lines (Estimated: ~250 lines)
 
 ---
 
@@ -89,8 +89,8 @@
 
 | File | Purpose | Coverage Target | Status |
 |------|---------|-----------------|--------|
-| `tests/server/unit/domain/entities/test_conversation.py` | Test `Conversation` entity validation | >95% | ⏳ Pending |
-| `tests/server/unit/domain/entities/test_message.py` | Test `Message` entity validation | >95% | ⏳ Pending |
+| `tests/server/unit/domain/entities/test_conversation.py` | Test `Conversation` entity validation | >95% | ✅ Complete (100%) |
+| `tests/server/unit/domain/entities/test_message.py` | Test `Message` entity validation | >95% | ✅ Complete (100%) |
 | `tests/server/unit/infrastructure/persistence/test_sqlalchemy_conversation_repository.py` | Test repository adapter (mocked DB) | >90% | ⏳ Pending |
 | `tests/server/unit/services/conversation/test_conversation_service.py` | Test service layer (mocked repository) | >90% | ⏳ Pending |
 
@@ -148,13 +148,13 @@
 | Phase | Files Expected | Files Complete | Completion % |
 |-------|----------------|----------------|--------------|
 | **Phase 0** (Documentation) | 4 | 4 | 100% ✅ |
-| **Phase 1** (Domain) | 5 | 0 | 0% ⏳ |
+| **Phase 1** (Domain) | 5 | 5 | 100% ✅ |
 | **Phase 2** (Infrastructure) | 8 | 0 | 0% ⏳ |
 | **Phase 3** (Service) | 4 | 0 | 0% ⏳ |
 | **Phase 4** (API) | 6 | 0 | 0% ⏳ |
 | **Phase 5** (Quality) | 6 | 0 | 0% ⏳ |
 | **Phase 6** (Validation) | 1 | 0 | 0% ⏳ |
-| **TOTAL** | **34** | **4** | **11.76%** |
+| **TOTAL** | **34** | **9** | **26.47%** |
 
 ---
 
@@ -163,13 +163,13 @@
 | File Type | Total Files | Complete | Pending |
 |-----------|-------------|----------|---------|
 | Documentation | 9 | 4 | 5 |
-| Source Code (Production) | 12 | 0 | 12 |
-| Unit Tests | 4 | 0 | 4 |
+| Source Code (Production) | 12 | 3 | 9 |
+| Unit Tests | 4 | 2 | 2 |
 | Integration Tests | 3 | 0 | 3 |
 | Security Tests | 1 | 0 | 1 |
 | Configuration | 3 | 0 | 3 |
 | Migration (Optional) | 2 | 0 | 2 |
-| **TOTAL** | **34** | **4** | **30** |
+| **TOTAL** | **34** | **9** | **25** |
 
 ---
 
@@ -199,7 +199,7 @@ These files MUST be completed first (dependencies for other files):
 
 | Layer | Files | Estimated LOC | Actual LOC | Difference |
 |-------|-------|---------------|------------|------------|
-| Domain | 3 | 250 | 0 | - |
+| Domain | 3 | 250 | 180 | -70 |
 | Infrastructure | 4 | 400 | 0 | - |
 | Service | 2 | 200 | 0 | - |
 | API | 3 | 300 | 0 | - |

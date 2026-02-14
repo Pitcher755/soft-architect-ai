@@ -1,7 +1,7 @@
 # 📊 HU-4.2: Conversation History - Progress Tracker
 
 > **Last Updated:** 2026-02-14
-> **Status:** 🟡 Phase 0 (Setup) - 16.67% Complete
+> **Status:** 🟡 Phase 1 (Domain Layer) - 33.33% Complete
 > **Branch:** `feature/backend-conversation-history`
 
 ---
@@ -9,10 +9,10 @@
 ## 📈 Overall Progress
 
 ```
-[███░░░░░░░░░░░░░░░░░] 16.67% (1/6 phases)
+[██████░░░░░░░░░░░░░░] 33.33% (2/6 phases)
 
 Phase 0: ✅ Setup & API Contracts           [████████████████████] 100%
-Phase 1: ⏳ Domain Layer (TDD Red/Green)   [░░░░░░░░░░░░░░░░░░░░]   0%
+Phase 1: ✅ Domain Layer (TDD Red/Green)   [████████████████████] 100%
 Phase 2: ⏳ Infrastructure Layer (SQLAlchemy) [░░░░░░░░░░░░░░░░░░░░]   0%
 Phase 3: ⏳ Service Layer (Context Window) [░░░░░░░░░░░░░░░░░░░░]   0%
 Phase 4: ⏳ API Endpoints (FastAPI)        [░░░░░░░░░░░░░░░░░░░░]   0%
@@ -29,7 +29,7 @@ Phase 6: ⏳ Validation & PR                [░░░░░░░░░░░�
 | Phase | Status | Duration | Tasks Complete | Test Coverage | Documentation |
 |-------|--------|----------|----------------|---------------|---------------|
 | **Phase 0** | ✅ | 1h | 3/3 | N/A | ✅ Complete |
-| **Phase 1** | ⏳ | 2h | 0/4 | 0% | Pending |
+| **Phase 1** | ✅ | 2h | 4/4 | 100% | ✅ Complete |
 | **Phase 2** | ⏳ | 3h | 0/4 | 0% | Pending |
 | **Phase 3** | ⏳ | 2h | 0/3 | 0% | Pending |
 | **Phase 4** | ⏳ | 2h | 0/4 | 0% | Pending |
@@ -65,7 +65,7 @@ Phase 6: ⏳ Validation & PR                [░░░░░░░░░░░�
 
 ---
 
-## ⏳ Phase 1: Domain Layer (TDD Red/Green) (0%)
+## ✅ Phase 1: Domain Layer (TDD Red/Green) (100%)
 
 **Objective:** Create domain entities and repository protocol with TDD validation
 
@@ -73,27 +73,27 @@ Phase 6: ⏳ Validation & PR                [░░░░░░░░░░░�
 
 ### Checklist
 
-- [ ] **1.1** Create `Conversation` entity with validation rules
+- [x] **1.1** Create `Conversation` entity with validation rules
   - UUID primary key
   - Project ID reference
   - Created/updated timestamps
   - List of messages (relationship)
 
-- [ ] **1.2** Create `Message` entity with validation rules
+- [x] **1.2** Create `Message` entity with validation rules
   - UUID primary key
   - Conversation ID foreign key
   - Role enum (USER, ASSISTANT, SYSTEM)
   - Content (max 5000 chars)
   - Timestamp
 
-- [ ] **1.3** Create `ConversationRepository` protocol (port)
+- [x] **1.3** Create `ConversationRepository` protocol (port)
   - `create_conversation()` method signature
   - `get_conversation()` method signature
   - `list_conversations()` method signature
   - `add_message()` method signature
   - `get_last_n_messages()` method signature (context window)
 
-- [ ] **1.4** Write TDD tests for domain entities
+- [x] **1.4** Write TDD tests for domain entities
   - Test validation rules (field length, required fields)
   - Test relationship integrity
   - Coverage target: >95%
@@ -106,11 +106,35 @@ Phase 6: ⏳ Validation & PR                [░░░░░░░░░░░�
 - `tests/server/unit/domain/entities/test_conversation.py`
 - `tests/server/unit/domain/entities/test_message.py`
 
+### Artifacts Created
+
+- `src/server/app/domain/entities/message.py` (MessageRole enum + Message dataclass)
+- `src/server/app/domain/entities/conversation.py` (Conversation dataclass with add_message() and get_last_n_messages())
+- `src/server/app/domain/repositories/conversation_repository.py` (Protocol interface)
+- `tests/server/unit/domain/entities/test_message.py` (4 tests, 100% coverage)
+- `tests/server/unit/domain/entities/test_conversation.py` (7 tests, 100% coverage)
+
+### Commits
+
+- `c8e152d` - test(domain): implement Message entity with TDD (Phase 1.1)
+- `e981750` - test(domain): implement Conversation entity with TDD (Phase 1.2)
+- `fa4ab62` - feat(domain): define ConversationRepository protocol (Phase 1.3)
+- `b3f90bf` - style(domain): apply Black formatting (Phase 1 validation)
+
+### Validation Results
+
+- Tests: 11/11 passing ✅
+- Message.py coverage: 100% (22/22 statements) ✅
+- Conversation.py coverage: 100% (20/20 statements) ✅
+- Pyright type check: 0 errors ✅
+- Black formatting: Applied ✅
+
 ### Notes
 
 - Follow Clean Architecture: Domain entities have ZERO dependencies on infrastructure
-- Use Pydantic for validation (no SQLAlchemy in domain layer)
+- Used dataclasses with __post_init__ validation (no Pydantic in domain layer for MVP)
 - Repository protocol defines interface, NOT implementation
+- Overall entities package coverage: 82% (includes legacy __init__.py from HU-4.1)
 
 ---
 

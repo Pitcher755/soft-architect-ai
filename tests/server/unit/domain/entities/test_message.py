@@ -85,7 +85,7 @@ def test_message_role_must_be_valid_enum():
         Message(
             id=msg_id,
             conversation_id=conv_id,
-            role="INVALID_ROLE",  # Not in enum
+            role="INVALID_ROLE",  # type: ignore[arg-type]  # Intentionally testing invalid type
             content="Hello",
             created_at=datetime.now(UTC),
         )
