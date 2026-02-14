@@ -1,8 +1,8 @@
 # 🧠 HU-4.1: Artifacts Manifest - Backend Chat Endpoint & RAG Orchestration
 
 > **Purpose:** Complete inventory of all files created, modified, or related to HU-4.1
-> **Last Updated:** 2026-02-13
-> **Status:** 🚧 In Progress (Phases 0-3 completed)
+> **Last Updated:** 2026-02-14
+> **Status:** 🚧 In Progress (Phase 6 in progress)
 
 ---
 
@@ -130,7 +130,7 @@
 ### Endpoints
 | File | Status | Purpose | Test Coverage |
 |------|--------|---------|---------------|
-| `src/server/app/api/v1/chat.py` | ⏳ Pending | POST /chat/message endpoint | Target: >85% |
+| `src/server/app/api/v1/chat.py` | ✅ Implemented | POST /api/v1/chat/message endpoint | ✅ Covered by integration tests |
 | `src/server/app/api/v1/__init__.py` | ✅ Exists | Router registration | - |
 
 **Endpoint Signature:**
@@ -161,7 +161,7 @@ async def send_message(
 ### Dependency Injection
 | File | Status | Purpose |
 |------|--------|---------|
-| `src/server/app/core/dependencies.py` | ⏳ Modified | Add `get_rag_orchestrator()` |
+| `src/server/app/api/dependencies.py` | ✅ Implemented | `get_rag_orchestrator()` DI container + stubs |
 
 ---
 
@@ -225,7 +225,7 @@ Layer
 ### Integration Tests - API Layer
 | File | Status | Purpose | Coverage Target |
 |------|--------|---------|-----------------|
-| `tests/server/integration/api/test_chat_endpoint.py` | ⏳ Pending | E2E endpoint tests | >80% |
+| `tests/server/integration/api/v1/test_chat_endpoints.py` | ✅ Implemented | E2E endpoint tests (success/422/503/500) | ✅ Passing |
 
 **Test Cases:**
 ```python
@@ -339,4 +339,4 @@ graph TD
 
 ---
 
-**Last Update:** 2026-02-13 | **Next Review:** After Phase 1 completion
+**Last Update:** 2026-02-14 | **Next Review:** Phase 6 (Validation & PR)

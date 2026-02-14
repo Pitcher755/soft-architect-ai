@@ -2,7 +2,7 @@
 
 > **Sprint:** S4 - Inteligencia Artificial y Chat (The Brain)
 > **Epic:** E4 - Backend IA & RAG
-> **Status:** 🚧 In Progress (Phase 4 pending)
+> **Status:** 🚧 In Progress (Phase 6 in progress)
 > **Priority:** 🔴 Critical
 > **Estimation:** L (Large)
 > **Branch:** `feature/backend-chat-endpoint`
@@ -121,16 +121,16 @@ The endpoint must:
 - [x] Write unit tests for orchestration logic
 
 #### Phase 4: FastAPI Endpoint
-- [ ] Implement `/api/v1/chat/message` POST route
-- [ ] Add dependency injection for `RAGOrchestrator`
-- [ ] Implement error handling (custom exceptions)
-- [ ] Write integration tests (E2E with mocked LLM)
+- [x] Implement `/api/v1/chat/message` POST route
+- [x] Add dependency injection for `RAGOrchestrator`
+- [x] Implement error handling (custom exceptions)
+- [x] Write integration tests (E2E with mocked LLM)
 
 #### Phase 5: Quality & Security Hardening
-- [ ] Security audit (Bandit scan)
-- [ ] Performance profiling (<500ms target)
-- [ ] Error scenarios testing (connection failures, timeouts)
-- [ ] Documentation (API docs, architecture diagrams)
+- [x] Security audit (Bandit scan)
+- [x] Performance profiling (<500ms target)
+- [x] Error scenarios testing (connection failures, timeouts)
+- [x] Documentation (API docs, architecture diagrams)
 
 #### Phase 6: Validation & PR
 - [ ] Run `./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh`
@@ -274,16 +274,16 @@ El endpoint debe:
 - [x] Escribir tests unitarios para lógica de orquestación
 
 #### Fase 4: Endpoint FastAPI
-- [ ] Implementar ruta POST `/api/v1/chat/message`
-- [ ] Añadir inyección de dependencias para `RAGOrchestrator`
-- [ ] Implementar manejo de errores (excepciones personalizadas)
-- [ ] Escribir tests de integración (E2E con LLM mockeado)
+- [x] Implementar ruta POST `/api/v1/chat/message`
+- [x] Añadir inyección de dependencias para `RAGOrchestrator`
+- [x] Implementar manejo de errores (excepciones personalizadas)
+- [x] Escribir tests de integración (E2E con LLM mockeado)
 
 #### Fase 5: Calidad & Endurecimiento de Seguridad
-- [ ] Auditoría de seguridad (escaneo Bandit)
-- [ ] Perfilado de rendimiento (objetivo <500ms)
-- [ ] Pruebas de escenarios de error (fallos de conexión, timeouts)
-- [ ] Documentación (docs de API, diagramas de arquitectura)
+- [x] Auditoría de seguridad (escaneo Bandit)
+- [x] Perfilado de rendimiento (objetivo <500ms)
+- [x] Pruebas de escenarios de error (fallos de conexión, timeouts)
+- [x] Documentación (docs de API, diagramas de arquitectura)
 
 #### Fase 6: Validación & PR
 - [ ] Ejecutar `./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh`
