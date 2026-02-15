@@ -2,9 +2,10 @@
 
 import os
 from functools import lru_cache
+from typing import Annotated
 from uuid import UUID
 
-from fastapi import HTTPException, status
+from fastapi import Header, HTTPException, status
 
 from app.core.security import TokenValidator
 from app.infrastructure.llm.factory import get_llm_client
@@ -13,7 +14,7 @@ from app.services.rag.template_builder_protocol import TemplateBuilderProtocol
 from app.services.rag.vector_store_protocol import VectorStoreProtocol
 
 
-async def verify_api_key(x_api_key: str | None = None) -> str:
+async def verify_api_key(x_api_key: Annotated[str | None, Header()] = None) -> str:
     """
     Verify API key from request header.
 

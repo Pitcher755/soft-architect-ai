@@ -12,7 +12,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from app.api.dependencies import get_rag_orchestrator
+from app.api.dependencies import get_rag_orchestrator, verify_api_key
 from app.core.exceptions import (
     LLMConnectionError,
     LLMError,
@@ -78,6 +78,93 @@ async def chat_message(
             status_code=500,
             detail="An unexpected error occurred processing your request.",
         ) from error
+
+
+@router.post("/stream", status_code=200)
+async def chat_message_stream(
+    request: ChatRequest,
+    orchestrator: RAGOrchestrator = Depends(get_rag_orchestrator),
+    _api_key: str = Depends(verify_api_key),
+) -> StreamingResponse:
+    """Process a chat message using RAG orchestration with SSE streaming.
+
+    Streams AI response in real-time using Server-Sent Events (SSE).
+    Emits three event types:
+    - `event: message` with `data: {"token": "...", "is_final": false}`
+    - `event: done` with `data: {"full_response": "...", "sources": [...], "metadata": {...}}`
+    - `event: error` with `data: {"error": "...", "code": "...", "retry": true/false}`
+
+    Args:
+        request: ChatRequest with message and project_id
+        orchestrator: Injected RAGOrchestrator instance
+
+    Returns:
+        StreamingResponse with text/event-stream content type
+
+    Note:
+        - Always returns HTTP 200 (errors emitted as SSE error events)
+        - Client should handle event types: message, done, error
+        - Connection kept alive with Cache-Control: no-cache
+    """
+
+    async def event_generator() -> AsyncGenerator[str, None]:
+        """Convert dict events from orchestrator to SSE format."""
+        try:
+            async for event in orchestrator.process_message_stream(request):
+                event_type = event.get("type", "message")
+
+                # Map event types to SSE format
+                if event_type == "token":
+                    # Token event: stream individual tokens
+                    sse_data = {
+                        "token": event["data"],
+                        "is_final": event.get("is_final", False),
+                    }
+                    yield f"event: message\ndata: {json.dumps(sse_data)}\n\n"
+
+                elif event_type == "done":
+                    # Done event: final response with metadata
+                    yield f"event: done\ndata: {json.dumps(event['data'])}\n\n"
+
+                elif event_type == "error":
+                    # Error event: error details with retry flag
+                    yield f"event: error\ndata: {json.dumps(event['data'])}\n\n"
+                    break  # Stop streaming after error
+
+        except LLMConnectionError:
+            # AI service unreachable - emit error event
+            error_data = {
+                "error": "AI Engine is currently unreachable",
+                "code": "LLM_CONNECTION_ERROR",
+                "retry": True,
+            }
+            yield f"event: error\ndata: {json.dumps(error_data)}\n\n"
+        except RAGRetrievalError:
+            # Vector store error - emit error event
+            error_data = {
+                "error": "Knowledge base search failed",
+                "code": "RAG_RETRIEVAL_ERROR",
+                "retry": True,
+            }
+            yield f"event: error\ndata: {json.dumps(error_data)}\n\n"
+        except Exception:
+            # Catch-all for unexpected errors
+            error_data = {
+                "error": "An unexpected error occurred",
+                "code": "STREAM_ERROR",
+                "retry": False,
+            }
+            yield f"event: error\ndata: {json.dumps(error_data)}\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 
 def get_orchestrator() -> SequentialOrchestrator:

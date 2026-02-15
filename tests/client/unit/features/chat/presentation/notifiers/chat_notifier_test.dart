@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:softarchitect_ai/domain/entities/chat_stream_event.dart';
 import 'package:softarchitect_ai/features/chat/domain/entities/chat_message.dart';
 import 'package:softarchitect_ai/features/chat/domain/entities/document_proposal.dart';
 import 'package:softarchitect_ai/features/chat/domain/repositories/chat_repository.dart';
@@ -27,6 +28,29 @@ class FakeChatRepository implements ChatRepository {
   }
 
   @override
+  Stream<ChatStreamEvent> sendMessageStream(
+    String message,
+    String projectId,
+  ) async* {
+    if (shouldFail) {
+      yield ErrorEvent(
+        error: errorMessage,
+        code: 'TEST_ERROR',
+        shouldRetry: false,
+      );
+      return;
+    }
+    for (final token in generatedTokens) {
+      yield TokenEvent(token: token, isFinal: false);
+    }
+    yield DoneEvent(
+      fullResponse: generatedTokens.join(''),
+      sources: [],
+      metadata: {},
+    );
+  }
+
+  @override
   Future<void> saveProposal(DocumentProposal proposal) async {
     // No-op for testing
   }
@@ -49,9 +73,7 @@ void main() {
   setUp(() {
     fakeRepository = FakeChatRepository();
     container = ProviderContainer(
-      overrides: [
-        chatRepositoryProvider.overrideWithValue(fakeRepository),
-      ],
+      overrides: [chatRepositoryProvider.overrideWithValue(fakeRepository)],
     );
   });
 
@@ -106,24 +128,26 @@ void main() {
       expect(assistantMessage.content, 'Token1 Token2');
     });
 
-    test('should transition to proposal state after streaming complete',
-        () async {
-      final notifier = container.read(chatNotifierProvider.notifier);
-      fakeRepository.generatedTokens = ['Document', ' ', 'content'];
+    test(
+      'should transition to proposal state after streaming complete',
+      () async {
+        final notifier = container.read(chatNotifierProvider.notifier);
+        fakeRepository.generatedTokens = ['Document', ' ', 'content'];
 
-      notifier.sendMessage('Create document');
+        notifier.sendMessage('Create document');
 
-      // Wait for streaming to complete and proposal to be created
-      await Future<void>.delayed(const Duration(milliseconds: 200));
+        // Wait for streaming to complete and proposal to be created
+        await Future<void>.delayed(const Duration(milliseconds: 200));
 
-      final state = container.read(chatNotifierProvider);
+        final state = container.read(chatNotifierProvider);
 
-      // Verify proposal was created
-      expect(state.currentProposal, isNotNull);
-      expect(state.currentProposal!.validationState, ValidationState.pending);
-      expect(state.currentProposal!.content, 'Document content');
-      expect(state.isStreaming, false);
-    });
+        // Verify proposal was created
+        expect(state.currentProposal, isNotNull);
+        expect(state.currentProposal!.validationState, ValidationState.pending);
+        expect(state.currentProposal!.content, 'Document content');
+        expect(state.isStreaming, false);
+      },
+    );
 
     test('should handle stream errors gracefully', () async {
       final notifier = container.read(chatNotifierProvider.notifier);

@@ -35,7 +35,7 @@ class BaseLLMClient(ABC):
         ...
 
     @abstractmethod
-    async def stream_generate(
+    def stream_generate(
         self,
         prompt: str,
         max_tokens: int | None = None,

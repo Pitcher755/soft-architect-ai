@@ -32,6 +32,9 @@ dependencies:
   softarchitect_ai:
     path: ../src/client
 
+  # HTTP Client for SSE tests
+  http: ^1.6.0
+
   # Testing & Mocking
   mockito: ^5.6.3
 
@@ -61,6 +64,9 @@ dev_dependencies:
 # MONOREPO PATH DEPENDENCIES
 # Link to the main Flutter app for testing
 # ============================================================================
+  flutter_localizations: any
+  flutter_highlighter: any
+  path: any
 dependency_overrides:
   softarchitect_ai:
     path: ../src/client
