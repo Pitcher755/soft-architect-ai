@@ -29,7 +29,9 @@ void main() {
   });
 
   group('AppearanceSection', () {
-    testWidgets('should render theme toggle switch', (WidgetTester tester) async {
+    testWidgets('should render theme toggle switch', (
+      WidgetTester tester,
+    ) async {
       // Arrange & Act
       await tester.pumpWidget(
         ProviderScope(child: createTestApp(const AppearanceSection())),
@@ -52,7 +54,9 @@ void main() {
       expect(find.byType(Slider), findsOneWidget);
     });
 
-    testWidgets('should display font size percentage', (WidgetTester tester) async {
+    testWidgets('should display font size percentage', (
+      WidgetTester tester,
+    ) async {
       // Arrange & Act
       await tester.pumpWidget(
         ProviderScope(child: createTestApp(const AppearanceSection())),
@@ -60,11 +64,16 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(Text), findsAtLeastNWidgets(2),
-          reason: 'Should have text widgets including font size percentage');
+      expect(
+        find.byType(Text),
+        findsAtLeastNWidgets(2),
+        reason: 'Should have text widgets including font size percentage',
+      );
     });
 
-    testWidgets('theme switch updates notifier state', (WidgetTester tester) async {
+    testWidgets('theme switch updates notifier state', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
@@ -78,15 +87,23 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(container.read(settingsProvider).requireValue.themeMode, ThemeMode.dark);
+      expect(
+        container.read(settingsProvider).requireValue.themeMode,
+        ThemeMode.dark,
+      );
 
       await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).requireValue.themeMode, ThemeMode.light);
+      expect(
+        container.read(settingsProvider).requireValue.themeMode,
+        ThemeMode.light,
+      );
     });
 
-    testWidgets('slider and text submit update and validate font size', (WidgetTester tester) async {
+    testWidgets('slider and text submit update and validate font size', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
@@ -103,14 +120,20 @@ void main() {
 
       await tester.drag(find.byType(Slider), const Offset(120, 0));
       await tester.pumpAndSettle();
-      expect(container.read(settingsProvider).requireValue.fontSize, greaterThan(1.0));
+      expect(
+        container.read(settingsProvider).requireValue.fontSize,
+        greaterThan(1.0),
+      );
 
       final textField = find.byType(TextField);
       await tester.enterText(textField, '999');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).requireValue.fontSize, lessThanOrEqualTo(1.4));
+      expect(
+        container.read(settingsProvider).requireValue.fontSize,
+        lessThanOrEqualTo(1.4),
+      );
     });
   });
 }

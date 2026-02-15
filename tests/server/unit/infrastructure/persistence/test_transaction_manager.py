@@ -11,7 +11,7 @@ import sqlite3
 import tempfile
 
 import pytest
-from src.server.app.infrastructure.persistence.transaction_manager import (
+from app.infrastructure.persistence.transaction_manager import (
     TransactionManager,
 )
 

@@ -62,7 +62,10 @@ void main() {
       const writeEx = StorageWriteException('write failed');
 
       expect(readEx.toString(), contains('StorageReadException: read failed'));
-      expect(writeEx.toString(), contains('StorageWriteException: write failed'));
+      expect(
+        writeEx.toString(),
+        contains('StorageWriteException: write failed'),
+      );
     });
   });
 }

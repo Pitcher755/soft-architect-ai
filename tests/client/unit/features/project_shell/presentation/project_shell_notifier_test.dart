@@ -162,16 +162,10 @@ void main() {
 
         // Verify selected project
         expect(notifier.state.selectedProject, isNotNull);
-        expect(
-          notifier.state.selectedProject!.id,
-          equals(testProject.id),
-        );
+        expect(notifier.state.selectedProject!.id, equals(testProject.id));
 
         // Verify lastOpened was updated
-        expect(
-          notifier.state.selectedProject!.lastOpened,
-          isNotNull,
-        );
+        expect(notifier.state.selectedProject!.lastOpened, isNotNull);
       });
     });
 
@@ -242,10 +236,7 @@ void main() {
         await notifier.deleteProject(projectToDelete.id);
 
         expect(notifier.state.projects, equals([otherProject]));
-        expect(
-          notifier.state.selectedProject,
-          isNull,
-        ); // Should be deselected
+        expect(notifier.state.selectedProject, isNull); // Should be deselected
         expect(notifier.state.errorMessage, isNull);
       });
 

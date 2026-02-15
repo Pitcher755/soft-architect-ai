@@ -162,6 +162,5 @@ void main() {
 
       expect(find.textContaining('resultados encontrados'), findsOneWidget);
     });
-
   });
 }

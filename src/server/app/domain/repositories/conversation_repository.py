@@ -7,8 +7,8 @@ This is an INTERFACE (Protocol) - defines contract, NOT implementation.
 from typing import Protocol
 from uuid import UUID
 
-from src.server.app.domain.entities.conversation import Conversation
-from src.server.app.domain.entities.message import Message
+from app.domain.entities.conversation import Conversation
+from app.domain.entities.message import Message
 
 
 class ConversationRepository(Protocol):

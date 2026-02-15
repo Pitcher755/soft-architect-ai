@@ -8,9 +8,9 @@ Business logic:
 
 from uuid import UUID
 
-from src.server.app.domain.entities.conversation import Conversation
-from src.server.app.domain.entities.message import Message
-from src.server.app.domain.repositories.conversation_repository import (
+from app.domain.entities.conversation import Conversation
+from app.domain.entities.message import Message
+from app.domain.repositories.conversation_repository import (
     ConversationRepository,
 )
 

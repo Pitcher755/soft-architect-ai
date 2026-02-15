@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from uuid import UUID
 
-from src.server.app.domain.entities.message import Message
+from app.domain.entities.message import Message
 
 
 @dataclass

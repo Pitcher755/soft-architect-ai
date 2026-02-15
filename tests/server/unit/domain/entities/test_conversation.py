@@ -10,8 +10,8 @@ Test Coverage:
 import pytest
 from datetime import datetime, UTC
 from uuid import uuid4
-from src.server.app.domain.entities.conversation import Conversation
-from src.server.app.domain.entities.message import Message, MessageRole
+from app.domain.entities.conversation import Conversation
+from app.domain.entities.message import Message, MessageRole
 
 
 def test_conversation_creation_with_valid_data():

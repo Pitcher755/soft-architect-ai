@@ -28,8 +28,9 @@ void main() {
   });
 
   group('ProfileSection', () {
-    testWidgets('should display userName field with ValueKey',
-        (WidgetTester tester) async {
+    testWidgets('should display userName field with ValueKey', (
+      WidgetTester tester,
+    ) async {
       // Arrange: Create container and wait for async initialization
       final container = ProviderContainer();
       addTearDown(container.dispose);
@@ -41,11 +42,7 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: Scaffold(
-              body: ProfileSection(),
-            ),
-          ),
+          child: const MaterialApp(home: Scaffold(body: ProfileSection())),
         ),
       );
       await tester.pumpAndSettle();
@@ -55,12 +52,14 @@ void main() {
       expect(
         find.byKey(const ValueKey('userName_field')),
         findsOneWidget,
-        reason: 'ProfileSection should have a TextField with ValueKey for testing',
+        reason:
+            'ProfileSection should have a TextField with ValueKey for testing',
       );
     });
 
-    testWidgets('should have onChanged handler for userName field',
-        (WidgetTester tester) async {
+    testWidgets('should have onChanged handler for userName field', (
+      WidgetTester tester,
+    ) async {
       // Arrange: Create container and wait for async initialization
       final container = ProviderContainer();
       addTearDown(container.dispose);
@@ -72,27 +71,30 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: Scaffold(
-              body: ProfileSection(),
-            ),
-          ),
+          child: const MaterialApp(home: Scaffold(body: ProfileSection())),
         ),
       );
       await tester.pumpAndSettle();
 
       // Assert: Verify the TextField with ValueKey exists and can receive focus
       final textFieldFinder = find.byKey(const ValueKey('userName_field'));
-      expect(textFieldFinder, findsOneWidget,
-          reason: 'TextField with userName_field key should exist');
+      expect(
+        textFieldFinder,
+        findsOneWidget,
+        reason: 'TextField with userName_field key should exist',
+      );
 
       // Verify it's a TextField widget (which would have onChanged capability)
-      expect(find.byType(TextField), findsWidgets,
-          reason: 'ProfileSection should contain TextField widgets');
+      expect(
+        find.byType(TextField),
+        findsWidgets,
+        reason: 'ProfileSection should contain TextField widgets',
+      );
     });
 
-    testWidgets('updates user name when text changes and submits',
-        (WidgetTester tester) async {
+    testWidgets('updates user name when text changes and submits', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
@@ -112,11 +114,15 @@ void main() {
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).requireValue.userName, contains('NuevoNombre'));
+      expect(
+        container.read(settingsProvider).requireValue.userName,
+        contains('NuevoNombre'),
+      );
     });
 
-    testWidgets('opens avatar dialog and selects predefined avatar',
-        (WidgetTester tester) async {
+    testWidgets('opens avatar dialog and selects predefined avatar', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
@@ -126,9 +132,7 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: Scaffold(body: ProfileSection()),
-          ),
+          child: const MaterialApp(home: Scaffold(body: ProfileSection())),
         ),
       );
       await tester.pumpAndSettle();
@@ -151,8 +155,9 @@ void main() {
       expect(after, equals(5));
     });
 
-    testWidgets('editing complete trims and persists user name',
-        (WidgetTester tester) async {
+    testWidgets('editing complete trims and persists user name', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
@@ -162,9 +167,7 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: Scaffold(body: ProfileSection()),
-          ),
+          child: const MaterialApp(home: Scaffold(body: ProfileSection())),
         ),
       );
       await tester.pumpAndSettle();
@@ -174,11 +177,15 @@ void main() {
       await tester.tap(find.byType(Scaffold));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).requireValue.userName, contains('Arquitecta'));
+      expect(
+        container.read(settingsProvider).requireValue.userName,
+        contains('Arquitecta'),
+      );
     });
 
-    testWidgets('custom avatar selection failure shows snackbar',
-        (WidgetTester tester) async {
+    testWidgets('custom avatar selection failure shows snackbar', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 

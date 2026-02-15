@@ -14,15 +14,13 @@ void main() {
   });
 
   group('PerformanceSection', () {
-    testWidgets('should render animations toggle switch', (WidgetTester tester) async {
+    testWidgets('should render animations toggle switch', (
+      WidgetTester tester,
+    ) async {
       // Arrange & Act
       await tester.pumpWidget(
         const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: PerformanceSection(),
-            ),
-          ),
+          child: MaterialApp(home: Scaffold(body: PerformanceSection())),
         ),
       );
       await tester.pumpAndSettle();
@@ -32,45 +30,53 @@ void main() {
       expect(find.byType(Switch), findsWidgets);
     });
 
-    testWidgets('should render memory optimization switch', (WidgetTester tester) async {
+    testWidgets('should render memory optimization switch', (
+      WidgetTester tester,
+    ) async {
       // Arrange & Act
       await tester.pumpWidget(
         const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: PerformanceSection(),
-            ),
-          ),
+          child: MaterialApp(home: Scaffold(body: PerformanceSection())),
         ),
       );
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(Switch), findsWidgets,
-          reason: 'Should have at least 2 Switch widgets for animations and memory');
+      expect(
+        find.byType(Switch),
+        findsWidgets,
+        reason:
+            'Should have at least 2 Switch widgets for animations and memory',
+      );
     });
 
-    testWidgets('should display both performance settings', (WidgetTester tester) async {
+    testWidgets('should display both performance settings', (
+      WidgetTester tester,
+    ) async {
       // Arrange & Act
       await tester.pumpWidget(
         const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: PerformanceSection(),
-            ),
-          ),
+          child: MaterialApp(home: Scaffold(body: PerformanceSection())),
         ),
       );
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(Text), findsWidgets,
-          reason: 'Should display text labels for settings');
-      expect(find.byType(Divider), findsWidgets,
-          reason: 'Should have dividers between settings');
+      expect(
+        find.byType(Text),
+        findsWidgets,
+        reason: 'Should display text labels for settings',
+      );
+      expect(
+        find.byType(Divider),
+        findsWidgets,
+        reason: 'Should have dividers between settings',
+      );
     });
 
-    testWidgets('toggling switches updates settings state', (WidgetTester tester) async {
+    testWidgets('toggling switches updates settings state', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
@@ -80,11 +86,7 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: Scaffold(
-              body: PerformanceSection(),
-            ),
-          ),
+          child: const MaterialApp(home: Scaffold(body: PerformanceSection())),
         ),
       );
       await tester.pumpAndSettle();
@@ -93,8 +95,14 @@ void main() {
       expect(switches, findsNWidgets(2));
 
       // Verify initial state
-      expect(container.read(settingsProvider).requireValue.enableAnimations, isTrue);
-      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, isTrue);
+      expect(
+        container.read(settingsProvider).requireValue.enableAnimations,
+        isTrue,
+      );
+      expect(
+        container.read(settingsProvider).requireValue.enableMemoryOptimization,
+        isTrue,
+      );
 
       await tester.tap(switches.first);
       await tester.pumpAndSettle();
@@ -102,8 +110,14 @@ void main() {
       await tester.tap(switches.last);
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).requireValue.enableAnimations, isFalse);
-      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, isFalse);
+      expect(
+        container.read(settingsProvider).requireValue.enableAnimations,
+        isFalse,
+      );
+      expect(
+        container.read(settingsProvider).requireValue.enableMemoryOptimization,
+        isFalse,
+      );
     });
   });
 }

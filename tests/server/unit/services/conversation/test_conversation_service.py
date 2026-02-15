@@ -11,11 +11,11 @@ from uuid import uuid4
 from unittest.mock import AsyncMock
 from datetime import datetime, UTC
 
-from src.server.app.services.conversation.conversation_service import (
+from app.services.conversation.conversation_service import (
     ConversationService,
 )
-from src.server.app.domain.entities.conversation import Conversation
-from src.server.app.domain.entities.message import Message, MessageRole
+from app.domain.entities.conversation import Conversation
+from app.domain.entities.message import Message, MessageRole
 
 
 @pytest.mark.asyncio

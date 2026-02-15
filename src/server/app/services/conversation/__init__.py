@@ -1,6 +1,6 @@
 """Conversation service for HU-4.2."""
 
-from src.server.app.services.conversation.conversation_service import (
+from app.services.conversation.conversation_service import (
     ConversationService,
 )
 

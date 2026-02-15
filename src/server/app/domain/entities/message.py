@@ -45,6 +45,4 @@ class Message:
                 f"Content exceeds maximum length (5000 chars): {len(self.content)}"
             )
 
-        # Validate role
-        if not isinstance(self.role, MessageRole):
-            raise ValueError(f"Invalid role: {self.role}. Must be MessageRole enum.")
+        # Role is already validated by type system (MessageRole enum)

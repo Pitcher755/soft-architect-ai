@@ -164,7 +164,10 @@ void main() {
     test('should distinguish between all states', () {
       expect(ValidationState.pending, isNot(equals(ValidationState.validated)));
       expect(ValidationState.pending, isNot(equals(ValidationState.rejected)));
-      expect(ValidationState.validated, isNot(equals(ValidationState.rejected)));
+      expect(
+        ValidationState.validated,
+        isNot(equals(ValidationState.rejected)),
+      );
     });
   });
 }

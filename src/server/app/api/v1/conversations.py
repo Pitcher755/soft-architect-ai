@@ -11,16 +11,17 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.server.app.domain.schemas.conversation import (
+
+from app.domain.schemas.conversation import (
     ConversationCreate,
     ConversationList,
     ConversationResponse,
 )
-from src.server.app.infrastructure.persistence.database import get_db_session
-from src.server.app.infrastructure.persistence.repositories.sqlalchemy_conversation_repository import (
+from app.infrastructure.persistence.database import get_db_session
+from app.infrastructure.persistence.repositories.sqlalchemy_conversation_repository import (
     SQLAlchemyConversationRepository,
 )
-from src.server.app.services.conversation.conversation_service import (
+from app.services.conversation.conversation_service import (
     ConversationService,
 )
 
