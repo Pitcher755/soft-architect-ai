@@ -297,4 +297,128 @@ void main() {
       expect(state.isStreaming, false); // Streaming stopped on error
     });
   });
+
+  group('ChatNotifier Legacy Methods Coverage', () {
+    test('rejectProposal clears current proposal', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      fakeRepository.generatedTokens = ['Document', ' ', 'content'];
+
+      // Generate document and wait for proposal
+      notifier.sendMessage('Generate document');
+      await Future<void>.delayed(const Duration(milliseconds: 220));
+
+      final stateWithProposal = container.read(chatNotifierProvider);
+      expect(stateWithProposal.currentProposal, isNotNull);
+
+      // Reject proposal
+      notifier.rejectProposal();
+
+      final stateAfterReject = container.read(chatNotifierProvider);
+      expect(stateAfterReject.currentProposal, isNull);
+    });
+
+    test('clearError resets error state', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      fakeRepository.shouldFail = true;
+      fakeRepository.errorMessage = 'Test error';
+
+      // Trigger error
+      notifier.sendMessage('Fail');
+      await Future<void>.delayed(const Duration(milliseconds: 180));
+
+      final stateWithError = container.read(chatNotifierProvider);
+      expect(stateWithError.hasError, true);
+
+      // Clear error
+      notifier.clearError();
+
+      final stateCleaned = container.read(chatNotifierProvider);
+      expect(stateCleaned.hasError, false);
+      // errorMessage persists but hasError is false (expected behavior)
+    });
+
+    test('resetForNewProject resets state with custom totalDocs', () {
+      final notifier = container.read(chatNotifierProvider.notifier);
+
+      // Send some messages first
+      notifier.sendMessage('Test message');
+
+      // Reset for new project
+      notifier.resetForNewProject(totalDocs: 30);
+
+      final state = container.read(chatNotifierProvider);
+      expect(state.messages, isEmpty);
+      expect(state.currentDocIndex, 1);
+      expect(state.totalDocs, 30);
+      expect(state.currentProposal, isNull);
+      expect(state.hasError, false);
+    });
+
+    test('setProjectPath updates project path in state', () {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      const testPath = '/tmp/test_project';
+
+      notifier.setProjectPath(testPath);
+
+      final state = container.read(chatNotifierProvider);
+      expect(state.projectPath, testPath);
+    });
+
+    test('retryLastMessage re-sends last user message', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+
+      // Send successful message first
+      fakeRepository.generatedTokens = ['First', ' ', 'message'];
+      notifier.sendMessage('First message');
+      await Future<void>.delayed(const Duration(milliseconds: 220));
+
+      final initialState = container.read(chatNotifierProvider);
+      expect(initialState.hasError, false);
+      final messageCountBefore = initialState.messages.length;
+
+      // Simulate error scenario by failing next message
+      fakeRepository.shouldFail = true;
+      fakeRepository.errorMessage = 'Connection error';
+      notifier.sendMessage('Second message');
+      await Future<void>.delayed(const Duration(milliseconds: 180));
+
+      final stateWithError = container.read(chatNotifierProvider);
+      expect(stateWithError.hasError, true);
+
+      // Fix repository and retry
+      fakeRepository.shouldFail = false;
+      fakeRepository.generatedTokens = ['Retry', ' ', 'success'];
+
+      await notifier.retryLastMessage();
+      await Future<void>.delayed(const Duration(milliseconds: 220));
+
+      final stateAfterRetry = container.read(chatNotifierProvider);
+      // After retry, messaging continues (error cleared before retry)
+      expect(stateAfterRetry.messages.length, greaterThan(messageCountBefore));
+    });
+
+    test('regenerateProposal re-generates document', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      fakeRepository.generatedTokens = ['First', ' ', 'version'];
+
+      // Generate initial document
+      notifier.sendMessage('Generate document');
+      await Future<void>.delayed(const Duration(milliseconds: 220));
+
+      final initialState = container.read(chatNotifierProvider);
+      final initialContent = initialState.currentProposal?.content ?? '';
+
+      // Regenerate with different content
+      fakeRepository.generatedTokens = ['Second', ' ', 'version'];
+      await notifier.regenerateProposal();
+      await Future<void>.delayed(const Duration(milliseconds: 280));
+
+      final regeneratedState = container.read(chatNotifierProvider);
+      final regeneratedContent =
+          regeneratedState.currentProposal?.content ?? '';
+
+      expect(regeneratedContent, isNot(equals(initialContent)));
+      expect(regeneratedContent, contains('Second'));
+    });
+  });
 }
