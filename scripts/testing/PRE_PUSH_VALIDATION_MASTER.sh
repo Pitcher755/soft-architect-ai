@@ -158,11 +158,13 @@ print_header "PHASE 4️⃣: UNIT TESTS"
 run_check "Python Unit Tests" \
     "$PYTHON_TEST_BIN -m pytest tests/server/ -k 'not integration' -q --tb=no 2>/dev/null"
 
+# Flutter tests MUST run from tests/ directory (has test dependencies in pubspec.yaml)
+# tests/pubspec.yaml imports src/client via path: ../src/client
 run_check "Flutter Unit Tests" \
-    "(cd tests && flutter test client/unit/ --reporter=compact 2>/dev/null)"
+    "(cd \"$PROJECT_ROOT/tests\" && flutter test client/unit/ --reporter=compact 2>/dev/null)"
 
 run_check "Flutter Widget Tests" \
-    "(cd tests && flutter test client/widget/ --reporter=compact 2>/dev/null) || echo 'No widget tests'"
+    "(cd \"$PROJECT_ROOT/tests\" && flutter test client/widget/ --reporter=compact 2>/dev/null) || echo 'No widget tests'"
 
 ################################################################################
 # 5. INTEGRATION TESTS & PERFORMANCE

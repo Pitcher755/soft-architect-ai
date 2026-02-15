@@ -312,6 +312,22 @@ class LLMTimeoutError(BaseAppError):
         )
 
 
+class LLMStreamError(BaseAppError):
+    """LLM streaming interrupted or malformed (HU-4.3)."""
+
+    def __init__(
+        self,
+        message: str = "AI response stream interrupted or malformed",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="LLM_003",
+            message=message,
+            status_code=500,
+            details=details,
+        )
+
+
 class RAGRetrievalError(BaseAppError):
     """Knowledge base search failed."""
 

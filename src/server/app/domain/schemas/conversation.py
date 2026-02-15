@@ -11,7 +11,8 @@ from datetime import datetime
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
-from src.server.app.domain.entities.message import MessageRole
+
+from app.domain.entities.message import MessageRole
 
 
 class MessageResponse(BaseModel):

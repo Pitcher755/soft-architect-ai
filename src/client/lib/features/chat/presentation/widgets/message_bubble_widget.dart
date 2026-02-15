@@ -11,11 +11,13 @@ class ChatMessageUI {
     required this.role,
     required this.content,
     required this.timestamp,
+    this.isStreaming = false,
   });
   final String id;
   final String role;
   final String content;
   final DateTime timestamp;
+  final bool isStreaming;
 }
 
 /// Widget que renderiza mensajes de chat con estilo dark theme
@@ -71,16 +73,27 @@ class MessageBubbleWidget extends StatelessWidget {
                     : CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Message content
-                  SelectableText(
-                    message.content,
-                    style: TextStyle(
-                      color: _isUserMessage
-                          ? AppColors.textMain
-                          : AppColors.textSecondary,
-                      fontSize: 14,
-                      height: 1.5,
-                    ),
+                  // Message content with blinking cursor if streaming
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: SelectableText(
+                          message.content,
+                          style: TextStyle(
+                            color: _isUserMessage
+                                ? AppColors.textMain
+                                : AppColors.textSecondary,
+                            fontSize: 14,
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                      // Show blinking cursor only for streaming AI messages
+                      if (!_isUserMessage && message.isStreaming)
+                        const _BlinkingCursor(),
+                    ],
                   ),
 
                   // Timestamp
@@ -150,4 +163,53 @@ class MessageBubbleWidget extends StatelessWidget {
     final minute = dateTime.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
   }
+}
+
+/// Animated blinking cursor widget for streaming messages.
+/// Uses FadeTransition with AnimationController for smooth 60 FPS animation.
+class _BlinkingCursor extends StatefulWidget {
+  const _BlinkingCursor();
+
+  @override
+  State<_BlinkingCursor> createState() => _BlinkingCursorState();
+}
+
+class _BlinkingCursorState extends State<_BlinkingCursor>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 530), // Standard cursor blink rate
+    )..repeat(reverse: true);
+
+    _animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => FadeTransition(
+    opacity: _animation,
+    child: Container(
+      width: 2,
+      height: 16,
+      margin: const EdgeInsets.only(left: 2, top: 2),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(1),
+      ),
+    ),
+  );
 }

@@ -12,7 +12,8 @@ from datetime import UTC, datetime
 from sqlalchemy import Column, DateTime, Index, String
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import relationship
-from src.server.app.infrastructure.persistence.database import Base
+
+from app.infrastructure.persistence.database import Base
 
 
 class ConversationModel(Base):

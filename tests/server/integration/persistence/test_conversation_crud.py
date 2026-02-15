@@ -19,11 +19,13 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
 )
 
-from src.server.app.infrastructure.persistence.database import Base
-from src.server.app.infrastructure.persistence.repositories.sqlalchemy_conversation_repository import (
+# Import models to register with Base BEFORE creating tables
+from app.infrastructure.persistence.models import ConversationModel, MessageModel  # noqa: F401
+from app.infrastructure.persistence.database import Base
+from app.infrastructure.persistence.repositories.sqlalchemy_conversation_repository import (
     SQLAlchemyConversationRepository,
 )
-from src.server.app.domain.entities.message import Message, MessageRole
+from app.domain.entities.message import Message, MessageRole
 
 
 # Fixture: in-memory database

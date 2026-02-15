@@ -11,12 +11,13 @@ from uuid import UUID
 
 from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.server.app.domain.entities.conversation import Conversation
-from src.server.app.domain.entities.message import Message, MessageRole
-from src.server.app.infrastructure.persistence.models.conversation_model import (
+
+from app.domain.entities.conversation import Conversation
+from app.domain.entities.message import Message, MessageRole
+from app.infrastructure.persistence.models.conversation_model import (
     ConversationModel,
 )
-from src.server.app.infrastructure.persistence.models.message_model import MessageModel
+from app.infrastructure.persistence.models.message_model import MessageModel
 
 
 class SQLAlchemyConversationRepository:

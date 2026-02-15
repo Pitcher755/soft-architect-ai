@@ -11,11 +11,7 @@ void main() {
       // Arrange & Act
       await tester.pumpWidget(
         const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: GlobalSearchDialog(),
-            ),
-          ),
+          child: MaterialApp(home: Scaffold(body: GlobalSearchDialog())),
         ),
       );
       await tester.pumpAndSettle();
@@ -39,11 +35,7 @@ void main() {
       // Arrange
       await tester.pumpWidget(
         const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: GlobalSearchDialog(),
-            ),
-          ),
+          child: MaterialApp(home: Scaffold(body: GlobalSearchDialog())),
         ),
       );
       await tester.pumpAndSettle();
@@ -66,11 +58,7 @@ void main() {
       // Arrange & Act
       await tester.pumpWidget(
         const ProviderScope(
-          child: MaterialApp(
-            home: Scaffold(
-              body: GlobalSearchDialog(),
-            ),
-          ),
+          child: MaterialApp(home: Scaffold(body: GlobalSearchDialog())),
         ),
       );
       await tester.pumpAndSettle();
@@ -97,11 +85,7 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: Scaffold(
-              body: GlobalSearchDialog(),
-            ),
-          ),
+          child: const MaterialApp(home: Scaffold(body: GlobalSearchDialog())),
         ),
       );
       await tester.pumpAndSettle();

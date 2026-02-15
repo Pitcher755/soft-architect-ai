@@ -12,7 +12,7 @@ from uuid import uuid4
 from datetime import datetime, UTC
 from unittest.mock import AsyncMock, MagicMock
 
-from src.server.app.infrastructure.persistence.repositories.sqlalchemy_conversation_repository import (
+from app.infrastructure.persistence.repositories.sqlalchemy_conversation_repository import (
     SQLAlchemyConversationRepository,
 )
 

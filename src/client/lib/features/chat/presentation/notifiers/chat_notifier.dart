@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../../../../domain/entities/chat_stream_event.dart';
 import '../../../../features/filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../../features/project_shell/core/services/file_system_service.dart';
 import '../../domain/entities/chat_message.dart';
@@ -115,6 +116,104 @@ class ChatNotifier extends StateNotifier<ChatState> {
         currentProposal: proposal,
         isStreaming: false,
       );
+    } on Exception catch (e) {
+      state = state.copyWith(
+        isStreaming: false,
+        hasError: true,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Sends a user message and streams the AI response using SSE.
+  /// This method implements progressive token rendering with ChatStreamEvent.
+  Future<void> sendMessageStream(String message) async {
+    if (message.trim().isEmpty) {
+      return;
+    }
+
+    try {
+      // Clear any previous errors
+      state = state.clearError();
+
+      // 1️⃣ Add user message immediately
+      final userMessage = ChatMessage(
+        id: generateId(),
+        role: MessageRole.user,
+        content: message,
+        timestamp: DateTime.now().toIso8601String(),
+      );
+
+      final updatedMessages = [...state.messages, userMessage];
+      state = state.copyWith(messages: updatedMessages, isStreaming: true);
+
+      // 2️⃣ Add empty AI message with isStreaming=true
+      final assistantMessage = ChatMessage(
+        id: generateId(),
+        role: MessageRole.assistant,
+        content: '',
+        timestamp: DateTime.now().toIso8601String(),
+        isStreaming: true,
+      );
+
+      final messagesWithAssistant = [...updatedMessages, assistantMessage];
+      state = state.copyWith(
+        messages: messagesWithAssistant,
+        isStreaming: true,
+      );
+
+      // 3️⃣ Stream tokens from repository
+      final streamBuffer = StringBuffer();
+      final projectId = state.projectPath ?? 'default';
+      final stream = _repository.sendMessageStream(message, projectId);
+
+      await for (final event in stream) {
+        if (event is TokenEvent) {
+          // 4️⃣ Append token to AI message
+          streamBuffer.write(event.token);
+
+          final updatedAssistant = assistantMessage.copyWith(
+            content: streamBuffer.toString(),
+            isStreaming: true,
+          );
+
+          final newMessages = [
+            ...messagesWithAssistant.sublist(
+              0,
+              messagesWithAssistant.length - 1,
+            ),
+            updatedAssistant,
+          ];
+
+          state = state.copyWith(messages: newMessages, isStreaming: true);
+        } else if (event is DoneEvent) {
+          // 5️⃣ Mark message complete on DoneEvent
+          final fullResponse = event.fullResponse;
+
+          final completedAssistant = assistantMessage.copyWith(
+            content: fullResponse,
+            isStreaming: false,
+          );
+
+          final finalMessages = [
+            ...messagesWithAssistant.sublist(
+              0,
+              messagesWithAssistant.length - 1,
+            ),
+            completedAssistant,
+          ];
+
+          state = state.copyWith(messages: finalMessages, isStreaming: false);
+        } else if (event is ErrorEvent) {
+          // 6️⃣ Handle ErrorEvent
+          state = state.copyWith(
+            isStreaming: false,
+            hasError: true,
+            errorMessage: event.error,
+          );
+          return;
+        }
+      }
     } on Exception catch (e) {
       state = state.copyWith(
         isStreaming: false,
@@ -350,6 +449,17 @@ class _MockChatRepository implements ChatRepository {
       await Future.delayed(const Duration(milliseconds: 50));
       yield token;
     }
+  }
+
+  @override
+  Stream<ChatStreamEvent> sendMessageStream(
+    String message,
+    String projectId,
+  ) async* {
+    // Mock implementation - simulate streaming response
+    yield const TokenEvent(token: 'Mock');
+    yield const TokenEvent(token: ' response');
+    yield const DoneEvent(fullResponse: 'Mock response');
   }
 
   @override

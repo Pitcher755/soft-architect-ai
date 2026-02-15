@@ -8,7 +8,11 @@ void main() {
     return MaterialApp(
       home: MediaQuery(
         data: MediaQueryData(size: Size(width, 800)),
-        child: Scaffold(body: Center(child: SizedBox(width: width / 2, child: child))),
+        child: Scaffold(
+          body: Center(
+            child: SizedBox(width: width / 2, child: child),
+          ),
+        ),
       ),
     );
   }
@@ -44,7 +48,9 @@ void main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets('shortens long last path segment with ellipsis', (tester) async {
+    testWidgets('shortens long last path segment with ellipsis', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         _build(
           makeCard(path: '/tmp/this-is-a-very-very-long-project-folder-name'),

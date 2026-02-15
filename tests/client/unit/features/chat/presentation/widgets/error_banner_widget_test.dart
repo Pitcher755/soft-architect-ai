@@ -9,9 +9,7 @@ void main() {
 
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: ErrorBannerWidget(message: message),
-          ),
+          home: Scaffold(body: ErrorBannerWidget(message: message)),
         ),
       );
 
@@ -21,9 +19,7 @@ void main() {
     testWidgets('should display error icon', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: ErrorBannerWidget(message: 'Error occurred'),
-          ),
+          home: Scaffold(body: ErrorBannerWidget(message: 'Error occurred')),
         ),
       );
 
@@ -33,17 +29,16 @@ void main() {
     testWidgets('should display close icon button', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: ErrorBannerWidget(message: 'Test error'),
-          ),
+          home: Scaffold(body: ErrorBannerWidget(message: 'Test error')),
         ),
       );
 
       expect(find.byIcon(Icons.close), findsOneWidget);
     });
 
-    testWidgets('should call onDismiss when dismiss button is pressed',
-        (tester) async {
+    testWidgets('should call onDismiss when dismiss button is pressed', (
+      tester,
+    ) async {
       var dismissCalled = false;
       void onDismiss() {
         dismissCalled = true;
@@ -66,8 +61,9 @@ void main() {
       expect(dismissCalled, true);
     });
 
-    testWidgets('should truncate long error messages with ellipsis',
-        (tester) async {
+    testWidgets('should truncate long error messages with ellipsis', (
+      tester,
+    ) async {
       const longMessage =
           'This is a very long error message that should be truncated with ellipsis because it exceeds the maximum number of lines allowed in the error banner widget for displaying error messages to the user.';
 
@@ -87,21 +83,17 @@ void main() {
       expect(textWidget.overflow, TextOverflow.ellipsis);
     });
 
-    testWidgets('should use red color scheme for error styling',
-        (tester) async {
+    testWidgets('should use red color scheme for error styling', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: ErrorBannerWidget(message: 'Error'),
-          ),
+          home: Scaffold(body: ErrorBannerWidget(message: 'Error')),
         ),
       );
 
       final container = tester.widget<Container>(
-        find.ancestor(
-          of: find.text('Error'),
-          matching: find.byType(Container),
-        ),
+        find.ancestor(of: find.text('Error'), matching: find.byType(Container)),
       );
 
       final decoration = container.decoration as BoxDecoration;
@@ -111,9 +103,7 @@ void main() {
     testWidgets('should render with white text color', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: ErrorBannerWidget(message: 'Error'),
-          ),
+          home: Scaffold(body: ErrorBannerWidget(message: 'Error')),
         ),
       );
 
@@ -124,9 +114,7 @@ void main() {
     testWidgets('should work without onDismiss callback', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: ErrorBannerWidget(message: 'Error'),
-          ),
+          home: Scaffold(body: ErrorBannerWidget(message: 'Error')),
         ),
       );
 

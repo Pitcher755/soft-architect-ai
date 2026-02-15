@@ -46,11 +46,17 @@ void main() {
       expect(expanded.contains('d1'), isTrue);
       expect(expanded.contains('f1'), isTrue);
 
-      final visible = DirectoryTreeUseCase.getVisibleNodes(root, {'root', 'd1'});
+      final visible = DirectoryTreeUseCase.getVisibleNodes(root, {
+        'root',
+        'd1',
+      });
       expect(visible.map((n) => n.id).toList(), ['root', 'd1', 'f1']);
 
       final collapsed = DirectoryTreeUseCase.collapseNode({'root', 'd1'}, 'd1');
-      final visibleAfterCollapse = DirectoryTreeUseCase.getVisibleNodes(root, collapsed);
+      final visibleAfterCollapse = DirectoryTreeUseCase.getVisibleNodes(
+        root,
+        collapsed,
+      );
       expect(visibleAfterCollapse.map((n) => n.id).toList(), ['root', 'd1']);
 
       expect(DirectoryTreeUseCase.countVisibleNodes(root, {'root', 'd1'}), 3);

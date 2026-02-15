@@ -34,9 +34,15 @@ void main() {
 
     test('returns quickStart for guide project', () {
       final project = buildProject('/tmp/x', id: 'guide-softarchitect-01');
-      expect(ProjectPhaseService.getProjectPhase(project), ProjectPhase.quickStart);
+      expect(
+        ProjectPhaseService.getProjectPhase(project),
+        ProjectPhase.quickStart,
+      );
       expect(ProjectPhaseService.calculateProgress(project, 0), 1);
-      expect(ProjectPhaseService.getCurrentPhaseName(project, 0), 'Quick start');
+      expect(
+        ProjectPhaseService.getCurrentPhaseName(project, 0),
+        'Quick start',
+      );
       expect(ProjectPhaseService.getDocumentsInCurrentPhase(project, 0), 0);
       expect(ProjectPhaseService.isGuideProject(project), isTrue);
     });
@@ -55,10 +61,7 @@ void main() {
     });
 
     test('fetches files from scanner and calculates progress', () {
-      final scanner = FakeProjectFileScanner(const [
-        'AGENTS.md',
-        'README.md',
-      ]);
+      final scanner = FakeProjectFileScanner(const ['AGENTS.md', 'README.md']);
       final service = ProjectPhaseService(fileScanner: scanner.getProjectFiles);
 
       final result = service.analyzeProjectPath('/tmp/test_project');
@@ -129,7 +132,10 @@ void main() {
       ).writeAsStringSync('');
 
       final project = buildProject(dir.path);
-      expect(ProjectPhaseService.getProjectPhase(project), ProjectPhase.context);
+      expect(
+        ProjectPhaseService.getProjectPhase(project),
+        ProjectPhase.context,
+      );
 
       final snapshot = ProjectPhaseService.analyzeProject(dir.path);
       expect(snapshot.currentPhase, 1);
@@ -142,7 +148,9 @@ void main() {
       File('${dir.path}/AGENTS.md').writeAsStringSync('');
       File('${dir.path}/README.md').writeAsStringSync('');
       Directory('${dir.path}/context/10-CONTEXT').createSync(recursive: true);
-      Directory('${dir.path}/context/20-REQUIREMENTS').createSync(recursive: true);
+      Directory(
+        '${dir.path}/context/20-REQUIREMENTS',
+      ).createSync(recursive: true);
 
       for (final file in const [
         'DOMAIN_LANGUAGE.md',
@@ -162,7 +170,10 @@ void main() {
       }
 
       final project = buildProject(dir.path);
-      expect(ProjectPhaseService.getProjectPhase(project), ProjectPhase.requirements);
+      expect(
+        ProjectPhaseService.getProjectPhase(project),
+        ProjectPhase.requirements,
+      );
     });
 
     test('supports requirements alias folder 20-REQUIREMENTS_AND_SPEC', () {
@@ -199,8 +210,12 @@ void main() {
       File('${dir.path}/AGENTS.md').writeAsStringSync('');
       File('${dir.path}/README.md').writeAsStringSync('');
       Directory('${dir.path}/context/10-CONTEXT').createSync(recursive: true);
-      Directory('${dir.path}/context/20-REQUIREMENTS').createSync(recursive: true);
-      Directory('${dir.path}/context/30-ARCHITECTURE').createSync(recursive: true);
+      Directory(
+        '${dir.path}/context/20-REQUIREMENTS',
+      ).createSync(recursive: true);
+      Directory(
+        '${dir.path}/context/30-ARCHITECTURE',
+      ).createSync(recursive: true);
 
       for (final file in const [
         'DOMAIN_LANGUAGE.md',
@@ -231,21 +246,38 @@ void main() {
       }
 
       final project = buildProject(dir.path);
-      expect(ProjectPhaseService.getProjectPhase(project), ProjectPhase.architecture);
+      expect(
+        ProjectPhaseService.getProjectPhase(project),
+        ProjectPhase.architecture,
+      );
     });
 
     test('calculates bounded progress', () {
       final project = buildProject('/tmp/proj');
       expect(ProjectPhaseService.calculateProgress(project, 0), 0);
-      expect(ProjectPhaseService.calculateProgress(project, ProjectStructureConstants.totalExpectedDocs ~/ 2),
-          greaterThan(0));
-      expect(ProjectPhaseService.calculateProgress(project, ProjectStructureConstants.totalExpectedDocs * 2), 1);
+      expect(
+        ProjectPhaseService.calculateProgress(
+          project,
+          ProjectStructureConstants.totalExpectedDocs ~/ 2,
+        ),
+        greaterThan(0),
+      );
+      expect(
+        ProjectPhaseService.calculateProgress(
+          project,
+          ProjectStructureConstants.totalExpectedDocs * 2,
+        ),
+        1,
+      );
     });
 
     test('resolves current phase name and docs in phase', () {
       final project = buildProject('/tmp/proj');
       final name = ProjectPhaseService.getCurrentPhaseName(project, 2);
-      final inCurrent = ProjectPhaseService.getDocumentsInCurrentPhase(project, 2);
+      final inCurrent = ProjectPhaseService.getDocumentsInCurrentPhase(
+        project,
+        2,
+      );
       expect(name, ProjectPhase.root.name);
       expect(inCurrent, 2);
     });

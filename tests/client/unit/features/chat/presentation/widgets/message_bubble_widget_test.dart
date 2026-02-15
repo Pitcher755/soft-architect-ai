@@ -27,9 +27,7 @@ void main() {
       testWidgets('should display user message content', (tester) async {
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: MessageBubbleWidget(message: userMessage),
-            ),
+            home: Scaffold(body: MessageBubbleWidget(message: userMessage)),
           ),
         );
 
@@ -39,9 +37,7 @@ void main() {
       testWidgets('should align user message to the right', (tester) async {
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: MessageBubbleWidget(message: userMessage),
-            ),
+            home: Scaffold(body: MessageBubbleWidget(message: userMessage)),
           ),
         );
 
@@ -58,9 +54,7 @@ void main() {
       testWidgets('should have appropriate padding', (tester) async {
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: MessageBubbleWidget(message: userMessage),
-            ),
+            home: Scaffold(body: MessageBubbleWidget(message: userMessage)),
           ),
         );
 
@@ -83,8 +77,7 @@ void main() {
         expect(find.text('Assistant response'), findsOneWidget);
       });
 
-      testWidgets('should align assistant message to the left',
-          (tester) async {
+      testWidgets('should align assistant message to the left', (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
@@ -119,13 +112,10 @@ void main() {
     });
 
     group('Interactions', () {
-      testWidgets('should work without onLongPress callback',
-          (tester) async {
+      testWidgets('should work without onLongPress callback', (tester) async {
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: MessageBubbleWidget(message: userMessage),
-            ),
+            home: Scaffold(body: MessageBubbleWidget(message: userMessage)),
           ),
         );
 
@@ -141,34 +131,31 @@ void main() {
       testWidgets('should have Container with decoration', (tester) async {
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: MessageBubbleWidget(message: userMessage),
-            ),
+            home: Scaffold(body: MessageBubbleWidget(message: userMessage)),
           ),
         );
 
         expect(find.byType(Container), findsWidgets);
       });
 
-      testWidgets('should use SelectableText for message content',
-          (tester) async {
+      testWidgets('should use SelectableText for message content', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: MessageBubbleWidget(message: userMessage),
-            ),
+            home: Scaffold(body: MessageBubbleWidget(message: userMessage)),
           ),
         );
 
         expect(find.byType(SelectableText), findsOneWidget);
       });
 
-      testWidgets('should use Stack layout for badge positioning', (tester) async {
+      testWidgets('should use Stack layout for badge positioning', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: MessageBubbleWidget(message: userMessage),
-            ),
+            home: Scaffold(body: MessageBubbleWidget(message: userMessage)),
           ),
         );
 

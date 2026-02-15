@@ -7,26 +7,29 @@ import 'package:softarchitect_ai/features/project_shell/presentation/providers/p
 
 void main() {
   group('ProjectProgressNotifier', () {
-    test('starts in loading and transitions to data with analyzer result', () async {
-      final notifier = ProjectProgressNotifier(
-        analyzer: (_) => const ProjectPhaseProgress(
-          currentPhase: 2,
-          docsCompleted: 9,
-          totalDocs: 25,
-          progress: 0.36,
-        ),
-      );
+    test(
+      'starts in loading and transitions to data with analyzer result',
+      () async {
+        final notifier = ProjectProgressNotifier(
+          analyzer: (_) => const ProjectPhaseProgress(
+            currentPhase: 2,
+            docsCompleted: 9,
+            totalDocs: 25,
+            progress: 0.36,
+          ),
+        );
 
-      expect(notifier.state, isA<AsyncLoading<ProjectPhaseProgress>>());
+        expect(notifier.state, isA<AsyncLoading<ProjectPhaseProgress>>());
 
-      await notifier.loadProgress('/tmp/project');
+        await notifier.loadProgress('/tmp/project');
 
-      final state = notifier.state;
-      expect(state, isA<AsyncData<ProjectPhaseProgress>>());
-      expect(state.value?.currentPhase, 2);
-      expect(state.value?.docsCompleted, 9);
-      expect(state.value?.progress, closeTo(0.36, 0.0001));
-    });
+        final state = notifier.state;
+        expect(state, isA<AsyncData<ProjectPhaseProgress>>());
+        expect(state.value?.currentPhase, 2);
+        expect(state.value?.docsCompleted, 9);
+        expect(state.value?.progress, closeTo(0.36, 0.0001));
+      },
+    );
 
     test('returns fully completed state for mock project paths', () async {
       final notifier = ProjectProgressNotifier();

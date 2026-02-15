@@ -43,74 +43,78 @@ void main() {
       container.dispose();
     });
 
-    test('should handle corrupted JSON gracefully with fallback defaults',
-        () async {
-      // Setup corrupted JSON data
-      initMockSharedPreferences({
-        'app_settings_v2': '{invalid json syntax}',
-      });
+    test(
+      'should handle corrupted JSON gracefully with fallback defaults',
+      () async {
+        // Setup corrupted JSON data
+        initMockSharedPreferences({'app_settings_v2': '{invalid json syntax}'});
 
-      final container = ProviderContainer();
+        final container = ProviderContainer();
 
-      // Wait for async initialization
-      await container.read(settingsProvider.future);
+        // Wait for async initialization
+        await container.read(settingsProvider.future);
 
-      final settings = container.read(settingsProvider).requireValue;
+        final settings = container.read(settingsProvider).requireValue;
 
-      // Verify fallback to default values
-      expect(settings.userName, 'Architect');
-      expect(settings.themeMode, ThemeMode.dark);
-      expect(settings.fontSize, 1.0);
-      expect(settings.globalZoom, 1.0);
-      expect(settings.enableZoomShortcuts, true);
-      expect(settings.enableAnimations, true);
-      expect(settings.enableMemoryOptimization, true);
+        // Verify fallback to default values
+        expect(settings.userName, 'Architect');
+        expect(settings.themeMode, ThemeMode.dark);
+        expect(settings.fontSize, 1.0);
+        expect(settings.globalZoom, 1.0);
+        expect(settings.enableZoomShortcuts, true);
+        expect(settings.enableAnimations, true);
+        expect(settings.enableMemoryOptimization, true);
 
-      container.dispose();
-    });
+        container.dispose();
+      },
+    );
 
-    test('should handle missing settings key with default initialization',
-        () async {
-      // Initialize with empty map (no 'app_settings_v2' key)
-      initMockSharedPreferences({});
+    test(
+      'should handle missing settings key with default initialization',
+      () async {
+        // Initialize with empty map (no 'app_settings_v2' key)
+        initMockSharedPreferences({});
 
-      final container = ProviderContainer();
+        final container = ProviderContainer();
 
-      await container.read(settingsProvider.future);
+        await container.read(settingsProvider.future);
 
-      final settings = container.read(settingsProvider).requireValue;
+        final settings = container.read(settingsProvider).requireValue;
 
-      // Verify default initialization
-      expect(settings.userName, 'Architect');
-      expect(settings.themeMode, ThemeMode.dark);
-      expect(settings.fontSize, 1.0);
-      expect(settings.avatarIndex, 0);
-      expect(settings.projectDirectory, isNull);
+        // Verify default initialization
+        expect(settings.userName, 'Architect');
+        expect(settings.themeMode, ThemeMode.dark);
+        expect(settings.fontSize, 1.0);
+        expect(settings.avatarIndex, 0);
+        expect(settings.projectDirectory, isNull);
 
-      container.dispose();
-    });
+        container.dispose();
+      },
+    );
 
-    test('should handle partial JSON data with fallback for missing fields',
-        () async {
-      // JSON with only some fields
-      initMockSharedPreferences({
-        'app_settings_v2': '{"userName":"PartialUser","fontSize":1.2}',
-      });
+    test(
+      'should handle partial JSON data with fallback for missing fields',
+      () async {
+        // JSON with only some fields
+        initMockSharedPreferences({
+          'app_settings_v2': '{"userName":"PartialUser","fontSize":1.2}',
+        });
 
-      final container = ProviderContainer();
+        final container = ProviderContainer();
 
-      await container.read(settingsProvider.future);
+        await container.read(settingsProvider.future);
 
-      final settings = container.read(settingsProvider).requireValue;
+        final settings = container.read(settingsProvider).requireValue;
 
-      // Verify partial load + defaults for missing fields
-      expect(settings.userName, 'PartialUser'); // From JSON
-      expect(settings.fontSize, 1.2); // From JSON
-      expect(settings.themeMode, ThemeMode.light); // Default from fromJson
-      expect(settings.globalZoom, 1.0); // Default
-      expect(settings.avatarIndex, 0); // Default
+        // Verify partial load + defaults for missing fields
+        expect(settings.userName, 'PartialUser'); // From JSON
+        expect(settings.fontSize, 1.2); // From JSON
+        expect(settings.themeMode, ThemeMode.light); // Default from fromJson
+        expect(settings.globalZoom, 1.0); // Default
+        expect(settings.avatarIndex, 0); // Default
 
-      container.dispose();
-    });
+        container.dispose();
+      },
+    );
   });
 }

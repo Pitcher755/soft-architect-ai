@@ -29,7 +29,9 @@ void main() {
   });
 
   group('AccessibilitySection', () {
-    testWidgets('should render global zoom slider', (WidgetTester tester) async {
+    testWidgets('should render global zoom slider', (
+      WidgetTester tester,
+    ) async {
       // Arrange & Act
       await tester.pumpWidget(
         ProviderScope(child: createTestApp(const AccessibilitySection())),
@@ -41,7 +43,9 @@ void main() {
       expect(find.byType(Slider), findsOneWidget);
     });
 
-    testWidgets('should render zoom shortcuts switch', (WidgetTester tester) async {
+    testWidgets('should render zoom shortcuts switch', (
+      WidgetTester tester,
+    ) async {
       // Arrange & Act
       await tester.pumpWidget(
         ProviderScope(child: createTestApp(const AccessibilitySection())),
@@ -60,11 +64,16 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(Text), findsAtLeastNWidgets(2),
-          reason: 'Should have text widgets including zoom percentage');
+      expect(
+        find.byType(Text),
+        findsAtLeastNWidgets(2),
+        reason: 'Should have text widgets including zoom percentage',
+      );
     });
 
-    testWidgets('slider and switch update accessibility settings', (WidgetTester tester) async {
+    testWidgets('slider and switch update accessibility settings', (
+      WidgetTester tester,
+    ) async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
@@ -78,7 +87,10 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, isTrue);
+      expect(
+        container.read(settingsProvider).requireValue.enableZoomShortcuts,
+        isTrue,
+      );
       expect(container.read(settingsProvider).requireValue.globalZoom, 1.0);
 
       await tester.drag(find.byType(Slider), const Offset(140, 0));
@@ -87,8 +99,14 @@ void main() {
       await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
-      expect(container.read(settingsProvider).requireValue.globalZoom, greaterThan(1.0));
-      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, isFalse);
+      expect(
+        container.read(settingsProvider).requireValue.globalZoom,
+        greaterThan(1.0),
+      );
+      expect(
+        container.read(settingsProvider).requireValue.enableZoomShortcuts,
+        isFalse,
+      );
     });
   });
 }

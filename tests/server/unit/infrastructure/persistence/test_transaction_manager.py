@@ -11,7 +11,7 @@ import sqlite3
 import tempfile
 
 import pytest
-from src.server.app.infrastructure.persistence.transaction_manager import (
+from app.infrastructure.persistence.transaction_manager import (
     TransactionManager,
 )
 
@@ -43,22 +43,26 @@ def tx_manager(temp_db):
 def initialized_db(tx_manager):
     """Create a test database with schema."""
     with tx_manager.transaction() as conn:
-        conn.execute("""
+        conn.execute(
+            """
             CREATE TABLE projects (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
                 path TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
-            """)
-        conn.execute("""
+            """
+        )
+        conn.execute(
+            """
             CREATE TABLE project_metadata (
                 id INTEGER PRIMARY KEY,
                 project_id INTEGER NOT NULL UNIQUE,
                 last_modified TIMESTAMP,
                 FOREIGN KEY(project_id) REFERENCES projects(id)
             )
-            """)
+            """
+        )
     return tx_manager
 
 

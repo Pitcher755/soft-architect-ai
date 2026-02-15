@@ -31,7 +31,8 @@ def perf_repo() -> Generator[SQLiteRepository, None, None]:
         configure_sqlite(conn)
 
         # Initialize schema
-        conn.executescript("""
+        conn.executescript(
+            """
             CREATE TABLE IF NOT EXISTS projects (
                 id TEXT PRIMARY KEY,
                 name TEXT NOT NULL UNIQUE,
@@ -41,7 +42,8 @@ def perf_repo() -> Generator[SQLiteRepository, None, None]:
                 updated_at TEXT NOT NULL,
                 metadata TEXT
             );
-            """)
+            """
+        )
         conn.commit()
         conn.close()
 

@@ -71,9 +71,18 @@ void main() {
       await tester.pumpAndSettle(); // Wait for i18n and full render
 
       // Assert - Find buttons by key (more reliable than type for .icon() constructors)
-      expect(find.byKey(const Key('proposal_validate_button')), findsOneWidget); // Validate button
-      expect(find.byKey(const Key('proposal_refine_button')), findsOneWidget); // Refine button
-      expect(find.byKey(const Key('proposal_reject_button')), findsOneWidget); // Reject button
+      expect(
+        find.byKey(const Key('proposal_validate_button')),
+        findsOneWidget,
+      ); // Validate button
+      expect(
+        find.byKey(const Key('proposal_refine_button')),
+        findsOneWidget,
+      ); // Refine button
+      expect(
+        find.byKey(const Key('proposal_reject_button')),
+        findsOneWidget,
+      ); // Reject button
     });
 
     testWidgets('should call onValidate when button tapped', (
@@ -101,7 +110,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle(); // Wait for i18n and full render
-      await tester.tap(find.byKey(const Key('proposal_validate_button'))); // Validate button
+      await tester.tap(
+        find.byKey(const Key('proposal_validate_button')),
+      ); // Validate button
       await tester.pumpAndSettle();
 
       // Assert
@@ -133,7 +144,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle(); // Wait for i18n and full render
-      await tester.tap(find.byKey(const Key('proposal_refine_button'))); // Refine button
+      await tester.tap(
+        find.byKey(const Key('proposal_refine_button')),
+      ); // Refine button
       await tester.pumpAndSettle();
 
       // Assert
@@ -165,7 +178,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle(); // Wait for i18n and full render
-      await tester.tap(find.byKey(const Key('proposal_reject_button'))); // Reject button
+      await tester.tap(
+        find.byKey(const Key('proposal_reject_button')),
+      ); // Reject button
       await tester.pumpAndSettle();
 
       // Assert

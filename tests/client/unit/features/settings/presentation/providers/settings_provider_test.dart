@@ -199,10 +199,16 @@ void main() {
       final notifier = container.read(settingsProvider.notifier);
 
       await notifier.updateCustomAvatarPath('/tmp/avatar.png');
-      expect(container.read(settingsProvider).requireValue.customAvatarPath, '/tmp/avatar.png');
+      expect(
+        container.read(settingsProvider).requireValue.customAvatarPath,
+        '/tmp/avatar.png',
+      );
 
       await notifier.updateCustomAvatarPath(null);
-      expect(container.read(settingsProvider).requireValue.customAvatarPath, isNull);
+      expect(
+        container.read(settingsProvider).requireValue.customAvatarPath,
+        isNull,
+      );
     });
 
     test('updateStoragePath should update projectDirectory alias', () async {
@@ -265,10 +271,16 @@ void main() {
       final notifier = container.read(settingsProvider.notifier);
 
       await notifier.updateZoomShortcuts(enableZoomShortcuts: false);
-      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, false);
+      expect(
+        container.read(settingsProvider).requireValue.enableZoomShortcuts,
+        false,
+      );
 
       await notifier.updateZoomShortcuts(enableZoomShortcuts: true);
-      expect(container.read(settingsProvider).requireValue.enableZoomShortcuts, true);
+      expect(
+        container.read(settingsProvider).requireValue.enableZoomShortcuts,
+        true,
+      );
     });
 
     test('updateAnimations should toggle state', () async {
@@ -276,10 +288,16 @@ void main() {
       final notifier = container.read(settingsProvider.notifier);
 
       await notifier.updateAnimations(enableAnimations: false);
-      expect(container.read(settingsProvider).requireValue.enableAnimations, false);
+      expect(
+        container.read(settingsProvider).requireValue.enableAnimations,
+        false,
+      );
 
       await notifier.updateAnimations(enableAnimations: true);
-      expect(container.read(settingsProvider).requireValue.enableAnimations, true);
+      expect(
+        container.read(settingsProvider).requireValue.enableAnimations,
+        true,
+      );
     });
 
     test('updateMemoryOptimization should toggle state', () async {
@@ -287,10 +305,16 @@ void main() {
       final notifier = container.read(settingsProvider.notifier);
 
       await notifier.updateMemoryOptimization(enableMemoryOptimization: false);
-      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, false);
+      expect(
+        container.read(settingsProvider).requireValue.enableMemoryOptimization,
+        false,
+      );
 
       await notifier.updateMemoryOptimization(enableMemoryOptimization: true);
-      expect(container.read(settingsProvider).requireValue.enableMemoryOptimization, true);
+      expect(
+        container.read(settingsProvider).requireValue.enableMemoryOptimization,
+        true,
+      );
     });
 
     test('granular providers should reflect settingsProvider state', () async {

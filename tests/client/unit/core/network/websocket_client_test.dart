@@ -24,7 +24,8 @@ void main() {
 
       expect(() => client.send('ping'), returnsNormally);
       expect(
-        () => client.sendJson(<String, dynamic>{'type': 'token', 'content': 'x'}),
+        () =>
+            client.sendJson(<String, dynamic>{'type': 'token', 'content': 'x'}),
         returnsNormally,
       );
     });
@@ -45,13 +46,16 @@ void main() {
       expect(token, 'abc');
     });
 
-    test('testExtractToken returns empty string when token content missing', () {
-      final client = WebSocketClient(url: 'ws://localhost:9999/ws');
+    test(
+      'testExtractToken returns empty string when token content missing',
+      () {
+        final client = WebSocketClient(url: 'ws://localhost:9999/ws');
 
-      final token = client.testExtractToken('{"type":"token"}');
+        final token = client.testExtractToken('{"type":"token"}');
 
-      expect(token, '');
-    });
+        expect(token, '');
+      },
+    );
 
     test('testExtractToken handles ping and unknown message types', () {
       final client = WebSocketClient(url: 'ws://localhost:9999/ws');
@@ -71,7 +75,10 @@ void main() {
       final client = WebSocketClient(url: 'ws://localhost:9999/ws');
 
       expect(() => client.testHandleIncoming(123), returnsNormally);
-      expect(() => client.testHandleIncoming({'type': 'token'}), returnsNormally);
+      expect(
+        () => client.testHandleIncoming({'type': 'token'}),
+        returnsNormally,
+      );
     });
   });
 }
