@@ -51,18 +51,20 @@ data: {"full_response":"Hello world","sources":[]}
 
 ''';
 
-      final fakeClient = FakeHttpClient(() => http.StreamedResponse(
-            Stream.value(utf8.encode(sseResponse)),
-            200,
-            headers: {'content-type': 'text/event-stream'},
-          ));
+      final fakeClient = FakeHttpClient(
+        () => http.StreamedResponse(
+          Stream.value(utf8.encode(sseResponse)),
+          200,
+          headers: {'content-type': 'text/event-stream'},
+        ),
+      );
 
       final sseClient = SseClient(client: fakeClient);
 
       // Act
-      final events = await sseClient
-          .connect('http://test/stream', {'message': 'test'})
-          .toList();
+      final events = await sseClient.connect('http://test/stream', {
+        'message': 'test',
+      }).toList();
 
       // Assert
       expect(events.length, 3); // 2 tokens + 1 done
@@ -84,17 +86,17 @@ data: {"token":"Line2","is_final":false}
 
 ''';
 
-      final fakeClient = FakeHttpClient(() => http.StreamedResponse(
-            Stream.value(utf8.encode(sseResponse)),
-            200,
-          ));
+      final fakeClient = FakeHttpClient(
+        () =>
+            http.StreamedResponse(Stream.value(utf8.encode(sseResponse)), 200),
+      );
 
       final sseClient = SseClient(client: fakeClient);
 
       // Act
-      final events = await sseClient
-          .connect('http://test/stream', {'message': 'test'})
-          .toList();
+      final events = await sseClient.connect('http://test/stream', {
+        'message': 'test',
+      }).toList();
 
       // Assert
       expect(events.length, 2);
@@ -109,17 +111,17 @@ data: {"error":"Connection failed","code":"CONNECTION_ERROR","retry":true}
 
 ''';
 
-      final fakeClient = FakeHttpClient(() => http.StreamedResponse(
-            Stream.value(utf8.encode(sseResponse)),
-            200,
-          ));
+      final fakeClient = FakeHttpClient(
+        () =>
+            http.StreamedResponse(Stream.value(utf8.encode(sseResponse)), 200),
+      );
 
       final sseClient = SseClient(client: fakeClient);
 
       // Act
-      final events = await sseClient
-          .connect('http://test/stream', {'message': 'test'})
-          .toList();
+      final events = await sseClient.connect('http://test/stream', {
+        'message': 'test',
+      }).toList();
 
       // Assert
       expect(events.length, 1);
@@ -130,18 +132,20 @@ data: {"error":"Connection failed","code":"CONNECTION_ERROR","retry":true}
 
     test('connect handles HTTP error status', () async {
       // Arrange
-      final fakeClient = FakeHttpClient(() => http.StreamedResponse(
-            Stream.value(utf8.encode('Unauthorized')),
-            401,
-          ));
+      final fakeClient = FakeHttpClient(
+        () => http.StreamedResponse(
+          Stream.value(utf8.encode('Unauthorized')),
+          401,
+        ),
+      );
 
       final sseClient = SseClient(client: fakeClient);
 
       // Act & Assert
       expect(
-        () => sseClient
-            .connect('http://test/stream', {'message': 'test'})
-            .toList(),
+        () => sseClient.connect('http://test/stream', {
+          'message': 'test',
+        }).toList(),
         throwsA(isA<SseException>()),
       );
     });
@@ -154,9 +158,9 @@ data: {"error":"Connection failed","code":"CONNECTION_ERROR","retry":true}
 
       // Act & Assert
       expect(
-        () => sseClient
-            .connect('http://test/stream', {'message': 'test'})
-            .toList(),
+        () => sseClient.connect('http://test/stream', {
+          'message': 'test',
+        }).toList(),
         throwsA(isA<SseException>()),
       );
     });
@@ -173,17 +177,17 @@ data: {"token":"Test","is_final":false}
 
 ''';
 
-      final fakeClient = FakeHttpClient(() => http.StreamedResponse(
-            Stream.value(utf8.encode(sseResponse)),
-            200,
-          ));
+      final fakeClient = FakeHttpClient(
+        () =>
+            http.StreamedResponse(Stream.value(utf8.encode(sseResponse)), 200),
+      );
 
       final sseClient = SseClient(client: fakeClient);
 
       // Act
-      final events = await sseClient
-          .connect('http://test/stream', {'message': 'test'})
-          .toList();
+      final events = await sseClient.connect('http://test/stream', {
+        'message': 'test',
+      }).toList();
 
       // Assert
       expect(events.length, 1); // Only token event, comments skipped
@@ -197,17 +201,17 @@ data: {"full_response":"Complete","sources":["doc1.md","doc2.md"],"metadata":{"t
 
 ''';
 
-      final fakeClient = FakeHttpClient(() => http.StreamedResponse(
-            Stream.value(utf8.encode(sseResponse)),
-            200,
-          ));
+      final fakeClient = FakeHttpClient(
+        () =>
+            http.StreamedResponse(Stream.value(utf8.encode(sseResponse)), 200),
+      );
 
       final sseClient = SseClient(client: fakeClient);
 
       // Act
-      final events = await sseClient
-          .connect('http://test/stream', {'message': 'test'})
-          .toList();
+      final events = await sseClient.connect('http://test/stream', {
+        'message': 'test',
+      }).toList();
 
       // Assert
       expect(events.length, 1);
@@ -216,6 +220,50 @@ data: {"full_response":"Complete","sources":["doc1.md","doc2.md"],"metadata":{"t
       expect(doneEvent.fullResponse, 'Complete');
       expect(doneEvent.sources, ['doc1.md', 'doc2.md']);
       expect(doneEvent.metadata['tokens'], 50);
+    });
+
+    test('should ignore unknown event types and continue streaming', () async {
+      // Arrange - SSE with unknown event type
+      const sseResponse = '''
+event: unknown_event
+data: {"some": "data"}
+
+event: message
+data: {"token": "Hello", "is_final": false}
+
+event: done
+data: {"full_response": "Hello", "sources": [], "metadata": {}}
+
+''';
+
+      final fakeClient = FakeHttpClient(
+        () =>
+            http.StreamedResponse(Stream.value(utf8.encode(sseResponse)), 200),
+      );
+
+      final sseClient = SseClient(client: fakeClient);
+
+      // Act
+      final events = await sseClient.connect('http://test/stream', {
+        'message': 'test',
+      }).toList();
+
+      // Assert - unknown event should be ignored, only token + done received
+      expect(events.length, 2);
+      expect(events[0], isA<TokenEvent>());
+      expect(events[1], isA<DoneEvent>());
+    });
+
+    test('should properly close HTTP client when close() is called', () {
+      // Arrange
+      final fakeClient = FakeHttpClient(
+        () => http.StreamedResponse(Stream.value(utf8.encode('')), 200),
+      );
+
+      final sseClient = SseClient(client: fakeClient);
+
+      // Act & Assert - should not throw
+      expect(() => sseClient.close(), returnsNormally);
     });
   });
 }

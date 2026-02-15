@@ -65,7 +65,7 @@ class TestChatStreamEndpoint:
 
     @pytest.mark.asyncio
     async def test_chat_stream_returns_sse_events(
-        self, mock_llm_stream: AsyncGenerator[dict, None]
+        self, mock_llm_stream: Callable[[], AsyncGenerator[dict, None]]
     ) -> None:
         """
         Test that /chat/stream returns properly formatted SSE events.
@@ -224,7 +224,7 @@ class TestChatStreamEndpoint:
 
     @pytest.mark.asyncio
     async def test_chat_stream_emits_done_event(
-        self, mock_llm_stream: AsyncGenerator[dict, None]
+        self, mock_llm_stream: Callable[[], AsyncGenerator[dict, None]]
     ) -> None:
         """
         Test that stream ends with done event containing metadata.
