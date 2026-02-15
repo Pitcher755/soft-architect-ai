@@ -46,19 +46,58 @@ class ChatPanelWidget extends StatefulWidget {
 
 class _ChatPanelWidgetState extends State<ChatPanelWidget> {
   late TextEditingController _messageController;
+  late ScrollController _scrollController;
 
-  /// Initializes the chat input controller.
+  /// Initializes the chat input controller and scroll controller.
   @override
   void initState() {
     super.initState();
     _messageController = TextEditingController();
+    _scrollController = ScrollController();
   }
 
-  /// Disposes the chat input controller.
+  /// Disposes the chat input and scroll controllers.
   @override
   void dispose() {
     _messageController.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  /// Auto-scrolls to bottom when new messages arrive.
+  @override
+  void didUpdateWidget(covariant ChatPanelWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Auto-scroll when messages change (new tokens or messages)
+    if (widget.messages.length != oldWidget.messages.length ||
+        _hasStreamingContentChanged(oldWidget)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            0, // reverse: true means 0 is the bottom
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    }
+  }
+
+  /// Checks if streaming content has changed (tokens added).
+  bool _hasStreamingContentChanged(ChatPanelWidget oldWidget) {
+    if (widget.messages.length != oldWidget.messages.length) {
+      return false; // Already handled by length check
+    }
+
+    for (var i = 0; i < widget.messages.length; i++) {
+      final newMsg = widget.messages[i];
+      final oldMsg = oldWidget.messages[i];
+      if (newMsg.isStreaming && newMsg.content != oldMsg.content) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /// Builds the chat panel layout including
@@ -76,6 +115,7 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
           child: widget.messages.isEmpty
               ? _buildEmptyState()
               : ListView.builder(
+                  controller: _scrollController,
                   reverse: true,
                   padding: const EdgeInsets.all(16),
                   itemCount:

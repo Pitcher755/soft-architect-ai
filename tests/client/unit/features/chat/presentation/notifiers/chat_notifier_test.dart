@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:softarchitect_ai/domain/entities/chat_stream_event.dart';
 import 'package:softarchitect_ai/features/chat/domain/entities/chat_message.dart';
 import 'package:softarchitect_ai/features/chat/domain/entities/document_proposal.dart';
@@ -33,6 +32,7 @@ class FakeChatRepository implements ChatRepository {
     String projectId,
   ) async* {
     if (shouldFail) {
+      await Future.delayed(const Duration(milliseconds: 30));
       yield ErrorEvent(
         error: errorMessage,
         code: 'TEST_ERROR',
@@ -40,9 +40,12 @@ class FakeChatRepository implements ChatRepository {
       );
       return;
     }
+    // Add realistic streaming delays (50ms between tokens)
     for (final token in generatedTokens) {
+      await Future.delayed(const Duration(milliseconds: 50));
       yield TokenEvent(token: token, isFinal: false);
     }
+    await Future.delayed(const Duration(milliseconds: 50));
     yield DoneEvent(
       fullResponse: generatedTokens.join(''),
       sources: [],
@@ -191,6 +194,107 @@ void main() {
       // Verify document index advanced
       expect(updatedState.currentDocIndex, 2);
       expect(updatedState.currentProposal, isNull);
+    });
+  });
+
+  group('ChatNotifier Streaming Behavior', () {
+    test('sendMessageStream adds user message immediately', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      final userContent = 'Test streaming message';
+
+      // Act: Call streaming method (async)
+      final future = notifier.sendMessageStream(userContent);
+
+      // Wait for immediate user message addition (no delay needed)
+      await Future<void>.delayed(const Duration(milliseconds: 5));
+
+      // Assert: User message must be present immediately
+      final state = container.read(chatNotifierProvider);
+      expect(state.messages.length, greaterThanOrEqualTo(1));
+      expect(state.messages.first.role, MessageRole.user);
+      expect(state.messages.first.content, userContent);
+
+      // Wait for stream to complete before tearDown
+      await future;
+    });
+
+    test(
+      'sendMessageStream adds empty AI message with isStreaming=true',
+      () async {
+        final notifier = container.read(chatNotifierProvider.notifier);
+        fakeRepository.generatedTokens = ['First', ' ', 'Token'];
+
+        // Act: Call streaming method (async)
+        final future = notifier.sendMessageStream('Trigger AI response');
+
+        // Wait minimal time for initial state update (before first token @ 50ms)
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+
+        // Assert: AI message must exist with isStreaming flag
+        final state = container.read(chatNotifierProvider);
+        expect(state.messages.length, greaterThanOrEqualTo(2));
+        final aiMessage = state.messages.last;
+        expect(aiMessage.role, MessageRole.assistant);
+        expect(aiMessage.isStreaming, true);
+        expect(aiMessage.content, isEmpty); // Initially empty
+
+        // Wait for stream to complete before tearDown
+        await future;
+      },
+    );
+
+    test('sendMessageStream appends tokens to AI message', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      fakeRepository.generatedTokens = ['Hello', ' ', 'World', '!'];
+
+      // Act: Call streaming method (async)
+      final future = notifier.sendMessageStream('Generate text');
+
+      // Wait for tokens to accumulate (4 tokens * 50ms = 200ms, wait 180ms)
+      await Future<void>.delayed(const Duration(milliseconds: 180));
+
+      // Assert: AI message must accumulate tokens (still streaming)
+      final state = container.read(chatNotifierProvider);
+      expect(state.messages.length, greaterThanOrEqualTo(2));
+      final aiMessage = state.messages.last;
+      expect(aiMessage.role, MessageRole.assistant);
+      expect(aiMessage.content, contains('Hello')); // Partial content
+      expect(aiMessage.isStreaming, true); // Still streaming
+
+      // Wait for stream to complete before tearDown
+      await future;
+    });
+
+    test('sendMessageStream marks message complete on DoneEvent', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      fakeRepository.generatedTokens = ['Complete', ' ', 'Response'];
+
+      // Act: Call streaming method and wait for completion
+      await notifier.sendMessageStream('Complete message');
+
+      // Assert: AI message must be marked as complete
+      final state = container.read(chatNotifierProvider);
+      expect(state.messages.length, greaterThanOrEqualTo(2));
+      final aiMessage = state.messages.last;
+      expect(aiMessage.role, MessageRole.assistant);
+      expect(aiMessage.content, 'Complete Response');
+      expect(aiMessage.isStreaming, false); // Streaming finished
+      expect(state.isStreaming, false); // Global streaming flag off
+    });
+
+    test('sendMessageStream handles ErrorEvent', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      fakeRepository.shouldFail = true;
+      fakeRepository.errorMessage = 'Streaming error occurred';
+
+      // Act: Call streaming method that will fail and wait
+      await notifier.sendMessageStream('This will fail');
+
+      // Assert: Error must be captured in state
+      final state = container.read(chatNotifierProvider);
+      expect(state.hasError, true);
+      expect(state.errorMessage, contains('Streaming error occurred'));
+      expect(state.isStreaming, false); // Streaming stopped on error
     });
   });
 }
