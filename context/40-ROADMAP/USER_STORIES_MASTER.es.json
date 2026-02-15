@@ -141,24 +141,31 @@
                         },
                         {
                             "hu_id": "HU-4.4",
-                            "name": "Manejo de Errores y Resilience Gates",
-                            "priority": "Medium",
-                            "estimation": "M",
-                            "branch_name": "feature/error-handling-gates",
+                            "name": "RAG/LLM Resilience Extensions (Completa HU-3.4)",
+                            "priority": "High",
+                            "estimation": "S",
+                            "branch_name": "feature/rag-llm-resilience",
                             "dependencies": [
+                                "HU-3.4",
                                 "HU-4.3"
                             ],
                             "verification_criteria": [
-                                "✅ Retry automático (3x) si Ollama falla.",
-                                "✅ Mensajes de error amigables en UI (No stacktraces).",
-                                "✅ Fallback: Si RAG falla, responde con conocimiento general (graceful degradation).",
-                                "✅ Logs de error estructurados en backend."
+                                "✅ Graceful degradation: Si ChromaDB falla, chat continúa sin contexto RAG (sources=[]).",
+                                "✅ Retry automático (3x) en LLM calls con backoff exponencial (0.5s, 1s, 2s).",
+                                "✅ Timeout 30s en RAG search (asyncio.wait_for).",
+                                "✅ Mensajes de error traducidos para DB_ERR_001, RAG_ERR_001.",
+                                "✅ Log WARNING (no ERROR) cuando RAG se degrada.",
+                                "✅ 16/16 tests passing (7 degradation + 8 retry + 1 frontend).",
+                                "✅ Cobertura: Backend ≥90%, Frontend ≥85%."
                             ],
                             "technical_tasks": [
-                                "Implementar decorador @retry_with_backoff en Python.",
-                                "Crear ErrorMapper en Flutter para códigos HTTP.",
-                                "Diseñar Snackbar persistente para errores críticos."
-                            ]
+                                "Wrap vector_store.search() en try-except con timeout 30s (orchestrator.py).",
+                                "Aplicar @with_retry a ollama_client.generate() y stream_generate().",
+                                "Agregar ChromaDBConnectionError (DB_ERR_001) en exceptions.py.",
+                                "Agregar mensajes ES para DB_ERR_001, RAG_ERR_001 en error_mapper.dart.",
+                                "Crear 7 tests degradation + 8 tests retry + 1 test frontend."
+                            ],
+                            "notes": "Completa 4 GAPS críticos identificados en análisis HU-3.4: (1) Graceful degradation [CRÍTICO], (2) Retry LLM calls [HIGH], (3) Timeout RAG [MEDIUM], (4) Error codes [LOW]."
                         }
                     ]
                 }
