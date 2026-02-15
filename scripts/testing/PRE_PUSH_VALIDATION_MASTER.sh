@@ -159,10 +159,10 @@ run_check "Python Unit Tests" \
     "$PYTHON_TEST_BIN -m pytest tests/server/ -k 'not integration' -q --tb=no 2>/dev/null"
 
 run_check "Flutter Unit Tests" \
-    "(cd tests && flutter test client/unit/ --reporter=compact 2>/dev/null)"
+    "(cd src/client && flutter test ../../tests/client/unit/ --reporter=compact 2>/dev/null)"
 
 run_check "Flutter Widget Tests" \
-    "(cd tests && flutter test client/widget/ --reporter=compact 2>/dev/null) || echo 'No widget tests'"
+    "(cd src/client && flutter test ../../tests/client/widget/ --reporter=compact 2>/dev/null) || echo 'No widget tests'"
 
 ################################################################################
 # 5. INTEGRATION TESTS & PERFORMANCE

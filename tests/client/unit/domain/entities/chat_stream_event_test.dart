@@ -297,9 +297,10 @@ void main() {
     });
 
     test('should support type checking with is operator', () {
-      const event1 = TokenEvent(token: 'Test');
-      const event2 = DoneEvent(fullResponse: 'Done', sources: [], metadata: {});
-      const event3 = ErrorEvent(
+      const ChatStreamEvent event1 = TokenEvent(token: 'Test');
+      const ChatStreamEvent event2 =
+          DoneEvent(fullResponse: 'Done', sources: [], metadata: {});
+      const ChatStreamEvent event3 = ErrorEvent(
         error: 'Error',
         code: 'ERR',
         shouldRetry: false,
