@@ -50,9 +50,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # Testing Tools
-  #mockito: ^5.6.3
-
   # Integration Testing
   integration_test:
     sdk: flutter
@@ -60,13 +57,20 @@ dev_dependencies:
   # Database testing
   sqflite_common_ffi: ^2.3.0
 
-# ============================================================================
-# MONOREPO PATH DEPENDENCIES
-# Link to the main Flutter app for testing
-# ============================================================================
-  flutter_localizations: any
+  # Localization (SDK package)
+  flutter_localizations:
+    sdk: flutter
+
+  # Code highlighting
   flutter_highlighter: any
+
+  # Path utilities
   path: any
+
+# ============================================================================
+# DEPENDENCY OVERRIDES
+# Override dependencies when testing with local packages
+# ============================================================================
 dependency_overrides:
   softarchitect_ai:
     path: ../src/client
