@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 /// Maps backend error codes to localized user-friendly messages.
 ///
 /// Supports i18n/l10n for multi-language error handling.
@@ -138,9 +140,23 @@ class ErrorMapper {
   /// Returns 'es' or 'en' based on system settings.
   /// Falls back to 'es' if locale not supported.
   ///
-  /// TODO(flutter): Use Platform.localeName when targeting desktop/mobile.
-  /// In production: parse Platform.localeName (e.g., 'en_US' → 'en').
-  static String _detectSystemLocale() => 'es'; // Default: Spanish
+  /// Parses Platform.localeName (e.g., 'en_US' → 'en', 'es_ES' → 'es').
+  /// Handles web/unsupported platforms gracefully (fallback to 'es').
+  static String _detectSystemLocale() {
+    try {
+      // Get system locale (e.g., 'en_US', 'es_ES', 'pt_BR')
+      final systemLocale = Platform.localeName;
+
+      // Parse language code (before underscore)
+      final languageCode = systemLocale.split('_').first.toLowerCase();
+
+      // Return if supported, otherwise fallback to Spanish
+      return ['es', 'en'].contains(languageCode) ? languageCode : 'es';
+    } on Exception {
+      // Fallback to Spanish if Platform unavailable (e.g., web target)
+      return 'es';
+    }
+  }
 
   /// Set current locale for error messages.
   ///
