@@ -5,7 +5,7 @@ from uuid import uuid4
 
 import pytest
 
-from app.core.exceptions import LLMConnectionError, RAGRetrievalError
+from app.core.exceptions import LLMConnectionError
 from app.domain.schemas.chat import ChatRequest, ChatResponse
 from app.services.rag.orchestrator import RAGOrchestrator
 
@@ -130,13 +130,18 @@ class TestRAGOrchestrator:
             await orchestrator.process_message(request)
 
     @pytest.mark.asyncio
-    async def test_orchestrator_vector_failure_raises_exception(
+    async def test_orchestrator_vector_failure_degrades_gracefully(
         self,
         mock_vector_store,
         mock_template_builder,
         mock_llm_client,
     ):
-        """Vector store failure: Should raise RAGRetrievalError."""
+        """Vector store failure: Should degrade gracefully (HU-4.4 GAP 1).
+
+        After implementing graceful degradation, ChromaDB failures no longer
+        raise RAGRetrievalError. Instead, the system continues with empty
+        sources and FALLBACK template, ensuring 100% availability.
+        """
         mock_vector_store.search.side_effect = Exception("ChromaDB connection failed")
 
         orchestrator = RAGOrchestrator(
@@ -151,5 +156,11 @@ class TestRAGOrchestrator:
             project_id=uuid4(),
         )
 
-        with pytest.raises(RAGRetrievalError):
-            await orchestrator.process_message(request)
+        # Should NOT raise exception, should complete successfully
+        response = await orchestrator.process_message(request)
+
+        # Verify graceful degradation behavior
+        assert isinstance(response, ChatResponse)
+        assert response.sources == []  # Empty sources due to ChromaDB failure
+        assert response.template_used == "FALLBACK"  # Fallback template used
+        assert response.ai_response is not None  # LLM still generated response
