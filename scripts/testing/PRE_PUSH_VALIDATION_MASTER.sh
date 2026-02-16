@@ -21,7 +21,7 @@
 # ✅ WHAT THIS SCRIPT VALIDATES:
 #   1. Code Formatting (Black, Dart format)
 #   2. Linting (Ruff, Dart analysis, Security S-codes)
-#   3. Type Checking (Pyright optional, Dart required)
+#   3. Type Checking (Pyright + Dart required)
 #   4. Unit Tests (Python ≥80% coverage, Flutter all)
 #   5. Integration Tests (Python, Flutter, E2E)
 #   6. Security Audit (Bandit, SQL injection patterns)
@@ -137,6 +137,7 @@ echo -e "${BOLD}Project Root:${NC} $PROJECT_ROOT"
 echo -e "${BOLD}Timestamp:${NC} $(date '+%Y-%m-%d %H:%M:%S')"
 echo -e "${BOLD}Branch:${NC} $(git symbolic-ref --short HEAD 2>/dev/null || echo 'unknown')"
 echo -e "${BOLD}Python venv:${NC} $PYTHON_VENV"
+echo -e "${YELLOW}⏱️  Estimated time: 4-5 minutes (includes coverage generation)${NC}"
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -152,6 +153,17 @@ fi
 
 if ! command -v flutter &> /dev/null; then
     echo -e "${YELLOW}⚠️  WARNING: Flutter not found - Flutter tests will be skipped${NC}"
+fi
+
+# Install Pyright if not available (required for type checking)
+if ! "$PYTHON_TEST_BIN" -m pyright --version &> /dev/null; then
+    echo -e "${YELLOW}⏳ Installing Pyright (required for type checking)...${NC}"
+    "$PYTHON_TEST_BIN" -m pip install -q pyright
+fi
+
+# Install lcov if not available (required for Flutter coverage)
+if ! command -v lcov &> /dev/null; then
+    echo -e "${YELLOW}⚠️  WARNING: lcov not found - install with: sudo apt install lcov${NC}"
 fi
 
 echo -e "${GREEN}✅ Requirements OK${NC}"
@@ -175,14 +187,14 @@ run_check "Dart formatting" \
 
 print_header "PHASE 2️⃣: LINTING & CODE QUALITY"
 
-run_optional_check "Ruff (Python linting)" \
-    "(command -v ruff >/dev/null 2>&1 && ruff check src/server/) || ($PYTHON_TEST_BIN -m ruff check src/server/)"
+run_check "Ruff (Python linting)" \
+    "$PYTHON_TEST_BIN -m ruff check src/server/"
 
 run_check "Dart analysis" \
     "dart analyze src/client/ 2>/dev/null"
 
-run_optional_check "Ruff security codes (S-codes)" \
-    "(command -v ruff >/dev/null 2>&1 && ruff check --select S src/server/) || ($PYTHON_TEST_BIN -m ruff check --select S src/server/)"
+run_check "Ruff security codes (S-codes)" \
+    "$PYTHON_TEST_BIN -m ruff check --select S src/server/"
 
 ################################################################################
 # 3. TYPE CHECKING
@@ -190,7 +202,7 @@ run_optional_check "Ruff security codes (S-codes)" \
 
 print_header "PHASE 3️⃣: TYPE CHECKING"
 
-run_optional_check "Pyright (Python type checking)" \
+run_check "Pyright (Python type checking)" \
     "$PYTHON_SERVER_BIN -m pyright src/server/services src/server/core"
 
 run_check "Dart type checking" \
@@ -240,8 +252,8 @@ print_header "PHASE 6️⃣: SECURITY AUDIT"
 run_check "Bandit (Python security)" \
     "$PYTHON_TEST_BIN -m bandit -r src/server/services src/server/core -q 2>/dev/null"
 
-run_optional_check "SQL Injection Protection" \
-    "find tests/server -type f -name '*security*.py' | grep -q . && $PYTHON_TEST_BIN -m pytest tests/server -k 'sql or injection or security' -q --tb=no"
+run_check "SQL Injection Protection" \
+    "$PYTHON_TEST_BIN -m pytest tests/server -k 'sql or injection or security' -q --tb=no 2>/dev/null"
 
 ################################################################################
 # 7. CODE COVERAGE
@@ -290,25 +302,37 @@ fi
 TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
 
 print_step "Flutter Coverage Analysis"
-if command -v lcov >/dev/null 2>&1; then
-    rm -f "$PROJECT_ROOT/src/client/coverage/lcov.info"
+echo -e "${YELLOW}⏳ Generating Flutter coverage report...${NC}"
+rm -rf "$PROJECT_ROOT/src/client/coverage"
+if command -v flutter >/dev/null 2>&1; then
+    # Generate coverage from client directory (Flutter project root)
     if (cd "$PROJECT_ROOT/src/client" && flutter test ../../tests/client/ --coverage >/tmp/flutter_cov.out 2>&1); then
         if [ -f "$PROJECT_ROOT/src/client/coverage/lcov.info" ]; then
-            FLUTTER_COVERAGE=$(awk -F: '/^LF:/{lf+=$2} /^LH:/{lh+=$2} END{if(lf>0) printf "%.1f", (lh/lf)*100; else print ""}' "$PROJECT_ROOT/src/client/coverage/lcov.info")
-            if [ -n "$FLUTTER_COVERAGE" ]; then
-                print_success "Flutter Coverage: ${FLUTTER_COVERAGE}%"
+            if command -v lcov >/dev/null 2>&1; then
+                FLUTTER_COVERAGE=$(lcov --summary "$PROJECT_ROOT/src/client/coverage/lcov.info" 2>&1 | grep -oP 'lines\.*: \K\d+\.\d+(?=%)')
+                if [ -n "$FLUTTER_COVERAGE" ]; then
+                    FLUTTER_COVERAGE_INT=$(LC_NUMERIC=C printf "%.0f" "$FLUTTER_COVERAGE")
+                    if [ "$FLUTTER_COVERAGE_INT" -ge 80 ]; then
+                        print_success "Flutter Coverage: ${FLUTTER_COVERAGE}% (≥80%)"
+                    else
+                        print_fail "Flutter Coverage: ${FLUTTER_COVERAGE}% (<80%)"
+                    fi
+                else
+                    print_fail "Flutter Coverage: Could not parse coverage percentage"
+                fi
             else
-                print_fail "Flutter Coverage: lcov has no executable lines"
+                echo -e "${YELLOW}⚠️  lcov not installed - cannot calculate coverage percentage${NC}"
+                echo -e "${YELLOW}   Install with: sudo apt install lcov${NC}"
+                print_fail "Flutter Coverage: lcov required but not installed"
             fi
         else
-            print_fail "Flutter Coverage: lcov.info not found"
+            print_fail "Flutter Coverage: lcov.info not generated"
         fi
     else
         print_fail "Flutter Coverage: test execution failed"
     fi
 else
-    echo -e "${YELLOW}⚠️  Flutter Coverage Analysis (optional - lcov not installed)${NC}"
-    PASSED_CHECKS=$((PASSED_CHECKS + 1))
+    print_fail "Flutter Coverage: flutter not installed"
 fi
 
 TOTAL_CHECKS=$((TOTAL_CHECKS + 1))

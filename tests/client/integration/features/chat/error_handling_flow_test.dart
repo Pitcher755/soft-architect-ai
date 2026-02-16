@@ -45,7 +45,7 @@ void main() {
       // Assert: Verify error displayed with Spanish message and suggestion
       expect(find.textContaining('inválido'), findsWidgets);
       expect(find.textContaining('💡'), findsOneWidget);
-      expect(find.textContaining('Intenta generar'), findsOneWidget);
+      expect(find.textContaining('Regenera el documento'), findsOneWidget);
 
       // Verify snackbar displayed (no icon check since styling may vary)
       expect(find.byType(SnackBar), findsOneWidget);
