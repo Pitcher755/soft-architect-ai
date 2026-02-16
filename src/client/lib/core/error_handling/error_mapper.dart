@@ -1,92 +1,280 @@
-/// Maps backend error codes to user-friendly Spanish messages.
+/// Maps backend error codes to localized user-friendly messages.
 ///
-/// This class provides localized error messages and actionable suggestions
-/// for error codes returned by the backend API. All messages are in Spanish
-/// and avoid technical jargon.
+/// Supports i18n/l10n for multi-language error handling.
+/// Current implementation: Spanish (es) - primary language.
+/// Future: Add English (en), Portuguese (pt), etc.
 ///
 /// Example:
 /// ```dart
-/// final mapper = ErrorMapper();
-/// final message = mapper.getUserMessage('SYS_001');
-/// // Returns: "🔌 No hay conexión con el servidor local"
+/// final message = ErrorMapper.getUserMessage('SYS_001');
+/// // Returns: "🔌 No connection to local server"
 /// ```
 class ErrorMapper {
-  /// Error code to message mapping.
-  static const Map<String, String> _messages = {
+  /// Error messages in Spanish (es).
+  static const Map<String, String> _messagesEs = {
     // System Errors
-    'SYS_001': '🔌 No hay conexión con el servidor local',
-    'SYS_002': '💾 La memoria de tu tarjeta gráfica está llena',
-    'SYS_RETRY_EXHAUSTED': '⏱️ La operación falló después de varios intentos',
+    'SYS_001': '🔌 Sin conexión al servidor local',
+    'SYS_002': '💾 Tu tarjeta gráfica está sin memoria disponible',
+    'SYS_RETRY_EXHAUSTED': '⏱️ Operación falló tras reintentos',
 
     // Authentication Errors
-    'AUTH_001': '🔑 Falta la clave de API de Groq Cloud',
+    'AUTH_001': '🔑 Falta clave API de Groq Cloud',
 
     // RAG Errors
-    'RAG_001': '📚 La base de conocimiento está vacía',
-    'RAG_002': '💬 La conversación es demasiado larga',
+    'RAG_001': '📚 Tu base de conocimiento está vacía',
+    'RAG_002': '💬 Conversación demasiado larga',
+
+    // Database errors (HU-4.4 GAP 4)
+    'DB_ERR_001':
+        '🗄️ Base de datos no disponible. '
+        'Continuando con conocimiento general.',
+
+    // RAG/LLM errors (HU-4.4 GAP 4)
+    'RAG_ERR_001':
+        '🔍 Búsqueda de contexto falló. '
+        'Usando respuesta general.',
 
     // Validation Errors
     'VAL_001': '📝 El documento generado es inválido (muy corto)',
-    'VAL_002': '📝 El documento tiene formato Markdown incorrecto',
-    'VAL_003': '📝 El documento tiene problemas de codificación',
-    'VAL_004': '⚠️ El documento contiene contenido sospechoso',
-    'VAL_005': '📦 El documento es demasiado grande',
+    'VAL_002': '📝 Formato Markdown incorrecto',
+    'VAL_003': '📝 Problemas de codificación',
+    'VAL_004': '⚠️ Contenido sospechoso detectado',
+    'VAL_005': '📦 Documento demasiado grande',
 
     // WebSocket Streaming Errors
-    'WS_CONNECTION_FAILED':
-        '🔌 No se pudo conectar al streaming en tiempo real',
-    'WS_STREAM_FAILED': '📡 Falló la transmisión de tokens',
-    'WS_STREAM_ERROR': '⚠️ Error durante el streaming',
-    'WS_RECONNECTION_FAILED': '🔄 No se pudo reconectar al servidor',
+    'WS_CONNECTION_FAILED': '🔌 Conexión streaming falló',
+    'WS_STREAM_FAILED': '📡 Transmisión de tokens falló',
+    'WS_STREAM_ERROR': '⚠️ Error durante streaming',
+    'WS_RECONNECTION_FAILED': '🔄 Reconexión falló',
   };
 
-  /// Suggestions for each error code.
-  static const Map<String, String> _suggestions = {
-    'SYS_001': 'Verifica que Docker esté ejecutándose',
-    'SYS_002': 'Cierra otros programas o cambia a modo Cloud',
-    'SYS_RETRY_EXHAUSTED': 'Intenta nuevamente en unos momentos',
+  /// Error suggestions in Spanish (es).
+  static const Map<String, String> _suggestionsEs = {
+    'SYS_001': 'Verifica que Docker esté activo',
+    'SYS_002': 'Cierra apps o usa modo Cloud',
+    'SYS_RETRY_EXHAUSTED': 'Intenta en unos momentos',
     'AUTH_001': 'Ve a Configuración y agrega tu clave de API',
-    'RAG_001': 'Ejecuta "Cargar Base de Conocimiento"',
-    'RAG_002': 'Inicia una nueva conversación',
-    'VAL_001': 'Intenta generar el documento nuevamente',
-    'VAL_002': 'Revisa la estructura del documento',
-    'VAL_003': 'Asegúrate de usar texto en UTF-8',
-    'VAL_004': 'Contacta al soporte si el problema persiste',
-    'VAL_005': 'Reduce el tamaño del documento',
-    'WS_CONNECTION_FAILED': 'Verifica que el servidor local esté activo',
-    'WS_STREAM_FAILED': 'Intenta generar nuevamente',
-    'WS_STREAM_ERROR': 'Reinicia la conexión de streaming',
-    'WS_RECONNECTION_FAILED': 'Revisa tu red y vuelve a intentar',
+    'RAG_001': 'Carga Base de Conocimiento',
+    'RAG_002': 'Inicia nueva conversación',
+    'DB_ERR_001': 'Sistema funciona sin contexto',
+    'RAG_ERR_001': 'IA responde sin contexto',
+    'VAL_001': 'Regenera el documento',
+    'VAL_002': 'Revisa estructura Markdown',
+    'VAL_003': 'Usa texto en UTF-8',
+    'VAL_004': 'Contacta soporte',
+    'VAL_005': 'Reduce tamaño del documento',
+    'WS_CONNECTION_FAILED': 'Verifica servidor local',
+    'WS_STREAM_FAILED': 'Genera nuevamente',
+    'WS_STREAM_ERROR': 'Reinicia streaming',
+    'WS_RECONNECTION_FAILED': 'Revisa red e intenta',
   };
 
-  /// Get user-friendly message for error code.
-  ///
-  /// Returns a localized Spanish message for the given error code.
-  /// If the error code is unknown, returns a generic error message.
-  static String getUserMessage(String errorCode) =>
-      _messages[errorCode] ?? '🤔 Ocurrió un error ($errorCode)';
+  /// Error messages in English (en).
+  static const Map<String, String> _messagesEn = {
+    // System Errors
+    'SYS_001': '🔌 No connection to local server',
+    'SYS_002': '💾 Your GPU is out of memory',
+    'SYS_RETRY_EXHAUSTED': '⏱️ Operation failed after retries',
 
-  /// Get actionable suggestion for error code.
-  ///
-  /// Returns a localized Spanish suggestion for resolving the error.
-  /// If the error code is unknown, returns a generic suggestion.
-  static String getSuggestion(String errorCode) =>
-      _suggestions[errorCode] ?? 'Intenta nuevamente o contacta al soporte';
+    // Authentication Errors
+    'AUTH_001': '🔑 Missing Groq Cloud API key',
 
-  /// Check if error is retryable.
+    // RAG Errors
+    'RAG_001': '📚 Your knowledge base is empty',
+    'RAG_002': '💬 Conversation too long',
+
+    // Database errors (HU-4.4 GAP 4)
+    'DB_ERR_001':
+        '🗄️ Database unavailable. '
+        'Continuing with general knowledge.',
+
+    // RAG/LLM errors (HU-4.4 GAP 4)
+    'RAG_ERR_001':
+        '🔍 Context search failed. '
+        'Using general response.',
+
+    // Validation Errors
+    'VAL_001': '📝 Generated document invalid (too short)',
+    'VAL_002': '📝 Incorrect Markdown format',
+    'VAL_003': '📝 Encoding issues',
+    'VAL_004': '⚠️ Suspicious content detected',
+    'VAL_005': '📦 Document too large',
+
+    // WebSocket Streaming Errors
+    'WS_CONNECTION_FAILED': '🔌 Streaming connection failed',
+    'WS_STREAM_FAILED': '📡 Token transmission failed',
+    'WS_STREAM_ERROR': '⚠️ Error during streaming',
+    'WS_RECONNECTION_FAILED': '🔄 Reconnection failed',
+  };
+
+  /// Error suggestions in English (en).
+  static const Map<String, String> _suggestionsEn = {
+    'SYS_001': 'Check that Docker is running',
+    'SYS_002': 'Close apps or use Cloud mode',
+    'SYS_RETRY_EXHAUSTED': 'Try again in a moment',
+    'AUTH_001': 'Go to Settings and add your API key',
+    'RAG_001': 'Load Knowledge Base',
+    'RAG_002': 'Start new conversation',
+    'DB_ERR_001': 'System works without context',
+    'RAG_ERR_001': 'AI responds without context',
+    'VAL_001': 'Regenerate document',
+    'VAL_002': 'Check Markdown structure',
+    'VAL_003': 'Use UTF-8 text',
+    'VAL_004': 'Contact support',
+    'VAL_005': 'Reduce document size',
+    'WS_CONNECTION_FAILED': 'Check local server',
+    'WS_STREAM_FAILED': 'Generate again',
+    'WS_STREAM_ERROR': 'Restart streaming',
+    'WS_RECONNECTION_FAILED': 'Check network and retry',
+  };
+
+  /// Error messages in Portuguese (pt).
+  static const Map<String, String> _messagesPt = {
+    // System Errors
+    'SYS_001': '🔌 Sem conexão com servidor local',
+    'SYS_002': '💾 Sua GPU está sem memória',
+    'SYS_RETRY_EXHAUSTED': '⏱️ Operação falhou após tentativas',
+
+    // Authentication Errors
+    'AUTH_001': '🔑 Falta chave API do Groq Cloud',
+
+    // RAG Errors
+    'RAG_001': '📚 Sua base de conhecimento está vazia',
+    'RAG_002': '💬 Conversa muito longa',
+
+    // Database errors (HU-4.4 GAP 4)
+    'DB_ERR_001':
+        '🗄️ Banco de dados indisponível. '
+        'Continuando com conhecimento geral.',
+
+    // RAG/LLM errors (HU-4.4 GAP 4)
+    'RAG_ERR_001':
+        '🔍 Busca de contexto falhou. '
+        'Usando resposta geral.',
+
+    // Validation Errors
+    'VAL_001': '📝 Documento gerado inválido (muito curto)',
+    'VAL_002': '📝 Formato Markdown incorreto',
+    'VAL_003': '📝 Problemas de codificação',
+    'VAL_004': '⚠️ Conteúdo suspeito detectado',
+    'VAL_005': '📦 Documento muito grande',
+
+    // WebSocket Streaming Errors
+    'WS_CONNECTION_FAILED': '🔌 Conexão streaming falhou',
+    'WS_STREAM_FAILED': '📡 Transmissão de tokens falhou',
+    'WS_STREAM_ERROR': '⚠️ Erro durante streaming',
+    'WS_RECONNECTION_FAILED': '🔄 Reconexão falhou',
+  };
+
+  /// Error suggestions in Portuguese (pt).
+  static const Map<String, String> _suggestionsPt = {
+    'SYS_001': 'Verifique se o Docker está ativo',
+    'SYS_002': 'Feche apps ou use modo Cloud',
+    'SYS_RETRY_EXHAUSTED': 'Tente novamente em instantes',
+    'AUTH_001': 'Vá em Configurações e adicione sua chave API',
+    'RAG_001': 'Carregue Base de Conhecimento',
+    'RAG_002': 'Inicie nova conversa',
+    'DB_ERR_001': 'Sistema funciona sem contexto',
+    'RAG_ERR_001': 'IA responde sem contexto',
+    'VAL_001': 'Regenere o documento',
+    'VAL_002': 'Revise estrutura Markdown',
+    'VAL_003': 'Use texto em UTF-8',
+    'VAL_004': 'Contate suporte',
+    'VAL_005': 'Reduza tamanho do documento',
+    'WS_CONNECTION_FAILED': 'Verifique servidor local',
+    'WS_STREAM_FAILED': 'Gere novamente',
+    'WS_STREAM_ERROR': 'Reinicie streaming',
+    'WS_RECONNECTION_FAILED': 'Verifique rede e tente',
+  };
+
+  /// Current locale (default: Spanish).
+  /// TODO(platform): Detect from system in production.
+  static String _currentLocale = 'es';
+
+  /// Set current locale for error messages.
   ///
-  /// Returns true if the error can be retried by the user.
-  /// Retryable errors are typically transient (network, resources).
-  /// Non-retryable errors require user action (authentication, validation).
+  /// Supported: 'es', 'en', 'pt'.
+  static void setLocale(String locale) {
+    if (['es', 'en', 'pt'].contains(locale)) {
+      _currentLocale = locale;
+    }
+  }
+
+  /// Get current locale.
+  static String getLocale() => _currentLocale;
+
+  /// Get messages map for current locale.
+  static Map<String, String> get _messages {
+    switch (_currentLocale) {
+      case 'en':
+        return _messagesEn;
+      case 'pt':
+        return _messagesPt;
+      case 'es':
+      default:
+        return _messagesEs;
+    }
+  }
+
+  /// Get suggestions map for current locale.
+  static Map<String, String> get _suggestions {
+    switch (_currentLocale) {
+      case 'en':
+        return _suggestionsEn;
+      case 'pt':
+        return _suggestionsPt;
+      case 'es':
+      default:
+        return _suggestionsEs;
+    }
+  }
+
+  /// Get localized message for error code.
+  ///
+  /// Returns user-friendly message in current locale.
+  /// Falls back to generic message if code unknown.
+  static String getUserMessage(String errorCode) {
+    final defaultMsg = _currentLocale == 'en'
+        ? '🤔 Unknown error ($errorCode)'
+        : _currentLocale == 'pt'
+        ? '🤔 Erro desconhecido ($errorCode)'
+        : '🤔 error desconocido ($errorCode)';
+    return _messages[errorCode] ?? defaultMsg;
+  }
+
+  /// Get localized suggestion for error code.
+  ///
+  /// Returns actionable suggestion in current locale.
+  /// Falls back to generic suggestion if code unknown.
+  static String getSuggestion(String errorCode) {
+    final defaultSuggestion = _currentLocale == 'en'
+        ? 'Try again or contact support'
+        : _currentLocale == 'pt'
+        ? 'Tente novamente ou contate suporte'
+        : 'Intenta o contacta soporte';
+    return _suggestions[errorCode] ?? defaultSuggestion;
+  }
+
+  /// Check if error is retryable by user.
+  ///
+  /// Retryable: transient (network, resources).
+  /// Non-retryable: require action (auth, validation).
   static bool isRetryable(String errorCode) => [
-    'SYS_001', // Connection error
-    'SYS_002', // Out of memory
-    'SYS_RETRY_EXHAUSTED', // Retry exhausted
-    'RAG_001', // Empty knowledge base
-    'VAL_001', // Document too short (regenerate)
-    'VAL_002', // Invalid Markdown (regenerate)
-    'WS_CONNECTION_FAILED', // Streaming connection error
-    'WS_STREAM_FAILED', // Token stream failed
-    'WS_RECONNECTION_FAILED', // Reconnection failed
+    'SYS_001', // Connection
+    'SYS_002', // OOM
+    'SYS_RETRY_EXHAUSTED', // Retry
+    'RAG_001', // Empty KB
+    'VAL_001', // Short doc
+    'VAL_002', // Invalid MD
+    'WS_CONNECTION_FAILED', // Streaming
+    'WS_STREAM_FAILED', // Tokens
+    'WS_RECONNECTION_FAILED', // Reconnect
   ].contains(errorCode);
+
+  /// Check if error indicates graceful degradation.
+  ///
+  /// Used for snackbar severity (warning vs error).
+  /// System continues with reduced functionality.
+  static bool isGracefulDegradation(String errorCode) =>
+      errorCode == 'DB_ERR_001' || errorCode == 'RAG_ERR_001';
 }
