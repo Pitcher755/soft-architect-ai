@@ -137,12 +137,10 @@ class ErrorMapper {
   ///
   /// Returns 'es' or 'en' based on system settings.
   /// Falls back to 'es' if locale not supported.
-  static String _detectSystemLocale() {
-    // TODO(flutter): Use Platform.localeName when targeting desktop/mobile
-    // For now, return default Spanish locale
-    // In production: parse Platform.localeName (e.g., 'en_US' → 'en')
-    return 'es'; // Default: Spanish
-  }
+  ///
+  /// TODO(flutter): Use Platform.localeName when targeting desktop/mobile.
+  /// In production: parse Platform.localeName (e.g., 'en_US' → 'en').
+  static String _detectSystemLocale() => 'es'; // Default: Spanish
 
   /// Set current locale for error messages.
   ///
