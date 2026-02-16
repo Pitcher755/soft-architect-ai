@@ -128,74 +128,15 @@ class ErrorMapper {
     'WS_RECONNECTION_FAILED': 'Check network and retry',
   };
 
-  /// Error messages in Portuguese (pt).
-  static const Map<String, String> _messagesPt = {
-    // System Errors
-    'SYS_001': '🔌 Sem conexão com servidor local',
-    'SYS_002': '💾 Sua GPU está sem memória',
-    'SYS_RETRY_EXHAUSTED': '⏱️ Operação falhou após tentativas',
-
-    // Authentication Errors
-    'AUTH_001': '🔑 Falta chave API do Groq Cloud',
-
-    // RAG Errors
-    'RAG_001': '📚 Sua base de conhecimento está vazia',
-    'RAG_002': '💬 Conversa muito longa',
-
-    // Database errors (HU-4.4 GAP 4)
-    'DB_ERR_001':
-        '🗄️ Banco de dados indisponível. '
-        'Continuando com conhecimento geral.',
-
-    // RAG/LLM errors (HU-4.4 GAP 4)
-    'RAG_ERR_001':
-        '🔍 Busca de contexto falhou. '
-        'Usando resposta geral.',
-
-    // Validation Errors
-    'VAL_001': '📝 Documento gerado inválido (muito curto)',
-    'VAL_002': '📝 Formato Markdown incorreto',
-    'VAL_003': '📝 Problemas de codificação',
-    'VAL_004': '⚠️ Conteúdo suspeito detectado',
-    'VAL_005': '📦 Documento muito grande',
-
-    // WebSocket Streaming Errors
-    'WS_CONNECTION_FAILED': '🔌 Conexão streaming falhou',
-    'WS_STREAM_FAILED': '📡 Transmissão de tokens falhou',
-    'WS_STREAM_ERROR': '⚠️ Erro durante streaming',
-    'WS_RECONNECTION_FAILED': '🔄 Reconexão falhou',
-  };
-
-  /// Error suggestions in Portuguese (pt).
-  static const Map<String, String> _suggestionsPt = {
-    'SYS_001': 'Verifique se o Docker está ativo',
-    'SYS_002': 'Feche apps ou use modo Cloud',
-    'SYS_RETRY_EXHAUSTED': 'Tente novamente em instantes',
-    'AUTH_001': 'Vá em Configurações e adicione sua chave API',
-    'RAG_001': 'Carregue Base de Conhecimento',
-    'RAG_002': 'Inicie nova conversa',
-    'DB_ERR_001': 'Sistema funciona sem contexto',
-    'RAG_ERR_001': 'IA responde sem contexto',
-    'VAL_001': 'Regenere o documento',
-    'VAL_002': 'Revise estrutura Markdown',
-    'VAL_003': 'Use texto em UTF-8',
-    'VAL_004': 'Contate suporte',
-    'VAL_005': 'Reduza tamanho do documento',
-    'WS_CONNECTION_FAILED': 'Verifique servidor local',
-    'WS_STREAM_FAILED': 'Gere novamente',
-    'WS_STREAM_ERROR': 'Reinicie streaming',
-    'WS_RECONNECTION_FAILED': 'Verifique rede e tente',
-  };
-
   /// Current locale (default: Spanish).
   /// TODO(platform): Detect from system in production.
   static String _currentLocale = 'es';
 
   /// Set current locale for error messages.
   ///
-  /// Supported: 'es', 'en', 'pt'.
+  /// Supported: 'es', 'en'.
   static void setLocale(String locale) {
-    if (['es', 'en', 'pt'].contains(locale)) {
+    if (['es', 'en'].contains(locale)) {
       _currentLocale = locale;
     }
   }
@@ -208,8 +149,6 @@ class ErrorMapper {
     switch (_currentLocale) {
       case 'en':
         return _messagesEn;
-      case 'pt':
-        return _messagesPt;
       case 'es':
       default:
         return _messagesEs;
@@ -221,8 +160,6 @@ class ErrorMapper {
     switch (_currentLocale) {
       case 'en':
         return _suggestionsEn;
-      case 'pt':
-        return _suggestionsPt;
       case 'es':
       default:
         return _suggestionsEs;
@@ -236,8 +173,6 @@ class ErrorMapper {
   static String getUserMessage(String errorCode) {
     final defaultMsg = _currentLocale == 'en'
         ? '🤔 Unknown error ($errorCode)'
-        : _currentLocale == 'pt'
-        ? '🤔 Erro desconhecido ($errorCode)'
         : '🤔 error desconocido ($errorCode)';
     return _messages[errorCode] ?? defaultMsg;
   }
@@ -249,8 +184,6 @@ class ErrorMapper {
   static String getSuggestion(String errorCode) {
     final defaultSuggestion = _currentLocale == 'en'
         ? 'Try again or contact support'
-        : _currentLocale == 'pt'
-        ? 'Tente novamente ou contate suporte'
         : 'Intenta o contacta soporte';
     return _suggestions[errorCode] ?? defaultSuggestion;
   }
