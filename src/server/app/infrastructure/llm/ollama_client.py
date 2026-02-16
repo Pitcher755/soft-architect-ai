@@ -16,6 +16,7 @@ from app.core.exceptions import (
     LLMStreamError,
     LLMTimeoutError,
 )
+from app.core.retry import with_retry
 from app.infrastructure.llm.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
@@ -79,60 +80,64 @@ class OllamaClient(BaseLLMClient):
 
         return str(generated_text)
 
+    @with_retry(
+        max_retries=3,
+        base_delay=0.5,
+        retryable_exceptions=(httpx.RequestError, httpx.TimeoutException),
+    )
     async def generate(
         self,
         prompt: str,
         max_tokens: int | None = None,
         temperature: float | None = None,
     ) -> str:
+        """
+        Generate LLM response with retry logic (HU-4.4 GAP 2).
+
+        Retry behavior:
+        - Max 3 retries on network errors (httpx.RequestError, TimeoutException)
+        - Exponential backoff: 0.5s, 1.0s, 2.0s
+        - Logs WARNING on each retry, INFO on success after retry
+
+        Args:
+            prompt: The prompt to send to LLM
+            max_tokens: Maximum tokens in response
+            temperature: LLM temperature (0.0-1.0)
+
+        Returns:
+            Generated text from LLM
+
+        Raises:
+            httpx.RequestError: After 3 failed retries
+            httpx.TimeoutException: After 3 failed retries
+            LLM ConnectionError: Non-retryable errors (HTTP status errors)
+        """
         endpoint = f"{self.base_url}/api/generate"
         payload = self._build_payload(prompt, max_tokens, temperature)
 
-        try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.post(endpoint, json=payload)
+        async with httpx.AsyncClient(timeout=self.timeout) as client:
+            response = await client.post(endpoint, json=payload)
 
-                generated_text = await self._extract_generated_text(response)
-                logger.debug(f"Ollama generated {len(generated_text)} chars")
-                return generated_text
+            generated_text = await self._extract_generated_text(response)
+            logger.debug(f"Ollama generated {len(generated_text)} chars")
+            return generated_text
 
-        except httpx.TimeoutException as error:
-            logger.error(f"Ollama timeout: {error}")
-            raise LLMTimeoutError(
-                message=f"Ollama request timeout after {self.timeout}s",
-                details={"timeout": self.timeout},
-            ) from error
-
-        except httpx.RequestError as error:
-            logger.error(f"Ollama connection error: {error}")
-            raise LLMConnectionError(
-                message=f"Failed to connect to Ollama at {self.base_url}",
-                details={"error": str(error)},
-            ) from error
-
-        except (ValueError, KeyError) as error:
-            logger.error(f"Ollama invalid response: {error}")
-            raise LLMConnectionError(
-                message="Ollama returned invalid JSON response",
-                details={"error": str(error)},
-            ) from error
-
-        except (LLMConnectionError, LLMTimeoutError):
-            raise
-
-        except Exception as error:
-            logger.error(f"Ollama unexpected error: {error}")
-            raise LLMConnectionError(
-                message=f"Ollama unexpected failure: {error}",
-                details={"error": str(error)},
-            ) from error
-
+    @with_retry(
+        max_retries=3,
+        base_delay=0.5,
+        retryable_exceptions=(httpx.RequestError, httpx.TimeoutException),
+    )
     async def stream_generate(  # noqa: C901
         self,
         prompt: str,
         max_tokens: int | None = None,
         temperature: float | None = None,
     ) -> AsyncGenerator[str, None]:
+        """
+        Stream LLM response with retry logic (HU-4.4 GAP 2).
+
+        Same retry behavior as generate().
+        """
         """
         Generate streaming response from Ollama, yielding tokens progressively.
 
