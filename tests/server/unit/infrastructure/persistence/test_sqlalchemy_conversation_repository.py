@@ -21,7 +21,10 @@ from app.infrastructure.persistence.repositories.sqlalchemy_conversation_reposit
 async def test_create_conversation_success():
     """Test creating conversation successfully."""
     # Arrange
+    # FIXED: session.add() is sync, commit() is async (hybrid mock)
     mock_session = AsyncMock()
+    mock_session.add = MagicMock()  # sync method
+    mock_session.commit = AsyncMock()  # async method
     repository = SQLAlchemyConversationRepository(mock_session)
     project_id = uuid4()
     title = "Test Conversation"

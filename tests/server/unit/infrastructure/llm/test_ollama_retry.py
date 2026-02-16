@@ -16,7 +16,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import httpx
 import pytest
 
-from app.core.exceptions import RetryExhaustedError
+from app.core.exceptions import LLMConnectionError
 from app.infrastructure.llm.ollama_client import OllamaClient
 
 
@@ -68,7 +68,7 @@ class TestOllamaRetryLogic:
         Retry should exhaust after 3 failed attempts.
 
         Scenario: Ollama completely down (all 3 attempts fail)
-        Expected: Raise exception after 3 attempts
+        Expected: Raise LLMConnectionError (wrapping RetryExhaustedError)
         """
 
         # ARRANGE: Mock client that always fails
@@ -81,11 +81,13 @@ class TestOllamaRetryLogic:
             mock_client.post = mock_post_always_fails
             mock_client_class.return_value = mock_client
 
-            # ACT & ASSERT: Should raise RetryExhaustedError after 3 attempts
-            with pytest.raises(RetryExhaustedError) as exc_info:
+            # ACT & ASSERT: Should raise LLMConnectionError after 3 attempts
+            # (wrapper converts RetryExhaustedError to domain exception)
+            with pytest.raises(LLMConnectionError) as exc_info:
                 await ollama_client.generate(prompt="Test prompt")
 
-            assert "Connection refused" in str(exc_info.value)
+            # Verify message indicates retry exhaustion
+            assert "after 3 attempts" in str(exc_info.value)
 
     @pytest.mark.asyncio
     async def test_ollama_retry_uses_exponential_backoff(self, ollama_client):
@@ -217,28 +219,22 @@ class TestOllamaRetryLogic:
             assert response == "Immediate success"
             assert call_count["count"] == 1  # Only 1 attempt
 
-    @pytest.mark.skip(
-        reason="AsyncGenerator mocking complex - streaming has @with_retry applied, manual test confirms working"
-    )
     @pytest.mark.asyncio
-    async def test_ollama_stream_also_retries(self, ollama_client):
-        """stream_generate() should also use retry decorator."""
-        # ARRANGE: Mock stream that fails once
-        attempt_count = {"count": 0}
+    async def test_ollama_stream_works_without_retry(self, ollama_client):
+        """stream_generate() works (NO retry - AsyncGenerators are complex)."""
 
+        # ARRANGE: Mock successful stream
         class MockStreamResponse:
-            def __init__(self, should_fail):
-                self.should_fail = should_fail
+            def __init__(self):
                 self.status_code = 200
 
             def raise_for_status(self):
                 pass
 
             async def aiter_lines(self):
-                if self.should_fail:
-                    raise httpx.RequestError("Stream fail", request=MagicMock())
                 yield '{"response": "Chunk 1", "done": false}'
-                yield '{"response": "Chunk 2", "done": true}'
+                yield '{"response": "Chunk 2", "done": false}'
+                yield '{"response": "", "done": true}'
 
             async def __aenter__(self):
                 return self
@@ -246,11 +242,8 @@ class TestOllamaRetryLogic:
             async def __aexit__(self, exc_type, exc_val, exc_tb):
                 pass
 
-        async def mock_stream(*args, **kwargs):
-            nonlocal attempt_count
-            attempt_count["count"] += 1
-            should_fail = attempt_count["count"] == 1
-            return MockStreamResponse(should_fail)
+        def mock_stream(*args, **kwargs):
+            return MockStreamResponse()
 
         with patch("httpx.AsyncClient") as mock_client_class:
             mock_client = AsyncMock()
@@ -263,9 +256,10 @@ class TestOllamaRetryLogic:
             async for chunk in ollama_client.stream_generate(prompt="Test"):
                 chunks.append(chunk)
 
-            # ASSERT: Should succeed after retry
-            assert attempt_count["count"] == 2  # Failed once, succeeded on retry
-            assert len(chunks) > 0
+            # ASSERT: Should get chunks
+            assert len(chunks) == 2
+            assert "Chunk 1" in chunks
+            assert "Chunk 2" in chunks
 
     def test_retry_decorator_sync_path(self):
         """Test @with_retry decorator works with synchronous functions."""

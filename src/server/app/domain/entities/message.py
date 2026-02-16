@@ -36,6 +36,12 @@ class Message:
 
     def __post_init__(self):
         """Validate fields (runs after __init__)."""
+        # Validate role (runtime check, type hints alone don't prevent invalid strings)
+        if not isinstance(self.role, MessageRole):
+            raise ValueError(
+                f"Invalid role: {self.role}. Must be MessageRole enum (USER, ASSISTANT, SYSTEM)"
+            )
+
         # Validate content
         if not self.content or len(self.content) == 0:
             raise ValueError("Content cannot be empty")
@@ -44,5 +50,3 @@ class Message:
             raise ValueError(
                 f"Content exceeds maximum length (5000 chars): {len(self.content)}"
             )
-
-        # Role is already validated by type system (MessageRole enum)

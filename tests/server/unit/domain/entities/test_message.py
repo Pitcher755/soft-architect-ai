@@ -74,11 +74,6 @@ def test_message_content_max_length_5000_chars():
         )
 
 
-@pytest.mark.skip(
-    reason="Role validation is enforced by type system (MessageRole enum). "
-    "Runtime validation is redundant as dataclass with MessageRole type annotation "
-    "prevents invalid values through Python type system."
-)
 def test_message_role_must_be_valid_enum():
     """Test that invalid role raises validation error."""
     # Arrange
