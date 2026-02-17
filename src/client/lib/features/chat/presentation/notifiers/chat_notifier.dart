@@ -55,10 +55,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
       final history = await _repository.getChatHistory(projectId);
 
       // Reset state with loaded history
-      state = state.reset().copyWith(
-        projectPath: path,
-        messages: history,
-      );
+      state = state.reset().copyWith(projectPath: path, messages: history);
     } else {
       // First time setting path, just update state
       state = state.copyWith(projectPath: path);
@@ -534,10 +531,7 @@ class _MockChatRepository implements ChatRepository {
 }
 
 final chatRepositoryProvider = Provider<ChatRepository>(
-  (ref) => ChatRepositoryImpl(
-    baseUrl: _backendBaseUrl,
-    apiKey: _backendApiKey,
-  ),
+  (ref) => ChatRepositoryImpl(baseUrl: _backendBaseUrl, apiKey: _backendApiKey),
 );
 
 final mockChatRepositoryProvider = Provider<ChatRepository>(

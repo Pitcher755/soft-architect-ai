@@ -200,9 +200,7 @@ class ProjectCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     border: Border(
-                      top: BorderSide(
-                        color: phaseColor.withValues(alpha: 0.3),
-                      ),
+                      top: BorderSide(color: phaseColor.withValues(alpha: 0.3)),
                     ),
                   ),
                   child: Row(

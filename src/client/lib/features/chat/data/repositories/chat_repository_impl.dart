@@ -89,7 +89,7 @@ class ChatRepositoryImpl implements ChatRepository {
       return jsonList
           .map((json) => ChatMessage.fromJson(json as Map<String, dynamic>))
           .toList();
-    } catch (e) {
+    } on Exception {
       // Return empty list on error to avoid app crash
       return [];
     }
@@ -101,7 +101,7 @@ class ChatRepositoryImpl implements ChatRepository {
       final prefs = await SharedPreferences.getInstance();
       final key = _getChatHistoryKey(projectId);
       await prefs.remove(key);
-    } catch (e) {
+    } on Exception {
       // Silently fail, user can retry
     }
   }
@@ -122,7 +122,7 @@ class ChatRepositoryImpl implements ChatRepository {
       final jsonString = jsonEncode(jsonList);
 
       await prefs.setString(key, jsonString);
-    } catch (e) {
+    } on Exception {
       // Silently fail, history won't persist but app continues
     }
   }

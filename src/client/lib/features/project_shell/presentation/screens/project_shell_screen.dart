@@ -65,7 +65,9 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
 
     // Initialize projectPath in ChatNotifier for RAG context
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(chatNotifierProvider.notifier).setProjectPath(widget.projectPath);
+      ref
+          .read(chatNotifierProvider.notifier)
+          .setProjectPath(widget.projectPath);
     });
   }
 

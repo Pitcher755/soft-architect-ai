@@ -137,7 +137,9 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              border: Border(top: BorderSide(color: Theme.of(context).colorScheme.outline)),
+              border: Border(
+                top: BorderSide(color: Theme.of(context).colorScheme.outline),
+              ),
             ),
             child: Row(
               crossAxisAlignment:
@@ -159,26 +161,35 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                           _messageController.clear();
                         }
                       },
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: 13,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(fontSize: 13),
                       decoration: InputDecoration(
                         hintText:
                             'Provide feedback or additional context... (Press Enter to send)',
-                        hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
+                        hintStyle: Theme.of(context).textTheme.bodyMedium
+                            ?.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: AppColors.primary),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                          ),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12,
@@ -237,19 +248,20 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
-          const SizedBox(height: 24),
-          Text(
-            title,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall,
+          Icon(
+            icon,
+            size: 64,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
+          const SizedBox(height: 24),
+          Text(title, style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 8),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(fontSize: 14),
           ),
         ],
       ),
