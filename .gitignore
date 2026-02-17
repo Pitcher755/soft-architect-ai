@@ -123,3 +123,12 @@ htmlcov/
 .venv-ci/
 .venv-ci/
 conversations.db
+
+# ============================================================================
+# ChromaDB Data (Vector Database Runtime Files)
+# Added: 2026-02-17 - HU-4.4 Production Integration
+# ============================================================================
+# Ignore ChromaDB database files (persistent data)
+infrastructure/chroma_data/*.sqlite3
+infrastructure/chroma_data/*.sqlite3-wal
+infrastructure/chroma_data/*.sqlite3-shm

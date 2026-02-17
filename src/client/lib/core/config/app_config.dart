@@ -24,7 +24,7 @@ class AppConfig {
 
   static const String ollamaModel = String.fromEnvironment(
     'OLLAMA_MODEL',
-    defaultValue: 'qwen2.5-coder:7b',
+    defaultValue: 'qwen2.5-coder:3b',
   );
 
   // Groq Configuration

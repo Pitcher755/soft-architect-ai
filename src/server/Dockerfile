@@ -2,7 +2,16 @@
 FROM python:3.12-slim AS builder
 
 WORKDIR /app
+
+# Instalar dependencias del sistema necesarias para compilar librerías de IA (C++/ChromaDB)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
+
+# Instalar dependencias de Python (ahora chroma-hnswlib se podrá compilar)
 RUN pip install --user --no-cache-dir -r requirements.txt
 
 # Stage final
