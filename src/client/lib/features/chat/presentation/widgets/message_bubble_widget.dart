@@ -120,10 +120,10 @@ class MessageBubbleWidget extends StatelessWidget {
                 : AppColors.dirArchitecture,
             child: Text(
               _isUserMessage ? 'U' : 'AI',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0D1117),
+                color: Theme.of(context).colorScheme.surface,
               ),
             ),
           ),

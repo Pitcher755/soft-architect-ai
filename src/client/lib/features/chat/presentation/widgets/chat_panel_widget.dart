@@ -93,7 +93,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     final errorMessage = chatState.errorMessage ?? '';
 
     return Container(
-      color: const Color(0xFF0D1117),
+      color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
           // Error banner
@@ -129,9 +129,9 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
           // Input area (Fixed overflow issue)
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Color(0xFF161B22),
-              border: Border(top: BorderSide(color: Color(0xFF30363D))),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              border: Border(top: BorderSide(color: Theme.of(context).colorScheme.outline)),
             ),
             child: Row(
               crossAxisAlignment:
@@ -153,21 +153,22 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                           _messageController.clear();
                         }
                       },
-                      style: const TextStyle(
-                        color: Color(0xFFC9D1D9),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 13,
                       ),
                       decoration: InputDecoration(
                         hintText:
                             'Provide feedback or additional context... (Press Enter to send)',
-                        hintStyle: const TextStyle(color: Color(0xFF8B949E)),
+                        hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: Color(0xFF30363D)),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: Color(0xFF30363D)),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -230,19 +231,19 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 64, color: Colors.grey[600]),
+          Icon(icon, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
           const SizedBox(height: 24),
           Text(
             title,
             style: Theme.of(
               context,
-            ).textTheme.headlineSmall?.copyWith(color: const Color(0xFFC9D1D9)),
+            ).textTheme.headlineSmall,
           ),
           const SizedBox(height: 8),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey[400], fontSize: 14),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
           ),
         ],
       ),

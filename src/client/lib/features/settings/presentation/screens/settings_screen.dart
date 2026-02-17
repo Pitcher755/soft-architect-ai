@@ -28,7 +28,7 @@ class SettingsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D1117),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Row(
         children: [
           // Left Sidebar
@@ -51,20 +51,19 @@ class SettingsScreen extends ConsumerWidget {
                     children: [
                       Text(
                         l10n.settingsTitle,
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFE6EDF3),
-                          letterSpacing: -0.5,
-                        ),
+                        style: Theme.of(context).textTheme.displaySmall
+                            ?.copyWith(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: -0.5,
+                            ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         l10n.settingsSubtitle,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF8b949e),
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(fontSize: 14),
                       ),
                     ],
                   ),

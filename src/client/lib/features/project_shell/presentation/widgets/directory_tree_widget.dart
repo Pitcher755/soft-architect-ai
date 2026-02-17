@@ -73,7 +73,9 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                   width: 20,
                   child: _getFileIcon(
                     node.name,
-                    color: isSelected ? Colors.white : AppColors.primaryLight,
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : AppColors.primaryLight,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -81,7 +83,9 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                   child: Text(
                     node.name,
                     style: TextStyle(
-                      color: isSelected ? Colors.white : AppColors.textMain,
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : AppColors.textMain,
                       fontSize: 12,
                       fontWeight: isSelected
                           ? FontWeight.w500

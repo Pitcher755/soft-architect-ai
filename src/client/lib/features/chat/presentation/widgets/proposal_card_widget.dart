@@ -22,42 +22,50 @@ class ProposalCardWidget extends StatelessWidget {
   final VoidCallback onReject;
 
   @override
-  Widget build(BuildContext context) => Container(
-    margin: const EdgeInsets.symmetric(vertical: 12),
-    decoration: BoxDecoration(
-      color: AppColors.primaryDark.withValues(alpha: 0.15),
-      border: Border.all(color: AppColors.border),
-      borderRadius: BorderRadius.circular(12),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withValues(alpha: 0.2),
-          blurRadius: 8,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // 1. Header with title and copy button
-        _buildHeader(context),
-        const SizedBox(height: 0),
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
-        // 2. Content (Markdown Preview)
-        _buildContent(context),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.primaryDark.withValues(alpha: 0.15),
+        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // 1. Header with title and copy button
+          _buildHeader(context, colorScheme),
+          const SizedBox(height: 0),
 
-        // 3. Action Footer
-        _buildActionFooter(context),
-      ],
-    ),
-  );
+          // 2. Content (Markdown Preview)
+          _buildContent(context, textTheme),
 
-  Widget _buildHeader(BuildContext context) => Container(
+          // 3. Action Footer
+          _buildActionFooter(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+    BuildContext context,
+    ColorScheme colorScheme,
+  ) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    decoration: const BoxDecoration(
-      color: Color(0xFF1C2128),
-      border: Border(bottom: BorderSide(color: AppColors.border)),
-      borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+    decoration: BoxDecoration(
+      color: colorScheme.surfaceContainerHighest,
+      border: const Border(bottom: BorderSide(color: AppColors.border)),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,15 +111,14 @@ class ProposalCardWidget extends StatelessWidget {
     ),
   );
 
-  Widget _buildContent(BuildContext context) => Container(
+  Widget _buildContent(BuildContext context, TextTheme textTheme) => Container(
     constraints: const BoxConstraints(maxHeight: 300),
     color: AppColors.mainBg,
     child: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: SelectableText(
         proposal.content,
-        style: const TextStyle(
-          color: Color(0xFFC9D1D9),
+        style: textTheme.bodyMedium?.copyWith(
           fontSize: 13,
           fontFamily: 'JetBrains Mono',
           height: 1.6,

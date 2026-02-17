@@ -23,10 +23,19 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
   @override
   void initState() {
     super.initState();
-    final fontSize = ref.read(fontSizeProvider);
+    // Ensure baseFontSize is in valid range (10-24)
+    final baseFontSize = ref.read(baseFontSizeProvider).clamp(10.0, 24.0);
     _fontSizeController = TextEditingController(
-      text: (fontSize * 100).round().toString(),
+      text: baseFontSize.round().toString(),
     );
+
+    // If loaded value was out of range, update it immediately
+    final currentValue = ref.read(baseFontSizeProvider);
+    if (currentValue < 10.0 || currentValue > 24.0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(settingsProvider.notifier).updateBaseFontSize(baseFontSize);
+      });
+    }
   }
 
   @override
@@ -38,8 +47,12 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeProvider);
-    final fontSize = ref.watch(fontSizeProvider);
+    final rawBaseFontSize = ref.watch(baseFontSizeProvider);
+    // Ensure value is always in valid range for Slider
+    final baseFontSize = rawBaseFontSize.clamp(10.0, 24.0);
     final l10n = AppLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return SettingsCard(
       title: l10n.appearanceTitle,
@@ -55,8 +68,8 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
                 Icons.light_mode,
                 size: 20,
                 color: themeMode == ThemeMode.light
-                    ? const Color(0xFF58A6FF)
-                    : const Color(0xFF8b949e),
+                    ? colorScheme.primary
+                    : colorScheme.onSurfaceVariant,
               ),
               const SizedBox(width: 8),
               Switch(
@@ -64,70 +77,70 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
                 onChanged: (value) => ref
                     .read(settingsProvider.notifier)
                     .updateTheme(value ? ThemeMode.dark : ThemeMode.light),
-                activeThumbColor: const Color(0xFF58A6FF),
+                activeTrackColor: colorScheme.primary,
               ),
               const SizedBox(width: 8),
               Icon(
                 Icons.dark_mode,
                 size: 20,
                 color: themeMode == ThemeMode.dark
-                    ? const Color(0xFF58A6FF)
-                    : const Color(0xFF8b949e),
+                    ? colorScheme.primary
+                    : colorScheme.onSurfaceVariant,
               ),
             ],
           ),
         ),
-        const Divider(color: Color(0xFF30363d)),
+        Divider(color: colorScheme.outline),
         SettingItem(
           title: l10n.fontSizeTitle,
-          subtitle: l10n.fontSizeSubtitle,
+          subtitle: 'Ajusta el tamaño base del texto (10-24 pts)',
           child: Row(
             children: [
               SizedBox(
                 width: 200,
                 child: Slider(
-                  value: fontSize,
-                  min: 0.8,
-                  max: 1.4,
-                  divisions: 6,
+                  value: baseFontSize,
+                  min: 10,
+                  max: 24,
+                  divisions: 14,
+                  label: '${baseFontSize.round()} pts',
                   onChanged: (value) {
-                    ref.read(settingsProvider.notifier).updateFontSize(value);
-                    _fontSizeController.text = (value * 100).round().toString();
+                    ref
+                        .read(settingsProvider.notifier)
+                        .updateBaseFontSize(value);
+                    _fontSizeController.text = value.round().toString();
                   },
-                  activeColor: const Color(0xFF58A6FF),
-                  inactiveColor: const Color(0xFF30363d),
+                  activeColor: colorScheme.primary,
+                  inactiveColor: colorScheme.outline,
                 ),
               ),
               const SizedBox(width: 12),
               SizedBox(
-                width: 60,
+                width: 70,
                 child: TextField(
                   controller: _fontSizeController,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Color(0xFFE6EDF3),
-                    fontSize: 14,
-                  ),
+                  style: textTheme.bodyMedium?.copyWith(fontSize: 14),
                   decoration: InputDecoration(
-                    suffix: const Text(
-                      '%',
-                      style: TextStyle(color: Color(0xFF8b949e), fontSize: 12),
+                    suffix: Text(
+                      ' pts',
+                      style: textTheme.bodySmall?.copyWith(fontSize: 12),
                     ),
                     filled: true,
-                    fillColor: const Color(0xFF0D1117),
+                    fillColor: Theme.of(context).colorScheme.surface,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: const BorderSide(color: Color(0xFF30363d)),
+                      borderSide: BorderSide(color: colorScheme.outline),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: const BorderSide(color: Color(0xFF30363d)),
+                      borderSide: BorderSide(color: colorScheme.outline),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF58A6FF),
+                      borderSide: BorderSide(
+                        color: colorScheme.primary,
                         width: 2,
                       ),
                     ),
@@ -138,12 +151,12 @@ class _AppearanceSectionState extends ConsumerState<AppearanceSection> {
                   ),
                   onSubmitted: (value) {
                     final intValue = int.tryParse(value);
-                    if (intValue != null && intValue >= 80 && intValue <= 140) {
+                    if (intValue != null && intValue >= 10 && intValue <= 24) {
                       ref
                           .read(settingsProvider.notifier)
-                          .updateFontSize(intValue / 100);
+                          .updateBaseFontSize(intValue.toDouble());
                     } else {
-                      _fontSizeController.text = (fontSize * 100)
+                      _fontSizeController.text = baseFontSize
                           .round()
                           .toString();
                     }

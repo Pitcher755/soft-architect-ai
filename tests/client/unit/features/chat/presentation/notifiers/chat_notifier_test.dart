@@ -67,6 +67,11 @@ class FakeChatRepository implements ChatRepository {
   Future<void> clearChatHistory(String projectId) async {
     // No-op for testing
   }
+
+  @override
+  Future<void> saveMessage(String projectId, ChatMessage message) async {
+    // No-op for testing (mock implementation)
+  }
 }
 
 void main() {

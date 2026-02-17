@@ -121,8 +121,8 @@ void main() {
       await tester.drag(find.byType(Slider), const Offset(120, 0));
       await tester.pumpAndSettle();
       expect(
-        container.read(settingsProvider).requireValue.fontSize,
-        greaterThan(1.0),
+        container.read(settingsProvider).requireValue.baseFontSize,
+        greaterThan(14.0),
       );
 
       final textField = find.byType(TextField);
@@ -131,8 +131,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        container.read(settingsProvider).requireValue.fontSize,
-        lessThanOrEqualTo(1.4),
+        container.read(settingsProvider).requireValue.baseFontSize,
+        lessThanOrEqualTo(24.0),
       );
     });
   });

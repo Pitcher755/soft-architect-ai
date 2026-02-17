@@ -17,47 +17,57 @@ class ErrorBannerWidget extends StatelessWidget {
   final VoidCallback? onDismiss;
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: Colors.transparent,
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.red[900],
-        border: Border(bottom: BorderSide(color: Colors.red[700]!, width: 2)),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          // Error icon
-          const Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Icon(Icons.error_outline, color: Colors.white),
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.error,
+          border: Border(
+            bottom: BorderSide(
+              color: colorScheme.error.withValues(alpha: 0.7),
+              width: 2,
+            ),
           ),
-          // Error message
-          Expanded(
-            child: Text(
-              message,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            // Error icon
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Icon(Icons.error_outline, color: colorScheme.onError),
+            ),
+            // Error message
+            Expanded(
+              child: Text(
+                message,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onError,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          // Dismiss button
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: IconButton(
-              icon: const Icon(Icons.close, color: Colors.white),
-              onPressed: onDismiss,
-              tooltip: 'Dismiss error',
-              padding: EdgeInsets.zero,
+            // Dismiss button
+            SizedBox(
+              width: 40,
+              height: 40,
+              child: IconButton(
+                icon: Icon(Icons.close, color: colorScheme.onError),
+                onPressed: onDismiss,
+                tooltip: 'Dismiss error',
+                padding: EdgeInsets.zero,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

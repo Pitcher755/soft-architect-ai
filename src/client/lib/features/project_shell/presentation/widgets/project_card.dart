@@ -61,7 +61,6 @@ class ProjectCard extends StatelessWidget {
     late double pathFontSize;
     late double dateFontSize;
     late double pathIconSize;
-    late double arrowIconSize;
     late double badgeFontSize;
 
     if (screenWidth < 500) {
@@ -73,7 +72,6 @@ class ProjectCard extends StatelessWidget {
       pathFontSize = 8;
       dateFontSize = 7;
       pathIconSize = 10;
-      arrowIconSize = 14;
       badgeFontSize = 8;
     } else if (screenWidth < 800) {
       // Small to medium screens
@@ -84,7 +82,6 @@ class ProjectCard extends StatelessWidget {
       pathFontSize = 9;
       dateFontSize = 8;
       pathIconSize = 11;
-      arrowIconSize = 15;
       badgeFontSize = 9;
     } else {
       // Large screens (default)
@@ -95,7 +92,6 @@ class ProjectCard extends StatelessWidget {
       pathFontSize = 11;
       dateFontSize = 10;
       pathIconSize = 12;
-      arrowIconSize = 16;
       badgeFontSize = 10;
     }
 
@@ -111,7 +107,10 @@ class ProjectCard extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.surfaceBg,
-              border: Border.all(color: AppColors.border),
+              border: Border.all(
+                color: phaseColor.withValues(alpha: 0.5),
+                width: 1.5,
+              ),
               borderRadius: BorderRadius.circular(12),
             ),
             padding: EdgeInsets.all(padding),
@@ -186,12 +185,34 @@ class ProjectCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 3),
-
-                      Tooltip(
-                        message: path,
-                        child: SizedBox(
-                          height: pathFontSize,
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+                // --- Bottom metadata bar ---
+                Container(
+                  padding: EdgeInsets.only(
+                    top: screenWidth < 500
+                        ? 6
+                        : screenWidth < 800
+                        ? 8
+                        : 10,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: phaseColor.withValues(alpha: 0.3),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Path (left side)
+                      Expanded(
+                        flex: 2,
+                        child: Tooltip(
+                          message: path,
                           child: Row(
                             children: [
                               Icon(
@@ -199,7 +220,7 @@ class ProjectCard extends StatelessWidget {
                                 size: pathIconSize,
                                 color: AppColors.textSecondary,
                               ),
-                              const SizedBox(width: 3),
+                              const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
                                   _getShortPath(path),
@@ -207,7 +228,6 @@ class ProjectCard extends StatelessWidget {
                                     fontSize: pathFontSize,
                                     fontFamily: 'Courier',
                                     color: AppColors.textSecondary,
-                                    height: 1,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -217,42 +237,24 @@ class ProjectCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Spacer(),
-                    ],
-                  ),
-                ),
-                // --- Bottom section with metadata ---
-                Container(
-                  padding: EdgeInsets.only(
-                    top: screenWidth < 500
-                        ? 4
-                        : screenWidth < 800
-                        ? 6
-                        : 8,
-                  ),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: AppColors.border, width: 0.5),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          'Mod: $modified',
-                          style: TextStyle(
-                            fontSize: dateFontSize,
+                      const SizedBox(width: 8),
+                      // Modified date (right side)
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.access_time,
+                            size: pathIconSize,
                             color: AppColors.textSecondary,
-                            height: 1,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
-                        size: arrowIconSize,
-                        color: AppColors.textSecondary,
+                          const SizedBox(width: 4),
+                          Text(
+                            modified,
+                            style: TextStyle(
+                              fontSize: dateFontSize,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

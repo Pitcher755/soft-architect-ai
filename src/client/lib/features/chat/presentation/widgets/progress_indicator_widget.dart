@@ -253,13 +253,14 @@ class _PhaseSegment extends StatelessWidget {
                 //brillo cruce toda la barra
                 final start = -1.5 + (shimmerController!.value * 3.5);
                 final end = start + 1.5;
+                final shimmerColor = Theme.of(context).colorScheme.onSurface;
 
                 return Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Colors.transparent,
-                        Colors.white.withValues(alpha: 0.6), // Blanco fuerte
+                        shimmerColor.withValues(alpha: 0.6),
                         Colors.transparent,
                       ],
                       stops: const [0.0, 0.5, 1.0],

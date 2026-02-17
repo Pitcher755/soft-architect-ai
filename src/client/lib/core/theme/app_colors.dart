@@ -2,234 +2,149 @@
 import 'package:flutter/material.dart';
 
 /// Centralized color palette for SoftArchitect AI
-/// Based on GitHub Dark theme with custom accent colors
-/// All colors are used with withValues(alpha: x) for opacity effects
+/// REDESIGNED: Modern Vibrant Dark Mode (Linear/SaaS Style)
+/// Rich deep blue backgrounds with high-saturation neon accents
 class AppColors {
   // Prevent instantiation
   AppColors._();
 
   // ==========================================================================
-  // PRIMARY ACCENT COLORS
+  // PRIMARY ACCENT COLORS (Vibrant Neon)
   // ==========================================================================
 
-  /// Primary accent color - Used for buttons, active states, borders
-  /// Used in: Buttons, selected states, primary borders, active sidebar items
-  static const Color primary = Color(0xFF58A6FF); // Bright blue accent
-  static const Color primaryLight = Color(0xFF79C0FF); // Lighter blue
-  static const Color primaryDark = Color(0xFF1F6FEB); // Darker blue
+  /// Primary accent color - Electric Blue
+  static const Color primary = Color(
+    0xFF3B82F6,
+  ); // Vibrant Blue (Tailwind Blue 500)
+  static const Color primaryLight = Color(0xFF60A5FA); // Bright Blue
+  static const Color primaryDark = Color(0xFF2563EB); // Deep intense blue
 
   // ==========================================================================
-  // BACKGROUND COLORS
+  // BACKGROUND COLORS (Midnight Blue / Deep Navy)
   // ==========================================================================
 
-  /// Main scaffold background
-  /// Used in: Scaffold, primary background
-  static const Color mainBg = Color(0xFF0D1117); // Deep black
+  /// Main scaffold background - Deepest Midnight Blue (No longer flat black)
+  static const Color mainBg = Color(0xFF0B101E);
 
-  /// Sidebar and card backgrounds
-  /// Used in: Sidebar, ProjectCard, ProjectListView containers, dialogs
-  static const Color surfaceBg = Color(0xFF161B22); // Dark gray
+  /// Sidebar and card backgrounds - Slightly elevated navy
+  static const Color surfaceBg = Color(0xFF111827);
 
-  /// Secondary surface layer
-  /// Used in: Nested containers, elevated surfaces
-  static const Color surfaceLight = Color(0xFF21262D); // Lighter surface
+  /// Secondary surface layer - Interactive elements
+  static const Color surfaceLight = Color(0xFF1E293B);
 
   // ==========================================================================
-  // BORDER & DIVIDER COLORS
+  // BORDER & DIVIDER COLORS (Glassy / Subtle)
   // ==========================================================================
 
-  /// Default border color
-  /// Used in: Card borders, dividers, subtle borders
-  static const Color border = Color(0xFF30363D); // Neutral border
+  /// Default border color - Subtle slate
+  static const Color border = Color(0xFF334155);
 
-  /// Light border variant
-  /// Used in: Subtle separators, low-contrast borders
-  static const Color borderLight = Color(0xFF6E7681); // Light gray
+  /// Light border variant - For active states
+  static const Color borderLight = Color(0xFF475569);
 
   // ==========================================================================
-  // TEXT COLORS
+  // TEXT COLORS (High Contrast OLED style)
   // ==========================================================================
 
-  /// Primary text color (off-white)
-  /// Used in: Headings, main content text, card titles
-  static const Color textMain = Color(0xFFE6EDF3); // Main text
+  /// Primary text color - Bright crisp white
+  static const Color textMain = Color(0xFFF8FAFC);
 
-  /// Secondary text color (gray)
-  /// Used in: Subtitles, metadata, secondary information, hints
-  static const Color textSecondary = Color(0xFF8B949E); // Secondary text
+  /// Secondary text color - Cool slate gray
+  static const Color textSecondary = Color(0xFF94A3B8);
 
-  /// Muted text color (darker gray)
-  /// Used in: Disabled states, less important info
-  static const Color textMuted = Color(0xFF6E7681); // Muted text
+  /// Muted text color - Darker cool gray
+  static const Color textMuted = Color(0xFF64748B);
 
   // ==========================================================================
-  // PROJECT PHASE COLORS
+  // PROJECT PHASE COLORS (Ultra Vibrant)
   // ==========================================================================
-  // These represent different stages of a project lifecycle
-  // Used in: Phase badges, cards, list items
-  // Apply with: withValues(alpha: 0.1) for backgrounds, alpha: 0.4 for borders
 
-  /// Fase 1: Contexto - Initial context phase
-  /// Used in: Phase badge, phase color accent
-  /// Opacity: 0.1 (background), 0.4 (border), 0.6 (icon accent)
-  static const Color phase1Context = Color(0xFFFCD34D); // Yellow
+  /// Fase 1: Contexto - Neon Yellow/Amber
+  static const Color phase1Context = Color(0xFFFBBF24);
 
-  /// Fase 2: Requisitos - Requirements phase
-  /// Used in: Phase badge, phase color accent
-  /// Opacity: 0.1 (background), 0.4 (border), 0.6 (icon accent)
-  static const Color phase2Requirements = Color(0xFF10B981); // Green
+  /// Fase 2: Requisitos - Emerald Green
+  static const Color phase2Requirements = Color(0xFF34D399);
 
-  /// Fase 3: Arquitectura - Architecture phase
-  /// Used in: Phase badge, phase color accent
-  /// Opacity: 0.1 (background), 0.4 (border), 0.6 (icon accent)
-  static const Color phase3Architecture = Color(0xFF60A5FA); // Blue
+  /// Fase 3: Arquitectura - Cyan/Electric Blue
+  static const Color phase3Architecture = Color(0xFF2DD4BF);
 
   // ==========================================================================
-  // DIRECTORY PHASE COLORS (por fase de proyecto)
+  // DIRECTORY PHASE COLORS
   // ==========================================================================
-  // Colores para directorios que representan diferentes fases del proyecto
-  // Usado en: Iconos de árbol de directorios, badges de fase
-  // Cantidad de archivos: 00-ROOT(4), 10-CONTEXT(3), 20-REQUIREMENTS(4),
-  // 30-ARCHITECTURE(6), 35-UI_UX(3), 40-PLANNING(4), 99-META(1)
-  // Total: 25 archivos
 
-  /// 00-ROOT: Root directory color (4 files)
-  /// Used in: Directory icon, folder accent
-  static const Color dirRoot = Color(0xFF94E2D5); // Teal/Cyan
+  /// 00-ROOT: Root directory color
+  static const Color dirRoot = Color(0xFF94A3B8); // Slate
 
-  /// 10-CONTEXT: Context phase directory (3 files)
-  /// Used in: Directory icon, folder accent (same as phase1Context)
-  static const Color dirContext = Color(0xFFFCD34D); // Yellow
+  /// 10-CONTEXT: Context phase directory
+  static const Color dirContext = phase1Context;
 
-  /// 20-REQUIREMENTS: Requirements phase directory (4 files)
-  /// Used in: Directory icon, folder accent (same as phase2Requirements)
-  static const Color dirRequirements = Color(0xFF10B981); // Green
+  /// 20-REQUIREMENTS: Requirements phase directory
+  static const Color dirRequirements = phase2Requirements;
 
-  /// 30-ARCHITECTURE: Architecture phase directory (6 files)
-  /// Used in: Directory icon, folder accent (same as phase3Architecture)
-  static const Color dirArchitecture = Color(0xFF60A5FA); // Blue
+  /// 30-ARCHITECTURE: Architecture phase directory
+  static const Color dirArchitecture = primaryLight;
 
-  /// 35-UI_UX: UI/UX design phase directory (3 files)
-  /// Used in: Directory icon, folder accent
-  static const Color dirUiUx = Color(0xFFEC4899); // Pink
+  /// 35-UI_UX: UI/UX design phase directory - Hot Pink
+  static const Color dirUiUx = Color(0xFFF472B6);
 
-  /// 40-PLANNING: Planning phase directory (4 files)
-  /// Used in: Directory icon, folder accent
-  static const Color dirPlanning = Color(0xFFA855F7); // Purple
+  /// 40-PLANNING: Planning phase directory - Bright Purple
+  static const Color dirPlanning = Color(0xFFA78BFA);
 
-  /// 99-META: Metadata/Meta directory (1 file)
-  /// Used in: Directory icon, folder accent
-  static const Color dirMeta = Color(0xFFFB923C); // Orange
+  /// 99-META: Metadata/Meta directory - Neon Orange
+  static const Color dirMeta = Color(0xFFFB923C);
 
   // ==========================================================================
-  // ICON COLORS
+  // ICON COLORS (High Saturation)
   // ==========================================================================
-  // Project-specific icon colors from mock data
-  // Applied with: withValues(alpha: 0.1) for container backgrounds
 
-  /// Blue icon color
-  /// Used in: E-Commerce Platform icon
   static const Color iconBlue = Color(0xFF3B82F6);
-
-  /// Purple icon color
-  /// Used in: Uber for Dogs icon
-  static const Color iconPurple = Color(0xFFA855F7);
-
-  /// Orange icon color
-  /// Used in: FinTech Core API, Music Streaming icons
-  static const Color iconOrange = Color(0xFFFB923C);
-
-  /// Pink/Magenta icon color
-  /// Used in: Healthcare Mobile App, Marketing Automation icons
+  static const Color iconPurple = Color(0xFF8B5CF6);
+  static const Color iconOrange = Color(0xFFF97316);
   static const Color iconPink = Color(0xFFEC4899);
-
-  /// Purple/Violet icon color
-  /// Used in: Analytics Dashboard icon
-  static const Color iconViolet = Color(0xFF8B5CF6);
-
-  /// Cyan icon color
-  /// Used in: Social Network Platform icon
+  static const Color iconViolet = Color(0xFF7C3AED);
   static const Color iconCyan = Color(0xFF06B6D4);
-
-  /// Amber icon color
-  /// Used in: Music Streaming Service icon
   static const Color iconAmber = Color(0xFFF59E0B);
-
-  /// Green icon color
-  /// Used in: IoT Device Manager icon
   static const Color iconGreen = Color(0xFF10B981);
-
-  /// Magenta icon color
-  /// Used in: Marketing Automation icon
   static const Color iconMagenta = Color(0xFFD946EF);
-
-  /// Orange-red icon color
-  /// Used in: Security Audit System icon
-  static const Color iconOrangeRed = Color(0xFFF97316);
+  static const Color iconOrangeRed = Color(0xFFEF4444);
 
   // ==========================================================================
   // SEMANTIC COLORS
   // ==========================================================================
 
-  /// Success/Approved color
-  /// Used in: Positive actions, success states
-  static const Color success = Color(0xFF238636); // Green
-  static const Color successAlt = Color(0xFF3FB950); // Lighter green
+  /// Success/Approved - Vibrant Emerald
+  static const Color success = Color(0xFF10B981);
+  static const Color successAlt = Color(0xFF34D399);
 
-  /// Warning color
-  /// Used in: Warning states, caution messages
-  static const Color warning = Color(0xFFD29922); // Amber
+  /// Warning - Bright Amber
+  static const Color warning = Color(0xFFF59E0B);
 
-  /// Error/Rejected color
-  /// Used in: Error states, rejection, negative actions
-  static const Color error = Color(0xFFDA3633); // Red
-  static const Color errorAlt = Color(0xFFF85149); // Lighter red
+  /// Error/Rejected - Neon Red
+  static const Color error = Color(0xFFEF4444);
+  static const Color errorAlt = Color(0xFFF87171);
 
-  /// Info color
-  /// Used in: Information, hints, tooltips
-  static const Color info = Color(0xFF58A6FF); // Primary blue (accent)
+  /// Info
+  static const Color info = primary;
 
   // ==========================================================================
-  // LANGUAGE-SPECIFIC COLORS
+  // LANGUAGE-SPECIFIC COLORS (Brightened)
   // ==========================================================================
 
-  static const Color dartBlue = Color(0xFF00D2FC);
-  static const Color pythonBlue = Color(0xFF3776AB);
-  static const Color jsYellow = Color(0xFFF7DF1E);
+  static const Color dartBlue = Color(0xFF38BDF8);
+  static const Color pythonBlue = Color(0xFF60A5FA);
+  static const Color jsYellow = Color(0xFFFDE047);
 
   // ==========================================================================
-  // SYNTAX HIGHLIGHTING COLORS
+  // SYNTAX HIGHLIGHTING COLORS (VS Code "One Dark Pro" style)
   // ==========================================================================
 
   static const Map<String, Color> syntaxColors = {
-    'keyword': Color(0xFFFF7B72), // Red/Pink
-    'function': Color(0xFFD2A8FF), // Purple
-    'argument': Color(0xFFFFA657), // Orange
-    'string': Color(0xFFA5D6FF), // Light Blue
-    'comment': Color(0xFF8B949E), // Gray
-    'operator': Color(0xFFFF7B72), // Red
-    'number': Color(0xFF79C0FF), // Blue
+    'keyword': Color(0xFFC678DD), // Soft Purple
+    'function': Color(0xFF61AFEF), // Light Blue
+    'argument': Color(0xFFE5C07B), // Soft Yellow
+    'string': Color(0xFF98C379), // Soft Green
+    'comment': Color(0xFF5C6370), // Italics Gray
+    'operator': Color(0xFF56B6C2), // Cyan
+    'number': Color(0xFFD19A66), // Dark Yellow
   };
-
-  // ==========================================================================
-  // OPACITY REFERENCE GUIDE
-  // ==========================================================================
-  // Use with: color.withValues(alpha: x)
-  //
-  // 0.1  → Very subtle backgrounds (icon containers, phase badges)
-  //        Example: iconColor.withValues(alpha: 0.1)
-  //
-  // 0.2  → Light backgrounds, hover states
-  //        Example: primary.withValues(alpha: 0.2) for logo container
-  //
-  // 0.3  → Medium borders, disabled states
-  //        Example: border.withValues(alpha: 0.3) for light borders
-  //
-  // 0.4  → Phase borders, medium contrast
-  //        Example: phaseColor.withValues(alpha: 0.4) for phase card borders
-  //
-  // 0.6  → Icon accents, semi-transparent elements
-  //        Example: phaseColor.withValues(alpha: 0.6) for arrow icons
-  //
-  // 1.0  → Fully opaque (default, no alpha needed)
 }

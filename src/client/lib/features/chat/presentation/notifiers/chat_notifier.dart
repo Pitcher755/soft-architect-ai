@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -42,14 +44,25 @@ class ChatNotifier extends StateNotifier<ChatState> {
   final Ref ref;
 
   /// Sets the project path for document saving.
-  /// If the project changes, resets the chat state to start a fresh
-  /// conversation.
-  void setProjectPath(String path) {
-    // If switching to a different project, reset the chat state
+  /// If the project changes, loads chat history from persistence.
+  Future<void> setProjectPath(String path) async {
+    // If switching to a different project, load its chat history
     if (state.projectPath != null && state.projectPath != path) {
-      state = state.reset();
+      // Generate UUID from path for history lookup
+      final projectId = UuidGenerator.fromString(path);
+
+      // Load chat history from persistence
+      final history = await _repository.getChatHistory(projectId);
+
+      // Reset state with loaded history
+      state = state.reset().copyWith(
+        projectPath: path,
+        messages: history,
+      );
+    } else {
+      // First time setting path, just update state
+      state = state.copyWith(projectPath: path);
     }
-    state = state.copyWith(projectPath: path);
   }
 
   /// Sends a user message and initiates document generation streaming.
@@ -193,6 +206,13 @@ class ChatNotifier extends StateNotifier<ChatState> {
       final repository = isGuideProject ? _mockRepository : _repository;
 
       final projectId = UuidGenerator.fromString(projectPath);
+
+      // Save user message to persistence (after variables defined)
+      if (!isGuideProject) {
+        // Use background save (fire-and-forget)
+        unawaited(_repository.saveMessage(projectId, userMessage));
+      }
+
       final stream = repository.sendMessageStream(message, projectId);
 
       await for (final event in stream) {
@@ -232,6 +252,12 @@ class ChatNotifier extends StateNotifier<ChatState> {
           ];
 
           state = state.copyWith(messages: finalMessages, isStreaming: false);
+
+          // Save assistant message to persistence
+          if (!isGuideProject) {
+            // Use background save (fire-and-forget)
+            unawaited(_repository.saveMessage(projectId, completedAssistant));
+          }
         } else if (event is ErrorEvent) {
           // 6️⃣ Handle ErrorEvent
           state = state.copyWith(
@@ -497,6 +523,11 @@ class _MockChatRepository implements ChatRepository {
 
   @override
   Future<List<ChatMessage>> getChatHistory(String projectId) async => [];
+
+  @override
+  Future<void> saveMessage(String projectId, ChatMessage message) async {
+    // Mock implementation - does nothing
+  }
 
   @override
   Future<void> clearChatHistory(String projectId) async {}

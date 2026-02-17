@@ -54,7 +54,7 @@ class WorkspaceHeader extends StatelessWidget {
               label: Text(l10n.newProjectButton),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 12,

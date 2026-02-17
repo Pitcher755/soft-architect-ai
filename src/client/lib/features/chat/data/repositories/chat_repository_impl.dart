@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../core/utils/uuid_generator.dart';
 import '../../../../domain/entities/chat_stream_event.dart';
 import '../../../../infrastructure/network/sse_client.dart';
@@ -72,15 +76,59 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<List<ChatMessage>> getChatHistory(String projectId) async {
-    // Existing implementation (stub for now)
-    throw UnimplementedError('getChatHistory not yet implemented');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final key = _getChatHistoryKey(projectId);
+      final jsonString = prefs.getString(key);
+
+      if (jsonString == null || jsonString.isEmpty) {
+        return [];
+      }
+
+      final jsonList = jsonDecode(jsonString) as List<dynamic>;
+      return jsonList
+          .map((json) => ChatMessage.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      // Return empty list on error to avoid app crash
+      return [];
+    }
   }
 
   @override
   Future<void> clearChatHistory(String projectId) async {
-    // Existing implementation (stub for now)
-    throw UnimplementedError('clearChatHistory not yet implemented');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final key = _getChatHistoryKey(projectId);
+      await prefs.remove(key);
+    } catch (e) {
+      // Silently fail, user can retry
+    }
   }
+
+  /// Save a single message to chat history.
+  ///
+  /// This method loads existing history, appends the new message,
+  /// and saves back to SharedPreferences.
+  @override
+  Future<void> saveMessage(String projectId, ChatMessage message) async {
+    try {
+      final history = await getChatHistory(projectId);
+      history.add(message);
+
+      final prefs = await SharedPreferences.getInstance();
+      final key = _getChatHistoryKey(projectId);
+      final jsonList = history.map((msg) => msg.toJson()).toList();
+      final jsonString = jsonEncode(jsonList);
+
+      await prefs.setString(key, jsonString);
+    } catch (e) {
+      // Silently fail, history won't persist but app continues
+    }
+  }
+
+  /// Generate SharedPreferences key for project-specific chat history.
+  String _getChatHistoryKey(String projectId) => 'chat_history_$projectId';
 
   /// Generate a UUID v4 for conversation_id (RFC 4122 compliant).
   String _generateConversationId() => UuidGenerator.v4();

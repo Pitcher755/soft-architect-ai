@@ -90,14 +90,14 @@ class SoftArchitectApp extends ConsumerWidget {
           title: 'SoftArchitect AI',
           debugShowCheckedModeBanner: false,
           theme: _buildThemeWithFontSize(
-            AppTheme.darkTheme(),
-            settings.fontSize,
+            AppTheme.lightTheme(),
+            settings.baseFontSize,
           ),
           darkTheme: _buildThemeWithFontSize(
             AppTheme.darkTheme(),
-            settings.fontSize,
+            settings.baseFontSize,
           ),
-          themeMode: ThemeMode.dark,
+          themeMode: settings.themeMode,
           routerConfig: router,
           locale: locale,
           localizationsDelegates: const [
@@ -119,22 +119,24 @@ class SoftArchitectApp extends ConsumerWidget {
       loading: () => const MaterialApp(
         home: Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
-      error: (_, __) => const MaterialApp(
+      error: (_, _) => const MaterialApp(
         home: Scaffold(body: Center(child: Text('Error loading settings'))),
       ),
     );
   }
 
-  /// Builds theme with optional font size scaling.
+  /// Builds theme with base font size in points (10-24pt).
   ///
-  /// Manually scales each TextStyle to avoid assertions on themes
-  /// without explicit fontSize definitions.
-  ThemeData _buildThemeWithFontSize(ThemeData baseTheme, double fontSize) {
-    if (fontSize == 1.0) {
+  /// Scales all text styles based on baseFontSize (default: 14pt).
+  ThemeData _buildThemeWithFontSize(ThemeData baseTheme, double baseFontSize) {
+    const defaultBaseFontSize = 20.0;
+    final scaleFactor = baseFontSize / defaultBaseFontSize;
+
+    if (scaleFactor == 1.0) {
       return baseTheme;
     }
 
-    final scaledTextTheme = _scaleTextTheme(baseTheme.textTheme, fontSize);
+    final scaledTextTheme = _scaleTextTheme(baseTheme.textTheme, scaleFactor);
     return baseTheme.copyWith(textTheme: scaledTextTheme);
   }
 

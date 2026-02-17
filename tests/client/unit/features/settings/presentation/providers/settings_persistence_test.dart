@@ -18,7 +18,7 @@ void main() {
       // Initialize mock with pre-populated data
       initMockSharedPreferences({
         'app_settings_v2':
-            '{"themeMode":2,"fontSize":1.3,"globalZoom":1.5,"enableZoomShortcuts":false,"enableAnimations":false,"enableMemoryOptimization":false,"userName":"PersistedUser","avatarIndex":2,"projectDirectory":"/persisted/path"}',
+            '{"themeMode":2,"baseFontSize":16.0,"globalZoom":1.5,"enableZoomShortcuts":false,"enableAnimations":false,"enableMemoryOptimization":false,"userName":"PersistedUser","avatarIndex":2,"projectDirectory":"/persisted/path"}',
       });
 
       // Create new container to trigger initialization from SharedPreferences
@@ -32,7 +32,7 @@ void main() {
       // Verify all persisted values were loaded
       expect(settings.userName, 'PersistedUser');
       expect(settings.themeMode, ThemeMode.dark); // themeMode:2 = dark
-      expect(settings.fontSize, 1.3);
+      expect(settings.baseFontSize, 16.0);
       expect(settings.globalZoom, 1.5);
       expect(settings.enableZoomShortcuts, false);
       expect(settings.enableAnimations, false);
@@ -59,7 +59,7 @@ void main() {
         // Verify fallback to default values
         expect(settings.userName, 'Architect');
         expect(settings.themeMode, ThemeMode.dark);
-        expect(settings.fontSize, 1.0);
+        expect(settings.baseFontSize, 14.0);
         expect(settings.globalZoom, 1.0);
         expect(settings.enableZoomShortcuts, true);
         expect(settings.enableAnimations, true);
@@ -84,7 +84,7 @@ void main() {
         // Verify default initialization
         expect(settings.userName, 'Architect');
         expect(settings.themeMode, ThemeMode.dark);
-        expect(settings.fontSize, 1.0);
+        expect(settings.baseFontSize, 14.0);
         expect(settings.avatarIndex, 0);
         expect(settings.projectDirectory, isNull);
 
@@ -97,7 +97,7 @@ void main() {
       () async {
         // JSON with only some fields
         initMockSharedPreferences({
-          'app_settings_v2': '{"userName":"PartialUser","fontSize":1.2}',
+          'app_settings_v2': '{"userName":"PartialUser","baseFontSize":18.0}',
         });
 
         final container = ProviderContainer();
@@ -108,10 +108,33 @@ void main() {
 
         // Verify partial load + defaults for missing fields
         expect(settings.userName, 'PartialUser'); // From JSON
-        expect(settings.fontSize, 1.2); // From JSON
+        expect(settings.baseFontSize, 18.0); // From JSON
         expect(settings.themeMode, ThemeMode.light); // Default from fromJson
         expect(settings.globalZoom, 1.0); // Default
         expect(settings.avatarIndex, 0); // Default
+
+        container.dispose();
+      },
+    );
+
+    test(
+      'should migrate old fontSize (multiplier) to baseFontSize (points)',
+      () async {
+        // JSON with old fontSize field (1.1 multiplier → 15.4 pts)
+        initMockSharedPreferences({
+          'app_settings_v2': '{"userName":"LegacyUser","fontSize":1.1}',
+        });
+
+        final container = ProviderContainer();
+
+        await container.read(settingsProvider.future);
+
+        final settings = container.read(settingsProvider).requireValue;
+
+        // Verify migration: 1.1 * 14.0 = 15.4 pts
+        expect(settings.userName, 'LegacyUser');
+        expect(settings.baseFontSize, closeTo(15.4, 0.1));
+        expect(settings.themeMode, ThemeMode.light); // Default from fromJson
 
         container.dispose();
       },

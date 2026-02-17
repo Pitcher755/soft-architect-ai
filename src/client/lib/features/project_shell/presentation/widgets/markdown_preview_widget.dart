@@ -93,7 +93,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppLocalizations.of(context).saveError(e.toString())),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -107,7 +107,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
     final isJson = filename?.toLowerCase().endsWith('.json') ?? false;
 
     return Container(
-      color: const Color(0xFF0D1117),
+      color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
           // Toolbar con context para SnackBars

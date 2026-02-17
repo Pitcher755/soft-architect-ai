@@ -1,189 +1,223 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_colors.dart';
+// Asegúrate de importar tus colores
+
 /// Central theme configuration for the application.
-/// Inspired by VS Code, Linear, and GitHub Dark Mode.
+/// Inspired by Modern SaaS (Linear, Vercel, OpenAI) Vibrant Dark Mode.
 class AppTheme {
-  // Base Colors (Backgrounds)
-  static const Color bgPrimary = Color(0xFF0D1117);
-  // Almost black, bluish
-  static const Color bgSecondary = Color(0xFF161B22);
-  // Sidebars, panels
-  static const Color bgTertiary = Color(0xFF21262D);
-  // Input fields, borders
-  static const Color bgElevation = Color(0xFF30363D);
+  // Base Colors (Backgrounds) - Now mapped directly to the new AppColors
+  static const Color bgPrimary = AppColors.mainBg;
+  static const Color bgSecondary = AppColors.surfaceBg;
+  static const Color bgTertiary = AppColors.surfaceLight;
+  static const Color bgElevation = AppColors.border;
 
   // Accent Colors
-  static const Color primary = Color(0xFF58A6FF); // Tech Blue
-  static const Color secondary = Color(0xFF238636); // Git Green
-  static const Color accent = Color(0xFFA371F7); // Purple (AI)
-  static const Color error = Color(0xFFF85149); // Red
-  static const Color warning = Color(0xFFD29922); // Yellow
+  static const Color primary = AppColors.primary;
+  static const Color secondary = AppColors.success;
+  static const Color accent = AppColors.iconViolet;
+  static const Color error = AppColors.errorAlt;
+  static const Color warning = AppColors.warning;
 
   // Typography
-  static const Color textPrimary = Color(0xFFC9D1D9); // High contrast
-  static const Color textSecondary = Color(0xFF8B949E); // Softer
-  static const Color textCode = Color(0xFFE1E4E8); // Code blocks
+  static const Color textPrimary = AppColors.textMain;
+  static const Color textSecondary = AppColors.textSecondary;
+  static const Color textCode = Color(0xFFE2E8F0);
 
-  /// Dark Theme (Default)
+  /// Dark Theme (Default & Locked for MVP)
   static ThemeData darkTheme() => ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     scaffoldBackgroundColor: bgPrimary,
+
+    // Smooth, deep app bar
     appBarTheme: const AppBarTheme(
       backgroundColor: bgSecondary,
       elevation: 0,
       centerTitle: true,
+      scrolledUnderElevation: 0, // Prevents scroll tinting issues
     ),
+
+    // Vibrant Color Scheme - Complete with all attributes
     colorScheme: const ColorScheme.dark(
       primary: primary,
       secondary: secondary,
       tertiary: accent,
       error: error,
       surface: bgSecondary,
+      surfaceContainerHighest: bgTertiary,
+      onSurface: textPrimary,
+      onSurfaceVariant: textSecondary,
+      outline: bgElevation,
+      outlineVariant: Color(0xFF475569),
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
     ),
+
+    // Modern "Glassy" Inputs
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: bgTertiary,
+      fillColor: bgTertiary.withValues(alpha: 0.5), // Semi-transparent fill
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(
+          12,
+        ), // Slightly rounder, more modern
         borderSide: const BorderSide(color: bgElevation),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: bgElevation),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: primary, width: 2),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: primary.withValues(alpha: 0.5), // Glow effect border
+          width: 2,
+        ),
       ),
+      hintStyle: const TextStyle(color: textSecondary),
     ),
+
+    // High Contrast Typography
     textTheme: const TextTheme(
-      displayLarge: TextStyle(color: textPrimary, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(color: textPrimary, fontWeight: FontWeight.bold),
+      displayLarge: TextStyle(
+        color: textPrimary,
+        fontWeight: FontWeight.bold,
+        letterSpacing: -1,
+      ),
+      displayMedium: TextStyle(
+        color: textPrimary,
+        fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
+      ),
       displaySmall: TextStyle(color: textPrimary, fontWeight: FontWeight.bold),
-      headlineLarge: TextStyle(color: textPrimary, fontWeight: FontWeight.bold),
+      headlineLarge: TextStyle(
+        color: textPrimary,
+        fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
+      ),
       headlineMedium: TextStyle(
         color: textPrimary,
         fontWeight: FontWeight.bold,
       ),
-      headlineSmall: TextStyle(color: textPrimary, fontWeight: FontWeight.bold),
-      titleLarge: TextStyle(color: textPrimary),
-      titleMedium: TextStyle(color: textPrimary),
-      titleSmall: TextStyle(color: textSecondary),
+      headlineSmall: TextStyle(color: textPrimary, fontWeight: FontWeight.w600),
+      titleLarge: TextStyle(color: textPrimary, fontWeight: FontWeight.w600),
+      titleMedium: TextStyle(color: textPrimary, fontWeight: FontWeight.w500),
+      titleSmall: TextStyle(color: textSecondary, fontWeight: FontWeight.w500),
       bodyLarge: TextStyle(color: textPrimary),
       bodyMedium: TextStyle(color: textPrimary),
       bodySmall: TextStyle(color: textSecondary),
-      labelLarge: TextStyle(color: textPrimary),
-      labelMedium: TextStyle(color: textSecondary),
+      labelLarge: TextStyle(color: textPrimary, fontWeight: FontWeight.w600),
+      labelMedium: TextStyle(color: textSecondary, fontWeight: FontWeight.w500),
       labelSmall: TextStyle(color: textSecondary),
     ),
-  );
 
-  /// Light Theme (Secondary)
-  static ThemeData lightTheme() => ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color(0xFFFAFAFA),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFFF5F5F5),
+    // Modern UI Elements
+    cardTheme: CardThemeData(
+      color: bgSecondary,
       elevation: 0,
-      centerTitle: true,
-      iconTheme: IconThemeData(color: Color(0xFF333333)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: bgElevation),
+      ),
     ),
-    colorScheme: const ColorScheme.light(
-      primary: Color(0xFF0066CC),
-      secondary: Color(0xFF22C55E),
-      tertiary: Color(0xFF9333EA),
-      error: Color(0xFFEF4444),
-      surface: Color(0xFFF5F5F5),
-      surfaceContainer: Color(0xFFEEEEEE),
-    ),
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: const Color(0xFFFFFFFF),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xFF0066CC), width: 2),
-      ),
-      labelStyle: const TextStyle(color: Color(0xFF666666)),
-      hintStyle: const TextStyle(color: Color(0xFF999999)),
-    ),
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
-        color: Color(0xFF111827),
-        fontWeight: FontWeight.bold,
-      ),
-      displayMedium: TextStyle(
-        color: Color(0xFF111827),
-        fontWeight: FontWeight.bold,
-      ),
-      displaySmall: TextStyle(
-        color: Color(0xFF111827),
-        fontWeight: FontWeight.bold,
-      ),
-      headlineLarge: TextStyle(
-        color: Color(0xFF1F2937),
-        fontWeight: FontWeight.bold,
-      ),
-      headlineMedium: TextStyle(
-        color: Color(0xFF1F2937),
-        fontWeight: FontWeight.bold,
-      ),
-      headlineSmall: TextStyle(
-        color: Color(0xFF374151),
-        fontWeight: FontWeight.bold,
-      ),
-      titleLarge: TextStyle(
-        color: Color(0xFF1F2937),
-        fontWeight: FontWeight.w600,
-      ),
-      titleMedium: TextStyle(
-        color: Color(0xFF374151),
-        fontWeight: FontWeight.w500,
-      ),
-      titleSmall: TextStyle(color: Color(0xFF6B7280)),
-      bodyLarge: TextStyle(color: Color(0xFF1F2937)),
-      bodyMedium: TextStyle(color: Color(0xFF374151)),
-      bodySmall: TextStyle(color: Color(0xFF6B7280)),
-      labelLarge: TextStyle(
-        color: Color(0xFF111827),
-        fontWeight: FontWeight.w500,
-      ),
-      labelMedium: TextStyle(
-        color: Color(0xFF4B5563),
-        fontWeight: FontWeight.w500,
-      ),
-      labelSmall: TextStyle(color: Color(0xFF6B7280)),
-    ),
-    iconTheme: const IconThemeData(color: Color(0xFF374151)),
-    dividerColor: const Color(0xFFE5E7EB),
+    iconTheme: const IconThemeData(color: textSecondary),
+    dividerColor: bgElevation,
+
+    // Vibrant Switches
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return const Color(0xFF0066CC);
+          return Colors.white;
         }
-        return const Color(0xFFD1D5DB);
+        return const Color(0xFF94A3B8);
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return const Color(0xFF93C5FD);
+          return primary;
         }
-        return const Color(0xFFE5E7EB);
+        return bgElevation;
       }),
     ),
-    sliderTheme: const SliderThemeData(
-      activeTrackColor: Color(0xFF0066CC),
-      inactiveTrackColor: Color(0xFFE5E7EB),
-      thumbColor: Color(0xFF0066CC),
-      overlayColor: Color(0x1F0066CC),
+  );
+
+  /// Light Theme (Maintained for compatibility, but recommend locking to Dark)
+  static ThemeData lightTheme() => ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFFFFFFFF),
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Color(0xFF0F172A)),
+    ),
+    colorScheme: const ColorScheme.light(
+      primary: Color(0xFF2563EB), // Tailwind Blue 600
+      secondary: Color(0xFF10B981), // Tailwind Emerald 500
+      tertiary: Color(0xFF8B5CF6), // Tailwind Violet 500
+      error: Color(0xFFEF4444), // Tailwind Red 500
+      surfaceContainerHighest: Color(0xFFF1F5F9),
+      onSurface: Color(0xFF0F172A),
+      onSurfaceVariant: Color(0xFF64748B),
+      outline: Color(0xFFCBD5E1),
+      outlineVariant: Color(0xFFE2E8F0),
+      onSecondary: Colors.white,
+    ),
+    // Complete light mode text theme
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.bold,
+        letterSpacing: -1,
+      ),
+      displayMedium: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
+      ),
+      displaySmall: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.bold,
+      ),
+      headlineLarge: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
+      ),
+      headlineMedium: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.bold,
+      ),
+      headlineSmall: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.w600,
+      ),
+      titleLarge: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.w600,
+      ),
+      titleMedium: TextStyle(
+        color: Color(0xFF1E293B),
+        fontWeight: FontWeight.w500,
+      ),
+      titleSmall: TextStyle(
+        color: Color(0xFF64748B),
+        fontWeight: FontWeight.w500,
+      ),
+      bodyLarge: TextStyle(color: Color(0xFF0F172A)),
+      bodyMedium: TextStyle(color: Color(0xFF1E293B)),
+      bodySmall: TextStyle(color: Color(0xFF64748B)),
+      labelLarge: TextStyle(
+        color: Color(0xFF0F172A),
+        fontWeight: FontWeight.w600,
+      ),
+      labelMedium: TextStyle(
+        color: Color(0xFF64748B),
+        fontWeight: FontWeight.w500,
+      ),
+      labelSmall: TextStyle(color: Color(0xFF64748B)),
     ),
   );
 }
