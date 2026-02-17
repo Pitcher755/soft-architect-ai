@@ -42,7 +42,13 @@ class ChatNotifier extends StateNotifier<ChatState> {
   final Ref ref;
 
   /// Sets the project path for document saving.
+  /// If the project changes, resets the chat state to start a fresh
+  /// conversation.
   void setProjectPath(String path) {
+    // If switching to a different project, reset the chat state
+    if (state.projectPath != null && state.projectPath != path) {
+      state = state.reset();
+    }
     state = state.copyWith(projectPath: path);
   }
 
@@ -496,10 +502,12 @@ class _MockChatRepository implements ChatRepository {
   Future<void> clearChatHistory(String projectId) async {}
 }
 
-final chatRepositoryProvider = Provider<ChatRepository>((ref) {
-  // Always use real backend for standard projects
-  return ChatRepositoryImpl(baseUrl: _backendBaseUrl, apiKey: _backendApiKey);
-});
+final chatRepositoryProvider = Provider<ChatRepository>(
+  (ref) => ChatRepositoryImpl(
+    baseUrl: _backendBaseUrl,
+    apiKey: _backendApiKey,
+  ),
+);
 
 final mockChatRepositoryProvider = Provider<ChatRepository>(
   (ref) => _MockChatRepository(),
