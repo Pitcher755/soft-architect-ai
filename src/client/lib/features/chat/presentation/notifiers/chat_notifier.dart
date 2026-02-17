@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../../../../core/utils/uuid_generator.dart';
 import '../../../../domain/entities/chat_stream_event.dart';
 import '../../../../features/filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../../features/project_shell/core/services/file_system_service.dart';
+import '../../data/repositories/chat_repository_impl.dart';
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';
@@ -12,17 +14,30 @@ import 'streaming_state.dart';
 /// Simple UUID generator for demo purposes
 String generateId() => DateTime.now().millisecondsSinceEpoch.toString();
 
+/// Configuration flags for development/production switches
+const String _backendBaseUrl = String.fromEnvironment(
+  'BACKEND_BASE_URL',
+  defaultValue: 'http://localhost:8000',
+);
+const String _backendApiKey = String.fromEnvironment(
+  'BACKEND_API_KEY',
+  defaultValue: 'dev_test_key_12345', // Valid dev API key (10+ chars)
+);
+
 /// Notifier for chat state management using state machine pattern.
 class ChatNotifier extends StateNotifier<ChatState> {
   ChatNotifier({
     required ChatRepository repository,
+    required ChatRepository mockRepository,
     required FileSystemService fileSystemService,
     required this.ref,
   }) : _repository = repository,
+       _mockRepository = mockRepository,
        _fileSystemService = fileSystemService,
        super(const ChatState());
 
   final ChatRepository _repository;
+  final ChatRepository _mockRepository;
   final FileSystemService _fileSystemService;
   final Ref ref;
 
@@ -164,8 +179,15 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
       // 3️⃣ Stream tokens from repository
       final streamBuffer = StringBuffer();
-      final projectId = state.projectPath ?? 'default';
-      final stream = _repository.sendMessageStream(message, projectId);
+      // Generate valid UUID from projectPath (deterministic for same path)
+      final projectPath = state.projectPath ?? 'default-project';
+
+      // Use mock repository for guide project (offline mode)
+      final isGuideProject = projectPath.startsWith('mock://');
+      final repository = isGuideProject ? _mockRepository : _repository;
+
+      final projectId = UuidGenerator.fromString(projectPath);
+      final stream = repository.sendMessageStream(message, projectId);
 
       await for (final event in stream) {
         if (event is TokenEvent) {
@@ -474,7 +496,12 @@ class _MockChatRepository implements ChatRepository {
   Future<void> clearChatHistory(String projectId) async {}
 }
 
-final chatRepositoryProvider = Provider<ChatRepository>(
+final chatRepositoryProvider = Provider<ChatRepository>((ref) {
+  // Always use real backend for standard projects
+  return ChatRepositoryImpl(baseUrl: _backendBaseUrl, apiKey: _backendApiKey);
+});
+
+final mockChatRepositoryProvider = Provider<ChatRepository>(
   (ref) => _MockChatRepository(),
 );
 
@@ -485,6 +512,7 @@ final fileSystemServiceProvider = Provider<FileSystemService>(
 final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>(
   (ref) => ChatNotifier(
     repository: ref.watch(chatRepositoryProvider),
+    mockRepository: ref.watch(mockChatRepositoryProvider),
     fileSystemService: ref.watch(fileSystemServiceProvider),
     ref: ref,
   ),

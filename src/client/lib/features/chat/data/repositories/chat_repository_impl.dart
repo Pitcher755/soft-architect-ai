@@ -1,3 +1,4 @@
+import '../../../../core/utils/uuid_generator.dart';
 import '../../../../domain/entities/chat_stream_event.dart';
 import '../../../../infrastructure/network/sse_client.dart';
 import '../../domain/entities/chat_message.dart';
@@ -81,12 +82,6 @@ class ChatRepositoryImpl implements ChatRepository {
     throw UnimplementedError('clearChatHistory not yet implemented');
   }
 
-  /// Generate a UUID v4 for conversation_id (simple implementation).
-  ///
-  /// In production, use the `uuid` package for proper UUID generation.
-  String _generateConversationId() {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final random = timestamp.hashCode;
-    return '$timestamp-$random';
-  }
+  /// Generate a UUID v4 for conversation_id (RFC 4122 compliant).
+  String _generateConversationId() => UuidGenerator.v4();
 }

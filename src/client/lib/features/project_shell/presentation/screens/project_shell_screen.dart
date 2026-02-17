@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/presentation/widgets/projects_sidebar.dart';
+import '../../../chat/presentation/notifiers/chat_notifier.dart';
 import '../../../chat/presentation/widgets/chat_panel_widget.dart';
 import '../../../chat/presentation/widgets/progress_indicator_widget.dart';
 import '../../../filesystem/domain/entities/file_node.dart';
@@ -61,6 +62,11 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   void initState() {
     super.initState();
     _initializeWelcomeMessage();
+
+    // Initialize projectPath in ChatNotifier for RAG context
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(chatNotifierProvider.notifier).setProjectPath(widget.projectPath);
+    });
   }
 
   void _initializeWelcomeMessage() {
@@ -329,10 +335,10 @@ class _ChatPanelSectionState extends ConsumerState<_ChatPanelSection> {
           ),
         Expanded(
           child: ChatPanelWidget(
-            messages: isMock ? MockProjectData.mockChatMessages : const [],
             isGuideProject: widget.projectPath.startsWith(
               'mock://softarchitect-guide',
             ),
+            projectId: widget.projectPath,
           ),
         ),
       ],
