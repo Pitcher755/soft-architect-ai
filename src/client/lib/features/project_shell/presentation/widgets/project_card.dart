@@ -200,7 +200,7 @@ class ProjectCard extends StatelessWidget {
                                 color: AppColors.textSecondary,
                               ),
                               const SizedBox(width: 3),
-                              Flexible(
+                              Expanded(
                                 child: Text(
                                   _getShortPath(path),
                                   style: TextStyle(

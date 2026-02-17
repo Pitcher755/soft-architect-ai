@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +13,7 @@ import 'features/chat/presentation/notifiers/chat_notifier.dart';
 import 'features/project_shell/core/services/file_system_service.dart';
 import 'features/settings/presentation/providers/settings_providers.dart';
 import 'gen/app_localizations.dart';
+import 'shared/presentation/widgets/keyboard_zoom_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,90 +77,50 @@ class SoftArchitectApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = createAppRouter();
+    // CRITICAL: Router is static provider, never rebuilds
+    final router = ref.watch(appRouterProvider);
     final locale = ref.watch(localeProvider);
 
-    // CRITICAL: Watch ONLY theme and font size
-    // Do NOT watch globalZoom - it would cause entire app rebuild
-    final themeMode = ref.watch(themeModeProvider);
-    final fontSize = ref.watch(fontSizeProvider);
+    // Watch settings async for initial load
+    final settingsAsync = ref.watch(settingsProvider);
 
-    // Read zoom without watching (no rebuild when zoom changes)
-    // This is read fresh on every build, but that's OK for MediaQuery
-    final globalZoom = ref.read(globalZoomProvider);
-    final enableZoomShortcuts = ref.read(enableZoomShortcutsProvider);
-
-    // Apply global zoom by wrapping the app in MediaQuery
-    // IMPORTANT: Use FocusScope to capture shortcuts without triggering
-    // navigation
-    return FocusScope(
-      onKey: (node, event) {
-        if (!enableZoomShortcuts) {
-          return KeyEventResult.ignored;
-        }
-
-        final isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
-        if (!isCtrlPressed) {
-          return KeyEventResult.ignored;
-        }
-
-        // Ctrl + Shift + Plus (En/US layout: Ctrl+Shift+=)
-        if (event.logicalKey == LogicalKeyboardKey.equal &&
-            HardwareKeyboard.instance.isShiftPressed) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
-          return KeyEventResult.handled;
-        }
-
-        // Ctrl + Equal/Plus (Spanish: Ctrl+= where + is Shift+=)
-        if (event.logicalKey == LogicalKeyboardKey.equal &&
-            !HardwareKeyboard.instance.isShiftPressed) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
-          return KeyEventResult.handled;
-        }
-
-        // Ctrl + Minus (works on all layouts)
-        if (event.logicalKey == LogicalKeyboardKey.minus) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom - 0.1).clamp(0.5, 2.0));
-          return KeyEventResult.handled;
-        }
-
-        // Ctrl + 0: Reset to 100%
-        if (event.logicalKey == LogicalKeyboardKey.digit0) {
-          ref.read(settingsProvider.notifier).updateGlobalZoom(1);
-          return KeyEventResult.handled;
-        }
-
-        return KeyEventResult.ignored;
-      },
-      child: Focus(
-        canRequestFocus: true,
-        child: MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(globalZoom)),
-          child: MaterialApp.router(
-            title: 'SoftArchitect AI',
-            debugShowCheckedModeBanner: false,
-            theme: _buildThemeWithFontSize(AppTheme.lightTheme(), fontSize),
-            darkTheme: _buildThemeWithFontSize(AppTheme.darkTheme(), fontSize),
-            themeMode: themeMode,
-            routerConfig: router,
-            locale: locale,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: LocaleNotifier.supportedLocales,
+    return settingsAsync.when(
+      data: (settings) => KeyboardZoomWrapper(
+        child: MaterialApp.router(
+          title: 'SoftArchitect AI',
+          debugShowCheckedModeBanner: false,
+          theme: _buildThemeWithFontSize(
+            AppTheme.darkTheme(),
+            settings.fontSize,
+          ),
+          darkTheme: _buildThemeWithFontSize(
+            AppTheme.darkTheme(),
+            settings.fontSize,
+          ),
+          themeMode: ThemeMode.dark,
+          routerConfig: router,
+          locale: locale,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: LocaleNotifier.supportedLocales,
+          // Apply zoom in builder without rebuilding router
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: TextScaler.linear(settings.globalZoom)),
+            child: child!,
           ),
         ),
+      ),
+      loading: () => const MaterialApp(
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
+      ),
+      error: (_, __) => const MaterialApp(
+        home: Scaffold(body: Center(child: Text('Error loading settings'))),
       ),
     );
   }

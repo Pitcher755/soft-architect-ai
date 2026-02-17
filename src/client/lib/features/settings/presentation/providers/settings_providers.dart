@@ -159,6 +159,29 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     await _saveSettings();
   }
 
+  /// Increase zoom by 10% (max 200%).
+  Future<void> increaseZoom() async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    final newZoom = (currentState.globalZoom + 0.1).clamp(0.5, 2.0);
+    await updateGlobalZoom(newZoom);
+  }
+
+  /// Decrease zoom by 10% (min 50%).
+  Future<void> decreaseZoom() async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    final newZoom = (currentState.globalZoom - 0.1).clamp(0.5, 2.0);
+    await updateGlobalZoom(newZoom);
+  }
+
+  /// Reset zoom to 100%.
+  Future<void> resetZoom() async {
+    await updateGlobalZoom(1);
+  }
+
   Future<void> updateZoomShortcuts({required bool enableZoomShortcuts}) async {
     final currentState = state.value;
     if (currentState == null) return;

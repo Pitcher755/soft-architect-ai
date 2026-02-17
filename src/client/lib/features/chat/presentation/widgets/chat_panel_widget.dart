@@ -139,30 +139,37 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
               children: [
                 Expanded(
                   child: ConstrainedBox(
-                    // Limitar altura máxima
                     constraints: const BoxConstraints(maxHeight: 120),
                     child: TextField(
                       controller: _messageController,
-                      maxLines: null, // Auto-grow
-                      minLines: 1, // Start small
+                      maxLines: null,
+                      minLines: 1,
+                      textInputAction: TextInputAction.send,
+                      onSubmitted: (text) {
+                        if (text.trim().isNotEmpty) {
+                          ref
+                              .read(chatNotifierProvider.notifier)
+                              .sendMessageStream(text.trim());
+                          _messageController.clear();
+                        }
+                      },
                       style: const TextStyle(
                         color: Color(0xFFC9D1D9),
                         fontSize: 13,
                       ),
                       decoration: InputDecoration(
-                        hintText: 'Provide feedback or additional context...',
+                        hintText:
+                            'Provide feedback or additional context... (Press Enter to send)',
                         hintStyle: const TextStyle(color: Color(0xFF8B949E)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(color: Color(0xFF30363D)),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          // Consistent border color
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(color: Color(0xFF30363D)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          // Highlight on focus
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(color: AppColors.primary),
                         ),
