@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../settings/presentation/providers/settings_providers.dart';
 import '../../domain/entities/chat_message.dart';
 import '../notifiers/chat_notifier.dart';
 import '../widgets/error_banner_widget.dart';
@@ -91,6 +92,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     final proposal = chatState.currentProposal;
     final showError = chatState.hasError;
     final errorMessage = chatState.errorMessage ?? '';
+    final userName = ref.watch(userNameProvider);
 
     return Container(
       color: Theme.of(context).colorScheme.surface,
@@ -121,7 +123,11 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
 
                       // Messages
                       final message = messages[messages.length - 1 - index];
-                      return MessageBubbleWidget(message: message);
+                      return MessageBubbleWidget(
+                        message: message,
+                        messageController: _messageController,
+                        userName: userName,
+                      );
                     },
                   ),
           ),

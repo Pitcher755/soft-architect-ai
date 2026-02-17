@@ -1,6 +1,8 @@
 // ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
@@ -21,16 +23,20 @@ class ChatMessageUI {
 }
 
 /// Widget que renderiza mensajes de chat con estilo dark theme
-/// - Mensajes del usuario: burbuja alineada a la derecha
-/// - Mensajes del asistente: burbuja alineada a la izquierda sin esquina superior izquierda
+/// - Mensajes del usuario: burbuja alineada a la derecha con botón editar
+/// - Mensajes del asistente: burbuja alineada a la izquierda con Markdown y botones de acción
 class MessageBubbleWidget extends StatelessWidget {
   const MessageBubbleWidget({
     required this.message,
     super.key,
     this.onLongPress,
+    this.messageController,
+    this.userName,
   });
   final ChatMessageUI message;
   final VoidCallback? onLongPress;
+  final TextEditingController? messageController;
+  final String? userName;
 
   bool get _isUserMessage => message.role == 'user';
 
@@ -73,28 +79,89 @@ class MessageBubbleWidget extends StatelessWidget {
                     : CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Message content with blinking cursor if streaming
+                  // Message content with edit button (user) or markdown (AI)
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Flexible(
-                        child: SelectableText(
-                          message.content,
-                          style: TextStyle(
-                            color: _isUserMessage
-                                ? AppColors.textMain
-                                : AppColors.textSecondary,
-                            fontSize: 14,
-                            height: 1.5,
-                          ),
-                        ),
+                        child: _isUserMessage
+                            ? SelectableText(
+                                message.content,
+                                style: const TextStyle(
+                                  color: AppColors.textMain,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              )
+                            : MarkdownBody(
+                                data: message.content,
+                                selectable: true,
+                                styleSheet: MarkdownStyleSheet(
+                                  p: const TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 14,
+                                    height: 1.5,
+                                  ),
+                                  code: const TextStyle(
+                                    backgroundColor: AppColors.surfaceBg,
+                                    color: AppColors.primary,
+                                    fontFamily: 'monospace',
+                                    fontSize: 13,
+                                  ),
+                                  codeblockDecoration: BoxDecoration(
+                                    color: AppColors.surfaceBg,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ),
+                              ),
                       ),
+                      // Edit button for user messages
+                      if (_isUserMessage && messageController != null)
+                        IconButton(
+                          icon: const Icon(Icons.edit, size: 16),
+                          color: AppColors.textMuted,
+                          iconSize: 16,
+                          padding: const EdgeInsets.all(4),
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            messageController!.text = message.content;
+                          },
+                          tooltip: 'Editar mensaje',
+                        ),
                       // Show blinking cursor only for streaming AI messages
                       if (!_isUserMessage && message.isStreaming)
                         const _BlinkingCursor(),
                     ],
                   ),
+
+                  // Action buttons for assistant messages
+                  if (!_isUserMessage && !message.isStreaming)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _ActionButton(
+                            icon: Icons.copy,
+                            tooltip: 'Copiar al portapapeles',
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(text: message.content),
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 8),
+                          _ActionButton(
+                            icon: Icons.check_circle_outline,
+                            tooltip: 'Validar y guardar documento',
+                            onPressed: () {
+                              // TODO: Implement validate and save functionality
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
 
                   // Timestamp
                   Padding(
@@ -118,13 +185,10 @@ class MessageBubbleWidget extends StatelessWidget {
             backgroundColor: _isUserMessage
                 ? AppColors.dirContext
                 : AppColors.dirArchitecture,
-            child: Text(
-              _isUserMessage ? 'U' : 'AI',
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.surface,
-              ),
+            child: Icon(
+              _isUserMessage ? Icons.person : Icons.smart_toy,
+              size: 14,
+              color: Colors.white,
             ),
           ),
         ],
@@ -163,6 +227,31 @@ class MessageBubbleWidget extends StatelessWidget {
     final minute = dateTime.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
   }
+}
+
+/// Small action button for assistant messages.
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+    icon: Icon(icon),
+    iconSize: 16,
+    padding: const EdgeInsets.all(4),
+    constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+    color: AppColors.textMuted,
+    hoverColor: AppColors.primary.withValues(alpha: 0.1),
+    onPressed: onPressed,
+    tooltip: tooltip,
+  );
 }
 
 /// Animated blinking cursor widget for streaming messages.
