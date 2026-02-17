@@ -47,7 +47,7 @@ class Settings(BaseSettings):
         APP_VERSION: Semantic version of the application
         API_V1_STR: URL prefix for API v1 endpoints (e.g., /api/v1)
 
-        LLM_PROVIDER: Which LLM backend to use ("local" or "cloud")
+        LLM_PROVIDER: Which LLM backend to use ("local", "cloud", or "ollama")
         OLLAMA_BASE_URL: HTTP URL to Ollama server for local inference
         GROQ_API_KEY: API key for Groq Cloud (if using cloud provider)
 
@@ -64,7 +64,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     # LLM Configuration
-    LLM_PROVIDER: Literal["local", "cloud"] = "local"
+    LLM_PROVIDER: Literal["local", "cloud", "ollama"] = "local"
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     GROQ_API_KEY: str = ""
 
