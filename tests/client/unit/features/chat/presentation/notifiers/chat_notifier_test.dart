@@ -105,6 +105,9 @@ void main() {
       final notifier = container.read(chatNotifierProvider.notifier);
       fakeRepository.generatedTokens = ['Hello', ' ', 'World'];
 
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
+
       notifier.sendMessage('Test message');
 
       // Wait for async operations
@@ -121,6 +124,9 @@ void main() {
     test('should stream tokens and update assistant message', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
       fakeRepository.generatedTokens = ['Token', '1', ' ', 'Token2'];
+
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
 
       notifier.sendMessage('Generate document');
 
@@ -142,6 +148,9 @@ void main() {
         final notifier = container.read(chatNotifierProvider.notifier);
         fakeRepository.generatedTokens = ['Document', ' ', 'content'];
 
+        // ✅ Required: Set project path before sending message
+        await notifier.setProjectPath('/tmp/test_project');
+
         notifier.sendMessage('Create document');
 
         // Wait for streaming to complete and proposal to be created
@@ -161,6 +170,9 @@ void main() {
       final notifier = container.read(chatNotifierProvider.notifier);
       fakeRepository.shouldFail = true;
       fakeRepository.errorMessage = 'Network error';
+
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
 
       notifier.sendMessage('This will fail');
 
@@ -252,6 +264,9 @@ void main() {
       final notifier = container.read(chatNotifierProvider.notifier);
       fakeRepository.generatedTokens = ['Hello', ' ', 'World', '!'];
 
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
+
       // Act: Call streaming method (async)
       final future = notifier.sendMessageStream('Generate text');
 
@@ -274,6 +289,9 @@ void main() {
       final notifier = container.read(chatNotifierProvider.notifier);
       fakeRepository.generatedTokens = ['Complete', ' ', 'Response'];
 
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
+
       // Act: Call streaming method and wait for completion
       await notifier.sendMessageStream('Complete message');
 
@@ -292,6 +310,9 @@ void main() {
       fakeRepository.shouldFail = true;
       fakeRepository.errorMessage = 'Streaming error occurred';
 
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
+
       // Act: Call streaming method that will fail and wait
       await notifier.sendMessageStream('This will fail');
 
@@ -307,6 +328,9 @@ void main() {
     test('rejectProposal clears current proposal', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
       fakeRepository.generatedTokens = ['Document', ' ', 'content'];
+
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
 
       // Generate document and wait for proposal
       notifier.sendMessage('Generate document');
@@ -327,6 +351,9 @@ void main() {
       fakeRepository.shouldFail = true;
       fakeRepository.errorMessage = 'Test error';
 
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
+
       // Trigger error
       notifier.sendMessage('Fail');
       await Future<void>.delayed(const Duration(milliseconds: 180));
@@ -342,8 +369,11 @@ void main() {
       // errorMessage persists but hasError is false (expected behavior)
     });
 
-    test('resetForNewProject resets state with custom totalDocs', () {
+    test('resetForNewProject resets state with custom totalDocs', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
+
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
 
       // Send some messages first
       notifier.sendMessage('Test message');
@@ -371,6 +401,9 @@ void main() {
 
     test('retryLastMessage re-sends last user message', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
+
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
 
       // Send successful message first
       fakeRepository.generatedTokens = ['First', ' ', 'message'];
@@ -405,6 +438,9 @@ void main() {
     test('regenerateProposal re-generates document', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
       fakeRepository.generatedTokens = ['First', ' ', 'version'];
+
+      // ✅ Required: Set project path before sending message
+      await notifier.setProjectPath('/tmp/test_project');
 
       // Generate initial document
       notifier.sendMessage('Generate document');
