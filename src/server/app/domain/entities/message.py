@@ -24,7 +24,7 @@ class Message:
     Message entity (immutable).
 
     Validation rules:
-    - content: max 5000 chars, not empty
+    - content: max 30000 chars, not empty (qwen2.5-coder:3b supports up to 32K tokens)
     - role: must be valid MessageRole enum value
     """
 
@@ -46,7 +46,7 @@ class Message:
         if not self.content or len(self.content) == 0:
             raise ValueError("Content cannot be empty")
 
-        if len(self.content) > 5000:
+        if len(self.content) > 30000:
             raise ValueError(
-                f"Content exceeds maximum length (5000 chars): {len(self.content)}"
+                f"Content exceeds maximum length (30000 chars): {len(self.content)}"
             )

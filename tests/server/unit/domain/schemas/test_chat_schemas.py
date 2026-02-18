@@ -21,23 +21,23 @@ from app.domain.schemas.chat import ChatRequest, ChatResponse, RAGContext
 class TestChatRequestValidation:
     """Test ChatRequest input validation and sanitization."""
 
-    def test_chat_request_rejects_over_2000_chars(self):
-        """Test DOS prevention: reject messages >2000 chars.
+    def test_chat_request_rejects_over_30000_chars(self):
+        """Test DOS prevention: reject messages >30000 chars.
 
-        Security: Prevents long-input DOS attacks.
+        Security: Prevents long-input DOS attacks (qwen2.5-coder:3b supports up to 32K tokens).
         """
-        long_message = "A" * 2001
+        long_message = "A" * 30001
 
-        with pytest.raises(ValueError, match="at most 2000 characters"):
+        with pytest.raises(ValueError, match="at most 30000 characters"):
             ChatRequest(
                 conversation_id=uuid4(),
                 message=long_message,
                 project_id=uuid4(),
             )
 
-    def test_chat_request_accepts_exactly_2000_chars(self):
-        """Test boundary condition: accept exactly 2000 chars."""
-        boundary_message = "B" * 2000
+    def test_chat_request_accepts_exactly_30000_chars(self):
+        """Test boundary condition: accept exactly 30000 chars."""
+        boundary_message = "B" * 30000
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -45,7 +45,7 @@ class TestChatRequestValidation:
             project_id=uuid4(),
         )
 
-        assert len(request.message) == 2000
+        assert len(request.message) == 30000
 
     def test_chat_request_escapes_html_entities(self):
         """Test XSS prevention: HTML entities must be escaped.

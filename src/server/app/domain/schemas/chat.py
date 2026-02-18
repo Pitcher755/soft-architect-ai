@@ -24,8 +24,8 @@ class ChatRequest(BaseModel):
     )
     message: str = Field(
         ...,
-        max_length=2000,
-        description="User message (max 2000 chars for DOS prevention)",
+        max_length=30000,
+        description="User message (max 30000 chars for extended prompts)",
         json_schema_extra={
             "examples": ["How do I implement authentication in Flutter?"]
         },

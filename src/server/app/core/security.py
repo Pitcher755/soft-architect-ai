@@ -52,7 +52,7 @@ class InputSanitizer:
     ]
 
     @staticmethod
-    def sanitize_string(value: str, max_length: int = 1000) -> str:
+    def sanitize_string(value: str, max_length: int = 30000) -> str:
         """
         Sanitize a string value for safe processing.
 
@@ -63,7 +63,7 @@ class InputSanitizer:
 
         Args:
             value: Input string to sanitize
-            max_length: Maximum allowed string length (default: 1000 chars)
+            max_length: Maximum allowed string length (default: 30000 chars)
 
         Returns:
             str: Sanitized string with leading/trailing whitespace removed
@@ -111,7 +111,7 @@ class InputSanitizer:
             ValueError: If prompt contains dangerous patterns
 
         Security Notes:
-            - Maximum length is 5000 characters (prevents token bombing)
+            - Maximum length is 30000 characters (allows extended prompts)
             - Injection patterns are still detected and rejected
             - Use this for any user input going to the LLM
 
@@ -120,7 +120,7 @@ class InputSanitizer:
             >>> safe_prompt = InputSanitizer.sanitize_prompt(prompt)
             >>> # safe_prompt can now be sent to Ollama or external LLM
         """
-        return InputSanitizer.sanitize_string(prompt, max_length=5000)
+        return InputSanitizer.sanitize_string(prompt, max_length=30000)
 
 
 class TokenValidator:
