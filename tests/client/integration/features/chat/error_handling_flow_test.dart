@@ -10,6 +10,8 @@ void main() {
     late SnackbarService snackbarService;
 
     setUp(() {
+      // Force Spanish locale for consistent testing
+      ErrorMapper.setLocale('es');
       snackbarService = SnackbarService();
     });
 

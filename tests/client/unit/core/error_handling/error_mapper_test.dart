@@ -16,6 +16,11 @@ import 'package:softarchitect_ai/core/error_handling/error_mapper.dart';
 
 void main() {
   group('ErrorMapper', () {
+    setUp(() {
+      // Force Spanish locale for consistent testing
+      ErrorMapper.setLocale('es');
+    });
+
     test('should map SYS_001 to Spanish message', () {
       // Arrange
       const errorCode = 'SYS_001';
