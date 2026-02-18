@@ -99,11 +99,12 @@ class RAGOrchestrator:
                 extra={"template": "FALLBACK", "reason": "no_sources_available"},
             )
 
-        # Build prompt with available sources (may be empty)
+        # ✅ Build prompt with RAG context AND chat history
         prompt = self.template_builder.build_prompt(
             query=request.message,
             context=sources,
             template_id=template_id,
+            history=request.history,  # ✅ NEW: Pass chat history
         )
 
         # Generate LLM response (GAP 2: retry applied in llm_client)
@@ -165,11 +166,12 @@ class RAGOrchestrator:
                 template_id = "FALLBACK"
                 logger.info("🔄 Using FALLBACK template in streaming (RAG degraded)")
 
-            # Phase 3: Prompt construction
+            # ✅ Phase 3: Prompt construction with history
             prompt = self.template_builder.build_prompt(
                 query=request.message,
                 context=sources,
                 template_id=template_id,
+                history=request.history,  # ✅ NEW: Pass chat history
             )
 
             # Phase 4: Stream LLM response
