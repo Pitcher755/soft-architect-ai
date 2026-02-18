@@ -12,7 +12,13 @@ class ChatState {
     this.hasError = false,
     this.errorMessage,
     this.projectPath,
+    this.isLoading = false,
   });
+
+  /// ✅ NEW: Factory constructor for initial clean state
+  ///
+  /// Use this when switching projects to ensure no state pollution.
+  factory ChatState.initial() => const ChatState();
   final List<ChatMessage> messages;
   final DocumentProposal? currentProposal;
   final int currentDocIndex;
@@ -21,6 +27,7 @@ class ChatState {
   final bool hasError;
   final String? errorMessage;
   final String? projectPath;
+  final bool isLoading;
 
   /// Returns progress as "Doc X/25"
   String get progressText => 'Doc $currentDocIndex/$totalDocs';
@@ -38,6 +45,7 @@ class ChatState {
     bool? hasError,
     String? errorMessage,
     String? projectPath,
+    bool? isLoading,
     bool clearProposal = false,
   }) => ChatState(
     messages: messages ?? this.messages,
@@ -50,6 +58,7 @@ class ChatState {
     hasError: hasError ?? this.hasError,
     errorMessage: errorMessage ?? this.errorMessage,
     projectPath: projectPath ?? this.projectPath,
+    isLoading: isLoading ?? this.isLoading,
   );
 
   /// Clears error state

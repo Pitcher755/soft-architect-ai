@@ -13,6 +13,15 @@ import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';
 import 'streaming_state.dart';
 
+/// Custom exception for missing project context
+class ProjectContextError implements Exception {
+  ProjectContextError(this.message);
+  final String message;
+
+  @override
+  String toString() => 'ProjectContextError: $message';
+}
+
 /// Simple UUID generator for demo purposes
 String generateId() => DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -44,21 +53,42 @@ class ChatNotifier extends StateNotifier<ChatState> {
   final Ref ref;
 
   /// Sets the project path for document saving.
-  /// If the project changes, loads chat history from persistence.
+  ///
+  /// ✅ CRITICAL FIX: ALWAYS resets state and loads history from SQLite.
+  ///
+  /// This prevents chat state pollution between projects by:
+  /// 1. Resetting ALL state fields to initial values
+  /// 2. Loading persisted history for the specific project
+  /// 3. Never showing "ghost messages" from previous project
+  ///
+  /// Example:
+  /// ```dart
+  /// await chatNotifier.setProjectPath('/home/user/project-a');
+  /// // State is now clean with only project-a messages
+  ///
+  /// await chatNotifier.setProjectPath('/home/user/project-b');
+  /// // State is now clean with only project-b messages
+  /// ```
   Future<void> setProjectPath(String path) async {
-    // If switching to a different project, load its chat history
-    if (state.projectPath != null && state.projectPath != path) {
-      // Generate UUID from path for history lookup
-      final projectId = UuidGenerator.fromString(path);
+    // ✅ STEP 1: ALWAYS reset state first (prevents pollution)
+    state = ChatState.initial().copyWith(projectPath: path, isLoading: true);
 
-      // Load chat history from persistence
+    // ✅ STEP 2: Generate deterministic UUID for this project
+    final projectId = UuidGenerator.fromString(path);
+
+    // ✅ STEP 3: Load chat history from SQLite
+    try {
       final history = await _repository.getChatHistory(projectId);
 
-      // Reset state with loaded history
-      state = state.reset().copyWith(projectPath: path, messages: history);
-    } else {
-      // First time setting path, just update state
-      state = state.copyWith(projectPath: path);
+      // ✅ STEP 4: Update state with loaded messages
+      state = state.copyWith(messages: history, isLoading: false);
+    } on Exception catch (e) {
+      // On error, keep empty state but log the issue
+      state = state.copyWith(
+        isLoading: false,
+        hasError: true,
+        errorMessage: 'Failed to load chat history: $e',
+      );
     }
   }
 
@@ -69,6 +99,14 @@ class ChatNotifier extends StateNotifier<ChatState> {
     }
 
     try {
+      // ✅ CRITICAL: Guard against missing project context
+      final projectPath = state.projectPath;
+      if (projectPath == null) {
+        throw ProjectContextError(
+          'No project context initialized. Call setProjectPath() first.',
+        );
+      }
+
       // Clear any previous errors
       state = state.clearError();
 
@@ -147,6 +185,13 @@ class ChatNotifier extends StateNotifier<ChatState> {
         currentProposal: proposal,
         isStreaming: false,
       );
+    } on ProjectContextError catch (e) {
+      // ✅ Show user-friendly error for missing context
+      state = state.copyWith(
+        isStreaming: false,
+        hasError: true,
+        errorMessage: 'Error: ${e.message}',
+      );
     } on Exception catch (e) {
       state = state.copyWith(
         isStreaming: false,
@@ -195,13 +240,20 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
       // 3️⃣ Stream tokens from repository
       final streamBuffer = StringBuffer();
-      // Generate valid UUID from projectPath (deterministic for same path)
-      final projectPath = state.projectPath ?? 'default-project';
+
+      // ✅ CRITICAL: Guard against missing project context
+      final projectPath = state.projectPath;
+      if (projectPath == null) {
+        throw ProjectContextError(
+          'No project context initialized. Call setProjectPath() first.',
+        );
+      }
 
       // Use mock repository for guide project (offline mode)
       final isGuideProject = projectPath.startsWith('mock://');
       final repository = isGuideProject ? _mockRepository : _repository;
 
+      // Generate deterministic UUID from project path
       final projectId = UuidGenerator.fromString(projectPath);
 
       // Save user message to persistence (after variables defined)
@@ -265,6 +317,13 @@ class ChatNotifier extends StateNotifier<ChatState> {
           return;
         }
       }
+    } on ProjectContextError catch (e) {
+      // ✅ Show user-friendly error for missing context
+      state = state.copyWith(
+        isStreaming: false,
+        hasError: true,
+        errorMessage: 'Error: ${e.message}',
+      );
     } on Exception catch (e) {
       state = state.copyWith(
         isStreaming: false,

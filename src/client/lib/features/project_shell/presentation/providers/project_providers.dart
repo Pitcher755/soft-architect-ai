@@ -2,12 +2,14 @@
 
 // lib/features/project_shell/presentation/providers/project_providers.dart
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart' as legacy;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../services/database_helper.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/models/project_phase.dart';
 import '../../domain/services/project_phase_service.dart';
@@ -30,26 +32,43 @@ class ProjectsNotifier extends Notifier<List<Project>> {
     return [];
   }
 
-  /// Carga proyectos desde SharedPreferences + Guía Mock
+  /// ✅ CRITICAL FIX: Mark missing projects instead of deleting them
+  ///
+  /// This allows users to:
+  /// 1. See missing projects in the UI (grayed out)
+  /// 2. Restore the directory later
+  /// 3. Manually delete if desired
   Future<void> _loadProjects() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // 1. Cargar proyectos reales (guardados en prefs)
+    // 1. Load projects from SharedPreferences
     final savedJson = prefs.getStringList(_storageKey) ?? [];
     final userProjects = <Project>[];
 
     for (final str in savedJson) {
       try {
         final Map<String, dynamic> json = jsonDecode(str);
+        final projectPath = json['path'] as String;
+
+        // ✅ CRITICAL: Check if directory exists (but DON'T delete)
+        final directory = Directory(projectPath);
+        final exists = directory.existsSync();
+
+        if (!exists) {
+          debugPrint('⚠️ Project directory missing: $projectPath');
+        }
+
+        // ✅ Add project with isMissing flag instead of skipping
         userProjects.add(
           Project(
             id: json['id'] as String,
             name: json['name'] as String,
-            path: json['path'] as String,
+            path: projectPath,
             createdAt: DateTime.parse(json['createdAt'] as String),
             lastOpened: json['lastOpened'] != null
                 ? DateTime.parse(json['lastOpened'] as String)
                 : null,
+            isMissing: !exists, // ✅ Mark as missing, don't delete
           ),
         );
       } catch (e) {
@@ -57,7 +76,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
       }
     }
 
-    // 2. Cargar la guía mock (siempre presente)
+    // 2. Add guide project (always available)
     final guideProject = Project(
       id: 'guide-softarchitect-01',
       name: 'Guía SoftArchitect',
@@ -66,7 +85,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
       lastOpened: DateTime.now(),
     );
 
-    // 3. Combinar y ordenar (más reciente primero)
+    // 3. Combine and sort (most recent first)
     final all = [guideProject, ...userProjects];
     all.sort((a, b) {
       final aTime = a.lastOpened ?? a.createdAt;
@@ -94,6 +113,46 @@ class ProjectsNotifier extends Notifier<List<Project>> {
     await _saveToPrefs();
   }
 
+  /// ✅ NEW: Manually delete a project (user-initiated only)
+  ///
+  /// This should ONLY be called when user explicitly clicks "Delete" button.
+  /// It will:
+  /// 1. Remove from UI state
+  /// 2. Remove from SharedPreferences
+  /// 3. Purge chat history from SQLite
+  Future<void> deleteProject(String projectId) async {
+    // Remove from state
+    state = state.where((p) => p.id != projectId).toList();
+
+    // Persist changes
+    await _saveToPrefs();
+
+    // Purge chat history for this project
+    await _purgeChatHistory(projectId);
+
+    debugPrint('🗑️ Project deleted: $projectId');
+  }
+
+  /// ✅ NEW: Restore a missing project (mark as found)
+  ///
+  /// Call this when user restores the directory or wants to retry.
+  Future<void> restoreProject(String projectId) async {
+    final project = state.firstWhere((p) => p.id == projectId);
+    final directory = Directory(project.path);
+
+    if (directory.existsSync()) {
+      // Update state to mark as found
+      state = state
+          .map((p) => p.id == projectId ? p.copyWith(isMissing: false) : p)
+          .toList();
+
+      await _saveToPrefs();
+      debugPrint('✅ Project restored: $projectId');
+    } else {
+      debugPrint('⚠️ Cannot restore, directory still missing: ${project.path}');
+    }
+  }
+
   /// Guarda los proyectos reales en SharedPreferences
   Future<void> _saveToPrefs() async {
     final prefs = await SharedPreferences.getInstance();
@@ -111,12 +170,26 @@ class ProjectsNotifier extends Notifier<List<Project>> {
             'path': p.path,
             'createdAt': p.createdAt.toIso8601String(),
             'lastOpened': p.lastOpened?.toIso8601String(),
+            'isMissing': p.isMissing, // ✅ NEW: Persist missing flag
           }),
         )
         .toList();
 
     await prefs.setStringList(_storageKey, encoded);
     debugPrint('✅ Proyectos guardados: ${realProjects.length}');
+  }
+
+  /// Purges chat history for a deleted project.
+  Future<void> _purgeChatHistory(String projectId) async {
+    try {
+      final dbHelper = DatabaseHelper();
+      final deletedCount = await dbHelper.deleteChatMessagesForProject(
+        projectId,
+      );
+      debugPrint('🗑️ Chat history purged: $deletedCount messages');
+    } on Exception catch (e) {
+      debugPrint('❌ Error purging chat history: $e');
+    }
   }
 }
 

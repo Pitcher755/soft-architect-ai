@@ -32,6 +32,7 @@ class Project {
     required this.path,
     required this.createdAt,
     this.lastOpened,
+    this.isMissing = false,
   });
 
   /// Unique project identifier
@@ -48,6 +49,12 @@ class Project {
 
   /// Last time project was opened (nullable if never opened)
   final DateTime? lastOpened;
+
+  /// ✅ NEW: Flag indicating if project directory is missing
+  ///
+  /// When `true`, the project record exists but the physical directory
+  /// doesn't exist on disk. User can restore directory or delete project.
+  final bool isMissing;
 
   /// Get project directory name for display purposes
   ///
@@ -97,12 +104,14 @@ class Project {
     String? path,
     DateTime? createdAt,
     DateTime? lastOpened,
+    bool? isMissing,
   }) => Project(
     id: id ?? this.id,
     name: name ?? this.name,
     path: path ?? this.path,
     createdAt: createdAt ?? this.createdAt,
     lastOpened: lastOpened ?? this.lastOpened,
+    isMissing: isMissing ?? this.isMissing,
   );
 
   @override
