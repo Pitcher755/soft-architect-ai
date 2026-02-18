@@ -110,8 +110,19 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
 def get_rag_orchestrator() -> RAGOrchestrator:
     """Return a cached RAGOrchestrator instance for dependency injection."""
 
-    # 1. Obtener cliente LLM (Ahora leerá el .env correctamente)
-    llm_mode = os.getenv("LLM_PROVIDER", "ollama").lower()
+    # 1. Obtener modo del .env
+    raw_mode = os.getenv("LLM_PROVIDER", "ollama").lower()
+
+    # TRADUCTOR: Convertir config de usuario ('local') a config técnica ('ollama')
+    if raw_mode == "local":
+        llm_mode = "ollama"
+    elif raw_mode == "cloud":
+        llm_mode = "groq"
+    else:
+        # Si ya pone "ollama" o "groq", lo dejamos tal cual
+        llm_mode = raw_mode
+
+    # Ahora sí, la factory recibirá "ollama" y funcionará
     llm_client = get_llm_client(mode=llm_mode)
 
     # 2. Base de Datos Vectorial

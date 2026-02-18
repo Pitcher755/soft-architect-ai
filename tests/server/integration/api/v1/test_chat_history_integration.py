@@ -146,10 +146,10 @@ async def test_chat_stream_endpoint_rejects_invalid_history() -> None:
 
 @pytest.mark.asyncio
 async def test_chat_stream_endpoint_rejects_oversized_history() -> None:
-    """Oversized history: Should return 422 for >20 messages."""
+    """Oversized history: Should return 422 for >100 messages (default config)."""
     large_history = [
         {"role": "user" if i % 2 == 0 else "assistant", "content": f"Message {i}"}
-        for i in range(21)
+        for i in range(101)  # Exceeds default limit of 100
     ]
 
     app.dependency_overrides[verify_api_key] = lambda: "test-api-key"

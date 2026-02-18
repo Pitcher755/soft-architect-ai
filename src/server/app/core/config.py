@@ -75,6 +75,10 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
 
+    # Chat History Configuration
+    CHAT_MAX_HISTORY_MESSAGES: int = 100  # Max messages (50 user + 50 assistant)
+    CHAT_MAX_MESSAGE_LENGTH: int = 20000  # Max chars per message (model supports 32K)
+
     # Streaming Configuration
     WS_HEARTBEAT_INTERVAL_SECONDS: float = 30.0
     WS_IDLE_TIMEOUT_SECONDS: float = 300.0

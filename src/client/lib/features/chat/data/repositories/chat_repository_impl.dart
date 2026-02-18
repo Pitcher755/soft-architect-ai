@@ -61,25 +61,59 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Stream<ChatStreamEvent> sendMessageStream(String message, String projectId) {
+  Stream<ChatStreamEvent> sendMessageStream(
+    String message,
+    String projectId,
+  ) async* {
     final url = '$baseUrl/api/v1/chat/stream';
+
+    // ✅ Load chat history from SQLite to provide conversational context
+    var historyPayload = <Map<String, String>>[];
+    try {
+      final chatHistory = await getChatHistory(projectId);
+
+      // Limit to last 100 messages (50 user + 50 assistant pairs)
+      // to prevent token overflow while ensuring sufficient context
+      const maxHistoryMessages = 100;
+      final limitedHistory = chatHistory.length > maxHistoryMessages
+          ? chatHistory.sublist(chatHistory.length - maxHistoryMessages)
+          : chatHistory;
+
+      // Transform ChatMessage entities to backend format: {role, content}
+      historyPayload = limitedHistory
+          .map(
+            (msg) => {
+              'role': msg.role.name, // 'user' or 'assistant'
+              'content': msg.content,
+            },
+          )
+          .toList();
+
+      print(
+        '📤 Sending ${historyPayload.length} history messages '
+        'to backend',
+      );
+    } on Exception catch (e) {
+      print('⚠️ Failed to load chat history: $e. Sending without context.');
+      // Continue without history if loading fails (graceful degradation)
+    }
+
     final body = {
       'message': message,
       'project_id': projectId,
       'conversation_id': _generateConversationId(), // Generate UUID
+      'history': historyPayload, // ✅ NEW: Include chat history
     };
     final headers = {'X-API-Key': apiKey};
 
     try {
-      return sseClient.connect(url, body, headers: headers);
+      yield* sseClient.connect(url, body, headers: headers);
     } on SseException catch (e) {
       // Transform SSE exception into error event stream
-      return Stream.value(
-        ErrorEvent(
-          error: e.message,
-          code: 'CONNECTION_ERROR',
-          shouldRetry: e.statusCode != 401, // Don't retry auth errors
-        ),
+      yield ErrorEvent(
+        error: e.message,
+        code: 'CONNECTION_ERROR',
+        shouldRetry: e.statusCode != 401, // Don't retry auth errors
       );
     }
   }

@@ -41,10 +41,10 @@ class TestChatRequestWithHistory:
         assert request.history == []
 
     def test_chat_request_rejects_history_exceeding_20_messages(self) -> None:
-        """Oversized history: Should reject >20 messages."""
+        """Oversized history: Should reject >100 messages (default config)."""
         large_history = [
             {"role": "user" if i % 2 == 0 else "assistant", "content": f"Message {i}"}
-            for i in range(21)
+            for i in range(101)  # Exceeds default limit of 100
         ]
 
         with pytest.raises(ValueError, match="exceeds maximum length"):
@@ -94,10 +94,10 @@ class TestChatRequestWithHistory:
         assert "Normal text" in request.history[0]["content"]
 
     def test_chat_request_rejects_oversized_message_in_history(self) -> None:
-        """Oversized message: Should reject history messages >5000 chars."""
-        long_content = "A" * 5001
+        """Oversized message: Should reject history messages >20000 chars (default config)."""
+        long_content = "A" * 20001  # Exceeds default limit of 20000
 
-        with pytest.raises(ValueError, match="exceeds 5000 characters"):
+        with pytest.raises(ValueError, match="exceeds 20000 characters"):
             ChatRequest(
                 conversation_id=uuid4(),
                 message="Test",

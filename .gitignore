@@ -132,3 +132,7 @@ conversations.db
 infrastructure/chroma_data/*.sqlite3
 infrastructure/chroma_data/*.sqlite3-wal
 infrastructure/chroma_data/*.sqlite3-shm
+
+
+# Temporales
+hoja_ruta.md

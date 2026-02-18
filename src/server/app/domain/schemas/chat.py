@@ -11,6 +11,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, field_validator
 
+from app.core.config import settings
 from app.domain.utils.sanitizer import InputSanitizer
 
 
@@ -24,8 +25,8 @@ class ChatRequest(BaseModel):
     )
     message: str = Field(
         ...,
-        max_length=30000,
-        description="User message (max 30000 chars for extended prompts)",
+        max_length=32000,  # Dynamic limit applied in validator
+        description=f"User message (max {settings.CHAT_MAX_MESSAGE_LENGTH} chars, configurable via CHAT_MAX_MESSAGE_LENGTH)",
         json_schema_extra={
             "examples": ["How do I implement authentication in Flutter?"]
         },
@@ -57,7 +58,12 @@ class ChatRequest(BaseModel):
     @field_validator("message")
     @classmethod
     def sanitize_message(cls, v: str) -> str:
-        """Sanitize user input using security utility."""
+        """Sanitize user input and enforce dynamic length limit."""
+        if len(v) > settings.CHAT_MAX_MESSAGE_LENGTH:
+            raise ValueError(
+                f"Message exceeds maximum length of {settings.CHAT_MAX_MESSAGE_LENGTH} characters "
+                f"(got {len(v)}). Adjust CHAT_MAX_MESSAGE_LENGTH env var if needed."
+            )
         return InputSanitizer.sanitize_message(v)
 
     @field_validator("history")
@@ -67,10 +73,10 @@ class ChatRequest(BaseModel):
         Validate chat history structure and limit size.
 
         Rules:
-        - Max 20 messages (10 user + 10 assistant pairs)
+        - Max N messages (configurable via CHAT_MAX_HISTORY_MESSAGES)
         - Each message must have 'role' and 'content'
         - Role must be 'user' or 'assistant'
-        - Content max 5000 chars per message
+        - Content max M chars per message (configurable via CHAT_MAX_MESSAGE_LENGTH)
 
         Args:
             v: List of chat messages
@@ -81,10 +87,11 @@ class ChatRequest(BaseModel):
         Raises:
             ValueError: If validation fails
         """
-        if len(v) > 20:
+        max_messages = settings.CHAT_MAX_HISTORY_MESSAGES
+        if len(v) > max_messages:
             raise ValueError(
-                "Chat history exceeds maximum length (20 messages). "
-                "Use context window management to limit history."
+                f"Chat history exceeds maximum length ({max_messages} messages). "
+                "Adjust CHAT_MAX_HISTORY_MESSAGES env var if needed."
             )
 
         valid_roles = {"user", "assistant"}
@@ -111,9 +118,11 @@ class ChatRequest(BaseModel):
             if not isinstance(content, str):  # pyright: ignore[reportUnnecessaryIsInstance]
                 raise ValueError(f"Message {i} content must be a string")
 
-            if len(content) > 5000:
+            max_length = settings.CHAT_MAX_MESSAGE_LENGTH
+            if len(content) > max_length:
                 raise ValueError(
-                    f"Message {i} content exceeds 5000 characters (got {len(content)})"
+                    f"Message {i} content exceeds {max_length} characters (got {len(content)}). "
+                    "Adjust CHAT_MAX_MESSAGE_LENGTH env var if needed."
                 )
 
             # Sanitize content (XSS prevention)
