@@ -219,10 +219,10 @@ void main() {
 
         // Assert
         // Should indicate fallback to general LLM
-        expect(result.toLowerCase(), anyOf([
-          contains('general'),
-          contains('fallback'),
-        ]));
+        expect(
+          result.toLowerCase(),
+          anyOf([contains('general'), contains('fallback')]),
+        );
       });
     });
   });

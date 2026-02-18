@@ -35,9 +35,9 @@ void main() {
       await tester.pumpWidget(_build(makeCard()));
       expect(find.text('Proyecto Demo'), findsOneWidget);
       expect(find.text('Arquitectura'), findsOneWidget);
-      expect(find.textContaining('Mod:'), findsOneWidget);
+      expect(find.text('hoy'), findsOneWidget);
       expect(find.byIcon(Icons.folder), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(Icons.folder_open), findsOneWidget);
     });
 
     testWidgets('invokes onTap callback', (tester) async {

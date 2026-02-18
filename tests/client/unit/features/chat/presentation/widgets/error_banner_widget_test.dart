@@ -87,8 +87,9 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(body: ErrorBannerWidget(message: 'Error')),
+        MaterialApp(
+          theme: ThemeData.light(),
+          home: const Scaffold(body: ErrorBannerWidget(message: 'Error')),
         ),
       );
 
@@ -97,7 +98,8 @@ void main() {
       );
 
       final decoration = container.decoration as BoxDecoration;
-      expect(decoration.color, Colors.red[900]);
+      final expectedColor = ThemeData.light().colorScheme.error;
+      expect(decoration.color, expectedColor);
     });
 
     testWidgets('should render with white text color', (tester) async {
