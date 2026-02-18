@@ -10,11 +10,13 @@ import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';
 
-/// Implementation of [ChatRepository] using SSE for streaming and SQLite for persistence.
+/// Implementation of [ChatRepository] using SSE for streaming
+/// and SQLite for persistence.
 ///
-/// This implementation connects to the backend API via Server-Sent Events
-/// to stream AI-generated responses token-by-token, and persists chat history
-/// to local SQLite database for session recovery.
+/// This implementation connects to the backend API via
+/// Server-Sent Events to stream AI-generated responses
+/// token-by-token, and persists chat history to local
+/// SQLite database for session recovery.
 ///
 /// Example usage:
 /// ```dart
@@ -23,7 +25,8 @@ import '../../domain/repositories/chat_repository.dart';
 ///   apiKey: 'your-api-key',
 /// );
 ///
-/// await for (final event in repository.sendMessageStream(message, projectId)) {
+/// await for (final event in
+///     repository.sendMessageStream(message, projectId)) {
 ///   // Handle streaming events
 /// }
 /// ```
@@ -166,7 +169,8 @@ class ChatRepositoryImpl implements ChatRepository {
 
       // ignore: avoid_print
       print(
-        '✅ Message saved: ${message.id} (${message.role.name}) for project: $projectId',
+        '✅ Message saved: ${message.id} '
+        '(${message.role.name}) for project: $projectId',
       );
     } catch (e, stackTrace) {
       // ignore: avoid_print

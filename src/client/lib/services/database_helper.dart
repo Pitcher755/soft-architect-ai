@@ -390,7 +390,8 @@ class DatabaseHelper {
 
   /// ✅ NEW: Delete all chat messages for a specific project.
   ///
-  /// Used to purge orphaned chat histories when project directory no longer exists.
+  /// Used to purge orphaned chat histories when project
+  /// directory no longer exists.
   /// Returns the number of rows deleted.
   /// Throws [DatabaseException] on database error.
   Future<int> deleteChatMessagesForProject(String projectId) async {

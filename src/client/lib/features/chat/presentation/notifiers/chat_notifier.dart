@@ -88,6 +88,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
       // ✅ STEP 4: Update state with loaded messages
       state = state.copyWith(messages: history, isLoading: false);
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       debugPrint('🔥 Stack trace: $stackTrace');
       // On error, keep empty state but log the issue
@@ -269,10 +270,12 @@ class ChatNotifier extends StateNotifier<ChatState> {
       if (!isGuideProject) {
         try {
           debugPrint(
-            '💾 Attempting to save user message: ${userMessage.id} for project: $projectId',
+            '💾 Attempting to save user message: ${userMessage.id} '
+            'for project: $projectId',
           );
           await _repository.saveMessage(projectId, userMessage);
           debugPrint('✅ User message saved successfully');
+          // ignore: avoid_catches_without_on_clauses
         } catch (e, stackTrace) {
           debugPrint('🔥 Failed to save user message: $e');
           debugPrint('🔥 Stack trace: $stackTrace');
@@ -331,6 +334,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
               debugPrint(
                 '💾 Assistant message saved to DB: ${completedAssistant.id}',
               );
+              // ignore: avoid_catches_without_on_clauses
             } catch (e) {
               debugPrint('❌ Failed to save assistant message: $e');
               // Show error to user
