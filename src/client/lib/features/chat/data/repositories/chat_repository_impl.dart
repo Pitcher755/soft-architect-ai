@@ -1,18 +1,20 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../../../core/utils/uuid_generator.dart';
 import '../../../../domain/entities/chat_stream_event.dart';
 import '../../../../infrastructure/network/sse_client.dart';
+import '../../../../services/database_helper.dart';
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';
 
-/// Implementation of [ChatRepository] using SSE for real-time streaming.
+/// Implementation of [ChatRepository] using SSE for streaming and SQLite for persistence.
 ///
 /// This implementation connects to the backend API via Server-Sent Events
-/// to stream AI-generated responses token-by-token.
+/// to stream AI-generated responses token-by-token, and persists chat history
+/// to local SQLite database for session recovery.
 ///
 /// Example usage:
 /// ```dart
@@ -21,7 +23,8 @@ import '../../domain/repositories/chat_repository.dart';
 ///   apiKey: 'your-api-key',
 /// );
 ///
-/// await for (final event in repository.sendMessageStream(message, projectId)) {///   // Handle streaming events
+/// await for (final event in repository.sendMessageStream(message, projectId)) {
+///   // Handle streaming events
 /// }
 /// ```
 class ChatRepositoryImpl implements ChatRepository {
@@ -29,10 +32,20 @@ class ChatRepositoryImpl implements ChatRepository {
     required this.baseUrl,
     required this.apiKey,
     SseClient? sseClient,
-  }) : sseClient = sseClient ?? SseClient();
+    Database? database,
+  }) : sseClient = sseClient ?? SseClient(),
+       _database = database;
+
   final String baseUrl;
   final String apiKey;
   final SseClient sseClient;
+  Database? _database;
+
+  /// Lazy initialization of database
+  Future<Database> get database async {
+    _database ??= await DatabaseHelper().database;
+    return _database!;
+  }
 
   @override
   Stream<String> generateDocument(
@@ -70,65 +83,99 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<void> saveProposal(DocumentProposal proposal) async {
-    // Existing implementation (stub for now)
-    throw UnimplementedError('saveProposal not yet implemented');
+    // TODO: Implement proposal persistence
+    // Note: Proposals are different from regular chat messages
+    // They may need a separate table or different storage mechanism
+    // For now, proposals are handled in-memory by ChatNotifier
   }
 
   @override
   Future<List<ChatMessage>> getChatHistory(String projectId) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final key = _getChatHistoryKey(projectId);
-      final jsonString = prefs.getString(key);
+      final db = await database;
 
-      if (jsonString == null || jsonString.isEmpty) {
-        return [];
-      }
+      final List<Map<String, dynamic>> maps = await db.query(
+        'chat_messages',
+        where: 'project_id = ?',
+        whereArgs: [projectId],
+        orderBy: 'timestamp ASC',
+      );
 
-      final jsonList = jsonDecode(jsonString) as List<dynamic>;
-      return jsonList
-          .map((json) => ChatMessage.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } on Exception {
-      // Return empty list on error to avoid app crash
-      return [];
+      final messages = maps.map((map) {
+        final metadata = map['metadata'] as String?;
+        return ChatMessage(
+          id: map['id'] as String,
+          role: MessageRole.values.firstWhere(
+            (e) => e.name == map['role'],
+            orElse: () => MessageRole.user,
+          ),
+          content: map['content'] as String,
+          timestamp: map['timestamp'] as String,
+          isStreaming: (map['is_streaming'] as int) == 1,
+          metadata: metadata != null && metadata.isNotEmpty
+              ? jsonDecode(metadata) as Map<String, dynamic>
+              : null,
+        );
+      }).toList();
+
+      // ignore: avoid_print
+      print('✅ Loaded ${messages.length} messages for project: $projectId');
+      return messages;
+    } on Exception catch (e) {
+      // ignore: avoid_print
+      print('🔥 ERROR SQL (getChatHistory): $e');
+      rethrow; // Re-throw to propagate error to UI
     }
   }
 
   @override
   Future<void> clearChatHistory(String projectId) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final key = _getChatHistoryKey(projectId);
-      await prefs.remove(key);
-    } on Exception {
-      // Silently fail, user can retry
+      final db = await database;
+      final deletedRows = await db.delete(
+        'chat_messages',
+        where: 'project_id = ?',
+        whereArgs: [projectId],
+      );
+      // ignore: avoid_print
+      print('✅ Cleared $deletedRows messages for project: $projectId');
+    } on Exception catch (e) {
+      // ignore: avoid_print
+      print('🔥 ERROR SQL (clearChatHistory): $e');
+      rethrow; // Re-throw to propagate error
     }
   }
 
   /// Save a single message to chat history.
   ///
-  /// This method loads existing history, appends the new message,
-  /// and saves back to SharedPreferences.
+  /// This method saves the message directly to SQLite.
   @override
   Future<void> saveMessage(String projectId, ChatMessage message) async {
     try {
-      final history = await getChatHistory(projectId);
-      history.add(message);
+      final db = await database;
 
-      final prefs = await SharedPreferences.getInstance();
-      final key = _getChatHistoryKey(projectId);
-      final jsonList = history.map((msg) => msg.toJson()).toList();
-      final jsonString = jsonEncode(jsonList);
+      await db.insert('chat_messages', {
+        'id': message.id,
+        'project_id': projectId,
+        'role': message.role.name,
+        'content': message.content,
+        'timestamp': message.timestamp,
+        'is_streaming': message.isStreaming ? 1 : 0,
+        'metadata': jsonEncode(message.metadata ?? {}),
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
 
-      await prefs.setString(key, jsonString);
-    } on Exception {
-      // Silently fail, history won't persist but app continues
+      // ignore: avoid_print
+      print(
+        '✅ Message saved: ${message.id} (${message.role.name}) for project: $projectId',
+      );
+    } catch (e, stackTrace) {
+      // ignore: avoid_print
+      print('🔥 ERROR SQL (saveMessage): $e');
+      // ignore: avoid_print
+      print('Stack trace: $stackTrace');
+      rethrow; // Re-throw to propagate error
     }
   }
-
-  /// Generate SharedPreferences key for project-specific chat history.
-  String _getChatHistoryKey(String projectId) => 'chat_history_$projectId';
 
   /// Generate a UUID v4 for conversation_id (RFC 4122 compliant).
   String _generateConversationId() => UuidGenerator.v4();

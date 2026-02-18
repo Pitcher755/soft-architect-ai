@@ -10,7 +10,10 @@
 ///   - Frontend is the Single Source of Truth for project state
 library;
 
+import 'dart:io' show Platform;
+
 import 'package:flutter/foundation.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 late final bool isWeb;
 bool _isWebInitialized = false;
@@ -43,6 +46,15 @@ Future<void> initializeSqfliteForDesktop() async {
     debugPrint(
       'ℹ️  Desktop platform detected - using platform-aware providers',
     );
+
+    // ✅ CRITICAL FIX: Initialize sqflite_common_ffi for desktop platforms
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      // Initialize FFI
+      sqfliteFfiInit();
+      // Set the database factory for sqflite
+      databaseFactory = databaseFactoryFfi;
+      debugPrint('✅ sqflite_common_ffi initialized for desktop');
+    }
   }
 }
 

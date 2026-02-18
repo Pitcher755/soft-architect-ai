@@ -41,17 +41,15 @@ class ErrorBannerWidget extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12),
               child: Icon(Icons.error_outline, color: colorScheme.onError),
             ),
-            // Error message
+            // Error message (selectable for copying)
             Expanded(
-              child: Text(
+              child: SelectableText(
                 message,
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onError,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
             // Dismiss button

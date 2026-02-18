@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -22,8 +23,8 @@ class ProjectContextError implements Exception {
   String toString() => 'ProjectContextError: $message';
 }
 
-/// Simple UUID generator for demo purposes
-String generateId() => DateTime.now().millisecondsSinceEpoch.toString();
+/// Generate unique ID using UUID v4 (ensures collision-free IDs)
+String generateId() => UuidGenerator.v4();
 
 /// Configuration flags for development/production switches
 const String _backendBaseUrl = String.fromEnvironment(
@@ -76,14 +77,22 @@ class ChatNotifier extends StateNotifier<ChatState> {
     // ✅ STEP 2: Generate deterministic UUID for this project
     final projectId = UuidGenerator.fromString(path);
 
+    // ignore: avoid_print
+    print('📂 Loading history for project: $path (ID: $projectId)');
+
     // ✅ STEP 3: Load chat history from SQLite
     try {
+      debugPrint('🔍 Fetching chat history from DB...');
       final history = await _repository.getChatHistory(projectId);
+      debugPrint('📖 Loaded ${history.length} messages from DB');
 
       // ✅ STEP 4: Update state with loaded messages
       state = state.copyWith(messages: history, isLoading: false);
-    } on Exception catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('🔥 Stack trace: $stackTrace');
       // On error, keep empty state but log the issue
+      // ignore: avoid_print
+      print('❌ Failed to load chat history: $e');
       state = state.copyWith(
         isLoading: false,
         hasError: true,
@@ -258,8 +267,21 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
       // Save user message to persistence (after variables defined)
       if (!isGuideProject) {
-        // Use background save (fire-and-forget)
-        unawaited(_repository.saveMessage(projectId, userMessage));
+        try {
+          debugPrint(
+            '💾 Attempting to save user message: ${userMessage.id} for project: $projectId',
+          );
+          await _repository.saveMessage(projectId, userMessage);
+          debugPrint('✅ User message saved successfully');
+        } catch (e, stackTrace) {
+          debugPrint('🔥 Failed to save user message: $e');
+          debugPrint('🔥 Stack trace: $stackTrace');
+          // Show error to user
+          state = state.copyWith(
+            hasError: true,
+            errorMessage: 'Warning: Your message was not saved: $e',
+          );
+        }
       }
 
       final stream = repository.sendMessageStream(message, projectId);
@@ -304,8 +326,19 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
           // Save assistant message to persistence
           if (!isGuideProject) {
-            // Use background save (fire-and-forget)
-            unawaited(_repository.saveMessage(projectId, completedAssistant));
+            try {
+              await _repository.saveMessage(projectId, completedAssistant);
+              debugPrint(
+                '💾 Assistant message saved to DB: ${completedAssistant.id}',
+              );
+            } catch (e) {
+              debugPrint('❌ Failed to save assistant message: $e');
+              // Show error to user
+              state = state.copyWith(
+                hasError: true,
+                errorMessage: 'Warning: Message not saved to history: $e',
+              );
+            }
           }
         } else if (event is ErrorEvent) {
           // 6️⃣ Handle ErrorEvent

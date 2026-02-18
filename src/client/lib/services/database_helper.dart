@@ -107,13 +107,16 @@ class DatabaseException implements Exception {
 ///   - Initialize database and schema
 ///   - Create, read, update, delete projects
 ///   - Query projects by ID or list all
+///   - Store and retrieve chat messages (persistent chat history)
 ///
 /// Thread Safety: All operations use sqflite's built-in locking.
 /// Idempotency: All operations are safe to call multiple times.
 class DatabaseHelper {
-  static const String _databaseName = 'user_data.db';
-  static const int _databaseVersion = 1;
+  static const String _databaseName =
+      'user_data_v2.db'; // ✅ RENAMED: Force fresh DB creation
+  static const int _databaseVersion = 2; // ✅ UPDATED: Increment for migration
   static const String _projectsTable = 'projects';
+  static const String _chatMessagesTable = 'chat_messages';
 
   static Database? _database;
 
@@ -132,20 +135,31 @@ class DatabaseHelper {
       final databasesPath = await getDatabasesPath();
       final path = p.join(databasesPath, _databaseName);
 
+      // ignore: avoid_print
+      print('📊 Initializing database at: $path (version $_databaseVersion)');
+
       return await openDatabase(
         path,
         version: _databaseVersion,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
       );
-    } catch (e) {
-      throw DatabaseException('Failed to initialize database', e as Exception);
+    } catch (e, stackTrace) {
+      // ignore: avoid_print
+      print('🔥 Database initialization error: $e');
+      // ignore: avoid_print
+      print('Stack trace: $stackTrace');
+      throw DatabaseException(
+        'Failed to initialize database: $e',
+        e is Exception ? e : null,
+      );
     }
   }
 
   /// Create database schema (called on first creation).
   Future<void> _onCreate(Database db, int version) async {
     try {
+      // Projects table
       await db.execute('''
         CREATE TABLE IF NOT EXISTS $_projectsTable (
           id TEXT PRIMARY KEY,
@@ -155,6 +169,26 @@ class DatabaseHelper {
           last_opened TEXT
         )
       ''');
+
+      // ✅ NEW: Chat messages table for persistent chat history
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS $_chatMessagesTable (
+          id TEXT PRIMARY KEY,
+          project_id TEXT NOT NULL,
+          role TEXT NOT NULL,
+          content TEXT NOT NULL,
+          timestamp TEXT NOT NULL,
+          is_streaming INTEGER DEFAULT 0,
+          metadata TEXT,
+          FOREIGN KEY (project_id) REFERENCES $_projectsTable(id) ON DELETE CASCADE
+        )
+      ''');
+
+      // ✅ NEW: Index for faster queries by project and timestamp
+      await db.execute('''
+        CREATE INDEX IF NOT EXISTS idx_chat_project_timestamp
+        ON $_chatMessagesTable(project_id, timestamp)
+      ''');
     } catch (e) {
       throw DatabaseException('Failed to create schema', e as Exception);
     }
@@ -162,8 +196,28 @@ class DatabaseHelper {
 
   /// Handle database upgrades (called when version changes).
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Placeholder for future schema migrations
-    // Example: ALTER TABLE, add columns, etc.
+    // ✅ NEW: Migration for existing databases (v1 → v2)
+    if (oldVersion < 2) {
+      // Add chat_messages table
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS $_chatMessagesTable (
+          id TEXT PRIMARY KEY,
+          project_id TEXT NOT NULL,
+          role TEXT NOT NULL,
+          content TEXT NOT NULL,
+          timestamp TEXT NOT NULL,
+          is_streaming INTEGER DEFAULT 0,
+          metadata TEXT,
+          FOREIGN KEY (project_id) REFERENCES $_projectsTable(id) ON DELETE CASCADE
+        )
+      ''');
+
+      // Add index
+      await db.execute('''
+        CREATE INDEX IF NOT EXISTS idx_chat_project_timestamp
+        ON $_chatMessagesTable(project_id, timestamp)
+      ''');
+    }
   }
 
   /// Insert a new project into the database.
@@ -331,6 +385,28 @@ class DatabaseHelper {
       await db.delete(_projectsTable);
     } catch (e) {
       throw DatabaseException('Failed to delete all projects', e as Exception);
+    }
+  }
+
+  /// ✅ NEW: Delete all chat messages for a specific project.
+  ///
+  /// Used to purge orphaned chat histories when project directory no longer exists.
+  /// Returns the number of rows deleted.
+  /// Throws [DatabaseException] on database error.
+  Future<int> deleteChatMessagesForProject(String projectId) async {
+    try {
+      final db = await database;
+      final result = await db.delete(
+        _chatMessagesTable,
+        where: 'project_id = ?',
+        whereArgs: [projectId],
+      );
+      return result;
+    } catch (e) {
+      throw DatabaseException(
+        'Failed to delete chat messages for project',
+        e as Exception,
+      );
     }
   }
 
