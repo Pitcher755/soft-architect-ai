@@ -144,10 +144,7 @@ void main() {
         role: MessageRole.assistant,
         content: 'Response with metadata',
         timestamp: DateTime.now().toIso8601String(),
-        metadata: {
-          'docType': 'README',
-          'isProposal': true,
-        },
+        metadata: {'docType': 'README', 'isProposal': true},
       );
 
       await repository.saveMessage(projectId, message);

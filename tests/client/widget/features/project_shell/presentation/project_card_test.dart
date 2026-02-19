@@ -17,7 +17,12 @@ void main() {
     );
   }
 
-  ProjectCard makeCard({VoidCallback? onTap, String path = '/tmp/my-project'}) {
+  ProjectCard makeCard({
+    VoidCallback? onTap,
+    String path = '/tmp/my-project',
+    String projectId = 'test-project-123',
+    bool isMissing = false,
+  }) {
     return ProjectCard(
       name: 'Proyecto Demo',
       icon: Icons.folder,
@@ -27,6 +32,8 @@ void main() {
       path: path,
       modified: 'hoy',
       onTap: onTap ?? () {},
+      projectId: projectId,
+      isMissing: isMissing,
     );
   }
 

@@ -32,111 +32,180 @@ class MessageBubbleWidget extends StatelessWidget {
     this.onLongPress,
     this.messageController,
     this.userName,
+    this.onValidate,
+    this.isValidated = false,
   });
   final ChatMessageUI message;
   final VoidCallback? onLongPress;
   final TextEditingController? messageController;
   final String? userName;
+  final VoidCallback? onValidate;
+  final bool isValidated;
 
   bool get _isUserMessage => message.role == 'user';
 
   @override
-  Widget build(BuildContext context) => Align(
-    alignment: _isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
-    child: Padding(
-      padding: EdgeInsets.only(
-        top: 8,
-        bottom: 8,
-        left: _isUserMessage ? 64 : 16,
-        right: _isUserMessage ? 16 : 64,
-      ),
-      child: Stack(
-        alignment: _isUserMessage ? Alignment.topRight : Alignment.topLeft,
-        children: [
-          // Message bubble
-          Container(
-            margin: EdgeInsets.only(
-              top: 16,
-              right: _isUserMessage ? 12 : 0,
-              left: _isUserMessage ? 0 : 12,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: _isUserMessage
-                  ? _getUserBubbleColor()
-                  : _getAssistantBubbleColor(),
-              borderRadius: _getBorderRadius(),
-              border: Border.all(
-                color: _isUserMessage ? AppColors.success : AppColors.border,
-                width: 0.5,
+  Widget build(BuildContext context) {
+    // For user messages: keep the old bubble design
+    if (_isUserMessage) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            bottom: 8,
+            left: 64,
+            right: 16,
+          ),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              // Message bubble
+              Container(
+                margin: const EdgeInsets.only(top: 16, right: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: _getUserBubbleColor(),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                  ),
+                  border: Border.all(color: AppColors.success, width: 0.5),
+                ),
+                child: GestureDetector(
+                  onLongPress: onLongPress,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Message content with edit button
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: SelectableText(
+                              message.content,
+                              style: const TextStyle(
+                                color: AppColors.textMain,
+                                fontSize: 14,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                          // Edit button for user messages
+                          if (messageController != null)
+                            IconButton(
+                              icon: const Icon(Icons.edit, size: 16),
+                              color: AppColors.textMuted,
+                              iconSize: 16,
+                              padding: const EdgeInsets.all(4),
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                messageController!.text = message.content;
+                              },
+                              tooltip: 'Editar mensaje',
+                            ),
+                        ],
+                      ),
+                      // Timestamp
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          _formatTime(message.timestamp),
+                          style: const TextStyle(
+                            color: AppColors.textMuted,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Avatar in top right corner for user
+              const CircleAvatar(
+                radius: 12,
+                backgroundColor: AppColors.dirContext,
+                child: Icon(Icons.person, size: 14, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      // For assistant messages: Professional IDE style (no bubble, full width)
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Avatar on the left
+            Padding(
+              padding: const EdgeInsets.only(right: 12, top: 4),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: AppColors.primary.withValues(alpha: 0.2),
+                foregroundColor: AppColors.primary,
+                child: const Icon(
+                  Icons.smart_toy_outlined,
+                  size: 25,
+                  color: AppColors.primary,
+                ),
               ),
             ),
-            child: GestureDetector(
-              onLongPress: onLongPress,
+            // Full-width content area (no bubble)
+            Expanded(
               child: Column(
-                crossAxisAlignment: _isUserMessage
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Message content with edit button (user) or markdown (AI)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        child: _isUserMessage
-                            ? SelectableText(
-                                message.content,
-                                style: const TextStyle(
-                                  color: AppColors.textMain,
-                                  fontSize: 14,
-                                  height: 1.5,
-                                ),
-                              )
-                            : MarkdownBody(
-                                data: message.content,
-                                selectable: true,
-                                styleSheet: MarkdownStyleSheet(
-                                  p: const TextStyle(
-                                    color: AppColors.textSecondary,
-                                    fontSize: 14,
-                                    height: 1.5,
-                                  ),
-                                  code: const TextStyle(
-                                    backgroundColor: AppColors.surfaceBg,
-                                    color: AppColors.primary,
-                                    fontFamily: 'monospace',
-                                    fontSize: 13,
-                                  ),
-                                  codeblockDecoration: BoxDecoration(
-                                    color: AppColors.surfaceBg,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                ),
+                  // Content without background
+                  GestureDetector(
+                    onLongPress: onLongPress,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Markdown content (no container background)
+                        MarkdownBody(
+                          data: message.content,
+                          selectable: true,
+                          styleSheet: MarkdownStyleSheet(
+                            p: const TextStyle(
+                              color: AppColors.textMain,
+                              fontSize: 14,
+                              height: 1.5,
+                            ),
+                            code: const TextStyle(
+                              backgroundColor: AppColors.surfaceBg,
+                              color: AppColors.primary,
+                              fontFamily: 'monospace',
+                              fontSize: 13,
+                            ),
+                            codeblockDecoration: BoxDecoration(
+                              color: AppColors.surfaceBg,
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                color: AppColors.border,
+                                width: 0.5,
                               ),
-                      ),
-                      // Edit button for user messages
-                      if (_isUserMessage && messageController != null)
-                        IconButton(
-                          icon: const Icon(Icons.edit, size: 16),
-                          color: AppColors.textMuted,
-                          iconSize: 16,
-                          padding: const EdgeInsets.all(4),
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            messageController!.text = message.content;
-                          },
-                          tooltip: 'Editar mensaje',
+                            ),
+                          ),
                         ),
-                      // Show blinking cursor only for streaming AI messages
-                      if (!_isUserMessage && message.isStreaming)
-                        const _BlinkingCursor(),
-                    ],
+                        // Show blinking cursor only for streaming messages
+                        if (message.isStreaming) const _BlinkingCursor(),
+                      ],
+                    ),
                   ),
 
                   // Action buttons for assistant messages
-                  if (!_isUserMessage && !message.isStreaming)
+                  if (!message.isStreaming)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Row(
@@ -152,13 +221,19 @@ class MessageBubbleWidget extends StatelessWidget {
                             },
                           ),
                           const SizedBox(width: 8),
-                          _ActionButton(
-                            icon: Icons.check_circle_outline,
-                            tooltip: 'Validar y guardar documento',
-                            onPressed: () {
-                              // TODO: Implement validate and save functionality
-                            },
-                          ),
+                          if (onValidate != null)
+                            _ActionButton(
+                              icon: isValidated
+                                  ? Icons.check_circle
+                                  : Icons.check_circle_outline,
+                              tooltip: isValidated
+                                  ? '✅ Documento guardado'
+                                  : 'Validar y guardar documento',
+                              onPressed: onValidate!,
+                              color: isValidated
+                                  ? AppColors.success
+                                  : AppColors.textMuted,
+                            ),
                         ],
                       ),
                     ),
@@ -177,50 +252,13 @@ class MessageBubbleWidget extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-
-          // Avatar in top corner
-          CircleAvatar(
-            radius: 12,
-            backgroundColor: _isUserMessage
-                ? AppColors.dirContext
-                : AppColors.dirArchitecture,
-            child: Icon(
-              _isUserMessage ? Icons.person : Icons.smart_toy,
-              size: 14,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-
-  Color _getUserBubbleColor() => AppColors.primaryLight.withValues(alpha: 0.15);
-
-  Color _getAssistantBubbleColor() =>
-      AppColors.primaryDark.withValues(alpha: 0.15);
-
-  /// Get border radius based on message role
-  /// User: sin esquina superior derecha (0,0)
-  /// AI: sin esquina superior izquierda (0,0)
-  BorderRadius _getBorderRadius() {
-    if (_isUserMessage) {
-      // User message: sharp top-right, rounded others
-      return const BorderRadius.only(
-        topLeft: Radius.circular(12),
-        bottomLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
-      );
-    } else {
-      // AI message: sharp top-left, rounded others
-      return const BorderRadius.only(
-        topRight: Radius.circular(12),
-        bottomLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
+          ],
+        ),
       );
     }
   }
+
+  Color _getUserBubbleColor() => AppColors.primaryLight.withValues(alpha: 0.15);
 
   String _formatTime(DateTime dateTime) {
     final hour = dateTime.hour.toString().padLeft(2, '0');
@@ -235,11 +273,13 @@ class _ActionButton extends StatelessWidget {
     required this.icon,
     required this.tooltip,
     required this.onPressed,
+    this.color,
   });
 
   final IconData icon;
   final String tooltip;
   final VoidCallback onPressed;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) => IconButton(
@@ -247,8 +287,8 @@ class _ActionButton extends StatelessWidget {
     iconSize: 16,
     padding: const EdgeInsets.all(4),
     constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-    color: AppColors.textMuted,
-    hoverColor: AppColors.primary.withValues(alpha: 0.1),
+    color: color ?? AppColors.textMuted,
+    hoverColor: (color ?? AppColors.primary).withValues(alpha: 0.1),
     onPressed: onPressed,
     tooltip: tooltip,
   );

@@ -298,8 +298,11 @@ void main() {
 
     test('should support type checking with is operator', () {
       const ChatStreamEvent event1 = TokenEvent(token: 'Test');
-      const ChatStreamEvent event2 =
-          DoneEvent(fullResponse: 'Done', sources: [], metadata: {});
+      const ChatStreamEvent event2 = DoneEvent(
+        fullResponse: 'Done',
+        sources: [],
+        metadata: {},
+      );
       const ChatStreamEvent event3 = ErrorEvent(
         error: 'Error',
         code: 'ERR',

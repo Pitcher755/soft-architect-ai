@@ -370,53 +370,148 @@ class ChatNotifier extends StateNotifier<ChatState> {
     }
   }
 
-  /// Validates the current proposal, saves to filesystem, and advances.
-  Future<void> validateProposal() async {
-    if (state.currentProposal == null || state.projectPath == null) {
+  /// Validates the current proposal OR a specific message by ID.
+  /// Saves to filesystem with intelligent path detection.
+  ///
+  /// Special cases:
+  /// - README.md → Root of project
+  /// - Other docs → Organized by section folders
+  Future<void> validateProposal([String? messageId]) async {
+    final projectPath = state.projectPath;
+
+    if (projectPath == null) {
+      state = state.copyWith(
+        hasError: true,
+        errorMessage: 'No project context for saving document',
+      );
       return;
     }
 
     try {
-      final proposal = state.currentProposal!;
+      String content;
+      String docType;
 
-      // Calculate file path
-      final section = _getSectionForDocType(proposal.docType);
-      final fileName = '${proposal.docType}.md';
-      final relativePath = '$section/$fileName';
+      // If messageId provided, validate that specific message
+      if (messageId != null) {
+        final message = state.messages.firstWhere(
+          (m) => m.id == messageId,
+          orElse: () => throw Exception('Message not found'),
+        );
+        content = message.content;
+        // Detect doc type from content (first H1 header)
+        docType = _detectDocTypeFromContent(content);
+      } else {
+        // Validate current proposal
+        final proposal = state.currentProposal;
+        if (proposal == null) {
+          state = state.copyWith(
+            hasError: true,
+            errorMessage: 'No proposal to validate',
+          );
+          return;
+        }
+        content = proposal.content;
+        docType = proposal.docType;
+      }
 
-      // Save to disk via FileSystemService
+      // Calculate file path with intelligent detection
+      final relativePath = _getFilePathForDocType(docType, content);
+
+      debugPrint('📝 Validating document: $docType');
+      debugPrint('📂 Target path: $projectPath/$relativePath');
+
+      // Save to disk via FileSystemService (replaces existing file)
       await _fileSystemService.saveDocument(
-        projectPath: state.projectPath!,
+        projectPath: projectPath,
         relativePath: relativePath,
-        content: proposal.content,
+        content: content,
       );
 
-      // ✅ Trigger file tree refresh (2️⃣ criterion: auto-update tree)
+      debugPrint('✅ Document saved successfully');
+
+      // Mark message as validated
+      final newValidatedIds = {...state.validatedMessageIds};
+      if (messageId != null) {
+        newValidatedIds.add(messageId);
+      }
+
+      // Save proposal to database
+      if (messageId != null) {
+        final proposal = DocumentProposal(
+          id: messageId,
+          docType: docType,
+          content: content,
+          metadata: {'file_path': relativePath},
+          validationState: ValidationState.validated,
+        );
+        await _repository.saveProposal(proposal);
+      }
+
+      // Trigger file tree refresh
       ref.read(fileSystemNotifierProvider.notifier).refresh();
+      debugPrint('🔄 File tree refresh triggered');
 
-      // Update proposal state to validated
-      // Note: validatedProposal can be used for logging or future audit trail
-      // ignore: unused_local_variable
-      final validatedProposal = proposal.copyWith(
-        validationState: ValidationState.validated,
-      );
+      // Check if we should advance workflow BEFORE clearing proposal
+      final shouldAdvanceWorkflow =
+          messageId == null && state.currentProposal != null;
 
-      // Advance to next document
+      // Update state
       state = state.copyWith(
-        currentDocIndex: state.currentDocIndex + 1,
-        clearProposal: true,
+        validatedMessageIds: newValidatedIds,
+        clearProposal: messageId == null, // Only clear if validating proposal
       );
 
-      // Trigger next question automatically if not complete
-      if (state.currentDocIndex <= state.totalDocs) {
-        await _triggerNextQuestion();
+      // Advance workflow only if validating proposal (not individual messages)
+      if (shouldAdvanceWorkflow) {
+        state = state.copyWith(currentDocIndex: state.currentDocIndex + 1);
+
+        // Trigger next question if not complete
+        if (!state.isComplete) {
+          await _triggerNextQuestion();
+          debugPrint('🎯 Next question triggered');
+        } else {
+          debugPrint('🎉 All documents completed!');
+        }
       }
     } on Exception catch (e) {
+      debugPrint('❌ Error validating document: $e');
       state = state.copyWith(
         hasError: true,
-        errorMessage: 'Error al guardar documento: $e',
+        errorMessage: 'Failed to save document: $e',
       );
     }
+  }
+
+  /// Detects document type from content (first H1 header)
+  String _detectDocTypeFromContent(String content) {
+    final lines = content.split('\n');
+    for (final line in lines) {
+      if (line.startsWith('# ')) {
+        final title = line.substring(2).trim();
+        // Convert "Project Manifesto" → "PROJECT_MANIFESTO"
+        return title.toUpperCase().replaceAll(' ', '_');
+      }
+    }
+    return 'DOCUMENT';
+  }
+
+  /// Returns the correct file path for a document type.
+  /// Handles special cases like README.md in root.
+  String _getFilePathForDocType(String docType, String content) {
+    // Special case: README always goes to root
+    if (docType.contains('README') ||
+        content.toUpperCase().startsWith('# README')) {
+      return 'README.md';
+    }
+
+    // Get section folder
+    final section = _getSectionForDocType(docType);
+
+    // Convert doc type to filename
+    // "PROJECT_MANIFESTO" → "PROJECT_MANIFESTO.md"
+    final fileName = '${docType.toUpperCase()}.md';
+
+    return '$section/$fileName';
   }
 
   /// Rejects the current proposal without advancing.

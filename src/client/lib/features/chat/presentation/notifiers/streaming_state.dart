@@ -13,6 +13,7 @@ class ChatState {
     this.errorMessage,
     this.projectPath,
     this.isLoading = false,
+    this.validatedMessageIds = const {},
   });
 
   /// ✅ NEW: Factory constructor for initial clean state
@@ -28,6 +29,9 @@ class ChatState {
   final String? errorMessage;
   final String? projectPath;
   final bool isLoading;
+
+  /// Set of message IDs that have been validated (saved to disk)
+  final Set<String> validatedMessageIds;
 
   /// Returns progress as "Doc X/25"
   String get progressText => 'Doc $currentDocIndex/$totalDocs';
@@ -47,6 +51,8 @@ class ChatState {
     String? projectPath,
     bool? isLoading,
     bool clearProposal = false,
+    bool clearErrorMessage = false,
+    Set<String>? validatedMessageIds,
   }) => ChatState(
     messages: messages ?? this.messages,
     currentProposal: clearProposal
@@ -56,13 +62,16 @@ class ChatState {
     totalDocs: totalDocs ?? this.totalDocs,
     isStreaming: isStreaming ?? this.isStreaming,
     hasError: hasError ?? this.hasError,
-    errorMessage: errorMessage ?? this.errorMessage,
+    errorMessage: clearErrorMessage
+        ? null
+        : (errorMessage ?? this.errorMessage),
     projectPath: projectPath ?? this.projectPath,
     isLoading: isLoading ?? this.isLoading,
+    validatedMessageIds: validatedMessageIds ?? this.validatedMessageIds,
   );
 
   /// Clears error state
-  ChatState clearError() => copyWith(hasError: false);
+  ChatState clearError() => copyWith(hasError: false, clearErrorMessage: true);
 
   /// Returns a new state with cleared messages (for new project)
   ChatState reset() => ChatState(totalDocs: totalDocs);

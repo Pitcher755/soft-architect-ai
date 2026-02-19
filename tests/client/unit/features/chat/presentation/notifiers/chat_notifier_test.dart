@@ -5,6 +5,65 @@ import 'package:softarchitect_ai/features/chat/domain/entities/chat_message.dart
 import 'package:softarchitect_ai/features/chat/domain/entities/document_proposal.dart';
 import 'package:softarchitect_ai/features/chat/domain/repositories/chat_repository.dart';
 import 'package:softarchitect_ai/features/chat/presentation/notifiers/chat_notifier.dart';
+import 'package:softarchitect_ai/features/filesystem/presentation/notifiers/file_system_notifier.dart';
+import 'package:softarchitect_ai/features/project_shell/core/services/file_system_service.dart';
+
+// Fake FileSystemService for testing
+class FakeFileSystemService implements FileSystemService {
+  final Map<String, String> savedFiles = {};
+  bool shouldFail = false;
+  String? lastSavedPath;
+  String? lastSavedContent;
+
+  @override
+  Future<void> saveDocument({
+    required String projectPath,
+    required String relativePath,
+    required String content,
+  }) async {
+    if (shouldFail) {
+      throw Exception('Failed to save document');
+    }
+    final fullPath = '$projectPath/$relativePath';
+    savedFiles[fullPath] = content;
+    lastSavedPath = relativePath;
+    lastSavedContent = content;
+  }
+
+  @override
+  Future<String?> readDocument({
+    required String projectPath,
+    required String relativePath,
+  }) async {
+    final fullPath = '$projectPath/$relativePath';
+    return savedFiles[fullPath];
+  }
+
+  @override
+  Future<bool> documentExists({
+    required String projectPath,
+    required String relativePath,
+  }) async {
+    final fullPath = '$projectPath/$relativePath';
+    return savedFiles.containsKey(fullPath);
+  }
+
+  @override
+  Future<void> deleteDocument({
+    required String projectPath,
+    required String relativePath,
+  }) async {
+    final fullPath = '$projectPath/$relativePath';
+    savedFiles.remove(fullPath);
+  }
+
+  @override
+  Future<void> initializeProjectDirectories({
+    required String projectPath,
+  }) async {
+    // No-op for testing
+  }
+}
 
 // Fake implementation for testing
 class FakeChatRepository implements ChatRepository {
@@ -460,6 +519,309 @@ void main() {
 
       expect(regeneratedContent, isNot(equals(initialContent)));
       expect(regeneratedContent, contains('Second'));
+    });
+  });
+
+  group('ChatNotifier - validateProposal Enhanced', () {
+    late FakeFileSystemService fakeFileSystemService;
+
+    setUp(() {
+      fakeFileSystemService = FakeFileSystemService();
+      container = ProviderContainer(
+        overrides: [
+          chatRepositoryProvider.overrideWithValue(fakeRepository),
+          fileSystemServiceProvider.overrideWithValue(fakeFileSystemService),
+          // Mock FileSystemNotifier to prevent null errors
+          fileSystemNotifierProvider.overrideWith((ref) {
+            return FileSystemNotifier();
+          }),
+        ],
+      );
+    });
+
+    test('should detect document type from H1 header in content', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      // Generate message via sendMessageStream with H1 header
+      fakeRepository.generatedTokens = [
+        '# PROJECT MANIFESTO\n\n',
+        'Content here...',
+      ];
+
+      await notifier.sendMessageStream('Generate manifesto');
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+
+      // Get the generated message ID
+      final state = container.read(chatNotifierProvider);
+      final assistantMessage = state.messages.lastWhere(
+        (m) => m.role == MessageRole.assistant,
+      );
+
+      // Validate that specific message (not currentProposal)
+      await notifier.validateProposal(assistantMessage.id);
+
+      // Verify file was saved with correct path (detection worked)
+      expect(fakeFileSystemService.savedFiles.isNotEmpty, true);
+      expect(
+        fakeFileSystemService.lastSavedPath,
+        '10-CONTEXT/PROJECT_MANIFESTO.md',
+      );
+    });
+
+    test('should save README.md to project root', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = [
+        '# README\n\n',
+        'Project',
+        ' ',
+        'Description',
+      ];
+      notifier.sendMessage('Generate README');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      // Validate the generated proposal
+      await notifier.validateProposal();
+
+      // Verify README was saved to root
+      final savedPath = fakeFileSystemService.lastSavedPath;
+      expect(savedPath, 'README.md');
+
+      final fullPath = '/tmp/test_project/README.md';
+      expect(fakeFileSystemService.savedFiles.containsKey(fullPath), true);
+    });
+
+    test('should save non-README documents to section folders', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = [
+        '# PROJECT MANIFESTO\n\n',
+        'Vision',
+        ' ',
+        'Statement',
+      ];
+      notifier.sendMessage('Generate project manifesto');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      // Validate the generated proposal
+      await notifier.validateProposal();
+
+      // Verify document was saved to section folder
+      final savedPath = fakeFileSystemService.lastSavedPath;
+      expect(savedPath, isNotNull);
+      expect(savedPath!.contains('/'), true); // Contains folder separator
+
+      // Check actual saved content
+      expect(
+        fakeFileSystemService.lastSavedContent,
+        contains('PROJECT MANIFESTO'),
+      );
+    });
+
+    test('should mark message as validated in state', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = ['# TEST DOC\n\n', 'Content'];
+      notifier.sendMessage('Generate document');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      final stateBeforeValidation = container.read(chatNotifierProvider);
+      expect(stateBeforeValidation.validatedMessageIds, isEmpty);
+
+      // Get the last assistant message ID
+      final assistantMessage = stateBeforeValidation.messages.lastWhere(
+        (m) => m.role == MessageRole.assistant,
+      );
+
+      // Validate the specific message
+      await notifier.validateProposal(assistantMessage.id);
+
+      final stateAfterValidation = container.read(chatNotifierProvider);
+      expect(
+        stateAfterValidation.validatedMessageIds.contains(assistantMessage.id),
+        true,
+      );
+    });
+
+    test('should save proposal to database with metadata', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = ['# DESIGN DOC\n\n', 'Architecture'];
+      notifier.sendMessage('Generate design doc');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      final stateBeforeValidation = container.read(chatNotifierProvider);
+      final assistantMessage = stateBeforeValidation.messages.lastWhere(
+        (m) => m.role == MessageRole.assistant,
+      );
+
+      // Validate and save to database
+      await notifier.validateProposal(assistantMessage.id);
+
+      // Verify file was saved (repository.saveProposal was called)
+      expect(fakeFileSystemService.savedFiles.isNotEmpty, true);
+    });
+
+    test(
+      'should replace existing file when validating same document',
+      () async {
+        final notifier = container.read(chatNotifierProvider.notifier);
+        await notifier.setProjectPath('/tmp/test_project');
+
+        // Generate and validate first version
+        fakeRepository.generatedTokens = ['# README\n\n', 'Version', ' ', '1'];
+        notifier.sendMessage('Generate README v1');
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+        await notifier.validateProposal();
+
+        final firstContent = fakeFileSystemService.lastSavedContent;
+        expect(firstContent, contains('Version 1'));
+
+        // Generate and validate second version (should replace)
+        fakeRepository.generatedTokens = ['# README\n\n', 'Version', ' ', '2'];
+        notifier.sendMessage('Generate README v2');
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+        await notifier.validateProposal();
+
+        final secondContent = fakeFileSystemService.lastSavedContent;
+        expect(secondContent, contains('Version 2'));
+        expect(secondContent, isNot(contains('Version 1')));
+
+        // Verify only one README exists (replaced, not duplicated)
+        final readmeFiles = fakeFileSystemService.savedFiles.keys.where(
+          (path) => path.endsWith('README.md'),
+        );
+        expect(readmeFiles, hasLength(1));
+      },
+    );
+
+    test('should handle validation error gracefully', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = ['# TEST DOC\n\n', 'Content'];
+      notifier.sendMessage('Generate document');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      // Simulate filesystem error
+      fakeFileSystemService.shouldFail = true;
+
+      // Validate (should catch error)
+      await notifier.validateProposal();
+
+      final state = container.read(chatNotifierProvider);
+      expect(state.hasError, true);
+      expect(state.errorMessage, contains('Failed to save document'));
+    });
+
+    test(
+      'should validate current proposal when no message ID provided',
+      () async {
+        final notifier = container.read(chatNotifierProvider.notifier);
+        await notifier.setProjectPath('/tmp/test_project');
+
+        fakeRepository.generatedTokens = ['# PROPOSAL\n\n', 'Content'];
+        notifier.sendMessage('Generate proposal');
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+
+        final stateBeforeValidation = container.read(chatNotifierProvider);
+        expect(stateBeforeValidation.currentProposal, isNotNull);
+
+        // Validate current proposal (no ID)
+        await notifier.validateProposal();
+
+        // Verify proposal was cleared (workflow advanced)
+        final stateAfterValidation = container.read(chatNotifierProvider);
+        expect(stateAfterValidation.currentProposal, isNull);
+        expect(fakeFileSystemService.savedFiles.isNotEmpty, true);
+      },
+    );
+
+    test('should advance workflow after validating current proposal', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = ['# DOC 1\n\n', 'Content'];
+      notifier.sendMessage('Generate doc 1');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      final stateBeforeValidation = container.read(chatNotifierProvider);
+      final indexBefore = stateBeforeValidation.currentDocIndex;
+
+      // Validate current proposal
+      await notifier.validateProposal();
+
+      final stateAfterValidation = container.read(chatNotifierProvider);
+      expect(stateAfterValidation.currentDocIndex, indexBefore + 1);
+    });
+
+    test(
+      'should not advance workflow when validating specific message',
+      () async {
+        final notifier = container.read(chatNotifierProvider.notifier);
+        await notifier.setProjectPath('/tmp/test_project');
+
+        fakeRepository.generatedTokens = ['# DOC 1\n\n', 'Content'];
+        notifier.sendMessage('Generate doc 1');
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+
+        final stateBeforeValidation = container.read(chatNotifierProvider);
+        final indexBefore = stateBeforeValidation.currentDocIndex;
+        final assistantMessage = stateBeforeValidation.messages.lastWhere(
+          (m) => m.role == MessageRole.assistant,
+        );
+
+        // Validate specific message (not current proposal)
+        await notifier.validateProposal(assistantMessage.id);
+
+        final stateAfterValidation = container.read(chatNotifierProvider);
+        expect(stateAfterValidation.currentDocIndex, indexBefore); // No change
+      },
+    );
+
+    test('should return error when no project path set', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      // DON'T set project path
+
+      fakeRepository.generatedTokens = ['# DOC\n\n', 'Content'];
+      notifier.sendMessage('Generate doc');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      // Attempt validation without project path
+      await notifier.validateProposal();
+
+      final state = container.read(chatNotifierProvider);
+      expect(state.hasError, true);
+      expect(state.errorMessage, contains('No project context'));
+    });
+
+    test('should return error when message ID not found', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      // Validate non-existent message ID
+      await notifier.validateProposal('non-existent-id');
+
+      final state = container.read(chatNotifierProvider);
+      expect(state.hasError, true);
+      expect(state.errorMessage, contains('Failed to save document'));
+    });
+
+    test('should return error when no proposal to validate', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      // Attempt validation when no current proposal exists
+      await notifier.validateProposal();
+
+      final state = container.read(chatNotifierProvider);
+      expect(state.hasError, true);
+      expect(state.errorMessage, contains('No proposal to validate'));
     });
   });
 }

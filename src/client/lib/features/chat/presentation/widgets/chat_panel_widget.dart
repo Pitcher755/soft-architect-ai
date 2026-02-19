@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../settings/presentation/providers/settings_providers.dart';
 import '../../domain/entities/chat_message.dart';
 import '../notifiers/chat_notifier.dart';
+import '../widgets/chat_input_widget.dart';
 import '../widgets/error_banner_widget.dart';
 import '../widgets/message_bubble_widget.dart';
 import '../widgets/proposal_card_widget.dart';
@@ -98,138 +98,116 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
       color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
-          // Error banner
-          if (showError) ErrorBannerWidget(message: errorMessage),
+          // Error banner with readable messages
+          if (showError)
+            ErrorBannerWidget(message: _getReadableErrorMessage(errorMessage)),
 
-          // Chat messages area
+          // Chat messages area wrapped in SelectionArea for text selection
           Expanded(
             child: messages.isEmpty
                 ? _buildEmptyState()
-                : ListView.builder(
-                    controller: _scrollController,
-                    reverse: true,
-                    padding: const EdgeInsets.all(16),
-                    itemCount: messages.length + (proposal != null ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      // Proposal card at top
-                      if (index == messages.length && proposal != null) {
-                        return ProposalCardWidget(
-                          proposal: proposal,
-                          onValidate: () {},
-                          onRefine: () {},
-                          onReject: () {},
-                        );
-                      }
+                : SelectionArea(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      reverse: true,
+                      padding: const EdgeInsets.all(16),
+                      itemCount: messages.length + (proposal != null ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        // Proposal card at top
+                        if (index == messages.length && proposal != null) {
+                          return ProposalCardWidget(
+                            proposal: proposal,
+                            onValidate: () {},
+                            onRefine: () {},
+                            onReject: () {},
+                          );
+                        }
 
-                      // Messages
-                      final message = messages[messages.length - 1 - index];
-                      return MessageBubbleWidget(
-                        message: message,
-                        messageController: _messageController,
-                        userName: userName,
-                      );
-                    },
+                        // Messages
+                        final message = messages[messages.length - 1 - index];
+                        final chatNotifier = ref.read(
+                          chatNotifierProvider.notifier,
+                        );
+                        final isValidated = chatState.validatedMessageIds
+                            .contains(message.id);
+                        return MessageBubbleWidget(
+                          message: message,
+                          messageController: _messageController,
+                          userName: userName,
+                          isValidated: isValidated,
+                          onValidate:
+                              message.role == 'assistant' &&
+                                  message.content.startsWith('#') &&
+                                  !message.isStreaming
+                              ? () => chatNotifier.validateProposal(message.id)
+                              : null,
+                        );
+                      },
+                    ),
                   ),
           ),
 
-          // Input area (Fixed overflow issue)
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              border: Border(
-                top: BorderSide(color: Theme.of(context).colorScheme.outline),
-              ),
-            ),
-            child: Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.end, // Alineado abajo si crece
-              children: [
-                Expanded(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 120),
-                    child: TextField(
-                      controller: _messageController,
-                      maxLines: null,
-                      minLines: 1,
-                      textInputAction: TextInputAction.send,
-                      onSubmitted: (text) {
-                        if (text.trim().isNotEmpty) {
-                          ref
-                              .read(chatNotifierProvider.notifier)
-                              .sendMessageStream(text.trim());
-                          _messageController.clear();
-                        }
-                      },
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(fontSize: 13),
-                      decoration: InputDecoration(
-                        hintText:
-                            'Provide feedback or additional context... (Press Enter to send)',
-                        hintStyle: Theme.of(context).textTheme.bodyMedium
-                            ?.copyWith(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurfaceVariant,
-                            ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 10,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                // Send Button (Replaces FAB for better desktop alignment)
-                IconButton(
-                  onPressed: () {
-                    // Send message via Riverpod notifier
-                    final text = _messageController.text.trim();
-                    if (text.isNotEmpty) {
-                      ref
-                          .read(chatNotifierProvider.notifier)
-                          .sendMessageStream(text);
-                      _messageController.clear();
-                    }
-                  },
-                  icon: const Icon(Icons.send_rounded),
-                  color: AppColors.primary,
-                  iconSize: 24,
-                  padding: const EdgeInsets.all(12),
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                    hoverColor: AppColors.primary.withValues(alpha: 0.2),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          // Input area using professional chat input widget
+          ChatInputWidget(
+            controller: _messageController,
+            onSend: (text) {
+              ref.read(chatNotifierProvider.notifier).sendMessageStream(text);
+            },
+            hintText: 'Proporciona retroalimentación o contexto adicional...',
           ),
         ],
       ),
     );
+  }
+
+  /// Converts raw error messages into user-friendly messages.
+  String _getReadableErrorMessage(String rawError) {
+    final lowerError = rawError.toLowerCase();
+
+    if (lowerError.contains('connection refused') ||
+        lowerError.contains('failed host lookup') ||
+        lowerError.contains('network unreachable')) {
+      return '⚠️ No se puede conectar con el servidor. ¿Está Docker encendido?';
+    }
+
+    if (lowerError.contains('http 400') || lowerError.contains('bad request')) {
+      return '⚠️ Error de configuración de IA. Verifica las variables de entorno.';
+    }
+
+    if (lowerError.contains('http 401') ||
+        lowerError.contains('unauthorized')) {
+      return '⚠️ Error de autenticación. Verifica tu API key.';
+    }
+
+    if (lowerError.contains('http 403') || lowerError.contains('forbidden')) {
+      return '⚠️ Acceso denegado. Verifica tus permisos.';
+    }
+
+    if (lowerError.contains('http 404') || lowerError.contains('not found')) {
+      return '⚠️ Servicio no encontrado. Verifica la configuración del servidor.';
+    }
+
+    if (lowerError.contains('http 500') ||
+        lowerError.contains('internal server')) {
+      return '⚠️ Error interno del servidor. Revisa los logs del backend.';
+    }
+
+    if (lowerError.contains('timeout') || lowerError.contains('timed out')) {
+      return '⚠️ El servidor tardó demasiado en responder. Intenta de nuevo.';
+    }
+
+    if (lowerError.contains('rate limit') ||
+        lowerError.contains('too many requests')) {
+      return '⚠️ Has excedido el límite de peticiones. Espera un momento.';
+    }
+
+    // Si no coincide con ningún patrón conocido, devolver el mensaje original
+    // pero truncado si es muy largo
+    if (rawError.length > 100) {
+      return '⚠️ ${rawError.substring(0, 97)}...';
+    }
+
+    return rawError;
   }
 
   /// Builds the empty state widget for the chat panel.

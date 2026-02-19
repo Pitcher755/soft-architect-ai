@@ -43,6 +43,5 @@ void main() {
       expect(marked.id, original.id);
       expect(marked.name, original.name);
     });
-
   });
 }

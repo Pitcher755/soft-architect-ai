@@ -291,22 +291,34 @@ void main() {
       expect(settings.themeMode, ThemeMode.light);
     });
 
-    test('updateBaseFontSize should clamp values to valid range (10-24 pts)', () async {
-      await container.read(settingsProvider.future);
-      final notifier = container.read(settingsProvider.notifier);
+    test(
+      'updateBaseFontSize should clamp values to valid range (10-24 pts)',
+      () async {
+        await container.read(settingsProvider.future);
+        final notifier = container.read(settingsProvider.notifier);
 
-      // Test lower bound
-      await notifier.updateBaseFontSize(5.0);
-      expect(container.read(settingsProvider).requireValue.baseFontSize, 10.0);
+        // Test lower bound
+        await notifier.updateBaseFontSize(5.0);
+        expect(
+          container.read(settingsProvider).requireValue.baseFontSize,
+          10.0,
+        );
 
-      // Test upper bound
-      await notifier.updateBaseFontSize(30.0);
-      expect(container.read(settingsProvider).requireValue.baseFontSize, 24.0);
+        // Test upper bound
+        await notifier.updateBaseFontSize(30.0);
+        expect(
+          container.read(settingsProvider).requireValue.baseFontSize,
+          24.0,
+        );
 
-      // Test valid value
-      await notifier.updateBaseFontSize(16.0);
-      expect(container.read(settingsProvider).requireValue.baseFontSize, 16.0);
-    });
+        // Test valid value
+        await notifier.updateBaseFontSize(16.0);
+        expect(
+          container.read(settingsProvider).requireValue.baseFontSize,
+          16.0,
+        );
+      },
+    );
 
     test('updateGlobalZoom should clamp values to valid range', () async {
       await container.read(settingsProvider.future);

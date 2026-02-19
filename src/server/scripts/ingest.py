@@ -26,6 +26,7 @@ Environment:
 import argparse
 import json
 import logging
+import os  # ✅ AÑADIDO: Necesario para leer variables de entorno
 import sys
 from pathlib import Path
 
@@ -153,19 +154,31 @@ def main():
     parser = argparse.ArgumentParser(
         description="Ingest Markdown documents into ChromaDB for SoftArchitect AI"
     )
+
+    # ✅ CORRECCIÓN 1: Leer host de entorno o usar nombre del servicio Docker
+    default_host = os.getenv("CHROMADB_HOST", "chromadb")
     parser.add_argument(
         "--host",
-        default="localhost",
-        help="ChromaDB server hostname (default: localhost)",
+        default=default_host,
+        help=f"ChromaDB server hostname (default: {default_host})",
     )
+
+    # ✅ CORRECCIÓN 2: Leer puerto de entorno
+    default_port = int(os.getenv("CHROMADB_PORT", 8000))
     parser.add_argument(
-        "--port", type=int, default=8000, help="ChromaDB server port (default: 8000)"
+        "--port",
+        type=int,
+        default=default_port,
+        help=f"ChromaDB server port (default: {default_port})",
     )
+
+    # ✅ CORRECCIÓN 3: Usar la ruta absoluta dentro del contenedor por defecto
     parser.add_argument(
         "--knowledge-base",
-        default="packages/knowledge_base",
-        help="Path to knowledge base directory (default: packages/knowledge_base)",
+        default="/app/knowledge_base",
+        help="Path to knowledge base directory (default: /app/knowledge_base)",
     )
+
     parser.add_argument(
         "--clear",
         action="store_true",

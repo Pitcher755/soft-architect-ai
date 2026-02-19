@@ -88,13 +88,7 @@ class ChatRepositoryImpl implements ChatRepository {
             },
           )
           .toList();
-
-      print(
-        '📤 Sending ${historyPayload.length} history messages '
-        'to backend',
-      );
-    } on Exception catch (e) {
-      print('⚠️ Failed to load chat history: $e. Sending without context.');
+    } on Exception catch (_) {
       // Continue without history if loading fails (graceful degradation)
     }
 
@@ -120,10 +114,35 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<void> saveProposal(DocumentProposal proposal) async {
-    // TODO: Implement proposal persistence
-    // Note: Proposals are different from regular chat messages
-    // They may need a separate table or different storage mechanism
-    // For now, proposals are handled in-memory by ChatNotifier
+    try {
+      final db = await database;
+
+      // Save proposal as special chat message with metadata
+      final proposalMessage = ChatMessage(
+        id: proposal.id,
+        role: MessageRole.assistant,
+        content: proposal.content,
+        timestamp: proposal.createdAt.toIso8601String(),
+        metadata: {
+          'is_proposal': true,
+          'doc_type': proposal.docType,
+          'validation_state': proposal.validationState.name,
+          ...proposal.metadata,
+        },
+      );
+
+      await db.insert('chat_messages', {
+        'id': proposalMessage.id,
+        'project_id': 'proposal', // Special project ID for proposals
+        'role': proposalMessage.role.name,
+        'content': proposalMessage.content,
+        'timestamp': proposalMessage.timestamp,
+        'is_streaming': 0,
+        'metadata': jsonEncode(proposalMessage.metadata ?? {}),
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
+    } on Exception catch (_) {
+      // Log error but don't throw - proposal saving is not critical
+    }
   }
 
   @override
@@ -154,13 +173,8 @@ class ChatRepositoryImpl implements ChatRepository {
               : null,
         );
       }).toList();
-
-      // ignore: avoid_print
-      print('✅ Loaded ${messages.length} messages for project: $projectId');
       return messages;
-    } on Exception catch (e) {
-      // ignore: avoid_print
-      print('🔥 ERROR SQL (getChatHistory): $e');
+    } on Exception catch (_) {
       rethrow; // Re-throw to propagate error to UI
     }
   }
@@ -169,16 +183,12 @@ class ChatRepositoryImpl implements ChatRepository {
   Future<void> clearChatHistory(String projectId) async {
     try {
       final db = await database;
-      final deletedRows = await db.delete(
+      await db.delete(
         'chat_messages',
         where: 'project_id = ?',
         whereArgs: [projectId],
       );
-      // ignore: avoid_print
-      print('✅ Cleared $deletedRows messages for project: $projectId');
-    } on Exception catch (e) {
-      // ignore: avoid_print
-      print('🔥 ERROR SQL (clearChatHistory): $e');
+    } on Exception catch (_) {
       rethrow; // Re-throw to propagate error
     }
   }
@@ -200,17 +210,7 @@ class ChatRepositoryImpl implements ChatRepository {
         'is_streaming': message.isStreaming ? 1 : 0,
         'metadata': jsonEncode(message.metadata ?? {}),
       }, conflictAlgorithm: ConflictAlgorithm.replace);
-
-      // ignore: avoid_print
-      print(
-        '✅ Message saved: ${message.id} '
-        '(${message.role.name}) for project: $projectId',
-      );
-    } catch (e, stackTrace) {
-      // ignore: avoid_print
-      print('🔥 ERROR SQL (saveMessage): $e');
-      // ignore: avoid_print
-      print('Stack trace: $stackTrace');
+    } catch (e) {
       rethrow; // Re-throw to propagate error
     }
   }

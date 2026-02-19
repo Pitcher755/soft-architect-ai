@@ -84,6 +84,8 @@ class ProjectsGrid extends ConsumerWidget {
                 phaseColor: phase.color,
                 progress: cardProgress,
                 path: project.path,
+                projectId: project.id,
+                isMissing: project.isMissing,
                 modified: _formatDate(
                   context,
                   project.lastOpened ?? project.createdAt,
