@@ -1,8 +1,8 @@
 # 📱 UI Wireframes & Screen Flow
 
-Mapa de navegación y estados de la interfaz para **{{PROJECT_NAME}}**.
+Navigation map and interface states for **{{PROJECT_NAME}}**.
 
-## 1. Mapa de Navegación (Screen Flow)
+## 1. Navigation Map (Screen Flow)
 
 ```mermaid
 graph LR
@@ -13,33 +13,33 @@ graph LR
     List{{RESOURCE_PLURAL}} --> Detail{{RESOURCE_NAME}}
 ```
 
-## 2. Definición de Pantallas Clave
+## 2. Key Screen Definitions
 
-### Pantalla: **{{SCREEN_1_NAME}}** (Ej: Dashboard)
+### Screen: **{{SCREEN_1_NAME}}** (e.g., Dashboard)
 
-* **Objetivo:** {{SCREEN_1_GOAL}}
-* **Componentes Clave:**
-    * Navbar con {{NAV_ITEMS}}.
-    * Lista de {{LIST_ITEM_TYPE}}.
-    * FAB para crear nuevo.
+* **Goal:** {{SCREEN_1_GOAL}}
+* **Key Components:**
+    * Navbar with {{NAV_ITEMS}}.
+    * List of {{LIST_ITEM_TYPE}}.
+    * FAB to create new.
 
-* **Estados UI:**
+* **UI States:**
     * `Loading`: Skeleton loader.
-    * `Empty`: Ilustración de "No hay datos".
-    * `Error`: Toast con mensaje y botón de reintentar.
+    * `Empty`: "No data" illustration.
+    * `Error`: Toast with message and retry button.
 
-### Pantalla: **{{SCREEN_2_NAME}}**
+### Screen: **{{SCREEN_2_NAME}}**
 
-* **Objetivo:** {{SCREEN_2_GOAL}}
-* **Componentes Clave:**
+* **Goal:** {{SCREEN_2_GOAL}}
+* **Key Components:**
     * {{COMPONENT_1}}
     * {{COMPONENT_2}}
 
-* **Estados UI:**
+* **UI States:**
     * `Loading`: {{LOADING_STATE}}
     * `Success`: {{SUCCESS_STATE}}
     * `Error`: {{ERROR_STATE}}
 
-## 3. Transiciones y Animaciones
-* **Duración Estándar:** {{ANIMATION_DURATION}}ms.
+## 3. Transitions and Animations
+* **Standard Duration:** {{ANIMATION_DURATION}}ms.
 * **Timing Function:** {{TIMING_FUNCTION}} (ease-in-out / linear).

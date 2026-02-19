@@ -1,11 +1,11 @@
 # 🔌 API Interface Contract
 
-Contrato de comunicación para **{{PROJECT_NAME}}**.
-**Protocolo:** {{PROTOCOL}} (REST / GraphQL / gRPC).
+Communication contract for **{{PROJECT_NAME}}**.
+**Protocol:** {{PROTOCOL}} (REST / GraphQL / gRPC).
 **Base URL:** `/api/v1`
 **Auth Standard:** Bearer Token (JWT).
 
-## 1. Endpoints Públicos (Public)
+## 1. Public Endpoints
 
 ### Auth
 * `POST /auth/login`
@@ -14,20 +14,20 @@ Contrato de comunicación para **{{PROJECT_NAME}}**.
 * `POST /auth/register`
     * **Input:** `RegisterRequest`.
 
-## 2. Endpoints Privados (Protected)
-*Requiere Header:* `Authorization: Bearer <token>`
+## 2. Protected Endpoints
+*Requires Header:* `Authorization: Bearer <token>`
 
-### Recurso: {{RESOURCE_NAME_1}} (Ej: Users)
-* `GET /{{RESOURCE_PLURAL}}` - Listar (Paginado).
-* `POST /{{RESOURCE_PLURAL}}` - Crear nuevo.
-* `GET /{{RESOURCE_PLURAL}}/{id}` - Detalle.
-* `PATCH /{{RESOURCE_PLURAL}}/{id}` - Actualización parcial.
+### Resource: {{RESOURCE_NAME_1}} (e.g., Users)
+* `GET /{{RESOURCE_PLURAL}}` - List (Paginated).
+* `POST /{{RESOURCE_PLURAL}}` - Create new.
+* `GET /{{RESOURCE_PLURAL}}/{id}` - Detail.
+* `PATCH /{{RESOURCE_PLURAL}}/{id}` - Partial update.
 
-### Recurso: {{RESOURCE_NAME_2}}
-* `GET /{{RESOURCE_2_PLURAL}}` - Listar.
-* `POST /{{RESOURCE_2_PLURAL}}` - Crear.
+### Resource: {{RESOURCE_NAME_2}}
+* `GET /{{RESOURCE_2_PLURAL}}` - List.
+* `POST /{{RESOURCE_2_PLURAL}}` - Create.
 
-## 3. Modelos de Datos (DTOs)
+## 3. Data Models (DTOs)
 
 #### `{{DTO_NAME}}`
 ```json

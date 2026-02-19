@@ -1,24 +1,24 @@
 # 🏗️ Technology Stack Decisions
 
-Este documento registra las decisiones tecnológicas aprobadas para **{{PROJECT_NAME}}**.
-**Estado:** Inmutable para la versión {{VERSION}}.
+This document records the approved technology decisions for **{{PROJECT_NAME}}**.
+**Status:** Immutable for version {{VERSION}}.
 
-## 1. Stack Principal (Core)
+## 1. Core Stack
 
-| Capa | Tecnología Elegida | Versión | ¿Por qué esta y no otra? (Trade-offs) |
+| Layer | Chosen Technology | Version | Why this and not another? (Trade-offs) |
 | :--- | :--- | :--- | :--- |
-| **Backend** | {{BACKEND_FRAMEWORK}} | {{BACKEND_VERSION}} | *Ej: FastAPI por performance async nativo.* |
-| **Frontend** | {{FRONTEND_FRAMEWORK}} | {{FRONTEND_VERSION}} | *Ej: Flutter para UI consistente en Desktop/Mobile.* |
-| **Base de Datos** | {{DATABASE_ENGINE}} | {{DB_VERSION}} | *Ej: PostgreSQL por integridad relacional robusta.* |
-| **IA / ML** | {{AI_ENGINE}} | {{AI_VERSION}} | *Ej: Ollama local para privacidad total.* |
+| **Backend** | {{BACKEND_FRAMEWORK}} | {{BACKEND_VERSION}} | *E.g.: FastAPI for native async performance.* |
+| **Frontend** | {{FRONTEND_FRAMEWORK}} | {{FRONTEND_VERSION}} | *E.g.: Flutter for consistent UI on Desktop/Mobile.* |
+| **Database** | {{DATABASE_ENGINE}} | {{DB_VERSION}} | *E.g.: PostgreSQL for robust relational integrity.* |
+| **AI / ML** | {{AI_ENGINE}} | {{AI_VERSION}} | *E.g.: Ollama local for total privacy.* |
 
-## 2. Herramientas de Desarrollo (DevTools)
-* **Linter/Formatter:** {{LINTER_TOOL}} (Ej: Ruff / ESLint).
-* **Gestión de Paquetes:** {{PACKAGE_MANAGER}} (Ej: Poetry / Pub).
-* **Containerización:** Docker + Docker Compose (v2+).
-* **Testing:** {{TESTING_FRAMEWORK}} (Ej: Pytest / Flutter Test).
+## 2. Development Tools (DevTools)
+* **Linter/Formatter:** {{LINTER_TOOL}} (e.g., Ruff / ESLint).
+* **Package Management:** {{PACKAGE_MANAGER}} (e.g., Poetry / Pub).
+* **Containerization:** Docker + Docker Compose (v2+).
+* **Testing:** {{TESTING_FRAMEWORK}} (e.g., Pytest / Flutter Test).
 
-## 3. Servicios Externos (3rd Party)
-* **Auth:** {{AUTH_PROVIDER}} (Ej: Auth0 / Firebase / Custom JWT).
-* **Pagos:** {{PAYMENT_PROVIDER}} (Ej: Stripe).
-* **Cloud/Hosting:** {{CLOUD_PROVIDER}} (Ej: AWS / DigitalOcean).
+## 3. External Services (3rd Party)
+* **Auth:** {{AUTH_PROVIDER}} (e.g., Auth0 / Firebase / Custom JWT).
+* **Payments:** {{PAYMENT_PROVIDER}} (e.g., Stripe).
+* **Cloud/Hosting:** {{CLOUD_PROVIDER}} (e.g., AWS / DigitalOcean).

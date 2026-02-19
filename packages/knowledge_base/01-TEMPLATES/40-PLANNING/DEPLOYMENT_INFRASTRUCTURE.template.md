@@ -1,9 +1,9 @@
 # ☁️ Infrastructure & Deployment Architecture
 
-Diagrama de despliegue para **{{PROJECT_NAME}}**.
-**Entorno:** {{CLOUD_PROVIDER}} (AWS / Azure / DigitalOcean / On-Premise).
+Deployment diagram for **{{PROJECT_NAME}}**.
+**Environment:** {{CLOUD_PROVIDER}} (AWS / Azure / DigitalOcean / On-Premise).
 
-## 1. Diagrama de Infraestructura
+## 1. Infrastructure Diagram
 
 ```mermaid
 graph TD
@@ -12,8 +12,8 @@ graph TD
     LB --> Web[Web Client CDN]
 
     subgraph PrivateNetwork["Private Network / VPC"]
-        API --> DB[(Base de Datos Primary)]
-        API --> Replica[(Réplica Standby)]
+        API --> DB[(Database Primary)]
+        API --> Replica[(Standby Replica)]
         API --> Redis[(Redis Cache)]
         API --> Worker[Async Workers/Queue]
         API --> Storage[Object Storage S3]
@@ -25,32 +25,32 @@ graph TD
     end
 ```
 
-## 2. Recursos Requeridos
+## 2. Required Resources
 
-| Recurso | Especificación (CPU/RAM) | Escalabilidad | Costo Est. |
+| Resource | Specification (CPU/RAM) | Scalability | Est. Cost |
 | :--- | :--- | :--- | :--- |
-| **API Server** | {{API_INSTANCE_SIZE}} | Horizontal (Auto-scaling 1-5 nodos) | {{API_COST}} |
+| **API Server** | {{API_INSTANCE_SIZE}} | Horizontal (Auto-scaling 1-5 nodes) | {{API_COST}} |
 | **Database Primary** | {{DB_INSTANCE_SIZE}} | Vertical | {{DB_COST}} |
-| **Cache (Redis)** | {{REDIS_INSTANCE_SIZE}} | Vertical o Cluster | {{REDIS_COST}} |
-| **Storage** | {{STORAGE_TYPE}} (S3/Blob) | Ilimitada | {{STORAGE_COST}} |
+| **Cache (Redis)** | {{REDIS_INSTANCE_SIZE}} | Vertical or Cluster | {{REDIS_COST}} |
+| **Storage** | {{STORAGE_TYPE}} (S3/Blob) | Unlimited | {{STORAGE_COST}} |
 
-## 3. Estrategia de Backup
+## 3. Backup Strategy
 
-* **DB:** Snapshot diario a las 03:00 AM UTC. Retención {{RETENTION_DAYS}} días.
-* **Storage:** Replicación cross-region (si aplica).
+* **DB:** Daily snapshot at 03:00 AM UTC. Retention {{RETENTION_DAYS}} days.
+* **Storage:** Cross-region replication (if applicable).
 * **Disaster Recovery:**
-    * RTO (Tiempo recuperación): {{RTO}}
-    * RPO (Pérdida datos máxima): {{RPO}}
+    * RTO (Recovery Time): {{RTO}}
+    * RPO (Max Data Loss): {{RPO}}
 
-## 4. Seguridad en Infraestructura
+## 4. Infrastructure Security
 
-* **Network:** VPC privada con NAT Gateway.
-* **Firewall:** Inbound permitido solo desde Cloudflare/CDN.
-* **SSL/TLS:** Certificados Let's Encrypt con auto-renovación.
-* **Secretos:** Almacenados en {{SECRETS_MANAGER}} (AWS Secrets / Vault).
+* **Network:** Private VPC with NAT Gateway.
+* **Firewall:** Inbound allowed only from Cloudflare/CDN.
+* **SSL/TLS:** Let's Encrypt certificates with auto-renewal.
+* **Secrets:** Stored in {{SECRETS_MANAGER}} (AWS Secrets / Vault).
 
-## 5. Monitoreo y Alertas
+## 5. Monitoring and Alerts
 
-* **Métricas:** CPU > 80%, RAM > 85%, Disk > 90%.
-* **Logs:** Centralizados en {{LOG_AGGREGATOR}} (CloudWatch / ELK).
-* **Uptime:** Meta 99.9% SLA.
+* **Metrics:** CPU > 80%, RAM > 85%, Disk > 90%.
+* **Logs:** Centralized in {{LOG_AGGREGATOR}} (CloudWatch / ELK).
+* **Uptime:** 99.9% SLA target.
