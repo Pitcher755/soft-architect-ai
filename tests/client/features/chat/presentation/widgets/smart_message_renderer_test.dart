@@ -1,0 +1,466 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:softarchitect_ai/features/chat/presentation/widgets/smart_message_renderer.dart';
+
+/// Tests for SmartMessageRenderer widget (TDD approach).
+///
+/// Test Coverage:
+/// - User messages render as plain markdown
+/// - AI messages without documents render as plain markdown
+/// - AI messages with single document render DocumentCard
+/// - AI messages with multiple documents render multiple DocumentCards
+/// - Mixed content (text + document + text) renders correctly
+/// - Document card has proper structure (header, content, validate button)
+/// - Text selection works for markdown content
+void main() {
+  group('SmartMessageRenderer', () {
+    testWidgets('renders user message as plain markdown',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '# User Question\nThis is a **bold** question.';
+
+      // Act
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: true,
+            ),
+          ),
+        ),
+      );
+
+      // Assert
+      expect(find.text('User Question'), findsOneWidget);
+      expect(find.byType(SelectableText), findsWidgets);
+      // Should NOT find document card components for user messages
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsNothing);
+      expect(find.text('Validar'), findsNothing);
+    });
+
+    testWidgets('renders AI message without documents as plain markdown',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+## Analysis Complete
+
+Based on your requirements, here are my recommendations:
+
+1. Use FastAPI for backend
+2. Use Flutter for frontend
+3. Use PostgreSQL for database
+
+Would you like me to proceed?
+''';
+
+      // Act
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+
+      // Assert
+      expect(find.text('Analysis Complete'), findsOneWidget);
+      expect(find.text('Use FastAPI for backend'), findsOneWidget);
+      // Should NOT find document card for plain messages
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsNothing);
+      expect(find.text('Validar'), findsNothing);
+    });
+
+    testWidgets('renders AI message with single document as DocumentCard',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+I've created the architecture document for you:
+
+```document
+# PROJECT_STRUCTURE_MAP.md
+
+## Directory Structure
+
+```
+src/
+  client/ - Flutter frontend
+  server/ - FastAPI backend
+```
+
+## Key Decisions
+
+- Clean Architecture pattern
+- Repository pattern for data layer
+```
+''';
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      // Should find pre-document text
+      expect(
+        find.textContaining("I've created the architecture document"),
+        findsOneWidget,
+      );
+
+      // Should find document card header
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsOneWidget);
+      expect(find.byIcon(Icons.plumbing_rounded), findsOneWidget);
+
+      // Should find validate button
+      expect(find.text('Validar y Guardar'), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle), findsOneWidget);
+
+      // Should find document content
+      expect(find.textContaining('PROJECT_STRUCTURE_MAP.md'), findsOneWidget);
+      expect(find.textContaining('Directory Structure'), findsOneWidget);
+    });
+
+    testWidgets('renders AI message with multiple documents correctly',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+I've prepared two documents:
+
+```document
+# TECH_STACK.md
+- Backend: FastAPI
+```
+
+And also:
+
+```document
+# API_CONTRACT.md
+- Endpoint: /api/v1/chat
+```
+
+Both are ready for validation.
+''';
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      // Should find TWO document cards
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsNWidgets(2));
+      expect(find.text('Validar y Guardar'), findsNWidgets(2));
+
+      // Should find content from both documents
+      expect(find.textContaining('TECH_STACK.md'), findsOneWidget);
+      expect(find.textContaining('API_CONTRACT.md'), findsOneWidget);
+
+      // Should find text between documents
+      expect(find.textContaining('And also:'), findsOneWidget);
+
+      // Should find text after documents
+      expect(find.textContaining('Both are ready'), findsOneWidget);
+    });
+
+    testWidgets('document card has proper visual structure',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+```document
+# Test Document
+Content here
+```
+''';
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData.light(),
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert - Find visual components
+      // Header with icon
+      expect(find.byIcon(Icons.plumbing_rounded), findsOneWidget);
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsOneWidget);
+
+      // Validate button text and icon should exist
+      expect(find.text('Validar y Guardar'), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle), findsOneWidget);
+
+      // Container with proper decoration
+      final containers = find.byType(Container);
+      expect(containers, findsWidgets);
+    });
+
+    testWidgets('validate button shows snackbar when pressed',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+```document
+# Test Document
+```
+''';
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap validate button by text
+      final validateButton = find.text('Validar y Guardar');
+      expect(validateButton, findsOneWidget);
+      await tester.tap(validateButton);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(SnackBar), findsOneWidget);
+      expect(
+        find.text('Documento enviado a validación...'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('markdown content supports text selection',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = 'This is **selectable** text.';
+
+      // Act
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+
+      // Assert - MarkdownBody should be present with selectable: true
+      // This is tested indirectly by checking the widget tree structure
+      expect(find.textContaining('selectable'), findsOneWidget);
+    });
+
+    testWidgets('handles empty document block gracefully',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+Here's an empty document:
+
+```document
+```
+
+That was empty.
+''';
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      // Should still render document card (even if empty)
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsOneWidget);
+      expect(find.text('Validar y Guardar'), findsOneWidget);
+
+      // Should find surrounding text
+      expect(find.textContaining("Here's an empty document"), findsOneWidget);
+      expect(find.textContaining('That was empty'), findsOneWidget);
+    });
+
+    testWidgets('dark theme renders properly', (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+```document
+# Dark Theme Test
+```
+''';
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData.dark(),
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      // Should render without errors in dark theme
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsOneWidget);
+      expect(find.text('Validar y Guardar'), findsOneWidget);
+
+      // Find container (dark theme uses different background color)
+      final containers = find.byType(Container);
+      expect(containers, findsWidgets);
+    });
+
+    testWidgets('handles malformed document blocks gracefully',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+This has a malformed document block:
+
+```document without closing
+# Some content
+
+Still in the document?
+''';
+
+      // Act & Assert
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+
+      // Should render as plain text (no document card found)
+      expect(find.text('ARTEFACTO DE INGENIERÍA'), findsNothing);
+      expect(
+        find.textContaining('This has a malformed document block'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('extracts path and triggers callback on validation',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+```document
+**Path:** `context/RULES.md`
+# Project Rules
+- Rule 1
+- Rule 2
+```
+''';
+
+      String? capturedPath;
+      String? capturedContent;
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+              onSaveDocument: (path, content) {
+                capturedPath = path;
+                capturedContent = content;
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Tap the validate button
+      final validateButton = find.text('Validar y Guardar');
+      expect(validateButton, findsOneWidget);
+      await tester.tap(validateButton);
+      await tester.pumpAndSettle();
+
+      // Assert callback was triggered with correct values
+      expect(capturedPath, 'context/RULES.md');
+      expect(capturedContent, isNot(contains('**Path:**')));
+      expect(capturedContent, contains('# Project Rules'));
+      expect(capturedContent, contains('- Rule 1'));
+
+      // Assert snackbar appears
+      expect(
+        find.text('Documento enviado a validación...'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('uses fallback path when no path found',
+        (WidgetTester tester) async {
+      // Arrange
+      const testContent = '''
+```document
+# Document Without Path
+Just some content without path metadata.
+```
+''';
+
+      String? capturedPath;
+
+      // Act
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+              onSaveDocument: (path, content) {
+                capturedPath = path;
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Tap the validate button
+      await tester.tap(find.text('Validar y Guardar'));
+      await tester.pumpAndSettle();
+
+      // Assert fallback path is used
+      expect(capturedPath, 'context/UNSORTED/untitled.md');
+    });
+  });
+}

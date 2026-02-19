@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../filesystem/presentation/providers/filesystem_providers.dart';
+import 'smart_message_renderer.dart';
 
 /// Model for chat messages (use the one from domain)
 class ChatMessageUI {
@@ -25,7 +27,9 @@ class ChatMessageUI {
 /// Widget que renderiza mensajes de chat con estilo dark theme
 /// - Mensajes del usuario: burbuja alineada a la derecha con botón editar
 /// - Mensajes del asistente: burbuja alineada a la izquierda con Markdown y botones de acción
-class MessageBubbleWidget extends StatelessWidget {
+///
+/// Transformado a ConsumerWidget para poder guardar archivos en el FileSystem.
+class MessageBubbleWidget extends ConsumerWidget {
   const MessageBubbleWidget({
     required this.message,
     super.key,
@@ -35,6 +39,7 @@ class MessageBubbleWidget extends StatelessWidget {
     this.onValidate,
     this.isValidated = false,
   });
+
   final ChatMessageUI message;
   final VoidCallback? onLongPress;
   final TextEditingController? messageController;
@@ -45,7 +50,7 @@ class MessageBubbleWidget extends StatelessWidget {
   bool get _isUserMessage => message.role == 'user';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // For user messages: keep the old bubble design
     if (_isUserMessage) {
       return Align(
@@ -172,31 +177,53 @@ class MessageBubbleWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Markdown content (no container background)
-                        MarkdownBody(
-                          data: message.content,
-                          selectable: true,
-                          styleSheet: MarkdownStyleSheet(
-                            p: const TextStyle(
-                              color: AppColors.textMain,
-                              fontSize: 14,
-                              height: 1.5,
-                            ),
-                            code: const TextStyle(
-                              backgroundColor: AppColors.surfaceBg,
-                              color: AppColors.primary,
-                              fontFamily: 'monospace',
-                              fontSize: 13,
-                            ),
-                            codeblockDecoration: BoxDecoration(
-                              color: AppColors.surfaceBg,
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: AppColors.border,
-                                width: 0.5,
-                              ),
-                            ),
-                          ),
+                        // Smart message renderer with document parsing
+                        SmartMessageRenderer(
+                          rawContent: message.content,
+                          isUser: false,
+                          onSaveDocument: (path, cleanContent) async {
+                            // ✅ IMPLEMENTACIÓN REAL DEL GUARDADO
+                            debugPrint('📄 Intentando guardar documento en: $path');
+
+                            try {
+                              // Obtenemos el repository del filesystem
+                              final repository =
+                                  ref.read(fileSystemRepositoryProvider);
+
+                              if (repository == null) {
+                                throw Exception(
+                                  'FileSystem no disponible. Abre un proyecto primero.',
+                                );
+                              }
+
+                              // Normalizamos la ruta (removemos / inicial si existe)
+                              final normalizedPath =
+                                  path.startsWith('/') ? path.substring(1) : path;
+
+                              // Llamamos al método saveFile del repository
+                              await repository.saveFile(
+                                relativePath: normalizedPath,
+                                content: cleanContent,
+                              );
+
+                              debugPrint('✅ Documento guardado con éxito');
+
+                              // Disparamos el callback opcional de validación del Chat
+                              if (onValidate != null) {
+                                onValidate!();
+                              }
+                            } catch (e) {
+                              debugPrint('❌ Error guardando el documento: $e');
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Error al guardar: $e'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          },
                         ),
                         // Show blinking cursor only for streaming messages
                         if (message.isStreaming) const _BlinkingCursor(),
