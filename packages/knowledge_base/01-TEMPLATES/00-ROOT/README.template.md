@@ -6,42 +6,42 @@
 
 > **{{VISION_STATEMENT}}**
 
-## 📖 Sobre el Proyecto
+## 📖 About the Project
 {{PROJECT_DESCRIPTION}}
 
-Este proyecto sigue la arquitectura definida por **SoftArchitect AI**.
-* **Stack Backend:** {{BACKEND_STACK}}
-* **Stack Frontend:** {{FRONTEND_STACK}}
-* **Base de Datos:** {{DATABASE_STACK}}
+This project follows the architecture defined by **SoftArchitect AI**.
+* **Backend Stack:** {{BACKEND_STACK}}
+* **Frontend Stack:** {{FRONTEND_STACK}}
+* **Database:** {{DATABASE_STACK}}
 
 ## 🚀 Quick Start
 
-### Prerequisitos
+### Prerequisites
 * Docker & Docker Compose
 * {{PRIMARY_LANGUAGE}} Environment
 
-### Instalación
+### Installation
 ```bash
-# 1. Clonar repositorio
+# 1. Clone repository
 git clone {{REPO_URL}}
 
-# 2. Configurar entorno
+# 2. Configure environment
 cp infrastructure/.env.example infrastructure/.env
 
-# 3. Levantar servicios
+# 3. Start services
 docker compose -f infrastructure/docker-compose.yml up -d
 ```
 
-## 📂 Estructura del Proyecto
-El proyecto sigue una estructura estricta de Clean Architecture:
+## 📂 Project Structure
+The project follows a strict Clean Architecture structure:
 
 * **src/server:** Backend API & Business Logic.
 * **src/client:** Frontend Application.
 * **infrastructure/:** Docker & Deployment configs.
-* **context/:** Fuente de Verdad (Requisitos, Arquitectura, Reglas).
+* **context/:** Source of Truth (Requirements, Architecture, Rules).
 
-## 🤝 Contribución
-Consulta CONTRIBUTING.md para conocer las reglas de Pull Requests y Estándares de Código.
+## 🤝 Contribution
+Check CONTRIBUTING.md to learn about Pull Request rules and Code Standards.
 
-## 📄 Licencia
-Este proyecto está bajo la licencia {{LICENSE_TYPE}}.
+## 📄 License
+This project is under the {{LICENSE_TYPE}} license.

@@ -1,31 +1,31 @@
 # 🤖 Project Agents & Roles Definition
 
-Este documento define "quién hace qué" en el proyecto **{{PROJECT_NAME}}**.
-SoftArchitect AI utilizará estos roles para saber a quién obedecer y qué tono usar.
+This document defines "who does what" in the **{{PROJECT_NAME}}** project.
+SoftArchitect AI will use these roles to know who to obey and what tone to use.
 
-## 1. Roles Humanos (The Creators)
+## 1. Human Roles (The Creators)
 
 ### 👨‍💻 Lead Architect (Human User)
-* **Responsabilidad:** Toma las decisiones finales, aprueba los Gates y define la visión.
-* **Permisos:** `RWX` (Read, Write, Execute, Delete).
-* **Nombre/Alias:** `{{USER_NAME}}`
+* **Responsibility:** Makes final decisions, approves Gates, and defines the vision.
+* **Permissions:** `RWX` (Read, Write, Execute, Delete).
+* **Name/Alias:** `{{USER_NAME}}`
 
 ### 💼 Product Owner / Stakeholder
-* **Responsabilidad:** Define el valor del negocio y prioriza features.
-* **Permisos:** `R--` (Read, Comment).
+* **Responsibility:** Defines business value and prioritizes features.
+* **Permissions:** `R--` (Read, Comment).
 
-## 2. Roles de IA (The Assistants)
+## 2. AI Roles (The Assistants)
 
 ### 🧠 SoftArchitect (System)
-* **Rol:** Arquitecto Senior y Gatekeeper.
-* **Misión:** Asegurar que se sigue el *Master Workflow* y que no se introduce deuda técnica.
-* **Comportamiento:** Estricto, técnico, proactivo en seguridad.
+* **Role:** Senior Architect and Gatekeeper.
+* **Mission:** Ensure the *Master Workflow* is followed and no technical debt is introduced.
+* **Behavior:** Strict, technical, proactive in security.
 
 ### 🔨 Code Gen (Sub-Agent)
-* **Rol:** Desarrollador Senior.
-* **Misión:** Implementar el código definido en la Fase 3.
-* **Comportamiento:** Obediente a `PROJECT_STRUCTURE_MAP.md`.
+* **Role:** Senior Developer.
+* **Mission:** Implement the code defined in Phase 3.
+* **Behavior:** Obedient to `PROJECT_STRUCTURE_MAP.md`.
 
 ---
-**Instrucciones para el Usuario:**
-Define quiénes son los integrantes reales de tu equipo si hay más de uno.
+**Instructions for the User:**
+Define who the actual members of your team are if there is more than one.

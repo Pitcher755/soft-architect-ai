@@ -1,22 +1,22 @@
 # ⚖️ Project Rules & Constitution
 
-Reglas inquebrantables para el desarrollo de **{{PROJECT_NAME}}**.
+Unbreakable rules for the development of **{{PROJECT_NAME}}**.
 
-## 1. Idioma y Comunicación
-* **Idioma Principal:** `{{PRIMARY_LANGUAGE}}` (e.g., Español).
-* **Código/Variables:** SIEMPRE en Inglés (`user_id`, no `id_usuario`).
+## 1. Language and Communication
+* **Primary Language:** `{{PRIMARY_LANGUAGE}}` (e.g., Spanish).
+* **Code/Variables:** ALWAYS in English (`user_id`, not `id_usuario`).
 * **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`).
 
-## 2. Filosofía de Desarrollo
-* **Docs-as-Code:** Si no está documentado en `context/`, no existe.
-* **Security First:** No se suben secretos (`.env`). No se usan funciones inseguras (`eval()`).
-* **Quality Gates:** No se pasa de fase sin aprobar los entregables.
+## 2. Development Philosophy
+* **Docs-as-Code:** If it's not documented in `context/`, it doesn't exist.
+* **Security First:** Do not upload secrets (`.env`). Do not use insecure functions (`eval()`).
+* **Quality Gates:** Do not move to the next phase without approving deliverables.
 
-## 3. Tech Stack Constraints (Resumen)
+## 3. Tech Stack Constraints (Summary)
 * **Backend:** `{{BACKEND_STACK}}` (e.g., Python FastAPI).
 * **Frontend:** `{{FRONTEND_STACK}}` (e.g., Flutter).
 * **DB:** `{{DATABASE_STACK}}`.
 
 ---
-**Instrucciones:**
-Reemplaza las variables entre llaves con las decisiones de tu proyecto.
+**Instructions:**
+Replace the variables in curly braces with your project decisions.
