@@ -1,14 +1,14 @@
 # ⌨️ Artisan Console: The Power CLI of Laravel
 
-> **Versión:** Laravel 11.0+
+> **Version:** Laravel 11.0+
 > **Propósito:** Automatización y mantenimiento desde CLI
 > **Herramienta:** Built-in Artisan (equivalent a Django management, Rails rake)
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Artisan Básico](#artisan-básico)
 2. [Generar Archivos](#generar-archivos)

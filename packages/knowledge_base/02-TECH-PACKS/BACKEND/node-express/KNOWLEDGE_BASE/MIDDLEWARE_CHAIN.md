@@ -2,14 +2,14 @@
 
 > **Framework:** Express.js (Node.js)
 > **Filosofía:** Middleware-First (Everything is middleware)
-> **Versión:** Express 4.18+
+> **Version:** Express 4.18+
 > **Paradigma:** Functional Composition
 
 Express es un framework minimalista. La magia está en el orden de los middleware.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Anatomía del Middleware](#anatomía-del-middleware)
 2. [The Chain Order](#the-chain-order)
@@ -440,6 +440,6 @@ app.get('/admin', authenticateUser, checkAdminRole, (req, res) => {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ MIDDLEWARE PATTERNS READY
 **Responsable:** ArchitectZero AI Agent

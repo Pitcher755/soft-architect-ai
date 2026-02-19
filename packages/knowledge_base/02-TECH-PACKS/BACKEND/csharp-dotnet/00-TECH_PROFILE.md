@@ -1,15 +1,15 @@
 # 🆔 Tech Profile: .NET (C# 12+)
 
 > **Categoría:** Enterprise Application Framework (Unified Platform)
-> **Versión:** .NET 8 LTS (Long-Term Support)
+> **Version:** .NET 8 LTS (Long-Term Support)
 > **Lenguaje:** C# 12+
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 La plataforma unificada de Microsoft. Desde web APIs hasta desktop, desde cloud hasta machine learning. TODO con el mismo ecosistema.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Visión de .NET](#visión-de-net)
 2. [Casos de Uso](#casos-de-uso)
@@ -56,7 +56,7 @@ Una plataforma **Open Source** (MIT License) que permite escribir una sola lógi
 | **APIs de Alto Rendimiento** | Async/await nativo, TechEmpower Top 5 | ~110k req/s |
 | **Sistemas Azure-First** | Integración cero-latencia con Azure | SDK oficial |
 | **Enterprise .NET Existente** | Migración desde .NET Framework | Drop-in upgrade |
-| **Arquitecturas Limpias** | DI container nativo, structure fomentada | Built-in |
+| **Architectures Limpias** | DI container nativo, structure fomentada | Built-in |
 | **Microservicios** | gRPC nativo, containerización simple | Docker first-class |
 | **Real-Time:** WebSockets, SignalR | Excelente soporte | < 1ms latency |
 
@@ -243,7 +243,7 @@ ENTRYPOINT ["dotnet", "MyApp.dll"]
 [ ] Exception handling
 [ ] CORS if needed
 
-# ✅ 5. Seguridad
+# ✅ 5. Security
 [ ] Authentication (JWT)
 [ ] Authorization (roles)
 [ ] Rate limiting
@@ -258,7 +258,7 @@ ENTRYPOINT ["dotnet", "MyApp.dll"]
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ .NET ECOSYSTEM OVERVIEW
 **Responsable:** ArchitectZero AI Agent
 

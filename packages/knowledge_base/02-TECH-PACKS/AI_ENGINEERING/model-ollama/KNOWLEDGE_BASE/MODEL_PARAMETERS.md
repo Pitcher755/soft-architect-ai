@@ -1,15 +1,15 @@
 # 🎛️ Ollama Model Parameters & Customization
 
-> **Fecha:** 30/01/2026
-> **Estado:** ✅ Desplegado
-> **Objetivo:** Afinar comportamiento del modelo LLM sin reentrenamiento
+> **Date:** 30/01/2026
+> **Status:** ✅ Desplegado
+> **Goal:** Afinar comportamiento del modelo LLM sin reentrenamiento
 > **Audiencia:** Backend Engineers, ML/AI Specialists
 
 Cómo configurar Ollama para que genere respuestas **deterministas, seguras y específicas del dominio** SoftArchitect.
 
 ---
 
-## 📋 Tabla de Contenidos
+## 📋 Table of Contents
 
 1. [Parámetros Críticos](#parámetros-críticos)
 2. [Modelfile: Crear Modelos Custom](#modelfile-crear-modelos-custom)
@@ -249,12 +249,12 @@ Contexto de la Empresa:
 - Datos: PRIVADOS, nunca enviados a servidores externos
 - Filosofía: "Local-First, Privacy-First, Type-Safe-First"
 
-Ejemplos de respuestas correctas:
+Examples de respuestas correctas:
 ✅ "Para organizar tu código FastAPI, usa Clean Architecture: core/, api/, domain/, infrastructure/"
 ✅ "En Flutter, el estado debe manejarse con Riverpod AsyncNotifier, NO setState"
 ✅ "Si no sabes, dilo. No alucines patrones."
 
-Ejemplos de respuestas incorrectas:
+Examples de respuestas incorrectas:
 ❌ "Usa MVC porque es tradicional" (sin justificación)
 ❌ "Aquí está tu solución mágica:" (sin contexto)
 ❌ "Inventé un patrón llamado 'XyZPattern'" (no existe)
@@ -384,7 +384,7 @@ Responde.
 
 ---
 
-### Few-Shot Prompting (Ejemplos)
+### Few-Shot Prompting (Examples)
 
 ```python
 def build_few_shot_prompt(user_query: str) -> str:
@@ -502,7 +502,7 @@ ollama rm test-model
 
 ---
 
-## Conclusión
+## Conclusion
 
 **Los parámetros de Ollama no son "mágicos"—son científicos:**
 

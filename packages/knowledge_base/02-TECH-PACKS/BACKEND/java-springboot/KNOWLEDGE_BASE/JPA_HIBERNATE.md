@@ -2,14 +2,14 @@
 
 > **Estándar:** Jakarta Persistence (JPA 3.2)
 > **Implementación:** Hibernate 6.4+
-> **Objetivo:** Persistencia relacional eficiente
-> **Fecha:** 30 de Enero de 2026
+> **Goal:** Persistencia relacional eficiente
+> **Date:** 30 de Enero de 2026
 
 ORM es la frontera entre el mundo de objetos (Java) y el mundo relacional (SQL). Aplicamos patrones para no explotar la base de datos.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Relaciones y Fetch Types](#relaciones-y-fetch-types)
 2. [El Problema N+1](#el-problema-n1)
@@ -36,7 +36,7 @@ ORM es la frontera entre el mundo de objetos (Java) y el mundo relacional (SQL).
 > **Todo `ToOne` es EAGER por defecto → CAMBIAR a LAZY**
 > **Todo `ToMany` es LAZY por defecto → MANTENER LAZY**
 
-### Ejemplos
+### Examples
 
 ```java
 // ❌ BAD: ManyToOne EAGER (trae el usuario cada vez que cargas un post)
@@ -519,6 +519,6 @@ public class Post {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ HIBERNATE ORM READY
 **Responsable:** ArchitectZero AI Agent

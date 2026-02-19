@@ -1,14 +1,14 @@
 # 🚀 Django ORM Performance: Query Optimization Masterclass
 
-> **Versión:** Django 4.2+
-> **Objetivo:** Evitar N+1 queries y matar la base de datos
+> **Version:** Django 4.2+
+> **Goal:** Evitar N+1 queries y matar la base de datos
 > **Métrica:** < 100ms para queries típicas en tablas 1M+
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [El Problema N+1](#el-problema-n1)
 2. [select_related: SQL JOIN](#selectrelated-sql-join)

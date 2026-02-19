@@ -1,15 +1,15 @@
 # 🐘 PostgreSQL JSONB Patterns: Hybrid SQL/NoSQL
 
-> **Versión:** PostgreSQL 14+
+> **Version:** PostgreSQL 14+
 > **Tipo:** JSON Binary (Indexable, Queryable)
 > **Caso de Uso:** Datos semi-estructurados, atributos dinámicos, metadatos variables
 > **Filosofía:** "Best of Both Worlds" - Integridad Relacional + Flexibilidad NoSQL
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Visión PostgreSQL Híbrida](#visión-postgresql-híbrida)
 2. [JSONB vs JSON vs Tabla Relacional](#jsonb-vs-json-vs-tabla-relacional)
@@ -35,9 +35,9 @@ PostgreSQL 14+ no es solo una base de datos relacional. Con JSONB nativo, es tam
 | **Joins** | ✅ Sí (relacional) | ❌ No ($lookup, subóptimo) |
 | **Schema Evolution** | ✅ Flexible (JSONB) | ✅ Flexible (default) |
 | **Cost** | ✅ Open Source | ⚠️ Caro en cloud |
-| **Índices** | ✅ GIN (rápidos) | ⚠️ BTree (menos flexible) |
+| **Indexes** | ✅ GIN (rápidos) | ⚠️ BTree (menos flexible) |
 
-**Conclusión:** Usa PostgreSQL + JSONB cuando necesites tanto **relaciones** como **flexibilidad**.
+**Conclusion:** Usa PostgreSQL + JSONB cuando necesites tanto **relaciones** como **flexibilidad**.
 
 ---
 
@@ -71,7 +71,7 @@ CREATE TABLE logs_jsonb (
 **Usa Tabla Relacional cuando:**
 - Datos centrales del dominio (ej: `Users`, `Orders`, `Products`)
 - Necesitas Foreign Keys, constraints
-- Consultas muy frecuentes sobre ese campo
+- Queries muy frecuentes sobre ese campo
 - Múltiples joins sobre el campo
 
 ```sql
@@ -112,7 +112,7 @@ INSERT INTO products (sku, name, attributes) VALUES (
     'Office Chair',
     '{"color": "black", "legs": 5, "adjustable_height": true, "max_weight_kg": 120}'
 );
--- Nota: Campos completamente diferentes, pero en la misma tabla.
+-- Note: Campos completamente diferentes, pero en la misma tabla.
 ```
 
 ---
@@ -137,7 +137,7 @@ CREATE TABLE products (
     metadata JSONB NOT NULL DEFAULT '{}'
 );
 
--- Índices estratégicos
+-- Indexes estratégicos
 CREATE INDEX idx_products_category ON products(category_id);
 CREATE INDEX idx_products_sku ON products(sku);
 
@@ -157,7 +157,7 @@ CREATE INDEX idx_products_metadata ON products USING GIN (metadata);
 
 Sin índice en JSONB = Full Table Scan. Con índice GIN = Acceso O(log N).
 
-### Crear Índices
+### Crear Indexes
 
 ```sql
 -- 1. Índice en todo el documento JSONB
@@ -175,7 +175,7 @@ CREATE INDEX idx_attributes_containment ON products USING GIN (
 CREATE INDEX idx_attributes_tags ON products USING GIN ((attributes->'tags'));
 ```
 
-### Verificar Índices
+### Verificar Indexes
 
 ```sql
 -- Ver índices creados
@@ -505,7 +505,7 @@ mongoexport --db mydb --collection products --out products.jsonl
 psql -c "COPY products(attributes) FROM STDIN" < products.jsonl
 ```
 
-### Paso 2: Crear Índices
+### Paso 2: Crear Indexes
 
 ```sql
 -- Después de la migración, crear índices GIN

@@ -1,7 +1,7 @@
 # 🆔 Tech Profile: Ollama
 
-> **Fecha:** 30/01/2026
-> **Estado:** ✅ Desplegado
+> **Date:** 30/01/2026
+> **Status:** ✅ Desplegado
 > **Categoría:** Local LLM Inference Engine
 > **Web Oficial:** https://ollama.com/
 > **Licencia:** MIT
@@ -11,7 +11,7 @@ Motor para ejecutar Modelos de Lenguaje (LLMs) localmente sin internet. Es el **
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Suitability (Dónde Brilla Ollama)](#suitability-dónde-brilla-ollama)
 2. [Value Analysis](#value-analysis)
@@ -327,7 +327,7 @@ volumes:
 # Listar modelos locales
 ollama list
 
-# Ejemplos de modelos pequeños y rápidos:
+# Examples de modelos pequeños y rápidos:
 ollama pull llama2:7b          # 3.8GB, rápido, general-purpose
 ollama pull mistral:7b         # 4.0GB, mejor calidad, razonamiento
 ollama pull neural-chat:7b     # 3.8GB, optimizado para chat
@@ -356,7 +356,7 @@ ollama pull mistral:7b         # Mejor comprensión de textos técnicos
 
 ---
 
-## Conclusión
+## Conclusion
 
 **Ollama es el motor de inferencia elegido para SoftArchitect porque:**
 

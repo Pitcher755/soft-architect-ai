@@ -3,20 +3,20 @@
 > **Categoría:** Backend API Framework
 > **Licencia:** MIT
 > **Web Oficial:** https://fastapi.tiangolo.com/
-> **Versión Objetivo:** 0.100.0+ (Pydantic v2 support)
+> **Versión Goal:** 0.100.0+ (Pydantic v2 support)
 
 Este perfil permite a **SoftArchitect AI** evaluar la idoneidad de FastAPI para proyectos backend.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [1. Casos de Uso (Suitability)](#1-casos-de-uso-suitability)
 - [2. Análisis de Valor](#2-análisis-de-valor)
 - [3. Requisitos del Sistema](#3-requisitos-del-sistema)
 - [4. Stack Integration](#4-stack-integration)
 - [5. Ciclo de Vida & Versioning](#5-ciclo-de-vida--versioning)
-- [6. Referencias](#6-referencias)
+- [6. References](#6-referencias)
 
 ---
 
@@ -34,7 +34,7 @@ Este perfil permite a **SoftArchitect AI** evaluar la idoneidad de FastAPI para 
 - SoftArchitect AI usa FastAPI como motor del motor RAG.
 - Fácil consumo de modelos locales vía HTTP.
 
-**Desarrollo Rápido con Seguridad**
+**Desarrollo Rápido con Security**
 - La validación automática de Pydantic reduce drásticamente los bugs de tipo.
 - Documentación automática en Swagger UI (OpenAPI 3.0.2).
 - Autocompletado en el IDE sin necesidad de plugins adicionales.
@@ -169,14 +169,14 @@ FastAPI NO tiene ventanas EOL formales. Recomendación de SoftArchitect:
 
 ---
 
-## 6. Referencias
+## 6. References
 
 **Documentación Oficial**
 - [FastAPI Docs](https://fastapi.tiangolo.com/)
 - [Pydantic V2 Guide](https://docs.pydantic.dev/latest/)
 - [SQLAlchemy ORM](https://docs.sqlalchemy.org/)
 
-**Ejemplos de Producción**
+**Examples de Producción**
 - SoftArchitect AI (este proyecto)
 - Uber Backend
 - Netflix API

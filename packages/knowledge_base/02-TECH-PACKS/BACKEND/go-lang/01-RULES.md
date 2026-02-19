@@ -3,13 +3,13 @@
 > **Tooling:** `gofmt`, `go vet`, `golangci-lint`
 > **Filosofía:** "Idiomatic Go"
 > **Principio:** Explicit > Implicit
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 Las reglas que rigen Go. No son sugerencias. Son la ley. El compilador y la comunidad te los recordarán.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Manejo de Errores](#manejo-de-errores)
 2. [Naming Conventions](#naming-conventions)
@@ -521,6 +521,6 @@ func Unlock() { mu.Unlock() }
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ IDIOMATIC GO GOVERNANCE
 **Responsable:** ArchitectZero AI Agent

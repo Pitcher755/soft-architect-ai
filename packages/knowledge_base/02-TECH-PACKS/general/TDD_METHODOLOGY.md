@@ -1,81 +1,81 @@
 # 🧪 Test-Driven Development (TDD) Methodology
 
-> **Fecha:** 30/01/2026
-> **Estado:** ✅ MANDATORY
-> **Filosofía:** "No escribas código de producción a menos que sea para pasar un test fallido"
-> **Ciclo:** Red 🔴 → Green 🟢 → Refactor 🔵
-> **Objetivo:** Código confiable, mantenible, documentado por tests
+> **Date:** 30/01/2026
+> **Status:** ✅ MANDATORY
+> **Philosophy:** "Don't write production code unless it's to pass a failing test"
+> **Cycle:** Red 🔴 → Green 🟢 → Refactor 🔵
+> **Goal:** Reliable, maintainable, test-documented code
 
-Test-Driven Development es la columna vertebral de la calidad en SoftArchitect. No es una sugerencia.
-
----
-
-## 📖 Tabla de Contenidos
-
-1. [El Ciclo Sagrado (The Red-Green-Refactor Loop)](#el-ciclo-sagrado-the-red-green-refactor-loop)
-2. [Estructura AAA (Arrange-Act-Assert)](#estructura-aaa-arrange-act-assert)
-3. [Ejemplos Prácticos](#ejemplos-prácticos)
-4. [Testing Piramid](#testing-piramid)
-5. [Best Practices por Lenguaje](#best-practices-por-lenguaje)
-6. [Métricas de Coverage](#métricas-de-coverage)
-7. [Anti-Patterns & Errores Comunes](#anti-patterns--errores-comunes)
+Test-Driven Development is the backbone of quality in SoftArchitect. This is not a suggestion.
 
 ---
 
-## El Ciclo Sagrado (The Red-Green-Refactor Loop)
+## 📖 Table of Contents
+
+1. [The Sacred Cycle (The Red-Green-Refactor Loop)](#the-sacred-cycle-the-red-green-refactor-loop)
+2. [AAA Structure (Arrange-Act-Assert)](#aaa-structure-arrange-act-assert)
+3. [Practical Examples](#practical-examples)
+4. [Testing Pyramid](#testing-pyramid)
+5. [Best Practices by Language](#best-practices-by-language)
+6. [Coverage Metrics](#coverage-metrics)
+7. [Anti-Patterns & Common Mistakes](#anti-patterns--common-mistakes)
+
+---
+
+## The Sacred Cycle (The Red-Green-Refactor Loop)
 
 ```
 ┌──────────────────────────────────────────────────────────┐
 │                 RED-GREEN-REFACTOR LOOP                  │
 ├──────────────────────────────────────────────────────────┤
 │                                                          │
-│   🔴 RED: Test Falla                                    │
-│   ├─ Escribir test para feature que NO existe           │
-│   ├─ Resultado: Test MUST fail (compilación o assert)   │
-│   └─ Propósito: Definir interfaz y comportamiento       │
+│   🔴 RED: Test Fails                                    │
+│   ├─ Write test for feature that DOES NOT exist         │
+│   ├─ Result: Test MUST fail (compilation or assert)     │
+│   └─ Purpose: Define interface and behavior             │
 │                                                          │
-│        ↓↓↓ [Implementar código mínimo] ↓↓↓               │
+│        ↓↓↓ [Implement minimum code] ↓↓↓                  │
 │                                                          │
-│   🟢 GREEN: Test Pasa                                   │
-│   ├─ Escribir código MÍNIMO para que pase               │
-│   ├─ Vale hardcodear, vale código feo                   │
-│   ├─ Importante: Ver la barra verde                     │
-│   └─ Resultado: Test MUST pass                          │
+│   🟢 GREEN: Test Passes                                 │
+│   ├─ Write MINIMUM code to make it pass                 │
+│   ├─ Hardcoding OK, ugly code OK                        │
+│   ├─ Important: See the green bar                       │
+│   └─ Result: Test MUST pass                             │
 │                                                          │
-│        ↓↓↓ [Mejorar el código] ↓↓↓                       │
+│        ↓↓↓ [Improve the code] ↓↓↓                        │
 │                                                          │
-│   🔵 REFACTOR: Optimizar                                │
-│   ├─ Mejorar código SIN cambiar comportamiento          │
-│   ├─ Aplicar SOLID, Clean Code                          │
-│   ├─ Seguridad: El test en verde = puedes refactorizar │
-│   └─ Test sigue pasando                                 │
+│   🔵 REFACTOR: Optimize                                 │
+│   ├─ Improve code WITHOUT changing behavior             │
+│   ├─ Apply SOLID, Clean Code                            │
+│   ├─ Safety: Green test = you can refactor              │
+│   └─ Test keeps passing                                 │
 │                                                          │
-│        ↓↓↓ [Volver al inicio] ↓↓↓                        │
+│        ↓↓↓ [Return to start] ↓↓↓                         │
 │                                                          │
 └──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Estructura AAA (Arrange-Act-Assert)
+## AAA Structure (Arrange-Act-Assert)
 
-Cada test tiene 3 fases:
+Each test has 3 phases:
 
 ```
 ┌───────────────────────────┐
-│ 1️⃣  ARRANGE (Preparar)    │
-│ Configurar fixtures,      │
-│ crear mocks, setup datos  │
+│ 1️⃣  ARRANGE (Setup)       │
+│ Configure fixtures,       │
+│ create mocks, setup data  │
 ├───────────────────────────┤
-│ 2️⃣  ACT (Actuar)          │
-│ Ejecutar código a testear │
+│ 2️⃣  ACT (Execute)         │
+│ Execute code under test   │
 ├───────────────────────────┤
-│ 3️⃣  ASSERT (Afirmar)      │
-│ Verificar resultados      │
+│ 3️⃣  ASSERT (Verify)       │
+│ Verify results            │
 └───────────────────────────┘
 ```
 
-### Plantilla Universal
+### Universal Template
 
 ```python
 def test_something():
@@ -85,10 +85,10 @@ def test_something():
     mock_repo = MagicMock()
     service = UserService(mock_repo)
 
-    # 2️⃣ ACT: Ejecutar
+    # 2️⃣ ACT: Execute
     result = service.create_user(input_data)
 
-    # 3️⃣ ASSERT: Verificar
+    # 3️⃣ ASSERT: Verify
     assert result.id == expected_output.id
     assert result.email == expected_output.email
     mock_repo.save.assert_called_once()
@@ -96,11 +96,11 @@ def test_something():
 
 ---
 
-## Ejemplos Prácticos
+## Practical Examples
 
-### Ejemplo 1: Feature Simple (User Creation)
+### Example 1: Simple Feature (User Creation)
 
-#### 🔴 RED: Escribir Test Primero
+#### 🔴 RED: Write Test First
 
 ```python
 # tests/unit/domain/services/test_user_service.py
@@ -114,18 +114,18 @@ from src.domain.exceptions import UserAlreadyExistsError
 @pytest.mark.asyncio
 async def test_create_user_with_valid_email():
     """
-    GIVEN: Email y contraseña válidas
-    WHEN: Crear usuario
-    THEN: Debe retornar usuario con ID
+    GIVEN: Valid email and password
+    WHEN: Creating user
+    THEN: Should return user with ID
     """
     # 1️⃣ ARRANGE
     email = "john@example.com"
     password = "SecurePass123!"
     expected_user = User(id=1, email=email, is_active=True)
 
-    # Mock del repositorio
+    # Mock repository
     mock_repo = AsyncMock()
-    mock_repo.get_user_by_email.return_value = None  # No existe
+    mock_repo.get_user_by_email.return_value = None  # Does not exist
     mock_repo.save.return_value = expected_user
 
     service = UserService(repo=mock_repo)
@@ -144,9 +144,9 @@ async def test_create_user_with_valid_email():
 @pytest.mark.asyncio
 async def test_create_user_with_existing_email():
     """
-    GIVEN: Email que ya existe
-    WHEN: Intentar crear usuario
-    THEN: Debe lanzar UserAlreadyExistsError
+    GIVEN: Email that already exists
+    WHEN: Attempting to create user
+    THEN: Should raise UserAlreadyExistsError
     """
     # 1️⃣ ARRANGE
     email = "existing@example.com"
@@ -162,9 +162,9 @@ async def test_create_user_with_existing_email():
         await service.create(email=email, password="ValidPass123!")
 ```
 
-**Estado:** Test FALLA ❌ (porque `UserService` no existe aún)
+**Status:** Test FAILS ❌ (because `UserService` does not exist yet)
 
-#### 🟢 GREEN: Implementación Mínima
+#### 🟢 GREEN: Minimum Implementation
 
 ```python
 # src/domain/services/user_service.py
@@ -180,20 +180,20 @@ class UserService:
         self.repo = repo
 
     async def create(self, email: str, password: str) -> User:
-        """Crear usuario nuevo."""
-        # Verificar que email no existe
+        """Create new user."""
+        # Verify that email does not exist
         existing = await self.repo.get_user_by_email(email)
         if existing:
             raise UserAlreadyExistsError(f"User with {email} already exists")
 
-        # Crear usuario (mínimo necesario)
+        # Create user (minimum necessary)
         new_user = User(id=1, email=email, is_active=True)
         return await self.repo.save(new_user)
 ```
 
-**Estado:** Test PASA ✅
+**Status:** Test PASSES ✅
 
-#### 🔵 REFACTOR: Implementación Real
+#### 🔵 REFACTOR: Real Implementation
 
 ```python
 # src/domain/services/user_service.py
@@ -215,37 +215,37 @@ class UserService:
 
     async def create(self, email: str, password: str) -> User:
         """
-        Crear usuario nuevo con contraseña hasheada.
+        Create new user with hashed password.
 
         Args:
-            email: Email del usuario (única)
-            password: Contraseña en texto plano (será hasheada)
+            email: User email (unique)
+            password: Plain text password (will be hashed)
 
         Returns:
-            User: Usuario creado con ID asignado
+            User: Created user with assigned ID
 
         Raises:
-            UserAlreadyExistsError: Si email ya existe
-            ValueError: Si email/password no válidos
+            UserAlreadyExistsError: If email already exists
+            ValueError: If email/password not valid
         """
-        # Validar formato de email
+        # Validate email format
         if not self._is_valid_email(email):
             raise ValueError(f"Invalid email format: {email}")
 
-        # Validar contraseña
+        # Validate password
         if not self._is_valid_password(password):
             raise ValueError("Password must be >= 12 chars with upper/number/symbol")
 
-        # Verificar que email no existe
+        # Verify that email does not exist
         existing = await self.repo.get_user_by_email(email)
         if existing:
             logger.warning(f"Attempt to create user with existing email: {email}")
             raise UserAlreadyExistsError(f"User with {email} already exists")
 
-        # Hash de contraseña
+        # Hash password
         hashed_password = hash_password(password)
 
-        # Crear usuario
+        # Create user
         new_user = User(
             email=email,
             hashed_password=hashed_password,
@@ -253,7 +253,7 @@ class UserService:
             created_at=datetime.utcnow(),
         )
 
-        # Persistir
+        # Persist
         saved_user = await self.repo.save(new_user)
         logger.info(f"User created: {saved_user.id}")
 
@@ -261,14 +261,14 @@ class UserService:
 
     @staticmethod
     def _is_valid_email(email: str) -> bool:
-        """Validar formato de email básico."""
+        """Validate basic email format."""
         import re
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return re.match(pattern, email) is not None
 
     @staticmethod
     def _is_valid_password(password: str) -> bool:
-        """Validar requisitos de contraseña."""
+        """Validate password requirements."""
         return (
             len(password) >= 12 and
             any(c.isupper() for c in password) and
@@ -277,13 +277,13 @@ class UserService:
         )
 ```
 
-**Estado:** Test SIGUE PASANDO ✅ (comportamiento no cambió, solo interno mejoró)
+**Status:** Test KEEPS PASSING ✅ (behavior unchanged, only internals improved)
 
 ---
 
-### Ejemplo 2: Error Handling (Flutter)
+### Example 2: Error Handling (Flutter)
 
-#### 🔴 RED: Test para Manejo de Errores
+#### 🔴 RED: Test for Error Handling
 
 ```dart
 // test/unit/domain/repositories/document_repository_test.dart
@@ -340,9 +340,9 @@ void main() {
 }
 ```
 
-**Estado:** Test FALLA ❌
+**Status:** Test FAILS ❌
 
-#### 🟢 GREEN: Implementación Mínima
+#### 🟢 GREEN: Minimum Implementation
 
 ```dart
 // lib/domain/repositories/document_repository.dart
@@ -361,16 +361,16 @@ class DocumentRepository {
     try {
       return await _remoteDatasource.fetchDocuments();
     } on SocketException {
-      // Si falla red, devolver cache
+      // If network fails, return cache
       return await _cache.getDocuments();
     }
   }
 }
 ```
 
-**Estado:** Test PASA ✅
+**Status:** Test PASSES ✅
 
-#### 🔵 REFACTOR: Logging y Mejor Handling
+#### 🔵 REFACTOR: Logging and Better Handling
 
 ```dart
 // lib/domain/repositories/document_repository.dart
@@ -414,35 +414,35 @@ class DocumentRepository {
 }
 ```
 
-**Estado:** Test SIGUE PASANDO ✅
+**Status:** Test KEEPS PASSING ✅
 
 ---
 
-## Testing Piramid
+## Testing Pyramid
 
-La estrategia de cobertura de SoftArchitect:
+SoftArchitect's coverage strategy:
 
 ```
            /\
           /  \
          / 10%\         E2E / Widget Tests
-        /  E2E \       (Verificar flow completo)
+        /  E2E \       (Verify complete flow)
        /────────\
       /          \
      /    20%     \    Integration Tests
-    /  Integration \  (Múltiples componentes)
+    /  Integration \  (Multiple components)
    /────────────────\
   /                  \
  /        70%         \  Unit Tests
-/    Unit Tests        \ (Lógica pura)
+/    Unit Tests        \ (Pure logic)
 /──────────────────────\
 
-Total = 100% cobertura
+Total = 100% coverage
 ```
 
-### Requerimientos
+### Requirements
 
-| Nivel | Herramienta | Cobertura | Ejemplos |
+| Level | Tool | Coverage | Examples |
 |:---|:---|:---:|:---|
 | **Unit** | pytest / flutter_test | ≥ 70% | Validators, formatters, algorithms |
 | **Integration** | pytest + sqlalchemy / flutter test | ≥ 20% | Repository + DB, Riverpod + API mock |
@@ -450,7 +450,7 @@ Total = 100% cobertura
 
 ---
 
-## Best Practices por Lenguaje
+## Best Practices by Language
 
 ### Python (pytest)
 
@@ -463,19 +463,19 @@ import pytest
 from src.domain.validators.email_validator import EmailValidator
 
 class TestEmailValidator:
-    """Grupo lógico de tests."""
+    """Logical group of tests."""
 
     @pytest.fixture
     def validator(self):
-        """Setup compartido."""
+        """Shared setup."""
         return EmailValidator()
 
     def test_valid_email(self, validator):
-        """Email válido debe pasar."""
+        """Valid email should pass."""
         assert validator.validate("user@example.com") is True
 
     def test_invalid_format(self, validator):
-        """Email sin @ debe fallar."""
+        """Email without @ should fail."""
         assert validator.validate("invalid_email") is False
 
     @pytest.mark.parametrize("email", [
@@ -484,7 +484,7 @@ class TestEmailValidator:
         "test_email@subdomain.example.com",
     ])
     def test_multiple_valid_emails(self, validator, email):
-        """Testear múltiples casos con parametrización."""
+        """Test multiple cases with parametrization."""
         assert validator.validate(email) is True
 
     @pytest.mark.asyncio
@@ -497,26 +497,26 @@ class TestEmailValidator:
 #### ❌ BAD: Anti-patterns
 
 ```python
-# ❌ NO HACER ESTO
+# ❌ DO NOT DO THIS
 
 def test_everything():
-    """Test que testea todo (ilegible)."""
+    """Test that tests everything (unreadable)."""
     validator = EmailValidator()
     assert validator.validate("test@example.com")
     assert validator.validate("another@example.com")
     assert validator.validate("third@example.com")
 
 def test_no_name():
-    """Nombre no descriptivo."""
+    """Non-descriptive name."""
     assert something()
 
 def test_with_print():
-    """Loguear con print (no usar)."""
+    """Logging with print (do not use)."""
     print("Debug info")
     assert True
 
 def test_logic_in_assertion():
-    """Lógica compleja en assert."""
+    """Complex logic in assert."""
     assert all([validator.validate(e) for e in emails]) and len(emails) > 0
 ```
 
@@ -559,7 +559,7 @@ void main() {
     });
 
     testWidgets('shows error message on load failure', (tester) async {
-      // Similar a arriba pero con provider que falla
+      // Similar to above but with failing provider
       final container = ProviderContainer(
         overrides: [
           documentsProvider.overrideWith((_) async {
@@ -569,7 +569,7 @@ void main() {
       );
 
       await tester.pumpWidget(...);
-      await tester.pumpAndSettle();  // Esperar async
+      await tester.pumpAndSettle();  // Wait for async
 
       expect(find.text('Error loading documents'), findsOneWidget);
     });
@@ -579,29 +579,29 @@ void main() {
 
 ---
 
-## Métricas de Coverage
+## Coverage Metrics
 
-### Medir Coverage
+### Measure Coverage
 
 ```bash
 # Python
 pytest --cov=src --cov-report=html tests/
-# Abre htmlcov/index.html
+# Open htmlcov/index.html
 
 # Flutter
 flutter test --coverage
-# Genera coverage/lcov.info
+# Generates coverage/lcov.info
 ```
 
-### Mínimos Obligatorios
+### Mandatory Minimums
 
 ```
 - Backend (Python): ≥ 80% coverage
 - Frontend (Flutter): ≥ 75% coverage
-- Crítico (auth, payment): ≥ 95% coverage
+- Critical (auth, payment): ≥ 95% coverage
 ```
 
-### Reporte en CI/CD
+### Report in CI/CD
 
 ```yaml
 # .github/workflows/ci.yml
@@ -616,30 +616,30 @@ flutter test --coverage
 
 ---
 
-## Anti-Patterns & Errores Comunes
+## Anti-Patterns & Common Mistakes
 
-### ❌ Test que No Testea
+### ❌ Test that Doesn't Test
 
 ```python
-# ❌ BAD: Test vacío
+# ❌ BAD: Empty test
 def test_something():
-    pass  # No hay assertions!
+    pass  # No assertions!
 
-# ❌ BAD: Test solo con setup, sin verificaciones
+# ❌ BAD: Test only with setup, no verifications
 def test_user_creation():
     user = User(email="test@test.com")
-    # ... nada más
+    # ... nothing more
 
 # ✅ GOOD
 def test_user_creation():
     user = User(email="test@test.com")
-    assert user.email == "test@test.com"  # Verificar
+    assert user.email == "test@test.com"  # Verify
 ```
 
-### ❌ Test No Aislados
+### ❌ Non-Isolated Tests
 
 ```python
-# ❌ BAD: Dependencia entre tests
+# ❌ BAD: Dependency between tests
 test_counter = 0
 
 def test_first():
@@ -650,39 +650,39 @@ def test_first():
 def test_second():
     global test_counter
     test_counter += 1
-    assert test_counter == 2  # Falla si test_first no corrió primero
+    assert test_counter == 2  # Fails if test_first didn't run first
 
-# ✅ GOOD: Cada test independiente
+# ✅ GOOD: Each test independent
 @pytest.fixture
 def counter():
     return 0
 
 def test_first(counter):
-    assert counter == 0  # Siempre
+    assert counter == 0  # Always
 ```
 
-### ❌ Mocks Innecesarios
+### ❌ Unnecessary Mocks
 
 ```python
-# ❌ BAD: Mockear cosas reales y simples
+# ❌ BAD: Mocking simple real things
 def test_add():
     mock_math = MagicMock()
     mock_math.add = MagicMock(return_value=5)
-    assert mock_math.add(2, 3) == 5  # Testeando el mock, no la función
+    assert mock_math.add(2, 3) == 5  # Testing the mock, not the function
 
-# ✅ GOOD: Test directo para lógica simple
+# ✅ GOOD: Direct test for simple logic
 def test_add():
     result = add(2, 3)
     assert result == 5
 ```
 
-### ❌ Assertions Genéricas
+### ❌ Generic Assertions
 
 ```python
-# ❌ BAD: Mensaje de error poco útil
+# ❌ BAD: Unhelpful error message
 assert user is not None
 
-# ✅ GOOD: Mensaje descriptivo
+# ✅ GOOD: Descriptive message
 assert user is not None, f"User should exist for email {email}"
 ```
 
@@ -690,43 +690,43 @@ assert user is not None, f"User should exist for email {email}"
 
 ## Pre-Development Checklist
 
-Antes de empezar a codificar:
+Before starting to code:
 
 ```bash
-# ✅ 1. Entender el requisito (User Story)
-[ ] Leí el description de la HU completo
-[ ] Entiendo los criterios de aceptación
-[ ] Identifiqué edge cases
+# ✅ 1. Understand the requirement (User Story)
+[ ] Read the complete HU description
+[ ] Understand acceptance criteria
+[ ] Identified edge cases
 
-# ✅ 2. Escribir tests PRIMERO
-[ ] Creé archivo de test (test_*.py / *_test.dart)
-[ ] Escribí al menos 3 tests (happy path + 2 errores)
-[ ] Tests fallan ❌
+# ✅ 2. Write tests FIRST
+[ ] Created test file (test_*.py / *_test.dart)
+[ ] Wrote at least 3 tests (happy path + 2 errors)
+[ ] Tests fail ❌
 
-# ✅ 3. Implementar código mínimo
-[ ] Tests pasan ✅
-[ ] Código es feo/hardcoded (está bien en GREEN)
+# ✅ 3. Implement minimum code
+[ ] Tests pass ✅
+[ ] Code is ugly/hardcoded (OK in GREEN)
 
-# ✅ 4. Refactorizar
-[ ] Mejoré código (limpieza, logging, tipos)
-[ ] Tests SIGUEN pasando ✅
-[ ] Pasé linter (ruff, flutter analyze)
+# ✅ 4. Refactor
+[ ] Improved code (cleanup, logging, types)
+[ ] Tests KEEP passing ✅
+[ ] Passed linter (ruff, flutter analyze)
 
-# ✅ 5. Verificación final
+# ✅ 5. Final verification
 [ ] Coverage ≥ 80%
-[ ] Sin print() o debugPrint()
-[ ] Commit con mensaje Conventional
+[ ] No print() or debugPrint()
+[ ] Commit with Conventional message
 ```
 
 ---
 
-## Conclusión
+## Conclusion
 
-**TDD es la garantía de calidad:**
+**TDD is the quality guarantee:**
 
-1. ✅ **Tests primero:** Definen comportamiento esperado
-2. ✅ **Cobertura alta:** Bugs detectados antes
-3. ✅ **Refactor seguro:** El test es tu red de seguridad
-4. ✅ **Documentación viva:** El test es la especificación
+1. ✅ **Tests first:** Define expected behavior
+2. ✅ **High coverage:** Bugs detected early
+3. ✅ **Safe refactor:** Tests are your safety net
+4. ✅ **Living documentation:** Tests are the specification
 
-**Dogfooding Validation:** SoftArchitect desarrolla cada feature con TDD. Si el test falla, la feature no existe.
+**Dogfooding Validation:** SoftArchitect develops each feature with TDD. If the test fails, the feature doesn't exist.

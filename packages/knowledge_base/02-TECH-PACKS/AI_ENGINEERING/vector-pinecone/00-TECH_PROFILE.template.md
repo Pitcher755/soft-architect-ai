@@ -3,13 +3,13 @@
 > **Categoría:** Managed Vector Database (SaaS)
 > **Tipo:** Cloud-Native, Serverless
 > **Web:** https://www.pinecone.io/
-> **Versión Objetivo:** v4.0+ (API v1)
+> **Versión Goal:** v4.0+ (API v1)
 
 Base de datos vectorial gestionada para búsqueda semántica a escala y baja latencia.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Casos de Uso (Suitability)](#casos-de-uso-suitability)
 2. [Conceptos Clave](#conceptos-clave)
@@ -184,6 +184,6 @@ Backend (FastAPI) → Embedder (OpenAI/Cohere) → Pinecone (SaaS)
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ ADOPTED (Production VectorDB)
 **Responsable:** ArchitectZero AI Agent

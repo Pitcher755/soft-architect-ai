@@ -1,128 +1,128 @@
 # 🆔 Tech Profile: {{TECH_NAME}}
 
-> **Categoría:** {{CATEGORY}} (Ej: Backend Framework, Frontend Library, NoSQL DB, Cloud Service)
-> **Licencia:** {{LICENSE}} (MIT, Apache 2.0, GPL, Proprietary, etc)
-> **Web Oficial:** {{OFFICIAL_SITE}}
-> **Versión Actual:** {{CURRENT_VERSION}}
+> **Category:** {{CATEGORY}} (e.g., Backend Framework, Frontend Library, NoSQL DB, Cloud Service)
+> **License:** {{LICENSE}} (MIT, Apache 2.0, GPL, Proprietary, etc)
+> **Official Website:** {{OFFICIAL_SITE}}
+> **Current Version:** {{CURRENT_VERSION}}
 > **EOL/LTS Info:** {{EOL_INFO}}
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-- [Introducción](#introducción)
-- [Casos de Uso](#casos-de-uso)
-- [Análisis de Valor](#análisis-de-valor)
-- [Requisitos del Sistema](#requisitos-del-sistema)
-- [Integración con Stack](#integración-con-stack)
-- [Referencias](#referencias)
+- [Introduction](#introduction)
+- [Use Cases](#use-cases)
+- [Value Analysis](#value-analysis)
+- [System Requirements](#system-requirements)
+- [Stack Integration](#stack-integration)
+- [References](#references)
 
 ---
 
-## 📝 Introducción
+## 📝 Introduction
 
-Este perfil permite a **SoftArchitect AI** evaluar la idoneidad de **{{TECH_NAME}}** para los requisitos específicos del proyecto del usuario.
+This profile allows **SoftArchitect AI** to evaluate the suitability of **{{TECH_NAME}}** for the specific requirements of the user's project.
 
-### En Una Línea
-{{TECH_ONE_LINER}} (Ej: "Framework web asincrónico de alto rendimiento para Python")
+### In One Line
+{{TECH_ONE_LINER}} (e.g., "High-performance asynchronous web framework for Python")
 
-### Propuesta de Valor
+### Value Proposition
 {{TECH_VALUE_PROP}}
 
 ---
 
-## 1. Casos de Uso (Suitability)
+## 1. Use Cases (Suitability)
 
-### ✅ Ideal Para (Best Fit)
+### ✅ Ideal For (Best Fit)
 
-Este stack es óptimo cuando:
+This stack is optimal when:
 
-* **{{USE_CASE_1}}** (Ej: Microservicios con alta concurrencia)
-  - Por qué: {{REASON_1}}
-  - Ejemplo real: {{EXAMPLE_1}}
+* **{{USE_CASE_1}}** (e.g., Microservices with high concurrency)
+  - Why: {{REASON_1}}
+  - Real example: {{EXAMPLE_1}}
 
-* **{{USE_CASE_2}}** (Ej: Prototipado rápido de MVP)
-  - Por qué: {{REASON_2}}
-  - Ejemplo real: {{EXAMPLE_2}}
+* **{{USE_CASE_2}}** (e.g., Rapid MVP prototyping)
+  - Why: {{REASON_2}}
+  - Real example: {{EXAMPLE_2}}
 
 * **{{USE_CASE_3}}**
-  - Por qué: {{REASON_3}}
+  - Why: {{REASON_3}}
 
-### ❌ No Usar Para (Anti-Patterns)
+### ❌ Not To Use For (Anti-Patterns)
 
-Evita esta tecnología cuando necesites:
+Avoid this technology when you need:
 
-* **{{ANTI_USE_CASE_1}}** (Ej: Tareas intensivas de CPU en tiempo real)
-  - Por qué: {{ANTI_REASON_1}}
-  - Alternativa recomendada: {{ANTI_ALT_1}}
+* **{{ANTI_USE_CASE_1}}** (e.g., CPU-intensive real-time tasks)
+  - Why: {{ANTI_REASON_1}}
+  - Recommended alternative: {{ANTI_ALT_1}}
 
-* **{{ANTI_USE_CASE_2}}** (Ej: Sistemas embebidos con memoria limitada)
-  - Por qué: {{ANTI_REASON_2}}
-  - Alternativa recomendada: {{ANTI_ALT_2}}
+* **{{ANTI_USE_CASE_2}}** (e.g., Embedded systems with limited memory)
+  - Why: {{ANTI_REASON_2}}
+  - Recommended alternative: {{ANTI_ALT_2}}
 
 ---
 
-## 2. Análisis de Valor (Trade-offs)
+## 2. Value Analysis (Trade-offs)
 
-Valoración de 1-5 (1 = Bajo, 5 = Excelente):
+Rating from 1-5 (1 = Low, 5 = Excellent):
 
-| Dimensión | Rating | Comentario | Impacto |
-|-----------|--------|-----------|--------|
-| **Curva de Aprendizaje** | {{RATING_LEARNING}} | {{COMMENT_LEARNING}} | {{IMPACT_LEARNING}} |
-| **Velocidad de Desarrollo** | {{RATING_SPEED}} | {{COMMENT_SPEED}} | {{IMPACT_SPEED}} |
-| **Rendimiento (Raw)** | {{RATING_PERF}} | {{COMMENT_PERF}} | {{IMPACT_PERF}} |
-| **Escalabilidad** | {{RATING_SCALABILITY}} | {{COMMENT_SCALABILITY}} | {{IMPACT_SCALABILITY}} |
-| **Ecosistema/Comunidad** | {{RATING_ECO}} | {{COMMENT_ECO}} | {{IMPACT_ECO}} |
-| **Soporte a Largo Plazo** | {{RATING_LTS}} | {{COMMENT_LTS}} | {{IMPACT_LTS}} |
+| Dimension | Rating | Comment | Impact |
+|-----------|--------|---------|--------|
+| **Learning Curve** | {{RATING_LEARNING}} | {{COMMENT_LEARNING}} | {{IMPACT_LEARNING}} |
+| **Development Speed** | {{RATING_SPEED}} | {{COMMENT_SPEED}} | {{IMPACT_SPEED}} |
+| **Performance (Raw)** | {{RATING_PERF}} | {{COMMENT_PERF}} | {{IMPACT_PERF}} |
+| **Scalability** | {{RATING_SCALABILITY}} | {{COMMENT_SCALABILITY}} | {{IMPACT_SCALABILITY}} |
+| **Ecosystem/Community** | {{RATING_ECO}} | {{COMMENT_ECO}} | {{IMPACT_ECO}} |
+| **Long-term Support** | {{RATING_LTS}} | {{COMMENT_LTS}} | {{IMPACT_LTS}} |
 
-### Decisión de Selección
+### Selection Decision
 
-**Usar si:**
+**Use if:**
 - {{SELECTION_IF_1}}
 - {{SELECTION_IF_2}}
 
-**No usar si:**
+**Don't use if:**
 - {{SELECTION_NOT_IF_1}}
 - {{SELECTION_NOT_IF_2}}
 
 ---
 
-## 3. Requisitos del Sistema
+## 3. System Requirements
 
 ### Runtime/Environment
 
-| Requisito | Valor | Notas |
-|-----------|-------|-------|
-| **Runtime Mínimo** | {{MIN_RUNTIME_VERSION}} | {{MIN_RUNTIME_NOTE}} |
-| **Runtime Recomendado** | {{REC_RUNTIME_VERSION}} | {{REC_RUNTIME_NOTE}} |
-| **Sistemas Operativos** | {{OS_SUPPORT}} | Windows, macOS, Linux, etc |
-| **Arquitecturas** | {{ARCH_SUPPORT}} | x86_64, ARM64, etc |
+| Requirement | Value | Notes |
+|-------------|-------|-------|
+| **Minimum Runtime** | {{MIN_RUNTIME_VERSION}} | {{MIN_RUNTIME_NOTE}} |
+| **Recommended Runtime** | {{REC_RUNTIME_VERSION}} | {{REC_RUNTIME_NOTE}} |
+| **Operating Systems** | {{OS_SUPPORT}} | Windows, macOS, Linux, etc |
+| **Architectures** | {{ARCH_SUPPORT}} | x86_64, ARM64, etc |
 
-### Dependencias Críticas
+### Critical Dependencies
 
 ```
 {{CRITICAL_DEPENDENCY_1}}: {{DEP_VERSION_1}}
-  └─ Por qué: {{DEP_REASON_1}}
+  └─ Why: {{DEP_REASON_1}}
 
 {{CRITICAL_DEPENDENCY_2}}: {{DEP_VERSION_2}}
-  └─ Por qué: {{DEP_REASON_2}}
+  └─ Why: {{DEP_REASON_2}}
 
 {{CRITICAL_DEPENDENCY_3}}: {{DEP_VERSION_3}}
 ```
 
-### Hardware Recomendado
+### Recommended Hardware
 
-| Recurso | Mínimo | Recomendado |
-|---------|--------|-------------|
+| Resource | Minimum | Recommended |
+|----------|---------|-------------|
 | **CPU** | {{CPU_MIN}} | {{CPU_REC}} |
 | **RAM** | {{RAM_MIN}} | {{RAM_REC}} |
-| **Almacenamiento** | {{STORAGE_MIN}} | {{STORAGE_REC}} |
+| **Storage** | {{STORAGE_MIN}} | {{STORAGE_REC}} |
 
 ---
 
-## 4. Integración con Stack
+## 4. Stack Integration
 
-### Compatible Con
+### Compatible With
 
 ```
 Frontend:           {{COMPATIBLE_FRONTEND}}
@@ -133,68 +133,68 @@ Message Queue:      {{COMPATIBLE_MQ}}
 Container:          {{COMPATIBLE_CONTAINER}} (Docker, Podman, etc)
 ```
 
-### Conflictos Conocidos
+### Known Conflicts
 
-* **Conflicto 1:** {{CONFLICT_1}}
-  - Solución: {{CONFLICT_SOL_1}}
+* **Conflict 1:** {{CONFLICT_1}}
+  - Solution: {{CONFLICT_SOL_1}}
 
-* **Conflicto 2:** {{CONFLICT_2}}
-  - Solución: {{CONFLICT_SOL_2}}
+* **Conflict 2:** {{CONFLICT_2}}
+  - Solution: {{CONFLICT_SOL_2}}
 
 ---
 
-## 5. Ciclo de Vida y Soporte
+## 5. Lifecycle and Support
 
 ### Versioning Strategy
 
 - **Strategy:** {{VERSIONING_STRATEGY}} (Semantic Versioning, Calendar Versioning, etc)
-- **Cycle:** {{RELEASE_CYCLE}} (Ej: Nueva mayor cada 12 meses)
+- **Cycle:** {{RELEASE_CYCLE}} (e.g., New major every 12 months)
 
 ### LTS Releases
 
-| Versión | Lanzamiento | EOL | Status |
-|---------|-------------|-----|--------|
+| Version | Release | EOL | Status |
+|---------|---------|-----|--------|
 | {{LTS_VERSION_1}} | {{LTS_DATE_1}} | {{LTS_EOL_1}} | {{LTS_STATUS_1}} |
 | {{LTS_VERSION_2}} | {{LTS_DATE_2}} | {{LTS_EOL_2}} | {{LTS_STATUS_2}} |
 
 ---
 
-## 6. Curva de Adopción
+## 6. Adoption Curve
 
-### Phase 1: Learning (Semanas 1-2)
-- Conceptos fundamentales: {{LEARNING_1}}
+### Phase 1: Learning (Weeks 1-2)
+- Fundamental concepts: {{LEARNING_1}}
 - Hands-on: {{LEARNING_HANDS_ON_1}}
-- Estimación: {{LEARNING_EST_1}}
+- Estimation: {{LEARNING_EST_1}}
 
-### Phase 2: Productivity (Semanas 3-4)
-- Patrones clave: {{PRODUCTIVITY_1}}
-- Productividad esperada: {{PRODUCTIVITY_EST_1}}
+### Phase 2: Productivity (Weeks 3-4)
+- Key patterns: {{PRODUCTIVITY_1}}
+- Expected productivity: {{PRODUCTIVITY_EST_1}}
 
-### Phase 3: Mastery (Meses 2-3)
-- Optimización: {{MASTERY_1}}
-- Nivel de experto: {{MASTERY_EST_1}}
+### Phase 3: Mastery (Months 2-3)
+- Optimization: {{MASTERY_1}}
+- Expert level: {{MASTERY_EST_1}}
 
 ---
 
-## 7. Riesgos y Mitigaciones
+## 7. Risks and Mitigations
 
-| Riesgo | Probabilidad | Impacto | Mitigación |
-|--------|-------------|--------|-----------|
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|-----------|
 | {{RISK_1}} | {{RISK_1_PROB}} | {{RISK_1_IMPACT}} | {{RISK_1_MIT}} |
 | {{RISK_2}} | {{RISK_2_PROB}} | {{RISK_2_IMPACT}} | {{RISK_2_MIT}} |
 | {{RISK_3}} | {{RISK_3_PROB}} | {{RISK_3_IMPACT}} | {{RISK_3_MIT}} |
 
 ---
 
-## 📚 Referencias
+## 📚 References
 
-- **Documentación Oficial:** [{{OFFICIAL_DOCS}}]({{OFFICIAL_DOCS_LINK}})
+- **Official Documentation:** [{{OFFICIAL_DOCS}}]({{OFFICIAL_DOCS_LINK}})
 - **GitHub:** [{{GITHUB_REPO}}]({{GITHUB_LINK}})
 - **Community:** {{COMMUNITY_LINKS}}
-- **Libros Recomendados:** {{RECOMMENDED_BOOKS}}
+- **Recommended Books:** {{RECOMMENDED_BOOKS}}
 
 ---
 
-**Última Actualización:** {{UPDATE_DATE}}
-**Mantenedor:** {{MAINTAINER}}
-**Versión del Perfil:** 1.0
+**Last Updated:** {{UPDATE_DATE}}
+**Maintainer:** {{MAINTAINER}}
+**Profile Version:** 1.0

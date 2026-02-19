@@ -1,22 +1,22 @@
 # 🐳 Dockerfile Patterns & Best Practices
 
-> **Fecha:** 30/01/2026
-> **Estado:** ✅ Desplegado
-> **Tecnología:** Docker / BuildKit / Container Registry
-> **Objetivo:** Imágenes de producción seguras, ligeras y rápidas
+> **Date:** 30/01/2026
+> **Status:** ✅ Desplegado
+> **Technology:** Docker / BuildKit / Container Registry
+> **Goal:** Imágenes de producción seguras, ligeras y rápidas
 > **Audiencia:** DevOps Engineers, Backend Developers, SoftArchitect AI
 
-Patrones de referencia para contenerización de servicios SoftArchitect AI. Todos los ejemplos siguen la filosofía "small, secure, fast" (SSF).
+Patterns de referencia para contenerización de servicios SoftArchitect AI. Todos los ejemplos siguen la filosofía "small, secure, fast" (SSF).
 
 ---
 
-## 📋 Tabla de Contenidos
+## 📋 Table of Contents
 
 1. [Fundamentos](#fundamentos)
 2. [Multi-Stage Builds](#multi-stage-builds)
-3. [Seguridad (Hardening)](#seguridad-hardening)
+3. [Security (Hardening)](#seguridad-hardening)
 4. [Optimización de Capas](#optimización-de-capas)
-5. [Patrones por Lenguaje](#patrones-por-lenguaje)
+5. [Patterns por Lenguaje](#patrones-por-lenguaje)
 6. [Docker Compose Integration](#docker-compose-integration)
 7. [Pre-Commit Checklist](#pre-commit-checklist)
 
@@ -33,7 +33,7 @@ Docker es el **contenedor de ejecución** para todos los servicios SoftArchitect
 ### Principios No Negociables
 
 1. **Imágenes Deterministas:** Tags específicos, NO `latest`.
-2. **Non-Root User:** Seguridad básica, un atacante no entra como root.
+2. **Non-Root User:** Security básica, un atacante no entra como root.
 3. **No Secrets:** Inyectar en runtime, NUNCA copiar .env.
 4. **Multi-Stage:** Separar etapa de build de etapa de runtime.
 
@@ -158,7 +158,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ---
 
-## Seguridad (Hardening)
+## Security (Hardening)
 
 ### ❌ BAD: Inseguro (Nunca Hacer Esto)
 
@@ -259,7 +259,7 @@ RUN apt-get update && apt-get install -y ...
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# 3️⃣ Configuración (cambios ocasionales)
+# 3️⃣ Configuration (cambios ocasionales)
 COPY config/ config/
 
 # 4️⃣ MÁS cambio: Código fuente
@@ -271,7 +271,7 @@ CMD ["uvicorn", "main:app"]
 
 ---
 
-## Patrones por Lenguaje
+## Patterns por Lenguaje
 
 ### Python FastAPI (Incluido arriba)
 
@@ -473,7 +473,7 @@ docker-compose up -d && sleep 10 && docker-compose ps --format "table {{.Service
 
 ---
 
-## Conclusión
+## Conclusion
 
 Estos patrones garantizan que **cada contenedor de SoftArchitect**:
 - ✅ Es seguro (no-root, tags pinned, sin secretos)

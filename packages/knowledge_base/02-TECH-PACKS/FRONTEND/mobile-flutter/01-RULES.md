@@ -1,42 +1,42 @@
 # 📏 Tech Governance Rules: Flutter & Dart
 
 > **Framework:** Flutter 3.19+
-> **Lenguaje:** Dart 3.0+ (Sound Null Safety)
-> **Objetivo:** Evitar "Widget Hell" y mantener código limpio, tipado, mantenible
+> **Language:** Dart 3.0+ (Sound Null Safety)
+> **Objective:** Avoid "Widget Hell" and maintain clean, typed, maintainable code
 
-Reglas estáticas de calidad para proyectos Flutter en SoftArchitect. **Estas son obligatorias, no opcionales.**
+Static quality rules for Flutter projects in SoftArchitect. **These are mandatory, not optional.**
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-- [1. Convenciones de Naming (Dart Style Guide)](#1-convenciones-de-naming-dart-style-guide)
-- [2. Principios Arquitectónicos](#2-principios-arquitectónicos)
-- [3. Gestión de Estado (Riverpod)](#3-gestión-de-estado-riverpod)
-- [4. Patrones de Seguridad](#4-patrones-de-seguridad)
+- [1. Naming Conventions (Dart Style Guide)](#1-naming-conventions-dart-style-guide)
+- [2. Architectural Principles](#2-architectural-principles)
+- [3. State Management (Riverpod)](#3-state-management-riverpod)
+- [4. Security Patterns](#4-security-patterns)
 - [5. Linting & Analysis](#5-linting--analysis)
 - [6. Developer Checklist](#6-developer-checklist)
 
 ---
 
-## 1. Convenciones de Naming (Dart Style Guide)
+## 1. Naming Conventions (Dart Style Guide)
 
-### Tabla de Convenciones
+### Conventions Table
 
-| Elemento | Convención | Ejemplo | Descripción |
+| Element | Convention | Example | Description |
 |:---|:---|:---|:---|
-| **Archivos Dart** | `snake_case.dart` | `user_profile_screen.dart` | Minúsculas, guiones bajos. |
-| **Clases** | `PascalCase` | `UserProfileScreen`, `LoginNotifier` | Siempre mayúscula inicial. |
-| **Variables** | `lowerCamelCase` | `isLoading`, `userName`, `userController` | Descriptivo, camelCase. |
-| **Constantes** | `lowerCamelCase` o `k` prefix | `kAnimationDuration`, `pageSize` | Prefix `k` es opcional pero común. |
-| **Enums** | `PascalCase` (tipo) + `lowerCamelCase` (valores) | `enum UserRole { admin, user }` | Tipo Pascal, valores camel. |
-| **Imports** | `snake_case` paths | `import 'features/auth/data/...';` | Rutas relativas, snake_case. |
-| **Private members** | Prefix `_` | `_privateField`, `_buildUI()` | Underscore para privados. |
+| **Dart Files** | `snake_case.dart` | `user_profile_screen.dart` | Lowercase, underscores. |
+| **Classes** | `PascalCase` | `UserProfileScreen`, `LoginNotifier` | Always initial uppercase. |
+| **Variables** | `lowerCamelCase` | `isLoading`, `userName`, `userController` | Descriptive, camelCase. |
+| **Constants** | `lowerCamelCase` or `k` prefix | `kAnimationDuration`, `pageSize` | Prefix `k` is optional but common. |
+| **Enums** | `PascalCase` (type) + `lowerCamelCase` (values) | `enum UserRole { admin, user }` | Type Pascal, values camel. |
+| **Imports** | `snake_case` paths | `import 'features/auth/data/...';` | Relative paths, snake_case. |
+| **Private members** | Prefix `_` | `_privateField`, `_buildUI()` | Underscore for private. |
 
-### Ejemplos Expandidos
+### Expanded Examples
 
 ```dart
-// ✅ GOOD: Naming correcto
+// ✅ GOOD: Correct naming
 class UserProfileScreen extends ConsumerWidget {
   final String userId;
 

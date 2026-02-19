@@ -3,16 +3,16 @@
 > **Estándar:** EF Core 8.0+
 > **Enfoque:** Code First (Recomendado)
 > **Soporte:** SQL Server, PostgreSQL, MySQL, SQLite
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 El ORM moderno de .NET. Reemplaza Hibernate en el mundo Java. Más limpio, más rápido, mejor tipado.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Code First vs Database First](#code-first-vs-database-first)
-2. [DbContext & Configuración](#dbcontext--configuración)
+2. [DbContext & Configuration](#dbcontext--configuración)
 3. [Relaciones & Navigation](#relaciones--navigation)
 4. [Change Tracking](#change-tracking)
 5. [AsNoTracking & Performance](#asnoftracking--performance)
@@ -80,7 +80,7 @@ dotnet ef dbcontext scaffold "Server=.;Database=MyDB" Microsoft.EntityFrameworkC
 
 ---
 
-## DbContext & Configuración
+## DbContext & Configuration
 
 ### DbContext Básico
 
@@ -95,7 +95,7 @@ public class AppDbContext : DbContext {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }
 
-    // Configuración (Fluent API)
+    // Configuration (Fluent API)
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         // Configurar User
         modelBuilder.Entity<User>()
@@ -194,7 +194,7 @@ public class UserRole {
     public Role Role { get; set; }
 }
 
-// Configuración
+// Configuration
 modelBuilder.Entity<UserRole>()
     .HasKey(ur => new { ur.UserId, ur.RoleId });
 
@@ -222,7 +222,7 @@ public class Profile {
     public string Bio { get; set; }
 }
 
-// Configuración
+// Configuration
 modelBuilder.Entity<User>()
     .HasOne(u => u.Profile)
     .WithOne()
@@ -421,7 +421,7 @@ protected override void Up(MigrationBuilder migrationBuilder) {
 [ ] DbSet<T> por cada entidad
 [ ] Inyectado en Program.cs
 
-# ✅ 2. Configuración
+# ✅ 2. Configuration
 [ ] Fluent API en OnModelCreating
 [ ] Data Annotations [Required], [MaxLength]
 [ ] Índices definidos
@@ -454,6 +454,6 @@ protected override void Up(MigrationBuilder migrationBuilder) {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ EF CORE MASTERY READY
 **Responsable:** ArchitectZero AI Agent

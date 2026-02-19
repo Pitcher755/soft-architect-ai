@@ -1,18 +1,18 @@
 # 📏 Tech Governance Rules: {{TECH_NAME}}
 
-> **Versión:** 1.0
-> **Fecha:** {{CREATION_DATE}}
-> **Mantenedor:** {{MAINTAINER}}
-> **Estado:** ✅ Activo
+> **Version:** 1.0
+> **Date:** {{CREATION_DATE}}
+> **Maintainer:** {{MAINTAINER}}
+> **Status:** ✅ Active
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-- [Introducción](#introducción)
-- [Convenciones de Naming](#convenciones-de-naming)
-- [Principios Arquitectónicos](#principios-arquitectónicos)
-- [Patrones de Seguridad](#patrones-de-seguridad)
+- [Introduction](#introduction)
+- [Naming Conventions](#naming-conventions)
+- [Architectural Principles](#architectural-principles)
+- [Security Patterns](#security-patterns)
 - [Testing & Quality](#testing--quality)
 - [Performance Rules](#performance-rules)
 - [Linting & Formatting](#linting--formatting)
@@ -20,77 +20,77 @@
 
 ---
 
-## 📝 Introducción
+## 📝 Introduction
 
-Estas son las reglas estáticas de calidad y estilo para **{{TECH_NAME}}**.
+These are the static quality and style rules for **{{TECH_NAME}}**.
 
-### Propósito
+### Purpose
 
-Garantizar que:
-- ✅ Todo código sea consistente y legible
-- ✅ Seguridad desde diseño (Security by Design)
-- ✅ Performance optimizado
-- ✅ Mantenibilidad a largo plazo
+To ensure that:
+- ✅ All code is consistent and readable
+- ✅ Security by Design
+- ✅ Optimized performance
+- ✅ Long-term maintainability
 
 ### Scope
 
-Aplicable a:
-- {{SCOPE_1}} (Ej: Código de producción)
-- {{SCOPE_2}} (Ej: Tests)
-- {{SCOPE_3}} (Ej: Documentación)
+Applicable to:
+- {{SCOPE_1}} (e.g., Production code)
+- {{SCOPE_2}} (e.g., Tests)
+- {{SCOPE_3}} (e.g., Documentation)
 
 ---
 
-## 1. Convenciones de Naming (Nomenclatura)
+## 1. Naming Conventions (Nomenclature)
 
-### Archivos y Directorios
+### Files and Directories
 
-| Elemento | Convención | Ejemplo | Justificación |
-|----------|-----------|---------|---------------|
-| **Archivos Código** | {{NAMING_FILE_PATTERN}} | `{{EXAMPLE_FILE}}` | {{NAMING_FILE_REASON}} |
-| **Directorios** | {{NAMING_DIR_PATTERN}} | `{{EXAMPLE_DIR}}` | {{NAMING_DIR_REASON}} |
+| Element | Convention | Example | Justification |
+|---------|-----------|---------|---------------|
+| **Code Files** | {{NAMING_FILE_PATTERN}} | `{{EXAMPLE_FILE}}` | {{NAMING_FILE_REASON}} |
+| **Directories** | {{NAMING_DIR_PATTERN}} | `{{EXAMPLE_DIR}}` | {{NAMING_DIR_REASON}} |
 | **Test Files** | {{NAMING_TEST_PATTERN}} | `{{EXAMPLE_TEST_FILE}}` | {{NAMING_TEST_REASON}} |
 | **Config Files** | {{NAMING_CONFIG_PATTERN}} | `{{EXAMPLE_CONFIG}}` | {{NAMING_CONFIG_REASON}} |
 
-### Elementos de Código
+### Code Elements
 
-| Elemento | Convención | Ejemplo | Regla Adicional |
-|----------|-----------|---------|-----------------|
-| **Clases** | {{NAMING_CLASS}} | `{{EXAMPLE_CLASS}}` | {{CLASS_RULE}} |
-| **Funciones/Métodos** | {{NAMING_FUNC}} | `{{EXAMPLE_FUNC}}` | {{FUNC_RULE}} |
+| Element | Convention | Example | Additional Rule |
+|---------|-----------|---------|-----------------|
+| **Classes** | {{NAMING_CLASS}} | `{{EXAMPLE_CLASS}}` | {{CLASS_RULE}} |
+| **Functions/Methods** | {{NAMING_FUNC}} | `{{EXAMPLE_FUNC}}` | {{FUNC_RULE}} |
 | **Variables** | {{NAMING_VAR}} | `{{EXAMPLE_VAR}}` | {{VAR_RULE}} |
-| **Constantes** | {{NAMING_CONST}} | `{{EXAMPLE_CONST}}` | {{CONST_RULE}} |
+| **Constants** | {{NAMING_CONST}} | `{{EXAMPLE_CONST}}` | {{CONST_RULE}} |
 | **Interfaces/Traits** | {{NAMING_INTERFACE}} | `{{EXAMPLE_INTERFACE}}` | {{INTERFACE_RULE}} |
 | **Enums** | {{NAMING_ENUM}} | `{{EXAMPLE_ENUM}}` | {{ENUM_RULE}} |
 
-### Reglas de Naming Globales
+### Global Naming Rules
 
-1. **Lenguaje:** {{NAMING_LANG}} (Ej: Inglés solamente)
-2. **Longitud máxima:** {{NAMING_MAX_LENGTH}} caracteres
-3. **Caracteres especiales:** {{NAMING_SPECIAL_CHARS}} permitidos
-4. **Abreviaturas:** {{NAMING_ABBREVIATIONS}} (Ej: No usar excepto en constantes estándar)
+1. **Language:** {{NAMING_LANG}} (e.g., English only)
+2. **Maximum length:** {{NAMING_MAX_LENGTH}} characters
+3. **Special characters:** {{NAMING_SPECIAL_CHARS}} allowed
+4. **Abbreviations:** {{NAMING_ABBREVIATIONS}} (e.g., Don't use except for standard constants)
 
 ---
 
-## 2. Principios Arquitectónicos
+## 2. Architectural Principles
 
-### 2.1 Estructura de Proyecto
+### 2.1 Project Structure
 
-**Obligación:** Seguir estrictamente `PROJECT_STRUCTURE_MAP.md`
+**Requirement:** Strictly follow `PROJECT_STRUCTURE_MAP.md`
 
 ```
 {{ARCH_STRUCTURE_EXAMPLE}}
 ```
 
-**Reglas:**
+**Rules:**
 - {{STRUCT_RULE_1}}
 - {{STRUCT_RULE_2}}
 - {{STRUCT_RULE_3}}
 
-### 2.2 Acoplamiento y Cohesión
+### 2.2 Coupling and Cohesion
 
-| Regla | Descripción | Anti-Patrón |
-|-------|-------------|-------------|
+| Rule | Description | Anti-Pattern |
+|------|-------------|--------------|
 | **DI** | {{DI_RULE}} | {{DI_ANTI}} |
 | **SOLID - Single Responsibility** | {{SOLID_S_RULE}} | {{SOLID_S_ANTI}} |
 | **SOLID - Open/Closed** | {{SOLID_OC_RULE}} | {{SOLID_OC_ANTI}} |
@@ -98,40 +98,40 @@ Aplicable a:
 | **SOLID - Interface Segregation** | {{SOLID_I_RULE}} | {{SOLID_I_ANTI}} |
 | **SOLID - Dependency Inversion** | {{SOLID_D_RULE}} | {{SOLID_D_ANTI}} |
 
-### 2.3 Gestión de Estado
+### 2.3 State Management
 
-**Estado Mutable:**
-- {{STATE_MUTABLE_RULE}} (Ej: Mantener local al máximo)
+**Mutable State:**
+- {{STATE_MUTABLE_RULE}} (e.g., Keep local to the maximum extent)
 
-**Estado Compartido:**
-- {{STATE_SHARED_RULE}} (Ej: Usar patterns como Redux/MobX)
+**Shared State:**
+- {{STATE_SHARED_RULE}} (e.g., Use patterns like Redux/MobX)
 
 **Async/Concurrency:**
-- {{STATE_ASYNC_RULE}} (Ej: Usar Streams/Observables)
+- {{STATE_ASYNC_RULE}} (e.g., Use Streams/Observables)
 
 ---
 
-## 3. Patrones de Seguridad (Hardening)
+## 3. Security Patterns (Hardening)
 
 ### 3.1 Input Validation
 
-**Regla:** Validar SIEMPRE en los límites (boundaries).
+**Rule:** ALWAYS validate at boundaries.
 
 ```{{TECH_CODE_LANG}}
-// ✅ GOOD: Validación en el boundary
+// ✅ GOOD: Validation at boundary
 {{CODE_VALIDATION_GOOD}}
 
-// ❌ BAD: Sin validación
+// ❌ BAD: Without validation
 {{CODE_VALIDATION_BAD}}
 ```
 
-**Herramientas recomendadas:**
+**Recommended tools:**
 - {{VALIDATION_TOOL_1}}
 - {{VALIDATION_TOOL_2}}
 
 ### 3.2 Secrets Management
 
-**Regla:** {{SECRETS_RULE}} (Ej: Nunca en código fuente, siempre desde env vars)
+**Rule:** {{SECRETS_RULE}} (e.g., Never in source code, always from env vars)
 
 ```{{TECH_CODE_LANG}}
 // ✅ GOOD
@@ -141,19 +141,19 @@ Aplicable a:
 {{CODE_SECRETS_BAD}}
 ```
 
-**Herramientas:**
+**Tools:**
 - {{SECRETS_TOOL_1}}
 - {{SECRETS_TOOL_2}}
 
-### 3.3 Autenticación y Autorización
+### 3.3 Authentication and Authorization
 
-**Patrón:** {{AUTH_PATTERN}} (Ej: JWT + Roles)
+**Pattern:** {{AUTH_PATTERN}} (e.g., JWT + Roles)
 
-**Implementación:** {{AUTH_IMPLEMENTATION}}
+**Implementation:** {{AUTH_IMPLEMENTATION}}
 
 ### 3.4 SQL Injection / NoSQL Injection
 
-**Regla:** Siempre usar {{INJECTION_PREVENTION}} (Ej: Prepared Statements / Parameterized Queries)
+**Rule:** Always use {{INJECTION_PREVENTION}} (e.g., Prepared Statements / Parameterized Queries)
 
 ```{{TECH_CODE_LANG}}
 // ✅ GOOD: Parameterized
@@ -173,11 +173,11 @@ Aplicable a:
 
 ## 4. Testing & Quality
 
-### 4.1 Cobertura de Tests
+### 4.1 Test Coverage
 
-**Objetivo:** {{TEST_COVERAGE_TARGET}}% (Ej: 80% mínimo)
+**Target:** {{TEST_COVERAGE_TARGET}}% (e.g., 80% minimum)
 
-**Pirámide de Tests:**
+**Test Pyramid:**
 
 ```
         /\
@@ -191,44 +191,44 @@ Aplicable a:
 /______________\
 ```
 
-### 4.2 Estructura de Tests
+### 4.2 Test Structure
 
-**Naming:** {{TEST_NAMING}} (Ej: `test_{{function_name}}_{{scenario}}_{{expected}}`)
+**Naming:** {{TEST_NAMING}} (e.g., `test_{{function_name}}_{{scenario}}_{{expected}}`)
 
-**Estructura AAA:**
+**AAA Structure:**
 
 ```{{TECH_CODE_LANG}}
 // Arrange: Setup
 {{CODE_TEST_ARRANGE}}
 
-// Act: Ejecutar
+// Act: Execute
 {{CODE_TEST_ACT}}
 
-// Assert: Verificar
+// Assert: Verify
 {{CODE_TEST_ASSERT}}
 ```
 
 ### 4.3 Mocking & Stubbing
 
-**Librería:** {{MOCK_LIBRARY}}
+**Library:** {{MOCK_LIBRARY}}
 
-**Regla:** {{MOCK_RULE}}
+**Rule:** {{MOCK_RULE}}
 
 ---
 
 ## 5. Performance Rules
 
-### 5.1 Optimización de Recursos
+### 5.1 Resource Optimization
 
-| Recurso | Límite | Acción |
-|---------|--------|--------|
-| **Memoria** | {{MEM_LIMIT}} | {{MEM_ACTION}} |
+| Resource | Limit | Action |
+|----------|-------|--------|
+| **Memory** | {{MEM_LIMIT}} | {{MEM_ACTION}} |
 | **CPU** | {{CPU_LIMIT}} | {{CPU_ACTION}} |
-| **Latencia** | {{LATENCY_LIMIT}} | {{LATENCY_ACTION}} |
+| **Latency** | {{LATENCY_LIMIT}} | {{LATENCY_ACTION}} |
 
 ### 5.2 Logging
 
-**Nivel recomendado:** {{LOG_LEVEL}} (Producción)
+**Recommended level:** {{LOG_LEVEL}} (Production)
 
 ```{{TECH_CODE_LANG}}
 // ✅ GOOD: Structured logging
@@ -240,25 +240,25 @@ Aplicable a:
 
 ### 5.3 Caching
 
-**Estrategia:** {{CACHING_STRATEGY}} (Ej: Cache-Aside)
+**Strategy:** {{CACHING_STRATEGY}} (e.g., Cache-Aside)
 
-**TTL:** {{CACHING_TTL}} (Ej: 1 hora para datos públicos)
+**TTL:** {{CACHING_TTL}} (e.g., 1 hour for public data)
 
 ---
 
 ## 6. Linting & Formatting
 
-### 6.1 Herramientas Obligatorias
+### 6.1 Mandatory Tools
 
-| Herramienta | Versión | Propósito |
-|-----------|---------|----------|
+| Tool | Version | Purpose |
+|------|---------|---------|
 | {{LINTER_NAME}} | {{LINTER_VERSION}} | {{LINTER_PURPOSE}} |
 | {{FORMATTER_NAME}} | {{FORMATTER_VERSION}} | {{FORMATTER_PURPOSE}} |
 | {{TYPE_CHECKER}} | {{TYPE_VERSION}} | {{TYPE_PURPOSE}} |
 
-### 6.2 Configuración Base
+### 6.2 Base Configuration
 
-**Archivo:** `{{CONFIG_FILE}}` (Ej: `.eslintrc.json`, `pyproject.toml`)
+**File:** `{{CONFIG_FILE}}` (e.g., `.eslintrc.json`, `pyproject.toml`)
 
 ```{{CONFIG_LANG}}
 {{CONFIG_TEMPLATE}}
@@ -266,26 +266,26 @@ Aplicable a:
 
 ### 6.3 Pre-commit Hooks
 
-**Herramienta:** {{PRECOMMIT_TOOL}} (Ej: husky, pre-commit)
+**Tool:** {{PRECOMMIT_TOOL}} (e.g., husky, pre-commit)
 
-**Hooks obligatorios:**
+**Mandatory hooks:**
 1. Linting check
 2. Formatting check
-3. Type checking (si aplica)
-4. Tests (mínimo unit tests)
+3. Type checking (if applicable)
+4. Tests (minimum unit tests)
 
 ---
 
 ## 7. Enforcement
 
-### Responsabilidades
+### Responsibilities
 
-| Rol | Responsabilidad |
-|-----|-----------------|
-| **Developer** | Seguir reglas en desarrollo local |
-| **CI/CD** | Validar reglas en cada PR |
-| **Code Reviewer** | Verificar cumplimiento en review |
-| **Tech Lead** | Actualizar reglas cuando sea necesario |
+| Role | Responsibility |
+|------|----------------|
+| **Developer** | Follow rules in local development |
+| **CI/CD** | Validate rules on every PR |
+| **Code Reviewer** | Verify compliance in review |
+| **Tech Lead** | Update rules when necessary |
 
 ### CI/CD Validation
 
@@ -305,31 +305,31 @@ jobs:
         run: {{TYPE_COMMAND}}
 ```
 
-### Violaciones y Sanciones
+### Violations and Sanctions
 
-| Violación | Acción |
+| Violation | Action |
 |-----------|--------|
-| **Linting failed** | PR bloqueado |
-| **Cobertura < {{TEST_COVERAGE_TARGET}}%** | PR bloqueado |
-| **Tests fallados** | PR bloqueado |
-| **Security issues** | Requerida remediación |
+| **Linting failed** | PR blocked |
+| **Coverage < {{TEST_COVERAGE_TARGET}}%** | PR blocked |
+| **Failed tests** | PR blocked |
+| **Security issues** | Remediation required |
 
 ---
 
-## 📋 Checklist para Desarrolladores
+## 📋 Developer Checklist
 
-Antes de commitear:
+Before committing:
 
-- [ ] Código sigue convenciones de naming
-- [ ] Linter pasa sin warnings
-- [ ] Formatter aplicado
-- [ ] Tests pasan (>{{TEST_COVERAGE_TARGET}}% coverage)
-- [ ] Type checking pasa (si aplica)
+- [ ] Code follows naming conventions
+- [ ] Linter passes without warnings
+- [ ] Formatter applied
+- [ ] Tests pass (>{{TEST_COVERAGE_TARGET}}% coverage)
+- [ ] Type checking passes (if applicable)
 - [ ] No hardcoded secrets
-- [ ] No archivos temporales commiteados
-- [ ] Commit message sigue Conventional Commits
+- [ ] No temporary files committed
+- [ ] Commit message follows Conventional Commits
 
 ---
 
-**Última Actualización:** {{UPDATE_DATE}}
-**Status:** ✅ Activo y Reforzado
+**Last Updated:** {{UPDATE_DATE}}
+**Status:** ✅ Active and Enforced

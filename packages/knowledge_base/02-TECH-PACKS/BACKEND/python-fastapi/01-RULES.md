@@ -2,17 +2,17 @@
 
 > **Framework:** FastAPI 0.100.0+
 > **Python:** 3.12.3
-> **Objetivo:** Asegurar código limpio, seguro y mantenible en SoftArchitect AI
+> **Goal:** Asegurar código limpio, seguro y mantenible en SoftArchitect AI
 
 Reglas estáticas de calidad para proyectos Python en SoftArchitect. **Estas son obligatorias, no opcionales.**
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [1. Convenciones de Naming (PEP 8 Extendido)](#1-convenciones-de-naming-pep-8-extendido)
 - [2. Principios Arquitectónicos](#2-principios-arquitectónicos)
-- [3. Patrones de Seguridad (Hardening)](#3-patrones-de-seguridad-hardening)
+- [3. Patterns de Security (Hardening)](#3-patrones-de-seguridad-hardening)
 - [4. Linting & Formatting](#4-linting--formatting)
 - [5. Developer Checklist](#5-developer-checklist)
 
@@ -33,7 +33,7 @@ Reglas estáticas de calidad para proyectos Python en SoftArchitect. **Estas son
 | **Excepciones** | `PascalCase` (suffix `Error`) | `UserNotFoundError` | Siempre heredan de `Exception`. |
 | **Database Columns** | `snake_case` | `created_at`, `user_id` | Coherente con tablas SQL. |
 
-### Ejemplos Expandidos
+### Examples Expandidos
 
 ```python
 # ✅ GOOD: Naming correcto
@@ -60,7 +60,7 @@ class userCreated(BaseModel):  # Inconsistencia: debe ser UserCreateRequest
 
 ## 2. Principios Arquitectónicos
 
-### Regla #1: Type Hints Obligatorios
+### Regla #1: Type Hints Mandatorys
 
 **Definición:** Toda función, clase y variable debe tener Type Hints explícitos.
 
@@ -136,11 +136,11 @@ async def create_user_endpoint(
 
 ---
 
-## 3. Patrones de Seguridad (Hardening)
+## 3. Patterns de Security (Hardening)
 
 ### 🔒 Patrón #1: Validación Pydantic V2
 
-**Obligatorio:** Validar TODOS los inputs vía Pydantic Models.
+**Mandatory:** Validar TODOS los inputs vía Pydantic Models.
 
 ```python
 # ✅ GOOD: Validación con Pydantic
@@ -166,7 +166,7 @@ async def create_user(request: Request):
 
 ### 🔒 Patrón #2: SQL Injection Prevention
 
-**Obligatorio:** Usar siempre ORM o parámetros. NUNCA f-strings.
+**Mandatory:** Usar siempre ORM o parámetros. NUNCA f-strings.
 
 ```python
 # ✅ GOOD: SQLAlchemy ORM
@@ -189,7 +189,7 @@ user = db.session.execute("SELECT * FROM users WHERE email = '" + email + "'")
 
 ### 🔒 Patrón #3: Secrets Management
 
-**Obligatorio:** Usar `pydantic-settings` + `.env` (NUNCA en código).
+**Mandatory:** Usar `pydantic-settings` + `.env` (NUNCA en código).
 
 ```python
 # core/config.py
@@ -221,7 +221,7 @@ password = os.getenv("DB_PASSWORD")  # Poco mantenible, difícil trackear
 
 ### 🔒 Patrón #4: Logging (NUNCA print())
 
-**Obligatorio:** Usar `logging` estructurado. `print()` está **PROHIBIDO** en src/.
+**Mandatory:** Usar `logging` estructurado. `print()` está **PROHIBIDO** en src/.
 
 ```python
 # core/logger.py
@@ -253,7 +253,7 @@ logger.info("User " + str(user_id) + " created")  # Difícil de parsear
 
 ## 4. Linting & Formatting
 
-### Tool Chain (Obligatorio)
+### Tool Chain (Mandatory)
 
 | Tool | Propósito | Config |
 |:---|:---|:---|

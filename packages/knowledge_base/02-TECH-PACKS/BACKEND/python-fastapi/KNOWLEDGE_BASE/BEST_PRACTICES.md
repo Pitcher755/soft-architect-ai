@@ -1,20 +1,20 @@
 # 🌟 Best Practices: Python FastAPI
 
-> **Versión:** 1.0
+> **Version:** 1.0
 > **Framework:** FastAPI 0.100.0+ + Pydantic V2
-> **Objetivo:** Patrones de oro para generación automática de código
+> **Goal:** Patterns de oro para generación automática de código
 
 Snippets de referencia producción-ready. El RAG usa estos para entender cómo escribir FastAPI "The SoftArchitect Way".
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [1. Inyección de Dependencias (Dependency Injection)](#1-inyección-de-dependencias-dependency-injection)
 - [2. Validación de Datos (Pydantic V2)](#2-validación-de-datos-pydantic-v2)
 - [3. Repository Pattern](#3-repository-pattern)
 - [4. Manejo de Errores Centralizado](#4-manejo-de-errores-centralizado)
-- [5. Configuración (Settings)](#5-configuración-settings)
+- [5. Configuration (Settings)](#5-configuración-settings)
 - [6. Logging Estructurado](#6-logging-estructurado)
 - [7. Testing (AAA Pattern)](#7-testing-aaa-pattern)
 - [8. Async/Await Patterns](#8-asyncawait-patterns)
@@ -374,7 +374,7 @@ async def get_user(
 
 ---
 
-## 5. Configuración (Settings)
+## 5. Configuration (Settings)
 
 ### ✅ Golden Standard
 
@@ -659,7 +659,7 @@ Before pushing code:
 
 ---
 
-**Versión:** 1.0
+**Version:** 1.0
 **Framework:** FastAPI + Pydantic V2 + SQLAlchemy 2.0
 **Última Actualización:** 30/01/2026
 **Validado Por:** ArchitectZero (Dogfooding ✨)

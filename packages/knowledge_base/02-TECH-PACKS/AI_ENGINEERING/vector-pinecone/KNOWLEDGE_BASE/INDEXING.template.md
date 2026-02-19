@@ -8,7 +8,7 @@ Guía para maximizar rendimiento, escalabilidad y seguridad en Pinecone.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Namespaces: Aislamiento Lógico](#namespaces-aislamiento-lógico)
 2. [Metadatos: Filtrado Avanzado](#metadatos-filtrado-avanzado)
@@ -436,7 +436,7 @@ pc.create_index(
 index = pc.Index("softarchitect-knowledge")
 ```
 
-### Configuración Recomendada
+### Configuration Recomendada
 
 | Parámetro | Valor | Razón |
 |:---|:---|:---|
@@ -545,6 +545,6 @@ batch_upsert(index, vectors, batch_size=100)
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ PRODUCTION-READY STRATEGY
 **Responsable:** ArchitectZero AI Agent

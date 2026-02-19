@@ -1,15 +1,15 @@
 # 🧠 ChromaDB Collection Design
 
-> **Fecha:** 30/01/2026
-> **Estado:** ✅ Desplegado
-> **Objetivo:** Diseño de base de datos vectorial para sistemas RAG escalables
+> **Date:** 30/01/2026
+> **Status:** ✅ Desplegado
+> **Goal:** Diseño de base de datos vectorial para sistemas RAG escalables
 > **Audiencia:** Backend Engineers, ML/AI Specialists, DevOps
 
 Estrategia de organización y consulta de embeddings en ChromaDB para SoftArchitect AI. Es la **memoria vectorial** del sistema RAG.
 
 ---
 
-## 📋 Tabla de Contenidos
+## 📋 Table of Contents
 
 1. [Estructura de Datos](#estructura-de-datos)
 2. [Estrategia de Metadatos](#estrategia-de-metadatos)
@@ -211,7 +211,7 @@ collection = client.get_or_create_collection(
 )
 ```
 
-### Configuración de Colección (SoftArchitect)
+### Configuration de Colección (SoftArchitect)
 
 ```python
 from chromadb import Client, Settings
@@ -472,7 +472,7 @@ services:
     container_name: softarchitect-chroma
 
     environment:
-      # Configuración de persistencia
+      # Configuration de persistencia
       CHROMA_DB_IMPL: duckdb
       PERSIST_DIRECTORY: /chroma/chroma
       ANONYMIZED_TELEMETRY: "False"
@@ -690,7 +690,7 @@ echo "ChromaDB Producción:
 
 ---
 
-## Conclusión
+## Conclusion
 
 ChromaDB es la **memoria vectorial compartida** de SoftArchitect:
 

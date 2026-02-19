@@ -1,21 +1,21 @@
-# 🛡️ NestJS Guards & Pipes: Seguridad y Validación Declarativa
+# 🛡️ NestJS Guards & Pipes: Security y Validación Declarativa
 
 > **Patrón:** Aspect-Oriented Programming (AOP)
-> **Paradigma:** Decoradores para Seguridad & Validación
+> **Paradigma:** Decoradores para Security & Validación
 > **Nivel:** Enterprise Security
 
 Guards y Pipes son mecanismos de NestJS para aplicar seguridad y validación de forma declarativa sin contaminar la lógica de negocio.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Pipes: Validación y Transformación](#pipes-validación-y-transformación)
 2. [Guards: Autenticación y Autorización](#guards-autenticación-y-autorización)
 3. [Exception Filters: Error Handling](#exception-filters-error-handling)
 4. [Interceptors: Response Transformation](#interceptors-response-transformation)
 5. [Orden de Ejecución](#orden-de-ejecución)
-6. [Patrones de Seguridad](#patrones-de-seguridad)
+6. [Patterns de Security](#patrones-de-seguridad)
 
 ---
 
@@ -28,7 +28,7 @@ Un **Pipe** es middleware que:
 2. **Transforma** los datos si es necesario
 3. **Rechaza** si la validación falla
 
-### ValidationPipe Global (Obligatorio)
+### ValidationPipe Global (Mandatory)
 
 ```typescript
 // src/main.ts
@@ -475,7 +475,7 @@ export class UsersController {
 
 ---
 
-## Patrones de Seguridad
+## Patterns de Security
 
 ### ✅ 1. JWT + Roles
 
@@ -527,7 +527,7 @@ async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
 
 ---
 
-## Checklist: Seguridad Bien Implementada
+## Checklist: Security Bien Implementada
 
 ```bash
 # ✅ 1. Validación
@@ -573,6 +573,6 @@ async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ ENTERPRISE SECURITY PATTERNS
 **Responsable:** ArchitectZero AI Agent

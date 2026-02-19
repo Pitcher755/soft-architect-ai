@@ -2,13 +2,13 @@
 
 > **Paradigma:** Plugin-based Orchestration
 > **Concepto:** Semantic Functions (Prompts) + Native Functions (Code)
-> **Versión:** SK 1.0.0+
+> **Version:** SK 1.0.0+
 
 Un **Plugin** es un grupo de funciones (semánticas y/o nativas) que resuelven un dominio específico.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Semantic Functions (Prompts como Código)](#semantic-functions-prompts-como-código)
 2. [Native Functions (Código Real)](#native-functions-código-real)
@@ -27,7 +27,7 @@ Las funciones semánticas son **prompts templados** almacenados en archivos `.sk
 ```
 plugins/WriterPlugin/Summarize/
 ├── skprompt.txt       # El prompt (plantilla)
-└── config.json        # Configuración (temp, tokens, etc)
+└── config.json        # Configuration (temp, tokens, etc)
 
 ```
 
@@ -49,7 +49,7 @@ Resumen:
 
 ### Archivo: `config.json`
 
-Configuración del modelo para esta función.
+Configuration del modelo para esta función.
 
 ```json
 {
@@ -464,6 +464,6 @@ class MegaPlugin:
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ PRODUCTION-READY PATTERNS
 **Responsable:** ArchitectZero AI Agent

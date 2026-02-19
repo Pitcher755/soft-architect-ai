@@ -4,12 +4,12 @@
 > **Tipo:** PaaS (Platform as a Service)
 > **Protocolo:** HTTP/HTTPS
 > **Escalado:** Automático opcional
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [¿Por Qué App Service?](#por-qué-app-service)
 2. [App Service Plans](#app-service-plans)
@@ -196,7 +196,7 @@ Con Slots (Moderno - sin downtime):
   = Cero downtime, rollback instantáneo
 ```
 
-### Configuración de Slots
+### Configuration de Slots
 
 ```yaml
 # App Service con 2 slots
