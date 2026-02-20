@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,47 +22,20 @@ class ProjectsSidebar extends ConsumerStatefulWidget {
 }
 
 class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
-  /// Show dialog to open a project from directory path
+  /// Show dialog to open a project from directory path using file picker
   Future<void> _showOpenProjectDialog() async {
-    final pathController = TextEditingController();
-
-    final result = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('📁 Abrir Proyecto'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Ingresa la ruta del directorio del proyecto:'),
-            const SizedBox(height: 12),
-            TextField(
-              controller: pathController,
-              decoration: InputDecoration(
-                hintText: '/home/user/projects/my-project',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                prefixIcon: const Icon(Icons.folder),
-              ),
-              style: const TextStyle(fontFamily: 'Courier'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, pathController.text),
-            child: const Text('Abrir'),
-          ),
-        ],
-      ),
+    // Use file picker to select directory
+    final result = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: '📁 Selecciona el directorio del proyecto',
+      lockParentWindow: true,
     );
 
-    if (result != null && result.isNotEmpty) {
+    // Handle cancellation (result will be null if user cancels)
+    if (result == null) {
+      return;
+    }
+
+    if (result.isNotEmpty) {
       final projectDir = Directory(result);
 
       if (!projectDir.existsSync()) {
@@ -102,6 +76,35 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
           ).toString(),
         );
       }
+    }
+  }
+
+  /// Exit application safely
+  Future<void> _exitApplication() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('⚠️ Salir de la Aplicación'),
+        content: const Text(
+          '¿Estás seguro de que deseas cerrar SoftArchitect AI?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
+            child: const Text('Salir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      // Close the application safely
+      exit(0);
     }
   }
 
@@ -175,6 +178,8 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
                   context.go('/settings');
                 } else if (value == 'close') {
                   _closeCurrentProject();
+                } else if (value == 'exit') {
+                  _exitApplication();
                 }
               },
               itemBuilder: (context) => [
@@ -214,6 +219,25 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
                       SizedBox(width: 12),
                       Text(
                         'Cerrar Proyecto',
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem<String>(
+                  value: 'exit',
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.exit_to_app_rounded,
+                        size: 18,
+                        color: Colors.redAccent,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        'Salir',
                         style: TextStyle(color: Colors.redAccent),
                       ),
                     ],
