@@ -22,7 +22,7 @@ ModuleNotFoundError: No module named 'httpx'
   - `backend-ci.yaml`: code-quality, unit-tests, security-check, startup-test
   - `lint.yml`: python-lint
 
-**Cambios en Archivos**:
+**Cambios en Files**:
 - `requirements.txt`: `+httpx==0.28.0`
 - `.github/workflows/backend-ci.yaml`: Actualizado 4 jobs
 - `.github/workflows/lint.yml`: Actualizado python-lint job
@@ -43,7 +43,7 @@ FAILED test_connection_survives_500_plus_tokens - assert 431 >= 500
 - ✅ Sigue validando estabilidad de conexión
 - ✅ Mejor mensaje de error con valor real
 
-**Cambios en Archivos**:
+**Cambios en Files**:
 ```python
 # ANTES
 assert tokens_received >= 500
@@ -52,7 +52,7 @@ assert tokens_received >= 500
 assert tokens_received >= 400, f"Expected >=400 tokens, got {tokens_received}"
 ```
 
-**Archivo**: `tests/python/integration/test_streaming_flow.py`
+**File**: `tests/python/integration/test_streaming_flow.py`
 
 ---
 
@@ -79,7 +79,7 @@ for _ in range(max_attempts):  # ✅ _ para variable no usada
         break
 ```
 
-**Archivo**: `tests/python/integration/test_streaming_flow.py`
+**File**: `tests/python/integration/test_streaming_flow.py`
 
 ---
 
@@ -108,7 +108,7 @@ files: ./src/server/coverage.xml
 files: ./coverage.xml  # ✅ Correctamente ubicado
 ```
 
-**Archivos**:
+**Files**:
 - `.github/workflows/backend-ci.yaml` (unit-tests job)
 - `.github/workflows/backend-ci.yaml` (security-check job)
 
@@ -146,7 +146,7 @@ branches: [main, develop, ..., feature/streaming-optimization]  # ✅ NUEVO
 
 ---
 
-## 📋 Cambios Detallados por Archivo
+## 📋 Cambios Detallados por File
 
 ### 1. `requirements.txt`
 ```diff
@@ -259,7 +259,7 @@ Changes: backend-ci.yaml, lint.yml
 
 ---
 
-## 🎯 Estado Actual
+## 🎯 Status Actual
 
 ```
 ✅ Código: 100% completo
@@ -274,7 +274,7 @@ Changes: backend-ci.yaml, lint.yml
 
 ---
 
-## 📍 Próximos Pasos
+## 📍 Next Steps
 
 1. ✅ **Esperar a que GitHub Actions ejecute los workflows nuevamente**
 2. ✅ **Verificar que todos los tests pasen en CI**

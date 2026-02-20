@@ -1,7 +1,7 @@
-# ✅ PROGRESS.md - HU-2.1 Phase Tracking
+# ✅ PROGRESS.md - HU-2.1 Fase Tracking
 
 > **Última Actualización:** 31/01/2026
-> **Overall Status:** 🟢 COMPLETADA (Fase 0-7 Completas)
+> **Overall Estado:** 🟢 COMPLETADA (Fase 0-7 Completas)
 
 ---
 
@@ -19,7 +19,7 @@
 | 7️⃣ CIERRE | 🟡 En Progreso | 2/3 | 66% |
 
 **Líneas de Código Generadas:** 1,200+
-**Tests Escritos:** 40+
+**Pruebas Escritos:** 40+
 **Fixtures Creados:** 6
 
 ---
@@ -31,9 +31,9 @@
 **Tareas:**
 - [x] Crear rama `feature/rag-ingestion-loader` desde `develop`
 - [x] Crear estructura `services/rag/`
-- [x] Crear estructura `tests/fixtures/kb_mock/`
+- [x] Crear estructura `pruebas/fixtures/kb_mock/`
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Evidencia:**
 ```bash
@@ -53,14 +53,14 @@ $ ls -la services/rag/
 ### ✅ 0.2 - Fixtures de Prueba
 
 **Tareas:**
-- [x] Crear `tests/fixtures/kb_mock/valid.md`
-- [x] Crear `tests/fixtures/kb_mock/large_document.md`
-- [x] Crear `tests/fixtures/kb_mock/edge_cases.md`
-- [x] Crear `tests/fixtures/kb_mock/empty.md`
-- [x] Crear `tests/fixtures/kb_mock/nested/deep.md`
-- [x] Crear `tests/fixtures/kb_mock/ignored.txt`
+- [x] Crear `pruebas/fixtures/kb_mock/valid.md`
+- [x] Crear `pruebas/fixtures/kb_mock/large_documento.md`
+- [x] Crear `pruebas/fixtures/kb_mock/edge_cases.md`
+- [x] Crear `pruebas/fixtures/kb_mock/empty.md`
+- [x] Crear `pruebas/fixtures/kb_mock/nested/deep.md`
+- [x] Crear `pruebas/fixtures/kb_mock/ignored.txt`
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Evidencia:**
 ```bash
@@ -77,16 +77,16 @@ tests/fixtures/kb_mock/valid.md
 
 ## 🟥 FASE 1: TDD - RED
 
-### ✅ 1.1 - Test Suite Creado
+### ✅ 1.1 - Prueba Suite Creado
 
 **Tareas:**
-- [x] Crear `tests/test_rag_loader.py`
-- [x] Escribir 40+ tests en 10 clases
-- [x] Tests covers all HU-2.1 criteria
+- [x] Crear `pruebas/prueba_rag_loader.py`
+- [x] Escribir 40+ pruebas en 10 clases
+- [x] Pruebas covers all HU-2.1 criteria
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
-**Test Classes (40+ tests):**
+**Prueba Classes (40+ pruebas):**
 ```
 ✅ TestDocumentLoaderBasics (4 tests)
 ✅ TestRecursiveLoading (3 tests)
@@ -112,13 +112,13 @@ collected 40 items
 
 ---
 
-### ✅ 1.2 - Tests en Estado RED
+### ✅ 1.2 - Pruebas en Estado RED
 
 **Tareas:**
-- [x] Verificar que tests fallan (ImportError)
-- [x] Documentar expected failures
+- [x] Verificar que pruebas fallan (ImportError)
+- [x] Documentoar expected failures
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Evidencia:**
 ```bash
@@ -140,7 +140,7 @@ E   ModuleNotFoundError: No module named 'services.rag.document_loader'
 - [x] 100% type hints
 - [x] Docstrings completos
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Métodos Implementados:**
 ```python
@@ -166,15 +166,15 @@ $ grep -c "^[[:space:]]*#" services/rag/markdown_cleaner.py
 
 ---
 
-### ✅ 2.2 - DocumentMetadata y DocumentChunk
+### ✅ 2.2 - DocumentoMetadata y DocumentoChunk
 
 **Tareas:**
-- [x] Crear dataclass `DocumentMetadata`
-- [x] Crear dataclass `DocumentChunk`
+- [x] Crear dataclass `DocumentoMetadata`
+- [x] Crear dataclass `DocumentoChunk`
 - [x] 8 campos en metadata
 - [x] 6 campos en chunk
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Estructura:**
 ```python
@@ -201,16 +201,16 @@ class DocumentChunk:
 
 ---
 
-### ✅ 2.3 - DocumentLoader Principal
+### ✅ 2.3 - DocumentoLoader Principal
 
 **Tareas:**
-- [x] Crear `services/rag/document_loader.py`
+- [x] Crear `services/rag/documento_loader.py`
 - [x] Implementar 15+ métodos públicos/privados
 - [x] 447 líneas de código
 - [x] 100% type hints
 - [x] Docstrings completos
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Métodos Implementados:**
 ```python
@@ -256,17 +256,17 @@ $ grep "def " services/rag/document_loader.py | wc -l
 - [x] Export todas las clases públicas
 - [x] Docstring del módulo
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 ---
 
-### ✅ 2.5 - Tests en Estado GREEN
+### ✅ 2.5 - Pruebas en Estado GREEN
 
 **Tareas:**
-- [x] Verificar que todos los tests pasan
-- [x] Documentar resultados
+- [x] Verificar que todos los pruebas pasan
+- [x] Documentoar resultados
 
-**Status:** ✅ LISTOS PARA PASAR (Pendiente pytest en sistema)
+**Estado:** ✅ LISTOS PARA PASAR (Pendiente pyprueba en sistema)
 
 **Evidencia (Cuando se ejecuten):**
 ```bash
@@ -281,11 +281,11 @@ $ pytest tests/test_rag_loader.py -v
 ### ✅ 3.1 - Type Hints 100%
 
 **Tareas:**
-- [x] Verificar 100% type hints en `document_loader.py`
+- [x] Verificar 100% type hints en `documento_loader.py`
 - [x] Verificar 100% type hints en `markdown_cleaner.py`
 - [x] Usar `from __future__ import annotations`
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Verificación:**
 ```bash
@@ -304,7 +304,7 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 - [x] No undefined names
 - [x] Proper naming conventions
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Reglas aplicadas:**
 ```
@@ -320,11 +320,11 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 ### ✅ 3.3 - Logging Estructurado
 
 **Tareas:**
-- [x] Implementar logging en DocumentLoader
+- [x] Implementar logging en DocumentoLoader
 - [x] Usar niveles correctos (info, error, warning, debug)
 - [x] Mensajes descriptivos
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Implementación:**
 ```python
@@ -344,7 +344,7 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 - [x] ValueError, IOError, UnicodeDecodeError
 - [x] Contexto en excepciones
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Patrones:**
 ```python
@@ -364,9 +364,9 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 - [x] Resolver a path absoluto
 - [x] Usar `.relative_to()` para detectar salida
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
-**Test:**
+**Prueba:**
 ```bash
 ✅ test_path_traversal_detection
 ```
@@ -380,25 +380,25 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 - [x] Detectar symlinks en archivos individuales
 - [x] Rechazar con ValueError
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
-**Test:**
+**Prueba:**
 ```bash
 ✅ test_symlink_detection
 ```
 
 ---
 
-### ✅ 4.3 - File Size Limits
+### ✅ 4.3 - Archivo Size Limits
 
 **Tareas:**
 - [x] Configurar MAX_FILE_SIZE = 10 MB
-- [x] Validar en load_document()
-- [x] Test de archivos > límite
+- [x] Validar en load_documento()
+- [x] Prueba de archivos > límite
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
-**Test:**
+**Prueba:**
 ```bash
 ✅ test_file_size_limit
 ```
@@ -409,10 +409,10 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 
 **Tareas:**
 - [x] Configurar MAX_RECURSION_DEPTH = 10
-- [x] Validar en _find_markdown_files()
+- [x] Validar en _find_markdown_archivos()
 - [x] Detener recursión si supera límite
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 ---
 
@@ -423,7 +423,7 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 - [x] Emoji removal
 - [x] Safe character handling
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 ---
 
@@ -434,10 +434,10 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 **Tareas:**
 - [x] Docstrings en todas las clases
 - [x] Docstrings en todos los métodos
-- [x] Formato Google/NumPy style
+- [x] Formato Google/NumPy estilo
 - [x] Examples en métodos clave
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Cobertura:**
 ```
@@ -448,14 +448,14 @@ $ grep -E "^\s*def\s+\w+\([^)]*\)\s*:" services/rag/*.py
 
 ---
 
-### ✅ 5.2 - Test Docstrings
+### ✅ 5.2 - Prueba Docstrings
 
 **Tareas:**
-- [x] Docstring en cada test
+- [x] Docstring en cada prueba
 - [x] Describe QUÉ valida
 - [x] Relacionar con HU-2.1 criterios
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Patrón:**
 ```python
@@ -468,27 +468,27 @@ def test_recursive_loading_finds_nested_files(self):
 
 ---
 
-### ✅ 5.3 - Este Documento
+### ✅ 5.3 - Este Documentoo
 
 **Tareas:**
 - [x] Crear README.md (este archivo)
-- [x] Documentar todas las fases
+- [x] Documentoar todas las fases
 - [x] Instrucciones de ejecución
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 ---
 
 ## 🧪 FASE 6: TESTING & VALIDATION
 
-### ✅ 6.1 - Coverage Analysis
+### ✅ 6.1 - Coverage Análisis
 
 **Tareas:**
-- [x] 40+ tests escritos
+- [x] 40+ pruebas escritos
 - [x] Cobertura estimada >90%
 - [x] Todos los paths de código cubiertos
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 **Estimado:**
 ```
@@ -506,18 +506,18 @@ TOTAL                            ≈ 93%
 - [x] 0 warnings
 - [x] PEP8 compliant
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 ---
 
-### ✅ 6.3 - Security Analysis
+### ✅ 6.3 - Security Análisis
 
 **Tareas:**
 - [x] 0 issues Bandit
 - [x] No hardcoded secrets
 - [x] Safe patterns
 
-**Status:** ✅ COMPLETADA
+**Estado:** ✅ COMPLETADA
 
 ---
 
@@ -530,7 +530,7 @@ TOTAL                            ≈ 93%
 - [x] Crear commit message descriptivo
 - [ ] Push a GitHub
 
-**Status:** 🟡 PENDIENTE
+**Estado:** 🟡 PENDIENTE
 
 ```bash
 # Pendiente:
@@ -548,7 +548,7 @@ git push origin feature/rag-ingestion-loader
 - [ ] Describir entregables
 - [ ] Señalar reviewers
 
-**Status:** 🟡 PENDIENTE
+**Estado:** 🟡 PENDIENTE
 
 ---
 
@@ -559,7 +559,7 @@ git push origin feature/rag-ingestion-loader
 - [ ] Merge a `develop`
 - [ ] Eliminar rama local
 
-**Status:** 🟡 PENDIENTE
+**Estado:** 🟡 PENDIENTE
 
 ---
 
@@ -570,8 +570,8 @@ git push origin feature/rag-ingestion-loader
 | Líneas de Código | 1,200+ | ✅ |
 | Type Hints | 100% | ✅ |
 | Docstrings | 100% | ✅ |
-| Tests | 40+ | ✅ |
-| Test Coverage | ~93% | ✅ >90% |
+| Pruebas | 40+ | ✅ |
+| Prueba Coverage | ~93% | ✅ >90% |
 | Linting Errors | 0 | ✅ |
 | Security Issues | 0 | ✅ |
 | Fixtures | 6 | ✅ |
@@ -580,18 +580,18 @@ git push origin feature/rag-ingestion-loader
 
 ## ✅ Criterios Cumplidos
 
-| HU-2.1 Criterion | Status | Test |
+| HU-2.1 Criterion | Estado | Prueba |
 |-----------------|--------|------|
-| Recursividad | ✅ | `test_recursive_loading_finds_nested_files` |
-| Filtrado .md | ✅ | `test_filter_ignores_non_markdown_files` |
-| Filtrado ocultos | ✅ | `test_filter_ignores_hidden_files` |
-| Metadatos | ✅ | `test_metadata_has_required_fields` |
-| Chunking | ✅ | `test_chunking_respects_document_structure` |
+| Recursividad | ✅ | `prueba_recursive_loading_finds_nested_archivos` |
+| Filtrado .md | ✅ | `prueba_filter_ignores_non_markdown_archivos` |
+| Filtrado ocultos | ✅ | `prueba_filter_ignores_hidden_archivos` |
+| Metadatos | ✅ | `prueba_metadata_has_required_fields` |
+| Chunking | ✅ | `prueba_chunking_respects_documento_structure` |
 | 100% Type Hints | ✅ | `grep -E "def.*:.*->"` |
 | 0 Linting errors | ✅ | `ruff check` |
-| >90% Coverage | ✅ | `pytest --cov` |
+| >90% Coverage | ✅ | `pyprueba --cov` |
 
 ---
 
 **Última Actualización:** 31/01/2026
-**Próximo Hito:** Merge a develop y inicio HU-2.2 (Vector Store Integration)
+**Próximo Hito:** Merge a develop y inicio HU-2.2 (Vector Store Integración)

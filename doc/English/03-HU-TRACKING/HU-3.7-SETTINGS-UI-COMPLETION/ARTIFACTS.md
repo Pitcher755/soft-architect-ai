@@ -1,8 +1,8 @@
 # HU-3.7: Artifacts Manifest
 
 > **Historia de Usuario:** Settings UI Completion & Widget Tests
-> **Fecha:** 11/02/2026
-> **Total de Archivos:** 40+ (23 new, 17 modified)
+> **Date:** 11/02/2026
+> **Total de Files:** 40+ (23 new, 17 modified)
 
 ---
 

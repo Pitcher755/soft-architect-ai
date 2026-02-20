@@ -1,17 +1,17 @@
 # HU-3.3: Widget Integration Verification
 
-> **Fecha:** 6 de febrero de 2026
-> **Estado:** ✅ **WIDGETS CONECTADOS E INTEGRADOS**
+> **Date:** 6 de febrero de 2026
+> **Status:** ✅ **WIDGETS CONECTADOS E INTEGRADOS**
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 1. [Resumen de Cambios](#resumen-de-cambios)
-2. [Estructura de Archivos](#estructura-de-archivos)
+2. [Estructura de Files](#estructura-de-files)
 3. [Navegación Implementada](#navegación-implementada)
 4. [Widgets Integrados](#widgets-integrados)
-5. [Instrucciones de Prueba](#instrucciones-de-prueba)
+5. [Instrucciones de Test](#instrucciones-de-test)
 
 ---
 
@@ -29,7 +29,7 @@ Se han conectado exitosamente los tres widgets creados en HU-3.3 a sus correspon
 
 ---
 
-## Estructura de Archivos
+## Estructura de Files
 
 ### Nueva Estructura Chat Feature
 
@@ -101,8 +101,8 @@ IconButton(
 ),
 ```
 
-**Resultado Visual:**
-- Botón de chat en la barra superior del ProjectShell
+**Result Visual:**
+- Button de chat en la barra superior del ProjectShell
 - Click abre la pantalla de chat con transición suave
 - SnackBar confirma la navegación
 
@@ -140,9 +140,9 @@ MessageBubbleWidget(
 **Ubicación:** `src/client/lib/features/chat/presentation/widgets/streaming_indicator_widget.dart`
 
 **Características:**
-- Muestra progreso de generación de documentos
+- Muestra progreso de generación de documents
 - Animación suave de barra de progreso
-- Contador de documentos (X/25)
+- Contador de documents (X/25)
 - Porcentaje en tiempo real
 
 **Integración en ChatScreen:**
@@ -170,21 +170,21 @@ if (chatState.isStreaming)
 **Ubicación:** `src/client/lib/features/chat/presentation/widgets/proposal_card_widget.dart`
 
 **Características:**
-- Muestra propuestas de documentos generadas
+- Muestra propuestas de documents generadas
 - Vista previa de contenido con scroll
 - Botones de acción: Aceptar, Rechazar, Refinar
-- Botón copiar con feedback visual
+- Button copiar con feedback visual
 
 **Integración:**
-- Preparado para integración futura
+- Ready for integración futura
 - Parámetros requeridos: `proposal`, `onValidate`, `onRefine`, `onReject`
-- Próxima fase: Conectar con lista de propuestas del estado
+- Próxima phase: Conectar con lista de propuestas del status
 
 ---
 
-## Instrucciones de Prueba
+## Instrucciones de Test
 
-### ✅ Verificación Previa
+### ✅ Verification Previa
 
 ```bash
 # 1. Verificar que no hay errores
@@ -197,7 +197,7 @@ flutter pub get
 flutter pub upgrade
 ```
 
-### 🚀 Ejecutar la App
+### 🚀 Execute la App
 
 ```bash
 # En src/client/
@@ -209,34 +209,34 @@ flutter run -d linux
 # ✓ Se ve botón de Chat en la barra superior
 ```
 
-### 🧪 Pruebas Manuales
+### 🧪 Tests Manuales
 
 #### Test 1: Navegación a ChatScreen
-1. Ejecutar: `flutter run -d linux`
-2. Buscar el botón de chat (ícono de chat) en la AppBar
-3. Clickear el botón
-4. **Resultado esperado:** La pantalla cambia a ChatScreen
+1. Execute: `flutter run -d linux`
+2. Buscar el button de chat (ícono de chat) en la AppBar
+3. Clickear el button
+4. **Result esperado:** La pantalla cambia a ChatScreen
 
 #### Test 2: Elementos Visibles en ChatScreen
 1. **AppBar:** Título "SoftArchitect AI - Chat"
 2. **Empty State:** Mensaje de bienvenida cuando no hay mensajes
-3. **Input Area:** Campo de texto + botón enviar en la parte inferior
+3. **Input Area:** Campo de texto + button enviar en la parte inferior
 4. **Características:**
    - Campo deshabilitado cuando `isStreaming` es true
    - Spinner de carga en el campo cuando se procesa
 
 #### Test 3: Enviar Mensaje (Mock)
 1. Escribir un mensaje en el input
-2. Presionar el botón enviar o Enter
-3. **Resultado esperado:**
+2. Presionar el button enviar o Enter
+3. **Result esperado:**
    - El mensaje aparece como MessageBubbleWidget
    - Input se limpia
    - Mensaje alineado a la derecha (usuario)
 
 #### Test 4: Simulación de Streaming
 1. Enviar mensaje (se simula con ChatNotifier)
-2. **Resultado esperado:**
-   - Botón enviar se deshabilita
+2. **Result esperado:**
+   - Button enviar se deshabilita
    - Spinner aparece en el campo
    - StreamingIndicatorWidget se muestra (si `isStreaming` es true)
    - Respuesta del asistente aparece a la izquierda
@@ -244,11 +244,11 @@ flutter run -d linux
 #### Test 5: Volver a ProjectShell
 1. Desde ChatScreen, usar navegador atrás o el router
 2. Cambia de ruta a `/project-shell`
-3. **Resultado esperado:** Vuelve a ProjectShellScreen
+3. **Result esperado:** Vuelve a ProjectShellScreen
 
 ---
 
-## Estado de Compilación
+## Status de Compilación
 
 ```bash
 $ flutter analyze --no-fatal-infos
@@ -262,9 +262,9 @@ $ git log --oneline | head -1
 
 ---
 
-## Próximos Pasos
+## Next Steps
 
-### 📋 Próximas Mejoras (Fase 7+)
+### 📋 Próximas Mejoras (Phase 7+)
 
 1. **ProposalCardWidget Integration**
    - Conectar con lista de propuestas en ChatState
@@ -294,7 +294,7 @@ $ git log --oneline | head -1
 
 ---
 
-## Archivos Modificados
+## Files Modificados
 
 ### Creados
 - ✅ `src/client/lib/features/chat/presentation/screens/chat_screen.dart` (190 líneas)
@@ -306,7 +306,7 @@ $ git log --oneline | head -1
 ### Total
 - **Líneas agregadas:** 213
 - **Commits:** 1 (4e38ea3)
-- **Estado:** ✅ Compilable y funcional
+- **Status:** ✅ Compilable y funcional
 
 ---
 
@@ -317,9 +317,9 @@ Los widgets de presentación creados en HU-3.3 están ahora:
 - ✅ Conectados a la navegación de la app
 - ✅ Accesibles desde el ProjectShellScreen
 - ✅ Compilable sin errores
-- ✅ Listos para pruebas manuales
+- ✅ Ready for tests manuales
 
-**Próximo paso:** Ejecutar `flutter run -d linux` y verificar la interfaz visualmente.
+**Próximo paso:** Execute `flutter run -d linux` y verificar la interfaz visualmente.
 
 ---
 

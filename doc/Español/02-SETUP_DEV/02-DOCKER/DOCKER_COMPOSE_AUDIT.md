@@ -23,9 +23,9 @@
 #### **CRÍTICO (Bloquea Productividad)**
 
 1. **DOCKERFILE FALTANTE**
-   - **Problema:** El compose referencia `dockerfile: Dockerfile` pero no existe.
+   - **Problema:** El compose referencia `dockerarchivo: Dockerarchivo` pero no existe.
    - **Impacto:** `docker compose up` fallará en build.
-   - **Solución:** Crear `src/server/Dockerfile` con Python 3.12.3.
+   - **Solución:** Crear `src/server/Dockerarchivo` con Python 3.12.3.
 
 2. **ENTRYPOINT INCORRECTO**
    - **Problema:** `command: uvicorn main:app --reload`
@@ -40,7 +40,7 @@
 
 4. **PATH DE DOCKERFILE RELATIVO INCORRECTO**
    - **Problema:** `build: context: ../src/server` es sintaxis incorrecta.
-   - **Debería ser:** `build: { context: ../src/server, dockerfile: Dockerfile }`
+   - **Debería ser:** `build: { context: ../src/server, dockerarchivo: Dockerarchivo }`
    - **Impacto:** Docker puede malinterpretar la ruta.
 
 #### **IMPORTANTE (Afecta Funcionalidad)**
@@ -52,7 +52,7 @@
 
 6. **FALTA LOGGING EXPLÍCITO**
    - **Problema:** Sin configuración de logging, los logs se pierden.
-   - **Solución:** Agregar `logging:` con driver `json-file` y límite de tamaño.
+   - **Solución:** Agregar `logging:` con driver `json-archivo` y límite de tamaño.
 
 7. **CHROME MAPPING DE PUERTOS**
    - **Problema:** Mapea puerto 8000 del contenedor ChromaDB al 8001 del host (confuso).
@@ -67,7 +67,7 @@
 #### **MODERADO (Mejora de Mantenibilidad)**
 
 9. **FALTA VARIABLE DE VERSIÓN**
-   - **Problema:** Versiones hardcodeadas (`ollama/ollama:latest`).
+   - **Problema:** Versiones hardcodeadas (`ollama/ollama:laprueba`).
    - **Mejor Práctica:** Usar `.env` para permitir cambios de versión sin editar compose.
 
 10. **FALTA SERVICIO DE CONFIGURACIÓN INICIAL**
@@ -135,19 +135,19 @@ DOCUMENTACIÓN:
 
 ## 4. FUNCIONABILIDAD ACTUAL
 
-**Resultado:** 🔴 **NO FUNCIONARÍA** en estado actual.
+**Resultadoado:** 🔴 **NO FUNCIONARÍA** en estado actual.
 
 **Razones:**
-1. Falta Dockerfile (build fallará).
+1. Falta Dockerarchivo (build fallará).
 2. Comando uvicorn incorrecto (container fallará).
 3. Sin healthchecks (API intentará conectar a servicios no listos).
 
 **Pasos Necesarios:**
-1. ✅ Crear Dockerfile
+1. ✅ Crear Dockerarchivo
 2. ✅ Corregir docker-compose.yml
 3. ✅ Crear .env con variables
 4. ✅ Crear doc de setup
-5. ✅ Test local: `docker compose up --build`
+5. ✅ Prueba local: `docker compose up --build`
 
 ---
 
@@ -157,10 +157,10 @@ DOCUMENTACIÓN:
 - ✅ Todos los requisitos de AGENTS.md
 - ✅ Requisitos de seguridad y privacidad
 - ✅ Benchmarks de performance (RAM, CPU)
-- ✅ Documentación integrada
+- ✅ Documentoación integrada
 - ✅ Funcionalidad verificada
 
 **Impacto:**
 - Desarrolladores pueden hacer `docker compose up` y todo funciona.
 - Transparencia en decisiones de configuración.
-- Fácil escalar a testing y producción.
+- Fácil escalar a pruebaing y producción.

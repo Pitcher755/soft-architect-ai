@@ -40,7 +40,7 @@ docker compose up -d
 
 ```
 
-**Resultado:** Todo (Ollama, ChromaDB, Backend) se está ejecutando en el servidor. Tu portátil no está consumiendo RAM ni guardando archivos.
+**Resultadoado:** Todo (Ollama, ChromaDB, Backend) se está ejecutando en el servidor. Tu portátil no está consumiendo RAM ni guardando archivos.
 
 ---
 
@@ -82,7 +82,7 @@ Si *necesitas* compilar el `.exe` de Windows o la `.apk` de Android:
 1. Enciendes portátil.
 2. Abres VS Code -> Clic en "Connect to Host".
 3. Terminal: `docker compose up`.
-4. Terminal: `flutter run -d web-server`.
+4. Terminal: `flutter ejecutar -d web-server`.
 5. Programas tranquilamente en el sofá mientras el HomeLab suda compilando y moviendo la IA.
 
 ---
@@ -109,7 +109,7 @@ Cuando te conectas por SSH, verás que tus extensiones locales aparecen en gris 
 **Debes instalar en el remoto:**
 
 * **Flutter** (Dart-Code.flutter)
-* **Dart** (Dart-Code.dart-code)
+* **Dart** (Dart-Code.dart-código)
 * **Docker** (ms-azuretools.vscode-docker)
 * **Python** (ms-python.python)
 * *(Opcional pero recomendada)* **GitHub Copilot**
@@ -136,7 +136,7 @@ git config --global credential.helper store
 
 
 
-#### 4. Aumentar los "Vigilantes" de Archivos (File Watchers)
+#### 4. Aumentar los "Vigilantes" de Archivos (Archivo Watchers)
 
 Flutter y VS Code observan miles de archivos. El límite por defecto de Linux es bajo y puede causar errores extraños.
 
@@ -186,7 +186,7 @@ volumes:
 
 ```
 
-### 7.2. Validación de Hardware ("The Fire Test")
+### 7.2. Validación de Hardware ("The Fire Prueba")
 
 Procedimiento para verificar la capacidad de inferencia del servidor.
 
@@ -205,7 +205,7 @@ docker exec -it sa_ollama ollama pull phi3.5
 ```
 
 
-3. **Prueba de Inferencia (Smoke Test):**
+3. **Prueba de Inferencia (Smoke Prueba):**
 Ejecutar un prompt simple para verificar latencia y funcionamiento.
 ```bash
 docker exec -it sa_ollama ollama run phi3.5 "Hola, preséntate brevemente."
@@ -336,7 +336,7 @@ sa_ollama       "/bin/ollama serve"   Up
 
 ```bash
 # API debe estar disponible
-curl -s http://localhost:8000/health | jq '.status'
+curl -s http://localhost:8000/health | jq '.estado'
 
 # ChromaDB debe estar disponible
 curl -s http://localhost:8001/api/v1 | jq '.api_version'
@@ -463,7 +463,7 @@ No basta con tener Docker. Necesitas el puente entre Docker y tu tarjeta gráfic
       sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
     sudo apt-get update
     sudo apt-get install -y nvidia-container-toolkit
-    sudo nvidia-ctk runtime configure --runtime=docker
+    sudo nvidia-ctk ejecutartime configure --ejecutartime=docker
     sudo systemctl restart docker
     ```
 

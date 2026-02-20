@@ -1,10 +1,10 @@
-# 📑 ÍNDICE MAESTRO: Análisis Completo HU-3.x Project-First Refactor
+# 📑 ÍNDICE MAESTRO: Analysis Completo HU-3.x Project-First Refactor
 
-> **Fecha de Análisis:** 02/02/2026
-> **Estado:** ✅ LISTO PARA REVISIÓN
+> **Fecha de Analysis:** 02/02/2026
+> **Status:** ✅ LISTO PARA REVISIÓN
 > **Responsable:** ArchitectZero (AI Lead)
 > **Rama Propuesta:** `feature/ui-project-shell`
-> **Commit:** a486720 (documentos incorporados)
+> **Commit:** a486720 (documents incorporados)
 
 ---
 
@@ -29,7 +29,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 ### Decisión Requerida
 
 **¿Proceder con refactor Project-First?**
-- ✅ Sí (RECOMENDADO) → Crear rama + Actualizar roadmap
+- ✅ Sí (RECOMENDADO) → Create rama + Actualizar roadmap
 - ❌ No → Mantener HU-3.x actual
 - 🤔 Modificar → Especificar cambios deseados
 
@@ -48,7 +48,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 - **Veredicto:** ¿Proceder o no?
 
 **2️⃣ ANÁLISIS PROFUNDO (30 min)** → [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md)
-- Análisis comparativo (actual vs. propuesto)
+- Analysis comparativo (actual vs. propuesto)
 - Ventajas/riesgos del modelo secuencial
 - Cambios arquitectónicos (4 capas)
 - Opción A vs. Opción B (descomposición)
@@ -56,8 +56,8 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 **3️⃣ ESPECIFICACIÓN TÉCNICA (20 min)** → [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md)
 - 5 HUs detalladas (HU-3.1 a HU-3.5)
-- Para cada HU: Descripción, Criterios Aceptación, Puntos, Rama, Dependencias
-- Secuencia de implementación
+- Para cada HU: Description, Criterios Aceptación, Puntos, Rama, Dependencias
+- Secuencia de implementation
 - Matriz de dependencias
 - **Veredicto:** Specs claras para desarrollo
 
@@ -72,8 +72,8 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 **5️⃣ PLAN DE ACCIÓN (20 min)** → [HU-3_IMPLEMENTATION_PLAN.es.md](./HU-3_IMPLEMENTATION_PLAN.es.md)
 - Decisiones pre-rama (checklist)
 - Estructura de rama
-- Cambios archivo por archivo
-- Pasos de implementación (Fase 0-5)
+- Cambios file por file
+- Pasos de implementation (Phase 0-5)
 - Timeline y criterios de aceptación
 - **Veredicto:** Runbook operativo
 
@@ -87,12 +87,12 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 1. [HU-3_EXECUTIVE_SUMMARY.es.md](./HU-3_EXECUTIVE_SUMMARY.es.md) → Lee secciones:
    - Resumen de 60 segundos
    - Visualización del cambio
-   - Análisis costo-beneficio
+   - Analysis costo-beneficio
    - Próximos pasos
 
 2. [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md) → Lee secciones:
    - Resumen ejecutivo
-   - Análisis comparativo (tabla)
+   - Analysis comparativo (tabla)
 
 **Decisión:** ¿Aprobado? Comenta abajo.
 
@@ -178,7 +178,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 4. [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md) ← Completo (15 min)
 
-**Acción:** Crear test plan basado en 5 HUs.
+**Acción:** Create test plan basado en 5 HUs.
 
 ---
 
@@ -186,7 +186,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 ### De 3 HUs a 5 HUs
 
-| HU | Nombre | Cambio | Estado | Rama |
+| HU | Name | Cambio | Status | Rama |
 |----|--------|--------|--------|------|
 | **3.1** | Project Shell | Redefinida (Chat UI → Project Manager IDE) | ✅ | `feature/ui-project-shell` |
 | **3.2** | FileSystemService | Redefinida (Streaming → Backend Motor I/O) | ✅ | `feature/backend-filesystem-service` |
@@ -262,17 +262,17 @@ Usuario describe idea en chat
 
 ## ⚠️ RIESGOS Y MITIGACIONES
 
-### Riesgo 1: Complejidad del Orquestador RAG
+### Riesgo 1: Complejidad del Orqustatusr RAG
 **Severidad:** MEDIUM | **Probabilidad:** HIGH
 
 **Mitigación:**
 - Spike en Semana 1 para arquitectura RAG
-- Documentación clara de estado machine
+- Documentación clara de status machine
 - Tests de integración E2E
 
 ---
 
-### Riesgo 2: Permisos del Sistema de Archivos
+### Riesgo 2: Permisos del Sistema de Files
 **Severidad:** MEDIUM | **Probabilidad:** MEDIUM
 
 **Mitigación:**
@@ -321,7 +321,7 @@ Opción C: 🤔 MODIFICAR - Proponer cambios
 
 ### Si ✅ Opción A Aprobada:
 
-**Fase 1: Rama y Documentación (02/02 - 03/02)**
+**Phase 1: Rama y Documentación (02/02 - 03/02)**
 ```
 ├─ Crear rama: feature/ui-project-shell
 ├─ Actualizar: USER_STORIES_MASTER.es.json
@@ -329,14 +329,14 @@ Opción C: 🤔 MODIFICAR - Proponer cambios
 └─ Esperar aprobaciones
 ```
 
-**Fase 2: Integración a Develop (04/02 - 05/02)**
+**Phase 2: Integración a Develop (04/02 - 05/02)**
 ```
 ├─ Code review por Tech Lead
 ├─ Resolver comentarios
 └─ Mergear a develop
 ```
 
-**Fase 3: Sprint 3 Inicia (06/02/2026)**
+**Phase 3: Sprint 3 Inicia (06/02/2026)**
 ```
 ├─ Week 1-2:   HU-3.1 + HU-3.2 (paralelo)
 ├─ Week 2-4:   HU-3.3 (núcleo)
@@ -350,13 +350,13 @@ Opción C: 🤔 MODIFICAR - Proponer cambios
 
 ## 📎 REFERENCIAS CRUZADAS
 
-### Documentos Relacionados en Proyecto
+### Documents Relacionados en Project
 
 - [AGENTS.md](../../AGENTS.md) - Arquitectura y principios
 - [context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md](../../context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md)
 - [context/40-ROADMAP/USER_STORIES_MASTER.es.json](../../context/40-ROADMAP/USER_STORIES_MASTER.es.json)
 
-### Documentos Nuevos Creados (Esta Rama)
+### Documents Nuevos Creados (Esta Rama)
 
 ```
 doc/01-PROJECT_REPORT/
@@ -370,15 +370,15 @@ doc/01-PROJECT_REPORT/
 
 ---
 
-## 🎯 ESTADO Y DECISIÓN
+## 🎯 STATUS Y DECISIÓN
 
-**Estado Actual:** ✅ ANÁLISIS COMPLETO
+**Status Actual:** ✅ ANÁLISIS COMPLETO
 
 **Acción Requerida:** ⏳ Confirmación del Usuario
 
 **Responsable:** Pitcher755 (Usuario)
 
-**Fecha de Análisis:** 02/02/2026
+**Fecha de Analysis:** 02/02/2026
 
 **Rama Asociada:** `feature/ui-project-shell` (creada, rebasada sobre develop)
 
@@ -400,8 +400,8 @@ doc/01-PROJECT_REPORT/
    ```
 
 3. ✅ Basado en tu respuesta:
-   - Si ✅: Continuamos a Fase 1 (Rama + PR)
-   - Si ❌: Archivamos este análisis
+   - Si ✅: Continuamos a Phase 1 (Rama + PR)
+   - Si ❌: Archivamos este analysis
    - Si 🤔: Discutimos cambios
 
 ---
@@ -411,19 +411,19 @@ doc/01-PROJECT_REPORT/
 ### ✅ **PROCEDER CON OPCIÓN B (Project-First Paradigm)**
 
 **Justificación:**
-1. ✅ Alineado con visión "Local-First" del proyecto
+1. ✅ Alineado con visión "Local-First" of the project
 2. ✅ Mejor UX (control explícito del usuario)
 3. ✅ Más seguro (validación en cada paso)
 4. ✅ Más mantenible (responsabilidades claras)
 5. ✅ ROI positivo (complejidad justificada)
 
-**Timeline:** 8 semanas (vs. 6 anterior) = inversión razonable
+**Timeline:** 8 semanas (vs. 6 previous) = inversión razonable
 
-**Próximo Paso:** Tu confirmación + crear rama.
+**Próximo Paso:** Tu confirmación + create rama.
 
 ---
 
-**Documento de Referencia**
+**Document de Referencia**
 **Creado por:** ArchitectZero (AI Lead)
 **Fecha:** 02/02/2026
-**Estado:** ✅ LISTO PARA REVISIÓN Y DECISIÓN
+**Status:** ✅ LISTO PARA REVISIÓN Y DECISIÓN

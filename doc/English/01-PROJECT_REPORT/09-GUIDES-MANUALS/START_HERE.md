@@ -1,4 +1,4 @@
-# 🚀 START HERE - Corrección del Sistema Híbrido de Proyectos
+# 🚀 START HERE - Corrección del Sistema Híbrido de Projects
 
 **Status:** ✅ COMPLETADO - 0 ERRORES
 **Fecha:** 9 de febrero de 2026
@@ -8,10 +8,10 @@
 
 ## ⚡ Tl;DR (30 segundos)
 
-**Problema:** Proyectos creados no aparecían en dashboard. Botón expandible oculto.
-**Causa:** `getMockProjectsData()` no cargaba proyectos reales del filesystem.
+**Problema:** Projects creados no aparecían en dashboard. Button expandible oculto.
+**Causa:** `getMockProjectsData()` no cargaba projects reales del filesystem.
 **Solución:** Cambiar a async + FutureBuilder + cargar real + mock juntos.
-**Resultado:** ✅ Sistema funcionando. 0 errores. Listo producción.
+**Result:** ✅ Sistema funcionando. 0 errores. Listo producción.
 
 ---
 
@@ -36,9 +36,9 @@
 
 ---
 
-## 📁 Archivos Clave
+## 📁 Files Clave
 
-### ✅ Código Modificado (3 archivos)
+### ✅ Código Modificado (3 files)
 
 ```
 src/client/lib/features/project_shell/
@@ -62,9 +62,9 @@ src/client/lib/features/project_shell/
 
 **Compilación:** ✅ 0 ERRORES
 
-### 📚 Documentación (8 archivos)
+### 📚 Documentación (8 files)
 
-| Archivo | Propósito | Lectura |
+| File | Propósito | Lectura |
 |---------|-----------|---------|
 | **ENTREGA_FINAL_VISUAL.md** | Resumen visual | 5 min |
 | **HYBRID_SYSTEM_README.md** | Guía completa | 20 min |
@@ -99,10 +99,10 @@ flutter run -d linux
 
 | Feature | Status |
 |---------|--------|
-| Proyectos reales (filesystem) | ✅ |
-| Proyecto mock (Guía) | ✅ |
+| Projects reales (filesystem) | ✅ |
+| Project mock (Guía) | ✅ |
 | Grid 8 primeros | ✅ |
-| Botón "Ver todos" (>8) | ✅ |
+| Button "Ver todos" (>8) | ✅ |
 | ProjectListView expandible | ✅ |
 | CreateProjectDialog → aparece | ✅ |
 | Persistencia | ✅ |
@@ -142,7 +142,7 @@ Status:         PRODUCTION READY ✅
 
 ---
 
-## 📝 Documentos por Rol
+## 📝 Documents por Rol
 
 **Product Manager/QA:**
 - ENTREGA_FINAL_VISUAL.md
@@ -166,7 +166,7 @@ Status:         PRODUCTION READY ✅
 ## 🔗 Links Rápidos
 
 ### Referencia Técnica
-- **3 archivos modificados:**
+- **3 files modificados:**
   - [project_workspace_screen.dart](src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart)
   - [mock_projects_data.dart](src/client/lib/features/project_shell/data/mock_projects_data.dart)
   - [project_list_view.dart](src/client/lib/features/project_shell/presentation/widgets/project_list_view.dart)
@@ -185,16 +185,16 @@ Status:         PRODUCTION READY ✅
 
 ---
 
-## ✅ Próximos Pasos
+## ✅ Next Steps
 
 1. **Hoy (ahora):**
-   - [ ] Leer este archivo (2 min)
-   - [ ] Ejecutar `flutter run` (2 min)
+   - [ ] Leer este file (2 min)
+   - [ ] Execute `flutter run` (2 min)
    - [ ] Verificar compilación (5 min)
 
 2. **Esta sesión:**
    - [ ] Leer TESTING_QUICK_START.md (15 min)
-   - [ ] Ejecutar Test 1 (5 min)
+   - [ ] Execute Test 1 (5 min)
 
 3. **Antes de producción:**
    - [ ] Completar VALIDATION_CHECKLIST.md (2 horas)
@@ -207,8 +207,8 @@ Status:         PRODUCTION READY ✅
 
 | Problema | Solución |
 |----------|----------|
-| Proyectos no aparecen | Ver: PROYECTO_SEARCH_PATHS.md |
-| Botón oculto | Necesitas 9+ proyectos |
+| Projects no aparecen | Ver: PROYECTO_SEARCH_PATHS.md |
+| Button oculto | Necesitas 9+ projects |
 | Error al compilar | Revisar: CORRECION_DEFINITIVA_HYBRID_SYSTEM.md |
 | ¿Dónde busca? | Ver: PROYECTO_SEARCH_PATHS.md |
 
@@ -228,6 +228,6 @@ Status:         PRODUCTION READY ✅
 
 ---
 
-**Siguiente:** Lee [ENTREGA_FINAL_VISUAL.md](ENTREGA_FINAL_VISUAL.md)
+**Next:** Lee [ENTREGA_FINAL_VISUAL.md](ENTREGA_FINAL_VISUAL.md)
 **Preguntas:** Consulta [HYBRID_SYSTEM_README.md](HYBRID_SYSTEM_README.md)
 **Testing:** Sigue [TESTING_QUICK_START.md](TESTING_QUICK_START.md)

@@ -1,21 +1,21 @@
-# 📊 Análisis de Cobertura de Tests - SoftArchitect AI
+# 📊 Análisis de Cobertura de Pruebas - SoftArchitect AI
 
 **Fecha:** 4 de febrero de 2026
-**Estado:** ✅ En Progreso - HU-3.1 Project Shell Notifier COMPLETADO
+**Estado:** ✅ En Progreso - HU-3.1 Proyecto Shell Notifier COMPLETADO
 
 ---
 
 ## 📈 Resumen Ejecutivo
 
-### Tests Actualmente Implementados
+### Pruebas Actualmente Implementados
 
 | Categoría | Cantidad | Estado |
 |-----------|----------|--------|
-| **Unit Tests (Dart - Flutter)** | 10 | ✅ Pasando |
-| **Widget Tests** | ~180+ | ⚠️ 6 Fallando |
-| **Integration Tests** | 0 | ❌ No Implementado |
-| **E2E Tests** | 0 | ❌ No Implementado |
-| **Python Unit Tests** | 5 | ✅ Estructura |
+| **Unit Pruebas (Dart - Flutter)** | 10 | ✅ Pasando |
+| **Widget Pruebas** | ~180+ | ⚠️ 6 Fallando |
+| **Integración Pruebas** | 0 | ❌ No Implementado |
+| **E2E Pruebas** | 0 | ❌ No Implementado |
+| **Python Unit Pruebas** | 5 | ✅ Estructura |
 
 ---
 
@@ -23,8 +23,8 @@
 
 ### 1️⃣ UNIT TESTS (Dart/Flutter) - ✅ 10 Pasando
 
-#### ProjectShellNotifier (HU-3.1 - COMPLETADO)
-✅ **10 tests pasando** en `unit/flutter/features/project_shell/presentation/`
+#### ProyectoShellNotifier (HU-3.1 - COMPLETADO)
+✅ **10 pruebas pasando** en `unit/flutter/features/proyecto_shell/presentation/`
 
 ```
 ✅ ProjectShellNotifier initialization should load projects
@@ -39,19 +39,19 @@
 ✅ ProjectShellNotifier ProjectShellState preserve values
 ```
 
-**Cobertura:** `ProjectShellNotifier` (100%)
-**Cobertura:** `ProjectShellState` (100%)
+**Cobertura:** `ProyectoShellNotifier` (100%)
+**Cobertura:** `ProyectoShellState` (100%)
 
-#### Infrastructure/Validation Tests
-✅ **70+ tests pasando** en `unit/flutter/features/project_shell/infrastructure/`
+#### Infraestructura/Validation Pruebas
+✅ **70+ pruebas pasando** en `unit/flutter/features/proyecto_shell/infrastructure/`
 
 ```
 ✅ ValidationConstants - 36 tests
 ✅ PathValidator - 25+ tests (comprensivo)
 ```
 
-#### Domain Tests
-✅ **40+ tests pasando** en `unit/flutter/features/project_shell/domain/`
+#### Domain Pruebas
+✅ **40+ pruebas pasando** en `unit/flutter/features/proyecto_shell/domain/`
 
 ```
 ✅ FileNode Entity - 20+ tests
@@ -61,23 +61,23 @@
 ✅ DirectoryTreeUseCase - 3+ tests
 ```
 
-**Total Unit Tests Pasando:** ~145+ ✅
+**Total Unit Pruebas Pasando:** ~145+ ✅
 
 ---
 
-### 2️⃣ WIDGET TESTS - ⚠️ ~180 Tests (6 Fallando)
+### 2️⃣ WIDGET TESTS - ⚠️ ~180 Pruebas (6 Fallando)
 
-**Ubicación:** `widget/flutter/features/project_shell/presentation/`
+**Ubicación:** `widget/flutter/features/proyecto_shell/presentation/`
 
 #### Estado Actual
-- **Total:** ~180 tests creados
+- **Total:** ~180 pruebas creados
 - **Pasando:** ~174 ✅
 - **Fallando:** 6 ⚠️
 - **Tasa Éxito:** 96.7%
 
-#### Tests Fallando (Requieren Fix)
-1. ❌ `MarkdownPreviewWidget should display header with filename`
-2. ❌ `ProjectShellScreen should handle deep nested paths` (y otros)
+#### Pruebas Fallando (Requieren Fix)
+1. ❌ `MarkdownPreviewWidget should display header with archivoname`
+2. ❌ `ProyectoShellScreen should handle deep nested paths` (y otros)
 
 **Causa:** Problemas con finders de widgets e iconos no encontrados
 
@@ -88,9 +88,9 @@
 **Estado:** No iniciado
 
 **Requisitos:**
-- Tests de flujo completo (crear → navegar → eliminar proyecto)
-- Tests de persistencia (base de datos)
-- Tests de sincronización entre capas
+- Pruebas de flujo completo (crear → navegar → eliminar proyecto)
+- Pruebas de persistencia (base de datos)
+- Pruebas de sincronización entre capas
 
 ---
 
@@ -99,15 +99,15 @@
 **Estado:** No iniciado
 
 **Requisitos:**
-- Tests automatizados de UI completa
-- Tests de interacción usuario
-- Tests de performance en desktop
+- Pruebas automatizados de UI completa
+- Pruebas de interacción usuario
+- Pruebas de performance en desktop
 
 ---
 
 ### 5️⃣ PYTHON TESTS (Backend) - ⏳ Estructura
 
-**Ubicación:** `tests/` (raíz)
+**Ubicación:** `pruebas/` (raíz)
 
 **Archivos Detectados:**
 ```
@@ -147,14 +147,14 @@ soft-architect-ai/
 ### Problema Identificado
 
 - ✅ `./coverage/` → es la principal (generada al ejecutar desde raíz)
-- ✅ `./tests/coverage/` → duplicada (generada al ejecutar desde `tests/`)
-- ✅ `./coverage/tests/coverage/` → anidación problemática
+- ✅ `./pruebas/coverage/` → duplicada (generada al ejecutar desde `pruebas/`)
+- ✅ `./coverage/pruebas/coverage/` → anidación problemática
 
 ### Causa
 
-El comando `flutter test --coverage` genera cobertura en el directorio donde se ejecuta:
+El comando `flutter prueba --coverage` genera cobertura en el directorio donde se ejecuta:
 - Ejecutar desde raíz → `./coverage/`
-- Ejecutar desde `tests/` → `./tests/coverage/`
+- Ejecutar desde `pruebas/` → `./pruebas/coverage/`
 
 ---
 
@@ -171,9 +171,9 @@ rm -rf ./coverage/tests/
 echo "coverage/" >> .gitignore
 ```
 
-### 2. Estandarizar Ejecución de Tests
+### 2. Estandarizar Ejecución de Pruebas
 
-**Crear un script** (`scripts/run-all-tests.sh`):
+**Crear un script** (`scripts/ejecutar-all-pruebas.sh`):
 
 ```bash
 #!/bin/bash
@@ -193,21 +193,21 @@ echo "📊 Cobertura generada en: ./coverage/"
 
 | Prioridad | Tarea | Estado |
 |-----------|-------|--------|
-| 🔴 CRÍTICA | Fijar 6 widget tests fallando | ⏳ TODO |
-| 🔴 CRÍTICA | Implementar integration tests | ❌ TODO |
-| 🟡 ALTA | Implementar E2E tests | ❌ TODO |
-| 🟢 MEDIA | Validar Python tests | ⏳ TODO |
+| 🔴 CRÍTICA | Fijar 6 widget pruebas fallando | ⏳ TODO |
+| 🔴 CRÍTICA | Implementar integration pruebas | ❌ TODO |
+| 🟡 ALTA | Implementar E2E pruebas | ❌ TODO |
+| 🟢 MEDIA | Validar Python pruebas | ⏳ TODO |
 | 🟢 BAJA | Configuración CI/CD coverage | ⏳ TODO |
 
 ---
 
 ## 🎯 Cobertura de Código Estimada
 
-| Módulo | Cobertura | Tests |
+| Módulo | Cobertura | Pruebas |
 |--------|-----------|-------|
 | Domain Layer | ~95% | 45+ |
-| Presentation (Notifier) | ~100% | 10 |
-| Infrastructure (Validation) | ~90% | 70+ |
+| Presentación (Notifier) | ~100% | 10 |
+| Infraestructura (Validation) | ~90% | 70+ |
 | Data Layer | ⚠️ 0% | 0 |
 | UI Widgets | ~85% | 174+ |
 
@@ -242,15 +242,15 @@ xdg-open ./coverage/html/index.html  # Linux
 ## 📝 Conclusiones
 
 ### ✅ Lo que Funciona
-- Unit tests sólidos (145+ tests pasando)
+- Unit pruebas sólidos (145+ pruebas pasando)
 - Cobertura domain layer excelente
-- Tests del Notifier 100%
+- Pruebas del Notifier 100%
 
 ### ⚠️ Lo que Necesita Atención
-- 6 widget tests fallando
+- 6 widget pruebas fallando
 - Directorios duplicados de coverage
-- Falta de integration/E2E tests
-- Python tests no validados
+- Falta de integration/E2E pruebas
+- Python pruebas no validados
 
 ### 🚀 Próxima Fase
-Arreglaro los 6 widget tests y comenzar con integration tests para HU-3.1.
+Arreglaro los 6 widget pruebas y comenzar con integration pruebas para HU-3.1.

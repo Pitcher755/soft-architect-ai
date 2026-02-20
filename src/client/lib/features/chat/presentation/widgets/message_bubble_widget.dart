@@ -108,7 +108,7 @@ class MessageBubbleWidget extends ConsumerWidget {
                               onPressed: () {
                                 messageController!.text = message.content;
                               },
-                              tooltip: 'Editar mensaje',
+                              tooltip: 'Edit message',
                             ),
                         ],
                       ),
@@ -170,15 +170,14 @@ class MessageBubbleWidget extends ConsumerWidget {
                           isUser: false,
                           onSaveDocument: (path, cleanContent) async {
                             debugPrint(
-                              '📄 Intentando guardar documento en: $path',
+                              '📄 Attempting to save document at: $path',
                             );
 
                             try {
-                              // 1. OBTENER EL ROOT (CON SALVAVIDAS)
+                              // 1. GET THE ROOT (WITH FAILSAFE)
                               var projectRoot = ref.read(projectRootProvider);
 
-                              // Si es nulo, buscamos el proyecto
-                              // abierto más reciente
+                              // If null, search for the most recently opened project
                               if (projectRoot == null || projectRoot.isEmpty) {
                                 final projects = ref.read(projectsProvider);
                                 final activeProject = projects
@@ -188,8 +187,7 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   projectRoot = activeProject.path;
                                 } else {
                                   throw Exception(
-                                    'No hay ningún proyecto '
-                                    'activo configurado.',
+                                    'No active project configured.',
                                   );
                                 }
                               }
@@ -198,7 +196,7 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   ? path.substring(1)
                                   : path;
 
-                              // 2. GUARDAR EL ARCHIVO
+                              // 2. SAVE THE FILE
                               final fsService = FileSystemServiceImpl();
                               await fsService.saveDocument(
                                 projectPath: projectRoot,
@@ -206,18 +204,15 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 content: cleanContent,
                               );
 
-                              debugPrint('✅ Documento guardado con éxito');
+                              debugPrint('✅ Document saved successfully');
 
-                              // Actualizar progreso del proyecto
+                              // Update project progress
                               try {
-                                await ProjectProgressService
-                                    .updateAfterDocumentSave(
+                                await ProjectProgressService.updateAfterDocumentSave(
                                   projectRoot,
                                 );
                               } on Exception catch (e) {
-                                debugPrint(
-                                  '⚠️ Error actualizando progreso: $e',
-                                );
+                                debugPrint('⚠️ Error updating progress: $e');
                               }
 
                               ref.invalidate(fileSystemNotifierProvider);
@@ -229,7 +224,7 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                      '✅ Documento guardado con éxito',
+                                      '✅ Document saved successfully',
                                     ),
                                     backgroundColor: Colors.green,
                                     duration: Duration(seconds: 2),
@@ -241,13 +236,13 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 onValidate!();
                               }
 
-                              // 🤖 3. BUCLE DE AGENTE (AGENTIC LOOP)
+                              // 🤖 3. AGENT LOOP (AGENTIC LOOP)
                               final autoPrompt =
-                                  'He validado y guardado el documento '
-                                  'en `$normalizedPath`. '
-                                  'Por favor, revisa el Master Workflow '
-                                  'y dime cuál es el siguiente paso y '
-                                  'qué documento toca crear ahora. '
+                                  'I have validated and saved the document '
+                                  'at `$normalizedPath`. '
+                                  'Please review the Master Workflow '
+                                  'and tell me what the next step is and '
+                                  'what document should be created now. '
                                   'Si necesitas contexto para el siguiente '
                                   'documento, hazme las preguntas necesarias.';
 

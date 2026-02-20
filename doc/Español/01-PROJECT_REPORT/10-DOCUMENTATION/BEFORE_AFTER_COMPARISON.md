@@ -49,9 +49,9 @@ final displayedProjects = allProjects.take(8).toList();
 
 | Síntoma | Causa |
 |---------|-------|
-| Botón "Ver todos" no visible | `allProjects.length` nunca > 8 |
-| Solo muestra Guía | `getMockProjectsData()` sin cargar reales |
-| Proyectos creados desaparecen | No se recargan del filesystem |
+| Botón "Ver todos" no visible | `allProyectos.length` nunca > 8 |
+| Solo muestra Guía | `getMockProyectosData()` sin cargar reales |
+| Proyectos creados desaparecen | No se recargan del archivosystem |
 | Spinner no aparece | No hay FutureBuilder manejo async |
 | ErrorState nunca se ve | No hay error handling |
 
@@ -59,7 +59,7 @@ final displayedProjects = allProjects.take(8).toList();
 
 ## ✅ DESPUÉS (FUNCIONAL)
 
-### Resultado Visual: Botón Y Proyectos APARECEN
+### Resultadoado Visual: Botón Y Proyectos APARECEN
 
 ```
 ╔════════════════════════════════════════════════════╗
@@ -154,9 +154,9 @@ Widget build(BuildContext context) {
 | Aspecto | ❌ Antes | ✅ Ahora |
 |---------|----------|---------|
 | Tipo | ConsumerStatefulWidget | StatefulWidget |
-| Inicialización | N/A (Riverpod) | `initState()` → `_projectsFuture` |
+| Inicialización | N/A (Riverpod) | `initState()` → `_proyectosFuture` |
 | Build logic | `ref.watch()` | `FutureBuilder` |
-| Carga datos | Ninguna (vacía) | `getMockProjectsData()` |
+| Carga datos | Ninguna (vacía) | `getMockProyectosData()` |
 
 ### Durante Carga: Esperando Datos
 
@@ -233,7 +233,7 @@ User puede expandir → ProjectListView ✅
 
 ---
 
-## 🎯 Resultados Finales
+## 🎯 Resultadoados Finales
 
 ### Métricas de Corrección
 
@@ -257,7 +257,7 @@ User puede expandir → ProjectListView ✅
 | Expandir lista | ❌ (botón oculto) | ✅ (botón visible) |
 | Ordenar proyectos | ❌ | ✅ (A-Z) |
 | Navegar a proyecto | ❌ (no había) | ✅ |
-| Persistencia | ❌ | ✅ (filesystem) |
+| Persistencia | ❌ | ✅ (archivosystem) |
 
 ---
 
@@ -298,7 +298,7 @@ User puede expandir → ProjectListView ✅
 
 ## ✅ Conclusión
 
-| Aspecto | Resultado |
+| Aspecto | Resultadoado |
 |---------|-----------|
 | **Compilación** | ✅ 0 errores |
 | **Funcionalidad** | ✅ Proyectos reales + mock |

@@ -1,8 +1,8 @@
 # 🏗️ HU-4.2: System Architecture Diagrams
 
-> **Version:** 1.0.0
+> **Versión:** 1.0.0
 > **Architectural Pattern:** Clean Architecture + Hexagonal Architecture (Ports & Adapters)
-> **Date:** 2026-02-14
+> **Fecha:** 2026-02-14
 
 ---
 
@@ -22,11 +22,11 @@
 
 ### Architectural Principles
 
-| Principle | Implementation |
+| Principle | Implementación |
 |-----------|----------------|
 | **Separation of Concerns** | Clean Architecture 4 layers |
 | **Dependency Inversion** | Domain layer independent |
-| **Testability** | 96% test coverage |
+| **Pruebaability** | 96% prueba coverage |
 | **Framework Independence** | Business logic decoupled |
 | **Database Independence** | Repository pattern abstraction |
 
@@ -35,8 +35,8 @@
 | Layer | Responsibility | Dependencies |
 |-------|----------------|--------------|
 | **Domain** | Business entities, rules | None (pure Python) |
-| **Infrastructure** | Database, persistence | Domain only |
-| **Service** | Use cases, orchestration | Domain + Infrastructure |
+| **Infraestructura** | Database, persistence | Domain only |
+| **Service** | Use cases, orchestration | Domain + Infraestructura |
 | **API** | HTTP endpoints, validation | Service + Domain schemas |
 
 ---
@@ -168,7 +168,7 @@ graph LR
 **Legend:**
 - 🟢 **Green:** Domain Layer (Pure Business Logic)
 - 🔵 **Blue:** Service Layer (Use Cases)
-- 🟠 **Orange:** Infrastructure Layer (Persistence)
+- 🟠 **Orange:** Infraestructura Layer (Persistence)
 - 🔴 **Pink:** API Layer (HTTP Interface)
 
 ---
@@ -241,14 +241,14 @@ erDiagram
 
 **Relationships:**
 - One conversation has many messages (1:N)
-- Messages are cascade-deleted when conversation is deleted
+- Messages are cascade-eliminard when conversation is eliminard
 - All IDs are UUID v4 format
 
 ---
 
 ## 🔁 Request/Response Lifecycle
 
-### POST /conversations/ (Create)
+### POST /conversations/ (Crear)
 
 ```mermaid
 flowchart TD
@@ -388,11 +388,11 @@ graph TD
 
 ### Dependency Matrix
 
-| From ↓ / To → | Domain | Service | Infrastructure | API |
+| From ↓ / To → | Domain | Service | Infraestructura | API |
 |---------------|--------|---------|----------------|-----|
 | **Domain** | ✅ | ❌ | ❌ | ❌ |
 | **Service** | ✅ | ✅ | ✅ (via interface) | ❌ |
-| **Infrastructure** | ✅ | ❌ | ✅ | ❌ |
+| **Infraestructura** | ✅ | ❌ | ✅ | ❌ |
 | **API** | ✅ | ✅ | ✅ (for DI) | ✅ |
 
 **Legend:**
@@ -441,13 +441,13 @@ graph LR
 - **Primary Ports (Left):** Application services (driven by external actors)
 - **Secondary Ports (Right):** Repository interfaces (required by application)
 - **Primary Adapters:** HTTP API, CLI (future)
-- **Secondary Adapters:** SQLite persistence, in-memory testing adapter
+- **Secondary Adapters:** SQLite persistence, in-memory pruebaing adapter
 
 ---
 
-## 🧪 Testing Architecture
+## 🧪 Pruebaing Architecture
 
-### Test Pyramid
+### Prueba Pyramid
 
 ```mermaid
 graph TB
@@ -465,14 +465,14 @@ graph TB
     style E2E fill:#ff9800,color:#fff
 ```
 
-**Coverage Breakdown:**
-- **Unit Tests:** 23 tests (Domain 11, Infrastructure 6, Service 6)
-- **Integration Tests:** 5 tests (API endpoints with real DB)
+**Coverage Desglose:**
+- **Unit Pruebas:** 23 pruebas (Domain 11, Infraestructura 6, Service 6)
+- **Integración Pruebas:** 5 pruebas (API endpoints with real DB)
 - **Total Coverage:** 96% (199/205 statements)
 
 ---
 
-## 🔗 Related Documentation
+## 🔗 Related Documentoation
 
 - **API Contract:** [API_CONTRACT.md](./API_CONTRACT.md)
 - **Coverage Report:** [COVERAGE_REPORT.md](./COVERAGE_REPORT.md)
@@ -483,15 +483,15 @@ graph TB
 
 ## ✅ Architecture Validation
 
-| Criteria | Status | Evidence |
+| Criteria | Estado | Evidence |
 |----------|--------|----------|
 | **Dependency Rule** | ✅ Pass | 0 Pyright errors (no circular deps) |
-| **Layer Separation** | ✅ Pass | Clear folder structure: domain/ infra/ services/ api/ |
-| **Testability** | ✅ Pass | 96% coverage, tests isolated |
+| **Layer Separation** | ✅ Pass | Clear carpeta structure: domain/ infra/ services/ api/ |
+| **Pruebaability** | ✅ Pass | 96% coverage, pruebas isolated |
 | **Framework Independence** | ✅ Pass | Domain layer has 0 FastAPI/SQLAlchemy imports |
 | **Database Independence** | ✅ Pass | Repository protocol abstracts persistence |
 
-**Architecture Status:** ✅ **COMPLIANT WITH CLEAN ARCHITECTURE**
+**Architecture Estado:** ✅ **COMPLIANT WITH CLEAN ARCHITECTURE**
 
 ---
 

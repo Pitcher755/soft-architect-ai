@@ -1,7 +1,7 @@
-# 📊 Análisis de Cobertura de Tests - SoftArchitect AI
+# 📊 Analysis de Cobertura de Tests - SoftArchitect AI
 
 **Fecha:** 4 de febrero de 2026
-**Estado:** ✅ En Progreso - HU-3.1 Project Shell Notifier COMPLETADO
+**Status:** ✅ En Progreso - HU-3.1 Project Shell Notifier COMPLETADO
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Tests Actualmente Implementados
 
-| Categoría | Cantidad | Estado |
+| Categoría | Cantidad | Status |
 |-----------|----------|--------|
 | **Unit Tests (Dart - Flutter)** | 10 | ✅ Pasando |
 | **Widget Tests** | ~180+ | ⚠️ 6 Fallando |
@@ -19,7 +19,7 @@
 
 ---
 
-## 📍 Desglose Detallado
+## 📍 Breakdown Detallado
 
 ### 1️⃣ UNIT TESTS (Dart/Flutter) - ✅ 10 Pasando
 
@@ -69,7 +69,7 @@
 
 **Ubicación:** `widget/flutter/features/project_shell/presentation/`
 
-#### Estado Actual
+#### Status Actual
 - **Total:** ~180 tests creados
 - **Pasando:** ~174 ✅
 - **Fallando:** 6 ⚠️
@@ -85,10 +85,10 @@
 
 ### 3️⃣ INTEGRATION TESTS - ❌ 0 Implementados
 
-**Estado:** No iniciado
+**Status:** No iniciado
 
 **Requisitos:**
-- Tests de flujo completo (crear → navegar → eliminar proyecto)
+- Tests de flujo completo (create → navegar → delete project)
 - Tests de persistencia (base de datos)
 - Tests de sincronización entre capas
 
@@ -96,7 +96,7 @@
 
 ### 4️⃣ E2E TESTS - ❌ 0 Implementados
 
-**Estado:** No iniciado
+**Status:** No iniciado
 
 **Requisitos:**
 - Tests automatizados de UI completa
@@ -109,7 +109,7 @@
 
 **Ubicación:** `tests/` (raíz)
 
-**Archivos Detectados:**
+**Files Detectados:**
 ```
 ✅ test_api.py
 ✅ test_architecture.py
@@ -118,7 +118,7 @@
 ✅ test_rag_loader.py
 ```
 
-**Estado:** Estructura existente, contenido no validado
+**Status:** Estructura existente, contenido no validado
 
 ---
 
@@ -146,15 +146,15 @@ soft-architect-ai/
 
 ### Problema Identificado
 
-- ✅ `./coverage/` → es la principal (generada al ejecutar desde raíz)
-- ✅ `./tests/coverage/` → duplicada (generada al ejecutar desde `tests/`)
+- ✅ `./coverage/` → es la principal (generada al execute desde raíz)
+- ✅ `./tests/coverage/` → duplicada (generada al execute desde `tests/`)
 - ✅ `./coverage/tests/coverage/` → anidación problemática
 
 ### Causa
 
 El comando `flutter test --coverage` genera cobertura en el directorio donde se ejecuta:
-- Ejecutar desde raíz → `./coverage/`
-- Ejecutar desde `tests/` → `./tests/coverage/`
+- Execute desde raíz → `./coverage/`
+- Execute desde `tests/` → `./tests/coverage/`
 
 ---
 
@@ -173,7 +173,7 @@ echo "coverage/" >> .gitignore
 
 ### 2. Estandarizar Ejecución de Tests
 
-**Crear un script** (`scripts/run-all-tests.sh`):
+**Create un script** (`scripts/run-all-tests.sh`):
 
 ```bash
 #!/bin/bash
@@ -189,15 +189,15 @@ flutter test widget/ 2>&1 | grep -E "^(✅|❌|\+|-)"
 echo "📊 Cobertura generada en: ./coverage/"
 ```
 
-### 3. Próximos Pasos
+### 3. Next Steps
 
-| Prioridad | Tarea | Estado |
+| Prioridad | Tarea | Status |
 |-----------|-------|--------|
 | 🔴 CRÍTICA | Fijar 6 widget tests fallando | ⏳ TODO |
 | 🔴 CRÍTICA | Implementar integration tests | ❌ TODO |
 | 🟡 ALTA | Implementar E2E tests | ❌ TODO |
 | 🟢 MEDIA | Validar Python tests | ⏳ TODO |
-| 🟢 BAJA | Configuración CI/CD coverage | ⏳ TODO |
+| 🟢 BAJA | Configuration CI/CD coverage | ⏳ TODO |
 
 ---
 
@@ -215,9 +215,9 @@ echo "📊 Cobertura generada en: ./coverage/"
 
 ---
 
-## 💾 Gestión de Archivos de Cobertura
+## 💾 Gestión de Files de Cobertura
 
-### Archivos Principales
+### Files Principales
 
 ```
 ./coverage/
@@ -252,5 +252,5 @@ xdg-open ./coverage/html/index.html  # Linux
 - Falta de integration/E2E tests
 - Python tests no validados
 
-### 🚀 Próxima Fase
+### 🚀 Próxima Phase
 Arreglaro los 6 widget tests y comenzar con integration tests para HU-3.1.

@@ -8,7 +8,7 @@
 
 ## 📖 5-Minute Overview
 
-HU-3.3 implementa un **Chat Secuencial** que procesa documentos grandes en chunks, manteniendo contexto a través de múltiples mensajes usando RAG (Retrieval-Augmented Generation).
+HU-3.3 implementa un **Chat Secuencial** que procesa documents grandes en chunks, manteniendo contexto a través de múltiples mensajes usando RAG (Retrieval-Augmented Generation).
 
 **Stack:**
 - Backend: Python 3.12 + FastAPI
@@ -16,7 +16,7 @@ HU-3.3 implementa un **Chat Secuencial** que procesa documentos grandes en chunk
 - LLM: Ollama (local) + Groq (cloud fallback)
 - Data: ChromaDB (vector store)
 
-**6 Fases TDD:**
+**6 Phases TDD:**
 1. 🔴 RED: Write failing tests
 2. 🟢 GREEN: Implement minimum code
 3. 🔵 REFACTOR: Optimize & clean
@@ -91,17 +91,17 @@ pytest ../../tests/python/unit/services/rag/test_orchestrator.py::TestOrchestrat
 
 ## 🔍 Critical Sections in Workflow Master
 
-**Section 4.2 - Fase 1 RED:** `[Line 450-550]`
+**Section 4.2 - Phase 1 RED:** `[Line 450-550]`
 - Basic test cases to write
 - Test file structure
 - Expected failures
 
-**Section 4.3 - Fase 2 GREEN:** `[Line 550-650]`
+**Section 4.3 - Phase 2 GREEN:** `[Line 550-650]`
 - Implementation skeleton
 - Database schema
 - Error handling setup
 
-**Section 4.4 - Fase 3 REFACTOR:** `[Line 650-750]`
+**Section 4.4 - Phase 3 REFACTOR:** `[Line 650-750]`
 - Code optimization
 - Performance improvements
 - Security hardening
@@ -174,7 +174,7 @@ Before starting Phase 1:
 - [ ] `validate_tests_migration.sh` returns 5/5 ✅
 - [ ] Can run `pytest ../../tests/python/ -v` successfully
 - [ ] Read HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md
-- [ ] Understand section 4.2 (Fase 1 RED)
+- [ ] Understand section 4.2 (Phase 1 RED)
 - [ ] Feature branch created: `feature/hu-3.3-phase-1`
 - [ ] Code editor open with proper Python path
 - [ ] Pre-commit hooks installed and working
@@ -252,7 +252,7 @@ git push origin feature/hu-3.3-phase-1
 
 ## 🎉 You're Ready!
 
-**Next Step:** Open the Workflow Master and read section 4.2 (Fase 1 RED).
+**Next Step:** Open the Workflow Master and read section 4.2 (Phase 1 RED).
 
 ```bash
 # Quick read in terminal

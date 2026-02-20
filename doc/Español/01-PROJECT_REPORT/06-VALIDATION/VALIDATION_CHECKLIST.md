@@ -24,7 +24,7 @@ COMANDO: flutter build linux --debug
 └─ [ ] Sin errores de linker
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
@@ -45,7 +45,7 @@ DEBUG CONSOLE - Buscar mensajes:
 └─ [ ] Sin "❌ Error loading" mensajes críticos
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
@@ -88,11 +88,11 @@ Botón "Ver todos":
     └─ [ ] Texto vuelve a "Ver todos..."
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
-## 📋 PASO 4: Test de Proyectos Reales
+## 📋 PASO 4: Prueba de Proyectos Reales
 
 ### 4A: Crear Carpeta de Prueba
 
@@ -116,7 +116,7 @@ VERIFICAR:
 └─ [ ] Proyecto mock sigue visible
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ### 4B: Crear Más Proyectos (>8)
 
@@ -150,11 +150,11 @@ CLICK BOTÓN:
     └─ [ ] Botón texto vuelve a "Ver todos"
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
-## 💾 PASO 5: Test de CreateProjectDialog
+## 💾 PASO 5: Prueba de CrearProyectoDialog
 
 ```
 PASOS EN APP:
@@ -192,11 +192,11 @@ $ ls -la ~/projects/  # o donde lo creaste
 └─ [ ] Permisos correctos (rwx)
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
-## 🔀 PASO 6: Test de Hybrid System
+## 🔀 PASO 6: Prueba de Hybrid System
 
 ### 6A: Navegar a Proyecto Real
 
@@ -215,7 +215,7 @@ EN GRID:
    └─ [ ] Sin errores
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ### 6B: Navegar a Guía (Mock)
 
@@ -235,11 +235,11 @@ EN GRID:
    └─ [ ] Funciona como proyecto normal
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
-## ⚡ PASO 7: Test de Performance
+## ⚡ PASO 7: Prueba de Performance
 
 ```
 MEDICIONES:
@@ -263,11 +263,11 @@ Expandir Lista:
 └─ [ ] Cerrar lista < 300ms
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
-## 🛡️ PASO 8: Test de Error Handling
+## 🛡️ PASO 8: Prueba de Error Handling
 
 ### 8A: Simular Carpeta sin Permisos
 
@@ -286,7 +286,7 @@ EN APP:
    └─ [ ] App resiliente a errores
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ### 8B: Carpeta vacía
 
@@ -302,11 +302,11 @@ EN APP:
    └─ [ ] Otros proyectos sí aparecen
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 
-## 🔄 PASO 9: Test de Persistencia
+## 🔄 PASO 9: Prueba de Persistencia
 
 ```
 PASOS:
@@ -328,7 +328,7 @@ PASOS:
    └─ [ ] Estado se preservó
 ```
 
-**✅ Status:** _______
+**✅ Estado:** _______
 
 ---
 

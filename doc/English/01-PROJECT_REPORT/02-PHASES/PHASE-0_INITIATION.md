@@ -1,7 +1,7 @@
-# 🚀 FASE 0: INICIO (Pre-Sprint Setup)
+# 🚀 PHASE 0: INICIO (Pre-Sprint Setup)
 
-> **Fecha:** 02/02/2026
-> **Estado:** ⏳ AWAITING USER CONFIRMATION
+> **Date:** 02/02/2026
+> **Status:** ⏳ AWAITING USER CONFIRMATION
 > **Duración:** Week of 02/02 (3-5 days)
 > **Owner:** Tech Lead + Product Manager
 
@@ -9,17 +9,17 @@
 
 ## 📋 RESUMEN FASE 0
 
-Fase preparatoria ANTES de comenzar el código.
+Phase preparatoria ANTES de comenzar el código.
 
 **Objetivos:**
 1. ✅ Usuario confirma decisión (✅ Proceder / ❌ No / 🤔 Modificar)
 2. ✅ Obtener aprobaciones de stakeholders
 3. ✅ Asignar recursos (team members)
 4. ✅ Alinear toolchain
-5. ✅ Crear plan de comunicación
+5. ✅ Create plan de comunicación
 
 **Entregables:**
-- ✅ Decisión confirmada (documento)
+- ✅ Decisión confirmada (document)
 - ✅ Lista de stakeholders aprobados
 - ✅ Team roster asignado
 - ✅ Comunicado de launch
@@ -52,7 +52,7 @@ Tu decisión:
 - ⏳ ArchitectZero espera confirmación
 - ⏳ NO proceder sin confirmación explícita
 
-**Resultado:** Documento de decisión archivado
+**Result:** Document de decisión archivado
 
 ---
 
@@ -67,14 +67,14 @@ Tu decisión:
 - [ ] QA Manager
 - [ ] DevOps Lead
 
-**Documento a compartir:**
+**Document a compartir:**
 → HU-3_EXECUTIVE_SUMMARY.es.md (10 min read)
 
 **Proceso:**
 1. Enviar correo: "Solicitud de aprobación - Project-First Refactor"
-2. Adjuntar: Documento ejecutivo
+2. Adjuntar: Document ejecutivo
 3. Fecha límite: 02/02/2026 EOD
-4. Resultado: Aprobaciones confirmadas en una lista
+4. Result: Aprobaciones confirmadas en una lista
 
 **Checklist de Aprobación:**
 ```
@@ -210,7 +210,7 @@ flutter doctor
 - [ ] Dart >= 3.2.0
 - [ ] Desktop support habilitado
 - [ ] `flutter doctor` todo verde
-- [ ] Puede compilar proyecto
+- [ ] Puede compilar project
 
 #### D. Verificar GitHub Access
 
@@ -408,7 +408,7 @@ Si los stakeholders tienen feedback/preocupaciones:
    Decisión: [Accepted/Rejected]
    ```
 
-2. **Crear issues en GitHub** (si son cambios)
+2. **Create issues en GitHub** (si son cambios)
    ```
    GitHub Issue Template:
 
@@ -418,7 +418,7 @@ Si los stakeholders tienen feedback/preocupaciones:
    Milestone: Fase 0
    ```
 
-3. **Actualizar documentos** (si necesario)
+3. **Actualizar documents** (si necesario)
    ```bash
    # Si feedback cambios specsed
    git add doc/01-PROJECT_REPORT/HU-3_*.es.md
@@ -536,8 +536,8 @@ SIGUIENTE SEMANA: Fase 1 (Foundation)
 - [ ] Números (puntos, FTE, horas) verificados
 
 **Cuando TODO esté ✅:**
-→ Fase 0 = COMPLETE
-→ Fase 1 puede comenzar
+→ Phase 0 = COMPLETE
+→ Phase 1 puede comenzar
 
 ---
 
@@ -546,16 +546,16 @@ SIGUIENTE SEMANA: Fase 1 (Foundation)
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |--------|------------|--------|-----------|
 | Feedback requiere cambios mayores | MEDIA | ALTO | Feedback loop en Día 2-3 |
-| Un stakeholder no aprueba | BAJA | ALTO | Discussion + adjust plan |
+| Un stakeholder no atest | BAJA | ALTO | Discussion + adjust plan |
 | Toolchain issues (Docker, Python) | MEDIA | MEDIO | Tech Lead pre-validó |
 | Team no disponible | BAJA | ALTO | Reservar calendarios anticipado |
-| Cambios scope durante Fase 0 | MEDIA | ALTO | Documento congelado hasta Día 5 |
+| Cambios scope durante Phase 0 | MEDIA | ALTO | Document congelado hasta Día 5 |
 
 ---
 
 ## 📚 REFERENCIAS
 
-### Documentos Fase 0
+### Documents Phase 0
 - HU-3_EXECUTIVE_SUMMARY.es.md (para stakeholders)
 - MASTER_IMPLEMENTATION_PLAN.es.md (para team)
 - HU-3_SPECIFICATIONS.es.md (para developers)
@@ -584,23 +584,23 @@ docker --version
 
 ## ✅ CONCLUSIÓN
 
-**Fase 0** es enteramente preparatoria:
+**Phase 0** es enteramente preparatoria:
 
 ✅ Usuario decide
-✅ Stakeholders aprueban
+✅ Stakeholders atestn
 ✅ Team se forma
 ✅ Toolchain se valida
 ✅ Comunicación se establece
 
-**Resultado:** Equipo completamente alineado y listo para Fase 1
+**Result:** Equipo completamente alineado y listo para Phase 1
 
 **Duración:** 3-5 días (02/02-02/06/2026)
 
-**Próximo Paso:** Esperar confirmación del usuario, luego ejecutar esta checklist
+**Próximo Paso:** Esperar confirmación del usuario, luego execute esta checklist
 
 ---
 
 **FASE 0 INICIACIÓN**
 **Creado:** 02/02/2026
 **Owner:** Tech Lead + PM
-**Estado:** ⏳ AWAITING USER CONFIRMATION
+**Status:** ⏳ AWAITING USER CONFIRMATION

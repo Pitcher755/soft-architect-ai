@@ -1,6 +1,6 @@
 # ⚡ FASE 6 Quick Reference
 
-> **Este documento es un resumen ejecutivo de FASE 6**
+> **Este document es un resumen ejecutivo de FASE 6**
 > **Para detalles completos, ver: [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md)**
 
 ---
@@ -20,7 +20,7 @@ docker-compose up -d chroma
 cd src/client && flutter run -d linux
 ```
 
-### 2. Ejecutar Script de Validación
+### 2. Execute Script de Validación
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
@@ -35,15 +35,15 @@ Seguir checklist en [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md#manual-e
 
 ## ✅ 8 Flujos de Validación
 
-| # | Flujo | Archivos a Verificar | Tiempo |
+| # | Flujo | Files a Verificar | Tiempo |
 |---|-------|----------------------|--------|
-| 1 | Crear Proyecto | Carpetas + `10-CONTEXT/` | 5 min |
+| 1 | Create Project | Folders + `10-CONTEXT/` | 5 min |
 | 2 | Chat Input | Button state, input field | 5 min |
 | 3 | Streaming | TTFT <200ms, animaciones | 10 min |
 | 4 | ProposalCard | Markdown, syntax highlighting, copy button | 10 min |
 | 5 | Persistencia | File exists on disk, contenido match | 10 min |
 | 6 | Regeneración | Contenido diferente, historial OK | 10 min |
-| 7 | Rechazo | NO persiste archivo, progreso OK | 10 min |
+| 7 | Rechazo | NO persiste file, progreso OK | 10 min |
 | 8 | Errores | Error handling elegante, retry logic | 10 min |
 
 **Total: ~70 minutos manual testing**
@@ -55,15 +55,15 @@ Seguir checklist en [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md#manual-e
 ### ✅ Positivos (MUST HAVE)
 - [ ] Doc 1 genera correctamente
 - [ ] Propuesta NO persiste sin "Validar"
-- [ ] Botón enviar deshabilitado si input vacío
+- [ ] Button enviar deshabilitado si input vacío
 - [ ] Copy button en bloques de código
-- [ ] FileSystemService guarda archivo
+- [ ] FileSystemService guarda file
 - [ ] Streaming <200ms TTFT
 - [ ] Progreso actualiza (Doc N/25)
 - [ ] Flujo 100% secuencial
 
 ### ❌ Negativos (MUST NOT HAVE)
-- [ ] Documentos NO se guardan sin "Validar"
+- [ ] Documents NO se guardan sin "Validar"
 - [ ] NO hay stack traces en UI
 - [ ] App NO se cuelga con errores de red
 
@@ -112,9 +112,9 @@ top -p $(pgrep -f "flutter|uvicorn")
 
 ---
 
-## 📋 Archivos Key
+## 📋 Files Key
 
-| Archivo | Propósito |
+| File | Propósito |
 |---------|-----------|
 | `scripts/validate_hu_3_3.sh` | Script de validación automático |
 | `doc/.../PHASE6_E2E_VALIDATION.md` | Documentación completa |
@@ -150,7 +150,7 @@ top -p $(pgrep -f "flutter|uvicorn")
 
 ## 🚀 Próximas Etapas
 
-Después de FASE 6:
+Después de PHASE 6:
 1. **Release:** Merge a develop
 2. **Tag:** v0.2.0 (HU-3.3 Complete)
 3. **Deployment:** Preparar para producción

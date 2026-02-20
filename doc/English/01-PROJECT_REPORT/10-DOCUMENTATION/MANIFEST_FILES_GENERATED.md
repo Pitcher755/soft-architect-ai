@@ -9,13 +9,13 @@
 ## 📊 RESUMEN DE CAMBIOS
 
 ### FASE ANTERIOR (Commit #1)
-- ✅ Archivo: 5 documentos iniciales (HU-3_*.es.md)
+- ✅ File: 5 documents iniciales (HU-3_*.es.md)
 - ✅ Commit Hash: `a486720`
 - ✅ Mensaje: "docs(hu-3): Especificación completa de refactor Project-First"
 
-### ESTA SESIÓN (Commit #2 - Pendiente)
+### ESTA SESIÓN (Commit #2 - Pending)
 
-**Archivos a agregar (6 nuevos):**
+**Files a agregar (6 nuevos):**
 ```
 doc/01-PROJECT_REPORT/
 ├─ README_HU-3_CENTRAL.es.md (NUEVO)
@@ -27,9 +27,9 @@ doc/01-PROJECT_REPORT/
 ```
 
 **Total acumulado:**
-- Commit #1: 5 archivos
-- Commit #2: 6 archivos
-- **TOTAL:** 11 documentos
+- Commit #1: 5 files
+- Commit #2: 6 files
+- **TOTAL:** 11 documents
 
 ---
 
@@ -43,11 +43,11 @@ doc/01-PROJECT_REPORT/
 
 **Contenido:**
 - "Empieza aquí" (3 minutos)
-- Tabla de documentos (8 docs)
+- Tabla de documents (8 docs)
 - Resumen 60 segundos
 - Guía por rol (5 roles × 60-90 min cada uno)
 - Matriz de relaciones entre docs
-- Estado actual
+- Status actual
 - Próximos pasos
 
 **Tamaño:** ~4,500 palabras | 300+ líneas
@@ -56,7 +56,7 @@ doc/01-PROJECT_REPORT/
 
 **Checklist Contenido:**
 - [x] TOC presente
-- [x] Metadata (fecha, estado)
+- [x] Metadata (fecha, status)
 - [x] Resumen ejecutivo
 - [x] Guía de lectura por rol
 - [x] Links internos correctos
@@ -72,8 +72,8 @@ doc/01-PROJECT_REPORT/
 **Propósito:** Índice maestro con orden de lectura
 
 **Contenido:**
-- Propósito del análisis
-- Tabla resumen (8 documentos)
+- Propósito del analysis
+- Tabla resumen (8 documents)
 - Lectura por rol (PO, Arquitecto, Dev, QA)
 - Cronograma general
 - Checklist de decisión
@@ -86,7 +86,7 @@ doc/01-PROJECT_REPORT/
 **Checklist Contenido:**
 - [x] TOC presente
 - [x] Propósito claro
-- [x] Tabla de documentos
+- [x] Tabla de documents
 - [x] Paths por rol
 - [x] Matriz de relaciones
 - [x] Tiempo de lectura para cada doc
@@ -98,10 +98,10 @@ doc/01-PROJECT_REPORT/
 
 **Ruta:** `doc/01-PROJECT_REPORT/INVENTORY_HU-3_DOCUMENTATION.es.md`
 
-**Propósito:** Inventario de TODOS los documentos + checklist
+**Propósito:** Inventario de TODOS los documents + checklist
 
 **Contenido:**
-- Lista de documentos generados (7 docs + este)
+- Lista de documents generados (7 docs + este)
 - Estadísticas (palabras, líneas, secciones)
 - Cobertura por área
 - Estructura en disco
@@ -117,7 +117,7 @@ doc/01-PROJECT_REPORT/
 
 **Checklist Contenido:**
 - [x] Lista completa de docs (8)
-- [x] Estadísticas por documento
+- [x] Estadísticas por document
 - [x] Cobertura 100% verificada
 - [x] Estructura en árbol ASCII
 - [x] Orden de lectura
@@ -137,12 +137,12 @@ doc/01-PROJECT_REPORT/
 - Resumen ejecutivo
 - Visión general (antes/después)
 - Cronograma 8 semanas (W1-W8)
-- 5 Fases detalladas:
-  - Fase 0: Pre-Sprint
-  - Fase 1: Foundation
-  - Fase 2: Core Logic
-  - Fase 3: Resilience
-  - Fase 4: Testing & Release
+- 5 Phases detalladas:
+  - Phase 0: Pre-Sprint
+  - Phase 1: Foundation
+  - Phase 2: Core Logic
+  - Phase 3: Resilience
+  - Phase 4: Testing & Release
 - Git workflow (Gitflow pattern)
 - Asignación de recursos (3.5 FTE)
 - 5 Riesgos + mitigaciones
@@ -157,9 +157,9 @@ doc/01-PROJECT_REPORT/
 **Checklist Contenido:**
 - [x] Resumen ejecutivo
 - [x] Cronograma Week-by-week
-- [x] 5 Fases definidas
+- [x] 5 Phases definidas
 - [x] Git workflow especificado
-- [x] Recursos por fase
+- [x] Recursos por phase
 - [x] Riesgos + mitigaciones (5)
 - [x] Métricas de éxito
 - [x] Hitos (5)
@@ -172,22 +172,22 @@ doc/01-PROJECT_REPORT/
 
 **Ruta:** `doc/01-PROJECT_REPORT/PHASE-0_INITIATION.es.md`
 
-**Propósito:** Guía paso-a-paso para Fase 0 (Pre-Sprint)
+**Propósito:** Guía paso-a-paso para Phase 0 (Pre-Sprint)
 
 **Contenido:**
-- Resumen Fase 0
+- Resumen Phase 0
 - 8 Pasos concretos:
   1. Decisión final del usuario
   2. Aprobaciones de stakeholders
   3. Asignación de recursos
   4. Alineación toolchain
   5. Plan de comunicación
-  6. Crear PR Draft
+  6. Create PR Draft
   7. Incorporar feedback
   8. Aprobación final
 - Timeline Week-by-week
 - Definición de "Done"
-- Riesgos Fase 0
+- Riesgos Phase 0
 - Referencias
 - Conclusión
 
@@ -213,7 +213,7 @@ doc/01-PROJECT_REPORT/
 
 **Ruta:** `doc/01-PROJECT_REPORT/FINAL_SUMMARY.es.md`
 
-**Propósito:** Resumen final ejecutivo + próximos pasos
+**Propósito:** Resumen final ejecutivo + next steps
 
 **Contenido:**
 - Resumen de LO QUE SE GENERÓ
@@ -221,8 +221,8 @@ doc/01-PROJECT_REPORT/
 - Números clave (HUs, puntos, duración)
 - Cómo proceder (3 opciones)
 - Guía de lectura recomendada
-- Archivo de referencia rápida
-- Estado actual (visual)
+- File de referencia rápida
+- Status actual (visual)
 - Contacto & preguntas
 - Conclusión
 
@@ -236,8 +236,8 @@ doc/01-PROJECT_REPORT/
 - [x] Números clave
 - [x] 3 opciones de decisión
 - [x] Guía de lectura
-- [x] Links a documentos
-- [x] Estado visual
+- [x] Links a documents
+- [x] Status visual
 - [x] Call to action clara
 - [x] Preguntas frecuentes
 - [x] Timeline
@@ -250,7 +250,7 @@ doc/01-PROJECT_REPORT/
 
 | Métrica | Valor |
 |---------|-------|
-| Archivos nuevos | 6 |
+| Files nuevos | 6 |
 | Palabras | ~29,000 |
 | Líneas | ~2,600 |
 | Secciones | 60+ |
@@ -262,15 +262,15 @@ doc/01-PROJECT_REPORT/
 
 | Métrica | Valor |
 |---------|-------|
-| Archivos totales | 11 |
+| Files totales | 11 |
 | Palabras totales | ~52,000 |
 | Líneas totales | ~5,200 |
-| Documentos estratégicos | 8 |
-| Documentos de soporte | 3 |
+| Documents estratégicos | 8 |
+| Documents de soporte | 3 |
 | Secciones | 120+ |
 | Diagramas ASCII | 8+ |
 | Ejemplos de código | 25+ |
-| Horas de análisis | 10+ |
+| Horas de analysis | 10+ |
 
 ---
 
@@ -392,7 +392,7 @@ tree doc/01-PROJECT_REPORT/ -L 1 | grep "es.md"
 
 ## 📖 ORDEN DE LECTURA PARA USUARIO
 
-**Cuando el usuario abra estos documentos, recomendado:**
+**Cuando el usuario abra estos documents, recomendado:**
 
 1. ✅ **FINAL_SUMMARY.es.md** ← EMPIEZA AQUÍ (2 min)
    - "¿De qué se trata?" → Resumen en 60 seg
@@ -400,7 +400,7 @@ tree doc/01-PROJECT_REPORT/ -L 1 | grep "es.md"
    - "¿Qué hago?" → 3 opciones de decisión
 
 2. ✅ **README_HU-3_CENTRAL.es.md** (5 min)
-   - "¿Cuáles son los documentos?" → Tabla completa
+   - "¿Cuáles son los documents?" → Tabla completa
    - "¿Cuánto tardo en leer?" → Timeline por rol
    - "¿Cómo los leo?" → Matriz de relaciones
 
@@ -410,7 +410,7 @@ tree doc/01-PROJECT_REPORT/ -L 1 | grep "es.md"
    - "¿Qué riesgos hay?" → Identificados
 
 4. ✅ **MASTER_IMPLEMENTATION_PLAN.es.md** (30 min)
-   - "¿Cómo se ejecuta?" → 5 fases
+   - "¿Cómo se ejecuta?" → 5 phases
    - "¿Cuándo se hace?" → Timeline 8 semanas
    - "¿Quiénes intervienen?" → 3.5 FTE
 
@@ -427,12 +427,12 @@ tree doc/01-PROJECT_REPORT/ -L 1 | grep "es.md"
 - [ ] Lee FINAL_SUMMARY.es.md (2 min)
 - [ ] Lee README_HU-3_CENTRAL.es.md (5 min)
 - [ ] Selecciona tu rol en INDEX_HU-3_ANALYSIS.es.md
-- [ ] Lee documentos según tu rol
+- [ ] Lee documents según tu rol
 - [ ] **COMENTA: ✅/❌/🤔**
 
 ### ArchitectZero (AI Lead)
 - [ ] Espera confirmación usuario
-- [ ] **Si ✅:** Ejecuta Fase 0 checklist
+- [ ] **Si ✅:** Ejecuta Phase 0 checklist
 - [ ] **Si ❌:** Archiva rama
 - [ ] **Si 🤔:** Discute cambios + retorna
 
@@ -482,26 +482,26 @@ DECISION
 
 ## 🏁 CONCLUSIÓN
 
-**Archivos generados para Commit #2:**
-- 6 documentos de consolidación
+**Files generados para Commit #2:**
+- 6 documents de consolidación
 - ~29,000 palabras nuevas
 - 60+ secciones nuevas
 - 15+ checklists operativos
 - 3 diagramas ASCII nuevos
 
 **Total acumulado (Commits #1 + #2):**
-- 11 documentos
+- 11 documents
 - ~52,000 palabras
 - 120+ secciones
 - Ready for user decision
 
 **Próximo paso:**
 - Usuario confirma decisión (✅/❌/🤔)
-- Fase 0 inicia si ✅
+- Phase 0 inicia si ✅
 
 ---
 
 **MANIFIESTO DE ARCHIVOS**
 **Sesión:** 02/02/2026
 **Status:** ✅ COMPLETO - READY FOR COMMIT #2
-**Archivos:** 6 nuevos | 11 totales
+**Files:** 6 nuevos | 11 totales

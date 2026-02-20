@@ -80,7 +80,7 @@ Prueba a pedir:
   };
 
   // ========================
-  // Legacy Mock Data (Proyecto de Ejemplo)
+  // Legacy Mock Data (Example Project)
   // ========================
   static const FileNode mockProjectRoot = FileNode(
     id: 'root',

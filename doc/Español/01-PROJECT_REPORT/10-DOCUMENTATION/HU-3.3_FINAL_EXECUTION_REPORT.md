@@ -9,10 +9,10 @@
 ## 📋 Tabla de Contenidos
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
-2. [FASE 4: Widgets & Unit Tests](#fase-4-widgets--unit-tests)
-3. [FASE 5: Integration Layer](#fase-5-integration-layer)
+2. [FASE 4: Widgets & Unit Pruebas](#fase-4-widgets--unit-pruebas)
+3. [FASE 5: Integración Layer](#fase-5-integration-layer)
 4. [FASE 6: E2E Validation](#fase-6-e2e-validation)
-5. [Test Results & Coverage](#test-results--coverage)
+5. [Prueba Resultados & Coverage](#prueba-results--coverage)
 6. [App Execution Report](#app-execution-report)
 7. [Quality Gates Validation](#quality-gates-validation)
 8. [Artifacts Summary](#artifacts-summary)
@@ -25,20 +25,20 @@
 
 ### ✅ Hitos Logrados
 
-| Hito | Descripción | Status |
+| Hito | Descripción | Estado |
 |------|-------------|--------|
-| **FASE 4: Widgets** | 3 componentes de UI + 20 tests unitarios | ✅ PASSED |
-| **FASE 5: Integration** | ChatNotifier + FileSystemService + Mocks | ✅ PASSED |
-| **FASE 6: E2E Validation** | Documentación completa + scripts automatizados | ✅ PASSED |
-| **Tests: 289/289** | Unit + Widget tests (97+192) en Flutter | ✅ ALL PASSED |
+| **FASE 4: Widgets** | 3 componentes de UI + 20 pruebas unitarios | ✅ PASSED |
+| **FASE 5: Integración** | ChatNotifier + ArchivoSystemService + Mocks | ✅ PASSED |
+| **FASE 6: E2E Validation** | Documentoación completa + scripts automatizados | ✅ PASSED |
+| **Pruebas: 289/289** | Unit + Widget pruebas (97+192) en Flutter | ✅ ALL PASSED |
 | **Code Quality** | 0 linting errors, Pyright clean, type-safe | ✅ CLEAN |
 | **App Execution** | Flutter app launched successfully on Linux | ✅ RUNNING |
-| **Documentation** | 16 archivos reorganizados per AGENTS.md | ✅ ORGANIZED |
-| **Git History** | 4 commits profesionales documentados | ✅ RECORDED |
+| **Documentoation** | 16 archivos reorganizados per AGENTS.md | ✅ ORGANIZED |
+| **Git History** | 4 commits profesionales documentoados | ✅ RECORDED |
 
 ---
 
-## FASE 4: Widgets & Unit Tests
+## FASE 4: Widgets & Unit Pruebas
 
 ### 📦 Widgets Implementados (3/3)
 
@@ -84,7 +84,7 @@ Tests: ✅ 9 widget tests covering all scenarios
 - Tema oscuro/claro adaptativo
 - Selección de texto y copy-to-clipboard
 
-### 📊 Unit Tests: 20/20 PASSED ✅
+### 📊 Unit Pruebas: 20/20 PASSED ✅
 
 ```
 ✅ ProposalCardWidget - 1 test
@@ -97,7 +97,7 @@ Tests: ✅ 9 widget tests covering all scenarios
 
 ---
 
-## FASE 5: Integration Layer
+## FASE 5: Integración Layer
 
 ### 🔌 Componentes de Integración
 
@@ -121,7 +121,7 @@ Future<void> resetChat() async
 void addDocumentProposal(DocumentProposal proposal)
 ```
 
-**Tests:**
+**Pruebas:**
 ```
 ✅ ChatNotifier initialization
 ✅ ChatNotifier state management
@@ -129,7 +129,7 @@ void addDocumentProposal(DocumentProposal proposal)
 ✅ ChatNotifier auto-advance
 ```
 
-#### 2. **FileSystemService** (157 líneas) ✅
+#### 2. **ArchivoSystemService** (157 líneas) ✅
 ```dart
 Location: src/client/lib/project_shell/domain/services/file_system_service.dart
 ```
@@ -140,10 +140,10 @@ Location: src/client/lib/project_shell/domain/services/file_system_service.dart
 | `save()` | `Future<void> save(...)` | Guarda mensajes en persistencia |
 | `read()` | `Future<String> read(...)` | Lee historiales de chat |
 | `exists()` | `Future<bool> exists(...)` | Verifica existencia de archivo |
-| `delete()` | `Future<void> delete(...)` | Elimina sesiones antiguas |
-| `initializeProjectStructure()` | `Future<void> init(...)` | Crea estructura inicial |
+| `eliminar()` | `Future<void> eliminar(...)` | Elimina sesiones antiguas |
+| `initializeProyectoStructure()` | `Future<void> init(...)` | Crea estructura inicial |
 
-**Tests:**
+**Pruebas:**
 ```
 ✅ FileSystemService CRUD operations
 ✅ FileSystemService error handling
@@ -157,19 +157,19 @@ Location: tests/test/integration/mocks/mock_services.dart
 
 **Servicios Mockeados:**
 - `MockChatRepository` - Repositorio en memoria
-- `MockFileSystemService` - Persistencia fake
-- Helpers para setup de tests
+- `MockArchivoSystemService` - Persistencia fake
+- Helpers para setup de pruebas
 
 **Propósito:**
-- Testing de integración sin dependencias reales
+- Pruebaing de integración sin dependencias reales
 - Simulación de comportamiento de servicios
-- Determinismo en tests
+- Determinismo en pruebas
 
 ---
 
 ## FASE 6: E2E Validation
 
-### 📋 Documentación Completa
+### 📋 Documentoación Completa
 
 #### 1. **PHASE6_E2E_VALIDATION.md** (550+ líneas) ✅
 
@@ -177,7 +177,7 @@ Location: tests/test/integration/mocks/mock_services.dart
 - **8 Validation Flows Completos:**
   1. User Message → Proposal Generation Flow
   2. Multi-Round Conversation Flow
-  3. Document Acceptance & Persistence Flow
+  3. Documento Acceptance & Persistence Flow
   4. Error Recovery Flow
   5. UI Responsiveness Flow
   6. Performance Benchmarking Flow
@@ -192,7 +192,7 @@ Location: tests/test/integration/mocks/mock_services.dart
   - Functionality checks (10)
   - Performance metrics (8)
   - Security validations (8)
-  - Documentation requirements (8)
+  - Documentoation requirements (8)
 
 - **Troubleshooting Guide:**
   - 6+ escenarios con soluciones
@@ -220,9 +220,9 @@ Stage 5: Display completion summary
 
 ---
 
-## Test Results & Coverage
+## Prueba Resultados & Coverage
 
-### 🧪 Test Execution Report
+### 🧪 Prueba Execution Report
 
 **Comando ejecutado:**
 ```bash
@@ -230,7 +230,7 @@ cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test test/unit test/widget --reporter=json
 ```
 
-### 📊 Resultados Finales
+### 📊 Resultadoados Finales
 
 ```
 ═════════════════════════════════════════════════════════════
@@ -255,32 +255,32 @@ CPU Usage:                <30%
 
 ### 🎯 Coverage by Component
 
-**Project Shell (200+ tests):**
-- ValidationConstants: ✅ 20 tests
-- PathValidator: ✅ 28 tests
-- ProjectShellNotifier: ✅ 8 tests
-- FileNode Entity: ✅ 20 tests
-- Project Entity: ✅ 12 tests
-- Directory Tree Use Case: ✅ 1 test
-- Project Validation Use Case: ✅ 14 tests
-- File Search Use Case: ✅ 20 tests
-- ProjectShellScreen Widget: ✅ 9 tests
-- DirectoryTreeWidget: ✅ 12 tests
-- MarkdownPreviewWidget: ✅ 16 tests
+**Proyecto Shell (200+ pruebas):**
+- ValidationConstants: ✅ 20 pruebas
+- PathValidator: ✅ 28 pruebas
+- ProyectoShellNotifier: ✅ 8 pruebas
+- ArchivoNode Entity: ✅ 20 pruebas
+- Proyecto Entity: ✅ 12 pruebas
+- Directory Tree Use Case: ✅ 1 prueba
+- Proyecto Validation Use Case: ✅ 14 pruebas
+- Archivo Search Use Case: ✅ 20 pruebas
+- ProyectoShellScreen Widget: ✅ 9 pruebas
+- DirectoryTreeWidget: ✅ 12 pruebas
+- MarkdownPreviewWidget: ✅ 16 pruebas
 
-**Chat Feature (70+ tests):**
-- ChatNotifier: ✅ 4 tests
-- DocumentProposal Entity: ✅ 2 tests
-- ChatMessage Entity: ✅ 2 tests
-- ProposalCardWidget: ✅ 1 test
-- StreamingIndicatorWidget: ✅ 1 test
-- MessageBubbleWidget: ✅ 9 tests
+**Chat Feature (70+ pruebas):**
+- ChatNotifier: ✅ 4 pruebas
+- DocumentoProposal Entity: ✅ 2 pruebas
+- ChatMessage Entity: ✅ 2 pruebas
+- ProposalCardWidget: ✅ 1 prueba
+- StreamingIndicatorWidget: ✅ 1 prueba
+- MessageBubbleWidget: ✅ 9 pruebas
 
 ### ✅ Quality Gate Checks
 
-| Gate | Threshold | Actual | Status |
+| Gate | Threshold | Actual | Estado |
 |------|-----------|--------|--------|
-| Tests Passing | 100% | 100% (289/289) | ✅ PASS |
+| Pruebas Passing | 100% | 100% (289/289) | ✅ PASS |
 | Linting Errors | 0 | 0 | ✅ PASS |
 | Type Errors | 0 | 0 | ✅ PASS |
 | Code Coverage | >80% | 95%+ | ✅ PASS |
@@ -291,11 +291,11 @@ CPU Usage:                <30%
 
 ## App Execution Report
 
-### 🚀 Flutter App Launch Status
+### 🚀 Flutter App Launch Estado
 
 **Timestamp:** 2025-01-16 14:21:43
 **Platform:** Linux Desktop
-**Command:** `flutter run -d linux`
+**Command:** `flutter ejecutar -d linux`
 
 ### ✅ Startup Sequence
 
@@ -324,17 +324,17 @@ CPU Usage:                <30%
 
 At startup, the following features were verified:
 
-| Feature | Check | Status |
+| Feature | Check | Estado |
 |---------|-------|--------|
 | Desktop Platform Detection | ✅ Detected correctly | ✅ PASS |
 | Provider Initialization | ✅ Platform-aware providers | ✅ PASS |
-| .env Configuration | ✅ File loaded successfully | ✅ PASS |
+| .env Configuración | ✅ Archivo loaded successfully | ✅ PASS |
 | Theme System | ✅ Dark theme applied | ✅ PASS |
 | Navigation Stack | ✅ Initial route displayed | ✅ PASS |
 | Hot Reload | ✅ Available (r command) | ✅ PASS |
-| DevTools Integration | ✅ Debugger available | ✅ PASS |
+| DevTools Integración | ✅ Debugger available | ✅ PASS |
 
-### 🔧 Runtime Features Available
+### 🔧 Ejecutartime Features Available
 
 ```
 ✅ Hot Reload (r)      - Apply code changes without restart
@@ -381,9 +381,9 @@ At startup, the following features were verified:
 
 ### ✅ Performance Metrics
 
-| Metric | Target | Measured | Status |
+| Metric | Target | Measured | Estado |
 |--------|--------|----------|--------|
-| **TTFT (Time to First Test)** | <200ms | 125ms | ✅ PASS |
+| **TTFT (Time to First Prueba)** | <200ms | 125ms | ✅ PASS |
 | **Build Time** | <60s | ~45s | ✅ PASS |
 | **Memory Footprint** | <100MB | 45MB | ✅ PASS |
 | **CPU Usage** | <30% | <20% | ✅ PASS |
@@ -392,8 +392,8 @@ At startup, the following features were verified:
 ### ✅ Security & Privacy Checks
 
 - ✅ No hardcoded credentials
-- ✅ .env file loaded for configuration
-- ✅ File system permissions validated
+- ✅ .env archivo loaded for configuración
+- ✅ Archivo system permissions validated
 - ✅ Path traversal attacks prevented
 - ✅ Sensitive data masked in logs
 - ✅ Local-first architecture (no cloud calls)
@@ -404,46 +404,46 @@ At startup, the following features were verified:
 
 ### 📦 Deliverables by FASE
 
-#### FASE 4: Widgets & Tests
-| Artifact | Lines | Location | Status |
+#### FASE 4: Widgets & Pruebas
+| Artifact | Lines | Location | Estado |
 |----------|-------|----------|--------|
 | ProposalCardWidget | 45 | `src/client/lib/.../proposal_card_widget.dart` | ✅ |
 | StreamingIndicatorWidget | 32 | `src/client/lib/.../streaming_indicator_widget.dart` | ✅ |
 | MessageBubbleWidget | 78 | `src/client/lib/.../message_bubble_widget.dart` | ✅ |
-| Widget Tests | 20 | `tests/test/widget/...` | ✅ |
+| Widget Pruebas | 20 | `pruebas/prueba/widget/...` | ✅ |
 | **Subtotal** | **175** | | **✅** |
 
-#### FASE 5: Integration Layer
-| Artifact | Lines | Location | Status |
+#### FASE 5: Integración Layer
+| Artifact | Lines | Location | Estado |
 |----------|-------|----------|--------|
 | ChatNotifier | 351 | `src/client/lib/.../chat_notifier.dart` | ✅ |
-| FileSystemService | 157 | `src/client/lib/.../file_system_service.dart` | ✅ |
-| Mock Services | 167 | `tests/test/integration/mocks/mock_services.dart` | ✅ |
-| Integration Tests | - | `tests/test/integration/...` | ✅ |
+| ArchivoSystemService | 157 | `src/client/lib/.../archivo_system_service.dart` | ✅ |
+| Mock Services | 167 | `pruebas/prueba/integration/mocks/mock_services.dart` | ✅ |
+| Integración Pruebas | - | `pruebas/prueba/integration/...` | ✅ |
 | **Subtotal** | **675** | | **✅** |
 
 #### FASE 6: E2E Validation
-| Artifact | Lines | Location | Status |
+| Artifact | Lines | Location | Estado |
 |----------|-------|----------|--------|
 | E2E Validation Guide | 550 | `doc/.../PHASE6_E2E_VALIDATION.md` | ✅ |
 | Quick Reference | 150 | `doc/.../PHASE6_QUICK_REFERENCE.md` | ✅ |
 | Validation Script | 90 | `scripts/validate_hu_3_3.sh` | ✅ |
 | **Subtotal** | **790** | | **✅** |
 
-#### 📋 Documentation & Organization
-| Artifact | Lines | Location | Status |
+#### 📋 Documentoation & Organization
+| Artifact | Lines | Location | Estado |
 |----------|-------|----------|--------|
 | HU-3.3 Master README | 400+ | `doc/.../HU-3.3.../README.md` | ✅ |
 | Completion Report | 300+ | `HU-3.3_COMPLETION_REPORT.md` | ✅ |
-| Enhanced Test Script | 500+ | `scripts/run_tests.sh` | ✅ |
+| Enhanced Prueba Script | 500+ | `scripts/ejecutar_pruebas.sh` | ✅ |
 | **Subtotal** | **1,200+** | | **✅** |
 
-#### 🔧 Git & Infrastructure
-| Artifact | Description | Status |
+#### 🔧 Git & Infraestructura
+| Artifact | Descripción | Estado |
 |----------|-------------|--------|
 | Git Commits | 4 professional commits | ✅ |
 | Pre-commit Hooks | Black, Ruff, trailing whitespace | ✅ |
-| CI/CD Pipeline | Tests + linting validation | ✅ |
+| CI/CD Pipeline | Pruebas + linting validation | ✅ |
 | **Subtotal** | | **✅** |
 
 ### 📊 Total Deliverables
@@ -465,31 +465,31 @@ GRAND TOTAL DELIVERABLES:   100% COMPLETE ✅
 
 ## 🎓 Conclusiones & Siguientes Pasos
 
-### ✅ HU-3.3 Status: **COMPLETADA AL 100%**
+### ✅ HU-3.3 Estado: **COMPLETADA AL 100%**
 
 **Cumplimiento de Requisitos:**
 - ✅ Todas las FASES (4, 5, 6) completadas
-- ✅ 289/289 tests passing
+- ✅ 289/289 pruebas passing
 - ✅ 0 code quality issues
-- ✅ 100% documentation coverage
+- ✅ 100% documentoation coverage
 - ✅ App executing successfully
 
-### 🚀 Ready for Production
+### 🚀 Preparado para Production
 
 La HU está lista para:
 1. **Código:** Merge to develop/main branch
-2. **Testing:** Manual E2E testing en ambiente real
+2. **Pruebaing:** Manual E2E pruebaing en ambiente real
 3. **Deployment:** Release preparation
-4. **Documentation:** Internal wiki update
+4. **Documentoation:** Internal wiki update
 
 ### 📋 Siguientes Pasos (Fase 7+)
 
 Possible future enhancements:
-1. Python backend API implementation (RAG service)
-2. Integration with Ollama/external LLM
-3. Advanced E2E testing with real data
+1. Python backend API implementación (RAG service)
+2. Integración with Ollama/external LLM
+3. Avanzado E2E pruebaing with real data
 4. Performance optimization & profiling
-5. User acceptance testing (UAT)
+5. User acceptance pruebaing (UAT)
 6. Production deployment
 
 ---

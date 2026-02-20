@@ -1,6 +1,6 @@
 # 🏗️ WORKFLOW MAESTRO: HU-3.5 - Streaming Optimization & Latency <200ms
 
-> **Fecha:** 10/02/2026
+> **Date:** 10/02/2026
 > **Rama:** `feature/streaming-optimization`
 > **Epic:** E3 - UX Frontend & Performance
 > **Prioridad:** 🔥 **ALTA**
@@ -9,18 +9,18 @@
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Objetivos Estratégicos](#objetivos-estratégicos)
 2. [Criterios de Aceptación (Definition of Done)](#criterios-de-aceptación-definition-of-done)
 3. [Arquitectura y Dependencias](#arquitectura-y-dependencias)
-4. [Fase 0: Preparación del Terreno](#fase-0-preparación-del-terreno)
-5. [Fase 1: TDD - ROJO (Tests que Fallan)](#fase-1-tdd---rojo-tests-que-fallan)
-6. [Fase 2: TDD - VERDE (Implementación)](#fase-2-tdd---verde-implementación)
-7. [Fase 3: TDD - REFACTOR (Optimización de Performance)](#fase-3-tdd---refactor-optimización-de-performance)
-8. [Fase 4: Testing de Integración (E2E)](#fase-4-testing-de-integración-e2e)
-9. [Fase 5: Documentación y Validación](#fase-5-documentación-y-validación)
-10. [Fase 6: CI/CD y Pipeline](#fase-6-cicd-y-pipeline)
+4. [Phase 0: Preparación del Terreno](#phase-0-preparación-del-terreno)
+5. [Phase 1: TDD - ROJO (Tests que Fallan)](#phase-1-tdd---rojo-tests-que-fallan)
+6. [Phase 2: TDD - VERDE (Implementation)](#phase-2-tdd---verde-implementation)
+7. [Phase 3: TDD - REFACTOR (Optimización de Performance)](#phase-3-tdd---refactor-optimización-de-performance)
+8. [Phase 4: Testing de Integración (E2E)](#phase-4-testing-de-integración-e2e)
+9. [Phase 5: Documentación y Validación](#phase-5-documentación-y-validación)
+10. [Phase 6: CI/CD y Pipeline](#phase-6-cicd-y-pipeline)
 11. [Entregables Finales](#entregables-finales)
 
 ---
@@ -81,7 +81,7 @@
 - ❌ **Sin Latencia Perceptible:** Usuario no debe percibir delays >200ms.
 - ❌ **Sin Jank:** Scrolling nunca debe dropear frames (mantener 60 FPS).
 - ❌ **Sin Memory Leaks:** RAM no debe crecer indefinidamente en chats largos.
-- ❌ **Sin Desconexiones Silenciosas:** Usuario siempre informado del estado de conexión.
+- ❌ **Sin Desconexiones Silenciosas:** Usuario siempre informado del status de conexión.
 - ❌ **Sin Bloqueos UI:** Thread principal nunca bloqueado por operaciones de red.
 
 ---
@@ -134,7 +134,7 @@
 
 ---
 
-## 🔧 Fase 0: Preparación del Terreno
+## 🔧 Phase 0: Preparación del Terreno
 
 **Objetivo:** Analizar infraestructura actual, definir métricas de performance y preparar herramientas de profiling.
 
@@ -151,9 +151,9 @@ rg "StreamProvider\|WebSocket\|asyncio.stream" src/ -A 3
 **Entregable:** Inventario de capacidades existentes y gaps de streaming.
 
 ### 0.2 Definir Métricas de Performance
-Crear documento de especificación de performance:
+Create document de especificación de performance:
 
-**Archivo:** `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/PERFORMANCE_METRICS.md`
+**File:** `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/PERFORMANCE_METRICS.md`
 
 ```markdown
 # Especificación de Métricas de Performance
@@ -199,21 +199,21 @@ flutter pub global activate devtools
 flutter pub global run devtools
 ```
 
-**Checklist Fase 0:**
+**Checklist Phase 0:**
 - [ ] Inventario de infraestructura actual completado
 - [ ] PERFORMANCE_METRICS.md creado y revisado
 - [ ] Herramientas de profiling configuradas (Chrome + Dart DevTools)
-- [ ] Baseline metrics capturadas (estado actual antes de optimización)
+- [ ] Baseline metrics capturadas (status actual antes de optimización)
 
 ---
 
-## 🔴 Fase 1: TDD - ROJO (Tests que Fallan)
+## 🔴 Phase 1: TDD - ROJO (Tests que Fallan)
 
-**Objetivo:** Escribir tests comprehensivos que FALLEN (sin implementación todavía).
+**Objetivo:** Escribir tests comprehensivos que FALLEN (sin implementation todavía).
 
 ### 1.1 Backend: Tests de WebSocket Handler
 
-**Archivo:** `tests/python/unit/api/websocket/test_streaming_handler.py`
+**File:** `tests/python/unit/api/websocket/test_streaming_handler.py`
 
 ```python
 """Tests unitarios para WebSocket streaming handler."""
@@ -310,11 +310,11 @@ class TestStreamingHandler:
         assert total_time > 2.0  # 10 tokens * 200ms = 2000ms
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (StreamingHandler no existe todavía).
+**Result Esperado:** ❌ Todos los tests FALLAN (StreamingHandler no existe todavía).
 
 ### 1.2 Backend: Tests de Token Buffer
 
-**Archivo:** `tests/python/unit/services/streaming/test_token_buffer.py`
+**File:** `tests/python/unit/services/streaming/test_token_buffer.py`
 
 ```python
 """Tests unitarios para buffer de tokens."""
@@ -398,11 +398,11 @@ class TestTokenBuffer:
         assert buffer.size == 0
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (TokenBuffer no existe todavía).
+**Result Esperado:** ❌ Todos los tests FALLAN (TokenBuffer no existe todavía).
 
 ### 1.3 Frontend: Tests de StreamProvider
 
-**Archivo:** `tests/test/unit/features/chat/streaming_provider_test.dart`
+**File:** `tests/test/unit/features/chat/streaming_provider_test.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -500,11 +500,11 @@ void main() {
 }
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (StreamingProvider no existe).
+**Result Esperado:** ❌ Todos los tests FALLAN (StreamingProvider no existe).
 
 ### 1.4 Frontend: Tests de Circular Buffer
 
-**Archivo:** `tests/test/unit/core/buffer/circular_buffer_test.dart`
+**File:** `tests/test/unit/core/buffer/circular_buffer_test.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -596,11 +596,11 @@ void main() {
 }
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (CircularBuffer no existe).
+**Result Esperado:** ❌ Todos los tests FALLAN (CircularBuffer no existe).
 
 ### 1.5 Frontend: Tests de Auto-Scroll Controller
 
-**Archivo:** `tests/test/unit/features/chat/auto_scroll_controller_test.dart`
+**File:** `tests/test/unit/features/chat/auto_scroll_controller_test.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -720,9 +720,9 @@ void main() {
 }
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (AutoScrollController no existe).
+**Result Esperado:** ❌ Todos los tests FALLAN (AutoScrollController no existe).
 
-### 1.6 Ejecutar Todos los Tests ROJOS
+### 1.6 Execute Todos los Tests ROJOS
 
 ```bash
 # Tests backend (Python)
@@ -736,7 +736,7 @@ cd tests && flutter test test/unit/features/chat/auto_scroll_controller_test.dar
 # Salida Esperada: TODO ROJO (100% tasa de fallo)
 ```
 
-**Checklist Fase 1:**
+**Checklist Phase 1:**
 - [ ] 5+ tests de WebSocket handler backend escritos (todos fallando)
 - [ ] 6+ tests de TokenBuffer backend escritos (todos fallando)
 - [ ] 5+ tests de StreamingProvider frontend escritos (todos fallando)
@@ -747,13 +747,13 @@ cd tests && flutter test test/unit/features/chat/auto_scroll_controller_test.dar
 
 ---
 
-## 🟢 Fase 2: TDD - VERDE (Implementación)
+## 🟢 Phase 2: TDD - VERDE (Implementation)
 
 **Objetivo:** Implementar código MÍNIMO para hacer pasar los tests (sin optimización todavía).
 
-### 2.1 Backend: Implementación de WebSocket Handler
+### 2.1 Backend: Implementation de WebSocket Handler
 
-**Archivo:** `src/server/api/v1/websocket/streaming_handler.py`
+**File:** `src/server/api/v1/websocket/streaming_handler.py`
 
 ```python
 """
@@ -917,9 +917,9 @@ class StreamingHandler:
             )
 ```
 
-### 2.2 Backend: Implementación de Token Buffer
+### 2.2 Backend: Implementation de Token Buffer
 
-**Archivo:** `src/server/services/streaming/token_buffer.py`
+**File:** `src/server/services/streaming/token_buffer.py`
 
 ```python
 """
@@ -1033,9 +1033,9 @@ class TokenBuffer:
         return tokens
 ```
 
-### 2.3 Frontend: Implementación de StreamProvider
+### 2.3 Frontend: Implementation de StreamProvider
 
-**Archivo:** `src/client/lib/features/chat/presentation/providers/streaming_provider.dart`
+**File:** `src/client/lib/features/chat/presentation/providers/streaming_provider.dart`
 
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -1171,9 +1171,9 @@ class StreamingNotifier extends StateNotifier<String> {
 }
 ```
 
-### 2.4 Frontend: Implementación de Circular Buffer
+### 2.4 Frontend: Implementation de Circular Buffer
 
-**Archivo:** `src/client/lib/core/buffer/circular_buffer.dart`
+**File:** `src/client/lib/core/buffer/circular_buffer.dart`
 
 ```dart
 /// Circular buffer implementation for fixed-size collections.
@@ -1287,9 +1287,9 @@ class CircularBuffer<T> {
 }
 ```
 
-### 2.5 Frontend: Implementación de Auto-Scroll Controller
+### 2.5 Frontend: Implementation de Auto-Scroll Controller
 
-**Archivo:** `src/client/lib/features/chat/presentation/widgets/auto_scroll_controller.dart`
+**File:** `src/client/lib/features/chat/presentation/widgets/auto_scroll_controller.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1408,7 +1408,7 @@ class AutoScrollController {
 }
 ```
 
-### 2.6 Ejecutar Tests VERDES
+### 2.6 Execute Tests VERDES
 
 ```bash
 # Tests backend
@@ -1422,7 +1422,7 @@ cd tests && flutter test test/unit/features/chat/auto_scroll_controller_test.dar
 # Salida Esperada: TODO VERDE (100% tasa de éxito)
 ```
 
-**Checklist Fase 2:**
+**Checklist Phase 2:**
 - [ ] StreamingHandler implementado con heartbeat y backpressure
 - [ ] TokenBuffer implementado con asyncio.Queue
 - [ ] StreamingProvider implementado con Riverpod StreamNotifier
@@ -1433,13 +1433,13 @@ cd tests && flutter test test/unit/features/chat/auto_scroll_controller_test.dar
 
 ---
 
-## 🔵 Fase 3: TDD - REFACTOR (Optimización de Performance)
+## 🔵 Phase 3: TDD - REFACTOR (Optimización de Performance)
 
 **Objetivo:** Optimizar código para cumplir targets de performance (<200ms, 60 FPS).
 
 ### 3.1 Profiling y Medición de Latencia
 
-**Archivo:** `src/server/core/performance/metrics_collector.py`
+**File:** `src/server/core/performance/metrics_collector.py`
 
 ```python
 """
@@ -1590,7 +1590,7 @@ async def connect(self, websocket: WebSocket) -> None:
 
 ### 3.3 Optimización de Rendering en Flutter
 
-**Archivo:** `src/client/lib/features/chat/presentation/widgets/streaming_message_widget.dart`
+**File:** `src/client/lib/features/chat/presentation/widgets/streaming_message_widget.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1652,7 +1652,7 @@ class StreamingMessageWidget extends StatelessWidget {
 }
 ```
 
-**Checklist Fase 3:**
+**Checklist Phase 3:**
 - [ ] MetricsCollector implementado para tracking de performance
 - [ ] Profiling integrado en StreamingHandler
 - [ ] Rendering optimizado con RepaintBoundary
@@ -1662,13 +1662,13 @@ class StreamingMessageWidget extends StatelessWidget {
 
 ---
 
-## 🧪 Fase 4: Testing de Integración (E2E)
+## 🧪 Phase 4: Testing de Integración (E2E)
 
 **Objetivo:** Testear flujo completo de streaming end-to-end con métricas reales.
 
 ### 4.1 Test de Integración Backend
 
-**Archivo:** `tests/python/integration/test_streaming_flow.py`
+**File:** `tests/python/integration/test_streaming_flow.py`
 
 ```python
 import pytest
@@ -1776,7 +1776,7 @@ class TestStreamingFlow:
 
 ### 4.2 Test de Integración Frontend
 
-**Archivo:** `tests/test/integration/features/chat/streaming_flow_test.dart`
+**File:** `tests/test/integration/features/chat/streaming_flow_test.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1894,7 +1894,7 @@ void main() {
 }
 ```
 
-**Checklist Fase 4:**
+**Checklist Phase 4:**
 - [ ] Tests E2E backend pasan (4+ escenarios)
 - [ ] Tests E2E frontend pasan (3+ escenarios)
 - [ ] Flujo de streaming validado end-to-end
@@ -1903,11 +1903,11 @@ void main() {
 
 ---
 
-## 📚 Fase 5: Documentación y Validación
+## 📚 Phase 5: Documentación y Validación
 
-### 5.1 Crear Documento de Performance Targets
+### 5.1 Create Document de Performance Targets
 
-**Archivo:** `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md`
+**File:** `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md`
 
 ```markdown
 # Performance Targets - SoftArchitect AI
@@ -1982,7 +1982,7 @@ flutter test tests/test/integration/features/chat/streaming_flow_test.dart
 
 ### 5.2 Actualizar API Interface Contract
 
-**Archivo:** `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md` (agregar sección)
+**File:** `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md` (agregar sección)
 
 ```markdown
 ## WebSocket Streaming Endpoint
@@ -2060,7 +2060,7 @@ flutter test tests/test/integration/features/chat/streaming_flow_test.dart
 - Idle Timeout: 5 minutes
 ```
 
-**Checklist Fase 5:**
+**Checklist Phase 5:**
 - [ ] PERFORMANCE_TARGETS.md creado con métricas validadas
 - [ ] API_INTERFACE_CONTRACT.md actualizado con spec WebSocket
 - [ ] Evidencia de profiling capturada (screenshots, logs)
@@ -2069,7 +2069,7 @@ flutter test tests/test/integration/features/chat/streaming_flow_test.dart
 
 ---
 
-## ⚙️ Fase 6: CI/CD y Pipeline
+## ⚙️ Phase 6: CI/CD y Pipeline
 
 ### 6.1 Verificar Cumplimiento CI/CD
 
@@ -2095,7 +2095,7 @@ pytest tests/python/integration/test_streaming_flow.py --benchmark-only
 
 ### 6.2 Agregar Workflow de Performance Testing
 
-**Archivo:** `.github/workflows/performance-tests.yml`
+**File:** `.github/workflows/performance-tests.yml`
 
 ```yaml
 name: Performance Tests
@@ -2154,7 +2154,7 @@ jobs:
           echo "✅ All frames within 16.67ms budget"
 ```
 
-**Checklist Fase 6:**
+**Checklist Phase 6:**
 - [ ] Todo el linting pasa (black, ruff, dart format)
 - [ ] Todos los type checks pasan (pyright, flutter analyze)
 - [ ] Cobertura de tests >85%
@@ -2234,5 +2234,5 @@ jobs:
 ---
 
 **Última Actualización:** 10/02/2026
-**Estado:** 🟢 Listo para Implementación
-**Próximo Paso:** Ejecutar Fase 0 (Preparación del Terreno)
+**Status:** 🟢 Listo para Implementation
+**Próximo Paso:** Execute Phase 0 (Preparación del Terreno)

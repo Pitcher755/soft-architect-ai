@@ -1,8 +1,8 @@
-# 📋 INVENTARIO COMPLETO: Documentación HU-3.x Project-First Refactor
+# 📋 INVENTARIO COMPLETO: Documentoación HU-3.x Proyecto-First Refactor
 
 > **Fecha:** 02/02/2026
-> **Rama:** feature/ui-project-shell
-> **Status:** ✅ DOCUMENTACIÓN COMPLETA (7 archivos)
+> **Rama:** feature/ui-proyecto-shell
+> **Estado:** ✅ DOCUMENTACIÓN COMPLETA (7 archivos)
 > **Tamaño Total:** ~25,000 palabras
 
 ---
@@ -15,10 +15,10 @@
 
 **Ubicación:** `doc/01-PROJECT_REPORT/README_HU-3_CENTRAL.es.md`
 
-**Propósito:** Central de navegación para toda la documentación
+**Propósito:** Central de navegación para toda la documentoación
 
 **Contenido:**
-- Tabla de documentos
+- Tabla de documentoos
 - Guía de lectura por rol
 - Matriz de relaciones
 - Checklist para usuario
@@ -30,7 +30,7 @@
 **Cómo usarlo:**
 1. Leer este archivo primero
 2. Seleccionar tu rol
-3. Hacer clic en links a documentos específicos
+3. Hacer clic en links a documentoos específicos
 
 ---
 
@@ -42,7 +42,7 @@
 
 **Contenido:**
 - Resumen ejecutivo (60 seg)
-- 5 documentos con descripción
+- 5 documentoos con descripción
 - Lectura por rol (producto owner, arquitecto, developer, QA)
 - Referencias cruzadas
 - Checklist de decisión
@@ -88,13 +88,13 @@
 
 **Contenido:**
 - Situación actual (Chat-First)
-- Propuesta (Project-First Sequential)
+- Propuesta (Proyecto-First Sequential)
 - Tabla comparativa (10 columnas)
 - Diagrama secuencial de flujo
 - Ventajas y riesgos
 - Cambios arquitectónicos (4 capas)
 - Opción A vs. Opción B
-- Especificación de 5 HUs (descriptions, tasks, dependencies)
+- Especificación de 5 HUs (descripcións, tasks, dependencies)
 - Impacto en sprints posteriores (S4-S7)
 
 **Tamaño:** ~6,500 palabras
@@ -146,11 +146,11 @@
 **Propósito:** Propuestas de mejora técnica con código de ejemplo
 
 **Contenido:**
-- Mejoras en diseño UI (Project-centric navigation, Enhanced widgets)
+- Mejoras en diseño UI (Proyecto-centric navigation, Enhanced widgets)
 - Mejoras en arquitectura Backend (Nuevos servicios, endpoints)
-- Mejoras en UX (Project Wizard, Timeline Checklist)
+- Mejoras en UX (Proyecto Wizard, Timeline Checklist)
 - Mejoras en seguridad (Path validation, Permissions)
-- Mejoras en testing (Unit + Integration strategies)
+- Mejoras en pruebaing (Unit + Integración strategies)
 - Código de ejemplo:
   - Dart (Flutter widgets, state management)
   - Python (Backend services, error handling)
@@ -204,10 +204,10 @@
 - Estructura de ramas y Git workflow
 - Detalles por fase:
   - Fase 0: Pre-Sprint (análisis, aprobaciones)
-  - Fase 1: Foundation (HU-3.1 + 3.2)
-  - Fase 2: Core Logic (HU-3.3)
-  - Fase 3: Resilience (HU-3.4 + 3.5)
-  - Fase 4: Testing & Release (E2E, QA)
+  - Fase 1: Fundación (HU-3.1 + 3.2)
+  - Fase 2: Lógica Central (HU-3.3)
+  - Fase 3: Resiliencia (HU-3.4 + 3.5)
+  - Fase 4: Pruebaing & Release (E2E, QA)
 - Asignación de recursos (5 roles, 3.5 FTE)
 - Riesgos y mitigaciones (5 riesgos identificados)
 - Métricas de éxito (código, proceso, UX)
@@ -228,7 +228,7 @@
 
 ## 📊 ESTADÍSTICAS
 
-### Por Documento
+### Por Documentoo
 
 | Archivo | Palabras | Líneas | Secciones |
 |---------|----------|--------|-----------|
@@ -399,7 +399,7 @@ DECISIÓN
    ```
 
 2. **Opcional: Feedback**
-   - Preguntas sobre documentación
+   - Preguntas sobre documentoación
    - Solicitar cambios
    - Clarificaciones
 
@@ -428,7 +428,7 @@ Git Branch: feature/ui-project-shell
 └─ Working tree: Limpio
 ```
 
-### Documentos Previos en Proyecto
+### Documentoos Previos en Proyecto
 
 ```
 AGENTS.md ........................... Arquitectura y principios
@@ -459,11 +459,11 @@ packages/knowledge_base/
 - Developer: 60 min
 - COMPLETO: 4 horas
 
-### P: ¿Qué documento es el plan a ejecutar?
-**R:** MASTER_IMPLEMENTATION_PLAN.es.md - Contains 8-week timeline with all phases.
+### P: ¿Qué documentoo es el plan a ejecutar?
+**R:** MASTER_IMPLEMENTATION_PLAN.es.md - Contains 8-week timeline with all fases.
 
 ### P: ¿Cuál es la decisión requerida?
-**R:** Confirmar si proceder con Project-First (5 HUs, 70 pts, 8 sem) vs. mantener Chat-First actual.
+**R:** Confirmar si proceder con Proyecto-First (5 HUs, 70 pts, 8 sem) vs. mantener Chat-First actual.
 
 ### P: ¿Qué pasa después de confirmar?
 **R:**
@@ -475,9 +475,9 @@ packages/knowledge_base/
 
 ## 🏁 CONCLUSIÓN
 
-Tienes **7 documentos** (~38,000 palabras) que contienen:
+Tienes **7 documentoos** (~38,000 palabras) que contienen:
 
-✅ **Análisis completo** del refactor (Chat-First → Project-First)
+✅ **Análisis completo** del refactor (Chat-First → Proyecto-First)
 ✅ **Especificación detallada** de 5 HUs
 ✅ **Código de ejemplo** en Dart y Python
 ✅ **Plan maestro** de 8 semanas
@@ -487,7 +487,7 @@ Tienes **7 documentos** (~38,000 palabras) que contienen:
 
 **Próximo Paso:**
 
-Lee los documentos según tu rol, luego comenta tu decisión:
+Lee los documentoos según tu rol, luego comenta tu decisión:
 
 ```
 ✅ SÍ - Proceder (RECOMENDADO)

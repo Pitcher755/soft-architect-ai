@@ -1,4 +1,4 @@
-# 📊 Reporte de Ejecución de Tests - SoftArchitect AI
+# 📊 Reporte de Ejecución de Pruebas - SoftArchitect AI
 
 **Fecha:** $(date +"%Y-%m-%d %H:%M:%S")
 **Branch:** feature/settings-ui-completion
@@ -10,87 +10,87 @@
 
 | Métrica | Valor |
 |---------|-------|
-| **Total Tests Ejecutados** | 429 |
-| **✅ Tests Pasados** | 404 (94.2%) |
-| **⚠️ Tests Skipeados** | 7 (1.6%) |
-| **❌ Tests Fallidos** | 18 (4.2%) |
+| **Total Pruebas Ejecutados** | 429 |
+| **✅ Pruebas Pasados** | 404 (94.2%) |
+| **⚠️ Pruebas Skipeados** | 7 (1.6%) |
+| **❌ Pruebas Fallidos** | 18 (4.2%) |
 | **⏱️ Tiempo de Ejecución** | ~10 segundos |
 
 ---
 
-## ❌ Tests Fallidos (18 total)
+## ❌ Pruebas Fallidos (18 total)
 
-### 1. Widget Tests - ProposalCardWidget (6 fallos)
-**Archivo:** `tests/client/widget/features/chat/presentation/widgets/proposal_card_test.dart`
+### 1. Widget Pruebas - ProposalCardWidget (6 fallos)
+**Archivo:** `pruebas/client/widget/features/chat/presentation/widgets/proposal_card_prueba.dart`
 
-#### Tests Fallidos:
+#### Pruebas Fallidos:
 - ❌ `should render markdown content`
-- ❌ `should show action buttons`
-- ❌ `should call onValidate when button tapped`
-- ❌ `should call onRefine when refine button tapped`
-- ❌ `should call onReject when reject button tapped`
+- ❌ `should show action botóns`
+- ❌ `should call onValidate when botón tapped`
+- ❌ `should call onRefine when refine botón tapped`
+- ❌ `should call onReject when reject botón tapped`
 - ❌ `should apply dark theme styling`
-- ❌ `should display copy button in header`
+- ❌ `should display copy botón in header`
 
-**Categoría:** Widget Testing
+**Categoría:** Widget Pruebaing
 **Severidad:** ALTA
 **Razón Probable:** Mocking incorrecto de dependencias (flutter_markdown, theme provider)
 **Recomendación:** Revisar setup de mocks para MarkdownBody widget y MaterialApp theme
 
 ---
 
-### 2. Widget Tests - ProjectsSidebar (6 fallos)
-**Archivo:** `tests/client/features/project_shell/presentation/widgets/projects_sidebar_test.dart`
+### 2. Widget Pruebas - ProyectosSidebar (6 fallos)
+**Archivo:** `pruebas/client/features/proyecto_shell/presentation/widgets/proyectos_sidebar_prueba.dart`
 
-#### Tests Fallidos:
-- ❌ `should display sidebar with projects list`
-- ❌ `should display last project button when available`
-- ❌ `should navigate to project when item is tapped`
-- ❌ `should show project icon indicators`
-- ❌ `should display project names or paths`
-- ❌ `should update current project highlight`
+#### Pruebas Fallidos:
+- ❌ `should display sidebar con proyectos list`
+- ❌ `should display último proyecto botón when available`
+- ❌ `should navigate to proyecto when item is tapped`
+- ❌ `should show proyecto icon indicators`
+- ❌ `should display proyecto names or paths`
+- ❌ `should update current proyecto highlight`
 
-**Categoría:** Widget Testing
+**Categoría:** Widget Pruebaing
 **Severidad:** ALTA
 **Razón Probable:** Falta de mock para provider de proyectos o navegación
-**Recomendación:** Verificar ProviderScope setup y mock de ProjectShellNotifier
+**Recomendación:** Verificar ProviderScope setup y mock de ProyectoShellNotifier
 
 ---
 
-### 3. Widget Tests - MarkdownPreviewWidget (2 fallos)
-**Archivo:** `tests/client/widget/features/project_shell/presentation/markdown_preview_widget_test.dart`
+### 3. Widget Pruebas - MarkdownPreviewWidget (2 fallos)
+**Archivo:** `pruebas/client/widget/features/proyecto_shell/presentation/markdown_preview_widget_prueba.dart`
 
-#### Tests Fallidos:
+#### Pruebas Fallidos:
 - ❌ `should display empty state when content is null`
 - ❌ `should display empty state when content is empty`
 
-**Categoría:** Widget Testing
+**Categoría:** Widget Pruebaing
 **Severidad:** MEDIA
 **Razón Probable:** Assertion de widgets de estado vacío no encontrados
 **Recomendación:** Verificar implementación de empty state placeholder
 
 ---
 
-### 4. Widget Tests - GlobalSearchDialog (1 fallo)
-**Archivo:** `tests/client/features/project_shell/presentation/widgets/global_search_dialog_test.dart`
+### 4. Widget Pruebas - GlobalSearchDialog (1 fallo)
+**Archivo:** `pruebas/client/features/proyecto_shell/presentation/widgets/global_search_dialog_prueba.dart`
 
-#### Tests Fallidos:
-- ❌ `should close dialog when close button is tapped`
+#### Pruebas Fallidos:
+- ❌ `should close dialog when close botón is tapped`
 
-**Categoría:** Widget Testing
+**Categoría:** Widget Pruebaing
 **Severidad:** BAJA
 **Razón Probable:** Navigator.pop no mockeado correctamente
 **Recomendación:** Agregar mock de NavigatorObserver
 
 ---
 
-### 5. Integration Tests - Streaming Flow (1 fallo)
-**Archivo:** `tests/client/integration/features/chat/streaming_flow_test.dart`
+### 5. Integración Pruebas - Streaming Flow (1 fallo)
+**Archivo:** `pruebas/client/integration/features/chat/streaming_flow_prueba.dart`
 
-#### Test Fallido:
+#### Prueba Fallido:
 - ❌ `renders tokens incrementally without jank`
 
-**Categoría:** Integration E2E
+**Categoría:** Integración E2E
 **Severidad:** ALTA
 **Error:**
 ```
@@ -99,17 +99,17 @@
 ```
 
 **Razón Probable:** Timing issue - acceso a currentFrameTimeStamp antes de primer frame render
-**Recomendación:** Agregar `await tester.pumpAndSettle()` antes de medir timestamps
+**Recomendación:** Agregar `await pruebaer.pumpAndSettle()` antes de medir timestamps
 
 ---
 
-### 6. Integration Tests - Markdown Preview Flow (1 fallo)
-**Archivo:** `tests/client/integration/features/project_shell/presentation/markdown_preview_flow_test.dart`
+### 6. Integración Pruebas - Markdown Preview Flow (1 fallo)
+**Archivo:** `pruebas/client/integration/features/proyecto_shell/presentation/markdown_preview_flow_prueba.dart`
 
-#### Test Fallido:
+#### Prueba Fallido:
 - ❌ `should handle complete markdown preview workflow`
 
-**Categoría:** Integration E2E
+**Categoría:** Integración E2E
 **Severidad:** MEDIA
 **Error:**
 ```
@@ -126,13 +126,13 @@ Expected: exactly one matching candidate
 ## ⚠️ Warnings del Análisis Flutter (52 warnings)
 
 ### Categorías de Warnings:
-1. **`invalid_use_of_visible_for_testing_member`** (6 warnings)
-   - Uso de `setMockInitialValues` en tests de SharedPreferences
-   - **Acción:** Aceptable - es el uso esperado en contexto de testing
+1. **`invalid_use_of_visible_for_pruebaing_member`** (6 warnings)
+   - Uso de `setMockInitialValues` en pruebas de SharedPreferences
+   - **Acción:** Aceptable - es el uso esperado en contexto de pruebaing
 
 2. **`invalid_use_of_protected_member`** (46 warnings)
-   - Acceso directo a property `.state` de StateNotifier en tests
-   - **Archivo:** `project_shell_notifier_test.dart`
+   - Acceso directo a property `.state` de StateNotifier en pruebas
+   - **Archivo:** `proyecto_shell_notifier_prueba.dart`
    - **Acción:** Considerar uso de `.debugState` o accessors públicos
 
 ---
@@ -140,26 +140,26 @@ Expected: exactly one matching candidate
 ## 🔧 Plan de Corrección Prioritario
 
 ### PRIORIDAD ALTA (Bloquean features críticas)
-1. **ProposalCardWidget (6 tests)** → Arreglar mocking de flutter_markdown
-2. **ProjectsSidebar (6 tests)** → Corregir ProviderScope setup
-3. **Streaming Flow (1 test)** → Resolver timing assertion
+1. **ProposalCardWidget (6 pruebas)** → Arreglar mocking de flutter_markdown
+2. **ProyectosSidebar (6 pruebas)** → Corregir ProviderScope setup
+3. **Streaming Flow (1 prueba)** → Resolver timing assertion
 
 ### PRIORIDAD MEDIA
-4. **MarkdownPreviewWidget (2 tests)** → Implementar empty state tests
-5. **Markdown Preview Flow (1 test)** → Ajustar text finder strategy
+4. **MarkdownPreviewWidget (2 pruebas)** → Implementar empty state pruebas
+5. **Markdown Preview Flow (1 prueba)** → Ajustar text finder strategy
 
 ### PRIORIDAD BAJA
-6. **GlobalSearchDialog (1 test)** → Mockear Navigator
+6. **GlobalSearchDialog (1 prueba)** → Mockear Navigator
 
 ---
 
-## ✅ Tests con Éxito Destacados
+## ✅ Pruebas con Éxito Destacados
 
-- ✅ **FileSearchUseCase** - 40 tests de búsqueda y filtrado (100% pass)
-- ✅ **LocaleNotifier** - 23 tests de internacionalización (100% pass)
-- ✅ **Project Creation Flow** - 7 integration tests de creación de proyectos (100% pass)
-- ✅ **Directory Navigation Flow** - 12 integration tests de navegación (100% pass)
-- ✅ **Error Handling E2E** - Tests de manejo de errores bilingües (100% pass)
+- ✅ **ArchivoSearchUseCase** - 40 pruebas de búsqueda y filtrado (100% pass)
+- ✅ **LocaleNotifier** - 23 pruebas de internacionalización (100% pass)
+- ✅ **Proyecto Creation Flow** - 7 integration pruebas de creación de proyectos (100% pass)
+- ✅ **Directory Navigation Flow** - 12 integration pruebas de navegación (100% pass)
+- ✅ **Error Handling E2E** - Pruebas de manejo de errores bilingües (100% pass)
 
 ---
 
@@ -167,27 +167,27 @@ Expected: exactly one matching candidate
 
 | Categoría | Pasados | Fallidos | % Éxito |
 |-----------|---------|----------|---------|
-| **Unit Tests** | 340 | 0 | 100% |
-| **Widget Tests** | 40 | 15 | 72.7% |
-| **Integration Tests** | 24 | 2 | 92.3% |
-| **E2E Tests** | 0 | 1 | 0% (pending) |
+| **Unit Pruebas** | 340 | 0 | 100% |
+| **Widget Pruebas** | 40 | 15 | 72.7% |
+| **Integración Pruebas** | 24 | 2 | 92.3% |
+| **E2E Pruebas** | 0 | 1 | 0% (pending) |
 
 ---
 
 ## 🚨 Conclusiones
 
 ### Fortalezas
-- ✅ **Lógica de Negocio (Unit Tests):** 100% pass rate - arquitectura sólida
-- ✅ **Integration Tests:** 92.3% pass rate - flujos end-to-end funcionan correctamente
-- ✅ **Cobertura:** 429 tests totales - buena cobertura del proyecto
+- ✅ **Lógica de Negocio (Unit Pruebas):** 100% pass rate - arquitectura sólida
+- ✅ **Integración Pruebas:** 92.3% pass rate - flujos end-to-end funcionan correctamente
+- ✅ **Cobertura:** 429 pruebas totales - buena cobertura del proyecto
 
 ### Áreas de Mejora
-- ⚠️ **Widget Tests:** 72.7% pass rate - necesitan refactorización de mocking
-- ⚠️ **Flutter Analyze Warnings:** 52 warnings (aunque esperados en tests)
-- ⚠️ **Integration Test Plugin:** Warning sobre missing integration_test plugin setup
+- ⚠️ **Widget Pruebas:** 72.7% pass rate - necesitan refactorización de mocking
+- ⚠️ **Flutter Analyze Warnings:** 52 warnings (aunque esperados en pruebas)
+- ⚠️ **Integración Prueba Plugin:** Warning sobre missing integration_prueba plugin setup
 
 ### Recomendaciones Generales
 1. Consolidar estrategia de mocking para widgets con dependencias markdown
-2. Estandarizar setup de ProviderScope en todos los widget tests
-3. Agregar documentación de testing patterns en doc/02-SETUP_DEV/
-4. Configurar integration_test plugin para eliminar warnings
+2. Estandarizar setup de ProviderScope en todos los widget pruebas
+3. Agregar documentoación de pruebaing patterns en doc/02-SETUP_DEV/
+4. Configurar integration_prueba plugin para eliminar warnings

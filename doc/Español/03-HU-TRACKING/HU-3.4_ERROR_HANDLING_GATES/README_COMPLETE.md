@@ -23,7 +23,7 @@
 
 # 🇬🇧 English Version
 
-## 📝 Description
+## 📝 Descripción
 
 ### User Story
 
@@ -36,7 +36,7 @@ To guarantee document integrity and recovery from failures.
 ### Context
 
 After HU-3.3 (Chat Sequential Docs), we need **production-grade error handling** to ensure:
-- Documents are validated before storage
+- Documentos are validated before storage
 - Transient failures are automatically retried
 - Users receive actionable, localized error messages
 - System maintains audit trail without exposing sensitive data
@@ -59,36 +59,36 @@ Implement **validation, retry, and recovery** with:
   - Logs each retry with context
 
 - ↩️ **Fallback & Rollback**:
-  - Restore previous document version
+  - Restore anterior documento version
   - Store 5 most recent versions in SQLite
   - User-triggered rollback from UI
 
 - 🎨 **UX-Optimized Notifications**:
   - Success/Info: Auto-hide after 5s
   - Errors: Manual close required
-  - Retryable errors: Show "Retry" button
+  - Retryable errors: Show "Retry" botón
   - Localized Spanish messages
 
 - 📝 **Comprehensive Logging**:
   - Structured JSON logs
   - Context: operation, timestamp, error_code
-  - NEVER log: API keys, file contents, PII
+  - NEVER log: API keys, archivo contents, PII
 
 ---
 
 ## ✅ Acceptance Criteria
 
-| # | Criterion | Phase | Status |
+| # | Criterion | Fase | Estado |
 |---|-----------|-------|--------|
-| 1 | ✅ Documents validated (length, structure, encoding, safety, size) | Phase 2 | ⏳ |
-| 2 | ✅ Retry logic: 3 attempts, exponential backoff | Phase 2 | ⏳ |
-| 3 | ✅ Fallback: restore previous version on failure | Phase 2 | ⏳ |
-| 4 | ✅ Snackbar UX: auto-hide 5s (success), manual (error) | Phase 2 | ⏳ |
-| 5 | ✅ Error logging with context (no sensitive data) | Phase 3 | ⏳ |
-| 6 | ✅ Localized errors in Spanish (11+ codes mapped) | Phase 2 | ⏳ |
-| 7 | ✅ Test coverage >90% on gates and retry logic | Phase 1-4 | ⏳ |
-| 8 | ❌ Users NEVER see stack traces | Phase 2 | ⏳ |
-| 9 | ✅ Integration with HU-3.3 (Chat Sequential Docs) | Phase 4 | ⏳ |
+| 1 | ✅ Documentos validated (length, structure, encoding, safety, size) | Fase 2 | ⏳ |
+| 2 | ✅ Retry logic: 3 attempts, exponential backoff | Fase 2 | ⏳ |
+| 3 | ✅ Fallback: restore anterior version on failure | Fase 2 | ⏳ |
+| 4 | ✅ Snackbar UX: auto-hide 5s (success), manual (error) | Fase 2 | ⏳ |
+| 5 | ✅ Error logging with context (no sensitive data) | Fase 3 | ⏳ |
+| 6 | ✅ Localized errors in Spanish (11+ codes mapped) | Fase 2 | ⏳ |
+| 7 | ✅ Prueba coverage >90% on gates and retry logic | Fase 1-4 | ⏳ |
+| 8 | ❌ Users NEVER see stack traces | Fase 2 | ⏳ |
+| 9 | ✅ Integración with HU-3.3 (Chat Sequential Docs) | Fase 4 | ⏳ |
 
 ---
 
@@ -96,37 +96,37 @@ Implement **validation, retry, and recovery** with:
 
 ### Backend (Python)
 
-| # | Task | Artifact | Lines | Status |
+| # | Task | Artifact | Lines | Estado |
 |---|------|----------|-------|--------|
-| 1 | Validation gates implementation | `services/validators/document_validator.py` | ~150 | ⏳ |
+| 1 | Validation gates implementación | `services/validators/documento_validator.py` | ~150 | ⏳ |
 | 2 | Retry decorator with backoff | `core/retry.py` | ~100 | ⏳ |
 | 3 | Custom exceptions | `core/exceptions.py` (update) | ~80 | ⏳ |
 | 4 | Structured logging | `core/logging_config.py` | ~60 | ⏳ |
-| 5 | Unit tests (validators) | `tests/unit/services/validators/test_document_validator.py` | ~200 | ⏳ |
-| 6 | Unit tests (retry) | `tests/unit/core/test_retry.py` | ~150 | ⏳ |
-| 7 | Integration tests | `tests/integration/test_error_handling_flow.py` | ~100 | ⏳ |
+| 5 | Unit pruebas (validators) | `pruebas/unit/services/validators/prueba_documento_validator.py` | ~200 | ⏳ |
+| 6 | Unit pruebas (retry) | `pruebas/unit/core/prueba_retry.py` | ~150 | ⏳ |
+| 7 | Integración pruebas | `pruebas/integration/prueba_error_handling_flow.py` | ~100 | ⏳ |
 
 ### Frontend (Flutter)
 
-| # | Task | Artifact | Lines | Status |
+| # | Task | Artifact | Lines | Estado |
 |---|------|----------|-------|--------|
 | 1 | Error mapper (codes → messages) | `lib/core/error_handling/error_mapper.dart` | ~120 | ⏳ |
 | 2 | Snackbar service | `lib/core/error_handling/snackbar_service.dart` | ~180 | ⏳ |
 | 3 | Error context model | `lib/core/error_handling/error_context.dart` | ~40 | ⏳ |
-| 4 | Unit tests (error mapper) | `tests/unit/core/error_handling/error_mapper_test.dart` | ~100 | ⏳ |
-| 5 | Unit tests (snackbar) | `tests/unit/core/error_handling/snackbar_service_test.dart` | ~150 | ⏳ |
-| 6 | Integration tests | `tests/integration/features/chat/error_handling_flow_test.dart` | ~120 | ⏳ |
+| 4 | Unit pruebas (error mapper) | `pruebas/unit/core/error_handling/error_mapper_prueba.dart` | ~100 | ⏳ |
+| 5 | Unit pruebas (snackbar) | `pruebas/unit/core/error_handling/snackbar_service_prueba.dart` | ~150 | ⏳ |
+| 6 | Integración pruebas | `pruebas/integration/features/chat/error_handling_flow_prueba.dart` | ~120 | ⏳ |
 
-### Documentation
+### Documentoation
 
-| # | Task | Artifact | Status |
+| # | Task | Artifact | Estado |
 |---|------|----------|--------|
 | 1 | Update error handling standard | `context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md` | ⏳ |
-| 2 | Create developer guide | `doc/02-SETUP_DEV/ERROR_HANDLING_GUIDE.md` | ⏳ |
+| 2 | Crear developer guide | `doc/02-SETUP_DEV/ERROR_HANDLING_GUIDE.md` | ⏳ |
 | 3 | Define validation rules | `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/VALIDATION_RULES.md` | ⏳ |
 | 4 | Completion summary | `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/COMPLETION_SUMMARY.md` | ⏳ |
 
-**Total Estimated Lines:** ~1,650 lines (backend + frontend + tests)
+**Total Estimated Lines:** ~1,650 lines (backend + frontend + pruebas)
 
 ---
 
@@ -146,7 +146,7 @@ Implement **validation, retry, and recovery** with:
 
 ## 📚 Resources
 
-### Reference Documentation
+### Reference Documentoation
 - [ERROR_HANDLING_STANDARD.en.md](../../../context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.en.md)
 - [WORKFLOW_MASTER_DEFINITION.en.md](./WORKFLOW_MASTER_DEFINITION.en.md)
 - [AGENTS.md](../../../AGENTS.md) - Section 8 (CI/CD Pipeline)
@@ -161,7 +161,7 @@ Implement **validation, retry, and recovery** with:
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| Test Coverage | >90% | ⏳ 0% |
+| Prueba Coverage | >90% | ⏳ 0% |
 | Error Codes Mapped | 11+ | ⏳ 0 |
 | Validation Gates | 5 | ⏳ 0 |
 | Retry Max Attempts | 3 | ⏳ N/A |
@@ -172,15 +172,15 @@ Implement **validation, retry, and recovery** with:
 
 ## 📅 Timeline
 
-| Phase | Duration | Status |
+| Fase | Duration | Estado |
 |-------|----------|--------|
-| Phase 0: Preparation | 0.5 days | ⏳ Not Started |
-| Phase 1: TDD RED | 1 day | ⏳ Not Started |
-| Phase 2: TDD GREEN | 1 day | ⏳ Not Started |
-| Phase 3: TDD REFACTOR | 0.5 days | ⏳ Not Started |
-| Phase 4: Integration | 0.5 days | ⏳ Not Started |
-| Phase 5: Documentation | 0.25 days | ⏳ Not Started |
-| Phase 6: CI/CD | 0.25 days | ⏳ Not Started |
+| Fase 0: Preparation | 0.5 days | ⏳ Not Started |
+| Fase 1: TDD RED | 1 day | ⏳ Not Started |
+| Fase 2: TDD GREEN | 1 day | ⏳ Not Started |
+| Fase 3: TDD REFACTOR | 0.5 days | ⏳ Not Started |
+| Fase 4: Integración | 0.5 days | ⏳ Not Started |
+| Fase 5: Documentoation | 0.25 days | ⏳ Not Started |
+| Fase 6: CI/CD | 0.25 days | ⏳ Not Started |
 
 **Total Estimated Time:** 3.5 - 4 days
 
@@ -198,14 +198,14 @@ git checkout feature/error-handling-gates
 git pull origin develop
 ```
 
-### Phase 0 Checklist
+### Fase 0 Checklist
 - [ ] Read ERROR_HANDLING_STANDARD.md
 - [ ] Analyze existing error handling code
-- [ ] Create VALIDATION_RULES.md
-- [ ] Setup test directories
-- [ ] Prepare test fixtures
+- [ ] Crear VALIDATION_RULES.md
+- [ ] Setup prueba directories
+- [ ] Prepare prueba fixtures
 
-**Next:** See [WORKFLOW_MASTER_DEFINITION.en.md](./WORKFLOW_MASTER_DEFINITION.en.md) for detailed execution plan.
+**Siguiente:** See [WORKFLOW_MASTER_DEFINITION.en.md](./WORKFLOW_MASTER_DEFINITION.en.md) for detailed execution plan.
 
 </div>
 
@@ -228,7 +228,7 @@ Para garantizar integridad de documentos y recuperación ante fallos.
 ### Contexto
 
 Después de HU-3.3 (Chat Sequential Docs), necesitamos **manejo de errores production-grade** para asegurar:
-- Los documentos se validan antes del almacenamiento
+- Los documentoos se validan antes del almacenamiento
 - Los fallos transitorios se reintentan automáticamente
 - Los usuarios reciben mensajes de error accionables y localizados
 - El sistema mantiene audit trail sin exponer datos sensibles
@@ -251,7 +251,7 @@ Implementar **validación, reintento y recuperación** con:
   - Registra cada reintento con contexto
 
 - ↩️ **Fallback y Rollback**:
-  - Restaurar versión anterior del documento
+  - Restaurar versión anterior del documentoo
   - Almacenar 5 versiones más recientes en SQLite
   - Rollback activado por el usuario desde UI
 
@@ -272,13 +272,13 @@ Implementar **validación, reintento y recuperación** con:
 
 | # | Criterio | Fase | Estado |
 |---|----------|------|--------|
-| 1 | ✅ Documentos validados (longitud, estructura, codificación, seguridad, tamaño) | Fase 2 | ⏳ |
+| 1 | ✅ Documentoos validados (longitud, estructura, codificación, seguridad, tamaño) | Fase 2 | ⏳ |
 | 2 | ✅ Lógica de reintento: 3 intentos, backoff exponencial | Fase 2 | ⏳ |
 | 3 | ✅ Fallback: restaurar versión anterior en fallo | Fase 2 | ⏳ |
 | 4 | ✅ UX Snackbar: auto-ocultar 5s (éxito), manual (error) | Fase 2 | ⏳ |
 | 5 | ✅ Logging de errores con contexto (sin datos sensibles) | Fase 3 | ⏳ |
 | 6 | ✅ Errores localizados en español (11+ códigos mapeados) | Fase 2 | ⏳ |
-| 7 | ✅ Cobertura de tests >90% en gates y lógica de reintento | Fases 1-4 | ⏳ |
+| 7 | ✅ Cobertura de pruebas >90% en gates y lógica de reintento | Fases 1-4 | ⏳ |
 | 8 | ❌ Los usuarios NUNCA ven stack traces | Fase 2 | ⏳ |
 | 9 | ✅ Integración con HU-3.3 (Chat Sequential Docs) | Fase 4 | ⏳ |
 
@@ -290,13 +290,13 @@ Implementar **validación, reintento y recuperación** con:
 
 | # | Tarea | Artefacto | Líneas | Estado |
 |---|-------|-----------|--------|--------|
-| 1 | Implementación de gates de validación | `services/validators/document_validator.py` | ~150 | ⏳ |
+| 1 | Implementación de gates de validación | `services/validators/documento_validator.py` | ~150 | ⏳ |
 | 2 | Decorador de reintento con backoff | `core/retry.py` | ~100 | ⏳ |
 | 3 | Excepciones personalizadas | `core/exceptions.py` (actualizar) | ~80 | ⏳ |
 | 4 | Logging estructurado | `core/logging_config.py` | ~60 | ⏳ |
-| 5 | Tests unitarios (validadores) | `tests/unit/services/validators/test_document_validator.py` | ~200 | ⏳ |
-| 6 | Tests unitarios (reintento) | `tests/unit/core/test_retry.py` | ~150 | ⏳ |
-| 7 | Tests de integración | `tests/integration/test_error_handling_flow.py` | ~100 | ⏳ |
+| 5 | Pruebas unitarios (validadores) | `pruebas/unit/services/validators/prueba_documento_validator.py` | ~200 | ⏳ |
+| 6 | Pruebas unitarios (reintento) | `pruebas/unit/core/prueba_retry.py` | ~150 | ⏳ |
+| 7 | Pruebas de integración | `pruebas/integration/prueba_error_handling_flow.py` | ~100 | ⏳ |
 
 ### Frontend (Flutter)
 
@@ -305,11 +305,11 @@ Implementar **validación, reintento y recuperación** con:
 | 1 | Mapeador de errores (códigos → mensajes) | `lib/core/error_handling/error_mapper.dart` | ~120 | ⏳ |
 | 2 | Servicio de snackbar | `lib/core/error_handling/snackbar_service.dart` | ~180 | ⏳ |
 | 3 | Modelo de contexto de error | `lib/core/error_handling/error_context.dart` | ~40 | ⏳ |
-| 4 | Tests unitarios (error mapper) | `tests/unit/core/error_handling/error_mapper_test.dart` | ~100 | ⏳ |
-| 5 | Tests unitarios (snackbar) | `tests/unit/core/error_handling/snackbar_service_test.dart` | ~150 | ⏳ |
-| 6 | Tests de integración | `tests/integration/features/chat/error_handling_flow_test.dart` | ~120 | ⏳ |
+| 4 | Pruebas unitarios (error mapper) | `pruebas/unit/core/error_handling/error_mapper_prueba.dart` | ~100 | ⏳ |
+| 5 | Pruebas unitarios (snackbar) | `pruebas/unit/core/error_handling/snackbar_service_prueba.dart` | ~150 | ⏳ |
+| 6 | Pruebas de integración | `pruebas/integration/features/chat/error_handling_flow_prueba.dart` | ~120 | ⏳ |
 
-### Documentación
+### Documentoación
 
 | # | Tarea | Artefacto | Estado |
 |---|-------|-----------|--------|
@@ -318,7 +318,7 @@ Implementar **validación, reintento y recuperación** con:
 | 3 | Definir reglas de validación | `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/VALIDATION_RULES.md` | ⏳ |
 | 4 | Resumen de completación | `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/COMPLETION_SUMMARY.md` | ⏳ |
 
-**Total Líneas Estimadas:** ~1,650 líneas (backend + frontend + tests)
+**Total Líneas Estimadas:** ~1,650 líneas (backend + frontend + pruebas)
 
 ---
 
@@ -338,7 +338,7 @@ Implementar **validación, reintento y recuperación** con:
 
 ## 📚 Recursos
 
-### Documentación de Referencia
+### Documentoación de Referencia
 - [ERROR_HANDLING_STANDARD.es.md](../../../context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.es.md)
 - [WORKFLOW_MASTER_DEFINITION.es.md](./WORKFLOW_MASTER_DEFINITION.es.md)
 - [AGENTS.md](../../../AGENTS.md) - Sección 8 (Pipeline CI/CD)
@@ -353,7 +353,7 @@ Implementar **validación, reintento y recuperación** con:
 
 | Métrica | Objetivo | Actual |
 |---------|----------|--------|
-| Cobertura de Tests | >90% | ⏳ 0% |
+| Cobertura de Pruebas | >90% | ⏳ 0% |
 | Códigos de Error Mapeados | 11+ | ⏳ 0 |
 | Gates de Validación | 5 | ⏳ 0 |
 | Intentos Máx de Reintento | 3 | ⏳ N/A |
@@ -371,7 +371,7 @@ Implementar **validación, reintento y recuperación** con:
 | Fase 2: TDD VERDE | 1 día | ⏳ No Iniciado |
 | Fase 3: TDD REFACTOR | 0.5 días | ⏳ No Iniciado |
 | Fase 4: Integración | 0.5 días | ⏳ No Iniciado |
-| Fase 5: Documentación | 0.25 días | ⏳ No Iniciado |
+| Fase 5: Documentoación | 0.25 días | ⏳ No Iniciado |
 | Fase 6: CI/CD | 0.25 días | ⏳ No Iniciado |
 
 **Tiempo Total Estimado:** 3.5 - 4 días
@@ -394,8 +394,8 @@ git pull origin develop
 - [ ] Leer ERROR_HANDLING_STANDARD.md
 - [ ] Analizar código de manejo de errores existente
 - [ ] Crear VALIDATION_RULES.md
-- [ ] Configurar directorios de tests
-- [ ] Preparar fixtures de tests
+- [ ] Configurar directorios de pruebas
+- [ ] Preparar fixtures de pruebas
 
 **Siguiente:** Ver [WORKFLOW_MASTER_DEFINITION.es.md](./WORKFLOW_MASTER_DEFINITION.es.md) para el plan de ejecución detallado.
 

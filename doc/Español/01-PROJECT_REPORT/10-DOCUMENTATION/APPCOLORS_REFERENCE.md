@@ -145,7 +145,7 @@ Text(
 
 ## 💻 Ejemplos de Código
 
-### ProjectCard con AppColors
+### ProyectoCard con AppColors
 ```dart
 // Icon container
 Container(
@@ -190,7 +190,7 @@ Text(
 Border.all(color: AppColors.border),
 ```
 
-### ProjectListView con AppColors
+### ProyectoListView con AppColors
 ```dart
 // Container border
 border: Border.all(
@@ -270,12 +270,12 @@ Container(
 
 Cuando agregues nuevos colores:
 
-- [ ] Documenta el color en AppColors con su valor hex
+- [ ] Documentoa el color en AppColors con su valor hex
 - [ ] Especifica dónde se usa (UI component)
 - [ ] Indica si necesita opacidad y con qué valores
 - [ ] Actualiza esta guía de referencia
 - [ ] Usa `AppColors.colorName` en lugar de `Color(0xFFxxxxxx)`
-- [ ] Testa en múltiples modos (light/dark) si aplica
+- [ ] Pruebaa en múltiples modos (light/dark) si aplica
 
 ---
 
@@ -291,4 +291,4 @@ Cuando agregues nuevos colores:
 ## 📞 Contacto / Preguntas
 
 Para actualizar la paleta de colores o agregar nuevos, contacta al equipo de diseño.
-Todos los cambios deben ser reflejados en este documento.
+Todos los cambios deben ser reflejados en este documentoo.

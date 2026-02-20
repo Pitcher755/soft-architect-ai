@@ -1,16 +1,16 @@
 # 🎯 Project Shell Refactoring - Phase 2 Complete
 
-> **Fecha:** 8 de febrero de 2026
-> **Estado:** ✅ COMPLETADO
+> **Date:** 8 de febrero de 2026
+> **Status:** ✅ COMPLETADO
 > **Compilation:** 0 errors verified
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Resumen de Cambios](#resumen-de-cambios)
 - [Nuevos Widgets Creados](#nuevos-widgets-creados)
-- [Archivos Refactorizados](#archivos-refactorizados)
+- [Files Refactorizados](#files-refactorizados)
 - [Características Implementadas](#características-implementadas)
 - [Validación](#validación)
 
@@ -23,10 +23,10 @@
 Transformar `project_shell_screen.dart` de código espagueti a arquitectura limpia y modular:
 
 1. **Extraer lógica del árbol de directorios** → Nuevo widget `FileTreeWidget`
-2. **Crear columnas resizables** → Nuevo widget `ResizableColumn`
+2. **Create columnas resizables** → Nuevo widget `ResizableColumn`
 3. **Integrar ProgressIndicatorWidget real** → En el header del chat
 4. **Columnas ocultables** → Toggle buttons en FAB (Floating Action Buttons)
-5. **Navegación persistente** → Seleccionar archivo mantiene el árbol visible
+5. **Navegación persistente** → Seleccionar file mantiene el árbol visible
 
 ---
 
@@ -45,8 +45,8 @@ class FileTreeWidget extends StatefulWidget {
 **Características:**
 - Árbol de directorios completamente independiente
 - Cargado desde `MockProjectData.mockProjectRoot`
-- Expand/collapse de carpetas con iconos interactivos
-- Selección visual de archivos/carpetas
+- Expand/collapse de folders con iconos interactivos
+- Selección visual de files/folders
 - Callbacks cuando se selecciona un nodo
 - Profundidad basada en indentación
 
@@ -98,7 +98,7 @@ ResizableColumn(
 
 ---
 
-## 🔄 Archivos Refactorizados
+## 🔄 Files Refactorizados
 
 ### `project_shell_screen.dart`
 
@@ -113,8 +113,8 @@ ResizableColumn(
 - ~150 líneas (50% reducción)
 - 2 métodos build simples
 - Métodos: `_onFileSelected()`, `_buildFAB()`
-- Columnas resizables con estado
-- Estado claro y separado
+- Columnas resizables con status
+- Status claro y separado
 
 **Cambios principales:**
 
@@ -134,7 +134,7 @@ if (_showFilesPanel)
   ),
 ```
 
-**Variables de Estado:**
+**Variables de Status:**
 ```dart
 class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   late FileNode _selectedNode;                    // Currently selected file
@@ -173,11 +173,11 @@ Expanded(
 
 ### 1. Árbol de Directorios Navegable ✅
 
-- **Expand/Collapse:** Carpetas expandibles con control visual
-- **Selección:** Marca el archivo/carpeta seleccionado con color
+- **Expand/Collapse:** Folders expandibles con control visual
+- **Selección:** Marca el file/folder seleccionado con color
 - **Mock Data:** Precargado desde `MockProjectData.mockProjectRoot`
-- **Iconos:** Carpeta (azul), archivo (gris)
-- **Persistencia:** El árbol NO se cierra al seleccionar archivo
+- **Iconos:** Folder (azul), file (gris)
+- **Persistencia:** El árbol NO se cierra al seleccionar file
 
 ### 2. Columnas Redimensionables ✅
 
@@ -191,7 +191,7 @@ Expanded(
 - **Toggle Buttons:** 2 FABs en esquina inferior derecha
 - **Files Toggle:** Mostrar/ocultar explorador
 - **Preview Toggle:** Mostrar/ocultar preview markdown
-- **Persistencia:** Estado se mantiene al toggle
+- **Persistencia:** Status se mantiene al toggle
 - **Icons:** 📁 folder / 👁 visibility
 
 ### 4. Progress Indicator Integrado ✅
@@ -206,8 +206,8 @@ ProgressIndicatorWidget(
 **Características:**
 - Progress bar visual (32% = 8/25)
 - Label dinámico
-- Botón Pause
-- Phase colors por estado
+- Button Pause
+- Phase colors por status
 
 ### 5. Chat Panel con Datos Mock ✅
 
@@ -255,7 +255,7 @@ Analyzing client...
 ✓ ran in 1.3s
 ```
 
-### Estructura de Archivos ✅
+### Estructura de Files ✅
 ```
 lib/features/project_shell/
 ├── data/
@@ -272,7 +272,7 @@ lib/features/project_shell/
 
 ### Integración de Widgets ✅
 
-| Widget | Estado | Datos Mock | Navegable |
+| Widget | Status | Datos Mock | Navegable |
 |--------|--------|-----------|-----------|
 | FileTreeWidget | ✅ | MockProjectData.mockProjectRoot | ✅ |
 | ChatPanelWidget | ✅ | MockProjectData.mockChatMessages | ✅ |
@@ -310,22 +310,22 @@ lib/features/project_shell/
 
 ---
 
-## 🔮 Próximos Pasos (No Implementados Aún)
+## 🔮 Next Steps (No Implementados Aún)
 
 ### 1. Backend Integration
-- Crear `FileSystemNotifier` (reemplazo de mock)
-- Crear `ChatNotifier` (reemplazo de mock)
+- Create `FileSystemNotifier` (reemplazo de mock)
+- Create `ChatNotifier` (reemplazo de mock)
 - Repository pattern para datos
 
 ### 2. Real File System
-- Cargar archivos reales del proyecto
+- Cargar files reales of the project
 - Parsear markdown para rendering
 - Cachear contenido en memoria
 
 ### 3. Enhanced Features
 - Expandir/colapsar todos (buttons en header)
 - Buscar en árbol (search input)
-- Drag&drop entre carpetas (future)
+- Drag&drop entre folders (future)
 - Real-time edits en preview
 
 ### 4. Performance

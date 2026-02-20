@@ -1,17 +1,17 @@
-# ✅ VALIDACIÓN: GitHub Actions Workflows Listos para CI/CD
+# ✅ VALIDACIÓN: GitHub Actions Workflows Ready for CI/CD
 
-> **Fecha:** 01/02/2026
-> **Estado:** ✅ VERIFICADO
+> **Date:** 01/02/2026
+> **Status:** ✅ VERIFICADO
 > **Rama:** feature/rag-vectorization
 
 ---
 
 ## 📊 RESUMEN DE VALIDACIONES
 
-### 1. ✅ Instalación y Configuración
+### 1. ✅ Instalación y Configuration
 
 - **act instalado:** `/usr/local/bin/act`
-- **Docker configurado:** Listo para ejecutar containers
+- **Docker configurado:** Listo para execute containers
 - **Config act:** `~/.config/act/actrc` configurado con imagen `catthehacker/ubuntu:act-latest`
 
 ### 2. ✅ Workflows Disponibles
@@ -57,17 +57,17 @@ Stage 1 (Después de Stage 0):
 ✅ pytest-cov>=7.0.0             → Para coverage
 ```
 
-### 4. ✅ Configuración Pylance/Pyright
+### 4. ✅ Configuration Pylance/Pyright
 
-**Archivo:** `pyrightconfig.json`
+**File:** `pyrightconfig.json`
 - Include paths: `[app, services, core, tests]` ✅
 - venv excluded: NO (fue removido) ✅
 - venvPath configurado: SÍ ✅
-- Resultado: 0 errores de Pylance ✅
+- Result: 0 errores de Pylance ✅
 
 ### 5. ✅ Cambios Realizados (Esta Sesión)
 
-| Archivo | Cambio | Estado |
+| File | Cambio | Status |
 |---------|--------|--------|
 | `requirements.txt` | Agregado chromadb + deps | ✅ Committed |
 | `pyrightconfig.json` | Actualizado paths | ✅ Committed |
@@ -120,7 +120,7 @@ act --list
 
 ---
 
-## ✅ ESTADO LISTO PARA GITHUB ACTIONS
+## ✅ STATUS LISTO PARA GITHUB ACTIONS
 
 ### Tests Unitarios (HU-2.2)
 - ✅ 15 unit tests con mocking (sin Docker)

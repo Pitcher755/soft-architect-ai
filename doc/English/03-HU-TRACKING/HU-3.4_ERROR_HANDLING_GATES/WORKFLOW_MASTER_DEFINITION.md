@@ -61,7 +61,7 @@
 ### 6. **Error Code Mapping (User-Friendly)**
 - Map technical errors to Spanish messages:
   - `SYS_001` → "No hay conexión con el servidor local"
-  - `VAL_001` → "El documento generado es inválido"
+  - `VAL_001` → "El document generado es inválido"
   - `RAG_001` → "La base de conocimiento está vacía"
 - **No stack traces** visible to users (only in logs).
 - **Fulfills:** User experience, privacy.

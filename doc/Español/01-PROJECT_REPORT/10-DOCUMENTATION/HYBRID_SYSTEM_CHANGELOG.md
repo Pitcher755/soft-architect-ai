@@ -1,6 +1,6 @@
 <!--
 CHANGELOG: HYBRID SYSTEM IMPLEMENTATION
-This file documents all changes made to implement the hybrid project management system.
+This archivo documentos all changes made to implement the hybrid proyecto management system.
 -->
 
 # 📝 CHANGELOG: SISTEMA HÍBRIDO DE PROYECTOS
@@ -16,12 +16,12 @@ This file documents all changes made to implement the hybrid project management 
 
 ### ✨ Nuevos Archivos
 
-#### 1. `projects_provider.dart`
-**Ubicación:** `src/client/lib/features/project_shell/presentation/providers/`
+#### 1. `proyectos_provider.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/presentation/providers/`
 
 **Cambios:**
 - ✅ Creado archivo nuevo
-- ✅ Función `buildHybridProjectsList(List<Project> userProjects)`
+- ✅ Función `buildHybridProyectosList(List<Proyecto> userProyectos)`
 - ✅ Combina proyectos reales + mock en una lista ordenada
 
 **Código Clave:**
@@ -51,11 +51,11 @@ List<Project> buildHybridProjectsList(List<Project> userProjects) {
 
 ### ✏️ Archivos Modificados
 
-#### 1. `project.dart`
-**Ubicación:** `src/client/lib/features/project_shell/domain/entities/`
+#### 1. `proyecto.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/domain/entities/`
 
 **Cambios:**
-- ✅ Agregado getter `phase` (derivado de la ruta)
+- ✅ Agregado getter `fase` (derivado de la ruta)
 - ✅ Lógica: detecta palabras clave en la ruta para determinar fase
 
 **Código Clave:**
@@ -79,11 +79,11 @@ String get phase {
 
 ---
 
-#### 2. `mock_projects_data.dart`
-**Ubicación:** `src/client/lib/features/project_shell/data/`
+#### 2. `mock_proyectos_data.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/data/`
 
 **Cambios:**
-- ✅ Simplificado a una única función: `getMockProjectsData()`
+- ✅ Simplificado a una única función: `getMockProyectosData()`
 - ✅ Retorna lista con la guía SoftArchitect
 - ✅ Usa protocolo virtual `mock://softarchitect-guide`
 
@@ -101,16 +101,16 @@ List<Map<String, dynamic>> getMockProjectsData() => [
 ```
 
 **Antes:** Contenía múltiples proyectos mock con datos complejos
-**Después:** Solo la guía, referencia a MockProjectData para contenido
+**Después:** Solo la guía, referencia a MockProyectoData para contenido
 
 ---
 
 #### 3. `mock_data.dart`
-**Ubicación:** `src/client/lib/features/project_shell/data/`
+**Ubicación:** `src/client/lib/features/proyecto_shell/data/`
 
 **Cambios:**
-- ✅ Agregado `guideRootNode` (const FileNode)
-- ✅ Agregado `guideFileContents` (const Map<String, String>)
+- ✅ Agregado `guideRootNode` (const ArchivoNode)
+- ✅ Agregado `guideArchivoContents` (const Map<String, String>)
 - ✅ Estructura de árbol completa para la guía
 - ✅ Contenido markdown para cada archivo
 
@@ -155,13 +155,13 @@ class MockProjectData {
 
 ---
 
-#### 4. `file_tree_widget.dart`
-**Ubicación:** `src/client/lib/features/filesystem/presentation/widgets/`
+#### 4. `archivo_tree_widget.dart`
+**Ubicación:** `src/client/lib/features/archivosystem/presentation/widgets/`
 
 **Cambios:**
 - ✅ Detección de rutas `mock://` vs reales
-- ✅ Si es `mock://` → usa `MockProjectData.guideRootNode`
-- ✅ Si es real → lee del filesystem
+- ✅ Si es `mock://` → usa `MockProyectoData.guideRootNode`
+- ✅ Si es real → lee del archivosystem
 
 **Código Clave:**
 ```dart
@@ -180,13 +180,13 @@ if (widget.projectPath?.startsWith('mock://') ?? false) {
 
 ---
 
-#### 5. `project_shell_screen.dart`
-**Ubicación:** `src/client/lib/features/project_shell/presentation/screens/`
+#### 5. `proyecto_shell_screen.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/presentation/screens/`
 
 **Cambios:**
 - ✅ Detección híbrida al leer archivos
-- ✅ Si es `mock://` → lee de `MockProjectData.guideFileContents`
-- ✅ Si es real → usa `File.readAsString()`
+- ✅ Si es `mock://` → lee de `MockProyectoData.guideArchivoContents`
+- ✅ Si es real → usa `Archivo.readAsString()`
 
 **Código Clave:**
 ```dart
@@ -213,14 +213,14 @@ void _onFileSelected(FileNode node) {
 
 ---
 
-#### 6. `project_workspace_screen.dart`
-**Ubicación:** `src/client/lib/features/project_shell/presentation/screens/`
+#### 6. `proyecto_workspace_screen.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/presentation/screens/`
 
 **Cambios:**
 - ✅ Convertido de `StatefulWidget` a `ConsumerStatefulWidget`
-- ✅ Usa `buildHybridProjectsList()` para obtener proyectos
-- ✅ Agregados métodos helper `_formatModified()` y `_getPhaseColor()`
-- ✅ GridView ahora usa objetos `Project` en lugar de Maps
+- ✅ Usa `buildHybridProyectosList()` para obtener proyectos
+- ✅ Agregados métodos helper `_formatModified()` y `_getFaseColor()`
+- ✅ GridView ahora usa objetos `Proyecto` en lugar de Maps
 
 **Código Clave:**
 ```dart
@@ -280,14 +280,14 @@ return ProjectCard(
 
 ---
 
-#### 7. `project_list_view.dart`
-**Ubicación:** `src/client/lib/features/project_shell/presentation/widgets/`
+#### 7. `proyecto_list_view.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/presentation/widgets/`
 
 **Cambios:**
-- ✅ Cambio de firma: `List<Map<String, dynamic>>` → `List<Project>`
-- ✅ Importa entidad `Project`
+- ✅ Cambio de firma: `List<Map<String, dynamic>>` → `List<Proyecto>`
+- ✅ Importa entidad `Proyecto`
 - ✅ Usa propiedades de objeto en lugar de keys de Map
-- ✅ Agregado método `_getPhaseColor()`
+- ✅ Agregado método `_getFaseColor()`
 
 **Código Clave:**
 ```dart
@@ -320,13 +320,13 @@ class _ProjectListViewState extends State<ProjectListView> {
 
 ---
 
-#### 8. `project_model.dart`
-**Ubicación:** `src/client/lib/features/project_shell/data/models/`
+#### 8. `proyecto_model.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/data/models/`
 
 **Cambios:**
-- ✅ Actualizado para heredar correctamente de `Project`
-- ✅ Cambio de `lastModified` a `createdAt` y `lastOpened`
-- ✅ Removidas propiedades inválidas (`phase`, `icon`, `color`)
+- ✅ Actualizado para heredar correctamente de `Proyecto`
+- ✅ Cambio de `lastModified` a `creardAt` y `lastOpened`
+- ✅ Removidas propiedades inválidas (`fase`, `icon`, `color`)
 
 **Código Clave:**
 ```dart
@@ -356,13 +356,13 @@ class ProjectModel extends Project {
 
 ---
 
-#### 9. `web_mock_project_repository.dart`
-**Ubicación:** `src/client/lib/features/project_shell/data/repositories/`
+#### 9. `web_mock_proyecto_repository.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/data/repositories/`
 
 **Cambios:**
-- ✅ Actualizado para usar `createdAt` en lugar de `lastModified`
+- ✅ Actualizado para usar `creardAt` en lugar de `lastModified`
 - ✅ Usa `lastOpened` para tracking de último acceso
-- ✅ Método `getLastOpenedProject()` usa lógica correcta
+- ✅ Método `getLastOpenedProyecto()` usa lógica correcta
 
 **Código Clave:**
 ```dart
@@ -429,9 +429,9 @@ Project(
 | Net lines added | ~350 |
 | Errores de compilación | 0 ✅ |
 | Imports agregados | 3 |
-| Nuevas funciones | 1 (buildHybridProjectsList) |
-| Nuevos getters | 1 (Project.phase) |
-| Nuevos métodos helper | 2 (_formatModified, _getPhaseColor) |
+| Nuevas funciones | 1 (buildHybridProyectosList) |
+| Nuevos getters | 1 (Proyecto.fase) |
+| Nuevos métodos helper | 2 (_formatModified, _getFaseColor) |
 
 ---
 
@@ -448,7 +448,7 @@ Project(
 ✅ Type safety verified
 ```
 
-### Testing
+### Pruebaing
 
 ```bash
 ✅ Manual test: Dashboard shows guide
@@ -467,8 +467,8 @@ Project(
 2. **Educación Integrada:** Guía siempre disponible, no invasiva
 3. **Performance:** Guía en memoria, 0ms carga
 4. **Escalabilidad:** Fácil agregar más guías/contenido
-5. **Type Safety:** Todo es `Project`, no Maps
-6. **Mantenibilidad:** Código limpio y documentado
+5. **Type Safety:** Todo es `Proyecto`, no Maps
+6. **Mantenibilidad:** Código limpio y documentoado
 
 ---
 
@@ -482,7 +482,7 @@ Project(
 
 ---
 
-## 📚 Documentación Relacionada
+## 📚 Documentoación Relacionada
 
 - [HYBRID_SYSTEM_IMPLEMENTATION.md](doc/HYBRID_SYSTEM_IMPLEMENTATION.md)
 - [HYBRID_SYSTEM_SUMMARY.md](doc/HYBRID_SYSTEM_SUMMARY.md)

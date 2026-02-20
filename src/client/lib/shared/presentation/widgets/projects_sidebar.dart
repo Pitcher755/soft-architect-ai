@@ -236,10 +236,7 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
                         color: Colors.redAccent,
                       ),
                       SizedBox(width: 12),
-                      Text(
-                        'Salir',
-                        style: TextStyle(color: Colors.redAccent),
-                      ),
+                      Text('Salir', style: TextStyle(color: Colors.redAccent)),
                     ],
                   ),
                 ),
@@ -265,7 +262,7 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Column(
               children: [
-                // 1. BOTÓN DE WORKSPACE (Proyectos)
+                // 1. WORKSPACE BUTTON (Projects)
                 Tooltip(
                   message: 'Explorador de Proyectos',
                   child: _SidebarButton(
@@ -278,7 +275,7 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
 
                 const SizedBox(height: 16),
 
-                // 2. BOTÓN DE PROYECTO ACTIVO (Último proyecto abierto)
+                // 2. ACTIVE PROJECT BUTTON (Last opened project)
                 Tooltip(
                   message: lastProjectPath != null
                       ? 'Proyecto: ${_extractProjectName(lastProjectPath)}'
@@ -341,15 +338,15 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
     );
   }
 
-  /// Extrae el nombre del proyecto del path completo.
-  /// Ejemplo: '/home/user/projects/my-project' -> 'my-project'
+  /// Extracts the project name from the full path.
+  /// Example: '/home/user/projects/my-project' -> 'my-project'
   String _extractProjectName(String path) {
     final parts = path.split('/');
     return parts.isNotEmpty ? parts.last : path;
   }
 }
 
-/// Widget auxiliar para botones de la sidebar
+/// Helper widget for sidebar buttons
 class _SidebarButton extends StatelessWidget {
   const _SidebarButton({
     required this.icon,

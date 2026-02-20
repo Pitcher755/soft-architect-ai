@@ -14,7 +14,7 @@
 - Center column (Chat) siempre flexible
 - Sin lag, smooth dragging
 
-**Commit:** 4926e38 - "feat: Add dynamic resizable columns to ProjectShellScreen"
+**Commit:** 4926e38 - "feat: Add dynamic resizable columns to ProyectoShellScreen"
 
 ---
 
@@ -26,9 +26,9 @@
 - Toggle columna derecha (Preview)
 - Center column (Chat) siempre visible
 - Iconos intuitivos y responsive
-- Removed "Chat (Active)" button (reemplazado por toggle)
+- Removed "Chat (Active)" botón (reemplazado por toggle)
 
-**Código en:** `project_shell_screen.dart` (AppBar section)
+**Código en:** `proyecto_shell_screen.dart` (AppBar section)
 
 ---
 
@@ -40,7 +40,7 @@ Implementado exactamente como el HTML proporcionado:
 - **Modal Dialog** con header "Nuevo Proyecto"
 - **Campo de Nombre:** Con validación y placeholder
 - **Selector de Ruta:** Con botón "Examinar..."
-  - Ruta base por defecto: `~/Documents/SoftArchitectProjects`
+  - Ruta base por defecto: `~/Documentos/SoftArchitectProyectos`
   - Readonly (solo lectura)
 - **Descripción:** Campo textarea opcional
 - **Botones de Acción:** "Cancelar" y "Crear Proyecto"
@@ -54,12 +54,12 @@ Implementado exactamente como el HTML proporcionado:
 ### 4. ✅ Pantalla de Proyectos Dashboard
 **Estado:** Completado y Operacional
 
-Transformación de `ProjectWorkspaceScreen` a "Mis Proyectos" Dashboard:
+Transformación de `ProyectoWorkspaceScreen` a "Mis Proyectos" Dashboard:
 
 **Componentes:**
 - **Sidebar (64px):**
   - Logo con icono de terminal
-  - Botones de navegación (Projects activo, Search)
+  - Botones de navegación (Proyectos activo, Search)
   - Botón Settings en la base
 - **Main Content:**
   - Header: "Mis Proyectos" + Botón "Nuevo Proyecto"
@@ -77,7 +77,7 @@ Transformación de `ProjectWorkspaceScreen` a "Mis Proyectos" Dashboard:
 2. Uber for Dogs (Fase 1)
 3. FinTech Core API (Fase 3)
 
-**Commit:** bdff68c - "refactor: Convert ProjectWorkspaceScreen to Projects Dashboard"
+**Commit:** bdff68c - "refactor: Convert ProyectoWorkspaceScreen to Proyectos Dashboard"
 
 ---
 
@@ -85,7 +85,7 @@ Transformación de `ProjectWorkspaceScreen` a "Mis Proyectos" Dashboard:
 **Estado:** Completado y Operacional
 
 **Cambios:**
-- `ProjectShellScreen` ahora acepta parámetro `projectPath`
+- `ProyectoShellScreen` ahora acepta parámetro `proyectoPath`
 - Cada proyecto abre su árbol de directorios específico
 - No hay acceso a directorios de otros proyectos
 - AppBar muestra la ruta del proyecto actual
@@ -109,14 +109,14 @@ ProjectShellScreen muestra SOLO ese directorio
 **Estado:** Completado y Operacional
 
 **Cambios de Router:**
-- **Antes:** `/workspace/:projectId` → ProjectWorkspaceScreen
-- **Ahora:** `/workspace` → Projects Dashboard
-- **Antes:** `/project-shell` sin parámetros
-- **Ahora:** `/project-shell?path={directorio}` con parámetro
+- **Antes:** `/workspace/:proyectoId` → ProyectoWorkspaceScreen
+- **Ahora:** `/workspace` → Proyectos Dashboard
+- **Antes:** `/proyecto-shell` sin parámetros
+- **Ahora:** `/proyecto-shell?path={directorio}` con parámetro
 
 **Botones Back:**
-- ProjectShellScreen → `/workspace` (Projects Dashboard)
-- Projects Dashboard → `/` (Home/Selection)
+- ProyectoShellScreen → `/workspace` (Proyectos Dashboard)
+- Proyectos Dashboard → `/` (Home/Selection)
 
 **Removed:**
 - Ruta `/chat` (eliminada)
@@ -131,11 +131,11 @@ ProjectShellScreen muestra SOLO ese directorio
 
 | Aspecto | Antes | Después |
 |--------|-------|---------|
-| **ProjectWorkspaceScreen** | 3-column IDE workspace | Projects Dashboard |
-| **ProjectShellScreen** | No acepta parámetros | Acepta `projectPath` |
-| **Route `/workspace`** | `/workspace/:projectId` | `/workspace` (dashboard) |
-| **Route `/project-shell`** | No parámetros | `?path={ruta}` |
-| **Back Button** | `/` (home) | `/workspace` (dashboard) |
+| **ProyectoWorkspaceScreen** | 3-column IDE workspace | Proyectos Dashboard |
+| **ProyectoShellScreen** | No acepta parámetros | Acepta `proyectoPath` |
+| **Route `/workspace`** | `/workspace/:proyectoId` | `/workspace` (dashboard) |
+| **Route `/proyecto-shell`** | No parámetros | `?path={ruta}` |
+| **Back Botón** | `/` (home) | `/workspace` (dashboard) |
 | **ChatScreen** | Route `/chat` | Removida |
 | **Column Toggle** | N/A | 3 botones en AppBar |
 | **Column Resize** | Fixed widths | Draggable dividers |
@@ -144,13 +144,13 @@ ProjectShellScreen muestra SOLO ese directorio
 
 ## 🔧 Archivos Modificados
 
-1. **src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart**
-   - Agregado parámetro `projectPath`
+1. **src/client/lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart**
+   - Agregado parámetro `proyectoPath`
    - AppBar mejorado con botones de toggle
    - Divisores redimensionables
    - Conditionals para mostrar/ocultar paneles
 
-2. **src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart**
+2. **src/client/lib/features/proyecto_shell/presentation/screens/proyecto_workspace_screen.dart**
    - Reescrito como dashboard de proyectos
    - Grid de tarjetas responsive
    - Sidebar con navegación
@@ -173,15 +173,15 @@ ProjectShellScreen muestra SOLO ese directorio
 
 ### Dashboard de Proyectos
 - ✅ Sidebar navigation
-- ✅ Project cards grid
+- ✅ Proyecto cards grid
 - ✅ Hover effects
 - ✅ Responsive layout
 
-### Project Management
-- ✅ Create project dialog
-- ✅ Project path selector
+### Proyecto Management
+- ✅ Crear proyecto dialog
+- ✅ Proyecto path selector
 - ✅ Directory isolation
-- ✅ Phase badges
+- ✅ Fase badges
 
 ### UI Improvements
 - ✅ Better visual hierarchy
@@ -219,34 +219,34 @@ ProjectShellScreen muestra SOLO ese directorio
 
 ## 📈 Commits Realizados
 
-1. **4926e38** - "feat: Add dynamic resizable columns to ProjectShellScreen"
+1. **4926e38** - "feat: Add dynamic resizable columns to ProyectoShellScreen"
    - Columnas dinámicas
    - Divisores redimensionables
    - Estado de visibilidad
 
-2. **bdff68c** - "refactor: Convert ProjectWorkspaceScreen to Projects Dashboard"
+2. **bdff68c** - "refactor: Convert ProyectoWorkspaceScreen to Proyectos Dashboard"
    - Refactorización completa
    - Dashboard de proyectos
    - Router actualizado
    - Diálogo mejorado
 
-3. **1d0ff8b** - "docs: Projects Dashboard implementation"
-   - Documentación completa
+3. **1d0ff8b** - "docs: Proyectos Dashboard implementación"
+   - Documentoación completa
 
 ---
 
 ## 🚀 Estado Final
 
-**Status:** ✅ **100% COMPLETADO**
+**Estado:** ✅ **100% COMPLETADO**
 
-Todos los requisitos han sido implementados y testeados:
+Todos los requisitos han sido implementados y pruebaeados:
 - ✅ Compilación sin errores
 - ✅ App funcionando sin crashes
 - ✅ Navegación fluida
 - ✅ UI/UX profesional
 - ✅ Features implementadas
 
-**Terminal Activa:** 2832e044-f040-4892-b83c-0095b668b1f0 (app running)
+**Terminal Activa:** 2832e044-f040-4892-b83c-0095b668b1f0 (app ejecutarning)
 
 ---
 
@@ -256,11 +256,11 @@ Todos los requisitos han sido implementados y testeados:
 - El estado de visibilidad se mantiene durante la sesión
 - Los proyectos aislados garantizan seguridad de datos
 - El dashboard es completamente funcional
-- Listo para extended testing y backend integration
+- Listo para extended pruebaing y backend integration
 
 **Próximos Pasos (Opcionales):**
 - Persistencia de ancho de columnas (SharedPreferences)
 - Persistencia de proyectos (base de datos)
 - Integración con backend API
-- File picker real para selector de ruta
+- Archivo picker real para selector de ruta
 - Importar/exportar proyectos

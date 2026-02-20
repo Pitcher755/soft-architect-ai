@@ -1,8 +1,8 @@
 # 📊 Progreso HU-3.5: Streaming Optimization
 
-> **Estado Actual:** ✅ COMPLETADO (100%)
+> **Status Actual:** ✅ COMPLETADO (100%)
 
-## Fases
+## Phases
 
 - [x] Especificación completada
 - [x] WebSocket implementation

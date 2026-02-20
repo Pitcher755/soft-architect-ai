@@ -5,7 +5,7 @@
 > **Prioridad:** 🔥 **HIGH**
 > **Estimación:** M (5 pts)
 > **Rama:** `feature/error-handling-gates`
-> **Estado:** 🟢 **READY FOR PHASE 0**
+> **Status:** 🟢 **READY FOR PHASE 0**
 > **Linear Issue:** [PIT-78](https://linear.app/soft-architect-ai/issue/PIT-78)
 
 ---
@@ -215,7 +215,7 @@ git pull origin develop
 
 # 🇪🇸 Versión en Español
 
-## 📝 Descripción
+## 📝 Description
 
 ### Historia de Usuario
 
@@ -228,7 +228,7 @@ Para garantizar integridad de documentos y recuperación ante fallos.
 ### Contexto
 
 Después de HU-3.3 (Chat Sequential Docs), necesitamos **manejo de errores production-grade** para asegurar:
-- Los documentos se validan antes del almacenamiento
+- Los documents se validan antes del almacenamiento
 - Los fallos transitorios se reintentan automáticamente
 - Los usuarios reciben mensajes de error accionables y localizados
 - El sistema mantiene audit trail sin exponer datos sensibles
@@ -251,36 +251,36 @@ Implementar **validación, reintento y recuperación** con:
   - Registra cada reintento con contexto
 
 - ↩️ **Fallback y Rollback**:
-  - Restaurar versión anterior del documento
+  - Restaurar versión previous del document
   - Almacenar 5 versiones más recientes en SQLite
   - Rollback activado por el usuario desde UI
 
 - 🎨 **Notificaciones Optimizadas para UX**:
   - Éxito/Info: Auto-ocultar después de 5s
   - Errores: Cierre manual requerido
-  - Errores reintentables: Mostrar botón "Reintentar"
+  - Errores reintentables: Mostrar button "Reintentar"
   - Mensajes localizados en español
 
 - 📝 **Logging Comprehensivo**:
   - Logs estructurados JSON
   - Contexto: operation, timestamp, error_code
-  - NUNCA registrar: claves API, contenidos de archivos, PII
+  - NUNCA registrar: claves API, contenidos de files, PII
 
 ---
 
 ## ✅ Criterios de Aceptación
 
-| # | Criterio | Fase | Estado |
+| # | Criterio | Phase | Status |
 |---|----------|------|--------|
-| 1 | ✅ Documentos validados (longitud, estructura, codificación, seguridad, tamaño) | Fase 2 | ⏳ |
-| 2 | ✅ Lógica de reintento: 3 intentos, backoff exponencial | Fase 2 | ⏳ |
-| 3 | ✅ Fallback: restaurar versión anterior en fallo | Fase 2 | ⏳ |
-| 4 | ✅ UX Snackbar: auto-ocultar 5s (éxito), manual (error) | Fase 2 | ⏳ |
-| 5 | ✅ Logging de errores con contexto (sin datos sensibles) | Fase 3 | ⏳ |
-| 6 | ✅ Errores localizados en español (11+ códigos mapeados) | Fase 2 | ⏳ |
-| 7 | ✅ Cobertura de tests >90% en gates y lógica de reintento | Fases 1-4 | ⏳ |
-| 8 | ❌ Los usuarios NUNCA ven stack traces | Fase 2 | ⏳ |
-| 9 | ✅ Integración con HU-3.3 (Chat Sequential Docs) | Fase 4 | ⏳ |
+| 1 | ✅ Documents validados (longitud, estructura, codificación, seguridad, tamaño) | Phase 2 | ⏳ |
+| 2 | ✅ Lógica de reintento: 3 intentos, backoff exponencial | Phase 2 | ⏳ |
+| 3 | ✅ Fallback: restaurar versión previous en fallo | Phase 2 | ⏳ |
+| 4 | ✅ UX Snackbar: auto-ocultar 5s (éxito), manual (error) | Phase 2 | ⏳ |
+| 5 | ✅ Logging de errores con contexto (sin datos sensibles) | Phase 3 | ⏳ |
+| 6 | ✅ Errores localizados en español (11+ códigos mapeados) | Phase 2 | ⏳ |
+| 7 | ✅ Cobertura de tests >90% en gates y lógica de reintento | Phases 1-4 | ⏳ |
+| 8 | ❌ Los usuarios NUNCA ven stack traces | Phase 2 | ⏳ |
+| 9 | ✅ Integración con HU-3.3 (Chat Sequential Docs) | Phase 4 | ⏳ |
 
 ---
 
@@ -288,9 +288,9 @@ Implementar **validación, reintento y recuperación** con:
 
 ### Backend (Python)
 
-| # | Tarea | Artefacto | Líneas | Estado |
+| # | Tarea | Artefacto | Líneas | Status |
 |---|-------|-----------|--------|--------|
-| 1 | Implementación de gates de validación | `services/validators/document_validator.py` | ~150 | ⏳ |
+| 1 | Implementation de gates de validación | `services/validators/document_validator.py` | ~150 | ⏳ |
 | 2 | Decorador de reintento con backoff | `core/retry.py` | ~100 | ⏳ |
 | 3 | Excepciones personalizadas | `core/exceptions.py` (actualizar) | ~80 | ⏳ |
 | 4 | Logging estructurado | `core/logging_config.py` | ~60 | ⏳ |
@@ -300,7 +300,7 @@ Implementar **validación, reintento y recuperación** con:
 
 ### Frontend (Flutter)
 
-| # | Tarea | Artefacto | Líneas | Estado |
+| # | Tarea | Artefacto | Líneas | Status |
 |---|-------|-----------|--------|--------|
 | 1 | Mapeador de errores (códigos → mensajes) | `lib/core/error_handling/error_mapper.dart` | ~120 | ⏳ |
 | 2 | Servicio de snackbar | `lib/core/error_handling/snackbar_service.dart` | ~180 | ⏳ |
@@ -311,10 +311,10 @@ Implementar **validación, reintento y recuperación** con:
 
 ### Documentación
 
-| # | Tarea | Artefacto | Estado |
+| # | Tarea | Artefacto | Status |
 |---|-------|-----------|--------|
 | 1 | Actualizar estándar de manejo de errores | `context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md` | ⏳ |
-| 2 | Crear guía para desarrolladores | `doc/02-SETUP_DEV/ERROR_HANDLING_GUIDE.md` | ⏳ |
+| 2 | Create guía para desarrolladores | `doc/02-SETUP_DEV/ERROR_HANDLING_GUIDE.md` | ⏳ |
 | 3 | Definir reglas de validación | `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/VALIDATION_RULES.md` | ⏳ |
 | 4 | Resumen de completación | `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/COMPLETION_SUMMARY.md` | ⏳ |
 
@@ -364,15 +364,15 @@ Implementar **validación, reintento y recuperación** con:
 
 ## 📅 Cronograma
 
-| Fase | Duración | Estado |
+| Phase | Duración | Status |
 |------|----------|--------|
-| Fase 0: Preparación | 0.5 días | ⏳ No Iniciado |
-| Fase 1: TDD ROJO | 1 día | ⏳ No Iniciado |
-| Fase 2: TDD VERDE | 1 día | ⏳ No Iniciado |
-| Fase 3: TDD REFACTOR | 0.5 días | ⏳ No Iniciado |
-| Fase 4: Integración | 0.5 días | ⏳ No Iniciado |
-| Fase 5: Documentación | 0.25 días | ⏳ No Iniciado |
-| Fase 6: CI/CD | 0.25 días | ⏳ No Iniciado |
+| Phase 0: Preparación | 0.5 días | ⏳ No Iniciado |
+| Phase 1: TDD ROJO | 1 día | ⏳ No Iniciado |
+| Phase 2: TDD VERDE | 1 día | ⏳ No Iniciado |
+| Phase 3: TDD REFACTOR | 0.5 días | ⏳ No Iniciado |
+| Phase 4: Integración | 0.5 días | ⏳ No Iniciado |
+| Phase 5: Documentación | 0.25 días | ⏳ No Iniciado |
+| Phase 6: CI/CD | 0.25 días | ⏳ No Iniciado |
 
 **Tiempo Total Estimado:** 3.5 - 4 días
 
@@ -390,14 +390,14 @@ git checkout feature/error-handling-gates
 git pull origin develop
 ```
 
-### Checklist Fase 0
+### Checklist Phase 0
 - [ ] Leer ERROR_HANDLING_STANDARD.md
 - [ ] Analizar código de manejo de errores existente
-- [ ] Crear VALIDATION_RULES.md
+- [ ] Create VALIDATION_RULES.md
 - [ ] Configurar directorios de tests
 - [ ] Preparar fixtures de tests
 
-**Siguiente:** Ver [WORKFLOW_MASTER_DEFINITION.es.md](./WORKFLOW_MASTER_DEFINITION.es.md) para el plan de ejecución detallado.
+**Next:** Ver [WORKFLOW_MASTER_DEFINITION.es.md](./WORKFLOW_MASTER_DEFINITION.es.md) para el plan de ejecución detallado.
 
 </div>
 
@@ -406,4 +406,4 @@ git pull origin develop
 **Última Actualización:** 09/02/2026
 **Autor:** ArchitectZero
 **Revisado Por:** N/A
-**Estado Workflow:** 🟢 READY FOR EXECUTION
+**Status Workflow:** 🟢 READY FOR EXECUTION

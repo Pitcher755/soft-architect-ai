@@ -1,6 +1,6 @@
-# ✅ Refactoring Completado: Migración de Tests a Estructura Centralizada
+# ✅ Refactoring Completed: Migración de Tests a Estructura Centralizada
 
-## 📊 Resumen Ejecutivo
+## 📊 Executive Summary
 
 Se ha completado exitosamente la migración de todos los tests de Python del servidor a una estructura centralizada en `tests/python/` siguiendo las reglas del monorepo. Esto mejora la organización y facilita el mantenimiento futuro.
 
@@ -13,10 +13,10 @@ Se ha completado exitosamente la migración de todos los tests de Python del ser
 - Ahora sigue la estructura estándar del monorepo
 - Todos los tests (Frontend + Backend) en el mismo árbol raíz
 
-### 2. ✅ Configuración Actualizada
+### 2. ✅ Configuration Actualizada
 - **conftest.py:** Actualizado para ruta centralizada
 - **pyproject.toml:** `testpaths` apunta a `../../tests/python`
-- **pyrightconfig.json:** Incluye `tests/python` para análisis de tipo
+- **pyrightconfig.json:** Incluye `tests/python` para analysis de tipo
 - **backend-ci.yaml:** Tests ejecutados desde nueva ubicación
 
 ### 3. ✅ Validación Automática
@@ -80,7 +80,7 @@ tests/python/                      # ← Root centralizado (Monorepo)
 | **Test files migrados** | 22 |
 | **Líneas de código** | ~3,500 |
 | **Configuraciones actualizadas** | 4 |
-| **Carpetas creadas** | 7 |
+| **Folders creadas** | 7 |
 | **Validaciones pasadas** | 5/5 ✅ |
 
 ---
@@ -139,7 +139,7 @@ server_root = project_root / "src" / "server"
 ✓ tests/python/integration/ existe
 ```
 
-### 2. Archivos de Configuración
+### 2. Files de Configuration
 ```
 ✓ tests/python/conftest.py existe y actualizado
 ```
@@ -150,13 +150,13 @@ server_root = project_root / "src" / "server"
 ✓ Tests en tests/python/: 22 (activos)
 ```
 
-### 4. Configuración pytest
+### 4. Configuration pytest
 ```
 ✓ pyproject.toml actualizado
 ✓ testpaths apunta a tests/python
 ```
 
-### 5. Análisis de Tipo
+### 5. Analysis de Tipo
 ```
 ✓ pyrightconfig.json actualizado
 ✓ Incluye tests/python para Pyright
@@ -166,14 +166,14 @@ server_root = project_root / "src" / "server"
 
 ## 🚀 Cómo Usar los Tests Migrados
 
-### Ejecutar Todos los Tests
+### Execute Todos los Tests
 
 ```bash
 cd src/server
 pytest ../../tests/python/ -v
 ```
 
-### Ejecutar Tests Específicos
+### Execute Tests Específicos
 
 ```bash
 # Unit tests de app
@@ -229,7 +229,7 @@ Status: ✅ Validación automática PASSED
 
 ---
 
-## 🔄 Próximos Pasos
+## 🔄 Next Steps
 
 ### 1. Validar en GitHub Actions
 ```bash
@@ -263,9 +263,9 @@ git commit -m "chore: remove legacy tests directory after migration"
 
 ## 🎉 Conclusión
 
-La migración ha sido completada exitosamente. Todos los tests de Python están ahora centralizados en `tests/python/` siguiendo las mejores prácticas del monorepo. La estructura es clara, mantenible y lista para la siguiente fase de desarrollo (HU-3.3 Chat Secuencial).
+La migración ha sido completada exitosamente. Todos los tests de Python están ahora centralizados en `tests/python/` siguiendo las mejores prácticas del monorepo. La estructura es clara, mantenible y lista para la next phase de desarrollo (HU-3.3 Chat Secuencial).
 
-**Estado:** ✅ LISTO PARA INICIAR HU-3.3
+**Status:** ✅ LISTO PARA INICIAR HU-3.3
 
 ---
 

@@ -1,8 +1,8 @@
-# ✅ Corrección Definitiva: Sistema Híbrido de Proyectos (FUNCIONAL)
+# ✅ Corrección Definitiva: Sistema Híbrido de Projects (FUNCIONAL)
 
 **Fecha:** 9 de febrero de 2026
-**Estado:** ✅ COMPLETADO - 0 ERRORES DE COMPILACIÓN
-**Objetivo:** Mostrar proyectos REALES creados en CreateProjectDialog + proyecto MOCK (Guía)
+**Status:** ✅ COMPLETADO - 0 ERRORES DE COMPILACIÓN
+**Objetivo:** Mostrar projects REALES creados en CreateProjectDialog + project MOCK (Guía)
 
 ---
 
@@ -10,25 +10,25 @@
 
 ### ❌ PROBLEMA 1: Estructura Incorrecta (ConsumerStatefulWidget)
 **Causa:** Cambio innecesario a `ConsumerStatefulWidget` + Riverpod que rompió la lógica original
-**Síntoma:** El botón "Ver todos los proyectos" desaparecía, no mostraba proyectos creados
+**Síntoma:** El button "Ver todos los projects" desaparecía, no mostraba projects creados
 **Solución:**
 - ✅ **Revertida a `StatefulWidget` simple** (estructura original)
 - ✅ Removidas dependencias de Riverpod (flutter_riverpod)
 - ✅ Removidas llamadas a `ref.watch(hybridProjectsProvider)`
 
 ### ❌ PROBLEMA 2: Carga Síncrona vs Asíncrona
-**Causa:** `getMockProjectsData()` era síncrona, no cargaba proyectos reales
-**Síntoma:** Solo mostraba el proyecto mock, nunca los proyectos creados
+**Causa:** `getMockProjectsData()` era síncrona, no cargaba projects reales
+**Síntoma:** Solo mostraba el project mock, nunca los projects creados
 **Solución:**
 - ✅ `getMockProjectsData()` ahora es `async Future<List<Map<String, dynamic>>>`
 - ✅ Usa `FutureBuilder` en `project_workspace_screen.dart` para manejar carga
-- ✅ Carga proyectos reales del filesystem en paralelo con mock
+- ✅ Carga projects reales del filesystem en paralelo con mock
 
 ### ❌ PROBLEMA 3: Tipos de Datos Inconsistentes
 **Causa:** Mezcla de `Project` entity con `Map<String, dynamic>`
 **Síntoma:** Errores de tipo "Project isn't a type"
 **Solución:**
-- ✅ Unificado todo a `Map<String, dynamic>` para proyectos
+- ✅ Unificado todo a `Map<String, dynamic>` para projects
 - ✅ Actualizado `ProjectListView` para aceptar `List<Map<String, dynamic>>`
 - ✅ Removidas referencias a `Project` entity en UI layer
 
@@ -76,10 +76,10 @@ Widget build(BuildContext context) {
 **Cambios clave:**
 - ✅ Revertida a `StatefulWidget`
 - ✅ `initState()` inicializa `_projectsFuture`
-- ✅ `FutureBuilder` maneja 3 estados: loading, error, data
+- ✅ `FutureBuilder` maneja 3 statuss: loading, error, data
 - ✅ Loading spinner visible mientras carga
 - ✅ Error state muestra mensajes útiles
-- ✅ Data state renderiza grid de proyectos
+- ✅ Data state renderiza grid de projects
 
 ---
 
@@ -153,8 +153,8 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
 
 **Cambios clave:**
 - ✅ Función ahora es `async Future`
-- ✅ Carga proyectos reales del filesystem en múltiples rutas
-- ✅ Combina con proyecto mock de la Guía
+- ✅ Carga projects reales del filesystem en múltiples rutas
+- ✅ Combina con project mock de la Guía
 - ✅ Maneja errores sin romper la app
 - ✅ Formatea fechas relativas en español
 
@@ -281,24 +281,24 @@ class _ProjectListViewState extends State<ProjectListView> {
 
 ### Escenario 1: App Inicia
 1. ✅ Spinner loading aparece
-2. ✅ Se buscan proyectos en filesystem
-3. ✅ Se carga proyecto mock (Guía)
+2. ✅ Se buscan projects en filesystem
+3. ✅ Se carga project mock (Guía)
 4. ✅ Spinner desaparece
 5. ✅ Grid muestra: [Real Projects...] + [Guía SoftArchitect]
 
-### Escenario 2: Usuario Crea Nuevo Proyecto
-1. ✅ Click "Nuevo Proyecto"
+### Escenario 2: Usuario Crea Nuevo Project
+1. ✅ Click "New Project"
 2. ✅ CreateProjectDialog abre
-3. ✅ Rellena datos y presiona "Crear"
-4. ✅ Proyecto creado en filesystem
+3. ✅ Rellena datos y presiona "Create"
+4. ✅ Project creado en filesystem
 5. ✅ Dialogo cierra → navega a project-shell
-6. ✅ (Siguiendo carga) Nuevo proyecto aparece en grid
+6. ✅ (Siguiendo carga) Nuevo project aparece en grid
 
-### Escenario 3: Más de 8 Proyectos
+### Escenario 3: Más de 8 Projects
 1. ✅ Grid muestra 8 primeros
-2. ✅ Botón "Ver todos los proyectos (N)" aparece
+2. ✅ Button "Ver todos los projects (N)" aparece
 3. ✅ Click → abre ProjectListView expandible
-4. ✅ Muestra todos proyectos (reales + mock) ordenados
+4. ✅ Muestra todos projects (reales + mock) ordenados
 5. ✅ Click cerrar → vuelve a grid
 
 ---
@@ -309,9 +309,9 @@ class _ProjectListViewState extends State<ProjectListView> {
 |----------|-------|-------|
 | Estructura | ConsumerStatefulWidget | StatefulWidget ✅ |
 | Carga | Síncrona (sync) | Asíncrona (async) ✅ |
-| Proyectos Reales | No cargaban | Se cargan del FS ✅ |
-| Proyecto Mock | Solo ese | Combinado con reales ✅ |
-| Botón Expandir | Desaparecía | Aparece cuando > 8 ✅ |
+| Projects Reales | No cargaban | Se cargan del FS ✅ |
+| Project Mock | Solo ese | Combinado con reales ✅ |
+| Button Expandir | Desaparecía | Aparece cuando > 8 ✅ |
 | Tipos | Project entity | Map<String, dynamic> ✅ |
 | Errores | Múltiples | 0 errores ✅ |
 
@@ -321,12 +321,12 @@ class _ProjectListViewState extends State<ProjectListView> {
 
 ✅ **SISTEMA HÍBRIDO COMPLETAMENTE FUNCIONAL**
 
-- Proyectos REALES se cargan del filesystem
-- Proyecto MOCK (Guía) se incluye siempre
+- Projects REALES se cargan del filesystem
+- Project MOCK (Guía) se incluye siempre
 - Se muestran juntos en grid y lista expandible
-- Botón "Ver todos" aparece cuando hay >8 proyectos
-- Nuevos proyectos creados via CreateProjectDialog aparecen automáticamente
+- Button "Ver todos" aparece cuando hay >8 projects
+- Nuevos projects creados via CreateProjectDialog aparecen automáticamente
 - Manejo de errores robusto con FutureBuilder
 - 0 errores de compilación Dart
 
-**Próximo paso:** Ejecutar app y verificar que proyectos creados aparecen en dashboard.
+**Próximo paso:** Execute app y verificar que projects creados aparecen en dashboard.

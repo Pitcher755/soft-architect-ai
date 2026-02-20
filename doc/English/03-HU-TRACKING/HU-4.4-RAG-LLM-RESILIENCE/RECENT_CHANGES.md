@@ -18,14 +18,14 @@
 
 <div id="español">
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Resumen Ejecutivo](#-resumen-ejecutivo)
 2. [Phase 6: Soporte de Historial de Chat](#-phase-6-soporte-de-historial-de-chat-backend)
 3. [Phase 7: Límites Configurables](#-phase-7-límites-configurables)
 4. [Tabla de Comparación Antes/Después](#-tabla-de-comparación-antesdespués)
 5. [Guía de Migración](#-guía-de-migración)
-6. [Ejemplos de Configuración](#-ejemplos-de-configuración)
+6. [Ejemplos de Configuration](#-ejemplos-de-configuration)
 
 ---
 
@@ -43,7 +43,7 @@
 **Beneficios Clave:**
 - 🧠 **Contexto Conversacional:** El LLM recuerda las interacciones previas (memoria a corto plazo).
 - ⚙️ **Configurabilidad:** Ajustar límites sin recompilación ni despliegue.
-- 📈 **Escalabilidad:** Proyectos grandes (25+ documentos) ahora soportados con 100 mensajes de historial.
+- 📈 **Escalabilidad:** Projects grandes (25+ documents) ahora soportados con 100 mensajes de historial.
 - 🚀 **Rendimiento:** Frontend carga y envía últimos 100 mensajes automáticamente.
 
 ---
@@ -51,18 +51,18 @@
 ## 🧠 Phase 6: Soporte de Historial de Chat (Backend)
 
 > **Commit:** `01eec76`
-> **Fecha:** Enero 2025
-> **Estado:** ✅ Complete
+> **Date:** Enero 2025
+> **Status:** ✅ Complete
 
-### 6.1 Descripción
+### 6.1 Description
 
-Implementación de **memoria conversacional** en el backend para que el LLM tenga contexto de mensajes previos en una sesión.
+Implementation de **memoria conversacional** en el backend para que el LLM tenga contexto de mensajes previos en una sesión.
 
 ### 6.2 Cambios Técnicos
 
 #### Backend Schema (`chat.py`)
 
-**Archivo:** `src/server/app/domain/schemas/chat.py`
+**File:** `src/server/app/domain/schemas/chat.py`
 
 **Cambio Principal:** Campo opcional `history` en `ChatRequest`
 
@@ -115,7 +115,7 @@ class ChatRequest(BaseModel):
 
 #### Template Builder (`dependencies.py`)
 
-**Archivo:** `src/server/app/api/dependencies.py`
+**File:** `src/server/app/api/dependencies.py`
 
 **Cambio:** Método `build_prompt()` ahora acepta parámetro `history`
 
@@ -169,7 +169,7 @@ User Query: Current question
 
 #### Orchestrator Integration (`orchestrator.py`)
 
-**Archivo:** `src/server/app/services/rag/orchestrator.py`
+**File:** `src/server/app/services/rag/orchestrator.py`
 
 **Cambio:** Pasar `history` al template builder
 
@@ -206,7 +206,7 @@ async def process_message_stream(...) -> AsyncGenerator[dict[str, Any], None]:
 
 ### 6.3 Tests Creados (21 tests)
 
-**Archivos de Test:**
+**Files de Test:**
 - `tests/server/unit/domain/schemas/test_chat_history.py` (9 tests)
 - `tests/server/unit/api/test_template_builder_history.py` (7 tests)
 - `tests/server/integration/api/v1/test_chat_history_integration.py` (5 tests)
@@ -228,7 +228,7 @@ async def process_message_stream(...) -> AsyncGenerator[dict[str, Any], None]:
 ### 6.4 Limitaciones de Phase 6
 
 **Restricciones Hardcoded:**
-- ❌ Max 20 mensajes (límite pequeño para proyectos grandes)
+- ❌ Max 20 mensajes (límite pequeño para projects grandes)
 - ❌ Max 5000 chars/mensaje (el modelo soporta 32K tokens)
 - ❌ **Frontend NO enviaba historial** (backend listo pero no utilizado)
 
@@ -239,10 +239,10 @@ async def process_message_stream(...) -> AsyncGenerator[dict[str, Any], None]:
 ## ⚙️ Phase 7: Límites Configurables
 
 > **Commit:** `3786589`
-> **Fecha:** Enero 2025
-> **Estado:** ✅ Complete
+> **Date:** Enero 2025
+> **Status:** ✅ Complete
 
-### 7.1 Descripción
+### 7.1 Description
 
 Conversión de límites hardcoded en **configurables vía environment variables**, permitiendo ajuste dinámico sin recompilar. Además, **integración completa del frontend** para enviar historial.
 
@@ -250,7 +250,7 @@ Conversión de límites hardcoded en **configurables vía environment variables*
 
 #### Backend Configuration (`config.py`)
 
-**Archivo:** `src/server/app/core/config.py`
+**File:** `src/server/app/core/config.py`
 
 **Cambio:** Nuevos campos en `Settings` class
 
@@ -273,7 +273,7 @@ class Settings(BaseSettings):
 
 #### Dynamic Validation (`chat.py`)
 
-**Archivo:** `src/server/app/domain/schemas/chat.py`
+**File:** `src/server/app/domain/schemas/chat.py`
 
 **Cambio:** Validadores leen de `settings` en lugar de hardcoded values
 
@@ -334,7 +334,7 @@ class ChatRequest(BaseModel):
 
 #### Frontend History Loading (`chat_repository_impl.dart`)
 
-**Archivo:** `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
+**File:** `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
 
 **Cambio:** Cargar historial desde SQLite y enviar al backend
 
@@ -413,7 +413,7 @@ Stream<ChatStreamEvent> sendMessageStream(
 
 ##### 1. Environment Variables (`.env.example`)
 
-**Archivo:** `src/server/.env.example`
+**File:** `src/server/.env.example`
 
 ```bash
 # ─────────────────────────────────────────────────────────────
@@ -433,7 +433,7 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 ##### 2. Docker Compose (`docker-compose.yml`)
 
-**Archivo:** `infrastructure/docker-compose.yml`
+**File:** `infrastructure/docker-compose.yml`
 
 ```yaml
 services:
@@ -451,7 +451,7 @@ services:
 
 ### 7.3 Tests Actualizados (17 tests)
 
-**Archivos Modificados:**
+**Files Modificados:**
 - `tests/server/unit/domain/schemas/test_chat_history.py` (9 tests actualizados)
 - `tests/server/integration/api/v1/test_chat_history_integration.py` (4 tests actualizados)
 
@@ -460,18 +460,18 @@ services:
 - ✅ `test_chat_request_rejects_oversized_message_in_history` → Ahora usa 20001 chars (excede default 20000)
 - ✅ Docstrings actualizados: mencionan "default config"
 
-**Resultado:** ✅ 13 unit tests + 4 integration tests = **17/17 passing**
+**Result:** ✅ 13 unit tests + 4 integration tests = **17/17 passing**
 
 ### 7.4 Impacto de Phase 7
 
 **Mejoras Cuantitativas:**
 - 📈 **5x más mensajes:** 20 → 100 (capacidad para conversaciones extensas)
-- 📈 **4x más caracteres:** 5000 → 20000 (soporte para documentos largos)
-- ⚙️ **Configuración sin downtime:** Cambiar `.env` y restart (no recompilación)
+- 📈 **4x más caracteres:** 5000 → 20000 (soporte para documents largos)
+- ⚙️ **Configuration sin downtime:** Cambiar `.env` y restart (no recompilación)
 - 🚀 **Frontend integrado:** Historial enviado automáticamente en cada request
 
 **Mejoras Cualitativas:**
-- ✅ Proyectos grandes (25+ documentos) ahora viables
+- ✅ Projects grandes (25+ documents) ahora viables
 - ✅ Tuning sin conocimientos de programación (solo editar `.env`)
 - ✅ Graceful degradation en frontend (continúa si SQLite falla)
 - ✅ Mensajes de error informativos (incluyen límite actual)
@@ -490,11 +490,11 @@ services:
 | **Prompt Structure** | System → Context → Query | System → History → Context → Query | System → History → Context → Query |
 | **Tests** | N/A | +21 tests | +17 tests actualizados |
 | **Graceful Degradation** | N/A | Backend solo | Backend + Frontend |
-| **Use Case Viability** | Proyectos pequeños | Proyectos medianos | Proyectos grandes (25+ docs) |
+| **Use Case Viability** | Projects pequeños | Projects medianos | Projects grandes (25+ docs) |
 
 **Resumen:**
 - Phase 6: Fundación (backend ready, frontend no integrado)
-- Phase 7: Producción (configuración dinámica, frontend integrado)
+- Phase 7: Producción (configuration dinámica, frontend integrado)
 
 ---
 
@@ -504,7 +504,7 @@ services:
 
 #### Escenario 1: Sin Action Requerida (Defaults Funcionan)
 
-**Condición:** Proyectos típicos (<25 documentos, mensajes <20K chars)
+**Condición:** Projects típicos (<25 documents, mensajes <20K chars)
 
 **Action:** Ninguna. Los defaults (100 mensajes, 20000 chars) son adecuados.
 
@@ -513,7 +513,7 @@ services:
 docker-compose up -d
 ```
 
-#### Escenario 2: Proyectos Grandes (25+ Documentos)
+#### Escenario 2: Projects Grandes (25+ Documents)
 
 **Condición:** Necesitas más contexto conversacional
 
@@ -529,7 +529,7 @@ export CHAT_MAX_HISTORY_MESSAGES=150
 docker-compose up -d
 ```
 
-#### Escenario 3: Documentos Extensos
+#### Escenario 3: Documents Extensos
 
 **Condición:** Mensajes típicos >20K caracteres (ej. pegar código completo)
 
@@ -554,7 +554,7 @@ echo "CHAT_MAX_MESSAGE_LENGTH=10000" >> .env
 docker-compose restart backend
 ```
 
-### Verificación Post-Migración
+### Verification Post-Migración
 
 ```bash
 # 1. Verificar que backend carga env vars
@@ -583,11 +583,11 @@ curl -X POST http://localhost:8000/api/v1/chat/stream \
 
 ---
 
-## 🔧 Ejemplos de Configuración
+## 🔧 Ejemplos de Configuration
 
 ### Development (Local `.env`)
 
-**Archivo:** `src/server/.env`
+**File:** `src/server/.env`
 
 ```bash
 # Development: Relaxed limits for testing
@@ -607,7 +607,7 @@ uvicorn app.main:app --reload
 
 ### Docker Compose (Staging)
 
-**Archivo:** `infrastructure/docker-compose.yml`
+**File:** `infrastructure/docker-compose.yml`
 
 ```yaml
 services:
@@ -738,7 +738,7 @@ dart analyze lib/features/chat/data/repositories/chat_repository_impl.dart --fat
 
 - [HU-4.4 README.md](./README.md) - HU principal (4 GAPS de resilience)
 - [HU-4.4 PROGRESS.md](./PROGRESS.md) - Tracking detallado de trabajo
-- [HU-4.4 ARTIFACTS.md](./ARTIFACTS.md) - Lista de archivos modificados
+- [HU-4.4 ARTIFACTS.md](./ARTIFACTS.md) - Lista de files modificados
 - [HU-4.2 CONVERSATION-HISTORY](../HU-4.2-CONVERSATION-HISTORY/) - Persistencia SQLite (frontend)
 
 ### Code Files Modified

@@ -1,8 +1,8 @@
-# ADR-001: UX Fixes and Chat Persistence Implementation
+# ADR-001: UX Fixes and Chat Persistence Implementación
 
-> **Date:** February 17, 2026
-> **Status:** ✅ Implemented
-> **Related HU:** HU-4.4 RAG/LLM Resilience Extensions
+> **Fecha:** February 17, 2026
+> **Estado:** ✅ Implemented
+> **Related HU:** HU-4.4 RAG/LLM Resiliencia Extensions
 > **Context:** Critical UX bugs and missing chat persistence feature
 
 ---
@@ -17,7 +17,7 @@
   - [Decision 2: Router Stability Pattern](#decision-2-router-stability-pattern)
   - [Decision 3: Keyboard Shortcuts with HardwareKeyboard](#decision-3-keyboard-shortcuts-with-hardwarekeyboard)
   - [Decision 4: Chat Persistence with SharedPreferences](#decision-4-chat-persistence-with-sharedpreferences)
-- [Implementation Details](#implementation-details)
+- [Implementación Details](#implementación-details)
 - [Consequences](#consequences)
 - [Alternatives Considered](#alternatives-considered)
 - [Validation](#validation)
@@ -27,16 +27,16 @@
 
 ## Context
 
-After implementing E2E SSE streaming (HU-4.3) and independent chat conversations per project, users reported **6 critical UX bugs** that prevented normal use of the application:
+After implementing E2E SSE streaming (HU-4.3) and independent chat conversations per proyecto, users reported **6 critical UX bugs** that prevented normal use of the application:
 
-1. **Project Card Overflow**: Long project paths caused visual overflow
+1. **Proyecto Card Overflow**: Long proyecto paths caused visual overflow
 2. **Enter Key Doesn't Send**: Users couldn't send messages with keyboard
 3. **Zoom Destroys Navigation**: Zoom shortcuts (Ctrl +/-) sent users back to home screen
 4. **Keyboard Shortcuts Fail**: Spanish/ISO keyboards couldn't trigger zoom shortcuts
 5. **Light Theme Broken**: Hardcoded dark colors prevented light theme from working
-6. **Chat Not Persistent**: Conversations cleared when switching projects
+6. **Chat Not Persistent**: Conversations cleared when switching proyectos
 
-These bugs collectively created a **poor user experience** and violated the principle of **"works offline without friction"**.
+These bugs collectively creard a **poor user experience** and violated the principle of **"works offline without friction"**.
 
 ---
 
@@ -50,7 +50,7 @@ We implemented **4 major architectural fixes** and **1 new feature**:
 | **Router Architecture** | Convert router from function to static Provider | Navigation stable across UI state changes |
 | **Keyboard Handling** | Migrate to `HardwareKeyboard` API with comprehensive key mapping | All keyboard layouts supported (ISO/ANSI/Spanish) |
 | **Chat Persistence** | Implement SharedPreferences-based repository with JSON serialization | Conversations persist across sessions |
-| **Widget Constraints** | Fix overflow with `Expanded` widget | Proper text truncation with ellipsis |
+| **Widget Constraints** | Fix overflow with `Expanded` widget | Proper text tejecutarcation with ellipsis |
 
 ---
 
@@ -86,11 +86,11 @@ return MaterialApp.router(routerConfig: router);
 ```
 
 **Impact:**
-- Pressing Ctrl +/- (zoom) → router recreates → resets to `initialLocation: '/workspace'`
+- Pressing Ctrl +/- (zoom) → router recrears → resets to `initialLocation: '/workspace'`
 - User loses navigation context (e.g., in settings screen → forced back to home)
 - State machine breaks: NavigatorObserver resets
 
-**Root Cause:** `createAppRouter()` function recreated GoRouter instance whenever parent widget rebuilt (triggered by zoom, theme, or any settings change).
+**Root Cause:** `crearAppRouter()` function recreard GoRouter instance whenever parent widget rebuilt (triggered by zoom, theme, or any settings change).
 
 ---
 
@@ -102,8 +102,8 @@ return MaterialApp.router(routerConfig: router);
 SingleActivator(LogicalKeyboardKey.add, control: true)
 ```
 
-**Testing:**
-| Keyboard Layout | Main Keyboard | Numpad | Result |
+**Pruebaing:**
+| Keyboard Layout | Main Keyboard | Numpad | Resultado |
 |----------------|---------------|---------|---------|
 | US (ANSI) | ✅ Works | ✅ Works | OK |
 | Spanish (ISO) | ❌ Fails | ✅ Works | BROKEN |
@@ -126,7 +126,7 @@ void setProjectPath(String path) {
 ```
 
 **Impact:**
-- User switches project → loses all chat history
+- User switches proyecto → loses all chat history
 - Closing app → all conversations erased
 - Violates user expectation: "my work should be saved"
 
@@ -145,7 +145,7 @@ void setProjectPath(String path) {
 - Single source of truth: `AppTheme.darkTheme()` and `AppTheme.lightTheme()` define all colors
 - Future-proof: Adding new themes requires no widget changes
 
-**Implementation:**
+**Implementación:**
 ```dart
 // ✅ CORRECT: Respects theme
 Container(
@@ -157,15 +157,15 @@ Container(
 )
 ```
 
-**Files Changed (8 total):**
+**Archivos Changed (8 total):**
 1. `lib/features/chat/presentation/widgets/chat_panel_widget.dart`
 2. `lib/features/chat/presentation/widgets/message_bubble_widget.dart`
-3. `lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart`
+3. `lib/features/proyecto_shell/presentation/widgets/markdown_preview_widget.dart`
 4. `lib/features/settings/presentation/screens/settings_screen.dart`
 5. `lib/features/settings/presentation/widgets/appearance_section.dart`
 6. `lib/features/settings/presentation/widgets/language_section.dart`
 7. `lib/features/settings/presentation/widgets/storage_section.dart`
-8. `lib/features/settings/presentation/widgets/profile_section.dart`
+8. `lib/features/settings/presentation/widgets/proarchivo_section.dart`
 
 **Theme Re-enabled:**
 ```dart
@@ -181,7 +181,7 @@ MaterialApp.router(
 
 ### Decision 2: Router Stability Pattern
 
-**Decision:** Convert `createAppRouter()` function to static `Provider<GoRouter>`.
+**Decision:** Convert `crearAppRouter()` function to static `Provider<GoRouter>`.
 
 **Rationale:**
 - **Riverpod Provider Pattern**: Providers cache instances, never rebuild unless explicitly invalidated
@@ -302,7 +302,7 @@ Focus(
 **Rationale:**
 - **Simplicity**: No SQL schema, no migrations, minimal boilerplate
 - **Offline-First**: Works without backend, persists locally
-- **Project-Scoped Keys**: `chat_history_<projectId>` pattern isolates conversations
+- **Proyecto-Scoped Keys**: `chat_history_<proyectoId>` pattern isolates conversations
 - **JSON Serialization**: Leverages Dart's built-in `jsonEncode/jsonDecode`
 
 **Architecture:**
@@ -331,7 +331,7 @@ Focus(
 └─────────────────────────────────────────┘
 ```
 
-**Implementation:**
+**Implementación:**
 
 **1. Entity Serialization (`chat_message.dart`):**
 ```dart
@@ -400,7 +400,7 @@ Future<void> saveMessage(String projectId, ChatMessage message) async {
 String _getChatHistoryKey(String projectId) => 'chat_history_$projectId';
 ```
 
-**3. Notifier Integration (`chat_notifier.dart`):**
+**3. Notifier Integración (`chat_notifier.dart`):**
 ```dart
 /// Sets the project path and loads chat history from persistence.
 Future<void> setProjectPath(String path) async {
@@ -469,22 +469,22 @@ chat_history_a3f8d9e1-4b2c-5d6a-7e8f-9a0b1c2d3e4f =
 
 ---
 
-## Implementation Details
+## Implementación Details
 
 ### Code Changes Summary
 
-| Component | Files Changed | Lines Added | Lines Removed |
+| Component | Archivos Changed | Lines Added | Lines Removed |
 |-----------|--------------|-------------|---------------|
-| **Theme Colors** | 8 files | 8 | 8 |
-| **Router Stability** | 2 files (main.dart, app_router.dart) | 35 | 25 |
-| **Keyboard Handling** | 2 files (keyboard_zoom_wrapper.dart, settings_providers.dart) | 50 | 40 |
-| **Chat Persistence** | 4 files (chat_message.dart, chat_repository.dart, chat_repository_impl.dart, chat_notifier.dart) | 120 | 15 |
-| **Bug Fixes (overflow, Enter key)** | 2 files | 10 | 5 |
-| **Total** | **14 files** | **223** | **93** |
+| **Theme Colors** | 8 archivos | 8 | 8 |
+| **Router Stability** | 2 archivos (main.dart, app_router.dart) | 35 | 25 |
+| **Keyboard Handling** | 2 archivos (keyboard_zoom_wrapper.dart, settings_providers.dart) | 50 | 40 |
+| **Chat Persistence** | 4 archivos (chat_message.dart, chat_repository.dart, chat_repository_impl.dart, chat_notifier.dart) | 120 | 15 |
+| **Bug Fixes (overflow, Enter key)** | 2 archivos | 10 | 5 |
+| **Total** | **14 archivos** | **223** | **93** |
 
 ### Commits
 
-**Commit 1 (Phase 6.1-6.5):**
+**Commit 1 (Fase 6.1-6.5):**
 ```
 fix(ui): 6 bugs críticos de UI/UX solucionados
 
@@ -498,7 +498,7 @@ BUG 6 - Chat Persistence (IN PROGRESS 🚧)
 Files: 6 modified (router, chat, settings, keyboard_wrapper)
 ```
 
-**Commit 2 (Current - Phase 6.6-6.7):**
+**Commit 2 (Current - Fase 6.6-6.7):**
 ```
 feat(persistence): Implement chat persistence + complete theme fix
 
@@ -538,12 +538,12 @@ Files: 14 modified (8 theme + 4 persistence + 2 refactor)
    - Platform-agnostic (Windows/Mac/Linux)
 
 4. **✅ Chat Persistence Works**
-   - Conversations survive project switches
+   - Conversations survive proyecto switches
    - Auto-save on every message (user + assistant)
    - Offline-first, no backend required
 
 5. **✅ UX Improved**
-   - Project paths display correctly with ellipsis
+   - Proyecto paths display correctly with ellipsis
    - Enter key sends messages (keyboard-friendly)
    - Zoom range: 50% to 200% (accessible)
 
@@ -562,14 +562,14 @@ Files: 14 modified (8 theme + 4 persistence + 2 refactor)
 
 3. **⚠️ Memory Usage (Large Conversations)**
    - **Risk**: Loading 1000+ messages into memory
-   - **Mitigation**: Current limit ~100 messages per project (reasonable)
+   - **Mitigation**: Current limit ~100 messages per proyecto (reasonable)
    - **Future**: Lazy loading with pagination
 
 ### Risks
 
 | Risk | Likelihood | Impact | Mitigation |
 |------|-----------|--------|------------|
-| SharedPreferences quota exceeded | Low (desktop has no limit) | Medium (history truncated) | Add storage monitoring in settings |
+| SharedPreferences quota exceeded | Low (desktop has no limit) | Medium (history tejecutarcated) | Add storage monitoring in settings |
 | JSON parse failure (corrupted data) | Low (atomic writes) | Medium (empty history) | Add backup mechanism |
 | Performance degradation (large history) | Low (100 msg limit OK) | Low (lazy loading ready) | Implement pagination in HU-5 |
 
@@ -589,7 +589,7 @@ Files: 14 modified (8 theme + 4 persistence + 2 refactor)
 - More boilerplate code
 - Overkill for MVP (simple key-value storage sufficient)
 
-**Decision:** Rejected for v1, consider for HU-5 (Advanced Chat Features).
+**Decision:** Rejected for v1, consider for HU-5 (Avanzado Chat Features).
 
 ---
 
@@ -624,7 +624,7 @@ Files: 14 modified (8 theme + 4 persistence + 2 refactor)
 
 ## Validation
 
-### Manual Testing
+### Manual Pruebaing
 
 ✅ **Theme Switching:**
 - Dark mode: All backgrounds dark, text light
@@ -632,8 +632,8 @@ Files: 14 modified (8 theme + 4 persistence + 2 refactor)
 - Settings screen: Theme switcher works correctly
 
 ✅ **Router Stability:**
-- Tested: Zoom in/out while in settings screen
-- Result: Stayed in settings, navigation preserved
+- Pruebaed: Zoom in/out while in settings screen
+- Resultado: Stayed in settings, navigation preserved
 
 ✅ **Keyboard Shortcuts:**
 - Spanish keyboard: Ctrl+= zooms in ✅
@@ -642,12 +642,12 @@ Files: 14 modified (8 theme + 4 persistence + 2 refactor)
 - Mac: Cmd+- zooms out ✅
 
 ✅ **Chat Persistence:**
-- Project A: Send 3 messages
-- Switch to Project B: Send 2 messages
-- Switch back to Project A: 3 messages still there ✅
+- Proyecto A: Send 3 messages
+- Switch to Proyecto B: Send 2 messages
+- Switch back to Proyecto A: 3 messages still there ✅
 - Close app, reopen: All messages preserved ✅
 
-### Automated Testing
+### Automated Pruebaing
 
 ```bash
 flutter analyze --no-fatal-infos
@@ -658,18 +658,18 @@ flutter analyze --no-fatal-infos
 1. `avoid_catches_without_on_clauses` (3 instances) - Acceptable for fire-and-forget saves
 2. `sort_constructors_first` (1 instance) - Cosmetic, factory after methods
 
-**Coverage Status:** ⏳ Pending (add in HU-5)
+**Coverage Estado:** ⏳ Pendiente (add in HU-5)
 
 ---
 
 ## References
 
-### Code Files
+### Code Archivos
 
 **Theme Refactor:**
 - [main.dart](../../src/client/lib/main.dart#L98-L102)
 - [chat_panel_widget.dart](../../src/client/lib/features/chat/presentation/widgets/chat_panel_widget.dart#L96)
-- [markdown_preview_widget.dart](../../src/client/lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart#L110)
+- [markdown_preview_widget.dart](../../src/client/lib/features/proyecto_shell/presentation/widgets/markdown_preview_widget.dart#L110)
 - [settings_screen.dart](../../src/client/lib/features/settings/presentation/screens/settings_screen.dart#L31)
 
 **Router Stability:**
@@ -686,12 +686,12 @@ flutter analyze --no-fatal-infos
 - [chat_repository_impl.dart](../../src/client/lib/features/chat/data/repositories/chat_repository_impl.dart#L76-L133)
 - [chat_notifier.dart](../../src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart#L45-L63)
 
-### Documentation
+### Documentoation
 
 - [AGENTS.md](../../AGENTS.md) - Agent rules and responsibilities
 - [HU-4.4 Tracking](../03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/README.md) - User story context
-- [Flutter Material Design 3](https://m3.material.io/styles/color/the-color-system/key-colors-tones) - ColorScheme specification
-- [GoRouter Best Practices](https://pub.dev/documentation/go_router/latest/) - Router stability patterns
+- [Flutter Material Design 3](https://m3.material.io/estilos/color/the-color-system/key-colors-tones) - ColorScheme specification
+- [GoRouter Best Practices](https://pub.dev/documentoation/go_router/laprueba/) - Router stability patterns
 
 ---
 
@@ -699,12 +699,12 @@ flutter analyze --no-fatal-infos
 
 **Author:** ArchitectZero (AI Agent)
 **Reviewed By:** Pitcher (Human Developer)
-**Approved:** Pending manual test completion
-**Next Steps:**
-1. Manual test all 6 bugs in desktop app
-2. Execute `PRE_PUSH_VALIDATION_MASTER.sh`
+**Approved:** Pendiente manual prueba completion
+**Siguiente Steps:**
+1. Manual prueba all 6 bugs in desktop app
+2. Ejecutar `PRE_PUSH_VALIDATION_MASTER.sh`
 3. Push to feature/rag-llm-resilience branch
-4. Create PR to develop branch
+4. Crear PR to develop branch
 
 ---
 

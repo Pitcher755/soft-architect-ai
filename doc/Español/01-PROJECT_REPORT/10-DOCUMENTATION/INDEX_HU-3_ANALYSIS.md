@@ -1,10 +1,10 @@
-# 📑 ÍNDICE MAESTRO: Análisis Completo HU-3.x Project-First Refactor
+# 📑 ÍNDICE MAESTRO: Análisis Completo HU-3.x Proyecto-First Refactor
 
 > **Fecha de Análisis:** 02/02/2026
 > **Estado:** ✅ LISTO PARA REVISIÓN
 > **Responsable:** ArchitectZero (AI Lead)
-> **Rama Propuesta:** `feature/ui-project-shell`
-> **Commit:** a486720 (documentos incorporados)
+> **Rama Propuesta:** `feature/ui-proyecto-shell`
+> **Commit:** a486720 (documentoos incorporados)
 
 ---
 
@@ -28,7 +28,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 ### Decisión Requerida
 
-**¿Proceder con refactor Project-First?**
+**¿Proceder con refactor Proyecto-First?**
 - ✅ Sí (RECOMENDADO) → Crear rama + Actualizar roadmap
 - ❌ No → Mantener HU-3.x actual
 - 🤔 Modificar → Especificar cambios deseados
@@ -64,7 +64,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 **4️⃣ INNOVACIONES TÉCNICAS (30 min)** → [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md)
 - Mejoras en UI/UX
 - Mejoras en Backend (servicios nuevos)
-- Mejoras en Testing (estrategia)
+- Mejoras en Pruebaing (estrategia)
 - Código de ejemplo (Dart + Python)
 - Trade-offs y alternativas
 - **Veredicto:** Decisiones arquitectónicas justificadas
@@ -75,7 +75,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 - Cambios archivo por archivo
 - Pasos de implementación (Fase 0-5)
 - Timeline y criterios de aceptación
-- **Veredicto:** Runbook operativo
+- **Veredicto:** Ejecutarbook operativo
 
 ---
 
@@ -115,14 +115,14 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 1. [HU-3_EXECUTIVE_SUMMARY.es.md](./HU-3_EXECUTIVE_SUMMARY.es.md) ← Rápido (5 min)
 2. [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md) → Lee secciones:
-   - HU-3.2 (FileSystemService)
+   - HU-3.2 (ArchivoSystemService)
    - HU-3.4 (Error Handling)
    - Cambios arquitectónicos (Python)
    (15 min)
 
 3. [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md) → Lee secciones:
    - Mejoras en Backend
-   - Mejoras en Testing
+   - Mejoras en Pruebaing
    - Código de ejemplo (Python)
    (15 min)
 
@@ -140,7 +140,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 1. [HU-3_EXECUTIVE_SUMMARY.es.md](./HU-3_EXECUTIVE_SUMMARY.es.md) ← Rápido (5 min)
 2. [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md) → Lee secciones:
-   - HU-3.1 (Project Shell)
+   - HU-3.1 (Proyecto Shell)
    - HU-3.3 (Chat Sequential)
    - HU-3.5 (Streaming)
    - Cambios arquitectónicos (Flutter)
@@ -162,23 +162,23 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 ---
 
-### 🔐 QA / Tester
+### 🔐 QA / Pruebaer
 **Tiempo Total:** ~50 min
 
 1. [HU-3_EXECUTIVE_SUMMARY.es.md](./HU-3_EXECUTIVE_SUMMARY.es.md) ← Rápido (5 min)
 2. [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md) → Lee secciones:
-   - Todos los HU (verification criteria)
+   - Todos los HU (verificación criteria)
    - Riesgos identificados
    (15 min)
 
 3. [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md) → Lee secciones:
-   - Mejoras en Testing (Strategy)
-   - Código de ejemplo (test cases)
+   - Mejoras en Pruebaing (Strategy)
+   - Código de ejemplo (prueba cases)
    (15 min)
 
 4. [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md) ← Completo (15 min)
 
-**Acción:** Crear test plan basado en 5 HUs.
+**Acción:** Crear prueba plan basado en 5 HUs.
 
 ---
 
@@ -188,10 +188,10 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 
 | HU | Nombre | Cambio | Estado | Rama |
 |----|--------|--------|--------|------|
-| **3.1** | Project Shell | Redefinida (Chat UI → Project Manager IDE) | ✅ | `feature/ui-project-shell` |
-| **3.2** | FileSystemService | Redefinida (Streaming → Backend Motor I/O) | ✅ | `feature/backend-filesystem-service` |
-| **3.3** | Chat Sequential | Redefinida (Error handling → Document Proposals) | ✅ | `feature/ui-chat-sequential-docs` |
-| **3.4** | Error Handling | ✨ NUEVA (Resilience layer) | ✨ | `feature/backend-error-handling` |
+| **3.1** | Proyecto Shell | Redefinida (Chat UI → Proyecto Manager IDE) | ✅ | `feature/ui-proyecto-shell` |
+| **3.2** | ArchivoSystemService | Redefinida (Streaming → Backend Motor I/O) | ✅ | `feature/backend-archivosystem-service` |
+| **3.3** | Chat Sequential | Redefinida (Error handling → Documento Proposals) | ✅ | `feature/ui-chat-sequential-docs` |
+| **3.4** | Error Handling | ✨ NUEVA (Resiliencia layer) | ✨ | `feature/backend-error-handling` |
 | **3.5** | Streaming Optimization | ✨ NUEVA (SSE + Optimistic UI) | ✨ | `feature/ui-streaming-optimization` |
 
 ### Estimaciones
@@ -201,7 +201,7 @@ DESPUÉS: Project-First Sequential Document Generation (25 docs en minutos)
 | **Total Puntos** | ~50 | ~70 | +40% |
 | **Duración Sprint 3** | 6 semanas | 8 semanas | +2 sem |
 | **Complejidad** | Media | Media-Alta | +1 |
-| **Testing Coverage** | Modesto (~60%) | Exhaustivo (>85%) | ↑↑ |
+| **Pruebaing Coverage** | Modesto (~60%) | Exhaustivo (>85%) | ↑↑ |
 
 ### Puntos por HU
 
@@ -232,7 +232,7 @@ Recibe respuesta
 [Copia/Pega - usuario responsable]
 ```
 
-**PROPUESTO (Project-First Sequential):**
+**PROPUESTO (Proyecto-First Sequential):**
 ```
 Usuario crea Proyecto
     ↓
@@ -267,8 +267,8 @@ Usuario describe idea en chat
 
 **Mitigación:**
 - Spike en Semana 1 para arquitectura RAG
-- Documentación clara de estado machine
-- Tests de integración E2E
+- Documentoación clara de estado machine
+- Pruebas de integración E2E
 
 ---
 
@@ -321,7 +321,7 @@ Opción C: 🤔 MODIFICAR - Proponer cambios
 
 ### Si ✅ Opción A Aprobada:
 
-**Fase 1: Rama y Documentación (02/02 - 03/02)**
+**Fase 1: Rama y Documentoación (02/02 - 03/02)**
 ```
 ├─ Crear rama: feature/ui-project-shell
 ├─ Actualizar: USER_STORIES_MASTER.es.json
@@ -350,13 +350,13 @@ Opción C: 🤔 MODIFICAR - Proponer cambios
 
 ## 📎 REFERENCIAS CRUZADAS
 
-### Documentos Relacionados en Proyecto
+### Documentoos Relacionados en Proyecto
 
 - [AGENTS.md](../../AGENTS.md) - Arquitectura y principios
 - [context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md](../../context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md)
 - [context/40-ROADMAP/USER_STORIES_MASTER.es.json](../../context/40-ROADMAP/USER_STORIES_MASTER.es.json)
 
-### Documentos Nuevos Creados (Esta Rama)
+### Documentoos Nuevos Creados (Esta Rama)
 
 ```
 doc/01-PROJECT_REPORT/
@@ -380,7 +380,7 @@ doc/01-PROJECT_REPORT/
 
 **Fecha de Análisis:** 02/02/2026
 
-**Rama Asociada:** `feature/ui-project-shell` (creada, rebasada sobre develop)
+**Rama Asociada:** `feature/ui-proyecto-shell` (creada, rebasada sobre develop)
 
 ---
 
@@ -408,7 +408,7 @@ doc/01-PROJECT_REPORT/
 
 ## 📈 RECOMENDACIÓN FINAL
 
-### ✅ **PROCEDER CON OPCIÓN B (Project-First Paradigm)**
+### ✅ **PROCEDER CON OPCIÓN B (Proyecto-First Paradigm)**
 
 **Justificación:**
 1. ✅ Alineado con visión "Local-First" del proyecto
@@ -423,7 +423,7 @@ doc/01-PROJECT_REPORT/
 
 ---
 
-**Documento de Referencia**
+**Documentoo de Referencia**
 **Creado por:** ArchitectZero (AI Lead)
 **Fecha:** 02/02/2026
 **Estado:** ✅ LISTO PARA REVISIÓN Y DECISIÓN

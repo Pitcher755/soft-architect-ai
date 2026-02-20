@@ -3,7 +3,7 @@
 > **Estado:** 📋 LISTA PARA INICIAR (Scaffold completado, mocks en lugar)
 > **Propósito:** Verificar el flujo completo E2E con backend real
 > **Estimación:** 3-4 días
-> **Tests Coverage Target:** Backend >85%, Frontend >80%
+> **Pruebas Coverage Target:** Backend >85%, Frontend >80%
 
 ---
 
@@ -12,7 +12,7 @@
 1. [Manual E2E Validation Checklist](#manual-e2e-validation-checklist)
 2. [Criterios de Aceptación (Definition of Ready)](#criterios-de-aceptación)
 3. [Definition of Done](#definition-of-done)
-4. [Guía de Testing](#guía-de-testing)
+4. [Guía de Pruebaing](#guía-de-pruebaing)
 5. [Troubleshooting](#troubleshooting)
 6. [Comandos Útiles](#comandos-útiles)
 7. [Métricas de Performance](#métricas-de-performance)
@@ -37,20 +37,20 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que la creación de proyecto funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
-| 1.1 | Click "Nuevo Proyecto" button | [ ] |
+| 1.1 | Click "Nuevo Proyecto" botón | [ ] |
 | 1.2 | Modal dialog aparece | [ ] |
 | 1.3 | Selector de carpeta funciona (click "Examinar") | [ ] |
 | 1.4 | Seleccionar carpeta válida | [ ] |
-| 1.5 | Nombre del proyecto: "TestProject" | [ ] |
-| 1.6 | Click "Crear" button | [ ] |
+| 1.5 | Nombre del proyecto: "PruebaProyecto" | [ ] |
+| 1.6 | Click "Crear" botón | [ ] |
 | 1.7 | Dashboard carga correctamente | [ ] |
 | 1.8 | Barra de progreso muestra "Doc 1/25" | [ ] |
 | 1.9 | Carpeta del proyecto se crea en disco | [ ] |
 | 1.10 | Subcarpetas (10-CONTEXT, 20-REQUIREMENTS, etc.) se crean | [ ] |
 
-**Expected Result:** Dashboard visible con chat listo para Doc 1
+**Expected Resultado:** Dashboard visible con chat listo para Doc 1
 
 ---
 
@@ -58,17 +58,17 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que la entrada de usuario funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
 | 2.1 | Input field visible y enfocable | [ ] |
 | 2.2 | Input field vacío → Botón enviar **deshabilitado** (gris) | [ ] |
-| 2.3 | Escribir: "Genera el Project Manifesto para un sistema de gestión de tareas" | [ ] |
+| 2.3 | Escribir: "Genera el Proyecto Manifesto para un sistema de gestión de tareas" | [ ] |
 | 2.4 | Botón enviar habilitado (color activo) | [ ] |
 | 2.5 | Click enviar | [ ] |
 | 2.6 | Input field se limpia automáticamente | [ ] |
 | 2.7 | Teclado: Enter también envía mensaje | [ ] |
 
-**Expected Result:** Mensaje usuario enviado exitosamente
+**Expected Resultado:** Mensaje usuario enviado exitosamente
 
 ---
 
@@ -76,7 +76,7 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar streaming token-a-token con indicador visual
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
 | 3.1 | Mensaje usuario aparece alineado a la **derecha** | [ ] |
 | 3.2 | Streaming indicator aparece (ej: "IA escribe...") | [ ] |
@@ -86,7 +86,7 @@ cd src/client && flutter run -d linux
 | 3.6 | Streaming completa en <5 segundos | [ ] |
 | 3.7 | Indicador desaparece cuando streaming termina | [ ] |
 
-**Expected Result:** Streaming visible y suave, <200ms TTFT
+**Expected Resultado:** Streaming visible y suave, <200ms TTFT
 
 ---
 
@@ -94,7 +94,7 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que la propuesta se renderiza correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
 | 4.1 | ProposalCard aparece después de streaming | [ ] |
 | 4.2 | Contenido es Markdown válido (títulos, listas, énfasis) | [ ] |
@@ -105,7 +105,7 @@ cd src/client && flutter run -d linux
 | 4.7 | Botones bien espaciados y visibles | [ ] |
 | 4.8 | Colores siguen Dark Mode (GitHub Dark) | [ ] |
 
-**Expected Result:** ProposalCard renderizada correctamente con Markdown
+**Expected Resultado:** ProposalCard renderizada correctamente con Markdown
 
 ---
 
@@ -113,20 +113,20 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que la propuesta se valida y persiste correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
 | 5.1 | Click botón "Validar y Guardar" | [ ] |
-| 5.2 | Toast notificación aparece: **"✅ Documento guardado"** | [ ] |
+| 5.2 | Toast notificación aparece: **"✅ Documentoo guardado"** | [ ] |
 | 5.3 | Toast desaparece después de 3s | [ ] |
 | 5.4 | Barra de progreso actualiza: "Doc 2/25" | [ ] |
 | 5.5 | ProposalCard desaparece | [ ] |
 | 5.6 | Abrir explorador de archivos | [ ] |
-| 5.7 | Navegar a: `TestProject/context/10-CONTEXT/` | [ ] |
+| 5.7 | Navegar a: `PruebaProyecto/context/10-CONTEXT/` | [ ] |
 | 5.8 | Archivo existe: `PROJECT_MANIFESTO.md` | [ ] |
 | 5.9 | Contenido del archivo **coincide exactamente** con propuesta | [ ] |
 | 5.10 | Chat automáticamente pregunta por Doc 2 | [ ] |
 
-**Expected Result:** Documento guardado correctamente en disco
+**Expected Resultado:** Documentoo guardado correctamente en disco
 
 ---
 
@@ -134,7 +134,7 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que el botón "Regenerar" funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
 | 6.1 | Generar Doc 2 (respuesta cualquiera) | [ ] |
 | 6.2 | Propuesta aparece | [ ] |
@@ -144,7 +144,7 @@ cd src/client && flutter run -d linux
 | 6.6 | Historial del chat mantiene mensajes anteriores | [ ] |
 | 6.7 | Propuesta anterior desaparece (solo la última visible) | [ ] |
 
-**Expected Result:** Regeneración funciona sin perder historial
+**Expected Resultado:** Regeneración funciona sin perder historial
 
 ---
 
@@ -152,7 +152,7 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que el botón "Rechazar" funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
 | 7.1 | Generar Doc 3 (respuesta cualquiera) | [ ] |
 | 7.2 | Propuesta aparece | [ ] |
@@ -162,7 +162,7 @@ cd src/client && flutter run -d linux
 | 7.6 | Progreso sigue en "Doc 3/25" (no avanza) | [ ] |
 | 7.7 | Archivo **NO se crea** en disco | [ ] |
 
-**Expected Result:** Rechazo descarta propuesta sin persistencia
+**Expected Resultado:** Rechazo descarta propuesta sin persistencia
 
 ---
 
@@ -170,7 +170,7 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que los errores se manejan elegantemente
 
-| Paso | Verificación | Status |
+| Paso | Verificación | Estado |
 |------|--------------|--------|
 | 8.1 | Parar backend: `Ctrl+C` en terminal del servidor | [ ] |
 | 8.2 | Enviar mensaje en chat | [ ] |
@@ -181,7 +181,7 @@ cd src/client && flutter run -d linux
 | 8.7 | Streaming funciona correctamente | [ ] |
 | 8.8 | **NO hay stack traces** mostrados al usuario | [ ] |
 
-**Expected Result:** Errores manejados elegantemente sin crashes
+**Expected Resultado:** Errores manejados elegantemente sin crashes
 
 ---
 
@@ -195,7 +195,7 @@ cd src/client && flutter run -d linux
 | **P2** | Propuesta es temporal (NO persiste hasta 'Validar') | [ ] |
 | **P3** | Botón enviar deshabilitado si campo vacío/espacios | [ ] |
 | **P4** | Bloques código con botón 'Copiar' funcional | [ ] |
-| **P5** | Botón 'Validar y Guardar' llama FileSystemService (HU-3.2) | [ ] |
+| **P5** | Botón 'Validar y Guardar' llama ArchivoSystemService (HU-3.2) | [ ] |
 | **P6** | Streaming SSE con <200ms TTFT | [ ] |
 | **P7** | Barra de progreso actualiza (Doc N/25) tras validar | [ ] |
 | **P8** | Flujo 100% secuencial (nunca 2 docs paralelos) | [ ] |
@@ -204,7 +204,7 @@ cd src/client && flutter run -d linux
 
 | ID | Criterio | Verificación |
 |----|----------|--------------|
-| **N1** | Documentos NO se guardan sin clic en 'Validar' | [ ] |
+| **N1** | Documentoos NO se guardan sin clic en 'Validar' | [ ] |
 | **N2** | Stack traces no aparecen en UI (errores genéricos amigables) | [ ] |
 | **N3** | App no se cuelga con conexión de red inestable | [ ] |
 
@@ -216,15 +216,15 @@ cd src/client && flutter run -d linux
 
 - [ ] **Backend:**
   - [ ] `SequentialOrchestrator` implementado con lógica de orquestación
-  - [ ] Tests unitarios: >85% coverage
-  - [ ] Tests de integración: /api/v1/chat/stream funciona
-  - [ ] Manejo de errores: Excepciones custom documentadas
+  - [ ] Pruebas unitarios: >85% coverage
+  - [ ] Pruebas de integración: /api/v1/chat/stream funciona
+  - [ ] Manejo de errores: Excepciones custom documentoadas
   - [ ] Logging: Debug logs útiles para troubleshooting
 
 - [ ] **Frontend:**
-  - [ ] `ChatNotifier` + UI Widgets con tests >80% coverage
-  - [ ] Integration tests E2E pasan (chat flow completo)
-  - [ ] FileSystemService integrado y funcionando
+  - [ ] `ChatNotifier` + UI Widgets con pruebas >80% coverage
+  - [ ] Integración pruebas E2E pasan (chat flow completo)
+  - [ ] ArchivoSystemService integrado y funcionando
   - [ ] Mock services reemplazados por servicios reales
 
 - [ ] **Arquitectura:**
@@ -243,15 +243,15 @@ cd src/client && flutter run -d linux
 ### Funcional
 
 - [ ] ✅ Streaming funciona (<200ms TTFT medido)
-- [ ] ✅ Validación persiste correctamente (file explorer)
+- [ ] ✅ Validación persiste correctamente (archivo explorer)
 - [ ] ✅ Manejo de errores elegante (no crashes)
 - [ ] ✅ Progreso se actualiza correctamente
 - [ ] ✅ Regeneración y rechazo funcionan
 
-### Documentación
+### Documentoación
 
 - [ ] [ ] README actualizado con instrucciones de uso
-- [ ] [ ] API docs: Swagger endpoint `/api/v1/chat/stream` documentado
+- [ ] [ ] API docs: Swagger endpoint `/api/v1/chat/stream` documentoado
 - [ ] [ ] ADR (Architecture Decision Record) creado para SSE vs WebSocket
 - [ ] [ ] Troubleshooting guide completado
 
@@ -265,9 +265,9 @@ cd src/client && flutter run -d linux
 
 ---
 
-## 📊 Guía de Testing
+## 📊 Guía de Pruebaing
 
-### Backend Tests
+### Backend Pruebas
 
 ```bash
 cd src/server
@@ -287,7 +287,7 @@ pytest tests/unit/api/v1/test_chat_endpoints.py -vv
 pytest --profile --profile-svg
 ```
 
-### Frontend Tests
+### Frontend Pruebas
 
 ```bash
 cd tests
@@ -377,7 +377,7 @@ print(f'Embedding time: {time.time() - start:.2f}s')
 
 ---
 
-### ❌ Problema: Tests de integración fallan
+### ❌ Problema: Pruebas de integración fallan
 
 **Diagnóstico:**
 
@@ -670,7 +670,7 @@ for doc_type in ['PROJECT_MANIFESTO', 'VISION_PROMISE', 'USER_JOURNEY']:
 - ✅ Todos los flujos de validación manual pasan
 - ✅ Coverage: Backend >85%, Frontend >80%
 - ✅ Performance: TTFT <200ms, memoria estable
-- ✅ Documentación completa y actualizada
+- ✅ Documentoación completa y actualizada
 
 **Tiempo Estimado:** 3-4 días
 

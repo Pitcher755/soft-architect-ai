@@ -1,12 +1,12 @@
 # 🎬 Tutoriales en Video - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Recursos de video
-> **Tiempo de lectura:** 5 minutos
+> **Date:** 19/02/2026
+> **Status:** ✅ Recursos de video
+> **Reading Time:** 5 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Tutoriales Disponibles](#tutoriales-disponibles)
 - [Series de Aprendizaje](#series-de-aprendizaje)
@@ -21,26 +21,26 @@
 
 #### 1. Instalación Completa en Windows
 **Duración:** 15 minutos
-**Nivel:** Principiante
+**Nivel:** Beginner
 **Idioma:** Español / English subtitles
 
 **Contenido:**
 - Instalación de Docker Desktop
 - Clonado del repositorio
-- Configuración del archivo `.env`
-- Primer arranque y verificación
+- Configuration del file `.env`
+- Primer arranque y verification
 
 **Link:** *(Próximamente en YouTube)*
 
 ---
 
-#### 2. Tu Primer Proyecto en 10 Minutos
+#### 2. Tu Primer Project en 10 Minutos
 **Duración:** 12 minutos
-**Nivel:** Principiante
+**Nivel:** Beginner
 **Idioma:** Español / English subtitles
 
 **Contenido:**
-- Crear nuevo proyecto "TODO App"
+- Create nuevo project "TODO App"
 - Definir problema y requisitos
 - Conversación con la IA
 - Generación de documentación automática
@@ -53,7 +53,7 @@
 
 #### 3. Diseño de API REST con Tech Packs
 **Duración:** 25 minutos
-**Nivel:** Intermedio
+**Nivel:** Intermediate
 **Idioma:** Español / English subtitles
 
 **Contenido:**
@@ -68,12 +68,12 @@
 
 #### 4. Microservicios vs Monolito: ¿Cuándo usar cada uno?
 **Duración:** 30 minutos
-**Nivel:** Intermedio
+**Nivel:** Intermediate
 **Idioma:** Español / English subtitles
 
 **Contenido:**
 - Conversación guiada con la IA
-- Análisis de trade-offs
+- Analysis de trade-offs
 - Caso de estudio: E-commerce
 - Documentación de decisión
 
@@ -81,16 +81,16 @@
 
 ---
 
-### 🔧 Avanzado (Advanced)
+### 🔧 Advanced (Advanced)
 
 #### 5. Personalizar Tech Packs Propios
 **Duración:** 20 minutos
-**Nivel:** Avanzado
+**Nivel:** Advanced
 **Idioma:** Español / English subtitles
 
 **Contenido:**
 - Estructura de un Tech Pack
-- Crear Tech Pack custom ("Svelte + SurrealDB")
+- Create Tech Pack custom ("Svelte + SurrealDB")
 - Reindexar Knowledge Base
 - Probar conversación con Tech Pack custom
 
@@ -100,7 +100,7 @@
 
 #### 6. Integración con Notion / Jira
 **Duración:** 18 minutos
-**Nivel:** Avanzado
+**Nivel:** Advanced
 **Idioma:** Español / English subtitles
 
 **Contenido:**
@@ -117,22 +117,22 @@
 
 ### Serie 1: Master Workflow 0-100 (4 episodios)
 
-**Episodio 1: Fase 0 - Governance** (15 min)
+**Episodio 1: Phase 0 - Governance** (15 min)
 - Definir problema
 - Identificar stakeholders
 - Requisitos funcionales y no funcionales
 
-**Episodio 2: Fase 1 - Architecture** (20 min)
+**Episodio 2: Phase 1 - Architecture** (20 min)
 - Decisiones técnicas
 - Diagramas C4
 - ADRs (Architecture Decision Records)
 
-**Episodio 3: Fase 2 - Implementation** (25 min)
+**Episodio 3: Phase 2 - Implementation** (25 min)
 - Historias de usuario
 - Backlog priorizado
 - Sprint planning
 
-**Episodio 4: Fase 3 - Tracking** (18 min)
+**Episodio 4: Phase 3 - Tracking** (18 min)
 - Métricas de progreso
 - Retrospectivas
 - Iteración continua
@@ -144,7 +144,7 @@
 ### Serie 2: Casos de Uso Reales (6 episodios)
 
 **Caso 1: Plataforma de Blog Académico** (30 min)
-- Del concepto a la implementación
+- Del concepto a la implementation
 - Decisiones técnicas reales
 - Errores y aprendizajes
 
@@ -188,8 +188,8 @@
 **Video (45 minutos):**
 - Entrevista con el CTO
 - Sesión en vivo de diseño con la IA
-- Resultado: Documentación completa en 2 días
-- Implementación en 3 semanas
+- Result: Documentación completa en 2 días
+- Implementation en 3 semanas
 - Retrospectiva y lecciones aprendidas
 
 **Link:** *(Próximamente en YouTube)*
@@ -204,9 +204,9 @@
 
 **Video (30 minutos):**
 - Integración en syllabus de la materia
-- Estudiantes diseñan proyectos propios
+- Estudiantes diseñan projects propios
 - Comparación de decisiones arquitectónicas
-- Resultados: Mejora del 40% en calidad de entregas
+- Results: Mejora del 40% en calidad de entregas
 
 **Link:** *(Próximamente en YouTube)*
 
@@ -221,8 +221,8 @@
 1. **Grabar tu video** (formato: MP4, 1080p, 30fps)
 2. **Subir a YouTube** (público o no listado)
 3. **Abrir issue en GitHub:** https://github.com/Pitcher755/soft-architect-ai/issues
-   - Título: `[VIDEO] Nombre del caso de uso`
-   - Descripción: Link al video + resumen
+   - Título: `[VIDEO] Name del caso de uso`
+   - Description: Link al video + resumen
    - Etiquetar: `documentation`, `video-tutorial`
 4. **Revisión del equipo** (2-3 días)
 5. **Si aprobado:** Se añade a esta página y al canal oficial
@@ -307,7 +307,7 @@
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documents Relacionados
 
 - [Inicio Rápido](01-QUICK_START.md) - Comenzar desde cero
 - [Master Workflow](04-MASTER_WORKFLOW.md) - Entender la metodología

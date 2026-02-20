@@ -8,65 +8,65 @@
 
 ### Fase 0: Preparación ✅ **100% COMPLETO**
 - [x] Workflow maestro (4,000+ líneas)
-- [x] Tests centralizados (22 files → tests/python/)
+- [x] Pruebas centralizados (22 archivos → pruebas/python/)
 - [x] CI/CD actualizado
-- [x] Documentación completa
-- **Resultado:** 6/6 tareas ✅
+- [x] Documentoación completa
+- **Resultadoado:** 6/6 tareas ✅
 
 ### Fase 1: Backend RAG Orchestration ✅ **100% COMPLETO**
 - [x] SequentialOrchestrator implementado
 - [x] Prompt templates con RAG integration
 - [x] Error handling (RAGError + LLMError)
-- [x] 8 unit tests pasando
+- [x] 8 unit pruebas pasando
 - [x] Docstrings + comentarios
-- **Resultado:** 8/8 tests ✅ | 0.44s
+- **Resultadoado:** 8/8 pruebas ✅ | 0.44s
 
 ### Fase 2: Backend SSE Streaming ✅ **100% COMPLETO**
 - [x] Endpoint /api/v1/chat/generate POST
 - [x] StreamingResponse con text/event-stream
 - [x] _stream_generator() async con try/except
-- [x] 11 integration tests pasando
+- [x] 11 integration pruebas pasando
 - [x] AsyncMock mocking correcto
 - [x] Error handling en eventos SSE
 - [x] Content-type validation
 - [x] Request/response models
-- **Resultado:** 11/11 tests ✅ | 0.21s
+- **Resultadoado:** 11/11 pruebas ✅ | 0.21s
 
 ### Fase 3: Frontend State Machine 🔄 **PENDIENTE (0%)**
 - [ ] Riverpod StateNotifier provider
 - [ ] ChatState con enums + validación
 - [ ] ChatClient para SSE stream
 - [ ] Error handling + recovery
-- [ ] 8-12 tests RED
-- [ ] Tests GREEN + refactor
-- **Resultado:** Próxima fase
+- [ ] 8-12 pruebas RED
+- [ ] Pruebas GREEN + refactor
+- **Resultadoado:** Próxima fase
 
 ### Fase 4: UI Components Golden Kit 🔄 **PENDIENTE (0%)**
 - [ ] ChatListWidget
 - [ ] MessageBubble con streaming animation
-- [ ] DocumentPreview (markdown)
-- [ ] ActionButtons (accept/reject/regenerate)
+- [ ] DocumentoPreview (markdown)
+- [ ] ActionBotóns (accept/reject/regenerate)
 - [ ] Loading states + skeleton
-- [ ] 8-10 integration tests
-- **Resultado:** Próxima fase
+- [ ] 8-10 integration pruebas
+- **Resultadoado:** Próxima fase
 
-### Fase 5: Integration The Gate 🔄 **PENDIENTE (0%)**
-- [ ] E2E tests (Flutter ↔ FastAPI ↔ FileSystem)
+### Fase 5: Integración The Gate 🔄 **PENDIENTE (0%)**
+- [ ] E2E pruebas (Flutter ↔ FastAPI ↔ ArchivoSystem)
 - [ ] ChatService API client
-- [ ] FileSystem integration (HU-3.2)
-- [ ] Document persistence flow
+- [ ] ArchivoSystem integration (HU-3.2)
+- [ ] Documento persistence flow
 - [ ] Error recovery + rollback
 - [ ] Performance validation (<200ms)
-- **Resultado:** Próxima fase
+- **Resultadoado:** Próxima fase
 
 ### Fase 6: End-to-End Validation 🔄 **PENDIENTE (0%)**
-- [ ] Acceptance criteria verification (AF-1 to AF-8)
+- [ ] Acceptance criteria verificación (AF-1 to AF-8)
 - [ ] Performance benchmarks
 - [ ] Security validation
-- [ ] Final documentation
+- [ ] Final documentoation
 - [ ] Git cleanup + rebase
 - [ ] PR ready
-- **Resultado:** Próxima fase
+- **Resultadoado:** Próxima fase
 
 ## 📊 Métricas Generales
 
@@ -74,15 +74,15 @@
 |---------|-------|--------|
 | **Fases Completadas** | 2/6 | 🟢 33% |
 | **Puntos Historia** | 9/21 | 🟢 42.8% |
-| **Tests Totales** | 19 tests | ✅ 100% passing |
+| **Pruebas Totales** | 19 pruebas | ✅ 100% passing |
 | **Backend Code** | ~850 LOC | ✅ Completo |
 | **Type Safety** | 0 Pylance errors | ✅ |
-| **Test Coverage** | 100% (core) | ✅ |
-| **Documentation** | 4,000+ líneas | ✅ |
+| **Prueba Coverage** | 100% (core) | ✅ |
+| **Documentoation** | 4,000+ líneas | ✅ |
 
 ## ✅ Checklist de Validación
 
-### Tests Fase 1 (Backend RAG)
+### Pruebas Fase 1 (Backend RAG)
 ```
 ✅ test_orchestrator_initialization
 ✅ test_generate_with_valid_context
@@ -94,7 +94,7 @@
 ✅ test_llm_client_config
 ```
 
-### Tests Fase 2 (SSE Streaming)
+### Pruebas Fase 2 (SSE Streaming)
 ```
 ✅ test_generate_endpoint_returns_sse_content_type
 ✅ test_generate_endpoint_streams_tokens
@@ -113,12 +113,12 @@
 
 **Estado:** LISTO PARA FASE 3 (Frontend State Machine)
 
-El backend está 100% completado y testeado. Proceder inmediatamente a implementar:
+El backend está 100% completado y pruebaeado. Proceder inmediatamente a implementar:
 1. Riverpod provider con state management
 2. ChatClient con SSE streaming client
-3. Flutter integration tests
+3. Flutter integration pruebas
 
-**Próximo Milestone:** Implementar Fase 3 (3-4 horas estimadas)
+**Próximo Hito:** Implementar Fase 3 (3-4 horas estimadas)
 
 ---
 

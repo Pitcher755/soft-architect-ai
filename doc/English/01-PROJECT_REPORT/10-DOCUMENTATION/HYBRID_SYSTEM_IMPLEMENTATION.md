@@ -1,15 +1,15 @@
-# 🔄 Implementación del Sistema Híbrido de Proyectos
+# 🔄 Implementation del Sistema Híbrido de Projects
 
-> **Fecha:** 2024
-> **Estado:** ✅ Completado
-> **Versión:** 1.0
+> **Date:** 2024
+> **Status:** ✅ Completed
+> **Version:** 1.0
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Visión General](#visión-general)
 - [Componentes Clave](#componentes-clave)
 - [Flujo de Datos](#flujo-de-datos)
-- [Archivos Modificados](#archivos-modificados)
+- [Files Modificados](#files-modificados)
 - [Guía de Uso](#guía-de-uso)
 - [Testing](#testing)
 
@@ -17,15 +17,15 @@
 
 ## Visión General
 
-El sistema híbrido permite gestionar **dos tipos de proyectos** en una interfaz unificada:
+El sistema híbrido permite gestionar **dos tipos de projects** en una interfaz unificada:
 
-1. **Proyectos Reales** 📁: Carpetas en el disco que siguen la estructura SoftArchitect
-2. **Proyectos Mock** (Guía) 📖: Contenido incrustado que actúa como tutorial interactivo
+1. **Projects Reales** 📁: Folders en el disco que siguen la estructura SoftArchitect
+2. **Projects Mock** (Guía) 📖: Contenido incrustado que actúa como tutorial interactivo
 
 ### Ventajas
 
 - ✅ Interfaz unificada para ambos tipos
-- ✅ Navegar entre proyectos reales y guía sin cambios
+- ✅ Navegar entre projects reales y guía sin cambios
 - ✅ Privacidad total (datos mock en memoria)
 - ✅ Carga inmediata (sin I/O para mock)
 - ✅ Escalable (fácil agregar más guías)
@@ -75,7 +75,7 @@ MockProjectData.guideFileContents
 Ubicación: `lib/features/project_shell/presentation/providers/projects_provider.dart`
 
 **Responsabilidad:**
-- Recibe lista de proyectos reales
+- Recibe lista de projects reales
 - Convierte mock data a objetos `Project`
 - Combina y ordena por fecha de modificación
 
@@ -103,7 +103,7 @@ String get phase {
 }
 ```
 
-**Propósito:** Mostrar badge de fase en ProjectCard sin datos adicionales.
+**Propósito:** Mostrar badge de phase en ProjectCard sin datos adicionales.
 
 ---
 
@@ -159,7 +159,7 @@ final allProjects = buildHybridProjectsList([]);
    - Muestra en panel central
 ```
 
-### Escenario 2: Crear y Abrir Proyecto Real
+### Escenario 2: Create y Abrir Project Real
 
 ```
 1. Usuario hace click "+Nuevo Proyecto"
@@ -183,14 +183,14 @@ final allProjects = buildHybridProjectsList([]);
 
 ---
 
-## Archivos Modificados
+## Files Modificados
 
-| Archivo | Cambios | Propósito |
+| File | Cambios | Propósito |
 |---------|---------|----------|
-| **project.dart** | ➕ Getter `phase` | Derivar fase de ruta |
-| **mock_projects_data.dart** | ✏️ Función `getMockProjectsData()` | Retornar guía como proyecto mock |
+| **project.dart** | ➕ Getter `phase` | Derivar phase de ruta |
+| **mock_projects_data.dart** | ✏️ Función `getMockProjectsData()` | Retornar guía como project mock |
 | **mock_data.dart** | ✏️ guideRootNode, guideFileContents | Datos de guía en memoria |
-| **projects_provider.dart** | ✨ `buildHybridProjectsList()` | Helper para mezclar proyectos |
+| **projects_provider.dart** | ✨ `buildHybridProjectsList()` | Helper para mezclar projects |
 | **file_tree_widget.dart** | ✏️ Detección mock:// | Mostrar guía o filesystem |
 | **project_shell_screen.dart** | ✏️ Lectura híbrida | Leer de mock o disco |
 | **project_workspace_screen.dart** | ✏️ Usar Project entities | GridView con objetos Project |
@@ -231,9 +231,9 @@ final allProjects = buildHybridProjectsList([]);
 
 ---
 
-### Agregar Nuevo Proyecto Mock (Ejemplo Complejo)
+### Agregar Nuevo Project Mock (Ejemplo Complejo)
 
-1. **Crear estructura en `mock_data.dart`:**
+1. **Create estructura en `mock_data.dart`:**
    ```dart
    static const FileNode exampleProjectRoot = FileNode(
      name: 'EXAMPLE-PROJECT',
@@ -242,7 +242,7 @@ final allProjects = buildHybridProjectsList([]);
    );
    ```
 
-2. **Agregar archivos en `guideFileContents`:**
+2. **Agregar files en `guideFileContents`:**
    ```dart
    'mock://example-project/README.md': '''...''',
    ```
@@ -276,7 +276,7 @@ test('buildHybridProjectsList includes guide project', () {
 });
 ```
 
-### Test 2: Leer Archivo Mock
+### Test 2: Leer File Mock
 
 ```dart
 test('project_shell_screen reads mock file content', () async {
@@ -303,11 +303,11 @@ test('file_tree_widget displays guide structure', () {
 1. ✅ Abrir app
 2. ✅ Ver "Guía SoftArchitect" en dashboard
 3. ✅ Click → Navegar a project-shell
-4. ✅ Ver árbol de archivos (00-Bienvenido.md, features/Chat-IA.md)
-5. ✅ Click en archivo → Ver contenido en panel central
+4. ✅ Ver árbol de files (00-Bienvenido.md, features/Chat-IA.md)
+5. ✅ Click en file → Ver contenido en panel central
 6. ✅ Volver al dashboard
-7. ✅ Crear nuevo proyecto real
-8. ✅ Click en proyecto real → Navegar a archivos reales
+7. ✅ Create nuevo project real
+8. ✅ Click en project real → Navegar a files reales
 9. ✅ Verificar que funciona igual (interfaz unificada)
 
 ---
@@ -324,16 +324,16 @@ Sí. Agrega otro FileNode + contenido en `mock_data.dart` y regístralo en `mock
 Excelente. Mock data está en memoria (const), zero I/O. Real projects usan I/O.
 
 **¿Puede el usuario borrar la guía?**
-No. Es virtual (mock://). No se puede eliminar directorios.
+No. Es virtual (mock://). No se puede delete directorios.
 
 ---
 
 ## Resumen
 
 ✅ **Híbrido implementado:**
-- Proyectos reales + Guía integrada en una interfaz
+- Projects reales + Guía integrada en una interfaz
 - Detección automática mediante protocolo `mock://`
 - Datos mock en memoria (eficiente)
 - Escalable y mantenible
 
-🎉 **Resultado:** El usuario ve proyectos reales y una guía interactiva, todo en el mismo lugar.
+🎉 **Result:** El usuario ve projects reales y una guía interactiva, todo en el mismo lugar.

@@ -1,6 +1,6 @@
 # 🌊 WORKFLOW MASTER: HU-4.3 SSE Streaming Real-time
 
-> **Version:** 2.0.0 (Enhanced)
+> **Versión:** 2.0.0 (Enhanced)
 > **Methodology:** TDD Strict + Clean Architecture + Async Streaming
 > **Author:** ArchitectZero
 > **Last Updated:** 2026-02-15
@@ -8,16 +8,16 @@
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Introduction & Philosophy](#1-introduction--philosophy)
-2. [Phase 0: Setup & API Contracts](#phase-0-setup--api-contracts)
-3. [Phase 1: Backend Infrastructure - LLM Streaming](#phase-1-backend-infrastructure---llm-streaming)
-4. [Phase 2: Backend API - SSE Endpoint](#phase-2-backend-api---sse-endpoint)
-5. [Phase 3: Frontend Data - SSE Client](#phase-3-frontend-data---sse-client)
-6. [Phase 4: Frontend UI - Chat Integration](#phase-4-frontend-ui---chat-integration)
-7. [Phase 5: Quality & Security Hardening](#phase-5-quality--security-hardening)
-8. [Phase 6: Validation & PR](#phase-6-validation--pr)
+2. [Fase 0: Setup & API Contracts](#fase-0-setup--api-contracts)
+3. [Fase 1: Backend Infraestructura - LLM Streaming](#fase-1-backend-infrastructure---llm-streaming)
+4. [Fase 2: Backend API - SSE Endpoint](#fase-2-backend-api---sse-endpoint)
+5. [Fase 3: Frontend Data - SSE Client](#fase-3-frontend-data---sse-client)
+6. [Fase 4: Frontend UI - Chat Integración](#fase-4-frontend-ui---chat-integration)
+7. [Fase 5: Quality & Security Hardening](#fase-5-quality--security-hardening)
+8. [Fase 6: Validation & PR](#fase-6-validation--pr)
 9. [Performance Considerations](#performance-considerations)
 10. [Troubleshooting Guide](#troubleshooting-guide)
 
@@ -46,7 +46,7 @@ Transform the current static chat endpoint into an **asynchronous streaming gate
 
 **Clean Architecture Compliance:**
 1. **Domain Layer:** Stream event entities (pure Dart/Python, no frameworks)
-2. **Infrastructure Layer:** SSE client implementation (adapters for HTTP)
+2. **Infraestructura Layer:** SSE client implementación (adapters for HTTP)
 3. **Service Layer:** Orchestrator streaming logic (use cases)
 4. **API Layer:** FastAPI StreamingResponse (delivery mechanism)
 
@@ -69,12 +69,12 @@ Transform the current static chat endpoint into an **asynchronous streaming gate
 | **TTF (Time To First Token)** | <200ms | Time from request to first `event: message` |
 | **Token Rate** | >20 tokens/sec | Streaming throughput (Ollama dependent) |
 | **UI Smoothness** | 60 FPS | Flutter DevTools Performance tab |
-| **Test Coverage** | ≥85% | pytest/flutter test with --coverage |
+| **Prueba Coverage** | ≥85% | pyprueba/flutter prueba with --coverage |
 | **Security Audit** | 0 issues | Bandit scan (Python), manual review (Dart) |
 
 ---
 
-## Phase 0: Setup & API Contracts
+## Fase 0: Setup & API Contracts
 
 ### 🎯 Objective
 Prepare workspace, define exact SSE protocol specification, and validate technical approach.
@@ -189,7 +189,7 @@ data: {"full_response": "The best answer is...", "sources": ["doc.md"], "metadat
 **Research Questions:**
 1. How does Ollama streaming API work? (NDJSON format)
 2. FastAPI StreamingResponse best practices?
-3. How to test async generators in pytest?
+3. How to prueba async generators in pyprueba?
 
 **Ollama Streaming Format:**
 ```bash
@@ -274,7 +274,7 @@ Stream<Map<String, dynamic>> connectSSE(String url) async* {
 }
 ```
 
-### 0.5 Test Fixtures Setup
+### 0.5 Prueba Fixtures Setup
 
 **Backend Fixtures:**
 ```python
@@ -312,29 +312,29 @@ class MockSseServer {
 }
 ```
 
-### ✅ Phase 0 Acceptance Criteria
+### ✅ Fase 0 Acceptance Criteria
 
-- [x] Branch created and synced with develop
+- [x] Branch creard and synced with develop
 - [x] Virtual environments updated (Python + Flutter)
-- [x] Documentation structure created
+- [x] Documentoation structure creard
 - [x] SSE protocol fully specified
 - [x] Ollama streaming format understood
-- [x] FastAPI StreamingResponse tested
+- [x] FastAPI StreamingResponse pruebaed
 - [x] Flutter SSE parsing strategy validated
-- [x] Test fixtures prepared
+- [x] Prueba fixtures prepared
 
 ---
 
-## Phase 1: Backend Infrastructure - LLM Streaming
+## Fase 1: Backend Infraestructura - LLM Streaming
 
 ### 🎯 Objective
-Add streaming capabilities to LLM strategy implementations using TDD Red-Green-Refactor cycle.
+Add streaming capabilities to LLM strategy implementacións using TDD Red-Green-Refactor cycle.
 
-### 🔴 1.1 RED: Strategy Streaming Tests
+### 🔴 1.1 RED: Strategy Streaming Pruebas
 
-**File:** `tests/server/unit/infrastructure/llm/test_ollama_client_streaming.py`
+**Archivo:** `pruebas/server/unit/infrastructure/llm/prueba_ollama_client_streaming.py`
 
-**Create new test file:**
+**Crear new prueba archivo:**
 ```python
 """Unit tests for Ollama client streaming functionality."""
 import pytest
@@ -456,7 +456,7 @@ class TestOllamaClientStreaming:
             assert "timeout" in str(exc_info.value).lower()
 ```
 
-**Run tests (MUST FAIL):**
+**Ejecutar pruebas (MUST FAIL):**
 ```bash
 cd src/server
 pytest tests/server/unit/infrastructure/llm/test_ollama_client_streaming.py -v
@@ -472,7 +472,7 @@ FAILED test_stream_generate_handles_ndjson_parsing - AttributeError: 'OllamaClie
 
 ### 🟢 1.2 GREEN: Base Protocol Update
 
-**File:** `src/server/app/infrastructure/llm/base.py`
+**Archivo:** `src/server/app/infrastructure/llm/base.py`
 
 ```python
 """Base protocol for LLM client implementations."""
@@ -526,11 +526,11 @@ class BaseLLMClient(ABC):
         pass
 ```
 
-### 🟢 1.3 GREEN: Ollama Client Implementation
+### 🟢 1.3 GREEN: Ollama Client Implementación
 
-**File:** `src/server/app/infrastructure/llm/ollama_client.py`
+**Archivo:** `src/server/app/infrastructure/llm/ollama_client.py`
 
-**Add to existing file:**
+**Add to existing archivo:**
 ```python
 import httpx
 import json
@@ -644,7 +644,7 @@ class OllamaClient(BaseLLMClient):
         await self._client.aclose()
 ```
 
-**File:** `src/server/app/infrastructure/llm/exceptions.py` (New)
+**Archivo:** `src/server/app/infrastructure/llm/exceptions.py` (New)
 
 ```python
 """Custom exceptions for LLM clients."""
@@ -672,7 +672,7 @@ class LLMStreamError(LLMError):
 
 ### 🟢 1.4 GREEN: Groq Client Stub (Future)
 
-**File:** `src/server/app/infrastructure/llm/groq_client.py`
+**Archivo:** `src/server/app/infrastructure/llm/groq_client.py`
 
 **Add method to existing class:**
 ```python
@@ -738,27 +738,27 @@ tests/server/unit/infrastructure/llm/test_ollama_client_streaming.py::test_strea
 Coverage: 92% (ollama_client.py)
 ```
 
-### ✅ Phase 1 Acceptance Criteria
+### ✅ Fase 1 Acceptance Criteria
 
-- [x] All 5 LLM streaming tests passing
+- [x] All 5 LLM streaming pruebas passing
 - [x] `BaseLLMClient` protocol updated with `stream_generate()`
 - [x] `OllamaClient.stream_generate()` implemented
 - [x] NDJSON parsing robust (handles malformed lines)
 - [x] Error handling comprehensive (connection, timeout, stream errors)
-- [x] Groq client stub created (raises NotImplementedError)
+- [x] Groq client stub creard (raises NotImplementedError)
 - [x] Code formatted (Black), linted (Ruff), type-checked (Pyright)
 - [x] Coverage ≥90% for LLM infrastructure layer
 
 ---
 
-## Phase 2: Backend API - SSE Endpoint
+## Fase 2: Backend API - SSE Endpoint
 
 ### 🎯 Objective
 Expose SSE endpoint in FastAPI with proper event formatting and error handling.
 
-### 🔴 2.1 RED: SSE Endpoint Tests
+### 🔴 2.1 RED: SSE Endpoint Pruebas
 
-**File:** `tests/server/integration/api/v1/test_chat_stream_endpoint.py` (New)
+**Archivo:** `pruebas/server/integration/api/v1/prueba_chat_stream_endpoint.py` (New)
 
 ```python
 """Integration tests for /api/v1/chat/stream SSE endpoint."""
@@ -917,7 +917,7 @@ class TestChatStreamEndpoint:
             assert response.status_code == 401
 ```
 
-**Run tests (MUST FAIL):**
+**Ejecutar pruebas (MUST FAIL):**
 ```bash
 pytest tests/server/integration/api/v1/test_chat_stream_endpoint.py -v
 ```
@@ -932,7 +932,7 @@ FAILED test_chat_stream_content_type_header - 404: Not Found
 
 ### 🟢 2.2 GREEN: RAG Orchestrator Streaming
 
-**File:** `src/server/app/services/rag/orchestrator.py`
+**Archivo:** `src/server/app/services/rag/orchestrator.py`
 
 **Add new method to existing class:**
 ```python
@@ -1026,9 +1026,9 @@ class RAGOrchestrator:
         pass
 ```
 
-### 🟢 2.3 GREEN: SSE Router Implementation
+### 🟢 2.3 GREEN: SSE Router Implementación
 
-**File:** `src/server/app/api/v1/chat.py`
+**Archivo:** `src/server/app/api/v1/chat.py`
 
 **Add new endpoint to existing router:**
 ```python
@@ -1152,7 +1152,7 @@ async def chat_stream(
 
 ### 🟢 2.4 GREEN: Schema Updates
 
-**File:** `src/server/app/domain/schemas/chat.py`
+**Archivo:** `src/server/app/domain/schemas/chat.py`
 
 **Add new schemas:**
 ```python
@@ -1255,15 +1255,15 @@ tests/server/integration/api/v1/test_chat_stream_endpoint.py::test_chat_stream_r
 Coverage: 88% (chat.py), 86% (orchestrator.py)
 ```
 
-### ✅ Phase 2 Acceptance Criteria
+### ✅ Fase 2 Acceptance Criteria
 
-- [x] All 6 SSE endpoint tests passing
+- [x] All 6 SSE endpoint pruebas passing
 - [x] `POST /api/v1/chat/stream` endpoint implemented
 - [x] `StreamingResponse` with `text/event-stream` content type
 - [x] SSE events properly formatted (event: + data: + \n\n)
 - [x] Token, done, and error events emitted correctly
 - [x] RAG orchestrator streaming method implemented
-- [x] Pydantic schemas for stream events created
+- [x] Pydantic schemas for stream events creard
 - [x] Error handling comprehensive (emits error events)
 - [x] API key authentication enforced
 - [x] Code formatted, linted, type-checked
@@ -1271,14 +1271,14 @@ Coverage: 88% (chat.py), 86% (orchestrator.py)
 
 ---
 
-## Phase 3: Frontend Data - SSE Client
+## Fase 3: Frontend Data - SSE Client
 
 ### 🎯 Objective
 Implement SSE client in Flutter to consume stream events and parse them into domain entities.
 
-### 🔴 3.1 RED: SSE Client Tests
+### 🔴 3.1 RED: SSE Client Pruebas
 
-**File:** `tests/client/unit/infrastructure/network/sse_client_test.dart`
+**Archivo:** `pruebas/client/unit/infrastructure/network/sse_client_prueba.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -1480,7 +1480,7 @@ data: {"full_response":"Complete","sources":["doc1.md","doc2.md"],"metadata":{"t
 }
 ```
 
-**Run tests (MUST FAIL):**
+**Ejecutar pruebas (MUST FAIL):**
 ```bash
 cd tests/client
 flutter test unit/infrastructure/network/sse_client_test.dart
@@ -1495,7 +1495,7 @@ Error: Not found: 'package:soft_architect_ai/infrastructure/network/sse_client.d
 
 ### 🟢 3.2 GREEN: Event Models
 
-**File:** `src/client/lib/domain/entities/chat_stream_event.dart` (New)
+**Archivo:** `src/client/lib/domain/entities/chat_stream_event.dart` (New)
 
 ```dart
 /// Base class for all chat stream events (Token, Done, Error).
@@ -1612,9 +1612,9 @@ class ErrorEvent extends ChatStreamEvent {
 }
 ```
 
-### 🟢 3.3 GREEN: SSE Client Implementation
+### 🟢 3.3 GREEN: SSE Client Implementación
 
-**File:** `src/client/lib/infrastructure/network/sse_client.dart` (New)
+**Archivo:** `src/client/lib/infrastructure/network/sse_client.dart` (New)
 
 ```dart
 import 'dart:async';
@@ -1764,7 +1764,7 @@ class SseClient {
 
 ### 🟢 3.4 GREEN: Repository Protocol Update
 
-**File:** `src/client/lib/domain/repositories/chat_repository.dart`
+**Archivo:** `src/client/lib/domain/repositories/chat_repository.dart`
 
 **Add method to existing protocol:**
 ```dart
@@ -1794,9 +1794,9 @@ abstract class ChatRepository {
 }
 ```
 
-### 🟢 3.5 GREEN: Repository Implementation
+### 🟢 3.5 GREEN: Repository Implementación
 
-**File:** `src/client/lib/infrastructure/repositories/chat_repository_impl.dart`
+**Archivo:** `src/client/lib/infrastructure/repositories/chat_repository_impl.dart`
 
 **Add method to existing class:**
 ```dart
@@ -1875,10 +1875,10 @@ genhtml coverage/lcov.info -o coverage/html
 Coverage: sse_client.dart: 94%
 ```
 
-### ✅ Phase 3 Acceptance Criteria
+### ✅ Fase 3 Acceptance Criteria
 
-- [x] All 7 SSE client tests passing
-- [x] `ChatStreamEvent` hierarchy created (Token, Done, Error)
+- [x] All 7 SSE client pruebas passing
+- [x] `ChatStreamEvent` hierarchy creard (Token, Done, Error)
 - [x] `SseClient` implemented with robust parsing
 - [x] SSE event format parsed correctly (event: + data:)
 - [x] JSON data deserialization working
@@ -1892,16 +1892,16 @@ Coverage: sse_client.dart: 94%
 
 ---
 
-## Phase 4: Frontend UI - Chat Integration
+## Fase 4: Frontend UI - Chat Integración
 
 ### 🎯 Objective
 Update Riverpod state management and UI widgets to handle streaming updates smoothly.
 
-### 🔴 4.1 RED: Chat Notifier Tests
+### 🔴 4.1 RED: Chat Notifier Pruebas
 
-**File:** `tests/client/unit/presentation/notifiers/chat_notifier_test.dart`
+**Archivo:** `pruebas/client/unit/presentation/notifiers/chat_notifier_prueba.dart`
 
-**Add tests to existing file:**
+**Add pruebas to existing archivo:**
 ```dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -2021,14 +2021,14 @@ void main() {
 }
 ```
 
-**Run tests (MUST FAIL):**
+**Ejecutar pruebas (MUST FAIL):**
 ```bash
 flutter test tests/client/unit/presentation/notifiers/chat_notifier_test.dart
 ```
 
 ### 🟢 4.2 GREEN: Message Model Update
 
-**File:** `src/client/lib/domain/entities/message.dart`
+**Archivo:** `src/client/lib/domain/entities/message.dart`
 
 **Add field to existing class:**
 ```dart
@@ -2086,7 +2086,7 @@ class Message {
 
 ### 🟢 4.3 GREEN: Chat Notifier Streaming
 
-**File:** `src/client/lib/presentation/notifiers/chat_notifier.dart`
+**Archivo:** `src/client/lib/presentation/notifiers/chat_notifier.dart`
 
 **Update existing class:**
 ```dart
@@ -2209,7 +2209,7 @@ class ChatState {
 
 ### 🟢 4.4 GREEN: UI Updates
 
-**File:** `src/client/lib/presentation/widgets/chat/message_bubble.dart`
+**Archivo:** `src/client/lib/presentation/widgets/chat/message_bubble.dart`
 
 **Update existing widget:**
 ```dart
@@ -2300,7 +2300,7 @@ class _BlinkingCursorState extends State<_BlinkingCursor>
 }
 ```
 
-**File:** `src/client/lib/presentation/widgets/chat/chat_view.dart`
+**Archivo:** `src/client/lib/presentation/widgets/chat/chat_view.dart`
 
 **Update existing widget:**
 ```dart
@@ -2453,12 +2453,12 @@ flutter test --coverage
 Coverage: chat_notifier.dart: 88%, message_bubble.dart: 82%
 ```
 
-### ✅ Phase 4 Acceptance Criteria
+### ✅ Fase 4 Acceptance Criteria
 
-- [x] All 5 chat notifier streaming tests passing
+- [x] All 5 chat notifier streaming pruebas passing
 - [x] `Message` entity updated with `isStreaming` field
 - [x] `sendMessageStream()` method implemented in notifier
-- [x] User message added immediately
+- [x] User message added inmediataly
 - [x] Empty AI message added with `isStreaming: true`
 - [x] Tokens appended progressively
 - [x] Message marked complete on `DoneEvent`
@@ -2471,7 +2471,7 @@ Coverage: chat_notifier.dart: 88%, message_bubble.dart: 82%
 
 ---
 
-## Phase 5: Quality & Security Hardening
+## Fase 5: Quality & Security Hardening
 
 ### 🎯 Objective
 Ensure all code meets AGENTS.md standards before pushing: formatting, linting, type safety, coverage, security audit.
@@ -2571,11 +2571,11 @@ Overall: 87%
 ✅ All frontend validation passed
 ```
 
-### 5.3 Create Documentation Files
+### 5.3 Crear Documentoation Archivos
 
-**Create 4 comprehensive documentation files (similar to HU-4.2):**
+**Crear 4 comprehensive documentoation archivos (similar to HU-4.2):**
 
-1. **COVERAGE_REPORT.md** - Coverage analysis with layer breakdown
+1. **COVERAGE_REPORT.md** - Coverage análisis with layer desglose
 2. **SECURITY_AUDIT.md** - Security review (input sanitization, SSE injection)
 3. **API_CONTRACT.md** - SSE protocol specification with examples
 4. **ARCHITECTURE_DIAGRAM.md** - Streaming architecture with Mermaid diagrams
@@ -2583,30 +2583,30 @@ Overall: 87%
 **Template structure (see HU-4.2 for reference):**
 - Executive Summary
 - Detailed Metrics
-- Layer-by-layer Analysis
+- Layer-by-layer Análisis
 - Missing Coverage Explanation
 - Recommendations
-- Approval Status
+- Approval Estado
 
-### ✅ Phase 5 Acceptance Criteria
+### ✅ Fase 5 Acceptance Criteria
 
 - [x] Black formatted (Python)
 - [x] Ruff clean (Python)
 - [x] Pyright 0 errors (Python)
 - [x] Bandit 0 high-severity issues (Python)
-- [x] pytest coverage ≥85% (Python)
+- [x] pyprueba coverage ≥85% (Python)
 - [x] Dart formatted (Flutter)
 - [x] flutter analyze clean (Flutter)
-- [x] flutter test coverage ≥85% (Flutter)
-- [x] 4 documentation files created
+- [x] flutter prueba coverage ≥85% (Flutter)
+- [x] 4 documentoation archivos creard
 - [x] All quality gates passed
 
 ---
 
-## Phase 6: Validation & PR
+## Fase 6: Validation & PR
 
 ### 🎯 Objective
-Final gate validation with master script, commit, push, and create professional PR.
+Final gate validation with master script, commit, push, and crear professional PR.
 
 ### 6.1 Master Validation Script
 
@@ -2727,7 +2727,7 @@ git push origin feature/backend-sse-streaming
 
 ### 6.3 PR Creation
 
-**Create Pull Request on GitHub:**
+**Crear Pull Request on GitHub:**
 
 1. **Navigate to:**
    ```
@@ -2739,7 +2739,7 @@ git push origin feature/backend-sse-streaming
    feat(chat): HU-4.3 - SSE Real-time Streaming
    ```
 
-3. **Description:** (Use PR_DESCRIPTION.md content - see Phase 5.3)
+3. **Descripción:** (Use PR_DESCRIPTION.md content - see Fase 5.3)
 
 4. **Configure PR:**
    - **Base branch:** `develop`
@@ -2752,14 +2752,14 @@ git push origin feature/backend-sse-streaming
    - ✅ No merge conflicts with develop
    - ✅ All review comments addressed
 
-### ✅ Phase 6 Acceptance Criteria
+### ✅ Fase 6 Acceptance Criteria
 
 - [x] Master validation passed (19/19 checks)
 - [x] All changes committed with detailed message
 - [x] Pushed to remote successfully
-- [x] PR created with comprehensive description
+- [x] PR creard with comprehensive descripción
 - [x] GitHub Actions CI/CD passing
-- [x] Ready for code review
+- [x] Preparado para code review
 
 ---
 
@@ -2789,7 +2789,7 @@ async def bad_generator():
 ```
 
 **Memory Management:**
-- Stream tokens immediately (don't buffer)
+- Stream tokens inmediataly (don't buffer)
 - Close HTTP client after streaming: `await llm_client.close()`
 - Use connection pooling for httpx
 
@@ -2888,8 +2888,8 @@ return StreamingResponse(
 )
 ```
 
-#### Issue: "pytest fails with 'event loop is closed'"
-**Symptoms:** `RuntimeError: Event loop is closed`
+#### Issue: "pyprueba fails with 'event loop is closed'"
+**Symptoms:** `EjecutartimeError: Event loop is closed`
 **Solution:**
 ```python
 # Use pytest-asyncio plugin
@@ -2966,8 +2966,8 @@ if (isNearBottom) {
 - [x] No memory leaks (proper cleanup of streams/controllers)
 
 ### Quality Requirements
-- [x] Test coverage ≥85% (Python 88%, Flutter 87%)
-- [x] 28/28 tests passing (23 new tests)
+- [x] Prueba coverage ≥85% (Python 88%, Flutter 87%)
+- [x] 28/28 pruebas passing (23 new pruebas)
 - [x] 0 Pyright type errors
 - [x] 0 Bandit security issues
 - [x] 19/19 PRE_PUSH validation checks passed
@@ -2978,12 +2978,12 @@ if (isNearBottom) {
 - [x] Error messages sanitized (no stack traces to client)
 - [x] Stream timeout handling (30s default)
 
-### Documentation Requirements
-- [x] COVERAGE_REPORT.md created
-- [x] SECURITY_AUDIT.md created
-- [x] API_CONTRACT.md created (SSE protocol spec)
-- [x] ARCHITECTURE_DIAGRAM.md created (streaming diagrams)
-- [x] PR description comprehensive (ready for review)
+### Documentoation Requirements
+- [x] COVERAGE_REPORT.md creard
+- [x] SECURITY_AUDIT.md creard
+- [x] API_CONTRACT.md creard (SSE protocol spec)
+- [x] ARCHITECTURE_DIAGRAM.md creard (streaming diagrams)
+- [x] PR descripción comprehensive (preparado para review)
 
 ---
 

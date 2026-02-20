@@ -1,4 +1,4 @@
-# 🚀 HU-3.2: FileSystem Service - Master Implementation Workflow
+# 🚀 HU-3.2: ArchivoSystem Service - Master Implementación Workflow
 
 > **Estado:** 🔄 LISTO PARA EJECUTAR
 > **Fecha:** 05/02/2026
@@ -11,10 +11,10 @@
 
 0. [Análisis de Requisitos & Arquitectura](#0️⃣-análisis-de-requisitos--arquitectura)
 1. [Fase 1: Seguridad y Validación (TDD RED)](#fase-1-seguridad-y-validación-tdd-red)
-2. [Fase 2: Core FileSystem Service (TDD GREEN)](#fase-2-core-filesystem-service-tdd-green)
+2. [Fase 2: Core ArchivoSystem Service (TDD GREEN)](#fase-2-core-archivosystem-service-tdd-green)
 3. [Fase 3: Audit Logger & Persistencia (TDD GREEN)](#fase-3-audit-logger--persistencia-tdd-green)
 4. [Fase 4: Integración Riverpod & UI Bridge (TDD REFACTOR)](#fase-4-integración-riverpod--ui-bridge-tdd-refactor)
-5. [Fase 5: Testing E2E & Security Hardening](#fase-5-testing-e2e--security-hardening)
+5. [Fase 5: Pruebaing E2E & Security Hardening](#fase-5-pruebaing-e2e--security-hardening)
 6. [Checklist de Aceptación](#checklist-de-aceptación)
 7. [Comandos de Referencia Rápida](#comandos-de-referencia-rápida)
 
@@ -25,12 +25,12 @@
 ## 0.1: Contexto de la HU-3.2
 
 **Historia de Usuario:**
-> "Como Frontend (Dart), quiero un FileSystemService que maneje la creación de carpetas y persistencia de documentos en el Host."
+> "Como Frontend (Dart), quiero un ArchivoSystemService que maneje la creación de carpetas y persistencia de documentoos en el Host."
 
 **Filosofía:** **"Trust no path"** - Ninguna ruta puede ser confiable sin validación exhaustiva.
 
 **Tech Stack:**
-- `dart:io` (File I/O nativo)
+- `dart:io` (Archivo I/O nativo)
 - `path` package (Path normalization)
 - `path_provider` (OS directories)
 - `riverpod` (Dependency injection)
@@ -52,8 +52,8 @@
 
 | ID | RNF | Target |
 |----|-----|--------|
-| RNF-1 | Coverage de tests unitarios (seguridad) | ≥95% |
-| RNF-2 | Coverage de tests de integración | ≥85% |
+| RNF-1 | Coverage de pruebas unitarios (seguridad) | ≥95% |
+| RNF-2 | Coverage de pruebas de integración | ≥85% |
 | RNF-3 | Latencia de creación de proyecto | <1s |
 | RNF-4 | Type Safety (Dart analyzer) | 0 errors |
 | RNF-5 | Seguridad: path traversal detection | 100% |
@@ -142,7 +142,7 @@
 **Estrategia de defensa:**
 - **Input Validation:** Todas las rutas pasan por `PathValidator` antes de cualquier operación.
 - **Path Normalization:** Usar `path.normalize()` para resolver `.`, `..`, `//`.
-- **Boundary Check:** Verificar con `path.isWithin(projectRoot, targetPath)`.
+- **Boundary Check:** Verificar con `path.isWithin(proyectoRoot, targetPath)`.
 - **Whitelist Approach:** Solo permitir rutas relativas dentro de carpetas conocidas.
 
 ---
@@ -176,7 +176,7 @@ mkdir -p lib/features/filesystem/presentation/providers
 mkdir -p lib/features/filesystem/core/constants
 ```
 
-### Paso 1.1.2: Crear estructura de tests centralizada
+### Paso 1.1.2: Crear estructura de pruebas centralizada
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -319,13 +319,13 @@ class InvalidFileOperationException extends FileSystemException {
 EOF
 ```
 
-✅ **Validación:** Archivo creado con 5 excepciones documentadas.
+✅ **Validación:** Archivo creado con 5 excepciones documentoadas.
 
 ---
 
-## 1.3: Crear Tests de Seguridad (RED Phase)
+## 1.3: Crear Pruebas de Seguridad (RED Fase)
 
-### Paso 1.3.1: Test del PathValidator (Critical Security)
+### Paso 1.3.1: Prueba del PathValidator (Critical Security)
 
 ```bash
 cat > tests/test/unit/features/filesystem/infrastructure/security/path_validator_test.dart << 'EOF'
@@ -490,16 +490,16 @@ void main() {
 EOF
 ```
 
-### Paso 1.3.2: Ejecutar tests (RED phase - Expected to fail)
+### Paso 1.3.2: Ejecutar pruebas (RED fase - Expected to fail)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test test/unit/features/filesystem/infrastructure/security/path_validator_test.dart --verbose
 ```
 
-**Expected result:** 🔴 **All tests FAIL** (PathValidator class doesn't exist yet)
+**Expected result:** 🔴 **All pruebas FAIL** (PathValidator class doesn't exist yet)
 
-✅ **Validación:** Tests creados y fallan correctamente (RED phase).
+✅ **Validación:** Pruebas creados y fallan correctamente (RED fase).
 
 ---
 
@@ -527,15 +527,15 @@ Sprint: 2.1
 HU: 3.2"
 ```
 
-✅ **Validación Fase 1:** Seguridad definida, tests escritos, listos para implementar.
+✅ **Validación Fase 1:** Seguridad definida, pruebas escritos, listos para implementar.
 
 ---
 
-# 🟢 FASE 2: Core FileSystem Service (TDD GREEN)
+# 🟢 FASE 2: Core ArchivoSystem Service (TDD GREEN)
 
 **Duración:** 2 días
 **Sprint:** 2.2
-**Objetivo:** Implementar PathValidator y FileSystemService para pasar los tests RED
+**Objetivo:** Implementar PathValidator y ArchivoSystemService para pasar los pruebas RED
 **Filosofía:** "Make it work, make it right, make it fast"
 
 ---
@@ -657,20 +657,20 @@ class PathValidator {
 EOF
 ```
 
-### Paso 2.1.2: Ejecutar tests de seguridad (GREEN phase)
+### Paso 2.1.2: Ejecutar pruebas de seguridad (GREEN fase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test test/unit/features/filesystem/infrastructure/security/path_validator_test.dart --verbose
 ```
 
-**Expected result:** 🟢 **18/18 tests PASS**
+**Expected result:** 🟢 **18/18 pruebas PASS**
 
-✅ **Validación:** PathValidator implementado correctamente, todos los tests pasan.
+✅ **Validación:** PathValidator implementado correctamente, todos los pruebas pasan.
 
 ---
 
-## 2.2: Implementar FileSystemService (Domain Interface)
+## 2.2: Implementar ArchivoSystemService (Domain Interface)
 
 ### Paso 2.2.1: Crear interfaz abstracta (Domain Layer)
 
@@ -759,7 +759,7 @@ abstract class FileSystemRepository {
 EOF
 ```
 
-### Paso 2.2.2: Crear implementación concreta (Infrastructure Layer)
+### Paso 2.2.2: Crear implementación concreta (Infraestructura Layer)
 
 ```bash
 cat > src/client/lib/features/filesystem/infrastructure/services/filesystem_service_impl.dart << 'EOF'
@@ -989,7 +989,7 @@ Ver [context/README.md](context/README.md) para la organización completa.
 EOF
 ```
 
-### Paso 2.2.3: Crear tests unitarios del servicio
+### Paso 2.2.3: Crear pruebas unitarios del servicio
 
 ```bash
 cat > tests/test/unit/features/filesystem/infrastructure/services/filesystem_service_test.dart << 'EOF'
@@ -1186,16 +1186,16 @@ void main() {
 EOF
 ```
 
-### Paso 2.2.4: Ejecutar tests del servicio (GREEN phase)
+### Paso 2.2.4: Ejecutar pruebas del servicio (GREEN fase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test test/unit/features/filesystem/ --verbose
 ```
 
-**Expected result:** 🟢 **All tests PASS**
+**Expected result:** 🟢 **All pruebas PASS**
 
-✅ **Validación:** FileSystemService implementado, tests unitarios pasan.
+✅ **Validación:** ArchivoSystemService implementado, pruebas unitarios pasan.
 
 ---
 
@@ -1347,7 +1347,7 @@ class AuditLogger {
 EOF
 ```
 
-### Paso 3.1.2: Integrar AuditLogger en FileSystemService
+### Paso 3.1.2: Integrar AuditLogger en ArchivoSystemService
 
 ```bash
 # Agregar la dependencia intl al pubspec.yaml primero
@@ -1358,7 +1358,7 @@ flutter pub add intl
 # (Agregar import y llamadas a logger en los métodos saveFile, deleteFile, initProjectStructure)
 ```
 
-### Paso 3.1.3: Crear tests del AuditLogger
+### Paso 3.1.3: Crear pruebas del AuditLogger
 
 ```bash
 cat > tests/test/unit/features/filesystem/infrastructure/logging/audit_logger_test.dart << 'EOF'
@@ -1469,16 +1469,16 @@ void main() {
 EOF
 ```
 
-### Paso 3.1.4: Ejecutar tests (GREEN phase)
+### Paso 3.1.4: Ejecutar pruebas (GREEN fase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test test/unit/features/filesystem/infrastructure/logging/ --verbose
 ```
 
-**Expected result:** 🟢 **All audit logger tests PASS**
+**Expected result:** 🟢 **All audit logger pruebas PASS**
 
-✅ **Validación:** AuditLogger implementado y testeado.
+✅ **Validación:** AuditLogger implementado y pruebaeado.
 
 ---
 
@@ -1618,7 +1618,7 @@ class FileSystemErrorMessages {
 EOF
 ```
 
-### Paso 4.1.3: Crear tests de integración (Riverpod + Service)
+### Paso 4.1.3: Crear pruebas de integración (Riverpod + Service)
 
 ```bash
 cat > tests/test/integration/features/filesystem/filesystem_integration_test.dart << 'EOF'
@@ -1730,20 +1730,20 @@ void main() {
 EOF
 ```
 
-### Paso 4.1.4: Ejecutar tests de integración (GREEN phase)
+### Paso 4.1.4: Ejecutar pruebas de integración (GREEN fase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test test/integration/features/filesystem/ --verbose
 ```
 
-**Expected result:** 🟢 **All integration tests PASS**
+**Expected result:** 🟢 **All integration pruebas PASS**
 
 ✅ **Validación:** Riverpod providers funcionando, service inyectado correctamente.
 
 ---
 
-## 4.2: Commit Fase 4 (Riverpod Integration)
+## 4.2: Commit Fase 4 (Riverpod Integración)
 
 ```bash
 git add -A
@@ -1775,18 +1775,18 @@ HU: 3.2"
 
 ---
 
-# 🛡️ FASE 5: Testing E2E & Security Hardening
+# 🛡️ FASE 5: Pruebaing E2E & Security Hardening
 
 **Duración:** 1 día
 **Sprint:** 2.5
-**Objetivo:** Tests end-to-end y auditoría de seguridad final
+**Objetivo:** Pruebas end-to-end y auditoría de seguridad final
 **Filosofía:** "Security is a feature, not an afterthought"
 
 ---
 
-## 5.1: Crear Tests E2E (End-to-End)
+## 5.1: Crear Pruebas E2E (End-to-End)
 
-### Paso 5.1.1: Test de flujo completo de creación de proyecto
+### Paso 5.1.1: Prueba de flujo completo de creación de proyecto
 
 ```bash
 cat > tests/test/e2e/features/filesystem/project_creation_e2e_test.dart << 'EOF'
@@ -1929,14 +1929,14 @@ Este es un proyecto de prueba para validar el FileSystemService.
 EOF
 ```
 
-### Paso 5.1.2: Ejecutar tests E2E
+### Paso 5.1.2: Ejecutar pruebas E2E
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test test/e2e/features/filesystem/ --verbose
 ```
 
-**Expected result:** 🟢 **All E2E tests PASS**
+**Expected result:** 🟢 **All E2E pruebas PASS**
 
 ✅ **Validación:** Flujo completo funciona end-to-end.
 
@@ -1992,7 +1992,7 @@ validator.validate('C:\\Windows\\System32\\config.sys') // Throws PathTraversalE
 ### 3. Null Byte Injection
 ```dart
 // ❌ BLOCKED
-validator.validate('context/file\x00.txt') // Throws PathTraversalException
+validator.validate('context/archivo\x00.txt') // Throws PathTraversalException
 ```
 
 ### 4. Symlink Attack
@@ -2060,7 +2060,7 @@ EOF
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client
-flutter analyze lib/features/filesystem/
+flutter analyze lib/features/archivosystem/
 ```
 
 **Expected result:** 0 errors, 0 warnings
@@ -2073,24 +2073,24 @@ flutter analyze lib/features/filesystem/
 
 ```bash
 git add -A
-git commit -m "test(hu-3.2): Phase 5 - E2E Tests & Security Audit
+git commit -m "prueba(hu-3.2): Fase 5 - E2E Pruebas & Security Audit
 
 Implemented:
-- End-to-end tests (full project creation flow)
-- Multi-project isolation tests
+- End-to-end pruebas (full proyecto creation flow)
+- Multi-proyecto isolation pruebas
 - Security audit report (FILESYSTEM_SECURITY_AUDIT.md)
-- 96% test coverage across all components
+- 96% prueba coverage across all components
 
-Tests status: 🟢 52+ tests PASSING (Unit + Integration + E2E)
+Pruebas estado: 🟢 52+ pruebas PASSING (Unit + Integración + E2E)
 
 Security audit results:
 ✅ 10/10 security controls implemented
-✅ 4 attack vectors tested and blocked
+✅ 4 attack vectors pruebaed and blocked
 ✅ Approved for production (MVP)
 
-Known limitations documented for future releases.
+Known limitations documentoed for future releases.
 
-Branch: feature/client-filesystem-service
+Branch: feature/client-archivosystem-service
 Sprint: 2.5
 HU: 3.2"
 ```
@@ -2150,17 +2150,17 @@ HU: 3.2"
 ## Tests
 
 ```bash
-# Unit tests (seguridad crítica)
-cd tests && flutter test test/unit/features/filesystem/ --coverage
+# Unit pruebas (seguridad crítica)
+cd pruebas && flutter prueba prueba/unit/features/archivosystem/ --coverage
 
-# Integration tests
-flutter test test/integration/features/filesystem/
+# Integración pruebas
+flutter prueba prueba/integration/features/archivosystem/
 
-# E2E tests
-flutter test test/e2e/features/filesystem/
+# E2E pruebas
+flutter prueba prueba/e2e/features/archivosystem/
 
-# Todos los tests
-flutter test test/
+# Todos los pruebas
+flutter prueba prueba/
 
 # Coverage HTML report
 genhtml coverage/lcov.info -o coverage/html
@@ -2170,28 +2170,28 @@ genhtml coverage/lcov.info -o coverage/html
 
 ```bash
 # Análisis estático
-cd src/client && flutter analyze lib/features/filesystem/
+cd src/client && flutter analyze lib/features/archivosystem/
 
 # Formateo
-dart format lib/features/filesystem/
+dart format lib/features/archivosystem/
 
 # Verificar imports
-dart fix --dry-run
+dart fix --dry-ejecutar
 ```
 
 ## Development
 
 ```bash
 # Crear nueva feature branch
-git checkout -b feature/client-filesystem-service develop
+git checkout -b feature/client-archivosystem-service develop
 
-# Commits según TDD phases
-git commit -m "test(hu-3.2): Phase X - Description (TDD RED)"   # Tests fallan
-git commit -m "feat(hu-3.2): Phase X - Description (TDD GREEN)" # Tests pasan
-git commit -m "refactor(hu-3.2): Phase X - Description"          # Mejoras
+# Commits según TDD fases
+git commit -m "prueba(hu-3.2): Fase X - Descripción (TDD RED)"   # Pruebas fallan
+git commit -m "feat(hu-3.2): Fase X - Descripción (TDD GREEN)" # Pruebas pasan
+git commit -m "refactor(hu-3.2): Fase X - Descripción"          # Mejoras
 
 # Push con upstream
-git push -u origin feature/client-filesystem-service
+git push -u origin feature/client-archivosystem-service
 ```
 
 ## Proyecto
@@ -2201,7 +2201,7 @@ git push -u origin feature/client-filesystem-service
 cd src/client && flutter pub get
 
 # Ejecutar app (Desktop Linux)
-flutter run -d linux
+flutter ejecutar -d linux
 
 # Build release
 flutter build linux --release

@@ -1,12 +1,12 @@
 # 🚀 Instalación Completa - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Guía actualizada
+> **Date:** 19/02/2026
+> **Status:** ✅ Guía actualizada
 > **Tiempo aproximado:** 20-30 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Requisitos del Sistema](#requisitos-del-sistema)
 - [Instalación Rápida (Recomendado)](#instalación-rápida-recomendado)
@@ -311,9 +311,9 @@ docker-compose up -d
 
 ## ✅ Verificar la Instalación
 
-### Lista de Verificación
+### Lista de Verification
 
-Después de instalar, comprueba que todo funciona:
+Después de instalar, comtest que todo funciona:
 
 ```bash
 # 1️⃣ ¿Python está correctamente instalado?
@@ -336,11 +336,11 @@ python main.py
 # Debería permitir crear y nombrar un proyecto
 ```
 
-### Resultado Esperado
+### Result Esperado
 
 ✅ **Pasos 1-3 completos**: Backend funcionando
 ✅ **Pasos 4-5 completos**: Frontend funcional
-✅ **Todo funciona**: Listo para el primer proyecto
+✅ **Todo funciona**: Listo para el primer project
 
 ---
 
@@ -384,7 +384,7 @@ taskkill /PID <PID> /F
 
 ### Problema 3: "Error: ENOENT: no such file or directory '.env'"
 
-**Causa:** Archivo .env no existe
+**Causa:** File .env no existe
 **Solución:**
 
 ```bash
@@ -511,16 +511,16 @@ https://github.com/Pitcher755/soft-architect-ai/issues/new
 
 ---
 
-## ✅ Siguiente Paso
+## ✅ Next Paso
 
 Una vez instalado y funcionando:
 
-🎯 **[Crear tu Primer Proyecto →](03-FIRST_PROJECT.md)**
+🎯 **[Create tu Primer Project →](03-FIRST_PROJECT.md)**
 
 Aprenderás a:
-- Crear un nuevo proyecto
+- Create un nuevo project
 - Definir la visión
-- Ejecutar FASE 1 del Master Workflow
+- Execute FASE 1 del Master Workflow
 
 ---
 
@@ -541,5 +541,5 @@ Aprenderás a:
 <p align="center">
   ✅ Instalación completada correctamente
   <br/>
-  🎯 Listo para: <a href="03-FIRST_PROJECT.md"><strong>Crear tu Primer Proyecto</strong></a>
+  🎯 Listo para: <a href="03-FIRST_PROJECT.md"><strong>Create tu Primer Project</strong></a>
 </p>

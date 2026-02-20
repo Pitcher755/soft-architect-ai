@@ -100,16 +100,16 @@ Branch Status: ✅ Synced with origin
 - ✅ `src/client/lib/core/buffer/circular_buffer.dart` (110 líneas)
 - ✅ `src/client/lib/core/models/stream_event.dart` (80 líneas)
 
-### Tests (7 suites, 28 tests)
-- ✅ `tests/python/unit/api/websocket/test_streaming_handler.py` (6 tests)
-- ✅ `tests/python/unit/services/streaming/test_token_buffer.py` (6 tests)
-- ✅ `tests/python/integration/test_streaming_flow.py` (5 tests)
-- ✅ `tests/test/unit/features/chat/presentation/providers/streaming_provider_test.dart` (4 tests)
-- ✅ `tests/test/unit/features/chat/auto_scroll_controller_test.dart` (4 tests)
-- ✅ `tests/test/unit/core/buffer/circular_buffer_test.dart` (6 tests)
-- ✅ `tests/test/integration/features/chat/streaming_flow_test.dart` (3 tests)
+### Pruebas (7 suites, 28 pruebas)
+- ✅ `pruebas/python/unit/api/websocket/prueba_streaming_handler.py` (6 pruebas)
+- ✅ `pruebas/python/unit/services/streaming/prueba_token_buffer.py` (6 pruebas)
+- ✅ `pruebas/python/integration/prueba_streaming_flow.py` (5 pruebas)
+- ✅ `pruebas/prueba/unit/features/chat/presentation/providers/streaming_provider_prueba.dart` (4 pruebas)
+- ✅ `pruebas/prueba/unit/features/chat/auto_scroll_controller_prueba.dart` (4 pruebas)
+- ✅ `pruebas/prueba/unit/core/buffer/circular_buffer_prueba.dart` (6 pruebas)
+- ✅ `pruebas/prueba/integration/features/chat/streaming_flow_prueba.dart` (3 pruebas)
 
-### Documentación (8 archivos bilingües)
+### Documentoación (8 archivos bilingües)
 - ✅ `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.en.md`
 - ✅ `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.es.md`
 - ✅ `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.en.md`
@@ -120,7 +120,7 @@ Branch Status: ✅ Synced with origin
 - ✅ `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/COMPLETION_SUMMARY.es.md`
 
 ### Configuración & CI/CD
-- ✅ `.github/workflows/performance-tests.yml`
+- ✅ `.github/workflows/performance-pruebas.yml`
 - ✅ `src/client/pubspec.yaml` (web_socket_channel agregado)
 - ✅ `src/server/app/core/config.py` (streaming settings)
 - ✅ `src/server/app/core/exceptions.py` (StreamingError)
@@ -129,7 +129,7 @@ Branch Status: ✅ Synced with origin
 
 ## 🧪 RESULTADOS DE TESTING
 
-### Flutter Tests: 8/8 ✅
+### Flutter Pruebas: 8/8 ✅
 ```
 ✅ StreamingProvider: initializes WebSocket connection successfully
 ✅ StreamingProvider: accumulates streamed tokens into message text
@@ -144,7 +144,7 @@ Coverage: >85%
 Execution Time: 12.3s
 ```
 
-### Python Unit Tests: 12/12 ✅
+### Python Unit Pruebas: 12/12 ✅
 ```
 ✅ StreamingHandler: 6 unit tests
 ✅ TokenBuffer: 6 unit tests
@@ -153,7 +153,7 @@ Coverage: 87.3%
 Execution Time: 8.7s
 ```
 
-### Integration Tests: 8/8 ✅
+### Integración Pruebas: 8/8 ✅
 ```
 ✅ Backend E2E: 5 tests (TTFB, token rate, stability, heartbeat, reconnection)
 ✅ Frontend E2E: 3 tests (rendering, auto-scroll, memory)
@@ -167,7 +167,7 @@ Execution Time: 14.2s
 
 ## ✨ CALIDAD DE CÓDIGO VALIDADA
 
-### Flutter Analysis
+### Flutter Análisis
 ```
 ✅ No issues found! (ran in 0.8s)
 
@@ -193,7 +193,7 @@ Total: 4/4 issues corregidos
 
 ## 🎯 PERFORMANCE TARGETS - TODOS MET
 
-| Target | Requerido | Logrado | Status |
+| Target | Requerido | Logrado | Estado |
 |--------|-----------|---------|--------|
 | TTFB p95 | <200ms | **185ms** | ✅ |
 | Token Rate | ≥10 tokens/sec | **12 tokens/sec** | ✅ |
@@ -224,7 +224,7 @@ Vea el archivo `PR_DESCRIPTION.md` en la raíz del repositorio para la descripci
 
 ## 🔗 INFORMACIÓN SOBRE LA PR
 
-**Status:** ✅ Ready for Review
+**Estado:** ✅ Preparado para Review
 **Commit Hash:** `a2eb011a2157cc4ebcbf8e33d9e41686a4a970be`
 **Branch:** `feature/streaming-optimization`
 **Target:** `develop`
@@ -242,7 +242,7 @@ https://github.com/Pitcher755/soft-architect-ai/compare/develop...feature/stream
 2. **PR_DESCRIPTION.md** - Descripción detallada para GitHub PR
 3. **CI_CD_VALIDATION_REPORT.md** - Reporte de validación CI/CD
 4. **WORKFLOW_COMPLETION_REPORT.md** - Reporte de completitud del workflow
-5. **TEST_RESULTS.md** - Resultados detallados de tests
+5. **TEST_RESULTS.md** - Resultadoados detallados de pruebas
 6. **IMPLEMENTATION_COMPLETE.md** - Resumen de implementación
 
 ---
@@ -250,7 +250,7 @@ https://github.com/Pitcher755/soft-architect-ai/compare/develop...feature/stream
 ## ✅ CHECKLIST PRE-MERGE
 
 ### Code Quality
-- [x] All tests passing (28/28)
+- [x] All pruebas passing (28/28)
 - [x] flutter analyze: 0 issues
 - [x] Code formatted (black, dart format)
 - [x] Linting clean (ruff, pylint)
@@ -261,35 +261,35 @@ https://github.com/Pitcher755/soft-architect-ai/compare/develop...feature/stream
 - [x] Comments and docstrings added
 - [x] No breaking changes
 
-### Documentation
+### Documentoation
 - [x] README updated
-- [x] API documentation complete
-- [x] Performance metrics documented
+- [x] API documentoation complete
+- [x] Performance metrics documentoed
 - [x] Architecture decisions recorded
-- [x] Implementation guide provided
+- [x] Implementación guide provided
 - [x] Bilingual support (ES/EN)
 - [x] Example code snippets included
 - [x] Troubleshooting guide written
 
-### Testing
-- [x] Unit tests comprehensive
-- [x] Integration tests passing
+### Pruebaing
+- [x] Unit pruebas comprehensive
+- [x] Integración pruebas passing
 - [x] Edge cases covered
-- [x] Error scenarios tested
+- [x] Error scenarios pruebaed
 - [x] Performance targets validated
 - [x] Memory leaks checked
 - [x] Connection stability verified
-- [x] Load testing completed
+- [x] Load pruebaing completed
 
 ### Deployment Readiness
 - [x] No database migrations needed
 - [x] No breaking API changes
 - [x] Backwards compatible
-- [x] Rollback plan documented
+- [x] Rollback plan documentoed
 - [x] Performance impact analyzed
 - [x] Security review completed
 - [x] OWASP standards followed
-- [x] Ready for production
+- [x] Preparado para production
 
 ---
 
@@ -299,13 +299,13 @@ https://github.com/Pitcher755/soft-architect-ai/compare/develop...feature/stream
 
 ✅ Commit exitoso
 ✅ Push exitoso
-✅ Todos los tests pasando (28/28)
+✅ Todos los pruebas pasando (28/28)
 ✅ Todos los criterios de aceptación cumplidos (12/12)
-✅ Documentación completa (bilingüe)
+✅ Documentoación completa (bilingüe)
 ✅ Code quality validado
 ✅ Performance targets alcanzados (6/6)
 
-**Status Final: 🟢 READY FOR MERGE TO DEVELOP**
+**Estado Final: 🟢 READY FOR MERGE TO DEVELOP**
 
 ---
 

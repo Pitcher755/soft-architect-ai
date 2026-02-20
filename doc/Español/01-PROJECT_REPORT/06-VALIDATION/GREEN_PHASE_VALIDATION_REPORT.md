@@ -1,8 +1,8 @@
-# ✅ GREEN Phase Validation Report - HU-1.1
+# ✅ GREEN Fase Validation Report - HU-1.1
 
 > **Fecha:** 29/01/2026
 > **Estado:** ✅ COMPLETADO
-> **Fase TDD:** GREEN (Implementation + Validation)
+> **Fase TDD:** GREEN (Implementación + Validation)
 > **Responsable:** ArchitectZero
 
 ---
@@ -12,7 +12,7 @@
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
 2. [Objetivos de la Fase GREEN](#objetivos-de-la-fase-green)
 3. [Implementación Realizada](#implementación-realizada)
-4. [Resultados de Validación](#resultados-de-validación)
+4. [Resultadoados de Validación](#resultados-de-validación)
 5. [Configuración GPU](#configuración-gpu)
 6. [Issues Resueltos](#issues-resueltos)
 7. [Conclusiones](#conclusiones)
@@ -21,13 +21,13 @@
 
 ## 1. Resumen Ejecutivo
 
-La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitosamente. El stack completo de **SoftArchitect AI** está operativo con los siguientes servicios:
+La fase GREEN de la HU-1.1 "Docker Infraestructura Setup" se ha completado exitosamente. El stack completo de **SoftArchitect AI** está operativo con los siguientes servicios:
 
 - ✅ **FastAPI Backend** (puerto 8000) - Healthy
 - ✅ **ChromaDB Vector DB** (puerto 8001) - Healthy
 - ✅ **Ollama LLM Engine** (puerto 11434) - Healthy con soporte GPU
 
-**Resultado Final:** 4/4 checks pasaron en `verify_setup.py`
+**Resultadoado Final:** 4/4 checks pasaron en `verify_setup.py`
 
 ---
 
@@ -35,7 +35,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 
 ### Criterios de Aceptación (Definition of Done)
 
-- [x] Dockerfile multi-stage implementado con usuario no-root
+- [x] Dockerarchivo multi-stage implementado con usuario no-root
 - [x] docker-compose.yml con 3 servicios + healthchecks
 - [x] Orchestration scripts (start_stack.sh, stop_stack.sh) funcionales
 - [x] Todos los servicios alcanzan estado "healthy"
@@ -93,7 +93,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 
 #### Archivos Modificados
 
-1. **src/server/Dockerfile**
+1. **src/server/Dockerarchivo**
    - Bug fix: `CMD ["uvicorn", "app.main:app", ...]` (era `main:app`)
    - Multi-stage build funcional
    - Usuario no-root (appuser uid 1000)
@@ -114,7 +114,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 
 ---
 
-## 4. Resultados de Validación
+## 4. Resultadoados de Validación
 
 ### Pre-Flight Checks (pre_check.py)
 
@@ -224,11 +224,11 @@ ERROR: Error loading ASGI app. Could not import module "main".
 ```
 
 **Causa Raíz:**
-Dockerfile ejecutaba `CMD ["uvicorn", "main:app", ...]` pero la app está en `app/main.py`, no en `main.py`.
+Dockerarchivo ejecutaba `CMD ["uvicorn", "main:app", ...]` pero la app está en `app/main.py`, no en `main.py`.
 
 **Solución:**
-Cambio en [src/server/Dockerfile](../../src/server/Dockerfile) línea 32:
-```dockerfile
+Cambio en [src/server/Dockerarchivo](../../src/server/Dockerarchivo) línea 32:
+```dockerarchivo
 # Antes (incorrecto)
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
@@ -297,17 +297,17 @@ healthcheck:
 
 2. ✅ **GPU Configurada y Funcional:**
    - Nvidia RTX 3050 Ti accesible desde Ollama
-   - Configuración portable documentada en .env
+   - Configuración portable documentoada en .env
    - Modelo LLM descargado y disponible
 
 3. ✅ **TDD Workflow Completado:**
-   - RED phase: Tests creados (pre_check.py, verify_setup.py)
-   - GREEN phase: Implementación + validación exitosa
-   - REFACTOR phase: Pendiente (optimización + documentación)
+   - RED fase: Pruebas creados (pre_check.py, verify_setup.py)
+   - GREEN fase: Implementación + validación exitosa
+   - REFACTOR fase: Pendiente (optimización + documentoación)
 
 4. ✅ **Debugging Sistemático:**
    - 3 issues críticos identificados y resueltos
-   - Root cause analysis documentado
+   - Root cause análisis documentoado
    - Solutions implementadas y validadas
 
 ### Métricas
@@ -317,22 +317,22 @@ healthcheck:
 - **Archivos Modificados:** 5
 - **Archivos Creados:** 5
 - **Líneas de Código:** ~600 (scripts + configs)
-- **Cobertura de Tests:** 100% de servicios validados
+- **Cobertura de Pruebas:** 100% de servicios validados
 
-### Next Steps (REFACTOR Phase)
+### Siguiente Steps (REFACTOR Fase)
 
 1. [ ] Remover warning de `version: '3.9'` en docker-compose.yml
 2. [ ] Añadir monitoring con Prometheus/Grafana (HU futura)
-3. [ ] Documentar workflow completo en doc/02-SETUP_DEV/
+3. [ ] Documentoar workflow completo en doc/02-SETUP_DEV/
 4. [ ] Crear troubleshooting guide para issues comunes
 5. [ ] Optimizar start_period de healthchecks (reducir tiempos de espera)
-6. [ ] Añadir smoke tests de endpoints en verify_setup.py
+6. [ ] Añadir smoke pruebas de endpoints en verify_setup.py
 
 ---
 
 ## 📚 Referencias
 
-- [AGENTS.md §8](../../AGENTS.md#8-estándar-de-documentación-doc-as-code) - Estándar de Documentación
+- [AGENTS.md §8](../../AGENTS.md#8-estándar-de-documentoación-doc-as-código) - Estándar de Documentoación
 - [docker-compose.yml](../../infrastructure/docker-compose.yml) - Configuración Final
 - [start_stack.sh](../../infrastructure/start_stack.sh) - Orchestration Script
 - [verify_setup.py](../../infrastructure/verify_setup.py) - Post-Deployment Checks

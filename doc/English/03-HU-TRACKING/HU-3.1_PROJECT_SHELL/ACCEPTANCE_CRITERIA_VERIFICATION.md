@@ -1,12 +1,12 @@
 # ✅ HU-3.1: Acceptance Criteria Verification Report
 
-> **Fecha:** 03/02/2026
-> **Estado:** ✅ COMPLETADO (100% Acceptance Criteria Met)
+> **Date:** 03/02/2026
+> **Status:** ✅ COMPLETADO (100% Acceptance Criteria Met)
 > **Version:** Final - Ready for PR
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Executive Summary](#executive-summary)
 2. [Functional Acceptance Criteria (AF-1 to AF-5)](#functional-acceptance-criteria)

@@ -10,8 +10,8 @@
 
 | Métrica | Valor | Estado |
 |---------|-------|--------|
-| **Tests que pasan** | 12/16 | ⚠️ 75% |
-| **Tests que fallan** | 4/16 | 🔴 25% |
+| **Pruebas que pasan** | 12/16 | ⚠️ 75% |
+| **Pruebas que fallan** | 4/16 | 🔴 25% |
 | **Cobertura código** | < 80% | ❌ BAJO |
 | **Completitud módulo HU** | ? | ❓ NO MEDIDA |
 | **Bloqueo merge** | SÍ | 🔴 CRÍTICO |
@@ -21,7 +21,7 @@
 ## 🔴 OBJETIVO 1: FIJAR PYTHON UNIT TESTS
 
 **Prioridad:** 🔴 CRÍTICO
-**Impacto:** Bloquea tests de integración y cobertura
+**Impacto:** Bloquea pruebas de integración y cobertura
 
 ### Síntomas
 ```
@@ -48,17 +48,17 @@ cat tests/server/conftest.py | head -50
 ### Tareas Específicas
 
 - [ ] **TAREA 1.1:** Ejecutar comando de diagnóstico y capturar output
-- [ ] **TAREA 1.2:** Revisar `tests/server/conftest.py`
+- [ ] **TAREA 1.2:** Revisar `pruebas/server/confprueba.py`
   - Verificar fixtures que inicializan SQLite
   - Buscar async fixtures sin `asyncio_mode` configurado
   - Revisar database cleanup en `teardown`
 
-- [ ] **TAREA 1.3:** Inspeccionar `tests/server/unit/domain/`
+- [ ] **TAREA 1.3:** Inspeccionar `pruebas/server/unit/domain/`
   - Buscar imports rotos
   - Verificar mock database path es relativo
-  - Revisar si tests dependen de archivos en `tests/fixtures/`
+  - Revisar si pruebas dependen de archivos en `pruebas/fixtures/`
 
-- [ ] **TAREA 1.4:** Verificar dependencias en `pyproject.toml`
+- [ ] **TAREA 1.4:** Verificar dependencias en `pyproyecto.toml`
   ```bash
   # Listar versiones actuales
   grep -A 10 '^\[tool.poetry.dependencies\]' src/server/pyproject.toml
@@ -82,7 +82,7 @@ cat tests/server/conftest.py | head -50
   pip install -r requirements.txt.new
   ```
 
-- [ ] **TAREA 1.6:** Ejecutar tests de nueva con datos de diagnóstico
+- [ ] **TAREA 1.6:** Ejecutar pruebas de nueva con datos de diagnóstico
   ```bash
   python -m pytest tests/server/unit/ -vv --tb=short --timeout=30 --durations=10
   ```
@@ -109,7 +109,7 @@ PHASE 5️⃣: INTEGRATION TESTS & PERFORMANCE
 ❌ SQLite Integration Tests  ← AQUÍ FALLA
 ```
 
-### Tests Específicos Afectados
+### Pruebas Específicos Afectados
 ```
 √ test_sqlite_persistence.py (19 tests)
 √ test_sqlite_performance.py (5 tests)
@@ -127,9 +127,9 @@ PHASE 5️⃣: INTEGRATION TESTS & PERFORMANCE
   ```
 
 - [ ] **TAREA 2.2:** Buscar problemas comunes
-  - [ ] Database file permisos (si ruta `/tmp/`): `ls -la /tmp/test_*.db`
+  - [ ] Database archivo permisos (si ruta `/tmp/`): `ls -la /tmp/prueba_*.db`
   - [ ] Database locks: `lsof | grep .db`
-  - [ ] Async fixtures: revisar `@pytest.fixture(scope="function")`
+  - [ ] Async fixtures: revisar `@pyprueba.fixture(scope="function")`
   - [ ] Transaccion isolation level
 
 - [ ] **TAREA 2.3:** Revisar fixture database
@@ -139,11 +139,11 @@ PHASE 5️⃣: INTEGRATION TESTS & PERFORMANCE
   ```
 
 - [ ] **TAREA 2.4:** Verificar setup/teardown
-  - [ ] Base datos temporal se crea antes de tests: ✓
+  - [ ] Base datos temporal se crea antes de pruebas: ✓
   - [ ] Base datos se limpia después: ✓
-  - [ ] No hay conflictos entre tests paralelos: ✓
+  - [ ] No hay conflictos entre pruebas paralelos: ✓
 
-- [ ] **TAREA 2.5:** Ejecutar integration tests con debug
+- [ ] **TAREA 2.5:** Ejecutar integration pruebas con debug
   ```bash
   python -m pytest tests/server/integration/ -vv --tb=short --durations=5 -x
   # -x = para en primer fallo para inspeccionar
@@ -211,13 +211,13 @@ PHASE 7️⃣: CODE COVERAGE
   # Crear tests para esas líneas
   ```
 
-- [ ] **TAREA 3.4:** Escribir tests adicionales si necesario
-  - Si cobertura < 90%: agregar tests para:
+- [ ] **TAREA 3.4:** Escribir pruebas adicionales si necesario
+  - Si cobertura < 90%: agregar pruebas para:
     - Error paths (excepciones)
     - Edge cases (listas vacías, None values)
     - Branches not covered
 
-- [ ] **TAREA 3.5:** Documentar cobertura final
+- [ ] **TAREA 3.5:** Documentoar cobertura final
   ```bash
   # Guardar reporte en doc
   python -m pytest tests/server/ \
@@ -253,45 +253,45 @@ PHASE 7️⃣: CODE COVERAGE
   ...
   ```
 
-- [ ] **TAREA 4.2:** AC-1 Validation - Phase ordering
-  - Ejecutar: `pytest tests/server/unit/domain/test_phase_ordering.py -v`
+- [ ] **TAREA 4.2:** AC-1 Validation - Fase ordering
+  - Ejecutar: `pyprueba pruebas/server/unit/domain/prueba_fase_ordering.py -v`
   - Verificar: orden ROOT → 10 → 20 → 30 → 40 → 99 ✓
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
 - [ ] **TAREA 4.3:** AC-2 Validation - Mandatory artifacts
-  - Ejecutar: `pytest tests/server/unit/domain/test_mandatory_validation.py -v`
+  - Ejecutar: `pyprueba pruebas/server/unit/domain/prueba_mandatory_validation.py -v`
   - Verificar: cada fase bloquea si faltan obligatorios ✓
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
 - [ ] **TAREA 4.4:** AC-3 Validation - Doc N/25 calculation
-  - Ejecutar: `pytest tests/server/unit/domain/test_doc_progress.py -v`
+  - Ejecutar: `pyprueba pruebas/server/unit/domain/prueba_doc_progress.py -v`
   - Verificar: fórmula `generated_docs / 25` correcta ✓
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
 - [ ] **TAREA 4.5:** AC-4 Validation - ROOT logic
-  - Ejecutar: `pytest tests/server/unit/domain/test_root_phase.py -v`
+  - Ejecutar: `pyprueba pruebas/server/unit/domain/prueba_root_fase.py -v`
   - Verificar: AGENTS.md + README.md obligatorios ✓
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
 - [ ] **TAREA 4.6:** AC-5 Validation - Non-ROOT completeness
-  - Ejecutar: `pytest tests/server/unit/domain/test_phase_completeness.py -v`
+  - Ejecutar: `pyprueba pruebas/server/unit/domain/prueba_fase_completeness.py -v`
   - Verificar: 100% docs requeridos antes de avanzar ✓
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
 - [ ] **TAREA 4.7:** AC-6 Validation - Idempotency
-  - Ejecutar: `pytest tests/server/unit/domain/test_idempotent_transition.py -v`
+  - Ejecutar: `pyprueba pruebas/server/unit/domain/prueba_idempotent_transition.py -v`
   - Verificar: re-scan no duplica artefactos ✓
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
 - [ ] **TAREA 4.8:** AC-7 Validation - Error handling
-  - Ejecutar: `pytest tests/server/unit/domain/test_error_messages.py -v`
+  - Ejecutar: `pyprueba pruebas/server/unit/domain/prueba_error_messages.py -v`
   - Verificar: errores controlados, sin stack traces ✓
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
-- [ ] **TAREA 4.9:** AC-8 Validation - Test coverage
+- [ ] **TAREA 4.9:** AC-8 Validation - Prueba coverage
   - Reporte: Cobertura módulo ≥90% ✓
   - Screenshot: `coverage report term-missing`
-  - Documentar: ✅ PASA
+  - Documentoar: ✅ PASA
 
 ### Criterio de Completitud
 ```
@@ -343,7 +343,7 @@ PHASE 7️⃣: CODE COVERAGE
   ```
 
 - [ ] **TAREA 5.2:** Agregar screenshot del dashboard
-  - [ ] Capturar pantalla de Project Dashboard
+  - [ ] Capturar pantalla de Proyecto Dashboard
   - [ ] Mostrar `Doc N/25` en tiempo real
   - [ ] Guardar en `doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/dashboard_screenshot.png`
 
@@ -356,14 +356,14 @@ PHASE 7️⃣: CODE COVERAGE
   ```
 
 - [ ] **TAREA 5.4:** Listar dependencias resueltas
-  - [x] HU-3.1 (ProjectShell base)
-  - [x] HU-3.2 (FileSystemService)
+  - [x] HU-3.1 (ProyectoShell base)
+  - [x] HU-3.2 (ArchivoSystemService)
   - [x] Packages/knowledge_base/01-TEMPLATES
 
 - [ ] **TAREA 5.5:** Enlazarse con roadmap
   - Referencia a issue #HU-3.8 en ROADMAP
   - Cierre automático de issue si aplica
-  - Link a este documento en PR
+  - Link a este documentoo en PR
 
 ### Criterio de Completitud
 ```
@@ -382,7 +382,7 @@ PHASE 7️⃣: CODE COVERAGE
 
 ### Tareas Específicas
 
-- [ ] **TAREA 6.1:** Documentar logros
+- [ ] **TAREA 6.1:** Documentoar logros
   ```markdown
   ### ✅ Logros Alcanzados
   - Motor de fases 100% funcional
@@ -392,14 +392,14 @@ PHASE 7️⃣: CODE COVERAGE
   - Integración fluida con ProjectShell
   ```
 
-- [ ] **TAREA 6.2:** Documentar deuda técnica (si aplica)
+- [ ] **TAREA 6.2:** Documentoar deuda técnica (si aplica)
   ```markdown
   ### ⚠️ Deuda Técnica Documentada
   - [ ] Refactor Phase Registry si crece >20 fases
   - [ ] Optimizar scan filesystem si > 1000 archivos
   ```
 
-- [ ] **TAREA 6.3:** Documentar métricas finales
+- [ ] **TAREA 6.3:** Documentoar métricas finales
   ```
   | Métrica | Valor |
   |---------|-------|
@@ -443,7 +443,7 @@ PHASE 7️⃣: CODE COVERAGE
   flutter run -d linux
   ```
 
-- [ ] **TAREA 7.2:** Validar ProjectShell se abre normalmente
+- [ ] **TAREA 7.2:** Validar ProyectoShell se abre normalmente
   - [ ] App no crashea en inicio
   - [ ] Dashboard visible sin errores
   - [ ] Ningún red error logs
@@ -453,14 +453,14 @@ PHASE 7️⃣: CODE COVERAGE
   - [ ] Verifica Doc contador >= 0
   - [ ] Verifica fase activa correcta (ROOT, 10, 20, etc)
 
-- [ ] **TAREA 7.4:** Test manual de transición
-  - [ ] Crear proyecto test
+- [ ] **TAREA 7.4:** Prueba manual de transición
+  - [ ] Crear proyecto prueba
   - [ ] Crear archivos de fase 10
   - [ ] Refrescar UI (pull-to-refresh o botón)
   - [ ] Verificar Doc N/25 incrementa
   - [ ] Verificar fase badge se actualiza
 
-- [ ] **TAREA 7.5:** Documentar resultado
+- [ ] **TAREA 7.5:** Documentoar resultado
   ```
   ✅ MANUAL INTEGRATION TEST PASSED
 
@@ -518,9 +518,9 @@ PHASE 7️⃣: CODE COVERAGE
 
 - [ ] **TAREA 8.4:** Resolver cualquier fallo restante
   - Ej: si `Coverage ≥80%` aún falla → volver a OBJ-3
-  - Ej: si nuevo test falla → volver a OBJ-1 o OBJ-2
+  - Ej: si nuevo prueba falla → volver a OBJ-1 o OBJ-2
 
-- [ ] **TAREA 8.5:** Documentar confirmación
+- [ ] **TAREA 8.5:** Documentoar confirmación
   ```markdown
   ## ✅ PRE-PUSH VALIDATION FINAL APPROVAL
 
@@ -544,13 +544,13 @@ PHASE 7️⃣: CODE COVERAGE
 
 ## 📌 TABLA RESUMEN - PROGRESO
 
-| # | Objetivo | Título | Prioridad | Dependen | Est. h | Status |
+| # | Objetivo | Título | Prioridad | Dependen | Est. h | Estado |
 |---|----------|--------|-----------|----------|--------|--------|
-| 1 | OBJ-1 | Fijar Python Unit Tests | 🔴 CRÍTICO | - | 2-4 | ⏳ TODO |
-| 2 | OBJ-2 | Fijar SQLite Integration | 🔴 CRÍTICO | OBJ-1 | 2-3 | ⏳ TODO |
+| 1 | OBJ-1 | Fijar Python Unit Pruebas | 🔴 CRÍTICO | - | 2-4 | ⏳ TODO |
+| 2 | OBJ-2 | Fijar SQLite Integración | 🔴 CRÍTICO | OBJ-1 | 2-3 | ⏳ TODO |
 | 3 | OBJ-3 | Medir Cobertura ≥90% HU | 🔴 CRÍTICO | OBJ-1,2 | 1-2 | ⏳ TODO |
 | 4 | OBJ-4 | Validar AC-1..AC-8 | 🟡 ALTO | OBJ-1,2,3 | 1 | ⏳ TODO |
-| 5 | OBJ-5 | Redactar PR Description | 🟡 MEDIO | OBJ-1..4 | 0.5 | ⏳ TODO |
+| 5 | OBJ-5 | Redactar PR Descripción | 🟡 MEDIO | OBJ-1..4 | 0.5 | ⏳ TODO |
 | 6 | OBJ-6 | Actualizar FINAL_SUMMARY | 🟢 MEDIO | OBJ-1..5 | 0.5 | ⏳ TODO |
 | 7 | OBJ-7 | Validación Integración Viva | 🟢 MEDIO | OBJ-1..5 | 0.75 | ⏳ TODO |
 | 8 | OBJ-8 | PRE_PUSH Validation Final | 🔴 CRÍTICO | OBJ-1,2,3,7 | 1 | ⏳ TODO |
@@ -623,12 +623,12 @@ cd tests/server && python -m pip install --upgrade pytest pytest-asyncio pytest-
 
 Si después de 2 horas en OBJ-1 no se resuelve:
 1. Hacer commit de diagnóstico
-2. Crear issue "HU-3.8.1: Test flakiness investigation"
+2. Crear issue "HU-3.8.1: Prueba flakiness investigation"
 3. Considerar rollback a `develop` y replanificación
-4. Posible: cambiar pytest->unittest nativo si es necesario
+4. Posible: cambiar pyprueba->unitprueba nativo si es necesario
 
 ---
 
-**Fecha Documento:** 12/02/2026 22:42
+**Fecha Documentoo:** 12/02/2026 22:42
 **Próxima Revisión:** Después de completar OBJ-1
 **Propietario:** Equipo Backend + Frontend

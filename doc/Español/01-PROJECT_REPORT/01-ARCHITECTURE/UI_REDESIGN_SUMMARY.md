@@ -1,14 +1,14 @@
-# 🎨 UI Redesign: Project Shell Interface - Summary
+# 🎨 UI Redesign: Proyecto Shell Interface - Summary
 
 **Date:** February 5, 2025
-**Branch:** `feature/ui-project-shell`
-**Status:** ✅ Complete - All Changes Implemented & Tested
+**Branch:** `feature/ui-proyecto-shell`
+**Estado:** ✅ Complete - All Changes Implemented & Pruebaed
 
 ---
 
 ## 📋 Overview
 
-Se implementó un rediseño completo de la interfaz del **Project Shell** siguiendo el estilo y paleta de colores de **GitHub Dark Theme** con optimizaciones para desktop.
+Se implementó un rediseño completo de la interfaz del **Proyecto Shell** siguiendo el estilo y paleta de colores de **GitHub Dark Theme** con optimizaciones para desktop.
 
 ### Archivos Modificados
 
@@ -25,7 +25,7 @@ src/client/lib/features/project_shell/presentation/
 
 ## 🎯 Cambios Principales
 
-### 1. **ProjectShellScreen** (`project_shell_screen.dart`)
+### 1. **ProyectoShellScreen** (`proyecto_shell_screen.dart`)
 
 **Cambio:** Migración de `ConsumerWidget` → `ConsumerStatefulWidget`
 
@@ -47,25 +47,25 @@ src/client/lib/features/project_shell/presentation/
 #### Features Implemented
 
 1. **Top App Bar**
-   - Project title with icon
+   - Proyecto title with icon
    - Path display (monospace font)
-   - Progress bar (12/25 documents)
-   - Export & Info buttons
+   - Progress bar (12/25 documentos)
+   - Export & Info botóns
 
 2. **Left Panel (Directory Tree)**
    - Expandable/collapsible directories
-   - File type icons with color coding
+   - Archivo type icons with color coding
    - Selection highlighting
    - Proper padding and indentation
 
 3. **Center Panel (Placeholder)**
-   - Ready for Sequential Chat Screen integration
-   - Placeholder text for future implementation
+   - Preparado para Sequential Chat Screen integration
+   - Placeholder text for future implementación
 
 4. **Right Panel (Markdown Preview)**
-   - File header with icon and name
+   - Archivo header with icon and name
    - Formatted markdown content
-   - Empty state when no file selected
+   - Empty state when no archivo selected
 
 #### State Management
 
@@ -101,14 +101,14 @@ Project Root/
 
 ### 2. **DirectoryTreeWidget** (`directory_tree_widget.dart`)
 
-**Style:** VS Code Explorer inspired
+**Estilo:** VS Code Explorer inspired
 
 #### Features
 
-| Feature | Implementation |
+| Feature | Implementación |
 |---------|-----------------|
 | **Expand/Collapse** | Chevron icon + manual state tracking |
-| **File Icons** | Type-specific icons (.md, .dart, .py, .json, etc.) |
+| **Archivo Icons** | Type-specific icons (.md, .dart, .py, .json, etc.) |
 | **Selection** | Blue highlight + different text styling |
 | **Hover State** | Subtle background color change |
 | **Indentation** | 16px padding per level |
@@ -143,12 +143,12 @@ Widget _buildTreeNode(FileNode node) {
 
 | Extension | Icon | Color |
 |-----------|------|-------|
-| .md | `description` | `#79c0ff` |
+| .md | `descripción` | `#79c0ff` |
 | .dart | `code` | `#79c0ff` |
 | .py | `code` | `#79c0ff` |
 | .json | `data_object` | `#79c0ff` |
 | .yaml/.yml | `settings` | `#79c0ff` |
-| Other | `description` | `#79c0ff` |
+| Other | `descripción` | `#79c0ff` |
 
 ---
 
@@ -161,21 +161,21 @@ Widget _buildTreeNode(FileNode node) {
 #### Features
 
 1. **Empty State**
-   - Large icon (description_outlined)
-   - Helper text: "Select a file to preview"
+   - Large icon (descripción_outlined)
+   - Helper text: "Select a archivo to preview"
    - Centered layout
 
-2. **File Header**
-   - File icon + filename
+2. **Archivo Header**
+   - Archivo icon + archivoname
    - Dark sidebar background
    - Proper spacing
 
 3. **Markdown Rendering**
-   - Syntax highlighting with custom StyleSheet
+   - Syntax highlighting with custom EstiloSheet
    - Selectable text (copy functionality)
-   - Link tap detection (ready for future implementation)
+   - Link tap detection (preparado para future implementación)
 
-#### Custom StyleSheet
+#### Custom EstiloSheet
 
 ```dart
 MarkdownStyleSheet(
@@ -211,13 +211,13 @@ MarkdownStyleSheet(
 
 ## ✅ Quality Checks
 
-### Code Analysis
+### Code Análisis
 ```bash
 flutter analyze
 # ✅ No issues found!
 ```
 
-### Build Verification
+### Build Verificación
 ```bash
 flutter build web
 # ✅ Built build/web successfully
@@ -231,16 +231,16 @@ flutter build web
 
 ---
 
-## 🔄 Integration Points
+## 🔄 Integración Points
 
-### Ready for Integration With:
+### Preparado para Integración With:
 
-1. **ProjectShellProvider** (Riverpod)
+1. **ProyectoShellProvider** (Riverpod)
    ```dart
    final projectShellProvider = StateNotifierProvider((ref) => ...);
    ```
 
-2. **File Content Loading**
+2. **Archivo Content Loading**
    ```dart
    void _onFileSelected(FileNode node) {
      // Currently: Mock loading in _loadFileContent()
@@ -264,19 +264,19 @@ flutter build web
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Siguiente Steps
 
-1. **Connect File Service**
-   - Implement actual file I/O in `_loadFileContent()`
-   - Replace mock file tree with real data from repository
+1. **Connect Archivo Service**
+   - Implement actual archivo I/O in `_loadArchivoContent()`
+   - Replace mock archivo tree with real data from repository
 
-2. **Implement Chat Integration**
+2. **Implement Chat Integración**
    - Replace center panel placeholder with `SequentialChatScreen`
    - Connect state between panels
 
 3. **Add Features**
    - Search functionality
-   - File editing capabilities
+   - Archivo editing capabilities
    - Right-click context menu
 
 4. **Accessibility**
@@ -290,19 +290,19 @@ flutter build web
 
 | Metric | Value |
 |--------|-------|
-| Files Modified | 3 |
+| Archivos Modified | 3 |
 | Lines of Code | ~450 |
 | Components Updated | 1 |
 | Widgets Refactored | 2 |
-| Build Status | ✅ Success |
+| Build Estado | ✅ Success |
 | Lint Issues | 0 |
 
 ---
 
-## 🔗 Related Files
+## 🔗 Related Archivos
 
-- **Domain Layer:** `domain/entities/file_node.dart`
-- **Presentation:** `presentation/providers/project_providers.dart`
+- **Domain Layer:** `domain/entities/archivo_node.dart`
+- **Presentación:** `presentation/providers/proyecto_providers.dart`
 - **Theme:** `core/theme/app_colors.dart` (future refactoring)
 
 ---
@@ -311,7 +311,7 @@ flutter build web
 
 - All hardcoded colors should eventually be moved to `AppColors` class
 - Consider extracting widget dimensions to constants
-- Mock file tree should be replaced with real data once file service is ready
+- Mock archivo tree should be replaced with real data once archivo service is ready
 - Consider adding animation for directory expand/collapse
 
 ---
@@ -321,6 +321,6 @@ flutter build web
 - [x] Code compiles successfully
 - [x] No lint violations
 - [x] All imports correct
-- [x] Documentation complete
-- [ ] Unit tests written (pending)
-- [ ] Integration tests added (pending)
+- [x] Documentoation complete
+- [ ] Unit pruebas written (pending)
+- [ ] Integración pruebas added (pending)

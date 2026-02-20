@@ -1,7 +1,7 @@
 # ✅ Project Shell Refactoring - Validation Checklist
 
-> **Estado:** ✅ COMPLETADO
-> **Fecha:** 8 de febrero de 2026
+> **Status:** ✅ COMPLETADO
+> **Date:** 8 de febrero de 2026
 > **Responsable:** ArchitectZero
 
 ---
@@ -12,7 +12,7 @@
 
 **Requisito:** "La columna de File Explorer debe cargar un widget real como file_tree_widget"
 
-**Implementación:**
+**Implementation:**
 - ✅ Creado: `FileTreeWidget` (160 líneas)
 - ✅ Independiente: No inline en project_shell_screen.dart
 - ✅ Reutilizable: Puede usarse en otros contextos
@@ -33,7 +33,7 @@ lib/features/project_shell/presentation/widgets/file_tree_widget.dart ✓
 
 **Requisito:** "El chat panel debe cargar ChatPanelWidget con todos sus widgets internos también con datos mockeados"
 
-**Implementación:**
+**Implementation:**
 - ✅ ChatPanelWidget integrado
 - ✅ Datos mockeados: 3 mensajes de demo
 - ✅ Widgets internos:
@@ -72,7 +72,7 @@ ChatPanelWidget rendering:
 
 **Requisito:** "Estas tres columnas deben ser resizables, puedes darle más ancho a cualquiera de ellas"
 
-**Implementación:**
+**Implementation:**
 - ✅ ResizableColumn widget creado
 - ✅ Files column: 200-500px (default 260px)
 - ✅ Preview column: 300-600px (default 420px)
@@ -102,11 +102,11 @@ ResizableColumn features:
 
 **Requisito:** "igual que pueden ser ocultables las dos de los laterales, el arbol de directorios y el markdown preview"
 
-**Implementación:**
+**Implementation:**
 - ✅ Files Column toggle: 📁 FAB
 - ✅ Preview Column toggle: 👁 FAB
 - ✅ FABs en esquina inferior derecha
-- ✅ Estado persistente
+- ✅ Status persistente
 - ✅ Ambos togglables independientemente
 
 **Validación:**
@@ -124,12 +124,12 @@ Visibility toggles:
 
 **Requisito:** "El widget progress_indicator_widget.dart es el que debe estar cargado en //progress bar"
 
-**Implementación:**
+**Implementation:**
 - ✅ Integrado en Chat Panel header
 - ✅ Progress bar animado (8/25 = 32%)
 - ✅ Phase label dinámico
 - ✅ Pause button
-- ✅ Colors por fase
+- ✅ Colors por phase
 
 **Validación:**
 ```
@@ -145,12 +145,12 @@ ProgressIndicatorWidget:
 
 ### ✅ 7. Árbol de Directorios Navegable
 
-**Requisito:** "el arbol de directorios y documentos mockeados deben ser navegables"
+**Requisito:** "el arbol de directorios y documents mockeados deben ser navegables"
 
-**Implementación:**
+**Implementation:**
 - ✅ Click en ► para expandir
 - ✅ Click en ▼ para contraer
-- ✅ Click en archivo para seleccionar
+- ✅ Click en file para seleccionar
 - ✅ Auto-expand de padres (future)
 - ✅ Path tracking
 
@@ -166,15 +166,15 @@ Navigation features:
 
 ---
 
-### ✅ 8. Selección de Archivo Persiste en Árbol
+### ✅ 8. Selección de File Persiste en Árbol
 
-**Requisito:** "si pulso en un documento .md para verlo en markdown_preview no se debe cerrar el arbol de directorios solo marcar el documento seleccionado"
+**Requisito:** "si pulso en un document .md para verlo en markdown_preview no se debe cerrar el arbol de directorios solo marcar el document seleccionado"
 
-**Implementación:**
+**Implementation:**
 - ✅ FileTreeWidget nunca se oculta automáticamente
-- ✅ Archivo seleccionado marcado en azul
+- ✅ File seleccionado marcado en azul
 - ✅ Preview se actualiza sin cerrar árbol
-- ✅ Estado persiste
+- ✅ Status persiste
 
 **Validación:**
 ```
@@ -237,7 +237,7 @@ ProjectShellScreen    ← Presentation (Orchestration)
 
 ### Tamaño de Código
 
-| Archivo | Antes | Después | Cambio |
+| File | Antes | Después | Cambio |
 |---------|-------|---------|--------|
 | project_shell_screen.dart | 276 lines | ~150 lines | -46% ✓ |
 | file_tree_widget.dart | - | 160 lines | NEW ✓ |
@@ -314,7 +314,7 @@ MockProjectData                API Provider
 
 ---
 
-## 📁 Estructura de Archivos
+## 📁 Estructura de Files
 
 ```
 ✓ lib/features/project_shell/
@@ -380,7 +380,7 @@ MockProjectData                API Provider
 5. ✅ Columnas ocultables
 6. ✅ ProgressIndicatorWidget en header
 7. ✅ Árbol navegable
-8. ✅ Selección de archivo persiste
+8. ✅ Selección de file persiste
 
 ### Validación Técnica - ✅ PASADA
 

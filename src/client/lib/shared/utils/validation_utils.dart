@@ -1,9 +1,9 @@
-/// Utilidades de validación para formularios
-/// Contiene funciones reutilizables para validar inputs de usuario
+/// Form validation utilities
+/// Contains reusable functions for validating user inputs
 library;
 
-/// Valida si un nombre de proyecto es válido
-/// Solo permite letras, números, guiones y guiones bajos
+/// Validates if a project name is valid
+/// Only allows letters, numbers, hyphens, and underscores
 bool isValidProjectName(String name) {
   if (name.isEmpty) {
     return false;
@@ -12,8 +12,8 @@ bool isValidProjectName(String name) {
   return validNameExp.hasMatch(name);
 }
 
-/// Valida todos los inputs del formulario de creación de proyecto
-/// Retorna null si todo es válido, o un mensaje de error
+/// Validates all inputs in the project creation form
+/// Returns null if everything is valid, or an error message
 String? validateProjectInputs({
   required String projectName,
   required String basePath,
@@ -30,5 +30,5 @@ String? validateProjectInputs({
     return 'Por favor selecciona una ruta base';
   }
 
-  return null; // Todo válido
+  return null; // All valid
 }

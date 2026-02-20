@@ -1,4 +1,4 @@
-# Mejores Prácticas de Testing
+# Mejores Prácticas de Pruebaing
 
 > **Fecha:** 10/02/2026
 > **Estado:** ✅ COMPLETE
@@ -8,8 +8,8 @@
 
 ## 📖 Tabla de Contenidos
 
-1. [Filosofía de Testing](#filosofía-de-testing)
-2. [Estructura y Organización de Tests](#estructura-y-organización-de-tests)
+1. [Filosofía de Pruebaing](#filosofía-de-pruebaing)
+2. [Estructura y Organización de Pruebas](#estructura-y-organización-de-pruebas)
 3. [Convenciones de Nombrado](#convenciones-de-nombrado)
 4. [Mocks vs Dependencias Reales](#mocks-vs-dependencias-reales)
 5. [Gestión de Fixtures](#gestión-de-fixtures)
@@ -19,11 +19,11 @@
 
 ---
 
-## Filosofía de Testing
+## Filosofía de Pruebaing
 
 ### Ciclo TDD: Rojo → Verde → Refactorización
 
-**Paso 1: ROJO - Escribir test que falla**
+**Paso 1: ROJO - Escribir prueba que falla**
 ```python
 def test_create_project_with_duplicate_id_fails():
     """La creación de proyecto debería fallar si ID ya existe."""
@@ -73,7 +73,7 @@ Componentes UI: >70% (Flutter)
 
 ---
 
-## Estructura y Organización de Tests
+## Estructura y Organización de Pruebas
 
 ### Organización de Archivos
 
@@ -107,7 +107,7 @@ tests/
         └── layout_test.dart
 ```
 
-### Organización de Clases de Test
+### Organización de Clases de Prueba
 
 ```python
 # ✅ BUEN - Organización clara
@@ -139,7 +139,7 @@ class TestSQLiteRepository:
 
 ## Convenciones de Nombrado
 
-### Formato: `test_{método}_{escenario}_{resultado_esperado}`
+### Formato: `prueba_{método}_{escenario}_{resultado_esperado}`
 
 **Análisis de Patrón:**
 
@@ -205,7 +205,7 @@ def test_validation_and_persistence():
       └─ Usar REAL para integration tests
 ```
 
-### Ejemplo: Unit Test (Mock-eado)
+### Ejemplo: Unit Prueba (Mock-eado)
 
 ```python
 from unittest.mock import MagicMock, patch
@@ -225,7 +225,7 @@ class TestUserService:
         mock_repo.get_user.assert_called_once_with("1")
 ```
 
-### Ejemplo: Integration Test (BD Real)
+### Ejemplo: Integración Prueba (BD Real)
 
 ```python
 class TestUserRepositoryIntegration:
@@ -418,9 +418,9 @@ def repo(self, temp_db):
     return SQLiteRepository(TransactionManager(temp_db))
 ```
 
-### Problema 2: "Test pasa localmente pero falla en CI"
+### Problema 2: "Prueba pasa localmente pero falla en CI"
 
-**Causa:** Test depende del ambiente (tiempo, filesystem, SO)
+**Causa:** Prueba depende del ambiente (tiempo, archivosystem, SO)
 
 **Solución:**
 ```python

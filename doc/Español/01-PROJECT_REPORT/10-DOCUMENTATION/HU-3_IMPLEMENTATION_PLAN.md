@@ -2,7 +2,7 @@
 
 > **Fecha:** 02/02/2026
 > **Estado:** 📋 CHECKLIST DE ACCIONES PRE-RAMA
-> **Tipo:** Operational Runbook
+> **Tipo:** Operational Ejecutarbook
 > **Audiencia:** Development Team + ArchitectZero
 
 ---
@@ -386,7 +386,7 @@ git branch -a
 
 **Acción:** Realizar cambios en `USER_STORIES_MASTER.es.json` (Pasos 1.1-1.5 arriba)
 
-**Herramienta:** Usar `replace_string_in_file` múltiples veces O usar `multi_replace_string_in_file`
+**Herramienta:** Usar `replace_string_in_archivo` múltiples veces O usar `multi_replace_string_in_archivo`
 
 **Validación:**
 ```bash
@@ -425,7 +425,7 @@ git push origin feature/hu-3-project-first-refactor
 
 **Acción:**
 1. Ir a GitHub
-2. Crear PR: `feature/hu-3-project-first-refactor` → `develop`
+2. Crear PR: `feature/hu-3-proyecto-first-refactor` → `develop`
 3. Descripción: Copiar del commit (arriba)
 4. Marcar como **Draft** (no lista para merge)
 5. Agregar labels: `epic/sprint3`, `refactoring`, `architecture`
@@ -442,7 +442,7 @@ git push origin feature/hu-3-project-first-refactor
 2. Cambiar PR de Draft → Ready
 3. Click: "Squash and merge" (1 commit limpio en develop)
 
-**Resultado:**
+**Resultadoado:**
 ```
 main ──────────────────────────────────
                                   (sin cambios)
@@ -528,7 +528,7 @@ Implementación comienza en Sprint 3 (después de merge).
 ### Bilingual Support
 
 Todos los nombres de ramas, commits, PRs deben ser en **inglés**.
-Los documentos (es.md) pueden ser en español.
+Los documentoos (es.md) pueden ser en español.
 
 ### Versioning
 
@@ -543,7 +543,7 @@ Después del merge, considerar:
 Esta rama es un **checkpoint arquitectónico importante**.
 
 Marca la transición de:
-- **Chat-First** (simple) → **Project-First** (robusto)
+- **Chat-First** (simple) → **Proyecto-First** (robusto)
 - **50 pts** (underestimated) → **70 pts** (realistic)
 - **3 HUs** (ambiguas) → **5 HUs** (claras)
 

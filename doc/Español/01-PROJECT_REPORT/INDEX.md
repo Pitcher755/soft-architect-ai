@@ -1,14 +1,14 @@
-# 📚 HU-3.1: Project Shell UI - Índice Completo
+# 📚 HU-3.1: Proyecto Shell UI - Índice Completo
 
 > **Consolidado:** 05/02/2026
-> **Estado:** ✅ COMPLETADO (Documentación Centralizada)
-> **Rama:** feature/ui-project-shell
+> **Estado:** ✅ COMPLETADO (Documentoación Centralizada)
+> **Rama:** feature/ui-proyecto-shell
 
 ---
 
 ## 🧭 Guía de Navegación
 
-Este directorio contiene TODA la documentación de HU-3.1 consolidada en un solo lugar.
+Este directorio contiene TODA la documentoación de HU-3.1 consolidada en un solo lugar.
 
 ### 🚀 Para Comenzar (5 minutos)
 1. **[README.md](README.md)** - Descripción general y quick links
@@ -37,8 +37,8 @@ Este directorio contiene TODA la documentación de HU-3.1 consolidada en un solo
 | **HU-3.1_IMPLEMENTATION_WORKFLOW_MASTER.md** | Workflow 4 fases completo (rojo→verde→refactor) | Desarrolladores |
 | **FINAL_STATUS_REPORT.md** | Estado final 100% completado | Product Owner / Tech Lead |
 | **ACCEPTANCE_CRITERIA_VERIFICATION.md** | Criterios funcionales/técnicos verificados | QA / Stakeholders |
-| **COMPLETION_SUMMARY.md** | Resumen Fase 2 (17/17 tests passing) | Developers |
-| **PROGRESS.md** | Histórico de cambios y progreso | Project Manager |
+| **COMPLETION_SUMMARY.md** | Resumen Fase 2 (17/17 pruebas passing) | Developers |
+| **PROGRESS.md** | Histórico de cambios y progreso | Proyecto Manager |
 | **PASO_3_2_RESUMEN.md** | Widgets principales completados | Developers |
 | **PASO_3_2_WIDGETS_PROGRESS.md** | Análisis técnico de widgets | Technical Team |
 | **ARTIFACTS.md** | Checklist de archivos generados | Developers |
@@ -47,11 +47,11 @@ Este directorio contiene TODA la documentación de HU-3.1 consolidada en un solo
 
 ## ✅ Estado Consolidado
 
-| Métrica | Resultado |
+| Métrica | Resultadoado |
 |---------|-----------|
-| **Documentación** | ✅ 100% Consolidada en 1 directorio |
+| **Documentoación** | ✅ 100% Consolidada en 1 directorio |
 | **Implementación** | ✅ 4/4 Fases Completadas |
-| **Tests** | ✅ 17/17 Passing |
+| **Pruebas** | ✅ 17/17 Passing |
 | **Coverage** | ✅ 75%+ objetivo cumplido |
 | **Criterios Aceptación** | ✅ 11/11 Verificados |
 | **Compilación** | ✅ 0 errores |
@@ -61,14 +61,14 @@ Este directorio contiene TODA la documentación de HU-3.1 consolidada en un solo
 ## 🔗 Enlaces Útiles
 
 - **Linear Issue:** [PIT-62](https://linear.app/pitcherdev/issue/PIT-62)
-- **Rama:** `feature/ui-project-shell`
+- **Rama:** `feature/ui-proyecto-shell`
 - **Destino:** `develop`
 
 ---
 
 ## 📌 Nota Importante
 
-Este directorio (`HU-3.1_PROJECT_SHELL`) es ahora el punto único de referencia para toda la documentación de HU-3.1.
+Este directorio (`HU-3.1_PROJECT_SHELL`) es ahora el punto único de referencia para toda la documentoación de HU-3.1.
 
 Los antiguos directorios:
 - ~~HU-3.1-PROJECT-SHELL~~ (archivos copiados y consolidados)

@@ -1,12 +1,12 @@
 # 🚀 Quick Start - SoftArchitect AI
 
-> **Reading Time:** 15 minutes
-> **Level:** Beginner
-> **Requirements:** Nothing, we'll start from scratch
+> **Tiempo de lectura:** 15 minutes
+> **Nivel:** Principiante
+> **Requisitos:** Nothing, we'll start from scratch
 
 ---
 
-## 📌 What is SoftArchitect AI?
+## 📌 Qué es SoftArchitect AI?
 
 SoftArchitect AI is your **personal software architect**. It's an application that guides you step-by-step to **transform ideas into professional technical architecture** without all the overwhelming decisions.
 
@@ -55,11 +55,11 @@ flutter run -d windows/macos/linux
 
 ---
 
-## 🎯 Your First Project (5 minutes)
+## 🎯 Your First Proyecto (5 minutes)
 
 ### Step 1: Open the App
 
-Go to **http://localhost:5000** (or run Flutter)
+Go to **http://localhost:5000** (or ejecutar Flutter)
 
 You'll see the home screen:
 
@@ -73,13 +73,13 @@ You'll see the home screen:
 └────────────────────────────┘
 ```
 
-### Step 2: Create a Project
+### Step 2: Crear a Proyecto
 
 Click on **"+CREATE NEW PROJECT"**
 
 Fill in:
 - **Name:** "My Notes App" (or whatever idea you have)
-- **Description:** "App for teams to share notes during meetings" (2-3 lines)
+- **Descripción:** "App for teams to share notes during meetings" (2-3 lines)
 
 Click **CREATE**
 
@@ -88,7 +88,7 @@ Click **CREATE**
 The app will show you the chat view with a message:
 
 > **SoftArchitect AI:**
-> "Hi, I see you want to create 'My Notes App'. Tell me more about your vision: Who will use it? What problem does it solve?"
+> "Hi, I see you want to crear 'My Notes App'. Tell me more about your vision: Who will use it? What problem does it solve?"
 
 ### Step 4: Respond
 
@@ -103,12 +103,12 @@ Click **SEND** (or press Ctrl+Enter)
 The AI will analyze your answer and generate:
 
 ✅ **PROJECT_MANIFESTO.md**
-- Your vision in a professional document
-- Project principles
+- Your vision in a professional documento
+- Proyecto principles
 - User promise
 
 ✅ **AGENTS.md**
-- Project roles
+- Proyecto roles
 - Responsibilities
 
 ✅ **USER_JOURNEY_MAP.md**
@@ -117,33 +117,33 @@ The AI will analyze your answer and generate:
 
 ---
 
-## 📚 The Master Workflow (4 Phases)
+## 📚 The Master Workflow (4 Fases)
 
-SoftArchitect guides you through 4 sequential phases. Each one answers a question:
+SoftArchitect guides you through 4 sequential fases. Each one answers a question:
 
-### PHASE 1: Governance & Identity
+### FASE 1: Governance & Identity
 **Question:** "What's the 'Why'?"
 **Duration:** 10-15 minutes
-**Documents:** 4 (Manifesto, Agents, Rules, User Journey)
-**Result:** Everyone understands the vision
+**Documentos:** 4 (Manifesto, Agents, Rules, User Journey)
+**Resultado:** Everyone understands the vision
 
-### PHASE 2: Specification & Security
+### FASE 2: Specification & Security
 **Question:** "What's the 'What'?"
 **Duration:** 30 minutes
-**Documents:** 3 (Requirements, User Stories, Security Policy)
-**Result:** Clear acceptance criteria
+**Documentos:** 3 (Requirements, User Stories, Security Policy)
+**Resultado:** Clear acceptance criteria
 
-### PHASE 3: Technical Architecture
+### FASE 3: Technical Architecture
 **Question:** "What's the 'How'?"
 **Duration:** 45 minutes
-**Documents:** 4 (Tech Stack, Structure Map, API Contract, Threat Model)
-**Result:** Professional technical architecture
+**Documentos:** 4 (Tech Stack, Structure Map, API Contract, Threat Model)
+**Resultado:** Professional technical architecture
 
-### PHASE 4: Planning & Quality
+### FASE 4: Planificación & Quality
 **Question:** "When? With what quality?"
 **Duration:** 20 minutes
-**Documents:** 2 (Roadmap Phases, Testing Strategy)
-**Result:** Execution plan and success metrics
+**Documentos:** 2 (Roadmap Fases, Pruebaing Strategy)
+**Resultado:** Execution plan and success metrics
 
 ---
 
@@ -155,25 +155,25 @@ SoftArchitect guides you through 4 sequential phases. Each one answers a questio
    - ❌ "Chat app"
    - ✅ "Real-time chat for remote teams of max 50 people"
 
-2. **Follow the phases in order**
+2. **Follow the fases in order**
    - Don't skip from PHASE 1 to PHASE 3
-   - Each phase prepares you for the next
+   - Each fase prepares you for the siguiente
 
 3. **Use the chat for clarifications**
    - "Why do you recommend PostgreSQL and not MongoDB?"
    - The AI will explain its decisions
 
-4. **Download the generated documents**
+4. **Download the generated documentos**
    - Use them as a reference in your team
    - They're copyrighted to you, do what you want
 
 ### ❌ DON'Ts (Don't do this)
 
 1. **Don't ask for code yet**
-   - The first 3 phases are pure design
+   - The first 3 fases are pure design
    - If you ask for code before PHASE 4, the AI will tell you (kindly)
 
-2. **Don't change decisions without documenting**
+2. **Don't change decisions without documentoing**
    - If you change from Flutter to React mid-way, update PHASE 3
    - Consistency matters
 
@@ -199,16 +199,16 @@ SoftArchitect guides you through 4 sequential phases. Each one answers a questio
 
 ### Center Panel (Chat)
 
-- **Top message:** The AI's latest question
+- **Top message:** The AI's laprueba question
 - **History:** Your complete conversation (scrollable)
 - **Input box:** Where you type
-- **SEND button:** Or Ctrl+Enter
+- **SEND botón:** Or Ctrl+Enter
 
-### Right Panel (Documents)
+### Right Panel (Documentos)
 
-- **Preview** of the document the AI just generated
-- **DOWNLOAD** button
-- **EDIT** button (if you want to tweak it manually)
+- **Preview** of the documento the AI just generated
+- **DOWNLOAD** botón
+- **EDIT** botón (if you want to tweak it manually)
 
 ---
 
@@ -217,7 +217,7 @@ SoftArchitect guides you through 4 sequential phases. Each one answers a questio
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl+Enter` | Send message |
-| `Ctrl+D` | Download current document |
+| `Ctrl+D` | Download current documento |
 | `Ctrl+.` | Open settings |
 | `Escape` | Close dialogs |
 
@@ -235,32 +235,32 @@ SoftArchitect guides you through 4 sequential phases. Each one answers a questio
 → Reload the page (Ctrl+R). Your chat is auto-saved.
 
 ### "I want to start over"
-→ Create a new project. The previous one is archived.
+→ Crear a nuevo proyecto. The anterior one is archived.
 
 ---
 
-## 📖 Complete Documentation
+## 📖 Complete Documentoation
 
 To go beyond Quick Start:
 
 - **[Complete Installation Guide](02-INSTALLATION.md)** - All steps for each OS
-- **[Master Workflow Detailed](04-MASTER_WORKFLOW.md)** - Deep explanation of each phase
+- **[Master Workflow Detailed](04-MASTER_WORKFLOW.md)** - Deep explanation of each fase
 - **[Chat Interface](05-CHAT_INTERFACE.md)** - How to use all options
 - **[Real-time Streaming](06-STREAMING.md)** - How AI streaming works
-- **[Persistence & Saving](07-PERSISTENCE.md)** - Where your projects are saved
+- **[Persistence & Saving](07-PERSISTENCE.md)** - Where your proyectos are saved
 - **[Troubleshooting](08-TROUBLESHOOTING.md)** - FAQ and solutions
 - **[Video Tutorials](10-VIDEO_TUTORIALS.md)** - Links to step-by-step videos
 
 ---
 
-## 🌟 What's Next?
+## 🌟 What's Siguiente?
 
 Now that you know:
 1. ✅ How to install the app
-2. ✅ How to create a project
+2. ✅ How to crear a proyecto
 3. ✅ How to complete PHASE 1
 
-Your next step:
+Your siguiente step:
 
 **→ Continue to PHASE 2 ("Specification & Security")**
 
@@ -273,7 +273,7 @@ The AI will ask you to define functional and non-functional requirements.
 Have questions?
 
 - **GitHub Issues:** [github.com/Pitcher755/soft-architect-ai/issues](https://github.com/Pitcher755/soft-architect-ai/issues)
-- **Technical Docs:** See `doc/English/01-PROJECT_REPORT` folder
+- **Technical Docs:** See `doc/English/01-PROJECT_REPORT` carpeta
 - **FAQ:** [08-TROUBLESHOOTING.md](08-TROUBLESHOOTING.md)
 
 ---

@@ -1,7 +1,7 @@
 # 📋 Especificación Detallada: Las 5 HUs del Sprint 3 (Project-First)
 
-> **Fecha:** 02/02/2026
-> **Estado:** ✅ ESPECIFICACIÓN FINAL
+> **Date:** 02/02/2026
+> **Status:** ✅ ESPECIFICACIÓN FINAL
 > **Relacionado con:** HU-3_REFACTOR_ANALYSIS.es.md
 > **Total Estimación:** 55 pts
 
@@ -9,7 +9,7 @@
 
 ## 🎯 Resumen de HUs
 
-| ID | Nombre | Puntos | Rama | Dependencias | Criticidad |
+| ID | Name | Puntos | Rama | Dependencias | Criticidad |
 |----|----|---------|------|-----------|------------|
 | **HU-3.1** | Project Shell (UI & Navigation) | 13 | `feature/ui-project-shell` | ❌ Ninguna | ⭐⭐⭐ |
 | **HU-3.2** | FileSystemService (Backend Motor) | 8 | `feature/backend-filesystem-service` | HU-3.1 | ⭐⭐⭐ |
@@ -21,29 +21,29 @@
 
 ## 📌 HU-3.1: Project Shell (UI & Navigation) ⭐ PRIMERA
 
-### Descripción
-Crear **interfaz de escritorio que permita crear proyectos y auto-generar estructura de directorios** (`context/10-20-30-35-40/`).
+### Description
+Create **interfaz de escritorio que permita create projects y auto-generar estructura de directorios** (`context/10-20-30-35-40/`).
 
 ### Historia de Usuario
 > **Como** usuario
-> **Quiero** crear un nuevo proyecto con nombre y descripción
+> **Quiero** create un nuevo project con nombre y description
 > **Para** establecer el contexto organizacional de mi documentación
 
 ### Responsabilidades
 1. **Frontend (Flutter)**
-   - Pantalla inicial: "Nuevo Proyecto" (input: nombre, descripción)
-   - Dashboard: Listar proyectos existentes
-   - Clickear proyecto → Carga vista de "Generación de Documentos"
+   - Pantalla inicial: "New Project" (input: nombre, description)
+   - Dashboard: Listar projects existentes
+   - Clickear project → Carga vista de "Generación de Documents"
    - Dark mode compatible
    - Responsive (redimensionamiento ventana)
 
 2. **Backend (FastAPI)**
    - Endpoint `POST /api/v1/projects/create` → crea dirs automáticamente
-   - Endpoint `GET /api/v1/projects/list` → retorna lista de proyectos
+   - Endpoint `GET /api/v1/projects/list` → retorna lista de projects
    - Endpoint `GET /api/v1/projects/{project_id}` → retorna metadatos
 
 ### Criterios de Aceptación
-- ✅ Usuario ingresa nombre + descripción
+- ✅ Usuario ingresa nombre + description
 - ✅ Backend crea estructura:
   ```
   /user/projects/{project_id}/
@@ -56,7 +56,7 @@ Crear **interfaz de escritorio que permita crear proyectos y auto-generar estruc
   ├── .project.json (metadata)
   └── CHAT_HISTORY.db (SQLite)
   ```
-- ✅ Dashboard se actualiza con nuevo proyecto
+- ✅ Dashboard se actualiza con nuevo project
 - ✅ Tests: Unit + Integration > 85% cobertura
 
 ### Datos de Entrada (Ejemplo)
@@ -80,7 +80,7 @@ Crear **interfaz de escritorio que permita crear proyectos y auto-generar estruc
 ### Puntos de Riesgo
 - Permisos del SO (Windows vs. Linux vs. macOS)
 - Manejo de rutas con espacios/caracteres especiales
-- Conflicto si proyecto ya existe
+- Conflicto si project ya existe
 
 ### Puntos de Estimación
 **13 pts (XL)**
@@ -98,30 +98,30 @@ Crear **interfaz de escritorio que permita crear proyectos y auto-generar estruc
 
 ## 📌 HU-3.2: FileSystemService (Backend Motor) ⭐ CRÍTICA
 
-### Descripción
-Implementar **servicio backend que gestione lectura/escritura segura de archivos**, control de acceso y persistencia en directorios del proyecto.
+### Description
+Implementar **servicio backend que gestione lectura/escritura segura de files**, control de acceso y persistencia en directorios of the project.
 
 ### Historia de Usuario
 > **Como** backend
 > **Quiero** un servicio centralizado de I/O con validaciones de seguridad
-> **Para** garantizar que los documentos se guardan correctamente y con permisos controlados
+> **Para** garantizar que los documents se guardan correctamente y con permisos controlados
 
 ### Responsabilidades
-1. **Crear estructura de dirs** (`context/10-20-30-35-40/`)
+1. **Create estructura de dirs** (`context/10-20-30-35-40/`)
 2. **Validar permisos** de lectura/escritura del SO
-3. **Guardar documentos** en markdown con nombrado predecible
-4. **Leer documentos** guardados (para historial + contexto)
+3. **Guardar documents** en markdown con nombrado predecible
+4. **Leer documents** guardados (para historial + contexto)
 5. **Manejo de excepciones** (disco lleno, permisos denegados, etc.)
 
 ### Criterios de Aceptación
 - ✅ Servicio crea dirs sin errores (idempotente)
 - ✅ Valida permisos antes de escribir (throw si no tiene acceso)
-- ✅ Guarda archivos con nombrado: `{number}-{SECTION}.md`
-- ✅ Lee archivos existentes y retorna contenido
+- ✅ Guarda files con nombrado: `{number}-{SECTION}.md`
+- ✅ Lee files existentes y retorna contenido
 - ✅ Tests (unit + integration): > 90% cobertura
 - ✅ Documentación Docstring (Python) completa
 
-### Estructura de Archivos (Salida Esperada)
+### Estructura de Files (Salida Esperada)
 ```
 /project_dir/context/
 ├── 10-CONTEXT/
@@ -189,41 +189,41 @@ class FileSystemService:
 `feature/backend-filesystem-service`
 
 ### Dependencias
-- HU-3.1 (necesita saber estructura de dirs del proyecto)
+- HU-3.1 (necesita saber estructura de dirs of the project)
 
 ---
 
 ## 📌 HU-3.3: Chat Sequential Document Generation ⭐ NÚCLEO
 
-### Descripción
-Implementar **flujo de chat que genera documentos secuencialmente usando RAG guiado por templates**, permitiendo usuario iterar antes de guardar.
+### Description
+Implementar **flujo de chat que genera documents secuencialmente usando RAG guiado por templates**, permitiendo usuario iterar antes de guardar.
 
 ### Historia de Usuario
 > **Como** usuario
-> **Quiero** describir mi proyecto una vez y recibir 25 documentos de arquitectura generados secuencialmente
+> **Quiero** describir mi project una vez y recibir 25 documents de arquitectura generados secuencialmente
 > **Para** tener documentación completa de ingeniería sin escribir manualmente
 
 ### Responsabilidades
 1. **Frontend (Flutter)**
-   - Chat input area (textarea para descripción inicial)
-   - Mostrar propuesta de documento en formato markdown
+   - Chat input area (textarea para description inicial)
+   - Mostrar propuesta de document en formato markdown
    - Botones: "✅ Validar" | "🔄 Iterar"
    - Si Iterar: Chat permite refinar contexto
-   - Si Validar: Guardar + pasar a documento siguiente
+   - Si Validar: Guardar + pasar a document next
    - Indicador de progreso (Doc N de 25)
 
 2. **Backend (FastAPI)**
    - Endpoint `POST /api/v1/chat/start-project` → inicia flujo
    - Endpoint `POST /api/v1/chat/message` → acepta refinamientos
-   - Endpoint `POST /api/v1/chat/validate-doc` → guarda documento
-   - Orquestador RAG que:
-     - Carga template de documento N (ej: `01-TEMPLATES/10-CONTEXT.md`)
-     - Inyecta contexto de proyecto + documentos previos
+   - Endpoint `POST /api/v1/chat/validate-doc` → guarda document
+   - Orqustatusr RAG que:
+     - Carga template de document N (ej: `01-TEMPLATES/10-CONTEXT.md`)
+     - Inyecta contexto de project + documents previos
      - Llama a LLM (Ollama/Groq) para rellenar template
-     - Retorna propuesta de documento
+     - Retorna propuesta de document
 
 ### Criterios de Aceptación
-- ✅ Chat acepta descripción inicial del proyecto
+- ✅ Chat acepta description inicial of the project
 - ✅ Backend genera propuesta de Doc 1 usando template `01-TEMPLATES/10-CONTEXT.md`
 - ✅ Frontend muestra propuesta en formato readable (markdown)
 - ✅ Usuario puede "Iterar" (chat refina) o "Validar" (guardar)
@@ -283,7 +283,7 @@ Implementar **flujo de chat que genera documentos secuencialmente usando RAG gui
 }
 ```
 
-### Datos de Salida (Documento 1 Propuesto - Ejemplo)
+### Datos de Salida (Document 1 Propuesto - Ejemplo)
 ```markdown
 # 📋 10-CONTEXT (Generado automáticamente)
 
@@ -304,7 +304,7 @@ Un asistente de IA offline para arquitectura de software basado en RAG local...
 
 ### Puntos de Riesgo
 - RAG timeout (necesita fallback a template vacío)
-- Usuario quiere saltar documentos (rechazamos: secuencial obligatorio)
+- Usuario quiere saltar documents (rechazamos: secuencial obligatorio)
 - Consumo de memoria si guardar chat history completo
 
 ### Puntos de Estimación
@@ -317,14 +317,14 @@ Un asistente de IA offline para arquitectura de software basado en RAG local...
 `feature/ui-chat-sequential-docs`
 
 ### Dependencias
-- HU-3.1 (crear proyecto)
-- HU-3.2 (guardar archivos)
+- HU-3.1 (create project)
+- HU-3.2 (guardar files)
 
 ---
 
 ## 📌 HU-3.4: Error Handling & Validation Gates
 
-### Descripción
+### Description
 Agregar **mecanismos de validación y manejo de errores** en flujo secuencial (ej: RAG falla, disco lleno, timeout).
 
 ### Historia de Usuario
@@ -374,12 +374,12 @@ Agregar **mecanismos de validación y manejo de errores** en flujo secuencial (e
 
 ## 📌 HU-3.5: Streaming & Performance Optimization
 
-### Descripción
-Optimizar **latencia del flujo RAG** (target: <2s por documento) usando streaming de respuestas LLM.
+### Description
+Optimizar **latencia del flujo RAG** (target: <2s por document) usando streaming de respuestas LLM.
 
 ### Historia de Usuario
 > **Como** usuario
-> **Quiero** ver el documento siendo generado en tiempo real (no esperar)
+> **Quiero** ver el document siendo generado en tiempo real (no esperar)
 > **Para** saber que el sistema está trabajando y sentir responsiveness
 
 ### Responsabilidades
@@ -400,7 +400,7 @@ Optimizar **latencia del flujo RAG** (target: <2s por documento) usando streamin
 ### Criterios de Aceptación
 - ✅ Latencia UI: <500ms desde "Validar Doc N" hasta ver "Generando Doc N+1..."
 - ✅ Streaming visible: usuario ve texto aparecer línea-por-línea
-- ✅ Benchmark: Generar 25 documentos en <5 minutos
+- ✅ Benchmark: Generar 25 documents en <5 minutos
 - ✅ Memory usage: <500MB (no crecer indefinidamente)
 - ✅ Tests: Performance benchmarks + memory profiling
 
@@ -423,7 +423,7 @@ Optimizar **latencia del flujo RAG** (target: <2s por documento) usando streamin
 
 ---
 
-## 🔄 Secuencia de Implementación Recomendada
+## 🔄 Secuencia de Implementation Recomendada
 
 ```
 Semana 1:
@@ -456,11 +456,11 @@ HU-3.3 (Chat Sequential) ────────→ HU-3.4 (Error Handling)
 
 ---
 
-## ✅ Próximos Pasos
+## ✅ Next Steps
 
-1. ✅ Crear rama: `feature/ui-project-shell` (base: `develop`)
-2. ✅ Mover documentos análisis a la rama
-3. ✅ Crear PR draft con toda esta especificación
+1. ✅ Create rama: `feature/ui-project-shell` (base: `develop`)
+2. ✅ Mover documents analysis a la rama
+3. ✅ Create PR draft con toda esta especificación
 4. ✅ Asignar equipo: Frontend (3.1, 3.3, 3.5) + Backend (3.2, 3.4)
 5. ✅ Dar start a HU-3.1 (foundation para resto)
 

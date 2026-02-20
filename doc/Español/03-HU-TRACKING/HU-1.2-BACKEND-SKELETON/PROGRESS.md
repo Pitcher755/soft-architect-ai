@@ -10,15 +10,15 @@ Fase 0 — Preparación y Análisis
 - [x] 0.1 - Prerrequisitos verificados (HU-1.1 merged, docker-compose, .env.example)
 - [x] 0.2 - Estrategia de ramas y rama de feature creada
 - [x] 0.3 - Análisis de contexto (estructura, stack, manejo de errores, seguridad)
-- [x] 0.4 - Inicialización del proyecto (pyproject.toml / poetry.lock presentes)
-- [x] 0.5 - Dependencias instaladas (FastAPI, Uvicorn, Pydantic, Ruff, pytest)
+- [x] 0.4 - Inicialización del proyecto (pyproyecto.toml / poetry.lock presentes)
+- [x] 0.5 - Dependencias instaladas (FastAPI, Uvicorn, Pydantic, Ruff, pyprueba)
 
 Fase 1 — Calidad y Reglas
 
 - [x] 1.1 - Ruff configurado y ejecutado (auto-fixes aplicados)
-- [x] 1.2 - Pytest y coverage configurados (umbral 80%)
+- [x] 1.2 - Pyprueba y coverage configurados (umbral 80%)
 - [x] 1.3 - Pre-commit hooks instalados y aplicados
-- [x] 1.4 - Test de arquitectura creado y ejecutado
+- [x] 1.4 - Prueba de arquitectura creado y ejecutado
 
 Fase 2 — Scaffolding e Implementación
 
@@ -31,16 +31,16 @@ Fase 2 — Scaffolding e Implementación
 - [x] 2.7 - App principal creada con handlers de startup/shutdown y excepciones
 - [x] 2.8 - `requirements.txt` exportado para Docker
 
-Fase 3 — Testing y Validación
+Fase 3 — Pruebaing y Validación
 
-- [x] 3.1 - Tests de configuración implementados
-- [x] 3.2 - Tests de errores implementados
-- [x] 3.3 - Tests de endpoints implementados (unit + integración)
-- [x] 3.4 - Suite de tests ejecutada — cobertura ≈98%
+- [x] 3.1 - Pruebas de configuración implementados
+- [x] 3.2 - Pruebas de errores implementados
+- [x] 3.3 - Pruebas de endpoints implementados (unit + integración)
+- [x] 3.4 - Suite de pruebas ejecutada — cobertura ≈98%
 - [x] 3.5 - Linting y formateo aplicados
 - [x] 3.6 - Integración Docker verificada (endpoint health 200)
 
-Fase 4 — Documentación Bilingüe
+Fase 4 — Documentoación Bilingüe
 
 - [x] 4.1 - README técnico (EN) creado
 - [x] 4.2 - README técnico (ES) creado

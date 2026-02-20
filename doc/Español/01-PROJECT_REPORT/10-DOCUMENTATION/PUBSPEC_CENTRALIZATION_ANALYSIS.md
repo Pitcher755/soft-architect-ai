@@ -7,18 +7,18 @@
 
 ## 🔍 Situación Actual
 
-### Estructura de pubspec.yaml Files:
+### Estructura de pubspec.yaml Archivos:
 
 1. **/ Raíz (pubspec.yaml)**
    - **Propósito:** Monorepo orchestration (deprecated)
    - **Dependencies:** flutter, flutter_highlighter, flutter_markdown_plus, flutter_riverpod, web_socket_channel
-   - **Problema:** Redundante con tests/pubspec.yaml
+   - **Problema:** Redundante con pruebas/pubspec.yaml
 
-2. **tests/ (pubspec.yaml)**
-   - **Propósito:** Test suite con dependency a client
+2. **pruebas/ (pubspec.yaml)**
+   - **Propósito:** Prueba suite con dependency a client
    - **Dependencies:** flutter, sqflite, riverpod, shared_preferences, softarchitect_ai (path: ../src/client), mockito, flutter_markdown_plus, web_socket_channel
    - **Dependency override:** softarchitect_ai: path: ../src/client
-   - **Uso:** Ejecutar tests con `cd tests && flutter test client/`
+   - **Uso:** Ejecutar pruebas con `cd pruebas && flutter prueba client/`
 
 3. **src/client/ (pubspec.yaml)**
    - **Propósito:** Flutter app principal
@@ -29,30 +29,30 @@
 
 ## 📊 Análisis de Dependencias Compartidas
 
-| Paquete | Raíz | Tests | Client | Versión Sincronizada? |
+| Paquete | Raíz | Pruebas | Client | Versión Sincronizada? |
 |---------|------|-------|--------|------------------------|
 | flutter | SDK | SDK | SDK | ✅ |
 | flutter_riverpod | ^3.2.1 | ^3.2.1 | ^3.2.1 | ✅ |
 | flutter_markdown_plus | ^1.0.7 | ^1.0.7 | ^1.0.7 | ✅ |
 | web_socket_channel | ^3.0.3 | ^3.0.3 | ^3.0.3 | ✅ |
 | mockito | - | ^5.6.3 | ^5.6.3 (dev) | ✅ |
-| flutter_highlighter | ^0.1.1 | - | ^0.1.1 | ❌ Falta en tests |
+| flutter_highlighter | ^0.1.1 | - | ^0.1.1 | ❌ Falta en pruebas |
 
 ---
 
 ## ⚠️ Problemas Identificados
 
-1. **Redundancia:** pubspec.yaml de raíz contiene dependencias duplicadas de tests/client
-2. **Desincronización:** flutter_highlighter solo en raíz y client, falta en tests
+1. **Redundancia:** pubspec.yaml de raíz contiene dependencias duplicadas de pruebas/client
+2. **Desincronización:** flutter_highlighter solo en raíz y client, falta en pruebas
 3. **Mantenimiento:** 3 archivos pubspec.yaml para actualizar manualmente
-4. **Confusión:** No está claro qué pubspec.yaml usar al ejecutar tests
+4. **Confusión:** No está claro qué pubspec.yaml usar al ejecutar pruebas
 
 ---
 
 ## ✅ RECOMENDACIÓN: MANTENER ESTRUCTURA ACTUAL CON MEJORAS
 
 ### Justificación:
-- **tests/pubspec.yaml** necesita path dependency a client para importar código
+- **pruebas/pubspec.yaml** necesita path dependency a client para importar código
 - **src/client/pubspec.yaml** es la app principal (NO SE PUEDE ELIMINAR)
 - **Raíz/pubspec.yaml** es útil para CI/CD y comandos desde raíz
 
@@ -69,7 +69,7 @@
 ### 1. Limpiar pubspec.yaml de RAÍZ
 **Mantener SOLO:**
 - `flutter: sdk: flutter` (mínimo necesario)
-- `flutter_test: sdk: flutter` (dev dependency para tests desde raíz)
+- `flutter_prueba: sdk: flutter` (dev dependency para pruebas desde raíz)
 
 **ELIMINAR:**
 - flutter_highlighter
@@ -77,22 +77,22 @@
 - flutter_riverpod
 - web_socket_channel
 
-**Motivo:** Estas dependencias ya están en `tests/pubspec.yaml` que tiene path dependency a client
+**Motivo:** Estas dependencias ya están en `pruebas/pubspec.yaml` que tiene path dependency a client
 
 ### 2. Verificar Sincronización de Versiones
 
 **Verificar en pub.dev versiones más recientes:**
-- ✅ flutter_riverpod: ^3.2.1 (latest stable)
-- ✅ flutter_markdown_plus: ^1.0.7 (latest)
-- ✅ web_socket_channel: ^3.0.3 (latest)
+- ✅ flutter_riverpod: ^3.2.1 (laprueba stable)
+- ✅ flutter_markdown_plus: ^1.0.7 (laprueba)
+- ✅ web_socket_channel: ^3.0.3 (laprueba)
 - ⚠️ mockito: ^5.6.3 (verificar si hay más reciente)
 - ⚠️ sqflite: ^2.4.2 (verificar actualización)
 
-### 3. Actualizar tests/pubspec.yaml
-- Agregar flutter_highlighter: ^0.1.1 si se usa en tests
+### 3. Actualizar pruebas/pubspec.yaml
+- Agregar flutter_highlighter: ^0.1.1 si se usa en pruebas
 - Verificar que todas las dependencias de client estén disponibles
 
-### 4. Documentar Roles
+### 4. Documentoar Roles
 
 **Raíz (pubspec.yaml):**
 ```yaml
@@ -101,7 +101,7 @@
 # Dependencies: Minimal (only flutter SDK)
 ```
 
-**Tests (tests/pubspec.yaml):**
+**Pruebas (pruebas/pubspec.yaml):**
 ```yaml
 # Purpose: Test suite with path dependency to client app
 # Usage: cd tests && flutter test client/
@@ -121,13 +121,13 @@
 
 **MANTENER 3 pubspec.yaml con roles claros:**
 1. Raíz: Mínimo (solo SDK)
-2. Tests: Test dependencies + path to client
+2. Pruebas: Prueba dependencies + path to client
 3. Client: App completa
 
 **Beneficios:**
 - ✅ Separación clara de responsabilidades
-- ✅ Tests pueden importar código de client sin duplicar dependencias
-- ✅ CI/CD puede ejecutar tests desde raíz
+- ✅ Pruebas pueden importar código de client sin duplicar dependencias
+- ✅ CI/CD puede ejecutar pruebas desde raíz
 - ✅ Evita dependency hell en monorepo
 
 ---
@@ -150,8 +150,8 @@ cd src/client && flutter run -d linux
 ## 🚀 Próximos Pasos
 
 1. ✅ Limpiar pubspec.yaml de raíz (solo SDK)
-2. ✅ Verificar versiones en tests/pubspec.yaml y src/client/pubspec.yaml
+2. ✅ Verificar versiones en pruebas/pubspec.yaml y src/client/pubspec.yaml
 3. ✅ Actualizar dependencias desincronizadas
 4. ✅ Ejecutar `flutter pub get` en cada directorio
-5. ✅ Validar que tests sigan funcionando
+5. ✅ Validar que pruebas sigan funcionando
 6. ✅ Commitear cambios

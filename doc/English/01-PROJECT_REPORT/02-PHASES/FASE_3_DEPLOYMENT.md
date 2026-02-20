@@ -1,21 +1,21 @@
-# 🏛️ FASE 3: REGLAS TRANSVERSALES (The Constitutional Law)
+# 🏛️ PHASE 3: REGLAS TRANSVERSALES (The Constitutional Law)
 
-> **Fecha:** 30 de Enero de 2026
-> **Estado:** ✅ COMPLETADA
+> **Date:** 30 de Enero de 2026
+> **Status:** ✅ COMPLETADA
 > **Commits:** 2 (5bca7ee + 1fe12ea)
-> **Total Líneas:** 3,742 (5 archivos constitucionales)
+> **Total Líneas:** 3,742 (5 files constitucionales)
 > **Impacto:** Todas las futuras decisiones de SoftArchitect se validarán contra estas reglas universales
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Visión General](#visión-general)
 2. [TRAMA 3.1: La Constitución (Constitutional Law)](#trama-31-la-constitución)
 3. [TRAMA 3.2: Los Estándares Web](#trama-32-los-estándares-web)
 4. [Matriz de Impacto](#matriz-de-impacto)
 5. [Validación RAG](#validación-rag)
-6. [Próximos Pasos](#próximos-pasos)
+6. [Next Steps](#próximos-pasos)
 
 ---
 
@@ -23,7 +23,7 @@
 
 **FASE 3** establece las **Leyes Universales** que rigen TODO desarrollo futuro en SoftArchitect.
 
-> "Estos documentos no son sugerencias; son **La Ley Absoluta**."
+> "Estos documents no son sugerencias; son **La Ley Absoluta**."
 > El RAG rechazará PRs que las violen. Los desarrolladores deben jurar cumplirlas.
 
 ### Objetivos Alcanzados
@@ -38,13 +38,13 @@
 
 ## TRAMA 3.1: La Constitución
 
-### 📋 Archivos Creados
+### 📋 Files Creados
 
 **Localización:** `packages/knowledge_base/02-TECH-PACKS/general/`
-**Total:** 3 archivos, 2,075 líneas
+**Total:** 3 files, 2,075 líneas
 **Commit:** `5bca7ee` ⚖️🐙🧪
 
-### Archivo 1: OWASP_TOP_10.md (789 líneas)
+### File 1: OWASP_TOP_10.md (789 líneas)
 
 **Propósito:** Traducir las 10 vulnerabilidades OWASP a soluciones técnicas por stack.
 
@@ -85,7 +85,7 @@
 
 **SoftArchitect valida su propio código:** Todos los commits en `src/server/` y `src/client/` pasan validación OWASP antes de merge.
 
-### Archivo 2: GIT_CONVENTIONS.md (554 líneas)
+### File 2: GIT_CONVENTIONS.md (554 líneas)
 
 **Propósito:** Estandarizar colaboración: branching, commits, PRs, code review.
 
@@ -138,7 +138,7 @@ git commit -m "aqwerty"
 
 **Regla:** Si alguno falla, el PR se rechaza automáticamente.
 
-### Archivo 3: TDD_METHODOLOGY.md (732 líneas)
+### File 3: TDD_METHODOLOGY.md (732 líneas)
 
 **Propósito:** Enforce Test-Driven Development como el único método aceptado.
 
@@ -218,13 +218,13 @@ def test_user_creation_valid():
 
 ## TRAMA 3.2: Los Estándares Web
 
-### 📋 Archivos Creados
+### 📋 Files Creados
 
 **Localización:** `packages/knowledge_base/02-TECH-PACKS/FRONTEND/web-general/`
-**Total:** 2 archivos, 1,667 líneas
+**Total:** 2 files, 1,667 líneas
 **Commit:** `1fe12ea` 🌐✨
 
-### Archivo 1: HTML5_SEMANTICS.md (720 líneas)
+### File 1: HTML5_SEMANTICS.md (720 líneas)
 
 **Propósito:** Prohibir "Div Soup" y forzar accesibilidad estructural.
 
@@ -236,7 +236,7 @@ def test_user_creation_valid():
 
 | Componente | ❌ MALO | ✅ BUENO | Razón |
 |:---|:---|:---|:---|
-| Botón | `<div onclick>` | `<button>` | Foco, SR, estilos nativos |
+| Button | `<div onclick>` | `<button>` | Foco, SR, styles nativos |
 | Enlace | `<div class="link" onclick>` | `<a href>` | Navegación, SEO |
 | Navegación | `<div class="nav">` | `<nav>` | Landmark para SR |
 | Artículo | `<div class="post">` | `<article>` | Contenido independiente |
@@ -245,7 +245,7 @@ def test_user_creation_valid():
 | Pie | `<div class="footer">` | `<footer>` | Información de cierre |
 | Título | `<div class="title">` | `<h1>`, `<h2>`, `<h3>` | Jerarquía, outline |
 
-#### Estructura Correcta de Documento
+#### Estructura Correcta de Document
 
 ```html
 <!DOCTYPE html>
@@ -308,7 +308,7 @@ def test_user_creation_valid():
 [ ] Tested con NVDA/JAWS/VoiceOver
 ```
 
-### Archivo 2: CSS_ARCHITECTURE.md (947 líneas)
+### File 2: CSS_ARCHITECTURE.md (947 líneas)
 
 **Propósito:** Definir responsive design strategy y arquitectura CSS.
 
@@ -452,7 +452,7 @@ h1 { font-size: 40px; }        /* No escalable */
 
 | Rol | Impacto | Acción |
 |:---|:---|:---|
-| **Desarrollador** | Debe seguir OWASP, Git Conventions, TDD, HTML5/CSS | Leer todos 5 archivos, acatar las leyes |
+| **Desarrollador** | Debe seguir OWASP, Git Conventions, TDD, HTML5/CSS | Leer todos 5 files, acatar las leyes |
 | **Architect** | Valida que designs cumplan estándares web | Revisar HTML5_SEMANTICS + CSS_ARCHITECTURE |
 | **QA/Testing** | TDD es obligatorio, testing pyramid es métrica | Enforcecer ≥80% coverage en PRs |
 | **DevOps** | OWASP A05 (Security Misconfiguration) es crítica | Hardening Docker, RBAC, secrets management |
@@ -460,7 +460,7 @@ h1 { font-size: 40px; }        /* No escalable */
 
 ### Por Contexto
 
-| Contexto | Archivo Relevante | Regla Clave |
+| Contexto | File Relevante | Regla Clave |
 |:---|:---|:---|
 | **Backend Feature** | OWASP_TOP_10 + TDD_METHODOLOGY | Depends() injection mandatory, ≥80% test coverage |
 | **Frontend Widget** | HTML5_SEMANTICS + CSS_ARCHITECTURE + TDD | Semantic HTML5, mobile-first CSS, tested |
@@ -475,7 +475,7 @@ h1 { font-size: 40px; }        /* No escalable */
 ### Cómo el RAG Usa Estas Leyes
 
 1. **Pre-Development Interview:**
-   > "¿Estás planeando crear un endpoint de autenticación? Recuerda: OWASP A07 (Authentication Failures). Usa Depends(get_current_user). Escribe tests primero (TDD)."
+   > "¿Estás planeando create un endpoint de autenticación? Recuerda: OWASP A07 (Authentication Failures). Usa Depends(get_current_user). Escribe tests primero (TDD)."
 
 2. **Code Review Validation:**
    ```
@@ -538,7 +538,7 @@ auto_reject_on: ["owasp_validation", "tdd_validation", "git_conventions"]
 
 ### Acumulado FASE 3
 
-| Componente | Líneas | Archivos | Commit |
+| Componente | Líneas | Files | Commit |
 |:---|---:|:---|:---|
 | TRAMA 3.1 (Constitutional) | 2,075 | 3 | `5bca7ee` |
 | - OWASP_TOP_10 | 789 | 1 | ✅ |
@@ -549,9 +549,9 @@ auto_reject_on: ["owasp_validation", "tdd_validation", "git_conventions"]
 | - CSS_ARCHITECTURE | 947 | 1 | ✅ |
 | **FASE 3 TOTAL** | **3,742** | **5** | Both ✅ |
 
-### Acumulado Todas las Fases
+### Acumulado Todas las Phases
 
-| Fase | Tramas | Archivos | Líneas | Estado |
+| Phase | Tramas | Files | Líneas | Status |
 |:---|---:|---:|---:|:---|
 | Phase 1 (Foundation) | 1 | 4 | ~1,500 | ✅ |
 | Phase 2 (Core Stack) | 3 | 12 | ~8,321 | ✅ |
@@ -560,25 +560,25 @@ auto_reject_on: ["owasp_validation", "tdd_validation", "git_conventions"]
 
 ---
 
-## Próximos Pasos
+## Next Steps
 
 ### Corto Plazo (Semana 1)
 
 1. ✅ Dogfooding validation: Validar `src/server/` y `src/client/` contra estas leyes
-2. ⏳ RAG Integration: Cargar 5 archivos en ChromaDB para queries
+2. ⏳ RAG Integration: Cargar 5 files en ChromaDB para queries
 3. ⏳ CI/CD Automation: Implementar pre-merge checks en GitHub Actions
 
 ### Mediano Plazo (FASE 4)
 
-**FASE 4:** Ecosystem Expansion
+**PHASE 4:** Ecosystem Expansion
 - TRAMA 4.1: JavaScript/TypeScript Standards (Node.js, React)
 - TRAMA 4.2: Data Layer Standards (SQL, NoSQL, API Design)
 - TRAMA 4.3: Enterprise Patterns (Microservices, Event-Driven)
 
 ### Largo Plazo (FASE 5-6)
 
-- FASE 5: IA Engineering Standards (LLM Integration, RAG Patterns)
-- FASE 6: Production Governance (Incident Response, Monitoring, SLA)
+- PHASE 5: IA Engineering Standards (LLM Integration, RAG Patterns)
+- PHASE 6: Production Governance (Incident Response, Monitoring, SLA)
 
 ---
 

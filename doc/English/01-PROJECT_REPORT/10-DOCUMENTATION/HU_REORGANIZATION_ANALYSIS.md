@@ -1,17 +1,17 @@
-# 📋 Análisis y Reorganización de Historias de Usuario (HU) - Hacia MVP v0.1.0
+# 📋 Analysis y Reorganización de Historias de Usuario (HU) - Hacia MVP v0.1.0
 
-> **Fecha:** 09/02/2026
-> **Estado:** ✅ ANÁLISIS COMPLETO
+> **Date:** 09/02/2026
+> **Status:** ✅ ANÁLISIS COMPLETO
 > **Branch:** `feature/chat-sequential-docs`
-> **Objetivo:** Reorganizar HU desde estado actual hasta alcanzar MVP
+> **Objetivo:** Reorganizar HU desde status actual hasta alcanzar MVP
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-1. [Estado Actual del Proyecto](#1-estado-actual-del-proyecto)
+1. [Status Actual del Project](#1-status-actual-del-project)
 2. [HU Completadas](#2-hu-completadas)
-3. [HU Pendientes (Originales)](#3-hu-pendientes-originales)
+3. [HU Pendings (Originales)](#3-hu-pendientes-originales)
 4. [TODOs Identificados](#4-todos-identificados)
 5. [Gaps de Cobertura](#5-gaps-de-cobertura)
 6. [Nuevas HU Propuestas](#6-nuevas-hu-propuestas)
@@ -20,7 +20,7 @@
 
 ---
 
-## 1. Estado Actual del Proyecto
+## 1. Status Actual del Project
 
 ### 1.1 Métricas Generales
 
@@ -34,7 +34,7 @@
 
 ### 1.2 Funcionalidades Implementadas
 
-| Feature | Status | Cobertura | Archivos |
+| Feature | Status | Cobertura | Files |
 |---------|--------|-----------|----------|
 | **Project Shell UI** | ✅ Completo | 95% | 25+ |
 | **FileSystem Service** | ✅ Completo | 90% | 15+ |
@@ -50,14 +50,14 @@
 
 ### Sprint 1: Infraestructura ✅
 
-| HU | Nombre | Status | Evidencia |
+| HU | Name | Status | Evidencia |
 |----|--------|--------|-----------|
 | **HU-1.1** | Docker Setup | ✅ COMPLETO | docker-compose.yml, scripts/start_stack.sh |
 | **HU-1.2** | Backend Skeleton | ✅ COMPLETO | src/server/, FastAPI estructura |
 
 ### Sprint 2: RAG Brain ✅
 
-| HU | Nombre | Status | Evidencia |
+| HU | Name | Status | Evidencia |
 |----|--------|--------|-----------|
 | **HU-2.0** | Knowledge Base Population | ✅ COMPLETO | packages/knowledge_base/ (29 files, 934 lines) |
 | **HU-2.1** | RAG Ingestion Loader | ✅ COMPLETO | services/rag/, tests passing 100% |
@@ -65,7 +65,7 @@
 
 ### Sprint 3: Project-First (Parcialmente Completo) ⚠️
 
-| HU | Nombre | Status | Cobertura | Branch |
+| HU | Name | Status | Cobertura | Branch |
 |----|--------|--------|-----------|--------|
 | **HU-3.1** | Project Shell UI | ✅ COMPLETO | 95% | feature/ui-project-shell (merged) |
 | **HU-3.2** | FileSystem Service | ✅ COMPLETO | 90% | feature/client-filesystem-service (merged) |
@@ -75,18 +75,18 @@
 
 ---
 
-## 3. HU Pendientes (Originales)
+## 3. HU Pendings (Originales)
 
 ### Sprint 3 - Restantes
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Name | Puntos | Status | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-3.4** | Error Handling & Validation Gates | 5 | ⏳ TODO | Ninguno |
 | **HU-3.5** | Streaming & Performance Optimization | 8 | ⏳ TODO | HU-3.4 (opcional) |
 
 ### Sprint 4: Backend Chat & RAG Integration
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Name | Puntos | Status | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-4.1** | Backend Chat Endpoint | 8 | ⏳ TODO | HU-2.2 ✅ |
 | **HU-4.2** | Conversation History | 5 | ⏳ TODO | HU-4.1 |
@@ -94,7 +94,7 @@
 
 ### Sprint 5: Cleanup & Polish
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Name | Puntos | Status | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-5.1** | Remove Temporary Endpoints | 2 | ⏳ TODO | HU-4.1 |
 | **HU-5.2** | Security Hardening | 8 | ⏳ TODO | All previous |
@@ -102,7 +102,7 @@
 
 ### Sprint 6: Packaging & Distribution
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Name | Puntos | Status | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-6.1** | Linux Installer (.deb) | 8 | ⏳ TODO | All previous |
 | **HU-6.2** | User Onboarding Flow | 5 | ⏳ TODO | HU-6.1 |
@@ -110,7 +110,7 @@
 
 ### Sprint 7: CI/CD & Release Management
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Name | Puntos | Status | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-7.1** | GitHub Actions Workflows | 5 | ⏳ TODO | None |
 | **HU-7.2** | Automated Testing Pipeline | 3 | ⏳ TODO | HU-7.1 |
@@ -122,7 +122,7 @@
 
 ### 4.1 TODOs en Código (3 items)
 
-| ID | Archivo | Línea | Descripción | Prioridad | Sprint |
+| ID | File | Línea | Description | Prioridad | Sprint |
 |----|---------|-------|-------------|-----------|--------|
 | **TODO-1** | project_shell_notifier.dart | 70 | Update last opened timestamp | 🔴 HIGH | S3.6 |
 | **TODO-2** | storage_section.dart | 68 | Implement file_picker | 🟡 MEDIUM | S3.7 |
@@ -130,7 +130,7 @@
 
 ### 4.2 TODOs de Tests (6 items)
 
-| ID | Tipo | Descripción | Prioridad | Sprint |
+| ID | Tipo | Description | Prioridad | Sprint |
 |----|------|-------------|-----------|--------|
 | **T-1** | Fix | Fix 6 failing SQLite persistence tests | 🔴 HIGH | S3.6 |
 | **T-2** | Fix | Fix 10 failing MarkdownPreview tests | 🔴 HIGH | S3.7 |
@@ -141,7 +141,7 @@
 
 ### 4.3 TODOs de Infraestructura (4 items)
 
-| ID | Descripción | Prioridad | Sprint |
+| ID | Description | Prioridad | Sprint |
 |----|-------------|-----------|--------|
 | **I-1** | Setup CI/CD GitHub Actions pipeline | 🔴 HIGH | S7.1 |
 | **I-2** | Generate coverage reports in CI | 🟡 MEDIUM | S7.2 |
@@ -218,7 +218,7 @@
 - TODO-2: Implement file_picker in storage_section.dart
 
 **Criterios de Aceptación:**
-- ✅ file_picker package integrado (selector de carpetas nativo)
+- ✅ file_picker package integrado (selector de folders nativo)
 - ✅ 10 MarkdownPreview tests refactorizados y passing
 - ✅ 7 Settings UI widget tests creados (appearance, storage, about)
 - ✅ GlobalSearchDialog widget test creado
@@ -228,7 +228,7 @@
 
 #### HU-3.8: Project Phase Logic & Progress Tracking 🟡 MEDIUM
 
-**Objetivo:** Implementar lógica real de fases de proyecto (Doc N/25 progress).
+**Objetivo:** Implementar lógica real de phases de project (Doc N/25 progress).
 
 | Campo | Valor |
 |-------|-------|
@@ -241,7 +241,7 @@
 - TODO-3: Implement real phase logic in project_phase_service.dart
 
 **Criterios de Aceptación:**
-- ✅ ProjectPhaseService detecta fase actual (0-6) basado en archivos context/
+- ✅ ProjectPhaseService detecta phase actual (0-6) basado en files context/
 - ✅ Progress bar (Doc N/25) actualiza dinámicamente
 - ✅ Tests unitarios para phase detection (>90%)
 - ✅ Integración con ProjectShell dashboard
@@ -263,7 +263,7 @@
 
 **Funcionalidades:**
 - Endpoint POST /chat/message acepta {conversation_id, message, project_id}
-- RAG Orchestrator selecciona templates basado en fase actual
+- RAG Orchestrator selecciona templates basado en phase actual
 - Context injection: template + user input + RAG knowledge
 - LLM call (Ollama local / Groq cloud)
 - Response con {ai_response, template_used, sources}
@@ -291,7 +291,7 @@
 **Funcionalidades:**
 - SQLite backend storage (conversations table)
 - GET /conversations/{id} devuelve historial completo
-- Contexto anterior se pasa al LLM (últimos 10 mensajes)
+- Contexto previous se pasa al LLM (últimos 10 mensajes)
 - Auto-cleanup de conversaciones >30 días
 
 **Criterios de Aceptación:**
@@ -350,7 +350,7 @@
 **Criterios de Aceptación:**
 - ✅ RAG timeout (>30s): retry 3x con backoff (1s, 2s, 4s)
 - ✅ Errores mapeados a mensajes en español (NO stack traces)
-- ✅ Snackbar crítico: sin autohide, botón 'Cerrar' manual
+- ✅ Snackbar crítico: sin autohide, button 'Cerrar' manual
 - ✅ Fallback: template placeholder si RAG falla
 - ✅ Tests: timeout simulation, retry logic, error mapping (>90%)
 
@@ -386,7 +386,7 @@
 
 #### HU-5.1: Integration Tests Suite Rewrite 🟡 MEDIUM
 
-**Objetivo:** Reescribir integration tests obsoletos y eliminar .skip files.
+**Objetivo:** Reescribir integration tests obsoletos y delete .skip files.
 
 | Campo | Valor |
 |-------|-------|
@@ -490,7 +490,7 @@
 
 #### HU-6.2: User Onboarding Flow & First-Run Experience 🟡 MEDIUM
 
-**Objetivo:** Wizard de configuración inicial (Ollama/Groq, project paths).
+**Objetivo:** Wizard de configuration inicial (Ollama/Groq, project paths).
 
 | Campo | Valor |
 |-------|-------|
@@ -507,7 +507,7 @@
 
 **Criterios de Aceptación:**
 - ✅ Wizard aparece solo en primera ejecución
-- ✅ Configuración guardada en sqflite (settings table)
+- ✅ Configuration guardada en sqflite (settings table)
 - ✅ Health check: Ollama/Groq API reachable
 - ✅ Skip wizard disponible (use defaults)
 - ✅ Tests: wizard flow, settings persistence (>85%)
@@ -729,14 +729,14 @@ TOTAL ESTIMACIÓN: 85 Story Points (~8-10 semanas)
 
 ---
 
-## 📊 Resumen Ejecutivo
+## 📊 Executive Summary
 
-### Estado Actual
-- **Completado:** 60% del MVP (HU 1.1-3.3)
-- **Pendiente:** 40% del MVP (HU 3.6-7.3)
+### Status Actual
+- **Completed:** 60% del MVP (HU 1.1-3.3)
+- **Pending:** 40% del MVP (HU 3.6-7.3)
 - **Calidad:** Tests 93.1%, Cobertura 82-85% ✅
 
-### Próximos Pasos
+### Next Steps
 1. **Semana 1-2:** Completar Sprint 3 (HU 3.6-3.8) - Test suite + Settings UI
 2. **Semana 3-4:** Sprint 4 Backend (HU 4.1-4.3) - Chat API + RAG + Streaming
 3. **Semana 5-6:** Sprint 4-5 Polish (HU 4.4-5.1) - Error handling + Tests
@@ -751,4 +751,4 @@ TOTAL ESTIMACIÓN: 85 Story Points (~8-10 semanas)
 ---
 
 **Generado:** 09/02/2026 | **Última Actualización:** 09/02/2026
-**Versión:** v1.0 | **Estado:** ✅ ANALYSIS COMPLETE
+**Versión:** v1.0 | **Status:** ✅ ANALYSIS COMPLETE

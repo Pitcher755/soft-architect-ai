@@ -11,24 +11,24 @@
 ### 1️⃣ Workflow Maestro HU-3.3 ✅
 - **Archivo:** [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md)
 - **Contenido:** 4,000+ líneas, 11 secciones, 6 fases TDD
-- **Incluye:** Especificaciones técnicas, tests planificados, patrones de diseño, validación completa
+- **Incluye:** Especificaciones técnicas, pruebas planificados, patrones de diseño, validación completa
 
-### 2️⃣ Migración de Tests a Monorepo ✅
-- **Antes:** `src/server/tests/` (estructura fragmentada)
-- **Después:** `tests/python/` (estructura centralizada)
-- **Archivos migrados:** 22 test files (~3,500 LOC)
+### 2️⃣ Migración de Pruebas a Monorepo ✅
+- **Antes:** `src/server/pruebas/` (estructura fragmentada)
+- **Después:** `pruebas/python/` (estructura centralizada)
+- **Archivos migrados:** 22 prueba archivos (~3,500 LOC)
 - **Validación:** 5/5 ✅ checks passed
 
 ### 3️⃣ Configuración Actualizada ✅
 | Archivo | Cambio | Estado |
 |---------|--------|--------|
-| `src/server/pyproject.toml` | testpaths → `../../tests/python` | ✅ |
-| `pyrightconfig.json` | include → `tests/python` | ✅ |
-| `.github/workflows/backend-ci.yaml` | pytest path actualizado | ✅ |
-| `tests/python/conftest.py` | Path resolution corregido | ✅ |
+| `src/server/pyproyecto.toml` | pruebapaths → `../../pruebas/python` | ✅ |
+| `pyrightconfig.json` | include → `pruebas/python` | ✅ |
+| `.github/workflows/backend-ci.yaml` | pyprueba path actualizado | ✅ |
+| `pruebas/python/confprueba.py` | Path resolution corregido | ✅ |
 
-### 4️⃣ Documentación Completa ✅
-- [README_MIGRATION.md](tests/python/README_MIGRATION.md) - Guía de migración
+### 4️⃣ Documentoación Completa ✅
+- [README_MIGRATION.md](pruebas/python/README_MIGRATION.md) - Guía de migración
 - [TESTS_MIGRATION_REPORT.md](doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md) - Informe técnico
 - [HU-3.3_READY.md](HU-3.3_READY.md) - Checklist pre-HU-3.3
 
@@ -51,7 +51,7 @@
 └─────────────────────────────────────────────────┘
 ```
 
-### Test Distribution (tests/python/)
+### Prueba Distribution (pruebas/python/)
 ```
 tests/python/
 ├── unit/app/              13 files   (endpoints, handlers)
@@ -64,14 +64,14 @@ tests/python/
 
 ---
 
-## 🔗 Documentación Principal (Quick Links)
+## 🔗 Documentoación Principal (Quick Links)
 
-| Documento | Propósito | Ubicación |
+| Documentoo | Propósito | Ubicación |
 |-----------|-----------|-----------|
 | **Workflow Maestro** | Guía completa de 6 fases TDD | [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md) |
 | **Checklist Readiness** | Tareas pre-HU-3.3 | [HU-3.3_READY.md](HU-3.3_READY.md) |
 | **Reporte Migración** | Detalles técnicos | [TESTS_MIGRATION_REPORT.md](doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md) |
-| **Guía de Tests** | Cómo ejecutar tests | [tests/python/README_MIGRATION.md](tests/python/README_MIGRATION.md) |
+| **Guía de Pruebas** | Cómo ejecutar pruebas | [pruebas/python/README_MIGRATION.md](pruebas/python/README_MIGRATION.md) |
 
 ---
 
@@ -84,8 +84,8 @@ cat doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLO
 ```
 
 **Objetivo:** Entender completamente:
-- Los 6 phases TDD
-- Todos los test cases planificados
+- Los 6 fases TDD
+- Todos los prueba cases planificados
 - Arquitectura del RAG Orchestrator
 - Patrones de error handling
 
@@ -130,20 +130,20 @@ git commit -m "test(rag): RED phase - basic orchestrator tests [HU-3.3]"
 
 ## ✨ Garantías Post-Preparación
 
-✅ **Estructura de Tests:** Centralizada, consistente, escalable
+✅ **Estructura de Pruebas:** Centralizada, consistente, escalable
 ✅ **CI/CD Pipeline:** Actualizado, apunta a nueva ubicación
-✅ **Type Safety:** Pyright configurado para tests/python/
+✅ **Type Safety:** Pyright configurado para pruebas/python/
 ✅ **Pre-commit Hooks:** Validando automáticamente
-✅ **Documentación:** Completa, actualizada, con ejemplos
-✅ **Tests Existentes:** Todos validan en nueva ubicación
+✅ **Documentoación:** Completa, actualizada, con ejemplos
+✅ **Pruebas Existentes:** Todos validan en nueva ubicación
 
 ---
 
 ## 📝 Notas Importantes
 
 1. **No se requiere** cambios adicionales antes de iniciar HU-3.3
-2. **Todos los tests** están organizados y validados
-3. **El workflow** HU-3.3 ya define cada test a escribir
+2. **Todos los pruebas** están organizados y validados
+3. **El workflow** HU-3.3 ya define cada prueba a escribir
 4. **Pre-commit hooks** previenen commits inválidos
 5. **GitHub Actions** valida automáticamente en push
 
@@ -155,23 +155,23 @@ git commit -m "test(rag): RED phase - basic orchestrator tests [HU-3.3]"
 - **Relative imports** deben contar correctamente los niveles de profundidad
 - **Validation automation** previene errores silenciosos
 - **Pre-commit hooks** son críticos para quality gates
-- **Documentation** es parte integral del proceso, no post-hoc
+- **Documentoation** es parte integral del proceso, no post-hoc
 
 ---
 
 ## 📞 Puntos de Contacto Rápido
 
 **¿Dónde está...?**
-- Tests → `tests/python/`
-- Configuración → `src/server/pyproject.toml`, `pyrightconfig.json`
+- Pruebas → `pruebas/python/`
+- Configuración → `src/server/pyproyecto.toml`, `pyrightconfig.json`
 - CI/CD → `.github/workflows/backend-ci.yaml`
 - Workflow → `doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/`
-- Documentación → `doc/01-PROJECT_REPORT/`
+- Documentoación → `doc/01-PROJECT_REPORT/`
 
 **¿Cómo ejecuto...?**
-- Tests → `cd src/server && pytest ../../tests/python/ -v`
-- Validación → `scripts/validate_tests_migration.sh`
-- Tipos → `pyright src/server/services tests/python/`
+- Pruebas → `cd src/server && pyprueba ../../pruebas/python/ -v`
+- Validación → `scripts/validate_pruebas_migration.sh`
+- Tipos → `pyright src/server/services pruebas/python/`
 - Linting → `ruff check src/server/`
 - Format → `black src/server/`
 
@@ -179,9 +179,9 @@ git commit -m "test(rag): RED phase - basic orchestrator tests [HU-3.3]"
 
 ## 🔒 Checklist Final
 
-- [x] Tests migrados y validados
+- [x] Pruebas migrados y validados
 - [x] Configuraciones actualizadas
-- [x] Documentación completada
+- [x] Documentoación completada
 - [x] Commits realizados y pusheados
 - [x] Pre-commit hooks funcionando
 - [x] CI/CD pipeline preparado

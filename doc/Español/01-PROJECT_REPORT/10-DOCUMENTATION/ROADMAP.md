@@ -15,7 +15,7 @@ La **HU-3.3 Super-Vitaminada** expande el alcance original para incluir el **Wor
 - **Chat Secuencial** (Columna Central)
 - **Preview Markdown** (Columna Derecha)
 
-**Objetivo:** Crear una experiencia IDE completa donde el usuario puede generar documentos secuencialmente, verlos en tiempo real, y navegar por la estructura del proyecto.
+**Objetivo:** Crear una experiencia IDE completa donde el usuario puede generar documentoos secuencialmente, verlos en tiempo real, y navegar por la estructura del proyecto.
 
 ---
 
@@ -26,7 +26,7 @@ La **HU-3.3 Super-Vitaminada** expande el alcance original para incluir el **Wor
 | Pantalla | Archivo HTML Ref | Estado | Inclusión en HU-3.3 |
 |----------|------------------|--------|---------------------|
 | Dashboard | `dashboard.html` | ✅ Ya implementado | HU-3.1 (previo) |
-| Modal Crear Proyecto | `create_project_modal.html` | ✅ Ya implementado | HU-3.1 (previo) |
+| Modal Crear Proyecto | `crear_proyecto_modal.html` | ✅ Ya implementado | HU-3.1 (previo) |
 | **Workspace IDE** | `workspace.html` | ⚠️ **NUEVO** | **HU-3.3 SUPER** |
 | └─ Explorador Archivos | (Columna Izquierda) | ⚠️ **NUEVO** | **HU-3.3 SUPER** |
 | └─ Chat Secuencial | (Columna Central) | ✅ Widgets implementados | **HU-3.3 SUPER** |
@@ -129,9 +129,9 @@ src/client/lib/
 
 ### **FASE 1: Workspace Shell (El Contenedor Principal)**
 
-**Objetivo:** Crear `ProjectWorkspaceScreen` con 3 columnas vacías.
+**Objetivo:** Crear `ProyectoWorkspaceScreen` con 3 columnas vacías.
 
-#### 1.1 Tests (RED)
+#### 1.1 Pruebas (RED)
 ```bash
 # Archivo: tests/features/project_shell/presentation/screens/project_workspace_screen_test.dart
 - test_renders_three_columns_layout()
@@ -169,17 +169,17 @@ class ProjectWorkspaceScreen extends ConsumerWidget {
 #### 1.3 Refactor (BLUE)
 - Extraer AppBar a `WorkspaceAppBar` widget
 - Aplicar tema GitHub Dark
-- Agregar tests para responsive layout
+- Agregar pruebas para responsive layout
 
-**Entregable:** `ProjectWorkspaceScreen` renderiza 3 columnas de colores temporales.
+**Entregable:** `ProyectoWorkspaceScreen` renderiza 3 columnas de colores temporales.
 
 ---
 
 ### **FASE 2: Explorador de Archivos (Columna Izquierda)**
 
-**Objetivo:** Implementar `FileSystemTreeWidget` conectado a `FileSystemService`.
+**Objetivo:** Implementar `ArchivoSystemTreeWidget` conectado a `ArchivoSystemService`.
 
-#### 2.1 Tests (RED)
+#### 2.1 Pruebas (RED)
 ```bash
 # Archivo: tests/features/project_shell/presentation/widgets/file_system_tree_widget_test.dart
 - test_renders_root_folders()
@@ -211,7 +211,7 @@ class FileSystemTreeWidget extends ConsumerWidget {
 ```
 
 #### 2.3 Integración
-- Conectar con `FileSystemService` (HU-3.2)
+- Conectar con `ArchivoSystemService` (HU-3.2)
 - Leer estructura de `context/` del proyecto activo
 - Iconos por tipo de archivo (.md, .json, carpetas)
 
@@ -223,7 +223,7 @@ class FileSystemTreeWidget extends ConsumerWidget {
 
 **Objetivo:** Implementar `MarkdownPreviewWidget` con estilos GitHub Dark.
 
-#### 3.1 Tests (RED)
+#### 3.1 Pruebas (RED)
 ```bash
 # Archivo: tests/features/project_shell/presentation/widgets/markdown_preview_widget_test.dart
 - test_renders_markdown_content()
@@ -268,7 +268,7 @@ class MarkdownPreviewWidget extends ConsumerWidget {
 
 **Objetivo:** Integrar `SequentialChatScreen` con widgets ya creados.
 
-#### 4.1 Tests (RED)
+#### 4.1 Pruebas (RED)
 ```bash
 # Archivo: tests/features/chat/presentation/screens/sequential_chat_screen_test.dart
 - test_renders_chat_history()
@@ -394,9 +394,9 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ### **FASE 6: Integración E2E y Validación**
 
-**Objetivo:** Validar el flujo completo de generación de documentos.
+**Objetivo:** Validar el flujo completo de generación de documentoos.
 
-#### 6.1 Test E2E
+#### 6.1 Prueba E2E
 ```bash
 # Archivo: integration_test/workspace_e2e_test.dart
 - test_complete_document_generation_flow()
@@ -411,13 +411,13 @@ class _ResizablePanesState extends State<ResizablePanes> {
 ```
 
 #### 6.2 Casos de Validación
-- ✅ No se puede saltar documentos sin validar
+- ✅ No se puede saltar documentoos sin validar
 - ✅ Propuestas rechazadas no se guardan
 - ✅ Progress bar se actualiza al validar
 - ✅ Árbol de archivos refleja cambios en tiempo real
 - ✅ Preview sincroniza con selección del árbol
 
-**Entregable:** Test E2E completo con cobertura >80%.
+**Entregable:** Prueba E2E completo con cobertura >80%.
 
 ---
 
@@ -425,28 +425,28 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 | HTML Component (mapa_widgets.md) | Dart Widget | Ubicación | Estado |
 |-----------------------------------|-------------|-----------|--------|
-| Sidebar (Explorador) | `FileSystemTreeWidget` | `project_shell/widgets/` | ⚠️ Nuevo |
-| Tree Node (Carpeta) | `TreeTile` | `project_shell/widgets/` | ⚠️ Nuevo |
-| Preview Panel | `MarkdownPreviewWidget` | `project_shell/widgets/` | ⚠️ Nuevo |
+| Sidebar (Explorador) | `ArchivoSystemTreeWidget` | `proyecto_shell/widgets/` | ⚠️ Nuevo |
+| Tree Node (Carpeta) | `TreeTile` | `proyecto_shell/widgets/` | ⚠️ Nuevo |
+| Preview Panel | `MarkdownPreviewWidget` | `proyecto_shell/widgets/` | ⚠️ Nuevo |
 | Chat Message (User) | `MessageBubbleWidget` | `chat/widgets/` | ✅ Hecho |
 | Chat Message (AI) | `MessageBubbleWidget` | `chat/widgets/` | ✅ Hecho |
 | Proposal Card | `ProposalCardWidget` | `chat/widgets/` | ✅ Hecho |
 | Streaming Indicator | `StreamingIndicatorWidget` | `chat/widgets/` | ✅ Hecho |
 | Progress Bar (AppBar) | `LinearProgressIndicator` | Built-in | ⚠️ Integrar |
-| Resizable Divider | `ResizablePanes` | `project_shell/widgets/` | ⚠️ Nuevo |
+| Resizable Divider | `ResizablePanes` | `proyecto_shell/widgets/` | ⚠️ Nuevo |
 
 ---
 
-## 🧪 Cobertura de Tests Requerida
+## 🧪 Cobertura de Pruebas Requerida
 
 | Categoría | Objetivo | Archivos |
 |-----------|----------|----------|
-| **Unit Tests** | >80% | `*_test.dart` |
-| **Widget Tests** | 100% componentes críticos | `*_widget_test.dart` |
-| **Integration Tests** | 100% flujo E2E | `integration_test/*.dart` |
+| **Unit Pruebas** | >80% | `*_prueba.dart` |
+| **Widget Pruebas** | 100% componentes críticos | `*_widget_prueba.dart` |
+| **Integración Pruebas** | 100% flujo E2E | `integration_prueba/*.dart` |
 | **Total Coverage** | >80% global | Validado por CI/CD |
 
-### Tests Críticos (Obligatorios)
+### Pruebas Críticos (Obligatorios)
 ```
 ✅ project_workspace_screen_test.dart (10 tests)
 ✅ file_system_tree_widget_test.dart (8 tests)
@@ -461,7 +461,7 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ## 📅 Cronograma de Implementación
 
-### Sprint Breakdown (Estimación 21 SP)
+### Sprint Desglose (Estimación 21 SP)
 
 | Fase | Tarea | SP | Duración Estimada | Dependencias |
 |------|-------|----|--------------------|--------------|
@@ -470,7 +470,7 @@ class _ResizablePanesState extends State<ResizablePanes> {
 | **FASE 3** | Preview Markdown | 3 | 2 días | FASE 1 |
 | **FASE 4** | Chat Secuencial | 8 | 4 días | FASE 1, 2, 3 |
 | **FASE 5** | Resizable Panes | 2 | 1 día | FASE 1 |
-| **FASE 6** | E2E Tests | 3 | 2 días | FASE 1-5 |
+| **FASE 6** | E2E Pruebas | 3 | 2 días | FASE 1-5 |
 | **TOTAL** | | **21** | **12 días** | |
 
 ---
@@ -480,9 +480,9 @@ class _ResizablePanesState extends State<ResizablePanes> {
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |--------|--------------|---------|------------|
 | **Complejidad del árbol de archivos** | Alta | Alto | Usar librería `flutter_treeview` |
-| **Performance con 25 documentos** | Media | Medio | Virtualización de listas |
+| **Performance con 25 documentoos** | Media | Medio | Virtualización de listas |
 | **Sincronización 3 columnas** | Media | Alto | StateNotifier global con Riverpod |
-| **Streaming SSE bloqueante** | Baja | Alto | Async/await correcto, tests extensivos |
+| **Streaming SSE bloqueante** | Baja | Alto | Async/await correcto, pruebas extensivos |
 | **Redimensionamiento buggy** | Media | Bajo | Constraints mínimos/máximos |
 
 ---
@@ -500,18 +500,18 @@ class _ResizablePanesState extends State<ResizablePanes> {
 - [ ] Columnas son redimensionables
 
 ### Calidad
-- [ ] >80% cobertura de tests
+- [ ] >80% cobertura de pruebas
 - [ ] 0 errores en `flutter analyze`
 - [ ] 0 warnings críticos
 - [ ] Pre-commit hooks pasan
-- [ ] Test E2E completo ejecuta correctamente
+- [ ] Prueba E2E completo ejecuta correctamente
 
-### Documentación
+### Documentoación
 - [ ] README.md en `doc/03-HU-TRACKING/HU-3.3-SUPER-WORKSPACE/`
 - [ ] PROGRESS.md actualizado (6 fases)
 - [ ] ARTIFACTS.md con todos los archivos creados
 - [ ] Comentarios en código (DartDoc)
-- [ ] Diagramas de flujo en documentación
+- [ ] Diagramas de flujo en documentoación
 
 ### Git
 - [ ] Commits atómicos y descriptivos
@@ -521,7 +521,7 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ---
 
-## 📚 Documentos de Referencia
+## 📚 Documentoos de Referencia
 
 ### Internos
 - [`doc/03-HU-TRACKING/HU-3.3-SUPER-WORKSPACE/README.md`](doc/03-HU-TRACKING/HU-3.3-SUPER-WORKSPACE/README.md)
@@ -530,7 +530,7 @@ class _ResizablePanesState extends State<ResizablePanes> {
 - [`context/40-ROADMAP/USER_STORIES_MASTER.es.json`](context/40-ROADMAP/USER_STORIES_MASTER.es.json)
 
 ### Externos
-- [Flutter Clean Architecture](https://resocoder.com/2019/08/27/flutter-tdd-clean-architecture-course-1-explanation-project-structure/)
+- [Flutter Clean Architecture](https://resocoder.com/2019/08/27/flutter-tdd-clean-architecture-course-1-explanation-proyecto-structure/)
 - [Riverpod 2.0 Docs](https://riverpod.dev/docs/getting_started)
 - [flutter_markdown Package](https://pub.dev/packages/flutter_markdown)
 
@@ -545,7 +545,7 @@ Antes de empezar a codificar:
 - [x] Confirmar HU-3.1 y HU-3.2 completadas
 - [ ] Crear branch `feature/chat-sequential-docs` (si no existe)
 - [ ] Verificar que `flutter analyze` pasa actualmente
-- [ ] Confirmar que todos los tests previos pasan (289/289)
+- [ ] Confirmar que todos los pruebas previos pasan (289/289)
 - [ ] Instalar dependencias adicionales:
   ```bash
   flutter pub add flutter_markdown
@@ -555,20 +555,20 @@ Antes de empezar a codificar:
 
 ---
 
-## 🎉 Resultado Final Esperado
+## 🎉 Resultadoado Final Esperado
 
 Al completar la HU-3.3 SUPER, el usuario podrá:
 
 1. ✅ **Abrir un proyecto** desde el Dashboard
 2. ✅ **Ver el Workspace IDE** con 3 columnas estilo VS Code
 3. ✅ **Navegar por archivos** en el explorador lateral
-4. ✅ **Chatear con la IA** para generar documentos secuencialmente
+4. ✅ **Chatear con la IA** para generar documentoos secuencialmente
 5. ✅ **Validar propuestas** que se guardan automáticamente
-6. ✅ **Ver el preview** del documento validado en tiempo real
+6. ✅ **Ver el preview** del documentoo validado en tiempo real
 7. ✅ **Seguir el progreso** con la barra de avance (Doc X/25)
 8. ✅ **Redimensionar columnas** según preferencias
 
-**Status Final:** 🚀 **WORKSPACE IDE FULLY FUNCTIONAL**
+**Estado Final:** 🚀 **WORKSPACE IDE FULLY FUNCTIONAL**
 
 ---
 

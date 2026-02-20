@@ -90,22 +90,22 @@ Se ha implementado exitosamente un **sistema híbrido que integra proyectos real
 
 | Archivo | Propósito |
 |---------|----------|
-| [projects_provider.dart](../src/client/lib/features/project_shell/presentation/providers/projects_provider.dart) | Helper `buildHybridProjectsList()` |
-| [HYBRID_SYSTEM_IMPLEMENTATION.md](HYBRID_SYSTEM_IMPLEMENTATION.md) | Documentación del sistema |
+| [proyectos_provider.dart](../src/client/lib/features/proyecto_shell/presentation/providers/proyectos_provider.dart) | Helper `buildHybridProyectosList()` |
+| [HYBRID_SYSTEM_IMPLEMENTATION.md](HYBRID_SYSTEM_IMPLEMENTATION.md) | Documentoación del sistema |
 
 ### Modificados (✏️ Actualizados)
 
 | Archivo | Cambios |
 |---------|---------|
-| **project.dart** | ➕ Getter `phase` (deriva de ruta) |
-| **mock_projects_data.dart** | ✏️ Función `getMockProjectsData()` retorna guía |
-| **mock_data.dart** | ✏️ `guideRootNode` + `guideFileContents` |
-| **file_tree_widget.dart** | ✏️ Detección `mock://` para mostrar guía |
-| **project_shell_screen.dart** | ✏️ Lectura híbrida de archivos |
-| **project_workspace_screen.dart** | ✏️ Usa `buildHybridProjectsList()` + objetos `Project` |
-| **project_list_view.dart** | ✏️ Acepta `List<Project>` (no Maps) |
-| **project_model.dart** | ✏️ Sincronizado con entidad `Project` |
-| **web_mock_project_repository.dart** | ✏️ Actualizado a `createdAt` |
+| **proyecto.dart** | ➕ Getter `fase` (deriva de ruta) |
+| **mock_proyectos_data.dart** | ✏️ Función `getMockProyectosData()` retorna guía |
+| **mock_data.dart** | ✏️ `guideRootNode` + `guideArchivoContents` |
+| **archivo_tree_widget.dart** | ✏️ Detección `mock://` para mostrar guía |
+| **proyecto_shell_screen.dart** | ✏️ Lectura híbrida de archivos |
+| **proyecto_workspace_screen.dart** | ✏️ Usa `buildHybridProyectosList()` + objetos `Proyecto` |
+| **proyecto_list_view.dart** | ✏️ Acepta `List<Proyecto>` (no Maps) |
+| **proyecto_model.dart** | ✏️ Sincronizado con entidad `Proyecto` |
+| **web_mock_proyecto_repository.dart** | ✏️ Actualizado a `creardAt` |
 
 ---
 
@@ -131,9 +131,9 @@ if (path.startsWith('mock://')) {
 }
 ```
 
-### 2. MockProjectData (Constantes)
+### 2. MockProyectoData (Constantes)
 
-**Ubicación:** `lib/features/project_shell/data/mock_data.dart`
+**Ubicación:** `lib/features/proyecto_shell/data/mock_data.dart`
 
 ```dart
 class MockProjectData {
@@ -154,9 +154,9 @@ class MockProjectData {
 }
 ```
 
-### 3. Helper buildHybridProjectsList()
+### 3. Helper buildHybridProyectosList()
 
-**Ubicación:** `lib/features/project_shell/presentation/providers/projects_provider.dart`
+**Ubicación:** `lib/features/proyecto_shell/presentation/providers/proyectos_provider.dart`
 
 ```dart
 List<Project> buildHybridProjectsList(List<Project> userProjects) {
@@ -182,7 +182,7 @@ List<Project> buildHybridProjectsList(List<Project> userProjects) {
 }
 ```
 
-### 4. Detección en FileTreeWidget
+### 4. Detección en ArchivoTreeWidget
 
 ```dart
 // Si la ruta es mock, usar guideRootNode
@@ -194,7 +194,7 @@ if (widget.projectPath?.startsWith('mock://') ?? false) {
 }
 ```
 
-### 5. Lectura Híbrida en ProjectShellScreen
+### 5. Lectura Híbrida en ProyectoShellScreen
 
 ```dart
 void _onFileSelected(FileNode node) {
@@ -219,7 +219,7 @@ void _onFileSelected(FileNode node) {
 ### Cobertura de Cambios
 
 - ✅ **8 archivos modificados** (proyecto entero + guía)
-- ✅ **2 archivos creados** (provider + documentación)
+- ✅ **2 archivos creados** (provider + documentoación)
 - ✅ **0 errores de compilación** (validado con `get_errors()`)
 - ✅ **0 líneas duplicadas** (refactorizado)
 - ✅ **100% de cobertura de rutas** (mock:// + /home/...)
@@ -230,14 +230,14 @@ void _onFileSelected(FileNode node) {
 |---------|-------|
 | Tiempo carga guía | ~0ms (const en memoria) |
 | Tiempo carga proyecto real | ~50-200ms (I/O normal) |
-| Tamaño MockProjectData | ~2KB (markdown comprimido) |
+| Tamaño MockProyectoData | ~2KB (markdown comprimido) |
 | Overhead híbrido | Negligible (~1ms detección) |
 
 ---
 
-## 🧪 Testing
+## 🧪 Pruebaing
 
-### Tests Unitarios Recomendados
+### Pruebas Unitarios Recomendados
 
 ```dart
 // Test 1: buildHybridProjectsList incluye guía
@@ -266,14 +266,14 @@ test('read mock file content', () {
 });
 ```
 
-### Manual Testing (Checklist)
+### Manual Pruebaing (Checklist)
 
 - [ ] Abrir app → Ver "Guía SoftArchitect" en dashboard
-- [ ] Click en guía → Navigate a /project-shell?path=mock://softarchitect-guide
+- [ ] Click en guía → Navigate a /proyecto-shell?path=mock://softarchitect-guide
 - [ ] Ver árbol de archivos (00-Bienvenido.md, features/Chat-IA.md)
 - [ ] Click en archivo → Ver contenido markdown en panel central
 - [ ] Crear proyecto real → Aparece en dashboard junto a guía
-- [ ] Click en proyecto real → Navigate a /project-shell?path=/home/...
+- [ ] Click en proyecto real → Navigate a /proyecto-shell?path=/home/...
 - [ ] Ver árbol de archivos (real del disco)
 - [ ] Click en archivo real → Ver contenido real
 - [ ] Volver a dashboard → Ambos proyectos visibles
@@ -302,12 +302,12 @@ test('read mock file content', () {
 
 ---
 
-## 📖 Documentación
+## 📖 Documentoación
 
 - [HYBRID_SYSTEM_IMPLEMENTATION.md](HYBRID_SYSTEM_IMPLEMENTATION.md) - Guía detallada del sistema
-- [project.dart](../src/client/lib/features/project_shell/domain/entities/project.dart) - Entidad Project con getter phase
-- [projects_provider.dart](../src/client/lib/features/project_shell/presentation/providers/projects_provider.dart) - Helper buildHybridProjectsList()
-- [mock_data.dart](../src/client/lib/features/project_shell/data/mock_data.dart) - MockProjectData con guía
+- [proyecto.dart](../src/client/lib/features/proyecto_shell/domain/entities/proyecto.dart) - Entidad Proyecto con getter fase
+- [proyectos_provider.dart](../src/client/lib/features/proyecto_shell/presentation/providers/proyectos_provider.dart) - Helper buildHybridProyectosList()
+- [mock_data.dart](../src/client/lib/features/proyecto_shell/data/mock_data.dart) - MockProyectoData con guía
 
 ---
 
@@ -346,4 +346,4 @@ La implementación está completa, validada y lista para producción. Los usuari
 3. ✅ Editar proyectos reales mientras aprenden con la guía
 4. ✅ Experimentar sin miedo (la guía es de solo lectura)
 
-**Resultado:** Una experiencia de usuario unificada, eficiente y educativa.
+**Resultadoado:** Una experiencia de usuario unificada, eficiente y educativa.

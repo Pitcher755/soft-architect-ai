@@ -1,12 +1,12 @@
 # 🚀 Complete Installation - SoftArchitect AI
 
-> **Date:** 02/19/2026
-> **Status:** ✅ Updated guide
+> **Fecha:** 02/19/2026
+> **Estado:** ✅ Updated guide
 > **Estimated time:** 20-30 minutes
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [System Requirements](#system-requirements)
 - [Quick Installation (Recommended)](#quick-installation-recommended)
@@ -311,7 +311,7 @@ docker-compose up -d
 
 ## ✅ Verify the Installation
 
-### Verification Checklist
+### Verificación Checklist
 
 After installation, verify everything works:
 
@@ -336,11 +336,11 @@ python main.py
 # Should allow creating and naming a project
 ```
 
-### Expected Result
+### Expected Resultado
 
 ✅ **Steps 1-3 complete**: Backend working
 ✅ **Steps 4-5 complete**: Frontend functional
-✅ **Everything works**: Ready for first project
+✅ **Everything works**: Preparado para first proyecto
 
 ---
 
@@ -382,9 +382,9 @@ taskkill /PID <PID> /F
 
 ---
 
-### Problem 3: "Error: ENOENT: no such file or directory '.env'"
+### Problem 3: "Error: ENOENT: no such archivo or directory '.env'"
 
-**Cause:** .env file doesn't exist
+**Cause:** .env archivo doesn't exist
 **Solution:**
 
 ```bash
@@ -397,7 +397,7 @@ cp .env.example .env
 
 ### Problem 4: "ConnectionError: Cannot connect to Ollama"
 
-**Cause:** Ollama is not running
+**Cause:** Ollama is not ejecutarning
 **Solution:**
 
 ```bash
@@ -414,7 +414,7 @@ GROQ_API_KEY=your_key_here
 
 ### Problem 5: Docker Won't Start
 
-**Cause:** Docker Desktop is not running
+**Cause:** Docker Desktop is not ejecutarning
 **Solution:**
 
 ```bash
@@ -503,7 +503,7 @@ https://github.com/Pitcher755/soft-architect-ai/issues/new
 - Operating system and version
 - Python version
 - Exact error message (copy-paste)
-- Steps you executed
+- Steps you ejecutard
 
 ### 3️⃣ Or contact the team:
 - Email: architect@softarchitectai.com
@@ -511,16 +511,16 @@ https://github.com/Pitcher755/soft-architect-ai/issues/new
 
 ---
 
-## ✅ Next Step
+## ✅ Siguiente Step
 
-Once installed and running:
+Once installed and ejecutarning:
 
-🎯 **[Create Your First Project →](03-FIRST_PROJECT.md)**
+🎯 **[Crear Your First Proyecto →](03-FIRST_PROJECT.md)**
 
 You'll learn to:
-- Create a new project
+- Crear a nuevo proyecto
 - Define the vision
-- Execute PHASE 1 of the Master Workflow
+- Ejecutar PHASE 1 of the Master Workflow
 
 ---
 
@@ -541,5 +541,5 @@ You'll learn to:
 <p align="center">
   ✅ Installation completed successfully
   <br/>
-  🎯 Ready for: <a href="03-FIRST_PROJECT.md"><strong>Create Your First Project</strong></a>
+  🎯 Preparado para: <a href="03-FIRST_PROJECT.md"><strong>Crear Your First Proyecto</strong></a>
 </p>

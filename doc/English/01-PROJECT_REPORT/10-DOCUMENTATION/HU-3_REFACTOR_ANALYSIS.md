@@ -1,20 +1,20 @@
-# 📊 Análisis Estratégico: Refactor de HU-3.x (Project-First Paradigm)
+# 📊 Analysis Estratégico: Refactor de HU-3.x (Project-First Paradigm)
 
-> **Fecha:** 02/02/2026
-> **Estado:** 🔍 ANÁLISIS EN PROGRESO (Sin Modificaciones en Rama Actual)
+> **Date:** 02/02/2026
+> **Status:** 🔍 ANÁLISIS EN PROGRESO (Sin Modificaciones en Rama Actual)
 > **Responsable:** ArchitectZero (AI Lead)
 > **Impacto:** S3 (Frontend & Logic) + Consecuencias en S4-S7
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Resumen Ejecutivo](#-resumen-ejecutivo)
-2. [Análisis Comparativo: Actual vs. Propuesto](#-análisis-comparativo-actual-vs-propuesto)
+2. [Analysis Comparativo: Actual vs. Propuesto](#-analysis-comparativo-actual-vs-propuesto)
 3. [Cambios Arquitectónicos Requeridos](#-cambios-arquitectónicos-requeridos)
 4. [Propuesta de Redefinición HU-3.x](#-propuesta-de-redefinición-hu-3x)
 5. [Impacto en Sprints Posteriores](#-impacto-en-sprints-posteriores)
-6. [Recomendaciones y Próximos Pasos](#-recomendaciones-y-próximos-pasos)
+6. [Recomendaciones y Next Steps](#-recomendaciones-y-próximos-pasos)
 
 ---
 
@@ -67,35 +67,35 @@ Usuario escribe idea en chat (ej: "App adopción mascotas estilo Tinder")
 
 **Características Clave:**
 - ✅ Flujo **100% secuencial** (nunca paralelo)
-- ✅ Cada documento debe validarse antes de pasar al siguiente
+- ✅ Cada document debe validarse antes de pasar al next
 - ✅ RAG **100% guiado por templates** (no generación libre)
-- ✅ Chat histórico en BD + Documentos validados en disco
+- ✅ Chat histórico en BD + Documents validados en disco
 - ✅ Iteración conversacional (usuario refina en chat antes de guardar)
-- ✅ Resultado: 25 documentos de arquitecto/ingeniero senior en MINUTOS
+- ✅ Result: 25 documents de arquitecto/ingeniero senior en MINUTOS
 
 ---
 
-## 🔄 Análisis Comparativo: Actual vs. Propuesto
+## 🔄 Analysis Comparativo: Actual vs. Propuesto
 
 ### Tabla Comparativa
 
 | Aspecto | HU-3.x Actual | Propuesta Project-First |
 |---------|--------------|------------------------|
 | **Modelo Mental** | Chatbot efímero | Gestor de documentación secuencial (guiado) |
-| **Punto de Entrada** | Abre app → chat | Crea proyecto → auto-crear dirs context/10-20-30-35-40 |
-| **Concepto de "Sesión"** | Conversación temporal | Mix: Chat histórico en BD + Documentos validados en disco |
+| **Punto de Entrada** | Abre app → chat | Crea project → auto-create dirs context/10-20-30-35-40 |
+| **Concepto de "Sesión"** | Conversación temporal | Mix: Chat histórico en BD + Documents validados en disco |
 | **Persistencia de Datos** | Ninguna (histórico en BD) | Chat en BD + Docs en context/{10-20-30-35-40}/ por validación |
 | **UI Principal** | ChatScreen | ProjectDashboard (Chat + Progress Bar "Doc 1/25") |
 | **Flujo de Generación** | Propuesta única | **Secuencial obligatorio:** Doc 1 → Validar → Guardar → Doc 2 → ... → Doc 25 |
 | **Validación del Usuario** | Aprobar/rechazar | **Aprobar O Interactuar en chat para mejorar** → Regenerar → Validar |
-| **Integración RAG** | "Transparente" | **100% guiada por templates** (01-TEMPLATES/) adaptados al proyecto |
-| **Caso de Uso Primario** | Consultas adhoc | Generar 25 documentos de arquitecto senior en minutos |
+| **Integración RAG** | "Transparente" | **100% guiada por templates** (01-TEMPLATES/) adaptados to the project |
+| **Caso de Uso Primario** | Consultas adhoc | Generar 25 documents de arquitecto senior en minutos |
 | **Persistencia Automática** | No | Sí (tras validación) |
-| **Documentos Finales** | Variable | 25 documentos (estándar del proyecto) |
+| **Documents Finales** | Variable | 25 documents (estándar of the project) |
 
 ---
 
-## 🔀 Diagrama Secuencial: Flujo de Generación de Documentos
+## 🔀 Diagrama Secuencial: Flujo de Generación de Documents
 
 ```
 PROYECTO CREADO
@@ -119,55 +119,55 @@ PROYECTO CREADO
 ```
 
 **Garantías:**
-- ✅ **Secuencial:** Nunca 2 documentos en paralelo
+- ✅ **Secuencial:** Nunca 2 documents en paralelo
 - ✅ **RAG 100% Guiado:** Templates de 01-TEMPLATES/ + adaptación
 - ✅ **Iterativo:** Usuario refina en chat antes de guardar
-- ✅ **Persistente:** Solo documentos validados en disco
+- ✅ **Persistente:** Solo documents validados en disco
 - ✅ **Auditable:** Chat histórico en BD
 
 ---
 
-### Análisis Profundo
+### Analysis Profundo
 
 #### ✅ Ventajas de Project-First + Sequential Workflow
 
 1. **Ownership y Gobernanza:**
-   - Usuario tiene control explícito sobre cada documento
+   - Usuario tiene control explícito sobre cada document
    - Iteración conversacional: refina antes de guardar
    - Trace audit completo: chat en BD + docs en disco
 
 2. **Generación Predecible y de Calidad:**
    - RAG 100% guiado por templates (no generación libre)
-   - Secuencial: cada documento mejora en base a anteriores
-   - Resultado: 25 documentos = arquitecto/ingeniero senior en MINUTOS
-   - Estandarización: todos los proyectos siguen la misma estructura
+   - Secuencial: cada document mejora en base a previouses
+   - Result: 25 documents = arquitecto/ingeniero senior en MINUTOS
+   - Estandarización: todos los projects siguen la misma estructura
 
 3. **Iteración Conversacional:**
-   - Usuario no es pasivo (no solo aprueba/rechaza)
+   - Usuario no es pasivo (no solo atest/rechaza)
    - Puede pedir cambios en el chat → RAG regenera
    - Multiples ciclos posibles hasta satisfacción
 
 4. **Persistencia Segura:**
    - Directorios creados automáticamente al inicio
-   - Solo documentos validados llegan a disco
+   - Solo documents validados llegan a disco
    - Histórico conversacional en BD (recuperable)
    - Backup implícito: versión previa siempre disponible
 
 #### ❌ Riesgos de Project-First + Sequential Workflow
 
-1. **Complejidad del Orquestador RAG:**
-   - Necesita rastrear estado de "qué documento sigue"
-   - Necesita inyectar contexto de documentos previos
+1. **Complejidad del Orqustatusr RAG:**
+   - Necesita rastrear status de "qué document sigue"
+   - Necesita inyectar contexto de documents previos
    - Manejo de conversación multi-turno para refinar
 
 2. **Experiencia de Onboarding:**
-   - Usuario debe entender concepto de "25 documentos secuenciales"
+   - Usuario debe entender concepto de "25 documents secuenciales"
    - La barrera de entrada es mayor (no es "chat simple")
    - Educación requerida
 
-3. **Gestión de Estado Conversacional:**
-   - El chat histórico debe recuperar contexto entre documentos
-   - Si usuario vuelve a un documento anterior, ¿qué sucede?
+3. **Gestión de Status Conversacional:**
+   - El chat histórico debe recuperar contexto entre documents
+   - Si usuario vuelve a un document previous, ¿qué sucede?
    - Necesidad de "cancelar" flujo y reiniciar
 
 ---
@@ -587,8 +587,8 @@ POST /api/v1/projects/{project_id}/document/validate
 ### Sprint 6 (HU-6: Packaging)
 
 **Agregado:**
-- En primer inicio, crear "Default Project" (~/SoftArchitect-AI/)
-- Onboarding debe explicar concepto de Proyecto
+- En primer inicio, create "Default Project" (~/SoftArchitect-AI/)
+- Onboarding debe explicar concepto de Project
 
 ### Sprint 7 (HU-7: CI/CD)
 
@@ -596,7 +596,7 @@ POST /api/v1/projects/{project_id}/document/validate
 
 ---
 
-## 💡 Recomendaciones y Próximos Pasos
+## 💡 Recomendaciones y Next Steps
 
 ### Recomendación General
 
@@ -609,7 +609,7 @@ POST /api/v1/projects/{project_id}/document/validate
 4. **Mantenibilidad:** Futuro developer entenderá por qué existe cada HU
 5. **Realismo:** Estimaciones más precisas
 
-### Flujo de Implementación Recomendado
+### Flujo de Implementation Recomendado
 
 ```mermaid
 graph TD
@@ -683,7 +683,7 @@ Ver propuestas arriba.
 "dependencies": ["HU-2.2", "HU-3.2", "context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md"]
 ```
 
-**Crear nueva HU-4.4:**
+**Create nueva HU-4.4:**
 ```json
 "hu_id": "HU-4.4",
 "name": "Como Backend, quiero que los documentos validados se guarden...",
@@ -705,14 +705,14 @@ Ver propuestas arriba.
 | **HU-3.5** | NEW: Streaming optimizado | MEDIO | HIGH |
 | **HU-4.1** | Agregar `project_id` parámetro | ALTO | CRITICAL |
 | **HU-4.4** | NEW: Document persistence backend | ALTO | HIGH |
-| **HU-6.2** | Onboarding debe mencionar Proyectos | BAJO | MEDIUM |
+| **HU-6.2** | Onboarding debe mencionar Projects | BAJO | MEDIUM |
 | **Estimación Total S3** | 50 pts → 70 pts | ALTO | - |
 
 ---
 
 ## ✅ Decisiones Requeridas (Pre-Rama Nueva)
 
-**ANTES de crear la rama `feature/hu-3-project-first-refactor`, confirmamos:**
+**ANTES de create la rama `feature/hu-3-project-first-refactor`, confirmamos:**
 
 1. ✅ ¿Proceder con Opción B (5 HUs)?
 2. ✅ ¿Aceptar aumento de estimación (50→70 pts)?
@@ -723,12 +723,12 @@ Ver propuestas arriba.
 
 ## 🔗 Referencias
 
-- `context/10-BUSINESS_AND_SCOPE/VISION_AND_PROMISE.md` - Visión del proyecto
-- `context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md` - Estructura de proyectos
+- `context/10-BUSINESS_AND_SCOPE/VISION_AND_PROMISE.md` - Visión of the project
+- `context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md` - Estructura de projects
 - `AGENTS.md` Section 5 - Principios de Arquitectura
 - `USER_STORIES_MASTER.es.json` - Roadmap actual
 
 ---
 
-**Documento preparado para revisión y validación.**
-**Próximo paso:** Confirmar decisiones + crear rama de trabajo.
+**Document ready for revisión y validación.**
+**Próximo paso:** Confirmar decisiones + create rama de trabajo.

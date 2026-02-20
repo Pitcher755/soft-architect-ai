@@ -93,7 +93,7 @@ softarchitect-ai-0.1.0-setup.msi (200-300 MB)
 
 ## 🔄 Flujo de Ejecución en Producción
 
-### **Fase 1: Instalación (Una sola vez)**
+### **Phase 1: Instalación (Una sola vez)**
 
 ```
 Usuario ejecuta: softarchitect-ai-0.1.0-setup.msi
@@ -120,7 +120,7 @@ Usuario ejecuta: softarchitect-ai-0.1.0-setup.msi
    "✅ Installation complete. Click 'Finish' to launch app."
 ```
 
-### **Fase 2: Primer Inicio (Automático)**
+### **Phase 2: Primer Inicio (Automático)**
 
 ```
 Usuario hace clic en: Desktop shortcut "SoftArchitect AI"
@@ -156,7 +156,7 @@ Usuario hace clic en: Desktop shortcut "SoftArchitect AI"
    Listo para usar
 ```
 
-### **Fase 3: Uso Normal (cada vez que abre)**
+### **Phase 3: Uso Normal (cada vez que abre)**
 
 ```
 Usuario abre: SoftArchitect AI (desde Desktop shortcut)
@@ -321,7 +321,7 @@ Detalle del Build Pipeline:
 
 ---
 
-## ⚡ Fase 2: Primer Inicio (First-Run Automation)
+## ⚡ Phase 2: Primer Inicio (First-Run Automation)
 
 ### Visión General
 En el primer inicio, la aplicación ejecuta automáticamente 6 pasos sin que el usuario intervenga:
@@ -703,12 +703,12 @@ Usuario quiere usar SoftArchitect AI:
 
 ### 📋 Visión General
 
-Además de la versión desktop standalone con **Qwen2.5:3b local**, se desarrollará una **versión web optimizada** para ejecutar en el homelab del desarrollador con las siguientes características:
+Además de la versión desktop standalone con **Qwen2.5:3b local**, se desarrollará una **versión web optimizada** para execute en el homelab del desarrollador con las nexts características:
 
 - **Runtime**: Flutter Web (misma codebase que desktop)
 - **Despliegue**: Docker en homelab (kubernetes o docker-compose)
 - **LLM Backend**: **Groq API Cloud** (no local Ollama)
-- **Caso de Uso**: Presentación interactiva, demostraciones en vivo, pruebas sin instalación
+- **Caso de Uso**: Presentación interactiva, demostraciones en vivo, tests sin instalación
 - **Audiencia**: Presentadores, evaluadores, stakeholders sin setup técnico
 
 ### 🎯 Por Qué Groq en la Versión Web?
@@ -826,7 +826,7 @@ networks:
     driver: bridge
 ```
 
-### 🔑 Configuración de Groq API
+### 🔑 Configuration de Groq API
 
 ```python
 # services/rag/groq_client.py (NUEVA clase)
@@ -983,7 +983,7 @@ async def chat_message(
 | **Latency** | 50-300ms (según hardware) | <100ms (Groq) |
 | **Costo** | 0€ (todo local) | Gratis < 30K req/mes |
 | **Privacy** | 100% (offline) | Datos → Groq (HTTPS) |
-| **Caso de Uso** | Productivo, trabajo diario | Demo, presentación, pruebas |
+| **Caso de Uso** | Productivo, trabajo diario | Demo, presentación, tests |
 | **Instalación** | Instalador .msi/.deb/.dmg | Docker o `docker-compose up` |
 | **Escalabilidad** | Limitado por hardware local | Infinito (Groq maneja carga) |
 | **Knowledge Base** | Misma (packages/knowledge_base/) | Misma (reutiliza chroma_data) |
@@ -1014,7 +1014,7 @@ Escenario: Presentación en conferencia/reunión
    └─ ✅ Stakeholders pueden acceder desde cualquier dispositivo
 ```
 
-### 🔒 Seguridad & Configuración
+### 🔒 Seguridad & Configuration
 
 ```bash
 # .env.local (nunca en Git)
@@ -1042,12 +1042,12 @@ GROQ_MODEL=llama-3.3-70b-versatile
 - ✅ Agregar parámetro `llm_mode` al header o request body
 
 **Sprint 4** (Integración Groq):
-- Crear `GroqClient` clase
+- Create `GroqClient` clase
 - Implementar autenticación API key
 - Agregar selector de modelo en Settings
 
 **Sprint 5** (Docker Web):
-- Crear `docker-compose.web.yml`
+- Create `docker-compose.web.yml`
 - Build imagen: `softarchitect-ai:web-latest`
 - Probar en homelab local
 - Documentar guía de deploy
@@ -1083,7 +1083,7 @@ Esto permite:
 
 ---
 
-## 📊 Resumen Ejecutivo
+## 📊 Executive Summary
 
 | Aspecto | Respuesta |
 |--------|-----------|
@@ -1108,10 +1108,10 @@ Esto permite:
 3. **Datos generados**: Se crean on-demand en primer inicio, nunca en Git
 4. **Transparencia**: Usuario solo ve "Installing..." y luego chat limpio
 
-**El siguiente paso** sería implementar HU-6.1 (packaging) para convertir esto de teoría a realidad.
+**El next paso** sería implementar HU-6.1 (packaging) para convertir esto de teoría a realidad.
 
 ---
 
-**Documento creado**: 2 de febrero de 2026
+**Document creado**: 2 de febrero de 2026
 **Versión**: 1.0
 **Status**: Definición arquitectónica para v0.1.0

@@ -1,12 +1,12 @@
 # 🚨 Solución de Problemas - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Guía de troubleshooting
-> **Tiempo de lectura:** 10 minutos
+> **Date:** 19/02/2026
+> **Status:** ✅ Guía de troubleshooting
+> **Reading Time:** 10 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Problemas de Instalación](#problemas-de-instalación)
 - [Problemas con la IA](#problemas-con-la-ia)
@@ -166,7 +166,7 @@ USE_GROQ=true
 - Menciona tecnologías que no pediste
 - "Modo creativo" excesivo
 
-**Causa:** Configuración del modelo inadecuada
+**Causa:** Configuration del modelo inadecuada
 
 **Solución:**
 ```bash
@@ -213,7 +213,7 @@ FREQUENCY_PENALTY=0.5
 **Síntomas:**
 - UI tarda en responder
 - Chat lag
-- Documentos tardan en cargar
+- Documents tardan en cargar
 
 **Causa Posible 1: RAM insuficiente**
 **Solución:**
@@ -313,7 +313,7 @@ Access to fetch at 'http://localhost:8000' from origin 'http://localhost:3000'
 has been blocked by CORS policy
 ```
 
-**Causa:** Configuración CORS mal configurada
+**Causa:** Configuration CORS mal configurada
 
 **Solución:**
 ```python
@@ -333,13 +333,13 @@ app.add_middleware(
 
 ## 💾 Problemas de Datos
 
-### ❌ "Mis proyectos desaparecieron"
+### ❌ "Mis projects desaparecieron"
 
 **Síntomas:**
-- Lista de proyectos vacía
+- Lista de projects vacía
 - "No projects found"
 
-**Causa:** Datos no persistidos o carpeta movida
+**Causa:** Datos no persistidos o folder movida
 
 **Solución:**
 ```bash
@@ -359,7 +359,7 @@ cp -r ./data/backup/* ./data/projects/
 
 ---
 
-### ❌ "Error al guardar documentos"
+### ❌ "Error al guardar documents"
 
 **Síntomas:**
 ```
@@ -452,7 +452,7 @@ SSL_VERIFY=false
 
 ---
 
-### 📚 Documentos Relacionados
+### 📚 Documents Relacionados
 
 - [Instalación Completa](02-INSTALLATION.md) - Para problemas de setup
 - [Quick Start](01-QUICK_START.md) - Comenzar desde cero

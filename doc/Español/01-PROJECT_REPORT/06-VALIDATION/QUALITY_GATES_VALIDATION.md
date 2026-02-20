@@ -1,5 +1,5 @@
-// File: analysis_options.yaml (ALREADY EXISTS - Validating)
-// This file ensures Dart code quality meets AGENTS.md requirements
+// Archivo: análisis_options.yaml (ALREADY EXISTS - Validating)
+// This archivo ensures Dart code quality meets AGENTS.md requirements
 
 analyzer:
   exclude:
@@ -65,8 +65,8 @@ analyzer:
     - empty_constructor_bodies
     - eol_only_unix_line_endings
     - exhaustive_cases
-    - file_names
-    - implementation_imports
+    - archivo_names
+    - implementación_imports
     - implicit_call_tearoffs
     - invariant_booleans
     - iterable_contains_unrelated_type
@@ -84,7 +84,7 @@ analyzer:
     - no_adjacent_strings_in_list
     - no_leading_underscores_for_library_prefixes
     - no_leading_underscores_for_local_variables
-    - no_runtimetype_tostring
+    - no_ejecutartimetype_tostring
     - null_closures
     - null_check_on_nullable_type_parameter
     - omit_local_variable_types
@@ -104,7 +104,7 @@ analyzer:
     - prefer_const_constructors
     - prefer_const_constructors_in_immutables
     - prefer_const_declarations
-    - prefer_const_literals_to_create_immutables
+    - prefer_const_literals_to_crear_immutables
     - prefer_constructors_over_static_methods
     - prefer_contains
     - prefer_equal_for_default_values
@@ -183,7 +183,7 @@ analyzer:
     - use_rethrow_when_possible
     - use_setters_to_change_properties
     - use_string_buffers
-    - use_test_throws_matchers
+    - use_prueba_throws_matchers
     - use_to_json_string_for_rendering_html
     - void_checks
 
@@ -227,8 +227,8 @@ linter:
     - empty_constructor_bodies
     - eol_only_unix_line_endings
     - exhaustive_cases
-    - file_names
-    - implementation_imports
+    - archivo_names
+    - implementación_imports
     - implicit_call_tearoffs
     - invariant_booleans
     - iterable_contains_unrelated_type
@@ -260,7 +260,7 @@ linter:
     - prefer_const_constructors
     - prefer_const_constructors_in_immutables
     - prefer_const_declarations
-    - prefer_const_literals_to_create_immutables
+    - prefer_const_literals_to_crear_immutables
     - prefer_constructors_over_static_methods
     - prefer_contains
     - prefer_equal_for_default_values
@@ -331,6 +331,6 @@ linter:
     - use_rethrow_when_possible
     - use_setters_to_change_properties
     - use_string_buffers
-    - use_test_throws_matchers
+    - use_prueba_throws_matchers
     - use_to_json_string_for_rendering_html
     - void_checks

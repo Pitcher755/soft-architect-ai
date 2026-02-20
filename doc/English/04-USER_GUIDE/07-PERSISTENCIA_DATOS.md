@@ -1,15 +1,15 @@
 # 💾 Persistencia de Datos - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Guía de almacenamiento de datos
-> **Tiempo de lectura:** 10 minutos
+> **Date:** 19/02/2026
+> **Status:** ✅ Guía de almacenamiento de datos
+> **Reading Time:** 10 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Dónde se Guardan tus Datos](#dónde-se-guardan-tus-datos)
-- [Estructura de Archivos](#estructura-de-archivos)
+- [Estructura de Files](#estructura-de-files)
 - [Backup y Restauración](#backup-y-restauración)
 - [Privacidad y Seguridad](#privacidad-y-seguridad)
 - [Migración de Datos](#migración-de-datos)
@@ -51,11 +51,11 @@ soft-architect-ai/
 
 ---
 
-## 🏗️ Estructura de Archivos
+## 🏗️ Estructura de Files
 
-### 1. Proyectos (`data/projects/`)
+### 1. Projects (`data/projects/`)
 
-Cada proyecto tiene esta estructura:
+Cada project tiene esta estructura:
 
 ```
 data/projects/<nombre-proyecto>/
@@ -134,7 +134,7 @@ Las conversaciones se guardan como JSON por fecha.
 
 ---
 
-### 3. Configuración de Usuario (`data/user_config/`)
+### 3. Configuration de Usuario (`data/user_config/`)
 
 #### `preferences.json`
 
@@ -177,7 +177,7 @@ Las conversaciones se guardan como JSON por fecha.
 
 **Tamaño típico:** 500MB - 2GB (depende de Tech Packs instalados)
 
-**Backup:** Copiar carpeta completa `chroma_data/`
+**Backup:** Copiar folder completa `chroma_data/`
 
 ---
 
@@ -203,7 +203,7 @@ tar -czvf ~/backups/soft-architect-ai_$(date +%Y%m%d).tar.gz \
 
 ### Opción B: Backup Automatizado (Script)
 
-**Crear script:** `scripts/backup.sh`
+**Create script:** `scripts/backup.sh`
 
 ```bash
 #!/bin/bash
@@ -227,7 +227,7 @@ tar -czvf "$BACKUP_DIR/backup_$DATE.tar.gz" \
 echo "✅ Backup completo: $BACKUP_DIR/backup_$DATE.tar.gz"
 ```
 
-**Ejecutar:**
+**Execute:**
 ```bash
 chmod +x scripts/backup.sh
 ./scripts/backup.sh
@@ -267,7 +267,7 @@ docker-compose up -d
 
 ### Datos Sensibles
 
-**❌ NUNCA commitear estos archivos:**
+**❌ NUNCA commitear estos files:**
 ```
 .env                    ← API keys, secrets
 data/                   ← Tus proyectos privados
@@ -289,7 +289,7 @@ infrastructure/chroma_data/
 
 ### Encriptación (Opcional)
 
-**Para proyectos ultra-confidenciales:**
+**Para projects ultra-confidenciales:**
 
 ```bash
 # Encriptar carpeta data con GPG
@@ -301,7 +301,7 @@ gpg --decrypt data_encrypted.tar.gz.gpg | tar -xzf -
 
 ---
 
-### Permisos de Archivos
+### Permisos de Files
 
 **Linux/Mac:**
 ```bash
@@ -327,9 +327,9 @@ icacls "data" /inheritance:r /grant:r "%USERNAME%:(OI)(CI)F"
 
 **Proceso:**
 
-1. **Backup de datos antiguos** (ver sección anterior)
+1. **Backup de datos antiguos** (ver sección previous)
 
-2. **Ejecutar script de migración:**
+2. **Execute script de migración:**
    ```bash
    python scripts/migrate_data.py --from 0.1.0 --to 0.2.0
    ```
@@ -406,7 +406,7 @@ python scripts/reindex_chroma.py --optimize
 
 ## 🛠️ Troubleshooting
 
-### ❌ "No puedo guardar archivos (Permission denied)"
+### ❌ "No puedo guardar files (Permission denied)"
 
 **Solución:**
 ```bash
@@ -420,9 +420,9 @@ icacls "data" /reset /t
 
 ---
 
-### ❌ "Mis proyectos desaparecieron"
+### ❌ "Mis projects desaparecieron"
 
-**Causa común:** Carpeta `data/` movida o eliminada accidentalmente
+**Causa común:** Folder `data/` movida o eliminada accidentalmente
 
 **Solución:**
 1. Verificar backup (ver sección Backup)
@@ -435,9 +435,9 @@ icacls "data" /reset /t
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documents Relacionados
 
-- [Instalación](02-INSTALLATION.md) - Configuración inicial
+- [Instalación](02-INSTALLATION.md) - Configuration inicial
 - [Solución de Problemas](08-SOLUCIÓN_DE_PROBLEMAS.md) - Errores comunes
 - [Seguridad](../../context/SECURITY_HARDENING_POLICY.es.md) - Políticas de seguridad
 

@@ -2,7 +2,7 @@
 
 > **Status:** Phase 5 Complete ✅ | Robustness: 50/100 🟡
 > **Target:** Phase 8 | Robustness: 90/100  🟢
-> **Fecha:** 29 de enero de 2026
+> **Date:** 29 de enero de 2026
 
 ---
 
@@ -260,7 +260,7 @@ Phase 8 (Week 5-6):
 
 ## 📞 Next Steps
 
-1. **Ahora:** Leer este documento completo
+1. **Ahora:** Leer este document completo
 2. **Mañana:** Revisar [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md)
 3. **Esta semana:** Comenzar Phase 6 (integration tests)
 4. **Próximo mes:** Completar Phase 8 (production-ready)

@@ -27,7 +27,7 @@
 
 **"El sistema DEBE funcionar SIEMPRE, incluso cuando falle la infraestructura (ChromaDB, Ollama). Antifragile by design."**
 
-Este workflow completa los 4 GAPS críticos identificados en el análisis HU-3.4 vs HU-4.4:
+Este workflow completa los 4 GAPS críticos identificados en el analysis HU-3.4 vs HU-4.4:
 
 - ✅ **GAP 1 (CRITICAL):** Graceful Degradation - Chat continúa sin contexto RAG si ChromaDB falla
 - ✅ **GAP 2 (HIGH):** Retry LLM - Reintentos automáticos (3x) en llamadas LLM con backoff exponencial

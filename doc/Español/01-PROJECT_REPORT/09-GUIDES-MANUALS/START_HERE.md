@@ -1,6 +1,6 @@
 # 🚀 START HERE - Corrección del Sistema Híbrido de Proyectos
 
-**Status:** ✅ COMPLETADO - 0 ERRORES
+**Estado:** ✅ COMPLETADO - 0 ERRORES
 **Fecha:** 9 de febrero de 2026
 **Versión:** 1.0 - Production Ready
 
@@ -9,9 +9,9 @@
 ## ⚡ Tl;DR (30 segundos)
 
 **Problema:** Proyectos creados no aparecían en dashboard. Botón expandible oculto.
-**Causa:** `getMockProjectsData()` no cargaba proyectos reales del filesystem.
+**Causa:** `getMockProyectosData()` no cargaba proyectos reales del archivosystem.
 **Solución:** Cambiar a async + FutureBuilder + cargar real + mock juntos.
-**Resultado:** ✅ Sistema funcionando. 0 errores. Listo producción.
+**Resultadoado:** ✅ Sistema funcionando. 0 errores. Listo producción.
 
 ---
 
@@ -26,7 +26,7 @@
 2. CORRECION_DEFINITIVA_HYBRID_SYSTEM.md
 3. BEFORE_AFTER_COMPARISON.md
 
-### 🧪 Necesito testear (2 horas)
+### 🧪 Necesito pruebaear (2 horas)
 → Sigue:
 1. TESTING_QUICK_START.md
 2. VALIDATION_CHECKLIST.md
@@ -62,14 +62,14 @@ src/client/lib/features/project_shell/
 
 **Compilación:** ✅ 0 ERRORES
 
-### 📚 Documentación (8 archivos)
+### 📚 Documentoación (8 archivos)
 
 | Archivo | Propósito | Lectura |
 |---------|-----------|---------|
 | **ENTREGA_FINAL_VISUAL.md** | Resumen visual | 5 min |
 | **HYBRID_SYSTEM_README.md** | Guía completa | 20 min |
 | **CORRECION_DEFINITIVA_HYBRID_SYSTEM.md** | Técnico detallado | 30 min |
-| **TESTING_QUICK_START.md** | Testing manual (6 tests) | 15 min |
+| **TESTING_QUICK_START.md** | Pruebaing manual (6 pruebas) | 15 min |
 | **VALIDATION_CHECKLIST.md** | Checklist (10 pasos) | 30 min |
 | **BEFORE_AFTER_COMPARISON.md** | Antes/después | 15 min |
 | **PROYECTO_SEARCH_PATHS.md** | Rutas & troubleshooting | 10 min |
@@ -77,7 +77,7 @@ src/client/lib/features/project_shell/
 
 ---
 
-## 🚀 Quick Test (2 minutos)
+## 🚀 Quick Prueba (2 minutos)
 
 ```bash
 # 1. Compilar
@@ -97,14 +97,14 @@ flutter run -d linux
 
 ## ✨ Qué Funciona Ahora
 
-| Feature | Status |
+| Feature | Estado |
 |---------|--------|
-| Proyectos reales (filesystem) | ✅ |
+| Proyectos reales (archivosystem) | ✅ |
 | Proyecto mock (Guía) | ✅ |
 | Grid 8 primeros | ✅ |
 | Botón "Ver todos" (>8) | ✅ |
-| ProjectListView expandible | ✅ |
-| CreateProjectDialog → aparece | ✅ |
+| ProyectoListView expandible | ✅ |
+| CrearProyectoDialog → aparece | ✅ |
 | Persistencia | ✅ |
 | Error handling | ✅ |
 | Performance | ✅ |
@@ -142,7 +142,7 @@ Status:         PRODUCTION READY ✅
 
 ---
 
-## 📝 Documentos por Rol
+## 📝 Documentoos por Rol
 
 **Product Manager/QA:**
 - ENTREGA_FINAL_VISUAL.md
@@ -167,17 +167,17 @@ Status:         PRODUCTION READY ✅
 
 ### Referencia Técnica
 - **3 archivos modificados:**
-  - [project_workspace_screen.dart](src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart)
-  - [mock_projects_data.dart](src/client/lib/features/project_shell/data/mock_projects_data.dart)
-  - [project_list_view.dart](src/client/lib/features/project_shell/presentation/widgets/project_list_view.dart)
+  - [proyecto_workspace_screen.dart](src/client/lib/features/proyecto_shell/presentation/screens/proyecto_workspace_screen.dart)
+  - [mock_proyectos_data.dart](src/client/lib/features/proyecto_shell/data/mock_proyectos_data.dart)
+  - [proyecto_list_view.dart](src/client/lib/features/proyecto_shell/presentation/widgets/proyecto_list_view.dart)
 
-### Documentación Detallada
+### Documentoación Detallada
 - [HYBRID_SYSTEM_README.md](HYBRID_SYSTEM_README.md) - Guía completa
 - [CORRECION_DEFINITIVA_HYBRID_SYSTEM.md](CORRECION_DEFINITIVA_HYBRID_SYSTEM.md) - Detalles técnicos
 - [BEFORE_AFTER_COMPARISON.md](BEFORE_AFTER_COMPARISON.md) - Antes/después
 
-### Testing
-- [TESTING_QUICK_START.md](TESTING_QUICK_START.md) - Tests rápidos (6)
+### Pruebaing
+- [TESTING_QUICK_START.md](TESTING_QUICK_START.md) - Pruebas rápidos (6)
 - [VALIDATION_CHECKLIST.md](VALIDATION_CHECKLIST.md) - Validación (10 pasos)
 
 ### Troubleshooting
@@ -189,12 +189,12 @@ Status:         PRODUCTION READY ✅
 
 1. **Hoy (ahora):**
    - [ ] Leer este archivo (2 min)
-   - [ ] Ejecutar `flutter run` (2 min)
+   - [ ] Ejecutar `flutter ejecutar` (2 min)
    - [ ] Verificar compilación (5 min)
 
 2. **Esta sesión:**
    - [ ] Leer TESTING_QUICK_START.md (15 min)
-   - [ ] Ejecutar Test 1 (5 min)
+   - [ ] Ejecutar Prueba 1 (5 min)
 
 3. **Antes de producción:**
    - [ ] Completar VALIDATION_CHECKLIST.md (2 horas)
@@ -214,7 +214,7 @@ Status:         PRODUCTION READY ✅
 
 ---
 
-## 🎯 Status Final
+## 🎯 Estado Final
 
 ```
 ╔══════════════════════════════════════════╗
@@ -230,4 +230,4 @@ Status:         PRODUCTION READY ✅
 
 **Siguiente:** Lee [ENTREGA_FINAL_VISUAL.md](ENTREGA_FINAL_VISUAL.md)
 **Preguntas:** Consulta [HYBRID_SYSTEM_README.md](HYBRID_SYSTEM_README.md)
-**Testing:** Sigue [TESTING_QUICK_START.md](TESTING_QUICK_START.md)
+**Pruebaing:** Sigue [TESTING_QUICK_START.md](TESTING_QUICK_START.md)

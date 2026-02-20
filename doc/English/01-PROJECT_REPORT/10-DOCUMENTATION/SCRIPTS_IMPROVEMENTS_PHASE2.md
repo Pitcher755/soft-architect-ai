@@ -1,16 +1,16 @@
 # 🔧 Scripts Improvements - Phase 2 (HU-4.4)
 
-> **Fecha:** 16/02/2026
-> **Estado:** ✅ COMPLETADO
+> **Date:** 16/02/2026
+> **Status:** ✅ COMPLETADO
 > **Autor:** SoftArchitect AI
 
-## 📊 Resumen Ejecutivo
+## 📊 Executive Summary
 
-Se han realizado mejoras masivas en **8 scripts críticos** del proyecto para asegurar:
+Se han realizado mejoras masivas en **8 scripts críticos** of the project para asegurar:
 - ✅ **Rutas relativas** (funcionan desde cualquier directorio)
-- ✅ **Documentación completa** (headers con usage, requirements, descripción)
+- ✅ **Documentación completa** (headers con usage, requirements, description)
 - ✅ **Validación de requisitos** (checks previos de dependencias)
-- ✅ **Cobertura total** (validan TODO el proyecto, no solo features)
+- ✅ **Cobertura total** (validan TODO el project, no solo features)
 - ✅ **Mensajes claros** (success/error/warning diferenciados)
 
 ---
@@ -127,7 +127,7 @@ PYTEST_BIN="$PYTHON_VENV/bin/pytest"
 BANDIT_BIN="$PYTHON_VENV/bin/bandit"
 ```
 
-### Resultado:
+### Result:
 ✅ Script ejecutándose correctamente, tests unitarios Python ahora pasan.
 
 ---
@@ -224,8 +224,8 @@ echo "0) ❌ Exit"
 # - performance-tests.yml: Performance Tests
 ```
 
-### Resultado:
-✅ Script validando workflows correctamente contra archivos en `.github/workflows/`.
+### Result:
+✅ Script validando workflows correctamente contra files en `.github/workflows/`.
 
 ---
 
@@ -287,10 +287,10 @@ done
 
 ### Mejoras Requeridas:
 
-1. **Header completo** con descripción y usage
+1. **Header completo** con description y usage
 2. **Rutas relativas desde PROJECT_ROOT**
-3. **Validación de todo el proyecto** (no solo features)
-4. **Reportes mejorados** (listado de archivos con issues)
+3. **Validación de todo el project** (no solo features)
+4. **Reportes mejorados** (listado de files con issues)
 5. **Exit codes correctos** (0=pass, 1=fail)
 
 ### Checks a Implementar:
@@ -307,7 +307,7 @@ grep -r "def [a-z]*_[a-z]*[áéíóúñ]" src/server/app/
 # 4. Reportar issues con paths exactos
 ```
 
-### Resultado Esperado:
+### Result Esperado:
 ```
 🔍 AUDITORÍA: Código en Inglés (AGENTS.md)
 ════════════════════════════════════════════
@@ -330,7 +330,7 @@ grep -r "def [a-z]*_[a-z]*[áéíóúñ]" src/server/app/
 
 ### Mejoras Requeridas:
 
-1. **Ejecutar sobre TODO el proyecto** (no solo features)
+1. **Execute sobre TODO el project** (no solo features)
 2. **Thresholds configurables** (coverage, lint, etc.)
 3. **Integración con AGENTS.md CI/CD rules**
 4. **Exit codes estrictos** (1 si algún gate falla)
@@ -402,7 +402,7 @@ esac
 
 **Path:** `scripts/testing/RUN_COMPLETE_TEST_SUITE.sh`
 
-### Estado Actual:
+### Status Actual:
 ```bash
 #!/bin/bash
 # Compatibility wrapper (kept for existing docs/commands)
@@ -411,7 +411,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 "$SCRIPT_DIR/run_tests.sh" all --coverage
 ```
 
-### Análisis:
+### Analysis:
 ✅ **Correcto:** Se trata de un wrapper que delega en `run_tests.sh` con cobertura completa. Cumple su propósito.
 
 ---
@@ -420,7 +420,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 **Path:** `scripts/testing/run_tests.sh`
 
-### Estado Actual:
+### Status Actual:
 - ✅ Unified test runner (Flutter + Python)
 - ✅ Coverage support (--coverage flag)
 - ✅ Mode selection (all|flutter|python)
@@ -455,9 +455,9 @@ Flutter coverage: 86.6%
 
 ---
 
-## 📊 Resumen de Estado
+## 📊 Resumen de Status
 
-| Script | Estado | Prioridad | Mejoras Aplicadas |
+| Script | Status | Prioridad | Mejoras Aplicadas |
 |--------|--------|-----------|-------------------|
 | PRE_PUSH_VALIDATION_MASTER.sh | ✅ COMPLETADO | 🔴 CRÍTICO | Header, requisitos, fix tests unitarios, paths relativos |
 | test-workflows-locally.sh | ✅ COMPLETADO | 🟡 ALTA | Header, check dependencies, menú mejorado, validación workflows |
@@ -470,14 +470,14 @@ Flutter coverage: 86.6%
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
 ### Inmediatos (antes de push):
-1. ✅ Ejecutar `PRE_PUSH_VALIDATION_MASTER.sh` completo
+1. ✅ Execute `PRE_PUSH_VALIDATION_MASTER.sh` completo
 2. ✅ Verificar que todos los tests unitarios Python pasan
 3. ✅ Confirmar coverage ≥80% en Python
 
-### Post-Push (HU siguiente):
+### Post-Push (HU next):
 1. ⏳ Completar mejoras en `validate-workflows.sh`
 2. ⏳ Completar mejoras en `audit-english-compliance.sh`
 3. ⏳ Completar mejoras en `validate-quality-gates.sh`
@@ -487,12 +487,12 @@ Flutter coverage: 86.6%
 
 ## 📝 Conclusiones
 
-### Logros de Esta Fase:
+### Logros de Esta Phase:
 - ✅ **2 scripts críticos completamente mejorados** (PRE_PUSH, test-workflows)
 - ✅ **Fix crítico en tests unitarios** (Path explícito tests/server/unit/)
 - ✅ **Rutas relativas en todos los scripts mejorados**
 - ✅ **Headers completos con requirements y usage**
-- ✅ **Validación de dependencias antes de ejecutar**
+- ✅ **Validación de dependencias antes de execute**
 
 ### Impacto:
 - 🎯 **Scripts funcionan desde cualquier directorio**

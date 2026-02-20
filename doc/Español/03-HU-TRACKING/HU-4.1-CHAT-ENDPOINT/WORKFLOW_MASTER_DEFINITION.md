@@ -1,22 +1,22 @@
 # 🧠 WORKFLOW MASTER: HU-4.1 Backend Chat Endpoint & RAG Orchestration
 
-> **Version:** 1.1.0 (Complete - Fixed Developer Tool Trap)
+> **Versión:** 1.1.0 (Complete - Fixed Developer Tool Trap)
 > **Methodology:** TDD Strict + Security-First + OWASP Paranoia
 > **Author:** ArchitectZero
 > **Last Updated:** 2026-02-14
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Introduction & Philosophy](#1-introduction--philosophy)
-2. [Phase 0: Setup & API Contracts](#phase-0-setup--api-contracts)
-3. [Phase 1: Domain & Security (TDD Red/Green)](#phase-1-domain--security-tdd-redgreen)
-4. [Phase 2: Infrastructure - LLM Strategy (TDD Red/Green)](#phase-2-infrastructure---llm-strategy-tdd-redgreen)
-5. [Phase 3: RAG Orchestrator (TDD Red/Green)](#phase-3-rag-orchestrator-tdd-redgreen)
-6. [Phase 4: FastAPI Endpoint (TDD Red/Green)](#phase-4-fastapi-endpoint-tdd-redgreen)
-7. [Phase 5: Quality & Security Hardening](#phase-5-quality--security-hardening)
-8. [Phase 6: Validation & PR](#phase-6-validation--pr)
+2. [Fase 0: Setup & API Contracts](#fase-0-setup--api-contracts)
+3. [Fase 1: Domain & Security (TDD Red/Green)](#fase-1-domain--security-tdd-redgreen)
+4. [Fase 2: Infraestructura - LLM Strategy (TDD Red/Green)](#fase-2-infrastructure---llm-strategy-tdd-redgreen)
+5. [Fase 3: RAG Orchestrator (TDD Red/Green)](#fase-3-rag-orchestrator-tdd-redgreen)
+6. [Fase 4: FastAPI Endpoint (TDD Red/Green)](#fase-4-fastapi-endpoint-tdd-redgreen)
+7. [Fase 5: Quality & Security Hardening](#fase-5-quality--security-hardening)
+8. [Fase 6: Validation & PR](#fase-6-validation--pr)
 9. [Emergency Procedures](#emergency-procedures)
 10. [Success Criteria Matrix](#success-criteria-matrix)
 
@@ -29,11 +29,11 @@
 **"Construir el cerebro de IA del proyecto sin comprometer un byte de seguridad, con paranoia OWASP nivel máximo"**
 
 Este workflow está diseñado para:
-- ✅ **TDD Estricto:** Ninguna línea de código sin test previo (Red → Green → Refactor).
+- ✅ **TDD Estricto:** Ninguna línea de código sin prueba previo (Red → Green → Refactor).
 - ✅ **Security-First:** Prevención de inyecciones (Prompt, XSS, SQL) desde el diseño.
 - ✅ **Type Safety:** 0 errores de Pyright, contratos explícitos.
-- ✅ **Resilience:** Patrón Strategy para LLMs (Ollama ↔ Groq sin tocar el core) y manejo de excepciones de dominio.
-- ✅ **Modularity:** Dependency Injection para facilitar testing con mocks.
+- ✅ **Resiliencia:** Patrón Strategy para LLMs (Ollama ↔ Groq sin tocar el core) y manejo de excepciones de dominio.
+- ✅ **Modularity:** Dependency Injection para facilitar pruebaing con mocks.
 
 ---
 
@@ -41,8 +41,8 @@ Este workflow está diseñado para:
 
 | Factor | Acceptance | Validation Method |
 |--------|-----------|------------------|
-| **Test Coverage** | >80% (domain >95%) | `pytest --cov --cov-fail-under=80` |
-| **Response Time** | <500ms | Integration test + manual profiling |
+| **Prueba Coverage** | >80% (domain >95%) | `pyprueba --cov --cov-fail-under=80` |
+| **Response Time** | <500ms | Integración prueba + manual profiling |
 | **Type Safety** | 0 Pyright errors | `python -m pyright app/` |
 | **Security** | 0 high-severity issues | `bandit -r app/` |
 | **Code Quality** | Black + Ruff clean | PRE_PUSH_VALIDATION_MASTER.sh |
@@ -51,16 +51,16 @@ Este workflow está diseñado para:
 
 ### 🚨 Non-Negotiable Rules
 
-1. **NEVER commit code without tests passing**
+1. **NEVER commit code without pruebas passing**
 2. **NEVER expose stack traces to the client**
 3. **NEVER skip input sanitization**
 4. **NEVER use `# type: ignore` without justification comment**
-5. **NEVER push without running `PRE_PUSH_VALIDATION_MASTER.sh`**
+5. **NEVER push without ejecutarning `PRE_PUSH_VALIDATION_MASTER.sh`**
 6. **NEVER strip HTML tags with regex** (Developer Tool Trap - destroys code like `List<String>`)
 
 ---
 
-## Phase 0: Setup & API Contracts
+## Fase 0: Setup & API Contracts
 
 **Duration:** 1-2 hours
 **Objective:** Prepare workspace, define exact API contracts before coding
@@ -87,9 +87,9 @@ mkdir -p doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT
 
 #### 0.2 Define Pydantic Schema Contracts
 
-**File:** `src/server/app/domain/schemas/chat.py`
+**Archivo:** `src/server/app/domain/schemas/chat.py`
 
-Create the schema skeleton (structure only, no logic yet):
+Crear the schema skeleton (structure only, no logic yet):
 
 ```python
 """
@@ -213,11 +213,11 @@ python -c "from src.server.app.domain.schemas.chat import ChatRequest, ChatRespo
 
 ---
 
-#### 0.3 Document API Contract
+#### 0.3 Documento API Contract
 
-**File:** `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/API_CONTRACT.md`
+**Archivo:** `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/API_CONTRACT.md`
 
-Create OpenAPI-style documentation:
+Crear OpenAPI-estilo documentoation:
 
 ```markdown
 # API Contract: POST /api/v1/chat/message
@@ -233,7 +233,7 @@ Content-Type: application/json
 {
   "conversation_id": "550e8400-e29b-41d4-a716-446655440000",
   "message": "How do I implement authentication in Flutter?",
-  "project_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+  "proyecto_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
 }
 ```
 
@@ -302,30 +302,30 @@ git commit -m "docs: init HU-4.1 tracking and API contracts (skeleton only)"
 
 ---
 
-### 🎓 Phase 0 Exit Criteria
+### 🎓 Fase 0 Exit Criteria
 
-- ✅ Branch `feature/backend-chat-endpoint` created
-- ✅ Tracking documentation complete (README, PROGRESS, ARTIFACTS, WORKFLOW)
+- ✅ Branch `feature/backend-chat-endpoint` creard
+- ✅ Tracking documentoation complete (README, PROGRESS, ARTIFACTS, WORKFLOW)
 - ✅ Schema skeleton defined (ChatRequest, ChatResponse, RAGContext)
-- ✅ API contract documented
+- ✅ API contract documentoed
 - ✅ Initial commit pushed
 
 ---
 
-## Phase 1: Domain & Security (TDD Red/Green)
+## Fase 1: Domain & Security (TDD Red/Green)
 
 **Duration:** 3-4 hours
 **Objective:** Implement domain layer with security-first validation using TDD Red → Green → Refactor
 
-**TDD Mantra:** *"Write the test that would make you confident the security hole is closed, then close it."*
+**TDD Mantra:** *"Write the prueba that would make you confident the security hole is closed, then close it."*
 
 ---
 
 ### 🔴 TDD Cycle 1: Input Validation Basics
 
-#### 1.1 Write Failing Tests
+#### 1.1 Write Failing Pruebas
 
-**File:** `tests/server/unit/domain/schemas/test_chat_schemas.py`
+**Archivo:** `pruebas/server/unit/domain/schemas/prueba_chat_schemas.py`
 
 ```python
 """
@@ -543,7 +543,7 @@ class TestChatResponseSchema:
         assert response.metadata is None
 ```
 
-**Run tests (they should FAIL):**
+**Ejecutar pruebas (they should FAIL):**
 ```bash
 cd src/server
 pytest tests/server/unit/domain/schemas/test_chat_schemas.py -v
@@ -557,7 +557,7 @@ pytest tests/server/unit/domain/schemas/test_chat_schemas.py -v
 
 ---
 
-#### 1.2 Implement Security Validators (Make Tests Pass)
+#### 1.2 Implement Security Validators (Make Pruebas Pass)
 
 **Update:** `src/server/app/domain/schemas/chat.py`
 
@@ -621,7 +621,7 @@ class ChatRequest(BaseModel):
         return v
 ```
 
-**Run tests again (should PASS now):**
+**Ejecutar pruebas again (should PASS now):**
 ```bash
 pytest tests/server/unit/domain/schemas/test_chat_schemas.py -v
 
@@ -636,7 +636,7 @@ pytest tests/server/unit/domain/schemas/test_chat_schemas.py -v
 
 #### 1.3 Refactor: Extract Sanitizer Utility
 
-**Create:** `src/server/app/domain/utils/sanitizer.py`
+**Crear:** `src/server/app/domain/utils/sanitizer.py`
 
 ```python
 """
@@ -785,9 +785,9 @@ python -m pyright app/domain/schemas/chat.py app/domain/utils/sanitizer.py
 
 ---
 
-### 🎓 Phase 1 Exit Criteria
+### 🎓 Fase 1 Exit Criteria
 
-- ✅ All domain tests pass (>95% coverage)
+- ✅ All domain pruebas pass (>95% coverage)
 - ✅ Security validators implemented (HTML escaping, XSS, prompt injection detection)
 - ✅ Developer Tool Trap FIXED (code snippets preserved)
 - ✅ Pyright reports 0 errors
@@ -819,16 +819,16 @@ Refs: HU-4.1"
 
 ---
 
-## Phase 2: Infrastructure - LLM Strategy (TDD Red/Green)
+## Fase 2: Infraestructura - LLM Strategy (TDD Red/Green)
 
 **Duration:** 4-5 hours
 **Objective:** Implement the Strategy Pattern to seamlessly switch between local Ollama and cloud Groq API.
 
 ---
 
-### 🔴 2.1 RED: Strategy Tests
+### 🔴 2.1 RED: Strategy Pruebas
 
-**File:** `tests/server/unit/infrastructure/llm/test_llm_clients.py`
+**Archivo:** `pruebas/server/unit/infrastructure/llm/prueba_llm_clients.py`
 
 ```python
 """
@@ -929,7 +929,7 @@ class TestGroqClient:
         assert isinstance(client, BaseLLMClient)
 ```
 
-**Run tests (should FAIL):**
+**Ejecutar pruebas (should FAIL):**
 ```bash
 pytest tests/server/unit/infrastructure/llm/ -v
 
@@ -938,11 +938,11 @@ pytest tests/server/unit/infrastructure/llm/ -v
 
 ---
 
-### 🟢 2.2 GREEN: Base Protocol & Concrete Implementations
+### 🟢 2.2 GREEN: Base Protocol & Concrete Implementacións
 
 #### 2.2.1 Define Custom Exceptions
 
-**File:** `src/server/app/core/exceptions/base.py`
+**Archivo:** `src/server/app/core/exceptions/base.py`
 
 ```python
 """
@@ -1005,7 +1005,7 @@ class RAGRetrievalError(BaseAppError):
 
 #### 2.2.2 Base Protocol (Abstract)
 
-**File:** `src/server/app/infrastructure/llm/base.py`
+**Archivo:** `src/server/app/infrastructure/llm/base.py`
 
 ```python
 """
@@ -1057,7 +1057,7 @@ class BaseLLMClient(ABC):
 
 #### 2.2.3 Ollama Client (Local)
 
-**File:** `src/server/app/infrastructure/llm/ollama_client.py`
+**Archivo:** `src/server/app/infrastructure/llm/ollama_client.py`
 
 ```python
 """
@@ -1185,7 +1185,7 @@ class OllamaClient(BaseLLMClient):
 
 #### 2.2.4 Groq Client (Stub)
 
-**File:** `src/server/app/infrastructure/llm/groq_client.py`
+**Archivo:** `src/server/app/infrastructure/llm/groq_client.py`
 
 ```python
 """
@@ -1245,7 +1245,7 @@ class GroqClient(BaseLLMClient):
 
 ### 🔵 2.3 REFACTOR: Factory Pattern
 
-**File:** `src/server/app/infrastructure/llm/factory.py`
+**Archivo:** `src/server/app/infrastructure/llm/factory.py`
 
 ```python
 """
@@ -1303,7 +1303,7 @@ def get_llm_client(mode: Optional[str] = None) -> BaseLLMClient:
 
 ---
 
-### 2.4 Run Tests (Should PASS)
+### 2.4 Ejecutar Pruebas (Should PASS)
 
 ```bash
 pytest tests/server/unit/infrastructure/llm/ -v --cov=app/infrastructure/llm --cov-fail-under=90
@@ -1328,14 +1328,14 @@ python -m pyright app/infrastructure/llm/
 
 ---
 
-### 🎓 Phase 2 Exit Criteria
+### 🎓 Fase 2 Exit Criteria
 
 - ✅ BaseLLMClient protocol defined (abstract)
 - ✅ OllamaClient implemented with error handling
-- ✅ GroqClient stub created
-- ✅ Factory pattern for runtime switching
+- ✅ GroqClient stub creard
+- ✅ Factory pattern for ejecutartime switching
 - ✅ Custom domain exceptions (LLMConnectionError, LLMTimeoutError)
-- ✅ Test coverage >90%
+- ✅ Prueba coverage >90%
 - ✅ Pyright 0 errors
 - ✅ Commit: `feat(infrastructure): implement LLM Strategy pattern (Ollama + Groq stub)`
 
@@ -1363,16 +1363,16 @@ Refs: HU-4.1"
 
 ---
 
-## Phase 3: RAG Orchestrator (TDD Red/Green)
+## Fase 3: RAG Orchestrator (TDD Red/Green)
 
 **Duration:** 5-6 hours
 **Objective:** Build the core use case that coordinates ChromaDB, Templates, and the LLM.
 
 ---
 
-### 🔴 3.1 RED: Orchestrator Tests
+### 🔴 3.1 RED: Orchestrator Pruebas
 
-**File:** `tests/server/unit/services/rag/test_orchestrator.py`
+**Archivo:** `pruebas/server/unit/services/rag/prueba_orchestrator.py`
 
 ```python
 """
@@ -1531,7 +1531,7 @@ class TestRAGOrchestrator:
             await orchestrator.process_message(request)
 ```
 
-**Run tests (should FAIL):**
+**Ejecutar pruebas (should FAIL):**
 ```bash
 pytest tests/server/unit/services/rag/test_orchestrator.py -v
 
@@ -1540,9 +1540,9 @@ pytest tests/server/unit/services/rag/test_orchestrator.py -v
 
 ---
 
-### 🟢 3.2 GREEN: Orchestrator Implementation
+### 🟢 3.2 GREEN: Orchestrator Implementación
 
-**File:** `src/server/app/services/rag/orchestrator.py`
+**Archivo:** `src/server/app/services/rag/orchestrator.py`
 
 ```python
 """
@@ -1665,7 +1665,7 @@ class RAGOrchestrator:
 
 ### 🔵 3.3 REFACTOR: Vector Store & Template Protocols (Stubs)
 
-**File:** `src/server/app/services/rag/vector_store_protocol.py` (stub)
+**Archivo:** `src/server/app/services/rag/vector_store_protocol.py` (stub)
 
 ```python
 """
@@ -1697,7 +1697,7 @@ class VectorStoreProtocol(ABC):
         pass
 ```
 
-**File:** `src/server/app/services/rag/template_builder_protocol.py` (stub)
+**Archivo:** `src/server/app/services/rag/template_builder_protocol.py` (stub)
 
 ```python
 """
@@ -1746,7 +1746,7 @@ class TemplateBuilderProtocol(ABC):
 
 ---
 
-### 3.4 Run Tests (Should PASS)
+### 3.4 Ejecutar Pruebas (Should PASS)
 
 ```bash
 pytest tests/server/unit/services/rag/test_orchestrator.py -v --cov=app/services/rag --cov-fail-under=85
@@ -1771,13 +1771,13 @@ python -m pyright app/services/rag/
 
 ---
 
-### 🎓 Phase 3 Exit Criteria
+### 🎓 Fase 3 Exit Criteria
 
 - ✅ RAGOrchestrator implemented with dependency injection
 - ✅ Vector store protocol defined (stub)
 - ✅ Template builder protocol defined (stub)
 - ✅ Error handling for all failure modes
-- ✅ Test coverage >85%
+- ✅ Prueba coverage >85%
 - ✅ Pyright 0 errors
 - ✅ Commit: `feat(services): implement RAGOrchestrator with dependency injection`
 
@@ -1803,16 +1803,16 @@ Refs: HU-4.1"
 
 ---
 
-## Phase 4: FastAPI Endpoint (TDD Red/Green)
+## Fase 4: FastAPI Endpoint (TDD Red/Green)
 
 **Duration:** 3-4 hours
-**Objective:** Expose the REST API endpoint and map Domain Exceptions to HTTP status codes.
+**Objective:** Expose the REST API endpoint and map Domain Exceptions to HTTP estado codes.
 
 ---
 
-### 🔴 4.1 RED: Endpoint E2E Tests
+### 🔴 4.1 RED: Endpoint E2E Pruebas
 
-**File:** `tests/server/integration/api/v1/test_chat_endpoints.py`
+**Archivo:** `pruebas/server/integration/api/v1/prueba_chat_endpoints.py`
 
 ```python
 """
@@ -1940,7 +1940,7 @@ class TestChatEndpoint:
         app.dependency_overrides.clear()
 ```
 
-**Run tests (should FAIL):**
+**Ejecutar pruebas (should FAIL):**
 ```bash
 pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
 
@@ -1953,7 +1953,7 @@ pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
 
 #### 4.2.1 Dependencies (DI Container)
 
-**File:** `src/server/app/api/dependencies.py`
+**Archivo:** `src/server/app/api/dependencies.py`
 
 ```python
 """
@@ -2007,7 +2007,7 @@ def get_rag_orchestrator() -> RAGOrchestrator:
 
 #### 4.2.2 Chat Router
 
-**File:** `src/server/app/api/v1/chat.py`
+**Archivo:** `src/server/app/api/v1/chat.py`
 
 ```python
 """
@@ -2081,7 +2081,7 @@ async def chat_message(
 
 #### 4.2.3 Register Router in Main App
 
-**File:** `src/server/app/main.py` (update)
+**Archivo:** `src/server/app/main.py` (update)
 
 ```python
 from fastapi import FastAPI
@@ -2099,7 +2099,7 @@ async def health_check():
 
 ---
 
-### 4.3 Run Tests (Should PASS)
+### 4.3 Ejecutar Pruebas (Should PASS)
 
 ```bash
 pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
@@ -2113,7 +2113,7 @@ pytest tests/server/integration/api/v1/test_chat_endpoints.py -v
 
 ---
 
-### 4.4 Manual Test (E2E)
+### 4.4 Manual Prueba (E2E)
 
 ```bash
 # Start server
@@ -2133,13 +2133,13 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
 
 ---
 
-### 🎓 Phase 4 Exit Criteria
+### 🎓 Fase 4 Exit Criteria
 
 - ✅ POST /api/v1/chat/message endpoint implemented
 - ✅ Exception handling (422, 503, 500)
 - ✅ Dependency injection configured
-- ✅ Integration tests pass
-- ✅ Manual E2E test successful
+- ✅ Integración pruebas pass
+- ✅ Manual E2E prueba successful
 - ✅ Commit: `feat(api): implement POST /api/v1/chat/message endpoint`
 
 ```bash
@@ -2164,7 +2164,7 @@ Refs: HU-4.1"
 
 ---
 
-## Phase 5: Quality & Security Hardening
+## Fase 5: Quality & Security Hardening
 
 **Duration:** 2-3 hours
 **Objective:** Comply strictly with AGENTS.md before pushing to remote.
@@ -2210,7 +2210,7 @@ bandit -r app/ -q
 
 ---
 
-### 5.4 Coverage Analysis
+### 5.4 Coverage Análisis
 
 *Target: >85% for this module.*
 
@@ -2251,14 +2251,14 @@ time curl -X POST http://localhost:8000/api/v1/chat/message \\
 
 ---
 
-### 🎓 Phase 5 Exit Criteria
+### 🎓 Fase 5 Exit Criteria
 
-- ✅ Black formatted (all files)
+- ✅ Black formatted (all archivos)
 - ✅ Ruff clean (0 violations)
 - ✅ Pyright 0 errors
 - ✅ Bandit 0 high-severity issues
 - ✅ Coverage >85%
-- ✅ Performance <500ms (manual verification)
+- ✅ Performance <500ms (manual verificación)
 - ✅ Commit: `chore: code quality hardening for HU-4.1`
 
 ```bash
@@ -2285,7 +2285,7 @@ Refs: HU-4.1"
 
 ---
 
-## Phase 6: Validation & PR
+## Fase 6: Validation & PR
 
 **Duration:** 1-2 hours
 **Objective:** Final gate validation and Merge.
@@ -2312,7 +2312,7 @@ Vuelve a la raíz del repositorio y ejecuta:
 # 🏆 ALL VALIDATION GATES PASSED! (Exit code: 0)
 ```
 
-*If any phase fails, fix and re-run until exit code 0.*
+*If any fase fails, fix and re-ejecutar until exit code 0.*
 
 ---
 
@@ -2405,8 +2405,8 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
   -H "Content-Type: application/json" \\
   -d '{
     "conversation_id": "550e8400-e29b-41d4-a716-446655440000",
-    "message": "How do I test in Python?",
-    "project_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+    "message": "How do I prueba in Python?",
+    "proyecto_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
   }'
 ```
 
@@ -2424,21 +2424,21 @@ Fixes #HU-4.1
 
 ---
 
-### 🎓 Phase 6 Exit Criteria
+### 🎓 Fase 6 Exit Criteria
 
 - ✅ PRE_PUSH_VALIDATION_MASTER exit code 0
 - ✅ All commits pushed to remote
-- ✅ PR created with complete description
+- ✅ PR creard with complete descripción
 - ✅ GitHub Actions CI passed
-- ✅ Ready for code review
+- ✅ Preparado para code review
 
 ---
 
 ## Emergency Procedures
 
-### 🚨 If Tests Fail During Development
+### 🚨 If Pruebas Fail During Development
 
-1. **STOP immediately** - Don't commit failing code
+1. **STOP inmediataly** - Don't commit failing code
 2. **Debug locally:**
    ```bash
    pytest tests/server/unit/ -v --tb=short -x  # Stop on first failure
@@ -2488,11 +2488,11 @@ git branch -D feature/backend-chat-endpoint
 
 ## Success Criteria Matrix
 
-| Criteria | Target | Validation Command | Status |
+| Criteria | Target | Validation Command | Estado |
 |----------|--------|-------------------|--------|
-| **Test Coverage** | >80% | `pytest --cov --cov-fail-under=80` | ✅ |
-| **Domain Coverage** | >95% | `pytest tests/server/unit/domain/ --cov=app/domain --cov-fail-under=95` | ✅ |
-| **Response Time** | <500ms | Manual profiling + integration test | ✅ |
+| **Prueba Coverage** | >80% | `pyprueba --cov --cov-fail-under=80` | ✅ |
+| **Domain Coverage** | >95% | `pyprueba pruebas/server/unit/domain/ --cov=app/domain --cov-fail-under=95` | ✅ |
+| **Response Time** | <500ms | Manual profiling + integration prueba | ✅ |
 | **Type Safety** | 0 errors | `python -m pyright app/` | ✅ (gate opcional en pre-push) |
 | **Black Formatting** | No changes | `black --check src/server/` | ✅ |
 | **Ruff Linting** | 0 violations | `ruff check src/server/` | ✅ |
@@ -2543,11 +2543,11 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
 - ✅ Endpoint responds <500ms
 - ✅ RAG inyecta contexto
 - ✅ Strategy soporta Ollama/Groq
-- ✅ Testing >85%
+- ✅ Pruebaing >85%
 - ✅ 0 errores Pyright
 - ✅ Security hardening (HTML escaping, prompt injection detection)
 - ✅ Developer Tool Trap fix
-- ✅ Dependency injection for testability
+- ✅ Dependency injection for pruebaability
 - ✅ Error handling (422, 503, 500)
 
 **NEXT STEPS:**
@@ -2557,4 +2557,4 @@ curl -X POST http://localhost:8000/api/v1/chat/message \\
 
 ---
 
-> **Note:** This workflow document is complete and production-ready. All phases (0-6) are fully detailed with TDD cycles, security fixes, and quality gates. Follow this workflow strictly to ensure HU-4.1 is implemented to ArchitectZero standards.
+> **Note:** This workflow documento is complete and production-ready. All fases (0-6) are fully detailed with TDD cycles, security fixes, and quality gates. Follow this workflow strictly to ensure HU-4.1 is implemented to ArchitectZero standards.

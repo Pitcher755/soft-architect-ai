@@ -1,6 +1,6 @@
-# 📦 HU-1.1: Artifacts (Archivos a Generar)
+# 📦 HU-1.1: Artifacts (Files a Generar)
 
-> **Documentación:** Archivos que se crearán durante la ejecución de esta HU
+> **Documentación:** Files que se createán durante la ejecución de esta HU
 
 ---
 
@@ -8,41 +8,41 @@
 
 ### 🐳 Infrastructure (docker-compose.yml)
 
-| Archivo | Ubicación | Descripción | Status |
+| File | Ubicación | Description | Status |
 |---------|-----------|-------------|--------|
-| `docker-compose.yml` | `infrastructure/` | Orquestación de 3 servicios (API, ChromaDB, Ollama) | ⏳ Pendiente |
-| `pre_check.py` | `infrastructure/` | Script para validar pre-requisitos (Docker, puertos) | ⏳ Pendiente |
-| `verify_setup.py` | `infrastructure/` | Script para validar que servicios están online | ⏳ Pendiente |
-| `.dockerignore` | `infrastructure/` | Archivo para limpiar contexto Docker | ⏳ Pendiente |
+| `docker-compose.yml` | `infrastructure/` | Orquestación de 3 servicios (API, ChromaDB, Ollama) | ⏳ Pending |
+| `pre_check.py` | `infrastructure/` | Script para validar pre-requisitos (Docker, puertos) | ⏳ Pending |
+| `verify_setup.py` | `infrastructure/` | Script para validar que servicios están online | ⏳ Pending |
+| `.dockerignore` | `infrastructure/` | File para limpiar contexto Docker | ⏳ Pending |
 
 ### 🔧 Backend (src/server)
 
-| Archivo | Ubicación | Descripción | Status |
+| File | Ubicación | Description | Status |
 |---------|-----------|-------------|--------|
 | `Dockerfile` | `src/server/` | Multi-stage build, non-root user, healthchecks | ⏳ Revisar/Mejorar |
-| `.dockerignore` | `src/server/` | Previene leaks de secretos y basura | ⏳ Pendiente |
+| `.dockerignore` | `src/server/` | Previene leaks de secretos y basura | ⏳ Pending |
 
 ### 🚀 Scripts de Orquestación (raíz)
 
-| Archivo | Ubicación | Descripción | Status |
+| File | Ubicación | Description | Status |
 |---------|-----------|-------------|--------|
-| `start_stack.sh` | raíz | Script para arrancar todo el stack | ⏳ Pendiente |
-| `stop_stack.sh` | raíz | Script para detener stack limpiamente | ⏳ Pendiente |
+| `start_stack.sh` | raíz | Script para arrancar todo el stack | ⏳ Pending |
+| `stop_stack.sh` | raíz | Script para detener stack limpiamente | ⏳ Pending |
 
-### ⚙️ Configuración (.env)
+### ⚙️ Configuration (.env)
 
-| Archivo | Ubicación | Descripción | Status |
+| File | Ubicación | Description | Status |
 |---------|-----------|-------------|--------|
 | `.env.example` | raíz | Template de variables de entorno | ⏳ Mejorar |
 
 ### 📚 Documentación
 
-| Archivo | Ubicación | Descripción | Status |
+| File | Ubicación | Description | Status |
 |---------|-----------|-------------|--------|
 | `SETUP_GUIDE.es.md` | `doc/02-SETUP_DEV/` | Instrucciones de instalación (actualizar) | ⏳ Actualizar |
 | `DOCKER_COMPOSE_GUIDE.es.md` | `doc/02-SETUP_DEV/` | Guía detallada de Docker (referencia) | ✅ Existe |
 | `README.md` | raíz | Quick Start (actualizar) | ⏳ Actualizar |
-| `DOCKER_SETUP_LOG.md` | `doc/01-PROJECT_REPORT/` | Log de completitud de HU-1.1 | ⏳ Pendiente |
+| `DOCKER_SETUP_LOG.md` | `doc/01-PROJECT_REPORT/` | Log de completitud de HU-1.1 | ⏳ Pending |
 
 ### 📊 Directorios Creados
 
@@ -51,7 +51,7 @@
 | `infrastructure/data/chromadb/` | Persistencia de ChromaDB | ✅ Creado |
 | `infrastructure/data/ollama/` | Persistencia de Ollama models | ✅ Creado |
 | `tests/integration/` | Tests de integración | ✅ Creado |
-| `src/server/docker/` | Configuración Docker adicional | ✅ Creado |
+| `src/server/docker/` | Configuration Docker adicional | ✅ Creado |
 | `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/` | Documentación de esta HU | ✅ Creado |
 
 ---
@@ -79,7 +79,7 @@ volumes:
 
 **Validación:**
 - ✅ YAML válido
-- ✅ 3 servicios orquestados
+- ✅ 3 servicios orqustatuss
 - ✅ Network bridge creado
 - ✅ Volúmenes nombrados
 - ✅ Healthchecks configurados
@@ -99,7 +99,7 @@ volumes:
 ✅ check_env_file()              # ¿.env existe?
 ```
 
-**Resultado:**
+**Result:**
 - 🔴 FALLA AHORA (antes de implementar)
 - 🟢 PASA después de setup correcto
 
@@ -115,7 +115,7 @@ volumes:
 ✅ check_service_port(11434)     # ¿Ollama responde?
 ```
 
-**Resultado:**
+**Result:**
 - 🔴 FALLA AHORA (servicios no están levantados)
 - 🟢 PASA después de `docker compose up`
 
@@ -221,4 +221,4 @@ IRON_MODE=true
 ---
 
 **Última Actualización:** 29 de Enero de 2026
-**Status:** 📋 Pendiente de generación
+**Status:** 📋 Pending de generación

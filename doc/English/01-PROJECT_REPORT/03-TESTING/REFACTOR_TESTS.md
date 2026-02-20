@@ -8,7 +8,7 @@
 
 ## 📊 What Changed
 
-Se reorganizó completamente la estructura de tests del proyecto para seguir **best practices de monorepo** con soporte multi-lenguaje (Flutter + Python).
+Se reorganizó completamente la estructura de tests of the project para seguir **best practices de monorepo** con soporte multi-lenguaje (Flutter + Python).
 
 ### Before (Problemas)
 ```
@@ -41,7 +41,7 @@ tests/
 
 | Beneficio | Detalles |
 |-----------|----------|
-| **Separación Clara** | Cada tecnología en su carpeta |
+| **Separación Clara** | Cada tecnología en su folder |
 | **Escalable** | Agregar Go, JS, etc. es trivial |
 | **Estándar** | Sigue convenciones de Flutter/Python |
 | **Coverage Fácil** | `flutter test --coverage` funciona directo |
@@ -97,7 +97,7 @@ Apunta a `tests/flutter/` como raíz:
 
 ## 📋 Modified Files
 
-| Archivo | Cambio |
+| File | Cambio |
 |---------|--------|
 | `tests/` | Reorganizado completamente |
 | `run_tests.sh` | Actualizado para nueva estructura |
@@ -134,7 +134,7 @@ flutter test            # ✅ Encuentra tests/test/ → tests/flutter/test/
 
 Ver `tests/README_REFACTOR.md` para:
 - Estructura completa
-- Cómo ejecutar tests
+- Cómo execute tests
 - Cómo agregar nuevas tecnologías
 - Best practices implementadas
 

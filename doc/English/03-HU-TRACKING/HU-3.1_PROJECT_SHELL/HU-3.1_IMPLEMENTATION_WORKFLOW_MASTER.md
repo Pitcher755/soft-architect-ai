@@ -1,19 +1,19 @@
 # 🚀 HU-3.1: Master Implementation Workflow (Complete Step-by-Step)
 
-> **Estado:** 🔄 LISTO PARA EJECUTAR
-> **Fecha:** 03/02/2026
+> **Status:** 🔄 LISTO PARA EJECUTAR
+> **Date:** 03/02/2026
 > **Basado en:** AGENTS.md § 8 + TDD + Clean Architecture
 > **Objetivo:** Completar HU-3.1 en 4 semanas siguiendo este workflow exacto
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-0. [Análisis de Requisitos & Arquitectura](#análisis-de-requisitos--arquitectura)
-1. [Fase 1: Infraestructura & Dependencias](#fase-1-infraestructura--dependencias)
-2. [Fase 2: Capa de Lógica & Estado (TDD RED → GREEN)](#fase-2-capa-de-lógica--estado-tdd-red--green)
-3. [Fase 3: Componentes UI (TDD GREEN & Widget Tests)](#fase-3-componentes-ui-tdd-green--widget-tests)
-4. [Fase 4: Testing, Security & Polish (TDD REFACTOR)](#fase-4-testing-security--polish-tdd-refactor)
+0. [Analysis de Requisitos & Arquitectura](#analysis-de-requisitos--arquitectura)
+1. [Phase 1: Infraestructura & Dependencias](#phase-1-infraestructura--dependencias)
+2. [Phase 2: Capa de Lógica & Status (TDD RED → GREEN)](#phase-2-capa-de-lógica--status-tdd-red--green)
+3. [Phase 3: Componentes UI (TDD GREEN & Widget Tests)](#phase-3-componentes-ui-tdd-green--widget-tests)
+4. [Phase 4: Testing, Security & Polish (TDD REFACTOR)](#phase-4-testing-security--polish-tdd-refactor)
 5. [Checklist de Aceptación](#checklist-de-aceptación-técnicos)
 6. [Comandos de Referencia Rápida](#comandos-de-referencia-rápida)
 
@@ -27,10 +27,10 @@
 |----|-----------|-----------|
 | RF-1 | Árbol de directorios con expand/collapse (VS Code style) | 🔴 CRÍTICA |
 | RF-2 | Preview Markdown en tiempo real con renderizado | 🔴 CRÍTICA |
-| RF-3 | Crear proyectos con validación de nombres | 🔴 CRÍTICA |
-| RF-4 | Búsqueda de archivos en tiempo real (filtro) | 🟡 ALTA |
-| RF-5 | Persistencia de estado (última carpeta abierta) en SQLite | 🟡 ALTA |
-| RF-6 | Renderizado sin lag con 100+ archivos | 🟡 ALTA |
+| RF-3 | Create projects con validación de nombres | 🔴 CRÍTICA |
+| RF-4 | Búsqueda de files en tiempo real (filtro) | 🟡 ALTA |
+| RF-5 | Persistencia de status (última folder abierta) en SQLite | 🟡 ALTA |
+| RF-6 | Renderizado sin lag con 100+ files | 🟡 ALTA |
 | RF-7 | Integración con FileSystemService backend | 🔴 CRÍTICA |
 | RF-8 | Tooltips descriptivos en botones | 🟢 MEDIA |
 
@@ -39,7 +39,7 @@
 | ID | RNF | Target |
 |----|-----|--------|
 | RNF-1 | Coverage de tests unitarios | ≥80% |
-| RNF-2 | Latencia de apertura de proyecto | <500ms |
+| RNF-2 | Latencia de apertura de project | <500ms |
 | RNF-3 | Rendimiento con árbol profundo | <100ms render para 100+ files |
 | RNF-4 | Type Safety (Dart analyzer) | 0 errors |
 | RNF-5 | Seguridad: validación de rutas (path traversal) | 100% |
@@ -143,7 +143,7 @@ dev_dependencies:
   custom_lint: ^0.4.0
 ```
 
-### Paso 1.1.2: Ejecutar pub get
+### Paso 1.1.2: Execute pub get
 
 ```bash
 flutter pub get
@@ -153,9 +153,9 @@ flutter pub get
 
 ---
 
-## 1.2: Crear Estructura de Carpetas
+## 1.2: Create Estructura de Folders
 
-### Paso 1.2.1: Crear directorio base para HU-3.1
+### Paso 1.2.1: Create directorio base para HU-3.1
 
 ```bash
 mkdir -p /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client/lib/features/project_shell/{domain,data,presentation}
@@ -209,13 +209,13 @@ src/client/lib/features/project_shell/
     └── widgets/
 ```
 
-✅ **Validación:** Todas las carpetas existen.
+✅ **Validación:** Todas las folders existen.
 
 ---
 
-## 1.3: Crear test_helper.dart y Fixtures
+## 1.3: Create test_helper.dart y Fixtures
 
-### Paso 1.3.1: Crear tests/test/helpers/test_helper.dart
+### Paso 1.3.1: Create tests/test/helpers/test_helper.dart
 
 ```bash
 cat > tests/test/helpers/test_helper.dart << 'EOF'
@@ -243,11 +243,11 @@ Future<void> closeTestDatabase(sqflite.Database db) async {
 EOF
 ```
 
-✅ **Validación:** Archivo creado en `tests/test/helpers/test_helper.dart`.
+✅ **Validación:** File creado en `tests/test/helpers/test_helper.dart`.
 
 ---
 
-## 1.4: Crear Fixtures de Datos
+## 1.4: Create Fixtures de Datos
 
 ### Paso 1.4.1: tests/test/helpers/project_fixtures.dart
 
@@ -287,7 +287,7 @@ EOF
 
 ---
 
-## 1.5: Crear 6 Tests RED (TDD Phase 1)
+## 1.5: Create 6 Tests RED (TDD Phase 1)
 
 ### Paso 1.5.1: Test 1 - ProjectValidation
 
@@ -470,7 +470,7 @@ void main() {
 EOF
 ```
 
-### Paso 1.5.7: Ejecutar tests (RED phase)
+### Paso 1.5.7: Execute tests (RED phase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests/flutter
@@ -707,7 +707,7 @@ void main() {
 
 ## 1.6: Configurar analysis_options.yaml
 
-### Paso 1.6.1: Crear análisis strict
+### Paso 1.6.1: Create analysis strict
 
 ```bash
 cat > /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/analysis_options.yaml << 'EOF'
@@ -746,7 +746,7 @@ EOF
 
 ---
 
-## 1.7: Commit Fase 1
+## 1.7: Commit Phase 1
 
 ```bash
 git add -A
@@ -764,11 +764,11 @@ Branch: feature/ui-project-shell
 Sprint: 1.1"
 ```
 
-✅ **Validación Fase 1:** Todas las herramientas están en la caja. Tests fallan esperando implementación.
+✅ **Validación Phase 1:** Todas las herramientas están en la caja. Tests fallan esperando implementation.
 
 ---
 
-# 🟡 FASE 2: Capa de Lógica & Estado (TDD GREEN)
+# 🟡 PHASE 2: Capa de Lógica & Status (TDD GREEN)
 
 **Duración:** 2 días
 **Sprint:** 1.2 + 2.1 + 2.2
@@ -777,7 +777,7 @@ Sprint: 1.1"
 
 ---
 
-## 2.1: Crear Entities (Domain Layer)
+## 2.1: Create Entities (Domain Layer)
 
 ### Paso 2.1.1: Project Entity
 
@@ -880,7 +880,7 @@ EOF
 
 ---
 
-## 2.2: Crear Exceptions (Core Layer)
+## 2.2: Create Exceptions (Core Layer)
 
 ### Paso 2.2.1: Project Shell Exceptions
 
@@ -955,7 +955,7 @@ EOF
 
 ---
 
-## 2.3: Crear Use Cases (Domain Layer)
+## 2.3: Create Use Cases (Domain Layer)
 
 ### Paso 2.3.1: ProjectValidationUseCase
 
@@ -1061,7 +1061,7 @@ EOF
 
 ---
 
-## 2.4: Crear Data Models
+## 2.4: Create Data Models
 
 ### Paso 2.4.1: ProjectModel
 
@@ -1107,7 +1107,7 @@ EOF
 
 ---
 
-## 2.5: Crear Data Sources
+## 2.5: Create Data Sources
 
 ### Paso 2.5.1: SQLiteDataSource
 
@@ -1211,7 +1211,7 @@ EOF
 
 ---
 
-## 2.6: Crear Repository Interface & Implementation
+## 2.6: Create Repository Interface & Implementation
 
 ### Paso 2.6.1: ProjectRepository Interface
 
@@ -1317,7 +1317,7 @@ EOF
 
 ---
 
-## 2.7: Ejecutar Tests (TDD GREEN Phase)
+## 2.7: Execute Tests (TDD GREEN Phase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -1337,11 +1337,11 @@ flutter test unit/flutter/features/project_shell/domain/use_cases/project_valida
 
 Ajustar implementation según errores.
 
-✅ **Validación Fase 2:** Entities, Use Cases, Repositories, Data Sources completados. Tests verde.
+✅ **Validación Phase 2:** Entities, Use Cases, Repositories, Data Sources completados. Tests verde.
 
 ---
 
-## 2.8: Commit Fase 2
+## 2.8: Commit Phase 2
 
 ```bash
 git add -A
@@ -1362,7 +1362,7 @@ Sprint: 1.2 + 2.1 + 2.2"
 
 ---
 
-# 🔵 FASE 3: Componentes UI (TDD GREEN & Widget Tests)
+# 🔵 PHASE 3: Componentes UI (TDD GREEN & Widget Tests)
 
 **Duración:** 3 días
 **Sprint:** 3.1 + 3.2 + 3.3
@@ -1371,7 +1371,7 @@ Sprint: 1.2 + 2.1 + 2.2"
 
 ---
 
-## 3.1: Crear Riverpod Providers & Notifiers
+## 3.1: Create Riverpod Providers & Notifiers
 
 ### Paso 3.1.1: ProjectShellNotifier
 
@@ -1474,7 +1474,7 @@ class ProjectShellNotifier extends StateNotifier<ProjectShellState> {
 EOF
 ```
 
-### Paso 3.1.2: Crear Providers
+### Paso 3.1.2: Create Providers
 
 ```bash
 cat > src/client/lib/features/project_shell/presentation/providers/project_providers.dart << 'EOF'
@@ -1508,7 +1508,7 @@ EOF
 
 ---
 
-## 3.2: Crear Widgets Principales
+## 3.2: Create Widgets Principales
 
 ### Paso 3.2.1: DirectoryTreeWidget
 
@@ -1711,7 +1711,7 @@ EOF
 
 ---
 
-## 3.3: Crear Widget Tests
+## 3.3: Create Widget Tests
 
 ```bash
 cat > tests/widget/project_shell_screen_test.dart << 'EOF'
@@ -1742,18 +1742,18 @@ EOF
 
 ---
 
-## 3.4: Ejecutar Tests
+## 3.4: Execute Tests
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test unit/flutter/features/project_shell/ widget/flutter/features/project_shell/ --verbose
 ```
 
-✅ **Validación Fase 3:** UI widgets creados, tests de widgets placer.
+✅ **Validación Phase 3:** UI widgets creados, tests de widgets placer.
 
 ---
 
-## 3.5: Commit Fase 3
+## 3.5: Commit Phase 3
 
 ```bash
 git add -A
@@ -1776,7 +1776,7 @@ Sprint: 3.1 + 3.2 + 3.3"
 
 ---
 
-# 🔴 FASE 4: Integración, Testing & Polish (Complete)
+# 🔴 PHASE 4: Integración, Testing & Polish (Complete)
 
 **Duración:** 2 días
 **Sprint:** 4.1 + 4.2
@@ -1809,7 +1809,7 @@ lcov --summary coverage/lcov.info | grep "lines"
 
 ### 🔐 A. Path Traversal Prevention (CRÍTICO)
 
-**Regla:** Validar TODOS los nombres de proyecto y rutas de archivo.
+**Regla:** Validar TODOS los nombres de project y rutas de file.
 
 ```dart
 // lib/features/project_shell/core/constants/validation_constants.dart
@@ -1832,7 +1832,7 @@ class ProjectValidationUseCase {
 }
 ```
 
-**Validar archivo:**
+**Validar file:**
 
 ```dart
 // Nunca permitir path traversal

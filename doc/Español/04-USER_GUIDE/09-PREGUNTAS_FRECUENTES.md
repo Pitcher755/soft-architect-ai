@@ -24,7 +24,7 @@
 **Respuesta:**
 SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los desarrolladores a través del ciclo completo de diseño de software (0-100), desde la conceptualización hasta la implementación, utilizando IA generativa privada.
 
-**Documento relacionado:** [Inicio Rápido](01-QUICK_START.md)
+**Documentoo relacionado:** [Inicio Rápido](01-QUICK_START.md)
 
 ---
 
@@ -35,7 +35,7 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 
 **SÍ**, solo si eliges usar **Groq Cloud** (opcional, para equipos con hardware limitado).
 
-**Documento relacionado:** [Instalación](02-INSTALLATION.md#opcion-a-docker-recommended)
+**Documentoo relacionado:** [Instalación](02-INSTALLATION.md#opcion-a-docker-recommended)
 
 ---
 
@@ -57,7 +57,7 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 **Respuesta:**
 **Sí**, absolutamente. La licencia del proyecto permite uso comercial siempre que respetes los términos de la licencia (MIT).
 
-**Documento relacionado:** [LICENSE](../../../LICENSE)
+**Documentoo relacionado:** [LICENSE](../../../LICENSE)
 
 ---
 
@@ -86,7 +86,7 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 - GPU: No necesaria
 - **Requiere:** API key de Groq (gratis)
 
-**Documento relacionado:** [Instalación](02-INSTALLATION.md)
+**Documentoo relacionado:** [Instalación](02-INSTALLATION.md)
 
 ---
 
@@ -100,14 +100,14 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 - ✅ macOS 11+ (Intel y Apple Silicon)
 - ✅ Linux (Ubuntu 20.04+, Debian, Arch, Fedora)
 
-**Documento relacionado:** [Instalación](02-INSTALLATION.md#instalación-por-sistema-operativo)
+**Documentoo relacionado:** [Instalación](02-INSTALLATION.md#instalación-por-sistema-operativo)
 
 ---
 
 ### ❓ ¿Necesito saber programar para usarlo?
 
 **Respuesta:**
-**NO para usarlo** (diseñar arquitecturas, generar documentación).
+**NO para usarlo** (diseñar arquitecturas, generar documentoación).
 
 **SÍ para personalizarlo** (añadir Tech Packs propios, modificar prompts).
 
@@ -144,10 +144,10 @@ Es una metodología estructurada en 4 fases para diseñar software:
 
 1. **Fase 0 (Governance):** Definir problema, requisitos, stakeholders
 2. **Fase 1 (Architecture):** Decisiones técnicas (stack, patrones)
-3. **Fase 2 (Implementation):** Historias de usuario, tareas
+3. **Fase 2 (Implementación):** Historias de usuario, tareas
 4. **Fase 3 (Tracking):** Sprints, validación, iteración
 
-**Documento relacionado:** [Master Workflow](04-MASTER_WORKFLOW.md)
+**Documentoo relacionado:** [Master Workflow](04-MASTER_WORKFLOW.md)
 
 ---
 
@@ -161,7 +161,7 @@ Es una metodología estructurada en 4 fases para diseñar software:
 2. Seguir formato de Tech Packs existentes
 3. Reiniciar backend para reindexar
 
-**Documento relacionado:** [Documentación de Tech Packs](../../02-SETUP_DEV/KNOWLEDGE_BASE_STRUCTURE.md)
+**Documentoo relacionado:** [Documentoación de Tech Packs](../../02-SETUP_DEV/KNOWLEDGE_BASE_STRUCTURE.md)
 
 ---
 
@@ -180,7 +180,7 @@ Todos los resultados se guardan automáticamente en:
 **Exportación adicional:**
 - **PDF:** Click en "Exportar a PDF" (próximamente)
 - **Markdown:** Ya disponible (copy-paste desde carpeta)
-- **JSON:** API REST `/api/export/{project_id}`
+- **JSON:** API REST `/api/export/{proyecto_id}`
 
 ---
 
@@ -210,7 +210,7 @@ rm -rf ./data/chat_history/*
 
 **Garantía:** Zero telemetry, zero analytics, zero tracking.
 
-**Documento relacionado:** [Política de Privacidad](../private/PRIVACY_POLICY.md)
+**Documentoo relacionado:** [Política de Privacidad](../private/PRIVACY_POLICY.md)
 
 ---
 
@@ -224,7 +224,7 @@ rm -rf ./data/chat_history/*
 - ✅ Data Sovereignty (legislación EU)
 - ✅ GDPR-friendly (no hay datos en la nube)
 
-**Documento relacionado:** [Auditoría de Seguridad](../../01-PROJECT_REPORT/SECURITY_AUDIT_REPORT.md)
+**Documentoo relacionado:** [Auditoría de Seguridad](../../01-PROJECT_REPORT/SECURITY_AUDIT_REPORT.md)
 
 ---
 
@@ -313,7 +313,7 @@ MODEL_NAME=phi
 4. Push: `git push origin feature/nueva-funcionalidad`
 5. Abrir Pull Request
 
-**Documento relacionado:** [CONTRIBUTING.md](../../../CONTRIBUTING.md)
+**Documentoo relacionado:** [CONTRIBUTING.md](../../../CONTRIBUTING.md)
 
 ---
 
@@ -348,7 +348,7 @@ MODEL_NAME=phi
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documentoos Relacionados
 
 - [Inicio Rápido](01-QUICK_START.md) - Empezar en 15 minutos
 - [Instalación Completa](02-INSTALLATION.md) - Setup detallado

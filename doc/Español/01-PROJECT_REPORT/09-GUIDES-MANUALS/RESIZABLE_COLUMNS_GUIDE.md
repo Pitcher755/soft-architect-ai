@@ -8,7 +8,7 @@
 
 ## ¿Qué se implementó?
 
-Las tres columnas del ProjectShellScreen ahora son **100% dinámicas y redimensionables**:
+Las tres columnas del ProyectoShellScreen ahora son **100% dinámicas y redimensionables**:
 
 ```
 ┌─ COLUMNA IZQUIERDA ┬─ COLUMNA CENTRAL ┬─ COLUMNA DERECHA ─┐
@@ -109,10 +109,10 @@ Pequeño ícono `⋮` en el centro de cada divisor para claridad UX
 2. **Comprime Preview** (arrastra divisor derecho a la izquierda)
 3. Maximiza el área de Chat para escribir prompts largos
 
-### Caso 3: Revisión de Documentos
+### Caso 3: Revisión de Documentoos
 1. **Comprime Explorer** (oculta)
 2. **Expande Preview** (arrastra divisor derecho a la izquierda)
-3. Visualiza documentos generados en pantalla completa
+3. Visualiza documentoos generados en pantalla completa
 
 ### Caso 4: Layout Equilibrado
 1. Deja columnas en tamaños predeterminados (~25% | 50% | 25%)
@@ -122,7 +122,7 @@ Pequeño ícono `⋮` en el centro de cada divisor para claridad UX
 
 ## 🔧 Implementación Técnica
 
-### Cambios en `project_shell_screen.dart`
+### Cambios en `proyecto_shell_screen.dart`
 
 1. **Variables de Estado (líneas 47-51):**
    ```dart
@@ -160,7 +160,7 @@ onHorizontalDragUpdate: (details) {
 
 ---
 
-## 🧪 Testing
+## 🧪 Pruebaing
 
 ### ✅ Escenarios Probados
 
@@ -202,7 +202,7 @@ onHorizontalDragUpdate: (details) {
 - ✅ Smooth dragging (60fps target)
 - ✅ No lag en redimensionamiento
 - ✅ Chat funcional durante resize
-- ✅ Lightweight implementation (solo state management)
+- ✅ Lightweight implementación (solo state management)
 
 ---
 
@@ -225,7 +225,7 @@ onHorizontalDragUpdate: (details) {
 
 5. **Vertical:**
    - Divisor horizontal (entre top toolbar y panels)
-   - Divisor horizontal (entre panels y bottom status bar)
+   - Divisor horizontal (entre panels y bottom estado bar)
 
 6. **Touch:**
    - Optimizar para pantallas táctiles
@@ -238,11 +238,11 @@ onHorizontalDragUpdate: (details) {
 | Aspecto | Estado |
 |--------|--------|
 | **Implementación** | ✅ Completada |
-| **Testing** | ✅ Pasados |
+| **Pruebaing** | ✅ Pasados |
 | **Compilación** | ✅ Sin errores |
 | **Ejecución** | ✅ Operacional |
 | **UI/UX** | ✅ Profesional |
-| **Documentación** | ✅ Completa |
+| **Documentoación** | ✅ Completa |
 
 ---
 

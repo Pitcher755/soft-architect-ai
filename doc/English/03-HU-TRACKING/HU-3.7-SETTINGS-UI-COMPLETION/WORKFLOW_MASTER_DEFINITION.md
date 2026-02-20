@@ -7,7 +7,7 @@
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [TDD Workflow Overview](#-tdd-workflow-overview)
 2. [Feature 1: LastProjectLocalDataSource](#feature-1-lastprojectlocaldatasource)

@@ -1,14 +1,14 @@
 # Validation Issues and Fixes
 
-> **Date:** 2026-02-13
-> **Status:** ✅ RESOLVED
+> **Fecha:** 2026-02-13
+> **Estado:** ✅ RESOLVED
 > **Context:** PRE_PUSH_VALIDATION_MASTER.sh improvements
 
 ---
 
 ## 📋 Table of Contents
 - [Issue 1: Pyright Timeout](#issue-1-pyright-timeout)
-- [Issue 2: Flutter Tests Fail from Root](#issue-2-flutter-tests-fail-from-root)
+- [Issue 2: Flutter Pruebas Fail from Root](#issue-2-flutter-pruebas-fail-from-root)
 - [Solutions Implemented](#solutions-implemented)
 - [Best Practices](#best-practices)
 
@@ -20,9 +20,9 @@
 Pyright was marked as "optional - skipped or tool missing" despite being installed.
 
 **Root Cause:**
-- Original script used `tests/venv/bin/python -m pyright`
+- Original script used `pruebas/venv/bin/python -m pyright`
 - Pyright needs access to `chromadb` and `langchain_core` packages
-- These packages are installed in `src/server/venv`, not `tests/venv`
+- These packages are installed in `src/server/venv`, not `pruebas/venv`
 - Pyright experiences timeout issues (>30s) during nodeenv initialization
 
 ### Investigation Steps
@@ -46,7 +46,7 @@ src/server/venv/bin/python -m pyright src/server/services src/server/core
 
 ### Solution Implemented
 1. ✅ Updated `PRE_PUSH_VALIDATION_MASTER.sh` to use TWO venvs:
-   - `PYTHON_TEST_BIN="tests/venv/bin/python"` → pytest, ruff, bandit
+   - `PYTHON_TEST_BIN="pruebas/venv/bin/python"` → pyprueba, ruff, bandit
    - `PYTHON_SERVER_BIN="src/server/venv/bin/python"` → pyright
 
 2. ✅ Installed pyright in correct venv:
@@ -55,11 +55,11 @@ src/server/venv/bin/python -m pyright src/server/services src/server/core
    ```
 
 3. ⚠️ **Known Issue:** Pyright hangs >30s on nodeenv setup
-   - **Status:** Marked as optional check
+   - **Estado:** Marked as optional check
    - **Alternative:** Use `npx pyright` instead of `python -m pyright`
    - **Future Work:** Consider installing pyright globally via npm
 
-### Verification
+### Verificación
 ```bash
 # Import resolution now works (when not timing out)
 src/server/venv/bin/python -m pyright src/server/services
@@ -68,10 +68,10 @@ src/server/venv/bin/python -m pyright src/server/services
 
 ---
 
-## Issue 2: Flutter Tests Fail from Root
+## Issue 2: Flutter Pruebas Fail from Root
 
 ### Problem
-Running `flutter test tests/client` from project root fails with:
+Ejecutarning `flutter prueba pruebas/client` from proyecto root fails with:
 ```
 Error: Couldn't resolve the package 'flutter_localizations'
 Error: Couldn't resolve the package 'flutter_riverpod'
@@ -79,14 +79,14 @@ Error: Couldn't resolve the package 'softarchitect_ai'
 ```
 
 **Root Cause:**
-- Project has 3 separate `pubspec.yaml` files:
+- Proyecto has 3 separate `pubspec.yaml` archivos:
   - `/pubspec.yaml` - Monorepo root (minimal dependencies)
   - `/src/client/pubspec.yaml` - Main app with `softarchitect_ai` package
-  - `/tests/pubspec.yaml` - Test suite with all test dependencies
+  - `/pruebas/pubspec.yaml` - Prueba suite with all prueba dependencies
 
-- When running `flutter test tests/client` from root, Flutter uses `/pubspec.yaml`
+- When ejecutarning `flutter prueba pruebas/client` from root, Flutter uses `/pubspec.yaml`
 - Root pubspec  does NOT have `flutter_riverpod`, `shared_preferences`, etc.
-- Tests fail to compile due to missing dependencies
+- Pruebas fail to compile due to missing dependencies
 
 ### Investigation Steps
 ```bash
@@ -128,7 +128,7 @@ ls -la pubspec.yaml tests/pubspec.yaml src/client/pubspec.yaml
    # ✅ Changes directory BEFORE running tests
    ```
 
-### Verification
+### Verificación
 ```bash
 # ✅ CORRECT: Run from tests/ directory
 cd tests && flutter test client/unit/
@@ -157,9 +157,9 @@ PYTHON_SERVER_BIN="$PROJECT_ROOT/src/server/venv/bin/python"
 **Usage Matrix:**
 | Tool | Virtual Environment | Purpose |
 |------|-------------------|---------|
-| pytest | `PYTHON_TEST_BIN` (tests/venv) | Run tests with test dependencies |
-| ruff | `PYTHON_TEST_BIN` (tests/venv) | Linting |
-| bandit | `PYTHON_TEST_BIN` (tests/venv) | Security audit |
+| pyprueba | `PYTHON_TEST_BIN` (pruebas/venv) | Ejecutar pruebas with prueba dependencies |
+| ruff | `PYTHON_TEST_BIN` (pruebas/venv) | Linting |
+| bandit | `PYTHON_TEST_BIN` (pruebas/venv) | Security audit |
 | pyright | `PYTHON_SERVER_BIN` (src/server/venv) | Type checking with server deps |
 
 ### Pubspec.yaml Update
@@ -189,7 +189,7 @@ $PYTHON_TEST_BIN -m pytest tests/server/   # Unit tests
 $PYTHON_TEST_BIN -m ruff check src/server/ # Linting
 ```
 
-### Flutter Testing
+### Flutter Pruebaing
 ```bash
 # ✅ CORRECT: Change to tests/ directory
 cd tests && flutter test client/unit/
@@ -209,12 +209,12 @@ flutter test tests/client  # Missing dependencies!
 
 ---
 
-## Status Summary
+## Estado Summary
 
-| Issue | Status | Notes |
+| Issue | Estado | Notes |
 |-------|--------|-------|
 | Pyright skipped | ⚠️ Known Issue | Nodeenv timeout (>30s) - marked optional |
-| Flutter tests from root | ✅ Documented | Must use `cd tests && flutter test` |
+| Flutter pruebas from root | ✅ Documentoed | Must use `cd pruebas && flutter prueba` |
 | Dual venv setup | ✅ Implemented | Script now uses correct venv per tool |
 | Pubspec.yaml clarity | ✅ Fixed | Updated comments to reflect reality |
 
@@ -222,14 +222,14 @@ flutter test tests/client  # Missing dependencies!
 
 ## References
 
-- [PRE_PUSH_VALIDATION_MASTER.sh](../../scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh)
+- [PRE_PUSH_VALIDATION_MASTER.sh](../../scripts/pruebaing/PRE_PUSH_VALIDATION_MASTER.sh)
 - [AGENTS.md](../../AGENTS.md#8-ci-cd-pipeline-rules)
 - Root pubspec.yaml (lines 4-13)
-- Tests pubspec.yaml (lines 1-30)
+- Pruebas pubspec.yaml (lines 1-30)
 
 ---
 
-**Next Actions:**
+**Siguiente Actions:**
 1. ⏳ Investigate pyright nodeenv timeout (consider npm installation)
-2. ✅ Document "cd tests" requirement in all testing docs
+2. ✅ Documento "cd pruebas" requirement in all pruebaing docs
 3. ✅ Ensure CI/CD pipelines use correct working directories

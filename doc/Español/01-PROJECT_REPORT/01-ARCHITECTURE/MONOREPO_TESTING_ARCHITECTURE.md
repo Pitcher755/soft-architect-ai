@@ -1,4 +1,4 @@
-# 🧪 Arquitectura de Testing en Monorepo
+# 🧪 Arquitectura de Pruebaing en Monorepo
 
 > **Fecha:** 03/02/2026
 > **Estado:** ✅ Implementado
@@ -9,7 +9,7 @@
 1. [Problema Identificado](#problema-identificado)
 2. [Solución: Patrón Centralizado](#solución-patrón-centralizado)
 3. [Estructura del Monorepo](#estructura-del-monorepo)
-4. [Ejecución de Tests](#ejecución-de-tests)
+4. [Ejecución de Pruebas](#ejecución-de-pruebas)
 5. [Migración Realizada](#migración-realizada)
 6. [Por Qué Este Patrón](#por-qué-este-patrón)
 
@@ -19,21 +19,21 @@
 
 ### La Contradicción Original
 
-1. **Explicación Teórica:** "Los tests del monorepo **DEBEN** estar centralizados en `/tests` para tener un punto único de verdad, fixtures compartidas y coverage unificado"
+1. **Explicación Teórica:** "Los pruebas del monorepo **DEBEN** estar centralizados en `/pruebas` para tener un punto único de verdad, fixtures compartidas y coverage unificado"
 
 2. **Implementación Actual (INCORRECTA):**
-   - Tests de Flutter en `src/client/test/` (descentralizado)
-   - Tests de Python en `src/server/tests/` (descentralizado)
+   - Pruebas de Flutter en `src/client/prueba/` (descentralizado)
+   - Pruebas de Python en `src/server/pruebas/` (descentralizado)
    - **Violación de lo que acababa de explicar**
 
 3. **Contradicción Identificada por el Usuario:**
-   > "Los tests de la app cliente (flutter) estaban situados en ese directorio pero ahora los has cambiado al directorio /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client/test, del cliente, **todo lo contrario a lo que me indicabas anteriormente**"
+   > "Los pruebas de la app cliente (flutter) estaban situados en ese directorio pero ahora los has cambiado al directorio /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client/prueba, del cliente, **todo lo contrario a lo que me indicabas anteriormente**"
 
 ### Causa Raíz
 
 Confusión entre dos patrones válidos pero **incompatibles en un monorepo**:
-- **Patrón A (Flutter Standard):** `app/test/` ← Tests dentro del package
-- **Patrón B (Monorepo Real):** `/tests/` ← Tests centralizados fuera del package
+- **Patrón A (Flutter Standard):** `app/prueba/` ← Pruebas dentro del package
+- **Patrón B (Monorepo Real):** `/pruebas/` ← Pruebas centralizados fuera del package
 
 **Para un monorepo con múltiples lenguajes, Patrón B es el correcto.**
 
@@ -45,10 +45,10 @@ Confusión entre dos patrones válidos pero **incompatibles en un monorepo**:
 
 | Principio | Implementación |
 |-----------|----------------|
-| **Una Única Fuente de Verdad** | `/tests/` = punto único de tests en el repo |
-| **DRY (No Repitas)** | Fixtures y mocks compartidos en `/tests/fixtures` y `/tests/mocks` |
-| **Separación de Responsabilidades** | Tests organizados por **tipo** (unit, integration) luego por **app** (flutter, python) |
-| **CI/CD Simple** | Un solo comando desde raíz ejecuta TODO: `./run_tests.sh all` |
+| **Una Única Fuente de Verdad** | `/pruebas/` = punto único de pruebas en el repo |
+| **DRY (No Repitas)** | Fixtures y mocks compartidos en `/pruebas/fixtures` y `/pruebas/mocks` |
+| **Separación de Responsabilidades** | Pruebas organizados por **tipo** (unit, integration) luego por **app** (flutter, python) |
+| **CI/CD Simple** | Un solo comando desde raíz ejecuta TODO: `./ejecutar_pruebas.sh all` |
 | **Cobertura Consistente** | Métricas unificadas para ambas tecnologías |
 
 ---
@@ -117,8 +117,8 @@ soft-architect-ai/
 
 ### Archivos Clave
 
-#### `/tests/test_helper.dart`
-Utilidades compartidas para tests de Dart:
+#### `/pruebas/prueba_helper.dart`
+Utilidades compartidas para pruebas de Dart:
 ```dart
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -128,8 +128,8 @@ Future<void> initTestDatabase() async {
 }
 ```
 
-#### `/tests/conftest.py`
-Utilidades compartidas para tests de Python:
+#### `/pruebas/confprueba.py`
+Utilidades compartidas para pruebas de Python:
 ```python
 import pytest
 from unittest.mock import MagicMock
@@ -140,8 +140,8 @@ def mock_db():
     return MagicMock()
 ```
 
-#### `run_tests.sh`
-Script maestro que ejecuta tests desde la raíz:
+#### `ejecutar_pruebas.sh`
+Script maestro que ejecuta pruebas desde la raíz:
 ```bash
 ./run_tests.sh flutter    # Tests de Flutter solamente
 ./run_tests.sh python     # Tests de Python solamente
@@ -151,7 +151,7 @@ Script maestro que ejecuta tests desde la raíz:
 
 ---
 
-## Ejecución de Tests
+## Ejecución de Pruebas
 
 ### Desde la Raíz del Monorepo
 
@@ -203,15 +203,15 @@ jobs:
 
 | Antes (❌ INCORRECTO) | Después (✅ CORRECTO) | Razón |
 |---|---|---|
-| `src/client/test/unit/domain/*.dart` | `tests/unit/flutter/domain/*.dart` | Centralizado |
-| `src/client/test/unit/data/*.dart` | `tests/unit/flutter/data/*.dart` | Centralizado |
-| `src/client/test/test_helper.dart` | `tests/test_helper.dart` | Compartido |
-| `src/client/test/fixtures/*.dart` | `tests/fixtures/*.dart` | Compartido |
-| ❌ `src/client/test/` directory | ✅ ELIMINADO | No existe en Patrón B |
+| `src/client/prueba/unit/domain/*.dart` | `pruebas/unit/flutter/domain/*.dart` | Centralizado |
+| `src/client/prueba/unit/data/*.dart` | `pruebas/unit/flutter/data/*.dart` | Centralizado |
+| `src/client/prueba/prueba_helper.dart` | `pruebas/prueba_helper.dart` | Compartido |
+| `src/client/prueba/fixtures/*.dart` | `pruebas/fixtures/*.dart` | Compartido |
+| ❌ `src/client/prueba/` directory | ✅ ELIMINADO | No existe en Patrón B |
 
 ### Imports (SIN CAMBIOS - Resolución Automática)
 
-Los imports en los tests usan `package:softarchitect_ai/...` que Flutter resuelve **automáticamente** desde `pubspec.yaml` sin importar dónde esté el archivo de test:
+Los imports en los pruebas usan `package:softarchitect_ai/...` que Flutter resuelve **automáticamente** desde `pubspec.yaml` sin importar dónde esté el archivo de prueba:
 
 ```dart
 // Tests en /tests/unit/flutter/domain/project_validation_use_case_test.dart
@@ -225,14 +225,14 @@ import 'package:softarchitect_ai/features/project_shell/domain/use_cases/project
 
 ### ✅ Ventajas del Patrón Centralizado
 
-1. **Monorepo Puro:** Un único punto de verdad para TODOS los tests
-   - Sin confusión: ¿Dónde van los tests de integración cliente-servidor?
-   - Respuesta clara: `/tests/integration/e2e/`
+1. **Monorepo Puro:** Un único punto de verdad para TODOS los pruebas
+   - Sin confusión: ¿Dónde van los pruebas de integración cliente-servidor?
+   - Respuesta clara: `/pruebas/integration/e2e/`
 
 2. **Código Compartido (DRY):**
-   - Fixtures (datos de test) compartidas entre Flutter y Python
+   - Fixtures (datos de prueba) compartidas entre Flutter y Python
    - Mocks reutilizables
-   - Utilidades de test centralizadas
+   - Utilidades de prueba centralizadas
 
 3. **CI/CD Simplificado:**
    ```bash
@@ -241,25 +241,25 @@ import 'package:softarchitect_ai/features/project_shell/domain/use_cases/project
 
 4. **Cobertura Unificada:**
    - Dashboard único que muestra cobertura de Flutter + Python
-   - Fácil ver qué tests faltan
+   - Fácil ver qué pruebas faltan
 
 5. **Escalabilidad:**
-   - Si agregamos más packages (Go, Rust), todos los tests van a `/tests`
+   - Si agregamos más packages (Go, Rust), todos los pruebas van a `/pruebas`
    - Patrón consistente para el futuro
 
 6. **Compatibilidad con Monorepos Estándar:**
-   - Google Monorepo (Bazel): tests centralizados
-   - Nx Monorepo: tests centralizados
-   - Yarn Workspaces: tests centralizados
+   - Google Monorepo (Bazel): pruebas centralizados
+   - Nx Monorepo: pruebas centralizados
+   - Yarn Workspaces: pruebas centralizados
    - **Es el estándar de la industria**
 
 ### ❌ Por Qué NO el Patrón Descentralizado
 
 | Problema | Ejemplo |
 |----------|---------|
-| **Múltiples fuentes de verdad** | Fixtures duplicadas en `/src/client/test/fixtures` y `/src/server/tests/fixtures` |
-| **Confusión en E2E** | ¿Dónde van los tests que requieren ambos packages? |
-| **CI/CD Complejo** | Necesitas scripts complejos para descubrir dónde están los tests |
+| **Múltiples fuentes de verdad** | Fixtures duplicadas en `/src/client/prueba/fixtures` y `/src/server/pruebas/fixtures` |
+| **Confusión en E2E** | ¿Dónde van los pruebas que requieren ambos packages? |
+| **CI/CD Complejo** | Necesitas scripts complejos para descubrir dónde están los pruebas |
 | **No es Monorepo Real** | Es como tener dos repos separados con prefijo `src/` |
 | **Violación de Principios Monorepo** | Cada package es "autónomo", sin cohesión |
 
@@ -267,14 +267,14 @@ import 'package:softarchitect_ai/features/project_shell/domain/use_cases/project
 
 ## 🔧 Configuración Requerida
 
-### 1. `.fluttertest` (Nuevo)
+### 1. `.flutterprueba` (Nuevo)
 ```json
 {
   "testFilePattern": "**/*_test.dart",
   "testDirectory": "tests/unit/flutter"
 }
 ```
-✅ **CREADO** - Indica a Flutter dónde buscar los tests
+✅ **CREADO** - Indica a Flutter dónde buscar los pruebas
 
 ### 2. `.gitignore` (Corregido)
 ```
@@ -286,8 +286,8 @@ src/server/lib64/
 ```
 ✅ **CORREGIDO** - No bloquea `src/client/lib/`
 
-### 3. `run_tests.sh` (Nuevo)
-✅ **CREADO** - Script maestro para ejecutar tests desde cualquier ubicación
+### 3. `ejecutar_pruebas.sh` (Nuevo)
+✅ **CREADO** - Script maestro para ejecutar pruebas desde cualquier ubicación
 
 ---
 
@@ -295,25 +295,25 @@ src/server/lib64/
 
 | Aspecto | Estado |
 |--------|--------|
-| Tests centralizados en `/tests` | ✅ DONE |
-| Tests de Flutter movidos | ✅ DONE |
+| Pruebas centralizados en `/pruebas` | ✅ DONE |
+| Pruebas de Flutter movidos | ✅ DONE |
 | Imports verificados | ✅ DONE (automáticos) |
 | Script de ejecución | ✅ DONE |
-| Configuración .fluttertest | ✅ DONE |
+| Configuración .flutterprueba | ✅ DONE |
 | .gitignore corregido | ✅ DONE |
-| 15 tests listos para ejecutar | ✅ READY |
+| 15 pruebas listos para ejecutar | ✅ READY |
 
 ---
 
 ## 🚀 Próximos Pasos
 
-1. **Ejecutar tests centralizados:**
+1. **Ejecutar pruebas centralizados:**
    ```bash
    ./run_tests.sh flutter
    ```
 
-2. **Agregar tests de Python** cuando la capa de servicios Python esté lista
+2. **Agregar pruebas de Python** cuando la capa de servicios Python esté lista
 
-3. **Agregar tests de integración E2E** para validar cliente ↔ servidor
+3. **Agregar pruebas de integración E2E** para validar cliente ↔ servidor
 
 4. **Integrar en GitHub Actions** en el pipeline de CI/CD

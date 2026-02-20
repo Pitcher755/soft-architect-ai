@@ -1,21 +1,21 @@
 # HU-3.6: Master Workflow Definition
 
-> **Version:** 1.0.0
-> **Created:** 2026-02-10
+> **Versión:** 1.0.0
+> **Creard:** 2026-02-10
 > **Agent:** ArchitectZero
 > **Methodology:** TDD + Clean Architecture + Master Workflow (0-100)
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Workflow Overview](#-workflow-overview)
-2. [Phase 1: RED (Analysis)](#-phase-1-red-test-driven-analysis)
-3. [Phase 2: GREEN (Implementation)](#-phase-2-green-implementation)
-4. [Phase 3: REFACTOR (Quality)](#-phase-3-refactor-code-quality)
-5. [Phase 4: OPTIMIZATION (Performance)](#️-phase-4-optimization-performance--security)
-6. [Phase 5: DOCUMENTATION (Completeness)](#-phase-5-documentation-comprehensive-docs)
-7. [Phase 6: VALIDATION (CI/CD)](#-phase-6-validation-cicd--final-review)
+2. [Fase 1: RED (Análisis)](#-fase-1-red-prueba-driven-análisis)
+3. [Fase 2: GREEN (Implementación)](#-fase-2-green-implementación)
+4. [Fase 3: REFACTOR (Quality)](#-fase-3-refactor-code-quality)
+5. [Fase 4: OPTIMIZATION (Performance)](#️-fase-4-optimization-performance--security)
+6. [Fase 5: DOCUMENTATION (Completeness)](#-fase-5-documentoation-comprehensive-docs)
+7. [Fase 6: VALIDATION (CI/CD)](#-fase-6-validation-cicd--final-review)
 8. [Quality Gates](#-quality-gates)
 9. [Acceptance Criteria](#-acceptance-criteria)
 
@@ -24,19 +24,19 @@
 ## 🎯 Workflow Overview
 
 ### Objectives
-1. **Complete Test Suite:** Fix all failing tests (Python + Flutter), achieve >80% coverage
-2. **Fix SQLite Persistence:** Resolve all persistence issues, add comprehensive tests
+1. **Complete Prueba Suite:** Fix all failing pruebas (Python + Flutter), achieve >80% coverage
+2. **Fix SQLite Persistence:** Resolve all persistence issues, add comprehensive pruebas
 3. **Implement i18n:** Full internationalization (ES/EN) with language selector
 
 ### Success Metrics
-- ✅ 100% test pass rate (0 failures)
-- ✅ Test coverage ≥80% for business logic
+- ✅ 100% prueba pass rate (0 failures)
+- ✅ Prueba coverage ≥80% for business logic
 - ✅ SQLite persistence validated with >90% coverage
 - ✅ 100% UI strings translated (ES/EN)
 - ✅ All CI/CD workflows pass
 - ✅ Zero security violations
 
-### Workflow Phases
+### Workflow Fases
 ```
 Phase 1: RED        (Analysis & Design)       [3-5 days]
   ↓
@@ -55,13 +55,13 @@ Phase 6: VALIDATE   (CI/CD & QA)              [1-2 days]
 
 ---
 
-## 🔴 PHASE 1: RED (Test-Driven Analysis)
+## 🔴 FASE 1: RED (Prueba-Driven Análisis)
 
-**Objective:** Analyze all failing tests, investigate SQLite issues, and design i18n architecture.
+**Objective:** Analyze all failing pruebas, investigate SQLite issues, and design i18n architecture.
 
-### 1.1 Test Inventory & Failure Analysis
+### 1.1 Prueba Inventory & Failure Análisis
 
-#### 1.1.1 Run All Python Tests
+#### 1.1.1 Ejecutar All Python Pruebas
 ```bash
 # Execute full Python test suite with coverage
 pytest tests/python/ \
@@ -72,15 +72,15 @@ pytest tests/python/ \
 ```
 
 **Expected Output:**
-- Test failure summary (count by category)
+- Prueba failure summary (count by category)
 - Coverage report (identify gaps <80%)
 - Error stack traces for each failure
 
-**Deliverable:** `python_test_results_initial.log`
+**Deliverable:** `python_prueba_results_initial.log`
 
 ---
 
-#### 1.1.2 Run All Flutter Tests
+#### 1.1.2 Ejecutar All Flutter Pruebas
 ```bash
 # Execute full Flutter test suite with coverage
 flutter test \
@@ -94,28 +94,28 @@ genhtml coverage/lcov.info \
 ```
 
 **Expected Output:**
-- Test failure summary
+- Prueba failure summary
 - Coverage report (identify gaps <80%)
 - Error messages for each failure
 
-**Deliverable:** `flutter_test_results_initial.log`
+**Deliverable:** `flutter_prueba_results_initial.log`
 
 ---
 
-#### 1.1.3 Categorize Test Failures
-Create a failure matrix in `TEST_FAILURE_ANALYSIS.md`:
+#### 1.1.3 Categorize Prueba Failures
+Crear a failure matrix in `TEST_FAILURE_ANALYSIS.md`:
 
-| Test File | Test Name | Error Type | Root Cause | Priority |
+| Prueba Archivo | Prueba Name | Error Type | Root Cause | Priority |
 |-----------|-----------|------------|------------|----------|
-| test_streaming_handler.py | test_websocket_connection | ConnectionRefusedError | Missing mock setup | High |
-| circular_buffer_test.dart | should handle overflow | AssertionError | Off-by-one error | High |
+| prueba_streaming_handler.py | prueba_websocket_connection | ConnectionRefusedError | Missing mock setup | High |
+| circular_buffer_prueba.dart | should handle overflow | AssertionError | Off-by-one error | High |
 | ... | ... | ... | ... | ... |
 
 **Categories:**
-- **Type A:** Logic errors (wrong implementation)
-- **Type B:** Mock/fixture issues (test setup)
+- **Type A:** Logic errors (wrong implementación)
+- **Type B:** Mock/fixture issues (prueba setup)
 - **Type C:** Environment issues (CI-specific)
-- **Type D:** Missing tests (incomplete coverage)
+- **Type D:** Missing pruebas (incomplete coverage)
 
 **Deliverable:** `TEST_FAILURE_ANALYSIS.md`
 
@@ -130,14 +130,14 @@ grep -i "sqlite\|database\|persistence" python_test_results_initial.log
 grep -i "sqlite\|database\|sqflite" flutter_test_results_initial.log
 ```
 
-**Document in `SQLITE_INVESTIGATION_REPORT.md`:**
-- All SQLite test failures
+**Documento in `SQLITE_INVESTIGATION_REPORT.md`:**
+- All SQLite prueba failures
 - Error stack traces
 - Suspected root causes
 
 ---
 
-#### 1.2.2 Review Current SQLite Implementation
+#### 1.2.2 Review Current SQLite Implementación
 ```bash
 # Analyze SQLite codebase
 find src/ -name "*sqlite*" -o -name "*persistence*" | xargs cat
@@ -147,11 +147,11 @@ find src/ -name "*sqlite*" -o -name "*persistence*" | xargs cat
 - [ ] Transaction handling implemented?
 - [ ] Connection pooling present?
 - [ ] Error handling comprehensive?
-- [ ] CRUD operations tested?
+- [ ] CRUD operations pruebaed?
 - [ ] Migration scripts validated?
 - [ ] Concurrency handled?
 
-**Findings Document:** `SQLITE_INVESTIGATION_REPORT.md`
+**Findings Documento:** `SQLITE_INVESTIGATION_REPORT.md`
 
 ---
 
@@ -159,9 +159,9 @@ find src/ -name "*sqlite*" -o -name "*persistence*" | xargs cat
 **Architecture Decision:**
 - Implement `TransactionManager` for ACID compliance
 - Add connection pooling for concurrency
-- Create comprehensive integration tests
+- Crear comprehensive integration pruebas
 
-**Modules to Create:**
+**Modules to Crear:**
 ```
 src/server/app/infrastructure/persistence/
 ├── transaction_manager.py
@@ -215,8 +215,8 @@ src/server/app/infrastructure/persistence/
 
 ---
 
-#### 1.3.3 Plan .arb File Structure
-**File Structure:**
+#### 1.3.3 Plan .arb Archivo Structure
+**Archivo Structure:**
 ```
 src/client/lib/l10n/
 ├── app_en.arb  (Source of truth)
@@ -238,7 +238,7 @@ src/client/lib/l10n/
 }
 ```
 
-**Deliverable:** Sample .arb files in `I18N_ARCHITECTURE_DESIGN.md`
+**Deliverable:** Sample .arb archivos in `I18N_ARCHITECTURE_DESIGN.md`
 
 ---
 
@@ -252,39 +252,39 @@ grep -r "Text(" src/client/lib/features/ | \
 
 **Expected:** 50-100+ hardcoded strings to translate
 
-**Deliverable:** List of files with hardcoded strings in `I18N_ARCHITECTURE_DESIGN.md`
+**Deliverable:** List of archivos with hardcoded strings in `I18N_ARCHITECTURE_DESIGN.md`
 
 ---
 
-### 1.4 Phase 1 Deliverables
+### 1.4 Fase 1 Deliverables
 
-**Documents to Create:**
+**Documentos to Crear:**
 1. ✅ `TEST_FAILURE_ANALYSIS.md`
 2. ✅ `SQLITE_INVESTIGATION_REPORT.md`
 3. ✅ `I18N_ARCHITECTURE_DESIGN.md`
 
 **Exit Criteria:**
-- [ ] All test failures documented with root causes
+- [ ] All prueba failures documentoed with root causes
 - [ ] SQLite issues analyzed and design approved
 - [ ] i18n architecture designed and validated
-- [ ] Phase 1 documents reviewed and approved
+- [ ] Fase 1 documentos reviewed and approved
 
 **Quality Gate:** All deliverables reviewed, no unresolved questions.
 
 ---
 
-## 🟢 PHASE 2: GREEN (Implementation)
+## 🟢 FASE 2: GREEN (Implementación)
 
-**Objective:** Fix all failing tests, implement SQLite fixes, and complete i18n infrastructure.
+**Objective:** Fix all failing pruebas, implement SQLite fixes, and complete i18n infrastructure.
 
-### 2.1 Python Test Fixes
+### 2.1 Python Prueba Fixes
 
-#### 2.1.1 Fix Unit Tests
-**Workflow for Each Failing Test:**
-1. Read test file and understand intent
-2. Identify root cause from Phase 1 analysis
-3. Implement fix (code or test)
-4. Run test in isolation
+#### 2.1.1 Fix Unit Pruebas
+**Workflow for Each Failing Prueba:**
+1. Read prueba archivo and understand intent
+2. Identify root cause from Fase 1 análisis
+3. Implement fix (code or prueba)
+4. Ejecutar prueba in isolation
 5. Verify passes
 6. Commit fix
 
@@ -298,17 +298,17 @@ git add tests/python/unit/api/websocket/test_streaming_handler.py
 git commit -m "fix: resolve websocket handler test mock setup"
 ```
 
-**Tests to Fix:**
-- `test_streaming_handler.py` (mock WebSocket connection)
-- `test_token_buffer.py` (fix buffer logic)
-- `test_metrics_collector.py` (fix time mocking)
+**Pruebas to Fix:**
+- `prueba_streaming_handler.py` (mock WebSocket connection)
+- `prueba_token_buffer.py` (fix buffer logic)
+- `prueba_metrics_collector.py` (fix time mocking)
 
-**Exit Criteria:** All Python unit tests pass
+**Exit Criteria:** All Python unit pruebas pass
 
 ---
 
-#### 2.1.2 Fix Integration Tests
-**Focus:** `test_streaming_flow.py`
+#### 2.1.2 Fix Integración Pruebas
+**Focus:** `prueba_streaming_flow.py`
 
 **Common Issues:**
 - Missing httpx dependency
@@ -325,22 +325,22 @@ response = await client.post("/api/query", json=payload)
 # No timeout= parameter
 ```
 
-**Exit Criteria:** All Python integration tests pass
+**Exit Criteria:** All Python integration pruebas pass
 
 ---
 
-#### 2.1.3 Add Missing Python Tests
+#### 2.1.3 Add Missing Python Pruebas
 **Uncovered Modules (from coverage report):**
 - `src/server/app/core/performance/metrics_collector.py`
 - `src/server/app/services/streaming/connection_manager.py`
 
-**Create Tests:**
+**Crear Pruebas:**
 ```bash
 touch tests/python/unit/core/performance/test_metrics_collector.py
 touch tests/python/unit/services/streaming/test_connection_manager.py
 ```
 
-**Write comprehensive tests following TDD:**
+**Write comprehensive pruebas following TDD:**
 ```python
 def test_metrics_collector_records_latency():
     """Should record UI latency metric."""
@@ -356,13 +356,13 @@ def test_metrics_collector_records_latency():
 
 ---
 
-### 2.2 Flutter Test Fixes
+### 2.2 Flutter Prueba Fixes
 
-#### 2.2.1 Fix Unit Tests
-**Tests to Fix:**
-- `circular_buffer_test.dart` (off-by-one error)
-- `auto_scroll_controller_test.dart` (mock ScrollController)
-- `streaming_provider_test.dart` (async state management)
+#### 2.2.1 Fix Unit Pruebas
+**Pruebas to Fix:**
+- `circular_buffer_prueba.dart` (off-by-one error)
+- `auto_scroll_controller_prueba.dart` (mock ScrollController)
+- `streaming_provider_prueba.dart` (async state management)
 
 **Example Fix:**
 ```dart
@@ -379,11 +379,11 @@ test('should handle overflow correctly', () {
 });
 ```
 
-**Exit Criteria:** All Flutter unit tests pass
+**Exit Criteria:** All Flutter unit pruebas pass
 
 ---
 
-#### 2.2.2 Fix Widget Tests
+#### 2.2.2 Fix Widget Pruebas
 **Common Issues:**
 - Missing `pumpAndSettle()` for async widgets
 - Missing `ProviderScope` wrapper
@@ -405,28 +405,28 @@ testWidgets('should display streaming message', (tester) async {
 });
 ```
 
-**Exit Criteria:** All Flutter widget tests pass
+**Exit Criteria:** All Flutter widget pruebas pass
 
 ---
 
-#### 2.2.3 Fix Integration Tests
-**Focus:** `streaming_flow_test.dart`, `filesystem_integration_test.dart`
+#### 2.2.3 Fix Integración Pruebas
+**Focus:** `streaming_flow_prueba.dart`, `archivosystem_integration_prueba.dart`
 
 **Strategy:**
 - Use real providers (not mocks)
-- Test full flow end-to-end
-- Validate side effects (file creation, database writes)
+- Prueba full flow end-to-end
+- Validate side effects (archivo creation, database writes)
 
-**Exit Criteria:** All Flutter integration tests pass
+**Exit Criteria:** All Flutter integration pruebas pass
 
 ---
 
-#### 2.2.4 Fix E2E Tests
-**Test:** `project_creation_e2e_test.dart`
+#### 2.2.4 Fix E2E Pruebas
+**Prueba:** `proyecto_creation_e2e_prueba.dart`
 
 **Issue:** Package resolution errors (`flutter_riverpod`, `softarchitect_ai`)
 
-**Fix:** Ensure `tests/pubspec.yaml` has correct dependencies:
+**Fix:** Ensure `pruebas/pubspec.yaml` has correct dependencies:
 ```yaml
 dependencies:
   flutter_riverpod: ^3.2.1
@@ -434,14 +434,14 @@ dependencies:
     path: ../src/client
 ```
 
-**Exit Criteria:** All E2E tests pass
+**Exit Criteria:** All E2E pruebas pass
 
 ---
 
 ### 2.3 SQLite Persistence Fix
 
 #### 2.3.1 Implement TransactionManager
-**File:** `src/server/app/infrastructure/persistence/transaction_manager.py`
+**Archivo:** `src/server/app/infrastructure/persistence/transaction_manager.py`
 
 ```python
 """Transaction manager for SQLite ACID compliance."""
@@ -469,7 +469,7 @@ class TransactionManager:
             conn.close()
 ```
 
-**Test:**
+**Prueba:**
 ```python
 def test_transaction_commits_on_success():
     manager = TransactionManager(":memory:")
@@ -486,12 +486,12 @@ def test_transaction_commits_on_success():
 ---
 
 #### 2.3.2 Refactor SQLite Repository
-**File:** `src/server/app/infrastructure/persistence/sqlite_repository.py`
+**Archivo:** `src/server/app/infrastructure/persistence/sqlite_repository.py`
 
 **Changes:**
 - Use `TransactionManager` for all writes
 - Add comprehensive error handling
-- Implement connection pooling (Phase 4)
+- Implement connection pooling (Fase 4)
 
 **Example:**
 ```python
@@ -510,8 +510,8 @@ class SQLiteRepository:
 
 ---
 
-#### 2.3.3 Add SQLite Integration Tests
-**File:** `tests/python/integration/test_sqlite_persistence.py`
+#### 2.3.3 Add SQLite Integración Pruebas
+**Archivo:** `pruebas/python/integration/prueba_sqlite_persistence.py`
 
 ```python
 def test_crud_operations():
@@ -537,8 +537,8 @@ def test_crud_operations():
 
 ---
 
-#### 2.3.4 Test Concurrency
-**File:** `tests/python/integration/test_sqlite_concurrency.py`
+#### 2.3.4 Prueba Concurrency
+**Archivo:** `pruebas/python/integration/prueba_sqlite_concurrency.py`
 
 ```python
 import threading
@@ -563,11 +563,11 @@ def test_concurrent_writes():
     assert len(projects) == 10
 ```
 
-**Exit Criteria:** All SQLite tests pass, coverage >90%
+**Exit Criteria:** All SQLite pruebas pass, coverage >90%
 
 ---
 
-### 2.4 i18n Implementation
+### 2.4 i18n Implementación
 
 #### 2.4.1 Install Dependencies
 **Update `src/client/pubspec.yaml`:**
@@ -581,14 +581,14 @@ flutter:
   generate: true
 ```
 
-**Create `src/client/l10n.yaml`:**
+**Crear `src/client/l10n.yaml`:**
 ```yaml
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
 ```
 
-**Run:**
+**Ejecutar:**
 ```bash
 cd src/client
 flutter pub get
@@ -597,8 +597,8 @@ flutter gen-l10n
 
 ---
 
-#### 2.4.2 Create .arb Files
-**File:** `src/client/lib/l10n/app_en.arb`
+#### 2.4.2 Crear .arb Archivos
+**Archivo:** `src/client/lib/l10n/app_en.arb`
 ```json
 {
   "@@locale": "en",
@@ -611,7 +611,7 @@ flutter gen-l10n
 }
 ```
 
-**File:** `src/client/lib/l10n/app_es.arb`
+**Archivo:** `src/client/lib/l10n/app_es.arb`
 ```json
 {
   "@@locale": "es",
@@ -627,7 +627,7 @@ flutter gen-l10n
 ---
 
 #### 2.4.3 Implement LocaleProvider
-**File:** `src/client/lib/core/localization/locale_provider.dart`
+**Archivo:** `src/client/lib/core/localization/locale_provider.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -658,7 +658,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
 ---
 
 #### 2.4.4 Update MaterialApp
-**File:** `src/client/lib/main.dart`
+**Archivo:** `src/client/lib/main.dart`
 
 ```dart
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -690,7 +690,7 @@ class MyApp extends ConsumerWidget {
 ---
 
 #### 2.4.5 Implement Language Selector
-**File:** `src/client/lib/features/settings/presentation/widgets/language_selector_widget.dart`
+**Archivo:** `src/client/lib/features/settings/presentation/widgets/language_selector_widget.dart`
 
 ```dart
 class LanguageSelectorWidget extends ConsumerWidget {
@@ -728,8 +728,8 @@ class LanguageSelectorWidget extends ConsumerWidget {
 
 #### 2.4.6 Replace All Hardcoded Strings
 **Strategy:**
-1. Search for `Text("...")` in UI files
-2. Extract string to .arb files
+1. Search for `Text("...")` in UI archivos
+2. Extract string to .arb archivos
 3. Replace with `AppLocalizations.of(context)!.stringKey`
 
 **Example:**
@@ -751,9 +751,9 @@ grep -rn 'Text("' src/client/lib/features/ | wc -l
 
 ---
 
-### 2.5 Phase 2 Verification
+### 2.5 Fase 2 Verificación
 
-**Run Full Test Suite:**
+**Ejecutar Full Prueba Suite:**
 ```bash
 # Python
 pytest tests/python/ --cov=src/server/app --cov-fail-under=80 -v
@@ -763,8 +763,8 @@ flutter test --coverage
 ```
 
 **Expected:**
-- ✅ All Python tests pass
-- ✅ All Flutter tests pass
+- ✅ All Python pruebas pass
+- ✅ All Flutter pruebas pass
 - ✅ Coverage ≥80%
 
 **Manual QA:**
@@ -775,11 +775,11 @@ flutter run -d linux
 # Navigate to Settings > Change language > Verify UI updates
 ```
 
-**Exit Criteria:** All tests pass, i18n functional
+**Exit Criteria:** All pruebas pass, i18n functional
 
 ---
 
-## 🔵 PHASE 3: REFACTOR (Code Quality)
+## 🔵 FASE 3: REFACTOR (Code Quality)
 
 **Objective:** Improve code quality, readability, and maintainability without changing behavior.
 
@@ -884,7 +884,7 @@ def create_project(self, project: Project) -> None:
 grep -rn "ElevatedButton" src/client/lib/features/ | wc -l
 ```
 
-**Create Reusable Widget:**
+**Crear Reusable Widget:**
 ```dart
 // lib/core/widgets/custom_button.dart
 class CustomButton extends StatelessWidget {
@@ -945,7 +945,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
 
 ### 3.3 Code Quality Checks
 
-**Run All Quality Tools:**
+**Ejecutar All Quality Tools:**
 ```bash
 # Python
 black src/server/
@@ -963,13 +963,13 @@ flutter analyze
 
 ---
 
-## ⚙️ PHASE 4: OPTIMIZATION (Performance & Security)
+## ⚙️ FASE 4: OPTIMIZATION (Performance & Security)
 
 **Objective:** Optimize performance, harden security, and prepare for production.
 
 ### 4.1 Performance Optimization
 
-#### 4.1.1 Profile SQLite Performance
+#### 4.1.1 Proarchivo SQLite Performance
 **Benchmark CRUD Operations:**
 ```python
 # tests/python/integration/test_sqlite_performance.py
@@ -988,8 +988,8 @@ def test_bulk_insert_performance():
 
 ---
 
-#### 4.1.2 Optimize SQLite Configuration
-**File:** `src/server/app/infrastructure/persistence/sqlite_config.py`
+#### 4.1.2 Optimize SQLite Configuración
+**Archivo:** `src/server/app/infrastructure/persistence/sqlite_config.py`
 
 ```python
 def configure_sqlite(conn: sqlite3.Connection):
@@ -1014,7 +1014,7 @@ CREATE INDEX idx_projects_name ON projects(name);
 CREATE INDEX idx_projects_created_at ON projects(created_at);
 ```
 
-**Test:**
+**Prueba:**
 ```python
 def test_index_improves_query_speed():
     """Query with index should be faster than full scan."""
@@ -1047,7 +1047,7 @@ final localeProvider = FutureProvider<AppLocalizations>((ref) async {
 
 ---
 
-#### 4.1.5 Profile UI Performance
+#### 4.1.5 Proarchivo UI Performance
 **Measure Frame Rendering Time:**
 ```dart
 // Enable performance overlay
@@ -1063,7 +1063,7 @@ flutter run --profile -d linux --enable-software-rendering
 
 ### 4.2 Security Hardening
 
-#### 4.2.1 Run Security Audit
+#### 4.2.1 Ejecutar Security Audit
 ```bash
 # Bandit (Python)
 bandit -r src/server/ -o bandit_report.txt
@@ -1089,7 +1089,7 @@ conn.execute(f"SELECT * FROM projects WHERE name='{name}'")
 conn.execute("SELECT * FROM projects WHERE name=?", (name,))
 ```
 
-**Test:**
+**Prueba:**
 ```python
 def test_sql_injection_prevented():
     """Should not allow SQL injection."""
@@ -1120,9 +1120,9 @@ def sanitize_path(path: str) -> str:
 
 ---
 
-### 4.3 Phase 4 Deliverables
+### 4.3 Fase 4 Deliverables
 
-**Create Reports:**
+**Crear Reports:**
 1. `PERFORMANCE_BENCHMARKS.md`
 2. `SECURITY_AUDIT_REPORT.md`
 
@@ -1133,14 +1133,14 @@ def sanitize_path(path: str) -> str:
 
 ---
 
-## 📋 PHASE 5: DOCUMENTATION (Comprehensive Docs)
+## 📋 FASE 5: DOCUMENTATION (Comprehensive Docs)
 
-**Objective:** Create complete, bilingual documentation for all deliverables.
+**Objective:** Crear complete, bilingual documentoation for all deliverables.
 
-### 5.1 Technical Documentation
+### 5.1 Technical Documentoation
 
-#### 5.1.1 i18n Implementation Guide
-**File:** `I18N_IMPLEMENTATION_GUIDE.en.md`
+#### 5.1.1 i18n Implementación Guide
+**Archivo:** `I18N_IMPLEMENTATION_GUIDE.en.md`
 
 **Structure:**
 ```
@@ -1153,12 +1153,12 @@ def sanitize_path(path: str) -> str:
 ## Troubleshooting
 ```
 
-**Also Create:** `I18N_IMPLEMENTATION_GUIDE.es.md`
+**Also Crear:** `I18N_IMPLEMENTATION_GUIDE.es.md`
 
 ---
 
 #### 5.1.2 SQLite Fix Report
-**File:** `SQLITE_FIX_REPORT.md`
+**Archivo:** `SQLITE_FIX_REPORT.md`
 
 **Structure:**
 ```
@@ -1173,18 +1173,18 @@ def sanitize_path(path: str) -> str:
 
 ---
 
-#### 5.1.3 Test Results Documentation
-**File:** `TEST_RESULTS.md`
+#### 5.1.3 Prueba Resultados Documentoation
+**Archivo:** `TEST_RESULTS.md`
 
 **Include:**
-- Final test counts (Python + Flutter)
+- Final prueba counts (Python + Flutter)
 - Coverage reports (screenshots)
 - Performance benchmarks
 - Comparison: before vs after
 
 ---
 
-### 5.2 User Documentation
+### 5.2 User Documentoation
 
 #### 5.2.1 Update User Guide
 **Add section:**
@@ -1199,13 +1199,13 @@ def sanitize_path(path: str) -> str:
 
 ---
 
-### 5.3 Developer Documentation
+### 5.3 Developer Documentoation
 
-#### 5.3.1 Testing Best Practices
-**File:** `doc/02-SETUP_DEV/TESTING_BEST_PRACTICES.en.md`
+#### 5.3.1 Pruebaing Best Practices
+**Archivo:** `doc/02-SETUP_DEV/TESTING_BEST_PRACTICES.en.md`
 
 **Topics:**
-- Test structure and naming conventions
+- Prueba structure and naming conventions
 - Mock vs real dependencies
 - Fixture management
 - CI/CD integration
@@ -1213,7 +1213,7 @@ def sanitize_path(path: str) -> str:
 ---
 
 #### 5.3.2 i18n Workflow for Future Translations
-**File:** `doc/02-SETUP_DEV/I18N_WORKFLOW_GUIDE.en.md`
+**Archivo:** `doc/02-SETUP_DEV/I18N_WORKFLOW_GUIDE.en.md`
 
 **Topics:**
 - How to add a new language (e.g., French)
@@ -1225,7 +1225,7 @@ def sanitize_path(path: str) -> str:
 ### 5.4 Completion Reports
 
 #### 5.4.1 Completion Summary (EN/ES)
-**Files:**
+**Archivos:**
 - `COMPLETION_SUMMARY.en.md`
 - `COMPLETION_SUMMARY.es.md`
 
@@ -1243,9 +1243,9 @@ def sanitize_path(path: str) -> str:
 
 ---
 
-### 5.5 Phase 5 Deliverables
+### 5.5 Fase 5 Deliverables
 
-**Documents Created:**
+**Documentos Creard:**
 - ✅ I18N_IMPLEMENTATION_GUIDE (EN/ES)
 - ✅ SQLITE_FIX_REPORT
 - ✅ TEST_RESULTS
@@ -1253,17 +1253,17 @@ def sanitize_path(path: str) -> str:
 - ✅ I18N_WORKFLOW_GUIDE (EN/ES)
 - ✅ COMPLETION_SUMMARY (EN/ES)
 
-**Exit Criteria:** All documentation complete and reviewed
+**Exit Criteria:** All documentoation complete and reviewed
 
 ---
 
-## ✅ PHASE 6: VALIDATION (CI/CD & Final Review)
+## ✅ FASE 6: VALIDATION (CI/CD & Final Review)
 
 **Objective:** Ensure all CI/CD workflows pass and perform final quality review.
 
-### 6.1 Local Testing
+### 6.1 Local Pruebaing
 
-#### 6.1.1 Full Python Test Suite
+#### 6.1.1 Full Python Prueba Suite
 ```bash
 pytest tests/python/ \
   --cov=src/server/app \
@@ -1274,12 +1274,12 @@ pytest tests/python/ \
 ```
 
 **Expected:**
-- ✅ All tests pass
+- ✅ All pruebas pass
 - ✅ Coverage ≥80%
 
 ---
 
-#### 6.1.2 Full Flutter Test Suite
+#### 6.1.2 Full Flutter Prueba Suite
 ```bash
 flutter test --coverage
 
@@ -1288,18 +1288,18 @@ genhtml coverage/lcov.info -o coverage_flutter_final
 ```
 
 **Expected:**
-- ✅ All tests pass
+- ✅ All pruebas pass
 - ✅ Coverage ≥80%
 
 ---
 
 #### 6.1.3 Manual QA Checklist
-- [ ] Test language switching (EN ↔ ES)
+- [ ] Prueba language switching (EN ↔ ES)
 - [ ] Verify all UI strings translated
-- [ ] Test SQLite persistence across app restarts
-- [ ] Test concurrent SQLite operations
+- [ ] Prueba SQLite persistence across app restarts
+- [ ] Prueba concurrent SQLite operations
 - [ ] Verify no performance regressions
-- [ ] Test on Linux, macOS, Windows (if available)
+- [ ] Prueba on Linux, macOS, Windows (if available)
 
 ---
 
@@ -1317,18 +1317,18 @@ git push origin feature/test-suite-sqlite-fix
 #### 6.2.2 Monitor CI/CD Workflows
 
 **Backend CI (`.github/workflows/backend-ci.yaml`):**
-- [ ] Python unit tests pass
-- [ ] Python integration tests pass
+- [ ] Python unit pruebas pass
+- [ ] Python integration pruebas pass
 - [ ] Type checking passes (Pyright)
 - [ ] Linting passes (Ruff)
 - [ ] Formatting validated (Black)
 
 **Lint Workflow (`.github/workflows/lint.yml`):**
-- [ ] Flutter tests pass
-- [ ] Dart analysis passes
+- [ ] Flutter pruebas pass
+- [ ] Dart análisis passes
 - [ ] Flutter formatting validated
 
-**Performance Tests (`.github/workflows/performance-tests.yml`):**
+**Performance Pruebas (`.github/workflows/performance-pruebas.yml`):**
 - [ ] Streaming benchmarks pass
 - [ ] SQLite benchmarks pass
 - [ ] Memory usage within limits
@@ -1341,7 +1341,7 @@ git push origin feature/test-suite-sqlite-fix
 2. Reproduce locally
 3. Fix issue
 4. Push fix
-5. Wait for re-run
+5. Wait for re-ejecutar
 
 **Target:** All workflows green ✅
 
@@ -1369,8 +1369,8 @@ ruff check src/server/ --select S
 **Self-Review Checklist:**
 - [ ] All code follows AGENTS.md guidelines
 - [ ] Clean Architecture compliance verified
-- [ ] Test quality validated (clear, deterministic)
-- [ ] Documentation completeness verified
+- [ ] Prueba quality validated (clear, deterministic)
+- [ ] Documentoation completeness verified
 - [ ] No dead code or comments
 - [ ] Commit messages follow convention
 - [ ] Branch is up-to-date with develop
@@ -1381,22 +1381,22 @@ ruff check src/server/ --select S
 
 **From README.md:**
 
-#### Testing
-- [x] All Python unit tests pass
-- [x] All Python integration tests pass
-- [x] All Flutter unit tests pass
-- [x] All Flutter widget tests pass
-- [x] All Flutter integration tests pass
-- [x] All E2E tests pass
-- [x] Test coverage ≥80%
-- [x] No flaky tests
+#### Pruebaing
+- [x] All Python unit pruebas pass
+- [x] All Python integration pruebas pass
+- [x] All Flutter unit pruebas pass
+- [x] All Flutter widget pruebas pass
+- [x] All Flutter integration pruebas pass
+- [x] All E2E pruebas pass
+- [x] Prueba coverage ≥80%
+- [x] No flaky pruebas
 - [x] Performance benchmarks meet targets
 
 #### SQLite Persistence
-- [x] All SQLite tests pass
+- [x] All SQLite pruebas pass
 - [x] CRUD operations validated
-- [x] Transaction handling tested
-- [x] Concurrent access tested
+- [x] Transaction handling pruebaed
+- [x] Concurrent access pruebaed
 - [x] Migration scripts validated
 - [x] No data integrity issues
 
@@ -1413,20 +1413,20 @@ ruff check src/server/ --select S
 #### CI/CD & Quality
 - [x] backend-ci.yaml passes
 - [x] lint.yml passes
-- [x] performance-tests.yml passes
+- [x] performance-pruebas.yml passes
 - [x] No Ruff violations
 - [x] No Pyright errors
 - [x] Code formatted
 - [x] Security audit passes
 
-#### Documentation
+#### Documentoation
 - [x] README.md updated
 - [x] PROGRESS.md completed
-- [x] ARTIFACTS.md manifest created
-- [x] WORKFLOW_MASTER_DEFINITION.md created
-- [x] TEST_RESULTS.md documented
-- [x] I18N_IMPLEMENTATION_GUIDE created
-- [x] SQLITE_FIX_REPORT created
+- [x] ARTIFACTS.md manifest creard
+- [x] WORKFLOW_MASTER_DEFINITION.md creard
+- [x] TEST_RESULTS.md documentoed
+- [x] I18N_IMPLEMENTATION_GUIDE creard
+- [x] SQLITE_FIX_REPORT creard
 
 ---
 
@@ -1438,36 +1438,36 @@ ruff check src/server/ --select S
 - ✅ Manual QA complete
 - ✅ Security validated
 - ✅ Code review approved
-- ✅ Documentation complete
+- ✅ Documentoation complete
 
-**Status:** 🎉 **HU-3.6 COMPLETE**
+**Estado:** 🎉 **HU-3.6 COMPLETE**
 
 ---
 
 ## 🚪 Quality Gates
 
-### Gate 1: Phase 1 → Phase 2
-- [ ] All test failures documented with root causes
+### Gate 1: Fase 1 → Fase 2
+- [ ] All prueba failures documentoed with root causes
 - [ ] SQLite issues analyzed
 - [ ] i18n architecture designed
 
-### Gate 2: Phase 2 → Phase 3
-- [ ] All tests pass (Python + Flutter)
+### Gate 2: Fase 2 → Fase 3
+- [ ] All pruebas pass (Python + Flutter)
 - [ ] SQLite persistence works
 - [ ] i18n functional
 
-### Gate 3: Phase 3 → Phase 4
+### Gate 3: Fase 3 → Fase 4
 - [ ] Code quality checks pass
 - [ ] Clean Architecture compliance
 
-### Gate 4: Phase 4 → Phase 5
+### Gate 4: Fase 4 → Fase 5
 - [ ] Performance targets met
 - [ ] Security audit passes
 
-### Gate 5: Phase 5 → Phase 6
-- [ ] All documentation complete
+### Gate 5: Fase 5 → Fase 6
+- [ ] All documentoation complete
 
-### Gate 6: Phase 6 → Merge
+### Gate 6: Fase 6 → Merge
 - [ ] All CI/CD workflows pass
 - [ ] Manual QA complete
 - [ ] All acceptance criteria met
@@ -1477,15 +1477,15 @@ ruff check src/server/ --select S
 ## ✅ Acceptance Criteria
 
 ### Functional Requirements
-1. **Testing**
-   - [ ] 100% test pass rate (0 failures)
-   - [ ] Test coverage ≥80% for business logic
-   - [ ] No flaky tests
+1. **Pruebaing**
+   - [ ] 100% prueba pass rate (0 failures)
+   - [ ] Prueba coverage ≥80% for business logic
+   - [ ] No flaky pruebas
 
 2. **SQLite Persistence**
    - [ ] Transaction support implemented
    - [ ] CRUD operations validated
-   - [ ] Concurrent access tested
+   - [ ] Concurrent access pruebaed
 
 3. **i18n**
    - [ ] Language selector functional
@@ -1508,7 +1508,7 @@ ruff check src/server/ --select S
    - [ ] Code formatted (Black, Dart format)
    - [ ] Clean Architecture compliance
 
-4. **Documentation**
+4. **Documentoation**
    - [ ] All docs bilingual (EN/ES)
    - [ ] User guide updated
    - [ ] Developer docs complete
@@ -1517,14 +1517,14 @@ ruff check src/server/ --select S
 
 ## 📊 Final Metrics
 
-*To be filled during Phase 6*
+*To be filled during Fase 6*
 
-### Test Coverage
+### Prueba Coverage
 - Python: __%
 - Flutter: __%
 
-### Test Results
-- Total Tests: __
+### Prueba Resultados
+- Total Pruebas: __
 - Passing: __
 - Failing: __
 

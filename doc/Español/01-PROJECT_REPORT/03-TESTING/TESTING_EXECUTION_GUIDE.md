@@ -1,4 +1,4 @@
-# 🧪 Guía de Ejecución de Tests
+# 🧪 Guía de Ejecución de Pruebas
 
 > **Versión:** v0.1.0 | **Estado:** ✅ Actualizado | **Fecha:** 31/01/2026
 
@@ -8,8 +8,8 @@
 
 1. [Requisitos Previos](#requisitos-previos)
 2. [Setup Inicial](#setup-inicial)
-3. [Ejecutar Tests](#ejecutar-tests)
-4. [Ver Resultados](#ver-resultados)
+3. [Ejecutar Pruebas](#ejecutar-pruebas)
+4. [Ver Resultadoados](#ver-resultados)
 5. [Debugging](#debugging)
 6. [Troubleshooting](#troubleshooting)
 
@@ -20,7 +20,7 @@
 ### Sistema Operativo
 - ✅ Linux (Ubuntu 20.04+), macOS, o Windows (WSL2)
 - ✅ Python 3.12.3+
-- ✅ Docker 20.10+ (para tests E2E)
+- ✅ Docker 20.10+ (para pruebas E2E)
 
 ### Herramientas Instaladas
 ```bash
@@ -105,9 +105,9 @@ curl http://localhost:8001/health
 
 ---
 
-## 🧪 Ejecutar Tests
+## 🧪 Ejecutar Pruebas
 
-### Opción 1: Todos los Tests (Recomendado)
+### Opción 1: Todos los Pruebas (Recomendado)
 
 ```bash
 cd /path/to/soft-architect-ai
@@ -137,19 +137,19 @@ tests/integration/services/rag/test_vector_store_e2e.py .....
 ======================== 19 passed in 10.40s ========================
 ```
 
-### Opción 2: Solo Tests Unitarios
+### Opción 2: Solo Pruebas Unitarios
 
 ```bash
 python -m pytest src/server/tests/unit/ -v
 ```
 
-### Opción 3: Solo Tests de Integración/E2E
+### Opción 3: Solo Pruebas de Integración/E2E
 
 ```bash
 python -m pytest src/server/tests/integration/ -v
 ```
 
-### Opción 4: Test Específico
+### Opción 4: Prueba Específico
 
 ```bash
 # Ejecutar un test individual
@@ -178,7 +178,7 @@ python -m pytest src/server/tests/ -v -s --log-cli-level=DEBUG
 
 ---
 
-## 📊 Ver Resultados
+## 📊 Ver Resultadoados
 
 ### Coverage HTML Report
 
@@ -230,7 +230,7 @@ python -m pytest src/server/tests/ \
 
 ## 🐛 Debugging
 
-### Ejecutar Test con Breakpoint
+### Ejecutar Prueba con Breakpoint
 
 ```bash
 # Usar pdb para debugging interactivo
@@ -247,7 +247,7 @@ python -m pytest \
 # q = quit
 ```
 
-### Ejecutar Test con Traceback Completo
+### Ejecutar Prueba con Traceback Completo
 
 ```bash
 python -m pytest \
@@ -255,7 +255,7 @@ python -m pytest \
   --tb=long  # long, short, line, native, no
 ```
 
-### Capturar Output de Test
+### Capturar Output de Prueba
 
 ```bash
 # Mostrar todo lo que el test imprime
@@ -316,7 +316,7 @@ echo $PYTHONPATH
 cd /full/path/to/soft-architect-ai
 ```
 
-### Problema 3: Tests se skippean
+### Problema 3: Pruebas se skippean
 
 **Output:**
 ```
@@ -336,7 +336,7 @@ echo $CHROMA_HOST
 CHROMA_HOST=localhost python -m pytest src/server/tests/integration/ -v
 ```
 
-### Problema 4: Timeout en tests
+### Problema 4: Timeout en pruebas
 
 **Error:**
 ```
@@ -410,7 +410,7 @@ pytest src/server/tests/ -v -m unit
 pytest src/server/tests/ -v -m integration
 ```
 
-### Performance Analysis
+### Performance Análisis
 
 ```bash
 # Ver tests más lentos
@@ -450,28 +450,28 @@ Antes de hacer commit, ejecutar:
 
 ## 🎓 Mejores Prácticas
 
-### Para Tests Nuevos
+### Para Pruebas Nuevos
 
-1. **Ubicación:** `src/server/tests/{unit,integration}/`
-2. **Naming:** `test_*.py` o `*_test.py`
-3. **Fixtures:** Usar `conftest.py` para fixtures compartidas
-4. **Marcadores:** Usar `@pytest.mark.unit`, `@pytest.mark.integration`
-5. **Async:** Usar `@pytest.mark.asyncio` para async tests
+1. **Ubicación:** `src/server/pruebas/{unit,integration}/`
+2. **Naming:** `prueba_*.py` o `*_prueba.py`
+3. **Fixtures:** Usar `confprueba.py` para fixtures compartidas
+4. **Marcadores:** Usar `@pyprueba.mark.unit`, `@pyprueba.mark.integration`
+5. **Async:** Usar `@pyprueba.mark.asyncio` para async pruebas
 
 ### Para Development
 
 1. Ejecutar suite cada 30 minutos
-2. Ejecutar test específico antes de commit
+2. Ejecutar prueba específico antes de commit
 3. Mantener coverage >80% en código nuevo
-4. Revisar failing tests inmediatamente
-5. Documentar test cases complejos
+4. Revisar failing pruebas inmediatamente
+5. Documentoar prueba cases complejos
 
 ---
 
 ## 📞 Recursos
 
-- **Pytest Documentation:** https://docs.pytest.org/
-- **Pytest Coverage:** https://coverage.readthedocs.io/
+- **Pyprueba Documentoation:** https://docs.pyprueba.org/
+- **Pyprueba Coverage:** https://coverage.readthedocs.io/
 - **Docker Compose:** https://docs.docker.com/compose/
 - **ChromaDB:** https://docs.trychroma.com/
 

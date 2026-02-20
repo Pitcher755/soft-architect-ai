@@ -26,7 +26,7 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 | Acción | Cantidad |
 |--------|----------|
 | **HU Creadas** | 17 (HU-3.6 a HU-7.3) |
-| **TODOs Integrados** | 13 (3 código + 6 tests + 4 infra) |
+| **TODOs Integrados** | 13 (3 código + 6 pruebas + 4 infra) |
 | **Story Points Totales** | 85 pts |
 | **Estimación Temporal** | 8-10 semanas |
 | **Issues Linear** | PIT-80 a PIT-96 |
@@ -35,10 +35,10 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 
 | Sprint | HUs | Puntos | Objetivo |
 |--------|-----|--------|----------|
-| **S3.6-S3.8** | 3 | 13 | Test Suite + Settings UI + Phase Logic |
+| **S3.6-S3.8** | 3 | 13 | Prueba Suite + Settings UI + Fase Logic |
 | **S4.1-S4.3** | 3 | 18 | Backend Chat + RAG + Streaming |
 | **S4.4-S4.5** | 2 | 10 | Error Handling + Optimization |
-| **S5.1-S5.3** | 3 | 18 | Integration Tests + Security + Performance |
+| **S5.1-S5.3** | 3 | 18 | Integración Pruebas + Security + Performance |
 | **S6.1-S6.3** | 3 | 16 | Installer + Onboarding + Docs |
 | **S7.1-S7.3** | 3 | 10 | CI/CD + Release Automation + MVP Launch |
 | **TOTAL** | **17** | **85** | **MVP v0.1.0 Complete** |
@@ -49,38 +49,38 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 
 ### Sprint 3 Extended - Completar Funcionalidades Base
 
-#### HU-3.6: Test Suite Completion & SQLite Persistence Fix 🔴
+#### HU-3.6: Prueba Suite Completion & SQLite Persistence Fix 🔴
 - **Issue:** [PIT-80](https://linear.app/pitcherdev/issue/PIT-80)
 - **Puntos:** 5 (M)
-- **Branch:** `fix/test-suite-completion`
+- **Branch:** `fix/prueba-suite-completion`
 - **TODOs:**
-  - T-1: Fix 6 failing SQLite persistence tests
+  - T-1: Fix 6 failing SQLite persistence pruebas
   - TODO-1: Update last opened timestamp
-  - I-3: Setup database migrations for tests
-- **Objetivo:** Elevar cobertura ProjectShell de 70% a >85%
+  - I-3: Setup database migrations for pruebas
+- **Objetivo:** Elevar cobertura ProyectoShell de 70% a >85%
 
-#### HU-3.7: Settings UI Completion & Widget Tests 🟡
+#### HU-3.7: Settings UI Completion & Widget Pruebas 🟡
 - **Issue:** [PIT-81](https://linear.app/pitcherdev/issue/PIT-81)
 - **Puntos:** 5 (M)
 - **Branch:** `feature/settings-ui-completion`
 - **TODOs:**
-  - T-2: Fix 10 failing MarkdownPreview tests
-  - T-3: Create 7 Settings UI widget tests
-  - T-4: Create GlobalSearchDialog widget test
-  - TODO-2: Implement file_picker
+  - T-2: Fix 10 failing MarkdownPreview pruebas
+  - T-3: Crear 7 Settings UI widget pruebas
+  - T-4: Crear GlobalSearchDialog widget prueba
+  - TODO-2: Implement archivo_picker
 - **Objetivo:** Elevar cobertura Settings de 85% a >90%
 
-#### HU-3.8: Project Phase Logic & Progress Tracking 🟡
+#### HU-3.8: Proyecto Fase Logic & Progress Tracking 🟡
 - **Issue:** [PIT-82](https://linear.app/pitcherdev/issue/PIT-82)
 - **Puntos:** 3 (S)
-- **Branch:** `feature/project-phase-logic`
+- **Branch:** `feature/proyecto-fase-logic`
 - **TODOs:**
-  - TODO-3: Implement real phase logic
+  - TODO-3: Implement real fase logic
 - **Objetivo:** Progress bar (Doc N/25) dinámico
 
 ---
 
-### Sprint 4 - Backend Integration & RAG Orchestration
+### Sprint 4 - Backend Integración & RAG Orchestration
 
 #### HU-4.1: Backend Chat Endpoint & RAG Orchestration 🔴
 - **Issue:** [PIT-83](https://linear.app/pitcherdev/issue/PIT-83)
@@ -118,16 +118,16 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 
 ---
 
-### Sprint 5 - Integration Tests & Cleanup
+### Sprint 5 - Integración Pruebas & Cleanup
 
-#### HU-5.1: Integration Tests Suite Rewrite 🟡
+#### HU-5.1: Integración Pruebas Suite Rewrite 🟡
 - **Issue:** [PIT-86](https://linear.app/pitcherdev/issue/PIT-86)
 - **Puntos:** 5 (M)
-- **Branch:** `chore/integration-tests-rewrite`
+- **Branch:** `chore/integration-pruebas-rewrite`
 - **TODOs:**
-  - T-5: Rewrite 3 .skip integration tests
-  - T-6: Remove 5 deprecated widget tests
-- **Objetivo:** Integration tests >85%, no .skip files
+  - T-5: Rewrite 3 .skip integration pruebas
+  - T-6: Remove 5 deprecated widget pruebas
+- **Objetivo:** Integración pruebas >85%, no .skip archivos
 
 #### HU-5.2: Security Hardening & OWASP Compliance 🔴
 - **Issue:** [PIT-87](https://linear.app/pitcherdev/issue/PIT-87)
@@ -145,31 +145,31 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 
 ### Sprint 6 - Packaging & Distribution
 
-#### HU-6.1: Linux Installer (.deb) & Desktop Integration 🔴
+#### HU-6.1: Linux Installer (.deb) & Desktop Integración 🔴
 - **Issue:** [PIT-92](https://linear.app/pitcherdev/issue/PIT-92)
 - **Puntos:** 8 (L)
 - **Branch:** `release/linux-installer`
 - **Objetivo:** .deb package, desktop entry, icon integration
 
-#### HU-6.2: User Onboarding Flow & First-Run Experience 🟡
+#### HU-6.2: User Onboarding Flow & First-Ejecutar Experience 🟡
 - **Issue:** [PIT-95](https://linear.app/pitcherdev/issue/PIT-95)
 - **Puntos:** 5 (M)
 - **Branch:** `feature/onboarding-wizard`
 - **Objetivo:** Wizard 4 pasos (Welcome → LLM → Path → Verify)
 
-#### HU-6.3: Documentation Portal & User Guide 🟡
+#### HU-6.3: Documentoation Portal & User Guide 🟡
 - **Issue:** [PIT-94](https://linear.app/pitcherdev/issue/PIT-94)
 - **Puntos:** 3 (S)
 - **Branch:** `docs/user-guide`
 - **TODOs:**
-  - I-4: Document test execution & coverage
+  - I-4: Documento prueba execution & coverage
 - **Objetivo:** User Guide completo, troubleshooting section
 
 ---
 
 ### Sprint 7 - CI/CD & Release Management
 
-#### HU-7.1: GitHub Actions Workflows & Automated Testing 🔴
+#### HU-7.1: GitHub Actions Workflows & Automated Pruebaing 🔴
 - **Issue:** [PIT-91](https://linear.app/pitcherdev/issue/PIT-91)
 - **Puntos:** 5 (M)
 - **Branch:** `ci/github-actions-pipeline`
@@ -206,12 +206,12 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 | **HU-4.1** (Backend Chat) | ❌ Pendiente | ✅ **HU-4.1** | Sin cambios, mantener original |
 | **HU-4.2** (Conversation History) | ❌ Pendiente | ✅ **HU-4.2** | Sin cambios, mantener original |
 | **HU-4.3** (Backend Streaming) | ❌ Pendiente | → **HU-4.3** | Renombrado a "SSE Streaming" (más claro) |
-| **HU-5.1** (Remove Temp Endpoints) | ❌ Pendiente | → **HU-5.1** (NEW) | Reemplazado por "Integration Tests Rewrite" (mayor prioridad) |
+| **HU-5.1** (Remove Temp Endpoints) | ❌ Pendiente | → **HU-5.1** (NEW) | Reemplazado por "Integración Pruebas Rewrite" (mayor prioridad) |
 | **HU-5.2** (Security Hardening) | ❌ Pendiente | ✅ **HU-5.2** | Sin cambios, mantener original |
 | **HU-5.3** (Performance Profiling) | ❌ Pendiente | ✅ **HU-5.3** | Sin cambios, mantener original |
 | **HU-6.1** (Linux Installer) | ❌ Pendiente | ✅ **HU-6.1** | Ampliado con desktop integration |
 | **HU-6.2** (Onboarding Flow) | ❌ Pendiente | ✅ **HU-6.2** | Sin cambios, mantener original |
-| **HU-6.3** (Documentation Portal) | ❌ Pendiente | ✅ **HU-6.3** | TODO I-4 integrado |
+| **HU-6.3** (Documentoation Portal) | ❌ Pendiente | ✅ **HU-6.3** | TODO I-4 integrado |
 | **HU-7.1** (GitHub Actions) | ❌ Pendiente | ✅ **HU-7.1** | TODOs I-1, I-2 integrados |
 | **HU-7.2** (Release v0.1.0) | ❌ Pendiente | → **HU-7.2** (Automation) + **HU-7.3** (Release) | Dividido en 2 HU más específicas |
 
@@ -219,7 +219,7 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 
 1. **3 HU Nuevas Añadidas (S3.6-S3.8):** Para completar el Sprint 3 con TODOs integrados
 2. **HU-3.4/3.5 Movidas a S4:** Mejor contexto después de backend integration
-3. **HU-5.1 Reemplazada:** Integration Tests Rewrite tiene mayor prioridad que Remove Temp Endpoints
+3. **HU-5.1 Reemplazada:** Integración Pruebas Rewrite tiene mayor prioridad que Remove Temp Endpoints
 4. **HU-7.2 Dividida:** Automation (HU-7.2) + Release (HU-7.3) para mayor claridad
 
 ---
@@ -230,21 +230,21 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 
 | Issue | HU | Título | Estimación | Prioridad | URL |
 |-------|----|--------|------------|-----------|-----|
-| **PIT-80** | HU-3.6 | Test Suite Completion & SQLite Fix | 5 pts | 🔴 Urgent | [Ver](https://linear.app/pitcherdev/issue/PIT-80) |
-| **PIT-81** | HU-3.7 | Settings UI Completion & Widget Tests | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-81) |
-| **PIT-82** | HU-3.8 | Project Phase Logic & Progress Tracking | 3 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-82) |
+| **PIT-80** | HU-3.6 | Prueba Suite Completion & SQLite Fix | 5 pts | 🔴 Urgent | [Ver](https://linear.app/pitcherdev/issue/PIT-80) |
+| **PIT-81** | HU-3.7 | Settings UI Completion & Widget Pruebas | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-81) |
+| **PIT-82** | HU-3.8 | Proyecto Fase Logic & Progress Tracking | 3 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-82) |
 | **PIT-83** | HU-4.1 | Backend Chat Endpoint & RAG Orchestration | 8 pts | 🔴 Urgent | [Ver](https://linear.app/pitcherdev/issue/PIT-83) |
 | **PIT-84** | HU-4.2 | Conversation History & Persistence | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-84) |
 | **PIT-85** | HU-4.3 | Server-Sent Events (SSE) Streaming | 5 pts | 🔴 Urgent | [Ver](https://linear.app/pitcherdev/issue/PIT-85) |
 | **PIT-89** | HU-4.4 | Error Handling & Validation Gates | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-89) |
 | **PIT-88** | HU-4.5 | Streaming Optimization & Caching | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-88) |
-| **PIT-86** | HU-5.1 | Integration Tests Suite Rewrite | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-86) |
+| **PIT-86** | HU-5.1 | Integración Pruebas Suite Rewrite | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-86) |
 | **PIT-87** | HU-5.2 | Security Hardening & OWASP Compliance | 8 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-87) |
 | **PIT-90** | HU-5.3 | Performance Profiling & Optimization | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-90) |
-| **PIT-92** | HU-6.1 | Linux Installer (.deb) & Desktop Integration | 8 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-92) |
-| **PIT-95** | HU-6.2 | User Onboarding Flow & First-Run Experience | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-95) |
-| **PIT-94** | HU-6.3 | Documentation Portal & User Guide | 3 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-94) |
-| **PIT-91** | HU-7.1 | GitHub Actions Workflows & Automated Testing | 5 pts | 🔴 Urgent | [Ver](https://linear.app/pitcherdev/issue/PIT-91) |
+| **PIT-92** | HU-6.1 | Linux Installer (.deb) & Desktop Integración | 8 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-92) |
+| **PIT-95** | HU-6.2 | User Onboarding Flow & First-Ejecutar Experience | 5 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-95) |
+| **PIT-94** | HU-6.3 | Documentoation Portal & User Guide | 3 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-94) |
+| **PIT-91** | HU-7.1 | GitHub Actions Workflows & Automated Pruebaing | 5 pts | 🔴 Urgent | [Ver](https://linear.app/pitcherdev/issue/PIT-91) |
 | **PIT-96** | HU-7.2 | Release Automation & Versioning | 3 pts | 🟡 High | [Ver](https://linear.app/pitcherdev/issue/PIT-96) |
 | **PIT-93** | HU-7.3 | MVP v0.1.0 Release | 2 pts | 🔴 Urgent | [Ver](https://linear.app/pitcherdev/issue/PIT-93) |
 
@@ -270,7 +270,7 @@ Distribución por Tamaño:
 ### 5.1 Acciones Inmediatas
 
 1. **Semana 1-2 (Actual):** Trabajar en HU-3.6 (PIT-80)
-   - Fix 6 SQLite tests
+   - Fix 6 SQLite pruebas
    - Implementar timestamp auto-update
    - Setup database migrations
 
@@ -280,7 +280,7 @@ Distribución por Tamaño:
    - PIT-82 → Frontend/Logic specialist
 
 3. **Actualizar Kanban Board:**
-   - Mover PIT-80, PIT-81, PIT-82 a "Ready for Dev"
+   - Mover PIT-80, PIT-81, PIT-82 a "Preparado para Dev"
    - Mantener PIT-83+ en "Backlog"
 
 ### 5.2 Roadmap Visual
@@ -301,13 +301,13 @@ Distribución por Tamaño:
 
 ### 5.3 Criterios de Éxito
 
-| Milestone | Criterio | Target | Status |
+| Milestone | Criterio | Target | Estado |
 |-----------|----------|--------|--------|
-| **Sprint 3 Complete** | Tests >95%, Cobertura >85% | S3.6-S3.8 done | ⏳ In Progress |
-| **Sprint 4 Complete** | Backend Chat funcional + RAG + SSE | S4.1-S4.5 done | ⏳ Pending |
-| **Sprint 5 Complete** | Tests >95%, Security audit passed | S5.1-S5.3 done | ⏳ Pending |
-| **Sprint 6 Complete** | Linux .deb installer tested | S6.1-S6.3 done | ⏳ Pending |
-| **Sprint 7 Complete** | CI/CD green, MVP v0.1.0 released | S7.1-S7.3 done | ⏳ Pending |
+| **Sprint 3 Complete** | Pruebas >95%, Cobertura >85% | S3.6-S3.8 done | ⏳ In Progress |
+| **Sprint 4 Complete** | Backend Chat funcional + RAG + SSE | S4.1-S4.5 done | ⏳ Pendiente |
+| **Sprint 5 Complete** | Pruebas >95%, Security audit passed | S5.1-S5.3 done | ⏳ Pendiente |
+| **Sprint 6 Complete** | Linux .deb installer pruebaed | S6.1-S6.3 done | ⏳ Pendiente |
+| **Sprint 7 Complete** | CI/CD green, MVP v0.1.0 released | S7.1-S7.3 done | ⏳ Pendiente |
 
 ---
 
@@ -315,15 +315,15 @@ Distribución por Tamaño:
 
 ### ✅ Completado
 
-- ✅ **17 HU** creadas y documentadas en Linear (PIT-80 a PIT-96)
+- ✅ **17 HU** creadas y documentoadas en Linear (PIT-80 a PIT-96)
 - ✅ **13 TODOs** integrados en las nuevas HU
-- ✅ Documento de análisis completo (HU_REORGANIZATION_ANALYSIS.md)
+- ✅ Documentoo de análisis completo (HU_REORGANIZATION_ANALYSIS.md)
 - ✅ Roadmap reorganizado con timeline de 8-10 semanas
 - ✅ Prioridades definidas por Sprint
 
 ### ⏳ Próximos Pasos
 
-1. **Semana 1:** Comenzar HU-3.6 (PIT-80) - Test Suite Completion
+1. **Semana 1:** Comenzar HU-3.6 (PIT-80) - Prueba Suite Completion
 2. **Semana 2:** Completar HU-3.7 y HU-3.8
 3. **Semana 3-4:** Sprint 4 Backend (HU-4.1-4.3)
 4. **Semana 5-10:** Sprints 5-7 (Security, Packaging, CI/CD, Release)
@@ -334,7 +334,7 @@ Distribución por Tamaño:
 
 ---
 
-**Documento generado:** 09/02/2026
+**Documentoo generado:** 09/02/2026
 **Última actualización:** 09/02/2026
 **Versión:** v1.0
 **Estado:** ✅ COMPLETE

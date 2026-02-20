@@ -50,13 +50,13 @@
 ### 2.2 Message Capacity
 - **Target:** +500 tokens sin degradación
 - **Definición:** Número máximo de tokens transmitidos en sesión sin pérdida de conexión
-- **Medición:** Test de carga con mensajes largos
+- **Medición:** Prueba de carga con mensajes largos
 - **Prioridad:** 🟡 MEDIA
 
 ### 2.3 Concurrent Users
 - **Target:** 10 conexiones simultáneas (MVP scope)
 - **Definición:** Número de WebSocket connections activas sin degradación de servicio
-- **Medición:** Stress testing con múltiples clientes
+- **Medición:** Stress pruebaing con múltiples clientes
 - **Prioridad:** 🟢 BAJA (futuro scaling)
 
 ---
@@ -72,7 +72,7 @@
 ### 3.2 Jank Threshold
 - **Target:** 0 frames > 16.67ms
 - **Definición:** Tiempo de rendering por frame (60 FPS = 16.67ms/frame)
-- **Medición:** Flutter Timeline (frame analysis)
+- **Medición:** Flutter Timeline (frame análisis)
 - **Prioridad:** 🔥 ALTA
 
 ### 3.3 Scroll Latency
@@ -94,7 +94,7 @@
 ### 4.2 Memory Growth Rate
 - **Target:** < 5MB por 1000 mensajes
 - **Definición:** Incremento de memoria RAM con crecimiento de chat history
-- **Medición:** Dart DevTools Memory Profiler
+- **Medición:** Dart DevTools Memory Proarchivor
 - **Prioridad:** 🟡 MEDIA
 
 ### 4.3 Garbage Collection Pause Time
@@ -153,7 +153,7 @@ flutter run --profile --trace-startup
 # Dart DevTools → Timeline → Record frames
 ```
 
-### 6.3 Integration (E2E)
+### 6.3 Integración (E2E)
 ```bash
 # Tests E2E con validación de métricas
 pytest tests/python/integration/test_streaming_flow.py -v

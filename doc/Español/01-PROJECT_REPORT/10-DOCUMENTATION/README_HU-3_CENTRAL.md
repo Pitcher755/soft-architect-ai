@@ -1,7 +1,7 @@
-# 📑 CENTRAL DE DOCUMENTACIÓN: HU-3.x Project-First Refactor Sprint 3
+# 📑 CENTRAL DE DOCUMENTACIÓN: HU-3.x Proyecto-First Refactor Sprint 3
 
 > **Repositorio:** soft-architect-ai
-> **Rama Principal:** `feature/ui-project-shell`
+> **Rama Principal:** `feature/ui-proyecto-shell`
 > **Fecha:** 02/02/2026
 > **Estado:** ✅ DOCUMENTACIÓN COMPLETA
 > **Responsable:** ArchitectZero (AI Lead)
@@ -16,7 +16,7 @@
 - 🏛️ **Arquitecto / Tech Lead** → Lee: [INDEX_HU-3_ANALYSIS.es.md](#análisis-profundo)
 - 💻 **Developer Backend** → Lee: [HU-3_SPECIFICATIONS.es.md](#especificaciones-técnicas) (HU-3.2, 3.4)
 - 🎨 **Developer Frontend** → Lee: [HU-3_SPECIFICATIONS.es.md](#especificaciones-técnicas) (HU-3.1, 3.3, 3.5)
-- 🔐 **QA / Tester** → Lee: [HU-3_IMPROVEMENT_PROPOSALS.es.md](#innovaciones-técnicas) (Testing section)
+- 🔐 **QA / Pruebaer** → Lee: [HU-3_IMPROVEMENT_PROPOSALS.es.md](#innovaciones-técnicas) (Pruebaing section)
 
 ---
 
@@ -24,7 +24,7 @@
 
 ### 🎯 Nivel Ejecutivo
 
-| Documento | Propósito | Tiempo | Link |
+| Documentoo | Propósito | Tiempo | Link |
 |-----------|----------|--------|------|
 | **INDEX_HU-3_ANALYSIS.es.md** | Índice y navegación | 5 min | [Leer](./INDEX_HU-3_ANALYSIS.es.md) |
 | **HU-3_EXECUTIVE_SUMMARY.es.md** | Resumen 60 segundos | 10 min | [Leer](./HU-3_EXECUTIVE_SUMMARY.es.md) |
@@ -32,7 +32,7 @@
 
 ### 🔍 Nivel Análisis
 
-| Documento | Propósito | Tiempo | Link |
+| Documentoo | Propósito | Tiempo | Link |
 |-----------|----------|--------|------|
 | **HU-3_REFACTOR_ANALYSIS.es.md** | Análisis comparativo profundo | 30 min | [Leer](./HU-3_REFACTOR_ANALYSIS.es.md) |
 | **HU-3_SPECIFICATIONS.es.md** | Especificación de 5 HUs | 20 min | [Leer](./HU-3_SPECIFICATIONS.es.md) |
@@ -40,7 +40,7 @@
 
 ### 🔧 Nivel Implementación
 
-| Documento | Propósito | Tiempo | Link |
+| Documentoo | Propósito | Tiempo | Link |
 |-----------|----------|--------|------|
 | **HU-3_IMPLEMENTATION_PLAN.es.md** | Checklist de acciones pre-rama | 20 min | [Leer](./HU-3_IMPLEMENTATION_PLAN.es.md) |
 | **MASTER_IMPLEMENTATION_PLAN.es.md** | Timeline 8 semanas + fases detalladas | 45 min | [Leer](./MASTER_IMPLEMENTATION_PLAN.es.md) ⭐ |
@@ -133,7 +133,7 @@ TOTAL: 55 pts en 8 semanas
 
 ### 💻 Developer Backend (60 min)
 
-**Tu rol:** Implementar HU-3.2 (FileSystemService), HU-3.4 (Error Handling)
+**Tu rol:** Implementar HU-3.2 (ArchivoSystemService), HU-3.4 (Error Handling)
 
 **Lee en este orden:**
 1. [HU-3_EXECUTIVE_SUMMARY.es.md](./HU-3_EXECUTIVE_SUMMARY.es.md) ← 5 min (rápido)
@@ -142,15 +142,15 @@ TOTAL: 55 pts en 8 semanas
 3. [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md)
    - Secciones: HU-3.2, HU-3.4 ← 20 min
 4. [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md)
-   - Secciones: Backend, Testing ← 15 min
+   - Secciones: Backend, Pruebaing ← 15 min
 5. [MASTER_IMPLEMENTATION_PLAN.es.md](./MASTER_IMPLEMENTATION_PLAN.es.md)
    - Secciones: Fase 1, Spike RAG ← 5 min
 
 **Tareas:**
-- [ ] Crear feature/backend-filesystem-service
-- [ ] Implementar FileSystemService (W1-W2)
-- [ ] Crear Endpoints /api/v1/projects/
-- [ ] 90%+ test coverage
+- [ ] Crear feature/backend-archivosystem-service
+- [ ] Implementar ArchivoSystemService (W1-W2)
+- [ ] Crear Endpoints /api/v1/proyectos/
+- [ ] 90%+ prueba coverage
 
 **Próximo paso:** Start Week 1
 
@@ -167,41 +167,41 @@ TOTAL: 55 pts en 8 semanas
 3. [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md)
    - Secciones: HU-3.1, HU-3.3, HU-3.5 ← 20 min
 4. [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md)
-   - Secciones: UI Design, UX, Testing ← 15 min
+   - Secciones: UI Design, UX, Pruebaing ← 15 min
 5. [MASTER_IMPLEMENTATION_PLAN.es.md](./MASTER_IMPLEMENTATION_PLAN.es.md)
    - Secciones: Fase 1-2 ← 5 min
 
 **Tareas:**
 - [ ] Design mockups (HU-3.1)
-- [ ] Create ProjectShell UI widgets (W1-W2)
-- [ ] Integrate ChatPanel + DocumentProposalWidget (W3-W5)
+- [ ] Crear ProyectoShell UI widgets (W1-W2)
+- [ ] Integrate ChatPanel + DocumentoProposalWidget (W3-W5)
 - [ ] SSE streaming (W6)
-- [ ] 85%+ test coverage
+- [ ] 85%+ prueba coverage
 
-**Próximo paso:** Design phase Week 1
+**Próximo paso:** Design fase Week 1
 
 ---
 
-### 🔐 QA / Tester (50 min)
+### 🔐 QA / Pruebaer (50 min)
 
-**Tu rol:** Test plan, validación E2E, cross-platform
+**Tu rol:** Prueba plan, validación E2E, cross-platform
 
 **Lee en este orden:**
 1. [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md) ← 20 min
-   - Verification criteria para todas las HUs
+   - Verificación criteria para todas las HUs
 2. [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md) ← 15 min
-   - Sección: Testing Strategy
+   - Sección: Pruebaing Strategy
 3. [MASTER_IMPLEMENTATION_PLAN.es.md](./MASTER_IMPLEMENTATION_PLAN.es.md) ← 15 min
    - Secciones: Métricas de Éxito, Riesgos
 
 **Tareas:**
-- [ ] Crear test plan (W1)
-- [ ] Unit tests (W1-W6)
-- [ ] E2E tests (W4-W5)
-- [ ] Cross-platform testing (W6-W7)
+- [ ] Crear prueba plan (W1)
+- [ ] Unit pruebas (W1-W6)
+- [ ] E2E pruebas (W4-W5)
+- [ ] Cross-platform pruebaing (W6-W7)
 - [ ] >85% coverage validation (W7)
 
-**Próximo paso:** Create test plan Week 1
+**Próximo paso:** Crear prueba plan Week 1
 
 ---
 
@@ -245,7 +245,7 @@ INDEX_HU-3_ANALYSIS.es.md ← Punto de entrada
    - HU-3_IMPLEMENTATION_PLAN.es.md
 ```
 
-### Documentación Generada (Rama Actual)
+### Documentoación Generada (Rama Actual)
 
 ```
 doc/01-PROJECT_REPORT/
@@ -297,9 +297,9 @@ Si usuario confirma ✅:
    ```
 
 3. **Crear PR Draft** (02/02-03/02)
-   - Title: "refactor(hu-3): Project-First Sequential..."
+   - Title: "refactor(hu-3): Proyecto-First Sequential..."
    - Base: develop
-   - Status: DRAFT
+   - Estado: DRAFT
 
 4. **Revisión Arquitectónica** (03/02-04/02)
    - Tech Lead revisa análisis
@@ -309,26 +309,26 @@ Si usuario confirma ✅:
    - Team prepara máquinas locales
    - Dependencies instaladas
 
-### FASE 1: Foundation (Week 1-2, 06/02 - 19/02)
+### FASE 1: Fundación (Week 1-2, 06/02 - 19/02)
 
 - HU-3.1 & HU-3.2 (paralelo)
 - Spike RAG design
-- HITO 1: Foundation Complete
+- HITO 1: Fundación Complete
 
-### FASE 2: Core Logic (Week 3-5, 20/02 - 12/03)
+### FASE 2: Lógica Central (Week 3-5, 20/02 - 12/03)
 
-- HU-3.3 implementation
+- HU-3.3 implementación
 - HU-3.4 integration
 - HITO 2: Core Complete
 
-### FASE 3: Resilience (Week 6, 13/03 - 19/03)
+### FASE 3: Resiliencia (Week 6, 13/03 - 19/03)
 
 - HU-3.5 optimization
 - HITO 3: All Features Merged
 
-### FASE 4: Testing & Release (Week 7-8, 20/03 - 01/04)
+### FASE 4: Pruebaing & Release (Week 7-8, 20/03 - 01/04)
 
-- E2E testing
+- E2E pruebaing
 - Cross-platform validation
 - HITO 4: Release Candidate
 - HITO 5: Production Ready
@@ -353,7 +353,7 @@ packages/knowledge_base/
 └─ 02-TECH-PACKS/ ← Contexto para IA
 ```
 
-### Documentos AGENTS.md
+### Documentoos AGENTS.md
 
 ```
 AGENTS.md Section 4: Arquitectura Clean Architecture
@@ -415,15 +415,15 @@ o
 
 ## 📈 DOCUMENTO VIVO
 
-Este documento es **vivo y evolucionará**:
+Este documentoo es **vivo y evolucionará**:
 
 - Week 0: Decisión + Aprobaciones
 - Week 1+: Actualizaciones semanales de progreso
-- Cambios documentados en CHANGELOG
+- Cambios documentoados en CHANGELOG
 
 ---
 
-**DOCUMENTACIÓN CENTRAL - HU-3.x Project-First Refactor**
+**DOCUMENTACIÓN CENTRAL - HU-3.x Proyecto-First Refactor**
 **Creada por:** ArchitectZero (AI Lead)
 **Fecha:** 02/02/2026
 **Estado:** ✅ COMPLETA Y LISTA PARA DECISIÓN

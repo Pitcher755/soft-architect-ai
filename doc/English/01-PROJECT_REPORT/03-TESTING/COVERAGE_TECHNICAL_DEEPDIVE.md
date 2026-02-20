@@ -2,7 +2,7 @@
 
 **Fecha:** 4 de Febrero de 2026
 **Audience:** Developers & QA Engineers
-**Nivel:** Técnico (Avanzado)
+**Nivel:** Técnico (Advanced)
 
 ---
 
@@ -44,12 +44,12 @@ TOTAL: 212 Tests | 202 Passing (95.3%)
 
 ---
 
-## 🔬 Análisis de Fallos
+## 🔬 Analysis de Fallos
 
 ### Categoría 1: Fallos Críticos (7 tests)
 
 #### ProjectShellScreen State Injection Issues
-**Archivo:** `tests/widget/flutter/.../project_shell_screen_test.dart`
+**File:** `tests/widget/flutter/.../project_shell_screen_test.dart`
 
 ```dart
 // PROBLEMA IDENTIFICADO:
@@ -162,7 +162,7 @@ testWidgets('...', (tester) async {
 });
 ```
 
-**Opción C: Crear TestableProjectShellNotifier**
+**Opción C: Create TestableProjectShellNotifier**
 ```dart
 // Extender con capacidad de test
 class TestableProjectShellNotifier extends ProjectShellNotifier {
@@ -188,7 +188,7 @@ class TestableProjectShellNotifier extends ProjectShellNotifier {
 ### Categoría 2: Fallos Secundarios (3 tests)
 
 #### Integration Test Database Initialization
-**Archivo:** `tests/integration/flutter/.../project_creation_flow_test.dart`
+**File:** `tests/integration/flutter/.../project_creation_flow_test.dart`
 
 ```dart
 // PROBLEMA:
@@ -287,7 +287,7 @@ Future<Database> initTestDatabase() async {
 ### Categoría 3: Fallos Menores (1 test)
 
 #### DirectoryTreeWidget Highlighting
-**Archivo:** `tests/widget/flutter/.../directory_tree_widget_test.dart`
+**File:** `tests/widget/flutter/.../directory_tree_widget_test.dart`
 
 ```dart
 testWidgets('should highlight selected file', ...) {
@@ -521,7 +521,7 @@ Target: 99.5%+ coverage
 
 ---
 
-**Documento Técnico:** Test Coverage Deep Dive
+**Document Técnico:** Test Coverage Deep Dive
 **Actualización:** 4 Feb 2026
 **Reviewer Recomendado:** Tech Lead o Senior Engineer
 **Próxima Revisión:** 7 de Febrero de 2026

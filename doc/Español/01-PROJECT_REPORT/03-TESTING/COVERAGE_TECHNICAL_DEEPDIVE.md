@@ -1,4 +1,4 @@
-# 🔧 Test Coverage - Technical Deep Dive
+# 🔧 Prueba Coverage - Technical Deep Dive
 
 **Fecha:** 4 de Febrero de 2026
 **Audience:** Developers & QA Engineers
@@ -6,7 +6,7 @@
 
 ---
 
-## 📊 Test Suite Architecture
+## 📊 Prueba Suite Architecture
 
 ### Estructura de Directorios
 ```
@@ -46,10 +46,10 @@ TOTAL: 212 Tests | 202 Passing (95.3%)
 
 ## 🔬 Análisis de Fallos
 
-### Categoría 1: Fallos Críticos (7 tests)
+### Categoría 1: Fallos Críticos (7 pruebas)
 
-#### ProjectShellScreen State Injection Issues
-**Archivo:** `tests/widget/flutter/.../project_shell_screen_test.dart`
+#### ProyectoShellScreen State Injection Issues
+**Archivo:** `pruebas/widget/flutter/.../proyecto_shell_screen_prueba.dart`
 
 ```dart
 // PROBLEMA IDENTIFICADO:
@@ -88,14 +88,14 @@ testWidgets('should display no project view when no project is selected', ...) {
 // O: El widget está usando un provider diferente que no está overridden
 ```
 
-**7 Tests Afectados:**
-1. ❌ should display no project view when no project is selected
-2. ❌ should display project name in app bar when project is selected
+**7 Pruebas Afectados:**
+1. ❌ should display no proyecto view when no proyecto is selected
+2. ❌ should display proyecto name in app bar when proyecto is selected
 3. ❌ should display loading indicator when loading
 4. ❌ should display error message when there is an error
-5. ❌ should handle empty projects list
+5. ❌ should handle empty proyectos list
 6. ❌ should have proper layout structure
-7. ❌ should update UI when project changes
+7. ❌ should update UI when proyecto changes
 
 **Soluciones Potenciales:**
 
@@ -136,7 +136,7 @@ testWidgets('...', (tester) async {
 });
 ```
 
-**Opción B: Refactorizar ProjectShellScreen para inyección**
+**Opción B: Refactorizar ProyectoShellScreen para inyección**
 ```dart
 // Pasar estado como parámetro al widget
 class ProjectShellScreen extends ConsumerWidget {
@@ -162,7 +162,7 @@ testWidgets('...', (tester) async {
 });
 ```
 
-**Opción C: Crear TestableProjectShellNotifier**
+**Opción C: Crear PruebaableProyectoShellNotifier**
 ```dart
 // Extender con capacidad de test
 class TestableProjectShellNotifier extends ProjectShellNotifier {
@@ -185,10 +185,10 @@ class TestableProjectShellNotifier extends ProjectShellNotifier {
 
 ---
 
-### Categoría 2: Fallos Secundarios (3 tests)
+### Categoría 2: Fallos Secundarios (3 pruebas)
 
-#### Integration Test Database Initialization
-**Archivo:** `tests/integration/flutter/.../project_creation_flow_test.dart`
+#### Integración Prueba Database Initialization
+**Archivo:** `pruebas/integration/flutter/.../proyecto_creation_flow_prueba.dart`
 
 ```dart
 // PROBLEMA:
@@ -214,10 +214,10 @@ setUp(() async {
 //    - Manejar constraints correctamente
 ```
 
-**3 Tests Afectados:**
-1. ❌ should create and retrieve project successfully
-2. ❌ should list all created projects
-3. ❌ should validate project constraints
+**3 Pruebas Afectados:**
+1. ❌ should crear and retrieve proyecto successfully
+2. ❌ should list all creard proyectos
+3. ❌ should validate proyecto constraints
 
 **Solución Recomendada:**
 ```dart
@@ -284,10 +284,10 @@ Future<Database> initTestDatabase() async {
 
 ---
 
-### Categoría 3: Fallos Menores (1 test)
+### Categoría 3: Fallos Menores (1 prueba)
 
 #### DirectoryTreeWidget Highlighting
-**Archivo:** `tests/widget/flutter/.../directory_tree_widget_test.dart`
+**Archivo:** `pruebas/widget/flutter/.../directory_tree_widget_prueba.dart`
 
 ```dart
 testWidgets('should highlight selected file', ...) {
@@ -372,9 +372,9 @@ testWidgets('should visually highlight selected file', ...) {
 
 ---
 
-## 🧪 Estrategia de Testing por Capa
+## 🧪 Estrategia de Pruebaing por Capa
 
-### 1. Unit Tests (Bottom-up)
+### 1. Unit Pruebas (Bottom-up)
 ```
 ✅ Validación de constantes → Validadores → Entidades → Use Cases
 
@@ -397,7 +397,7 @@ test('validateFilePathInProject rejects path traversal', () {
 });
 ```
 
-### 2. Widget Tests (Middle)
+### 2. Widget Pruebas (Middle)
 ```
 ✅ Individual widgets con mockeados providers
 
@@ -416,7 +416,7 @@ Solución:
 - Considerar StateNotifierProvider.family
 ```
 
-### 3. Integration Tests (Top)
+### 3. Integración Pruebas (Top)
 ```
 ✅ Flujos completos con BD real (en test)
 
@@ -514,14 +514,14 @@ Target: 99.5%+ coverage
 
 ## 📚 Referencias & Recursos
 
-- [Flutter Testing Docs](https://flutter.dev/docs/testing)
-- [Riverpod Testing Guide](https://riverpod.dev/docs/essentials/testing)
-- [SQLite Flutter Testing](https://pub.dev/packages/sqflite)
-- [Testing Best Practices](/context/TESTING_PYRAMID_AND_QUALITY_GATES.es.md)
+- [Flutter Pruebaing Docs](https://flutter.dev/docs/pruebaing)
+- [Riverpod Pruebaing Guide](https://riverpod.dev/docs/essentials/pruebaing)
+- [SQLite Flutter Pruebaing](https://pub.dev/packages/sqflite)
+- [Pruebaing Best Practices](/context/TESTING_PYRAMID_AND_QUALITY_GATES.es.md)
 
 ---
 
-**Documento Técnico:** Test Coverage Deep Dive
+**Documentoo Técnico:** Prueba Coverage Deep Dive
 **Actualización:** 4 Feb 2026
 **Reviewer Recomendado:** Tech Lead o Senior Engineer
 **Próxima Revisión:** 7 de Febrero de 2026

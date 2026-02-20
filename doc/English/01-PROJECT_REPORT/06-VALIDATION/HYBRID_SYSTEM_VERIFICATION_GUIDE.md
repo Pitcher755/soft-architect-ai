@@ -1,13 +1,13 @@
-# 🔍 Guía de Verificación del Sistema Híbrido
+# 🔍 Guía de Verification del Sistema Híbrido
 
 > **Propósito:** Verificar que el sistema híbrido está correctamente implementado
 > **Audiencia:** Desarrolladores, QA, Code Reviewers
 
 ---
 
-## 1️⃣ Verificación de Archivos
+## 1️⃣ Verification de Files
 
-### Archivos Que DEBEN Existir
+### Files Que DEBEN Existir
 
 ```bash
 ✅ src/client/lib/features/project_shell/presentation/providers/projects_provider.dart
@@ -16,7 +16,7 @@
 ✅ src/client/lib/features/project_shell/domain/entities/project.dart
 ```
 
-### Archivos Que DEBEN Ser Modificados
+### Files Que DEBEN Ser Modificados
 
 ```bash
 ✅ src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart
@@ -25,7 +25,7 @@
 ✅ src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart
 ```
 
-### Buscar Archivos
+### Buscar Files
 
 ```bash
 # Verificar projects_provider.dart
@@ -40,14 +40,14 @@ find . -name "mock_data.dart" -type f
 
 ---
 
-## 2️⃣ Verificación de Código
+## 2️⃣ Verification de Código
 
 ### Buscar Protocolo Virtual `mock://`
 
 El sistema debe usar `mock://` para identificar rutas virtuales. Debe haber exactamente:
 
 - **3 detecciones en FileTreeWidget** (para mostrar árbol)
-- **3 detecciones en ProjectShellScreen** (para leer archivo)
+- **3 detecciones en ProjectShellScreen** (para leer file)
 - **1 registro en MockProjectsData** (la ruta de la guía)
 - **Total: 6-7 matches**
 
@@ -106,7 +106,7 @@ grep -n "guideRootNode\|guideFileContents" src/client/lib/features/project_shell
 
 ---
 
-## 3️⃣ Verificación de Imports
+## 3️⃣ Verification de Imports
 
 ### ProjectWorkspaceScreen debe importar
 
@@ -139,7 +139,7 @@ grep -n "^import" src/client/lib/features/project_shell/presentation/screens/pro
 
 ---
 
-## 4️⃣ Verificación de Compilación
+## 4️⃣ Verification de Compilación
 
 ### NO debe haber errores
 
@@ -202,7 +202,7 @@ Color _getPhaseColor(String phase) {
 
 ---
 
-## 5️⃣ Verificación Funcional (Manual Testing)
+## 5️⃣ Verification Funcional (Manual Testing)
 
 ### Test 1: Dashboard Muestra Guía
 
@@ -234,7 +234,7 @@ Color _getPhaseColor(String phase) {
 4. VERIFICAR: Formatea correctamente (headers, bullets, etc.)
 ```
 
-### Test 4: Navegar Entre Archivos Mock
+### Test 4: Navegar Entre Files Mock
 
 ```
 1. Hacer click en "features/" para expandir
@@ -244,7 +244,7 @@ Color _getPhaseColor(String phase) {
 5. VERIFICAR: Panel muestra contenido diferente
 ```
 
-### Test 5: Crear Proyecto Real
+### Test 5: Create Project Real
 
 ```
 1. Hacer click en "+Nuevo Proyecto"
@@ -253,7 +253,7 @@ Color _getPhaseColor(String phase) {
 4. VERIFICAR: Aparece junto a guía en la lista
 ```
 
-### Test 6: Navegar Proyecto Real
+### Test 6: Navegar Project Real
 
 ```
 1. Hacer click en proyecto real
@@ -276,7 +276,7 @@ Color _getPhaseColor(String phase) {
 
 ---
 
-## 6️⃣ Verificación de Estructura de Datos
+## 6️⃣ Verification de Estructura de Datos
 
 ### MockProjectData debe contener
 
@@ -314,7 +314,7 @@ List<Map<String, dynamic>> getMockProjectsData() => [
 
 ---
 
-## 7️⃣ Verificación de Integración
+## 7️⃣ Verification de Integración
 
 ### buildHybridProjectsList() debe
 
@@ -428,11 +428,11 @@ R: Sí, está en memoria como const (0ms)
 **P: ¿Puedo editar la guía?**
 R: No, es de solo lectura por diseño (const)
 
-**P: ¿Qué pasa si agrego un proyecto real con ruta mock://?**
-R: No se recomienda, pero el sistema lo manejaría como proyecto real
+**P: ¿Qué pasa si agrego un project real con ruta mock://?**
+R: No se recomienda, pero el sistema lo manejaría como project real
 
 **P: ¿El usuario puede borrar la guía?**
-R: No, es virtual (mock://), no se puede eliminar
+R: No, es virtual (mock://), no se puede delete
 
 **P: ¿Performance impactado?**
 R: Negligible (<1ms), solo detección de string
@@ -446,7 +446,7 @@ R: Sí, agregar más guías es trivial (copiar/pegar en mock_data.dart)
 
 Si encuentras problemas:
 
-1. Ejecutar `flutter analyze` para ver errores de compilación
-2. Ejecutar tests unitarios para verificar lógica
-3. Revisar esta guía y el archivo HYBRID_SYSTEM_IMPLEMENTATION.md
+1. Execute `flutter analyze` para ver errores de compilación
+2. Execute tests unitarios para verificar lógica
+3. Revisar esta guía y el file HYBRID_SYSTEM_IMPLEMENTATION.md
 4. Contactar al team de arquitectura

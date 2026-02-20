@@ -1,36 +1,36 @@
 # 🏗️ Restructuring Report: Clean Architecture Implementation
 
-> **Fecha:** 8 de febrero de 2026
-> **Estado:** ✅ COMPLETADO
-> **Versión:** v0.2.0-refactoring
+> **Date:** 8 de febrero de 2026
+> **Status:** ✅ COMPLETADO
+> **Version:** v0.2.0-refactoring
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
-2. [Análisis de Redundancias](#análisis-de-redundancias)
+2. [Analysis de Redundancias](#analysis-de-redundancias)
 3. [Decisiones Arquitectónicas](#decisiones-arquitectónicas)
 4. [Cambios Implementados](#cambios-implementados)
 5. [Estructura Final](#estructura-final)
 6. [Buenas Prácticas Aplicadas](#buenas-prácticas-aplicadas)
-7. [Próximos Pasos](#próximos-pasos)
+7. [Next Steps](#próximos-pasos)
 
 ---
 
-## 📊 Resumen Ejecutivo
+## 📊 Executive Summary
 
-Se completó una **reestructuración mayor** del proyecto Flutter para implementar **Clean Architecture** rigurosa, eliminando:
+Se completó una **reestructuración mayor** of the project Flutter para implementar **Clean Architecture** rigurosa, eliminando:
 
 - ❌ **Code smells**: Widgets ubicados en directorios incorrectos
 - ❌ **Redundancias**: Múltiples tree widgets con la misma funcionalidad
 - ❌ **Violaciones de separación de concerns**: Widgets globales en features específicas
 
-**Resultado:** Arquitectura limpia, escalable y modular con máxima separación de concerns.
+**Result:** Arquitectura limpia, escalable y modular con máxima separación de concerns.
 
 ---
 
-## 🔍 Análisis de Redundancias
+## 🔍 Analysis de Redundancias
 
 ### Widget: FileSystemTreeWidget vs DirectoryTreeWidget
 
@@ -108,7 +108,7 @@ lib/
 
 ### 2. Principios Aplicados
 
-| Principio | Implementación |
+| Principio | Implementation |
 |-----------|---|
 | **Separation of Concerns** | Widgets en features específicas, compartidos en `shared/` |
 | **Single Responsibility** | Cada widget tiene UN propósito claro |
@@ -120,7 +120,7 @@ lib/
 
 ## 🔄 Cambios Implementados
 
-### ✅ Archivos Creados
+### ✅ Files Creados
 
 #### 1. `lib/features/chat/presentation/screens/sequential_chat_screen.dart`
 - **Propósito**: Pantalla principal de conversación AI (IDE-like 4-column layout)
@@ -132,13 +132,13 @@ lib/
   - ✅ Referencias correctas a widgets movidos
 
 #### 2. `lib/features/chat/presentation/widgets/file_tree_widget.dart`
-- **Propósito**: Árbol de archivos del proyecto (Riverpod integrated)
+- **Propósito**: Árbol de files of the project (Riverpod integrated)
 - **Antes**: `FileSystemTreeWidget` en `project_shell/`
 - **Cambios**:
   - ✅ Consolidación: Mantiene lo mejor de `FileSystemTreeWidget`
   - ✅ Desplazada `DirectoryTreeWidget` (mock eliminado)
   - ✅ Integración con `FileSystemNotifier` y `MarkdownPreviewNotifier`
-  - ✅ Soporte de colores por fase (00-, 10-, 20-, etc.)
+  - ✅ Soporte de colores por phase (00-, 10-, 20-, etc.)
 
 #### 3. `lib/features/chat/presentation/widgets/chat_panel_widget.dart`
 - **Propósito**: Panel de chat con entrada de 3 líneas
@@ -156,7 +156,7 @@ lib/
 - **Mejoras**:
   - ✅ Documentación de ubicación lógica
   - ✅ Styling consistente con GitHub Dark theme
-  - ✅ Empty state cuando no hay archivo seleccionado
+  - ✅ Empty state cuando no hay file seleccionado
 
 #### 5. `lib/shared/presentation/widgets/projects_sidebar.dart`
 - **Propósito**: Barra lateral global (64px, presente en todas las pantallas)
@@ -166,9 +166,9 @@ lib/
   - ✅ Puede ser usada por: Chat, Settings, Workspace, etc.
   - ✅ Sin dependencias de features específicas
 
-### ❌ Archivos Eliminados
+### ❌ Files Eliminados
 
-| Archivo | Razón |
+| File | Razón |
 |---------|-------|
 | `project_shell/presentation/widgets/project_shell_screen.dart` | Reemplazado por `sequential_chat_screen.dart` |
 | `project_shell/presentation/widgets/chat_panel_widget.dart` | Movido a `chat/presentation/widgets/` |
@@ -177,9 +177,9 @@ lib/
 | `project_shell/presentation/widgets/file_system_tree_widget.dart` | Renombrado y movido a `file_tree_widget.dart` |
 | `project_shell/presentation/widgets/projects_sidebar.dart` | Movido a `shared/presentation/widgets/` |
 
-### 🔄 Archivos Modificados (Imports)
+### 🔄 Files Modificados (Imports)
 
-| Archivo | Cambio |
+| File | Cambio |
 |---------|--------|
 | `lib/core/router/app_router.dart` | ✅ `ProjectShellScreen` → `SequentialChatScreen` |
 | `lib/features/settings/presentation/screens/settings_screen.dart` | ✅ Import de `ProjectsSidebar` → `shared/` |
@@ -245,7 +245,7 @@ lib/
 ✅ **Separación Clara**: Cada feature es independiente
 ✅ **Compartidos Globales**: `shared/` para widgets usados por múltiples features
 ✅ **Sin Circular Dependencies**: Arquitectura lineal
-✅ **Escalable**: Agregar feature = crear carpeta en `features/`
+✅ **Escalable**: Agregar feature = create folder en `features/`
 ✅ **Mantenible**: Imports claros, referencias explícitas
 
 ---
@@ -290,15 +290,15 @@ Presentation Layer (UI - Riverpod + Flutter)
 
 ### 5. **Naming Conventions**
 
-- ✅ `SequentialChatScreen` - Nombre específico (no genérico `ProjectShellScreen`)
+- ✅ `SequentialChatScreen` - Name específico (no genérico `ProjectShellScreen`)
 - ✅ `FileTreeWidget` - Descriptor claro (no `MyTreeWidget`)
 - ✅ `MarkdownPreviewWidget` - Purpose-driven naming
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
-### 1. **Verificación Immediate (15 min)**
+### 1. **Verification Immediate (15 min)**
 
 ```bash
 cd src/client
@@ -310,7 +310,7 @@ flutter analyze --no-pub
 
 ### 2. **Test Updates (30 min)**
 
-Archivos de tests a actualizar:
+Files de tests a actualizar:
 ```
 tests/test/integration/features/project_shell/presentation/
   ├── project_shell_screen_flow_test.dart      → Actualizar referencias
@@ -323,12 +323,12 @@ tests/test/widget/features/project_shell/presentation/
 ### 3. **Widget Usage Analysis (20 min)**
 
 Identificar widgets sin usar:
-- `project_shell/presentation/widgets/create_project_dialog.dart` - Análisis
+- `project_shell/presentation/widgets/create_project_dialog.dart` - Analysis
 - Otros widgets huérfanos
 
 ### 4. **Documentation Update**
 
-Crear/actualizar:
+Create/actualizar:
 - ✅ `doc/03-HU-TRACKING/HU-2.X-REFACTORING/` - Historial de cambios
 - ✅ `README.md` - Actualizar architecture section
 
@@ -336,9 +336,9 @@ Crear/actualizar:
 
 ## 📊 Métricas de Calidad
 
-| Métrica | Antes | Después | Estado |
+| Métrica | Antes | Después | Status |
 |---------|-------|---------|--------|
-| **Archivos Redundantes** | 2 (tree widgets) | 0 | ✅ Mejorado |
+| **Files Redundantes** | 2 (tree widgets) | 0 | ✅ Mejorado |
 | **Code Smell Violations** | 6+ | 0 | ✅ Mejorado |
 | **Feature Isolation** | Pobre (widgets globales en features) | Excelente | ✅ Mejorado |
 | **Compilation Errors** | TBD | 0 (target) | ⏳ Verificando |
@@ -356,6 +356,6 @@ Crear/actualizar:
 
 ---
 
-**Documento creado:** 2026-02-08
-**Estado:** ✅ COMPLETADO Y VALIDADO
-**Próxima acción:** Ejecutar `flutter analyze` para verificación final
+**Document creado:** 2026-02-08
+**Status:** ✅ COMPLETADO Y VALIDADO
+**Próxima acción:** Execute `flutter analyze` para verification final

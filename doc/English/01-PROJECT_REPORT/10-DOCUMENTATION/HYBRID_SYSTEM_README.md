@@ -1,6 +1,6 @@
-# 🎯 CORRECCIÓN: Sistema Híbrido de Proyectos - README COMPLETO
+# 🎯 CORRECCIÓN: Sistema Híbrido de Projects - README COMPLETO
 
-**Estado:** ✅ **COMPLETADO Y FUNCIONAL**
+**Status:** ✅ **COMPLETADO Y FUNCIONAL**
 **Compilación:** ✅ **0 ERRORES**
 **Fecha Corrección:** 9 de febrero de 2026
 
@@ -8,21 +8,21 @@
 
 ## 📌 Resumen Ejecutivo
 
-Se ha corregido **COMPLETAMENTE** el problema donde los proyectos creados en `CreateProjectDialog` no aparecían en `ProjectWorkspaceScreen`.
+Se ha corregido **COMPLETAMENTE** el problema donde los projects creados en `CreateProjectDialog` no aparecían en `ProjectWorkspaceScreen`.
 
 ### ✅ Lo que ahora funciona:
 
-1. **Proyectos REALES** se cargan del filesystem
-2. **Proyecto MOCK** (Guía SoftArchitect) siempre incluido
+1. **Projects REALES** se cargan del filesystem
+2. **Project MOCK** (Guía SoftArchitect) siempre incluido
 3. Se muestran **JUNTOS** en un grid elegante
-4. **Botón "Ver todos"** aparece cuando hay >8 proyectos
+4. **Button "Ver todos"** aparece cuando hay >8 projects
 5. **ProjectListView expandible** muestra lista completa
-6. **Nuevos proyectos** creados aparecen inmediatamente
+6. **Nuevos projects** creados aparecen inmediatamente
 7. **Manejo robusto** de errores y loading states
 
 ---
 
-## 🔧 Archivos Modificados
+## 🔧 Files Modificados
 
 ### 1. `project_workspace_screen.dart`
 **Ruta:** `src/client/lib/features/project_shell/presentation/screens/`
@@ -54,8 +54,8 @@ Widget build(BuildContext context) {
 **Impacto:**
 - ✅ Loading spinner visible mientras carga
 - ✅ Error state si hay problemas
-- ✅ Data state cuando están listos los proyectos
-- ✅ Botón "Ver todos" aparece correctamente
+- ✅ Data state cuando están listos los projects
+- ✅ Button "Ver todos" aparece correctamente
 
 ---
 
@@ -95,9 +95,9 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
 ```
 
 **Impacto:**
-- ✅ Busca proyectos en filesystem
+- ✅ Busca projects en filesystem
 - ✅ Soporta múltiples rutas
-- ✅ Combina con proyecto mock
+- ✅ Combina con project mock
 - ✅ Manejo de errores (intenta, continúa si falla)
 
 ---
@@ -195,7 +195,7 @@ Spinner      Show error    |
 7. Si más de 8: Botón "Ver todos (N)" aparece
 ```
 
-### Crear Nuevo Proyecto
+### Create Nuevo Project
 ```
 1. Click [+ Nuevo Proyecto]
 2. Llenar datos:
@@ -211,7 +211,7 @@ Spinner      Show error    |
    (fue buscado por _loadRealProjects())
 ```
 
-### Expandir Lista (>8 proyectos)
+### Expandir Lista (>8 projects)
 ```
 1. Grid muestra 8 primeros
 2. Botón "Ver todos los proyectos (12)" aparece
@@ -249,8 +249,8 @@ Ver: [`VALIDATION_CHECKLIST.md`](VALIDATION_CHECKLIST.md)
 
 **Tests incluidos:**
 - ✅ Test 1: Visualización inicial
-- ✅ Test 2: Crear nuevo proyecto
-- ✅ Test 3: Botón "Ver todos" (>8)
+- ✅ Test 2: Create nuevo project
+- ✅ Test 3: Button "Ver todos" (>8)
 - ✅ Test 4: Lista expandida
 - ✅ Test 5: Hybrid detection (real vs mock)
 - ✅ Test 6: Persistencia
@@ -259,7 +259,7 @@ Ver: [`VALIDATION_CHECKLIST.md`](VALIDATION_CHECKLIST.md)
 
 ## 📁 Estructura de Búsqueda
 
-### Rutas donde busca proyectos
+### Rutas donde busca projects
 
 ```
 1. ./projects                # Relativa a app
@@ -267,9 +267,9 @@ Ver: [`VALIDATION_CHECKLIST.md`](VALIDATION_CHECKLIST.md)
 3. ~/Proyectos              # Home (Spanish)
 ```
 
-### Cómo crear proyectos para testing
+### Cómo create projects para testing
 
-**Opción A: Carpeta física**
+**Opción A: Folder física**
 ```bash
 mkdir -p ~/projects/Test-Project-1
 mkdir -p ~/projects/Test-Project-2
@@ -293,7 +293,7 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 
 ## 📚 Documentación Generada
 
-| Documento | Propósito |
+| Document | Propósito |
 |-----------|-----------|
 | **CORRECION_DEFINITIVA_HYBRID_SYSTEM.md** | Detalles técnicos de la corrección |
 | **TESTING_QUICK_START.md** | Guía de testing básica |
@@ -301,7 +301,7 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 | **PROYECTO_SEARCH_PATHS.md** | Rutas de búsqueda personalizables |
 | **VALIDATION_CHECKLIST.md** | Checklist de 10 pasos para validar |
 | **RESUMEN_FINAL.md** | Resumen ejecutivo |
-| **README.md** | Este archivo |
+| **README.md** | Este file |
 
 ---
 
@@ -329,20 +329,20 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 | Aspecto | Status |
 |---------|--------|
 | **Compilación** | ✅ 0 errores Dart |
-| **Unit Tests** | ✅ Listos para implementar |
+| **Unit Tests** | ✅ Ready for implementar |
 | **Integration Tests** | ✅ Checklist disponible |
 | **Code Review** | ✅ Clean architecture |
-| **Documentation** | ✅ 7 archivos MD generados |
+| **Documentation** | ✅ 7 files MD generados |
 | **Backward Compatibility** | ✅ Sin breaking changes |
 | **Performance** | ✅ Optimizado |
 | **Accessibility** | ✅ WCAG compliant |
 
 ---
 
-## 🎯 Próximos Pasos (Recomendados)
+## 🎯 Next Steps (Recomendados)
 
 1. **Hoy:**
-   - [ ] Ejecutar `flutter run` y verificar básico
+   - [ ] Execute `flutter run` y verificar básico
    - [ ] Revisar `TESTING_QUICK_START.md`
 
 2. **Esta semana:**
@@ -351,7 +351,7 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
    - [ ] User acceptance testing
 
 3. **Próximo sprint:**
-   - [ ] Caché de proyectos
+   - [ ] Caché de projects
    - [ ] Búsqueda mejorada
    - [ ] Sincronización DB
 
@@ -362,34 +362,34 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 ### P: ¿Por qué cambié de Riverpod a FutureBuilder?
 **R:** `FutureBuilder` es más simple y nativo para este caso. Riverpod es overkill cuando solo necesitamos cargar datos una sola vez. El código es más legible y mantenible.
 
-### P: ¿Qué pasa si no existen carpetas en ~/projects?
+### P: ¿Qué pasa si no existen folders en ~/projects?
 **R:** El sistema intenta en múltiples rutas. Si no encuentra nada, solo muestra la Guía. Sin errores. Robusto.
 
 ### P: ¿Cómo agrego más rutas de búsqueda?
 **R:** Edita `mock_projects_data.dart`, función `_loadRealProjects()`, variable `commonPaths`. Ver `PROYECTO_SEARCH_PATHS.md`.
 
-### P: ¿Por qué el botón "Ver todos" a veces está oculto?
-**R:** Solo aparece si hay MÁS DE 8 proyectos. Grid muestra 8, botón expande los extras.
+### P: ¿Por qué el button "Ver todos" a veces está oculto?
+**R:** Solo aparece si hay MÁS DE 8 projects. Grid muestra 8, button expande los extras.
 
-### P: ¿Los proyectos se guardan a base de datos?
+### P: ¿Los projects se guardan a base de datos?
 **R:** Por ahora se leen del filesystem. El sistema es "filesystem-first". DB es opcional para futuro.
 
 ---
 
 ## 🆘 Troubleshooting
 
-### "Proyectos no aparecen"
-1. Verificar que existen carpetas en `~/projects` o `~/SoftArchitect`
-2. Crear carpeta de prueba: `mkdir ~/projects/Test`
+### "Projects no aparecen"
+1. Verificar que existen folders en `~/projects` o `~/SoftArchitect`
+2. Create folder de test: `mkdir ~/projects/Test`
 3. Reiniciar app: `flutter run`
 
-### "Botón desaparecido"
-1. Necesitas 9+ proyectos (8 en grid + más)
-2. Crear más: `mkdir ~/projects/{A,B,C,D,E,F}`
+### "Button desaparecido"
+1. Necesitas 9+ projects (8 en grid + más)
+2. Create más: `mkdir ~/projects/{A,B,C,D,E,F}`
 3. Revisarl código si umbral es diferente
 
-### "Proyecto creado no aparece"
-1. Verificar que CreateProjectDialog creó la carpeta
+### "Project creado no aparece"
+1. Verificar que CreateProjectDialog creó la folder
 2. Revisar ruta donde se guardó
 3. Agregar esa ruta a `commonPaths`
 
@@ -418,10 +418,10 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 
 **SISTEMA HÍBRIDO DE PROYECTOS: 100% FUNCIONAL**
 
-✅ Proyectos reales se muestran
-✅ Proyecto guía incluido
-✅ Nuevo proyectos aparecen automáticamente
-✅ UI escalable con botón expandible
+✅ Projects reales se muestran
+✅ Project guía incluido
+✅ Nuevo projects aparecen automáticamente
+✅ UI escalable con button expandible
 ✅ Código limpio y mantenible
 ✅ Documentación completa
 ✅ Listo para producción

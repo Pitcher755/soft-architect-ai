@@ -1,4 +1,4 @@
-# 🚀 PROGRESS - HU-2.3: 6 Phase Completion Tracker
+# 🚀 PROGRESS - HU-2.3: 6 Fase Completion Tracker
 
 > **Versión:** 1.0
 > **Última actualización:** 01/02/2026
@@ -6,7 +6,7 @@
 
 ---
 
-## 📊 Executive Summary
+## 📊 Resumen Ejecutivo
 
 | Métrica | Estado |
 |---------|--------|
@@ -22,14 +22,14 @@
 ## 🏁 FASE 0: Initialization & Context
 
 **Duración:** 5 minutos
-**Objetivo:** Prepare environment and document starting point
+**Objetivo:** Prepare environment and documento starting point
 
 ### Subtasks
 
-- [ ] **0.1** Verify Git status (clean working tree)
-- [ ] **0.2** Confirm branch: `chore/rag-verification-tools`
+- [ ] **0.1** Verify Git estado (clean working tree)
+- [ ] **0.2** Confirm branch: `chore/rag-verificación-tools`
 - [ ] **0.3** Sync with develop (already done: 1fa15c1)
-- [ ] **0.4** Create tracking documentation folder
+- [ ] **0.4** Crear tracking documentoation carpeta
 - [ ] **0.5** First commit: Initialize tracking docs
 
 ### Validation Criteria
@@ -42,11 +42,11 @@
 
 ### Commits Required
 
-1. `docs(hu-2.3): initialize tracking documentation structure`
+1. `docs(hu-2.3): initialize tracking documentoation structure`
 
 ---
 
-## 🐳 FASE 1: Infrastructure - Data Visibility
+## 🐳 FASE 1: Infraestructura - Data Visibility
 
 **Duración:** 10 minutos
 **Objetivo:** Configure bind mount so ChromaDB data is visible on host
@@ -55,11 +55,11 @@
 
 - [ ] **1.1** Audit current `infrastructure/docker-compose.yml`
 - [ ] **1.2** Add bind mount: `./chroma_data:/chroma/chroma`
-- [ ] **1.3** Run `docker compose down && docker compose up -d chromadb`
+- [ ] **1.3** Ejecutar `docker compose down && docker compose up -d chromadb`
 - [ ] **1.4** Verify: `ls -la infrastructure/chroma_data/` exists (empty)
-- [ ] **1.5** Test connectivity: `curl http://localhost:8000/api/v3/version`
-- [ ] **1.6** Create `tests/integration/services/rag/test_chroma_mount.py`
-- [ ] **1.7** Run mount verification tests
+- [ ] **1.5** Prueba connectivity: `curl http://localhost:8000/api/v3/version`
+- [ ] **1.6** Crear `pruebas/integration/services/rag/prueba_chroma_mount.py`
+- [ ] **1.7** Ejecutar mount verificación pruebas
 - [ ] **1.8** Commit FASE 1
 
 ### Validation Criteria
@@ -72,10 +72,10 @@
 ✓ Stdout: mkdir -p infrastructure/chroma_data successful
 ```
 
-### Files Modified/Created
+### Archivos Modified/Creard
 
 - ✏️ `infrastructure/docker-compose.yml` - Add volumes section
-- ✨ `src/server/tests/integration/services/rag/test_chroma_mount.py`
+- ✨ `src/server/pruebas/integration/services/rag/prueba_chroma_mount.py`
 
 ### Commits Required
 
@@ -83,20 +83,20 @@
 
 ---
 
-## 💾 FASE 2: Ingestion & Persistence Verification
+## 💾 FASE 2: Ingestion & Persistence Verificación
 
 **Duración:** 5 minutos
-**Objetivo:** Run ingestion and validate data persists physically on host
+**Objetivo:** Ejecutar ingestion and validate data persists physically on host
 
 ### Subtasks
 
 - [ ] **2.1** Review `src/server/scripts/ingest.py` (should exist from HU-2.2)
-- [ ] **2.2** Execute: `cd src/server && poetry run python scripts/ingest.py`
+- [ ] **2.2** Ejecutar: `cd src/server && poetry ejecutar python scripts/ingest.py`
 - [ ] **2.3** Monitor ingestion logs for "X successful, 0 failed"
 - [ ] **2.4** Check: `du -sh infrastructure/chroma_data/` (>1MB)
-- [ ] **2.5** List files: `find infrastructure/chroma_data -name "*.bin" | head -5`
-- [ ] **2.6** Create `tests/integration/services/rag/test_persistence.py`
-- [ ] **2.7** Run persistence tests
+- [ ] **2.5** List archivos: `find infrastructure/chroma_data -name "*.bin" | head -5`
+- [ ] **2.6** Crear `pruebas/integration/services/rag/prueba_persistence.py`
+- [ ] **2.7** Ejecutar persistence pruebas
 - [ ] **2.8** Commit FASE 2
 
 ### Validation Criteria
@@ -109,36 +109,36 @@
 ✓ Test: test_persistence.py PASSING
 ```
 
-### Files Modified/Created
+### Archivos Modified/Creard
 
-- ✨ `src/server/tests/integration/services/rag/test_persistence.py`
+- ✨ `src/server/pruebas/integration/services/rag/prueba_persistence.py`
 
 ### Commits Required
 
-1. `test(rag): add persistence verification tests`
+1. `prueba(rag): add persistence verificación pruebas`
 
 ---
 
 ## 🕵️ FASE 3: CLI Inspection Tool
 
 **Duración:** 15 minutos
-**Objetivo:** Create interactive CLI for viewing what RAG remembers
+**Objetivo:** Crear interactive CLI for viewing what RAG remembers
 
 ### Subtasks
 
-- [ ] **3.1** Create `src/server/scripts/inspect_db.py` with Click framework
+- [ ] **3.1** Crear `src/server/scripts/inspect_db.py` with Click framework
 - [ ] **3.2** Implement `health` command (check Chroma heartbeat)
 - [ ] **3.3** Implement `query` command (retrieve from vector DB)
 - [ ] **3.4** Implement `stats` command (collection statistics)
 - [ ] **3.5** Add JSON output mode `--json-output` flag
 - [ ] **3.6** Add full type hints and error handling
 - [ ] **3.7** Add comprehensive docstrings
-- [ ] **3.8** Add click dependency to `pyproject.toml`
-- [ ] **3.9** Create `tests/unit/scripts/test_inspect_db.py`
-- [ ] **3.10** Test all commands:
-  - `poetry run python scripts/inspect_db.py health`
-  - `poetry run python scripts/inspect_db.py query "Docker" --limit 2`
-  - `poetry run python scripts/inspect_db.py stats`
+- [ ] **3.8** Add click dependency to `pyproyecto.toml`
+- [ ] **3.9** Crear `pruebas/unit/scripts/prueba_inspect_db.py`
+- [ ] **3.10** Prueba all commands:
+  - `poetry ejecutar python scripts/inspect_db.py health`
+  - `poetry ejecutar python scripts/inspect_db.py query "Docker" --limit 2`
+  - `poetry ejecutar python scripts/inspect_db.py stats`
 - [ ] **3.11** Commit FASE 3
 
 ### Validation Criteria
@@ -152,11 +152,11 @@
 ✓ Code Quality: ruff check PASSING, black formatted
 ```
 
-### Files Modified/Created
+### Archivos Modified/Creard
 
 - ✨ `src/server/scripts/inspect_db.py` (186 lines)
-- ✨ `src/server/tests/unit/scripts/test_inspect_db.py`
-- ✏️ `src/server/pyproject.toml` - Add click dependency
+- ✨ `src/server/pruebas/unit/scripts/prueba_inspect_db.py`
+- ✏️ `src/server/pyproyecto.toml` - Add click dependency
 
 ### Commits Required
 
@@ -164,32 +164,32 @@
 
 ---
 
-## 🔌 FASE 4: API Test Endpoint
+## 🔌 FASE 4: API Prueba Endpoint
 
 **Duración:** 15 minutos
-**Objetivo:** Create temporary endpoint demonstrating full RAG integration
+**Objetivo:** Crear temporary endpoint demonstrating full RAG integration
 
 ### Subtasks
 
-- [ ] **4.1** Create `src/server/app/api/v1/endpoints/rag_test.py`
-- [ ] **4.2** Implement `POST /rag/test/retrieval` endpoint
+- [ ] **4.1** Crear `src/server/app/api/v1/endpoints/rag_prueba.py`
+- [ ] **4.2** Implement `POST /rag/prueba/retrieval` endpoint
   - Accept QueryRequest with question + limit
   - Query VectorStoreService
   - Return formatted JSON results
   - Full error handling (no stack traces)
-- [ ] **4.3** Implement `GET /rag/test/health` endpoint
-- [ ] **4.4** Create Pydantic models: QueryRequest, RetrievalResult, QueryResponse
+- [ ] **4.3** Implement `GET /rag/prueba/health` endpoint
+- [ ] **4.4** Crear Pydantic models: QueryRequest, RetrievalResultado, QueryResponse
 - [ ] **4.5** Add comprehensive docstrings with examples
 - [ ] **4.6** Add full type hints throughout
 - [ ] **4.7** Register router in `src/server/app/api/v1/router.py`
-- [ ] **4.8** Create `tests/unit/app/api/test_rag_endpoint.py` with mocks
-- [ ] **4.9** Test endpoint via cURL:
+- [ ] **4.8** Crear `pruebas/unit/app/api/prueba_rag_endpoint.py` with mocks
+- [ ] **4.9** Prueba endpoint via cURL:
   ```bash
   curl -X POST "http://localhost:8000/api/v1/rag/test/retrieval" \
        -H "Content-Type: application/json" \
        -d '{"question": "How do I use Docker?", "limit": 2}'
   ```
-- [ ] **4.10** Verify JSON response with "status", "query", "matches", "data"
+- [ ] **4.10** Verify JSON response with "estado", "query", "matches", "data"
 - [ ] **4.11** Mark endpoint as TEMPORARY in docstring
 - [ ] **4.12** Commit FASE 4
 
@@ -204,32 +204,32 @@
 ✓ Documentation: ⚠️ Temporary endpoint clearly marked
 ```
 
-### Files Modified/Created
+### Archivos Modified/Creard
 
-- ✨ `src/server/app/api/v1/endpoints/rag_test.py` (156 lines)
-- ✨ `src/server/tests/unit/app/api/test_rag_endpoint.py`
-- ✏️ `src/server/app/api/v1/router.py` - Register rag_test router
+- ✨ `src/server/app/api/v1/endpoints/rag_prueba.py` (156 lines)
+- ✨ `src/server/pruebas/unit/app/api/prueba_rag_endpoint.py`
+- ✏️ `src/server/app/api/v1/router.py` - Register rag_prueba router
 
 ### Commits Required
 
-1. `feat(api): add temporary RAG retrieval test endpoint`
+1. `feat(api): add temporary RAG retrieval prueba endpoint`
 
 ---
 
-## ✅ FASE 5: Final Validation & Documentation
+## ✅ FASE 5: Final Validation & Documentoation
 
 **Duración:** 10 minutos
-**Objetivo:** Complete smoke test, verify acceptance criteria, document findings
+**Objetivo:** Complete smoke prueba, verify acceptance criteria, documento findings
 
 ### Subtasks
 
 - [ ] **5.1** Start complete stack: `docker compose up -d`
-- [ ] **5.2** Run smoke tests:
+- [ ] **5.2** Ejecutar smoke pruebas:
   - CLI health check
-  - CLI query test
-  - API endpoint test
+  - CLI query prueba
+  - API endpoint prueba
   - Verify persistence
-- [ ] **5.3** Run full test suite:
+- [ ] **5.3** Ejecutar full prueba suite:
   ```bash
   poetry run pytest tests/integration/services/rag/ -v
   poetry run pytest tests/unit/app/api/test_rag_endpoint.py -v
@@ -243,35 +243,35 @@
   ```bash
   poetry run pytest --cov=src/server --cov-fail-under=80
   ```
-- [ ] **5.6** Create `VALIDATION_CHECKLIST.md` (documented in workflow)
-- [ ] **5.7** Update `PROGRESS.md` (this file)
+- [ ] **5.6** Crear `VALIDATION_CHECKLIST.md` (documentoed in workflow)
+- [ ] **5.7** Update `PROGRESS.md` (this archivo)
 - [ ] **5.8** Verify all acceptance criteria met (table below)
 - [ ] **5.9** Add `infrastructure/chroma_data/` to `.gitignore`
 - [ ] **5.10** Commit FASE 5
 
 ### Validation Criteria
 
-| Criteria | Status | Verified |
+| Criteria | Estado | Verified |
 |----------|--------|----------|
 | chroma_data directory exists | [ ] | [ ] |
-| Data files > 1MB | [ ] | [ ] |
+| Data archivos > 1MB | [ ] | [ ] |
 | inspect_db.py returns text | [ ] | [ ] |
-| /api/v1/rag/test/retrieval works | [ ] | [ ] |
+| /api/v1/rag/prueba/retrieval works | [ ] | [ ] |
 | Health check passes | [ ] | [ ] |
-| All tests PASSING | [ ] | [ ] |
+| All pruebas PASSING | [ ] | [ ] |
 | Coverage >80% | [ ] | [ ] |
 | Code quality PASSING | [ ] | [ ] |
 | Persistence after restart | [ ] | [ ] |
-| Documentation complete | [ ] | [ ] |
+| Documentoation complete | [ ] | [ ] |
 
-### Files Modified/Created
+### Archivos Modified/Creard
 
 - ✨ `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/VALIDATION_CHECKLIST.md`
 - ✏️ `.gitignore` - Add `infrastructure/chroma_data/`
 
 ### Commits Required
 
-1. `docs(hu-2.3): complete tracking documentation and validation`
+1. `docs(hu-2.3): complete tracking documentoation and validation`
 2. `chore: ignore ChromaDB persistent data directory`
 
 ---
@@ -279,14 +279,14 @@
 ## 📦 FASE 6: Merge & Release
 
 **Duración:** 5 minutos
-**Objetivo:** Push to GitHub and create Pull Request
+**Objetivo:** Push to GitHub and crear Pull Request
 
 ### Subtasks
 
 - [ ] **6.1** Verify all commits are present:
   - FASE 0: docs
-  - FASE 1: infra + tests
-  - FASE 2: persistence tests
+  - FASE 1: infra + pruebas
+  - FASE 2: persistence pruebas
   - FASE 3: CLI tool
   - FASE 4: API endpoint
   - FASE 5: docs + gitignore
@@ -294,15 +294,15 @@
   ```bash
   git push origin chore/rag-verification-tools
   ```
-- [ ] **6.3** Create Pull Request:
-  - Title: `chore(rag): Add RAG verification tools (HU-2.3)`
-  - Describe all 6 phases
+- [ ] **6.3** Crear Pull Request:
+  - Title: `chore(rag): Add RAG verificación tools (HU-2.3)`
+  - Describe all 6 fases
   - Link to PIT-65
   - Mark as draft initially
 - [ ] **6.4** Wait for GitHub Actions workflow to pass
 - [ ] **6.5** Request code review
 - [ ] **6.6** Merge to develop (when approved)
-- [ ] **6.7** Create GitHub Release with tag: `v0.2.0-hu2.3`
+- [ ] **6.7** Crear GitHub Release with tag: `v0.2.0-hu2.3`
 
 ### Validation Criteria
 
@@ -322,15 +322,15 @@
 
 | Category | Count | LOC |
 |----------|-------|-----|
-| New Python Files | 2 | 342 |
-| Test Files | 4 | 120 |
-| Documentation | 5 | 600+ |
-| Modified Files | 3 | 50 |
+| New Python Archivos | 2 | 342 |
+| Prueba Archivos | 4 | 120 |
+| Documentoation | 5 | 600+ |
+| Modified Archivos | 3 | 50 |
 | **Total** | **14** | **1,112+** |
 
-### Test Coverage
+### Prueba Coverage
 
-| Module | Tests | Status |
+| Module | Pruebas | Estado |
 |--------|-------|--------|
 | Chroma Mount | 2 | ⏳ PENDING |
 | Persistence | 3 | ⏳ PENDING |
@@ -350,9 +350,9 @@
 
 ## 🔄 Rollback Strategy
 
-If any phase fails:
+If any fase fails:
 
-1. **Rollback to Previous Phase:**
+1. **Rollback to Anterior Fase:**
    ```bash
    git reset --hard origin/chore/rag-verification-tools~1
    ```
@@ -361,11 +361,11 @@ If any phase fails:
    - Check logs in `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/VALIDATION_CHECKLIST.md`
    - Verify environment setup
 
-3. **Restart Phase:**
+3. **Restart Fase:**
    - Fix identified issue
-   - Restart from current phase
+   - Restart from current fase
 
-4. **Document Issue:**
+4. **Documento Issue:**
    - Add to TROUBLESHOOTING.md
    - Share with team
 
@@ -376,10 +376,10 @@ If any phase fails:
 - **Linear Issue:** [PIT-65](https://linear.app/pitcherdev/issue/PIT-65)
 - **Workflow Guide:** [WORKFLOW_MASTER_DEFINITION.md](./WORKFLOW_MASTER_DEFINITION.md)
 - **Architecture Rules:** [AGENTS.md](../../../AGENTS.md)
-- **Testing Strategy:** [context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../../../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md)
+- **Pruebaing Strategy:** [context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../../../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md)
 
 ---
 
 **Last Updated:** 01/02/2026
 **Version:** 1.0
-**Status:** READY FOR EXECUTION ✅
+**Estado:** READY FOR EXECUTION ✅

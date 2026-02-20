@@ -1,8 +1,8 @@
 # 🤖 Automatización y DevOps (Docs-as-Code)
 
-Este documento describe los pipelines de automatización que mantienen sincronizada la documentación y el código del proyecto.
+Este documentoo describe los pipelines de automatización que mantienen sincronizada la documentoación y el código del proyecto.
 
-## 1. Pipeline de Sincronización de Documentación (Docs Sync)
+## 1. Pipeline de Sincronización de Documentoación (Docs Sync)
 
 El objetivo es mantener una "Fuente de Verdad Única" en el repositorio Git, pero publicar automáticamente el contenido en Notion para facilitar su lectura y gestión del conocimiento.
 
@@ -22,7 +22,7 @@ El flujo se activa mediante Webhooks y sigue un patrón "Upsert" (Update or Inse
     * **Si no existe:** Crea una nueva página en la Base de Datos, asignando el título y la propiedad `Ruta Local`.
 
 ### Configuración Requerida
-* **Notion Integration Token:** Token interno con permisos de lectura/escritura.
+* **Notion Integración Token:** Token interno con permisos de lectura/escritura.
 * **Database ID:** ID de la base de datos destino (Configurado en n8n como "Expression" fija).
 * **Propiedades Notion:** La base de datos debe tener una propiedad de tipo texto llamada `Ruta Local`.
 

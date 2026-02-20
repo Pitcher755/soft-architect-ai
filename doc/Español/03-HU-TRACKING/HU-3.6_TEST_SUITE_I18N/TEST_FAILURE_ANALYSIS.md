@@ -1,59 +1,59 @@
-# 🔴 PHASE 1: RED - Test Failure Analysis Report
+# 🔴 FASE 1: RED - Prueba Failure Análisis Report
 
-> **Project:** SoftArchitect AI
-> **HU:** HU-3.6 Test Suite Completion & SQLite Fix (PIT-80)
-> **Date:** 2026-02-10
-> **Status:** ⚠️ PHASE 1: RED - Initial Test Execution Complete
+> **Proyecto:** SoftArchitect AI
+> **HU:** HU-3.6 Prueba Suite Completion & SQLite Fix (PIT-80)
+> **Fecha:** 2026-02-10
+> **Estado:** ⚠️ FASE 1: RED - Initial Prueba Execution Complete
 > **Methodology:** TDD Cycle (RED → GREEN → REFACTOR)
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Executive Summary](#executive-summary)
-2. [Test Execution Results](#test-execution-results)
-3. [Python Test Suite Analysis](#python-test-suite-analysis)
-4. [Flutter Test Suite Analysis](#flutter-test-suite-analysis)
+2. [Prueba Execution Resultados](#prueba-execution-results)
+3. [Python Prueba Suite Análisis](#python-prueba-suite-análisis)
+4. [Flutter Prueba Suite Análisis](#flutter-prueba-suite-análisis)
 5. [Failure Classification Matrix](#failure-classification-matrix)
-6. [Root Cause Analysis](#root-cause-analysis)
+6. [Root Cause Análisis](#root-cause-análisis)
 7. [Impact Assessment](#impact-assessment)
-8. [Next Steps (PHASE 2: GREEN)](#next-steps-phase-2-green)
+8. [Siguiente Steps (FASE 2: GREEN)](#siguiente-steps-fase-2-green)
 9. [References](#references)
 
 ---
 
 ## Executive Summary
 
-### Test Suite Health Snapshot
+### Prueba Suite Health Snapshot
 
 | **Metric** | **Python** | **Flutter** | **Combined** |
 |------------|------------|-------------|--------------|
-| Total Tests | 173 | 44 | **217** |
+| Total Pruebas | 173 | 44 | **217** |
 | Passed | 160 (92.5%) | 7 (15.9%) | **167 (77.0%)** |
 | Failed | 13 (7.5%) | 37 (84.1%) | **50 (23.0%)** |
 | Coverage | 76% | N/A (compilation errors) | **76%** (Python only) |
-| Status | ⚠️ FIXABLE | ❌ CRITICAL | ⚠️ **REQUIRES ATTENTION** |
+| Estado | ⚠️ FIXABLE | ❌ CRITICAL | ⚠️ **REQUIRES ATTENTION** |
 
 ### Critical Findings
 
 1. **Python Suite:**
-   - ❌ 13 failures in newly created `test_transaction_manager.py` (agent's premature Phase 2 code)
-   - ✅ 160 existing tests passing (core functionality stable)
+   - ❌ 13 failures in newly creard `prueba_transaction_manager.py` (agent's premature Fase 2 código)
+   - ✅ 160 existing pruebas passing (core functionality stable)
    - ⚠️ Coverage below 80% target (76%)
 
 2. **Flutter Suite:**
    - ❌ 37 compilation failures due to package resolution errors
-   - ⚠️ Root cause: `pubspec.yaml` misconfiguration (package `softarchitect_ai` not defined)
-   - ✅ 7 tests passing (likely isolated unit tests without imports)
+   - ⚠️ Root cause: `pubspec.yaml` misconfiguración (package `softarchitect_ai` not defined)
+   - ✅ 7 pruebas passing (likely isolated unit pruebas without imports)
 
 3. **Overall Assessment:**
    - **Severity:** HIGH
-   - **Impact:** Both Python and Flutter test suites have critical issues
+   - **Impact:** Both Python and Flutter prueba suites have critical issues
    - **Estimated Fix Time:** 2-3 hours (Python fixtures + Flutter pubspec)
 
 ---
 
-## Test Execution Results
+## Prueba Execution Resultados
 
 ### Execution Environment
 
@@ -76,12 +76,12 @@ flutter test \
 - OS: Linux
 - Python: 3.12.3
 - Flutter: 3.10.8
-- Pytest: 9.0.2
-- Branch: `feature/test-suite-sqlite-fix`
+- Pyprueba: 9.0.2
+- Branch: `feature/prueba-suite-sqlite-fix`
 
-### Raw Results Summary
+### Raw Resultados Summary
 
-**Python Test Output (Excerpt):**
+**Python Prueba Output (Excerpt):**
 ```
 ============================= test session starts ==============================
 collected 173 items
@@ -97,7 +97,7 @@ FAILED test_insert_commit - sqlite3.OperationalError: no such table: projects
 ======================== 160 passed, 13 failed in 2.84s ========================
 ```
 
-**Flutter Test Output (Excerpt):**
+**Flutter Prueba Output (Excerpt):**
 ```
 00:00 +0: loading .../proposal_card_test.dart
 Error: Couldn't resolve the package 'softarchitect_ai' in 'package:softarchitect_ai/...'
@@ -109,52 +109,52 @@ tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart:3:8
 
 ---
 
-## Python Test Suite Analysis
+## Python Prueba Suite Análisis
 
-### Passed Tests (160)
+### Passed Pruebas (160)
 
 **Modules with 100% Pass Rate:**
 
-| Module | Tests | Status | Coverage |
+| Module | Pruebas | Estado | Coverage |
 |--------|-------|--------|----------|
-| `test_rag_service.py` | 15 | ✅ ALL PASS | 91% |
-| `test_vector_store.py` | 12 | ✅ ALL PASS | 88% |
-| `test_hybrid_service.py` | 8 | ✅ ALL PASS | 85% |
-| `test_config.py` | 7 | ✅ ALL PASS | 100% |
-| `test_errors.py` | 5 | ✅ ALL PASS | 100% |
+| `prueba_rag_service.py` | 15 | ✅ ALL PASS | 91% |
+| `prueba_vector_store.py` | 12 | ✅ ALL PASS | 88% |
+| `prueba_hybrid_service.py` | 8 | ✅ ALL PASS | 85% |
+| `prueba_config.py` | 7 | ✅ ALL PASS | 100% |
+| `prueba_errors.py` | 5 | ✅ ALL PASS | 100% |
 | (Others) | 113 | ✅ ALL PASS | 72% avg |
 
 **Key Observations:**
-- Core RAG functionality is **stable** (35 tests, 100% pass rate)
-- Configuration and error handling are **solid** (12 tests, 100% pass rate)
-- Domain logic and business rules are **reliable** (113 tests passing)
+- Core RAG functionality is **stable** (35 pruebas, 100% pass rate)
+- Configuración and error handling are **solid** (12 pruebas, 100% pass rate)
+- Domain logic and business rules are **reliable** (113 pruebas passing)
 
-### Failed Tests (13) - NEW CODE ONLY
+### Failed Pruebas (13) - NEW CODE ONLY
 
-**ALL failures in `test_transaction_manager.py` (Agent's Premature Implementation)**
+**ALL failures in `prueba_transaction_manager.py` (Agent's Premature Implementación)**
 
-| Test Name | Error Type | Reason |
+| Prueba Name | Error Type | Reason |
 |-----------|------------|--------|
-| `test_transaction_commits_on_success` | `sqlite3.OperationalError` | `no such table: test` |
-| `test_insert_commit` | `sqlite3.OperationalError` | `no such table: projects` |
-| `test_update_commit` | `sqlite3.OperationalError` | `no such table: projects` |
-| `test_rollback_on_exception` | `sqlite3.OperationalError` | `no such table: test` |
-| `test_partial_changes_rollback` | `sqlite3.OperationalError` | `no such table: projects` |
-| `test_constraint_violation_rollback` | `sqlite3.OperationalError` | `no such table: project_metadata` |
-| `test_atomicity` | `sqlite3.OperationalError` | `no such table: projects` |
-| `test_isolation_level_deferred` | `sqlite3.OperationalError` | `no such table: test` |
-| `test_multiple_sequential_transactions` | `sqlite3.OperationalError` | `no such table: projects` |
-| `test_execute_multiple_operations` | `sqlite3.OperationalError` | `no such table: projects` |
-| `test_execute_transaction_rollback_on_error` | `sqlite3.OperationalError` | `no such table: projects` |
-| `test_double_close` | `sqlite3.OperationalError` | `no such table: test` |
-| `test_transaction_with_rollback_error` | `AssertionError` | `Fixture cleanup failed` |
+| `prueba_transaction_commits_on_success` | `sqlite3.OperationalError` | `no such table: prueba` |
+| `prueba_insert_commit` | `sqlite3.OperationalError` | `no such table: proyectos` |
+| `prueba_update_commit` | `sqlite3.OperationalError` | `no such table: proyectos` |
+| `prueba_rollback_on_exception` | `sqlite3.OperationalError` | `no such table: prueba` |
+| `prueba_partial_changes_rollback` | `sqlite3.OperationalError` | `no such table: proyectos` |
+| `prueba_constraint_violation_rollback` | `sqlite3.OperationalError` | `no such table: proyecto_metadata` |
+| `prueba_atomicity` | `sqlite3.OperationalError` | `no such table: proyectos` |
+| `prueba_isolation_level_deferred` | `sqlite3.OperationalError` | `no such table: prueba` |
+| `prueba_multiple_sequential_transactions` | `sqlite3.OperationalError` | `no such table: proyectos` |
+| `prueba_ejecutar_multiple_operations` | `sqlite3.OperationalError` | `no such table: proyectos` |
+| `prueba_ejecutar_transaction_rollback_on_error` | `sqlite3.OperationalError` | `no such table: proyectos` |
+| `prueba_double_close` | `sqlite3.OperationalError` | `no such table: prueba` |
+| `prueba_transaction_with_rollback_error` | `AssertionError` | `Fixture cleanup failed` |
 
 **Failure Pattern:**
-- **100% of failures** are in agent-created code (NOT pre-existing tests)
+- **100% of failures** are in agent-creard code (NOT pre-existing pruebas)
 - **Consistent error:** `sqlite3.OperationalError: no such table: {table_name}`
-- **Root cause:** Test fixture `initialized_db` doesn't persist schema properly
+- **Root cause:** Prueba fixture `initialized_db` doesn't persist schema properly
 
-### Coverage Analysis
+### Coverage Análisis
 
 **Overall Coverage:** 76% (target: ≥80%)
 
@@ -163,33 +163,33 @@ tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart:3:8
 | Module | Coverage | Missing Lines | Priority |
 |--------|----------|---------------|----------|
 | `logging_config.py` | 0% | 26 | LOW (infra) |
-| `rag_test.py` | 42% | 59 | MEDIUM (API endpoint) |
+| `rag_prueba.py` | 42% | 59 | MEDIUM (API endpoint) |
 | `entities/__init__.py` | 0% | 15 | LOW (imports only) |
-| `transaction_manager.py` | 81% | 8 | **HIGH** (new code) |
+| `transaction_manager.py` | 81% | 8 | **HIGH** (new código) |
 
 **Key Insight:**
-- Dropping coverage to 76% is caused by **agent's premature implementation**
-- Removing `transaction_manager.py` and its tests would restore coverage to ~78%
+- Dropping coverage to 76% is caused by **agent's premature implementación**
+- Removing `transaction_manager.py` and its pruebas would restore coverage to ~78%
 - Still need +2% coverage to meet ≥80% target
 
 ---
 
-## Flutter Test Suite Analysis
+## Flutter Prueba Suite Análisis
 
-### Passed Tests (7)
+### Passed Pruebas (7)
 
-**Tests That Compiled Successfully:**
+**Pruebas That Compiled Successfully:**
 
-| Test File | Tests | Status | Reason for Success |
+| Prueba Archivo | Pruebas | Estado | Reason for Success |
 |-----------|-------|--------|---------------------|
-| (Unknown - log doesn't show which 7 passed) | 7 | ✅ PASS | Likely isolated unit tests without external imports |
+| (Unknown - log doesn't show which 7 passed) | 7 | ✅ PASS | Likely isolated unit pruebas without external imports |
 
 **Hypothesis:**
-- These 7 tests are probably simple Dart unit tests (pure functions, models)
+- These 7 pruebas are probably simple Dart unit pruebas (pure functions, models)
 - No dependencies on `softarchitect_ai` package imports
-- Likely in `tests/test/unit/` directory with local imports only
+- Likely in `pruebas/prueba/unit/` directory with local imports only
 
-### Failed Tests (37) - COMPILATION ERRORS
+### Failed Pruebas (37) - COMPILATION ERRORS
 
 **ALL failures are compilation errors due to package resolution**
 
@@ -203,17 +203,17 @@ import 'package:softarchitect_ai/.../[entity/widget/provider].dart';
 [Test Name]: Error: Method not found: '[ClassName]'
 ```
 
-**Affected Test Files (Sampled from 4949-line log):**
+**Affected Prueba Archivos (Sampled from 4949-line log):**
 
-1. **Widget Tests (UI Layer):**
-   - `proposal_card_test.dart` (7 test cases) - Cannot find `DocumentProposal` entity, `ProposalCardWidget`
-   - `directory_tree_widget_test.dart` (?) - Cannot find `FileNode` entity, `DirectoryTreeWidget`
+1. **Widget Pruebas (UI Layer):**
+   - `proposal_card_prueba.dart` (7 prueba cases) - Cannot find `DocumentoProposal` entity, `ProposalCardWidget`
+   - `directory_tree_widget_prueba.dart` (?) - Cannot find `ArchivoNode` entity, `DirectoryTreeWidget`
 
-2. **Integration Tests:**
-   - `directory_navigation_flow_test.dart` (?) - Cannot find `FileNode`, `DirectoryTreeWidget`
+2. **Integración Pruebas:**
+   - `directory_navigation_flow_prueba.dart` (?) - Cannot find `ArchivoNode`, `DirectoryTreeWidget`
 
-3. **Domain Tests (Entities):**
-   - `project_fixtures.dart` - Cannot resolve `Project`, `FileNode` entities
+3. **Domain Pruebas (Entities):**
+   - `proyecto_fixtures.dart` - Cannot resolve `Proyecto`, `ArchivoNode` entities
 
 **Root Cause:**
 ```yaml
@@ -227,29 +227,29 @@ dependencies:
 ```
 
 **Why This Fails:**
-- Flutter tests in `tests/` directory have their own `pubspec.yaml`
-- Tests try to import `package:softarchitect_ai/...` but package is not declared
+- Flutter pruebas in `pruebas/` directory have their own `pubspec.yaml`
+- Pruebas try to import `package:softarchitect_ai/...` but package is not declared
 - Should either:
   1. Use relative imports: `import '../../../src/client/lib/...'`
   2. OR add dependency: `softarchitect_ai: { path: ../../src/client }`
 
 **Missing Entities Referenced:**
-- `DocumentProposal` (domain entity)
+- `DocumentoProposal` (domain entity)
 - `ProposalCardWidget` (presentation widget)
-- `FileNode` (domain entity)
+- `ArchivoNode` (domain entity)
 - `DirectoryTreeWidget` (presentation widget)
-- `Project` (domain entity)
+- `Proyecto` (domain entity)
 
 ---
 
 ## Failure Classification Matrix
 
-### Type A: Configuration Issues (HIGH PRIORITY)
+### Type A: Configuración Issues (HIGH PRIORITY)
 
-| Type | Count | Description | Examples |
+| Type | Count | Descripción | Examples |
 |------|-------|-------------|----------|
-| **A1: Package Resolution** | 37 | Flutter tests cannot resolve `softarchitect_ai` package | `proposal_card_test.dart`, `directory_navigation_flow_test.dart` |
-| **A2: Test Fixture Broken** | 13 | Pytest fixture doesn't persist SQLite schema | `test_transaction_manager.py` (all tests) |
+| **A1: Package Resolution** | 37 | Flutter pruebas cannot resolve `softarchitect_ai` package | `proposal_card_prueba.dart`, `directory_navigation_flow_prueba.dart` |
+| **A2: Prueba Fixture Broken** | 13 | Pyprueba fixture doesn't persist SQLite schema | `prueba_transaction_manager.py` (all pruebas) |
 | **A3: Coverage Gap** | 1 | Overall coverage 76% < 80% target | Python backend modules |
 
 **Total Type A:** 51 failures (100% of all failures)
@@ -258,9 +258,9 @@ dependencies:
 
 **Count:** 0
 
-No logic bugs detected in pre-existing codebase. All 160 existing Python tests pass.
+No logic bugs detected in pre-existing codebase. All 160 existing Python pruebas pass.
 
-### Type C: Incomplete Implementations (NONE FOUND - YET)
+### Type C: Incomplete Implementacións (NONE FOUND - YET)
 
 **Count:** 0
 
@@ -270,16 +270,16 @@ No incomplete features detected (yet - SQLite and i18n not fully analyzed).
 
 **Count:** Unknown
 
-- Hardcoded strings need cataloging (Phase 1.3)
-- SQLite persistence incomplete (Phase 1.2)
+- Hardcoded strings need cataloging (Fase 1.3)
+- SQLite persistence incomplete (Fase 1.2)
 
 ---
 
-## Root Cause Analysis
+## Root Cause Análisis
 
-### Python Test Failures (13)
+### Python Prueba Failures (13)
 
-**File:** `tests/python/unit/infrastructure/persistence/test_transaction_manager.py`
+**Archivo:** `pruebas/python/unit/infrastructure/persistence/prueba_transaction_manager.py`
 
 **Problematic Fixture:**
 
@@ -313,11 +313,11 @@ def initialized_db(tx_manager):
 **Why It Fails:**
 
 1. **`:memory:` database:** Each transaction context gets a NEW in-memory connection
-2. **Schema isolation:** Schema created in fixture's transaction context is lost
-3. **Subsequent tests:** Get fresh connections without the schema
-4. **Result:** `sqlite3.OperationalError: no such table: {table_name}`
+2. **Schema isolation:** Schema creard in fixture's transaction context is lost
+3. **Subsequent pruebas:** Get fresh connections without the schema
+4. **Resultado:** `sqlite3.OperationalError: no such table: {table_name}`
 
-**Evidence from Test Output:**
+**Evidence from Prueba Output:**
 
 ```
 tests/python/unit/infrastructure/persistence/test_transaction_manager.py::test_transaction_commits_on_success
@@ -352,11 +352,11 @@ def initialized_db():
 
 ---
 
-### Flutter Test Failures (37)
+### Flutter Prueba Failures (37)
 
-**File:** `tests/pubspec.yaml`
+**Archivo:** `pruebas/pubspec.yaml`
 
-**Suspected Configuration Issue:**
+**Suspected Configuración Issue:**
 
 ```yaml
 # tests/pubspec.yaml (CURRENT - INCORRECT)
@@ -382,9 +382,9 @@ dependencies:
 
 2. **Package `softarchitect_ai` not defined:** Flutter cannot resolve the import
 
-3. **Compilation fails:** Tests cannot be executed without resolving imports
+3. **Compilation fails:** Pruebas cannot be ejecutard without resolving imports
 
-**Evidence from Test Output:**
+**Evidence from Prueba Output:**
 
 ```
 Error: Couldn't resolve the package 'softarchitect_ai' in 'package:softarchitect_ai/features/chat/domain/entities/document_proposal.dart'.
@@ -429,24 +429,24 @@ import '../../../src/client/lib/features/chat/domain/entities/document_proposal.
 
 ### Business Impact
 
-| Impact Area | Severity | Description |
+| Impact Area | Severity | Descripción |
 |-------------|----------|-------------|
-| **CI/CD Pipeline** | ❌ CRITICAL | GitHub Actions will fail (50/217 tests failing) |
-| **Test Coverage** | ⚠️ HIGH | Coverage 76% < 80% target (failing quality gate) |
-| **Development Velocity** | ⚠️ MEDIUM | Cannot implement new features until tests pass |
-| **Code Confidence** | ✅ LOW | Core functionality stable (160/173 Python tests pass) |
+| **CI/CD Pipeline** | ❌ CRITICAL | GitHub Actions will fail (50/217 pruebas failing) |
+| **Prueba Coverage** | ⚠️ HIGH | Coverage 76% < 80% target (failing quality gate) |
+| **Development Velocity** | ⚠️ MEDIUM | Cannot implement new features until pruebas pass |
+| **Code Confidence** | ✅ LOW | Core functionality stable (160/173 Python pruebas pass) |
 
 ### Technical Impact
 
 **Blocked Features:**
 - ❌ SQLite persistence layer (transaction_manager broken)
-- ❌ i18n implementation (Flutter tests blocked)
-- ❌ Any new feature development (test suite must be green)
+- ❌ i18n implementación (Flutter pruebas blocked)
+- ❌ Any new feature development (prueba suite must be green)
 
-**Risk Analysis:**
-- **HIGH RISK:** Continuing development with 23% failing tests
-- **MEDIUM RISK:** Premature implementation (agent's Phase 2 code caused 13 failures)
-- **LOW RISK:** Core functionality regression (160 existing tests still pass)
+**Risk Análisis:**
+- **HIGH RISK:** Continuing development with 23% failing pruebas
+- **MEDIUM RISK:** Premature implementación (agent's Fase 2 code caused 13 failures)
+- **LOW RISK:** Core functionality regression (160 existing pruebas still pass)
 
 ### Timeline Impact
 
@@ -456,27 +456,27 @@ import '../../../src/client/lib/features/chat/domain/entities/document_proposal.
 |--------------|-----------|----------|
 | Python fixture repair | 30 min | 🔴 URGENT |
 | Flutter pubspec fix | 15 min | 🔴 URGENT |
-| Re-run tests & verify | 30 min | 🔴 URGENT |
+| Re-ejecutar pruebas & verify | 30 min | 🔴 URGENT |
 | Coverage improvement | 1-2 hours | ⚠️ HIGH |
 | **TOTAL** | **2-3 hours** | 🔴 **URGENT** |
 
 ---
 
-## Next Steps (PHASE 2: GREEN)
+## Siguiente Steps (FASE 2: GREEN)
 
-### Immediate Actions (Do NOT Implement Yet - RED Phase Still Active)
+### Immediate Actions (Do NOT Implement Yet - RED Fase Still Active)
 
-**Phase 1 Remaining Steps:**
+**Fase 1 Remaining Steps:**
 
-1. ✅ **Step 1.1.1-1.1.2:** Test execution COMPLETE
-2. ✅ **Step 1.1.3:** Failure categorization COMPLETE (this document)
+1. ✅ **Step 1.1.1-1.1.2:** Prueba execution COMPLETE
+2. ✅ **Step 1.1.3:** Failure categorization COMPLETE (this documento)
 3. ⏳ **Step 1.2:** SQLite investigation (survey actual codebase)
 4. ⏳ **Step 1.3:** i18n architecture design (count hardcoded strings)
 5. ⏳ **Step 1.4:** Update PROGRESS.md to reflect reality
 
-**Phase 2: GREEN (Future - NOT Started Yet):**
+**Fase 2: GREEN (Future - NOT Started Yet):**
 
-Once Phase 1 complete, create implementation plan:
+Once Fase 1 complete, crear implementación plan:
 
 ```markdown
 ## PHASE 2: GREEN - Implementation Plan (DRAFT)
@@ -506,37 +506,37 @@ Once Phase 1 complete, create implementation plan:
 
 ## References
 
-### Test Logs
+### Prueba Logs
 
-- **Python:** `python_test_results_initial.log` (184 lines)
-- **Flutter:** `flutter_test_results_initial.log` (4949 lines)
+- **Python:** `python_prueba_results_initial.log` (184 lines)
+- **Flutter:** `flutter_prueba_results_initial.log` (4949 lines)
 - **Coverage:** `coverage_python_initial/index.html`
 
-### Related Documents
+### Related Documentos
 
-- [WORKFLOW_MASTER_DEFINITION.md](./WORKFLOW_MASTER_DEFINITION.md) - Full 6-phase methodology
-- [PROGRESS.md](./PROGRESS.md) - Phase tracking (needs update to reflect reality)
-- [ARTIFACTS.md](./ARTIFACTS.md) - Expected deliverables (~120 files)
+- [WORKFLOW_MASTER_DEFINITION.md](./WORKFLOW_MASTER_DEFINITION.md) - Full 6-fase methodology
+- [PROGRESS.md](./PROGRESS.md) - Fase tracking (needs update to reflect reality)
+- [ARTIFACTS.md](./ARTIFACTS.md) - Expected deliverables (~120 archivos)
 
 ### Code References
 
 **Python (Broken):**
-- `tests/python/unit/infrastructure/persistence/test_transaction_manager.py` (13 failing tests)
-- `src/server/app/infrastructure/persistence/transaction_manager.py` (implementation - likely correct)
+- `pruebas/python/unit/infrastructure/persistence/prueba_transaction_manager.py` (13 failing pruebas)
+- `src/server/app/infrastructure/persistence/transaction_manager.py` (implementación - likely correct)
 
 **Flutter (Broken):**
-- `tests/pubspec.yaml` (needs `softarchitect_ai` dependency)
-- `tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart`
-- `tests/test/integration/features/project_shell/presentation/directory_navigation_flow_test.dart`
+- `pruebas/pubspec.yaml` (needs `softarchitect_ai` dependency)
+- `pruebas/prueba/widget/features/chat/presentation/widgets/proposal_card_prueba.dart`
+- `pruebas/prueba/integration/features/proyecto_shell/presentation/directory_navigation_flow_prueba.dart`
 
 ### Agent Rules
 
-- **TDD Principle:** Do NOT implement code until Phase 1 complete
-- **AGENTS.md Rule:** "Test execution FIRST, implementation SECOND"
-- **Lesson Learned:** Agent's premature Phase 2 implementation caused 13 immediate failures
+- **TDD Principle:** Do NOT implement code until Fase 1 complete
+- **AGENTS.md Rule:** "Prueba execution FIRST, implementación SECOND"
+- **Lesson Learned:** Agent's premature Fase 2 implementación caused 13 inmediata failures
 
 ---
 
-**Document Status:** ✅ COMPLETE (Phase 1 Step 1.1.3)
-**Next Document:** SQLITE_INVESTIGATION_REPORT.md (Phase 1 Step 1.2)
+**Documento Estado:** ✅ COMPLETE (Fase 1 Step 1.1.3)
+**Siguiente Documento:** SQLITE_INVESTIGATION_REPORT.md (Fase 1 Step 1.2)
 **Last Updated:** 2025-01-30

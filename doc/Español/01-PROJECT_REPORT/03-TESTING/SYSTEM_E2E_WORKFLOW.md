@@ -18,20 +18,20 @@
   - [Fase 3: Arquitectura Técnica](#fase-3-arquitectura-técnica)
   - [Fases 4-5: UX y Planificación](#fases-4-5-ux-y-planificación)
 - [Flujo de Interacción](#flujo-de-interacción)
-- [Documentos Generados](#documentos-generados)
+- [Documentoos Generados](#documentoos-generados)
 - [Gates de Validación](#gates-de-validación)
 
 ---
 
 ## 🎯 Descripción General
 
-Este diagrama ilustra el **flujo end-to-end completo** de SoftArchitect AI, desde que un usuario ingresa al sistema hasta que la documentación técnica está lista para iniciar el desarrollo de código.
+Este diagrama ilustra el **flujo end-to-end completo** de SoftArchitect AI, desde que un usuario ingresa al sistema hasta que la documentoación técnica está lista para iniciar el desarrollo de código.
 
 **Ejemplo de Caso de Uso:** Un emprendedor entra al chat y describe una idea: *"Aplicación estilo Tinder para adoptar mascotas, hecha en Flutter, sin fines de lucro"*.
 
 El sistema RAG utiliza el Knowledge Base (Fases 0-6) para:
 1. **Analizar** la entrada del usuario (constraints, patrones, tecnologías)
-2. **Generar** documentos técnicos usando templates de `01-TEMPLATES/`
+2. **Generar** documentoos técnicos usando templates de `01-TEMPLATES/`
 3. **Presentar** borradores para validación interactiva
 4. **Refinar** basado en feedback del usuario
 5. **Guardar** en `context/` para posterior generación de código
@@ -144,7 +144,7 @@ graph TD
 
 ### **FASE 1: Gobernanza e Identidad**
 
-| Documento | Template | Propósito |
+| Documentoo | Template | Propósito |
 |-----------|----------|----------|
 | `PROJECT_MANIFESTO.md` | `PROJECT_MANIFESTO.template.md` | Define visión, valores, compromisos del proyecto |
 | `AGENTS.md` | `AGENTS.template.md` | Define roles (Product Owner, Architect, Dev, QA) |
@@ -157,7 +157,7 @@ graph TD
 
 ### **FASE 2: Requisitos y Seguridad**
 
-| Documento | Template | Propósito |
+| Documentoo | Template | Propósito |
 |-----------|----------|----------|
 | `REQUIREMENTS_MASTER.md` | `REQUIREMENTS_MASTER.template.md` | RF + RNF + Constraints |
 | `USER_STORIES.json` | `USER_STORIES_MASTER.template.json` | Historias de usuario estructuradas |
@@ -170,14 +170,14 @@ graph TD
 
 ### **FASE 3: Arquitectura Técnica**
 
-| Documento | Template | Propósito |
+| Documentoo | Template | Propósito |
 |-----------|----------|----------|
 | `TECH_STACK_DECISION.md` | `TECH_STACK_DECISION.template.md` | Justificación de tecnologías elegidas |
 | `PROJECT_STRUCTURE_MAP.md` | `PROJECT_STRUCTURE_MAP.template.md` | Mapa ASCII de directorios (THE LAW) |
 | `API_INTERFACE_CONTRACT.md` | `API_INTERFACE_CONTRACT.template.md` | Especificación de endpoints REST/gRPC |
 | `DATA_MODEL_SCHEMA.md` | `DATA_MODEL_SCHEMA.template.md` | ERD, tipos de datos, validaciones |
 | `ARCH_DECISION_RECORDS.md` | `ARCH_DECISION_RECORDS.template.md` | ADRs (por qué cada decisión) |
-| `SECURITY_THREAT_MODEL.md` | `SECURITY_THREAT_MODEL.template.md` | STRIDE analysis, mitigaciones |
+| `SECURITY_THREAT_MODEL.md` | `SECURITY_THREAT_MODEL.template.md` | STRIDE análisis, mitigaciones |
 
 **Gate de Validación:** ¿Stack técnico cumple requisitos? ¿Seguridad a nivel arquitectura?
 
@@ -187,7 +187,7 @@ graph TD
 
 #### **Fase 4: Experiencia y Frontera**
 
-| Documento | Template | Propósito |
+| Documentoo | Template | Propósito |
 |-----------|----------|----------|
 | `DESIGN_SYSTEM.md` | `DESIGN_SYSTEM.template.md` | Tokens de color, tipografía, componentes |
 | `UI_WIREFRAMES_FLOW.md` | `UI_WIREFRAMES_FLOW.template.md` | Wireframes con Mermaid, flujos de pantalla |
@@ -195,11 +195,11 @@ graph TD
 
 #### **Fase 5: Operaciones y Calidad**
 
-| Documento | Template | Propósito |
+| Documentoo | Template | Propósito |
 |-----------|----------|----------|
 | `ROADMAP_PHASES.md` | `ROADMAP_PHASES.template.md` | MVP, V1, V2 con timeline |
-| `TESTING_STRATEGY.md` | `TESTING_STRATEGY.template.md` | Test pyramid, cobertura, métricas |
-| `CI_CD_PIPELINE.md` | `CI_CD_PIPELINE.template.md` | Stages: build, test, deploy |
+| `TESTING_STRATEGY.md` | `TESTING_STRATEGY.template.md` | Prueba pyramid, cobertura, métricas |
+| `CI_CD_PIPELINE.md` | `CI_CD_PIPELINE.template.md` | Stages: build, prueba, deploy |
 | `DEPLOYMENT_INFRASTRUCTURE.md` | `DEPLOYMENT_INFRASTRUCTURE.template.md` | Cloud architecture diagram |
 
 **Gate de Validación:** ¿UX alineada con visión? ¿Timeline realista?
@@ -227,9 +227,9 @@ El sistema implementa un **ciclo iterativo interactivo**:
 
 ---
 
-## 📄 Documentos Generados
+## 📄 Documentoos Generados
 
-Al completar todo el workflow, se habrán generado **~40 documentos** repartidos en:
+Al completar todo el workflow, se habrán generado **~40 documentoos** repartidos en:
 
 ```
 context/
@@ -242,7 +242,7 @@ context/
                           Total: 24 docs
 ```
 
-Cada documento es:
+Cada documentoo es:
 - **Reusable:** Template con {{PLACEHOLDERS}}
 - **Verificable:** Puede ser revisado y validado
 - **Versionable:** Almacenado en Git
@@ -292,7 +292,7 @@ Este workflow **consume y produce** contenido del Knowledge Base:
 - `packages/knowledge_base/02-TECH-PACKS/` - Decisiones técnicas predefinidas
 
 **Produce (Output):**
-- Documentos guardados en `context/` para cada proyecto
+- Documentoos guardados en `context/` para cada proyecto
 - Historial de decisiones (audit trail)
 - Nuevos patrones observados → retroalimentan Tech Packs
 

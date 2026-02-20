@@ -1,12 +1,12 @@
 # 💬 Interfaz de Chat - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Guía de uso del chat
-> **Tiempo de lectura:** 12 minutos
+> **Date:** 19/02/2026
+> **Status:** ✅ Guía de uso del chat
+> **Reading Time:** 12 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Introducción](#introducción)
 - [Anatomía de la Interfaz](#anatomía-de-la-interfaz)
@@ -58,11 +58,11 @@ La interfaz de chat es tu puerta de entrada al "cerebro" de SoftArchitect AI. A 
 
 | Elemento | Función |
 |----------|---------|
-| **Barra superior** | Navegación, configuración, acciones rápidas |
+| **Barra superior** | Navegación, configuration, acciones rápidas |
 | **Área de mensajes** | Histórico de conversación |
-| **Archivos adjuntos** | Documentos generados (clickeables) |
+| **Files adjuntos** | Documents generados (clickeables) |
 | **Input de texto** | Campo de escritura con sugerencias inteligentes |
-| **Botón Enviar** | Enviar pregunta (o `Ctrl+Enter`) |
+| **Button Enviar** | Enviar pregunta (o `Ctrl+Enter`) |
 
 ---
 
@@ -97,7 +97,7 @@ Experiencia del equipo: PostgreSQL y MongoDB
 ¿Cuál recomiendas y por qué?"
 ```
 
-**Resultado:** La IA tiene contexto suficiente para dar una recomendación fundamentada.
+**Result:** La IA tiene contexto suficiente para dar una recomendación fundamentada.
 
 ---
 
@@ -140,7 +140,7 @@ El **contexto** es la "memoria" de la conversación. La IA recuerda:
 - ✅ Mensajes previos (últimos 10 por defecto)
 - ✅ Decisiones arquitectónicas tomadas
 - ✅ Tech Packs mencionados
-- ✅ Archivos generados
+- ✅ Files generados
 
 ### Ventana de Contexto
 
@@ -164,14 +164,14 @@ El **contexto** es la "memoria" de la conversación. La IA recuerda:
 **Cuándo hacerlo:**
 - Conversación se desvió del tema original
 - IA empieza a dar respuestas contradictorias
-- Cambias de fase (Ej: Governance → Architecture)
+- Cambias de phase (Ej: Governance → Architecture)
 
 **Cómo hacerlo:**
-1. Click en `[🗑️]` (botón limpiar)
+1. Click en `[🗑️]` (button limpiar)
 2. Confirmar: "Esto borrará el historial actual"
 3. La IA reinicia con contexto limpio
 
-**⚠️ Advertencia:** Decisiones previas NO se borran (están guardadas en archivos).
+**⚠️ Advertencia:** Decisiones previas NO se borran (están guardadas en files).
 
 ---
 
@@ -190,9 +190,9 @@ Click en `[⏹️ Detener]` o presiona `Esc`
 
 ---
 
-### 2. **Archivos Generados Inline**
+### 2. **Files Generados Inline**
 
-La IA genera archivos Markdown automáticamente:
+La IA genera files Markdown automáticamente:
 
 ```
 🤖 SoftArchitect AI:
@@ -204,13 +204,13 @@ La IA genera archivos Markdown automáticamente:
 **Acciones disponibles:**
 - **Click:** Abre en editor integrado
 - **Hover:** Vista previa rápida
-- **Right-click:** Descargar, copiar link, eliminar
+- **Right-click:** Descargar, copiar link, delete
 
 ---
 
 ### 3. **Sugerencias Inteligentes**
 
-El sistema detecta patrones y sugiere próximos pasos:
+El sistema detecta patrones y sugiere next steps:
 
 ```
 💡 Sugerencia: "Parece que aún no definiste los requisitos no funcionales.
@@ -223,7 +223,7 @@ El sistema detecta patrones y sugiere próximos pasos:
 
 ### 4. **Modo Multi-Canal**
 
-Conversaciones paralelas por fase:
+Conversaciones paralelas por phase:
 
 ```
 Canales:
@@ -247,7 +247,7 @@ Click en el nombre del canal en la barra superior.
 | `Esc` | Detener streaming |
 | `Ctrl + ↑/↓` | Navegar historial |
 | `Ctrl + S` | Guardar conversación |
-| `Ctrl + N` | Nuevo proyecto |
+| `Ctrl + N` | Nuevo project |
 
 ---
 
@@ -376,9 +376,9 @@ MongoDB sería mejor si:
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documents Relacionados
 
-- [Master Workflow](04-MASTER_WORKFLOW.md) - Entender las 4 fases
+- [Master Workflow](04-MASTER_WORKFLOW.md) - Entender las 4 phases
 - [Streaming](06-RESPUESTAS_STREAMING.md) - Detalles técnicos del streaming
 - [Solución de Problemas](08-SOLUCIÓN_DE_PROBLEMAS.md) - Si la IA no responde
 

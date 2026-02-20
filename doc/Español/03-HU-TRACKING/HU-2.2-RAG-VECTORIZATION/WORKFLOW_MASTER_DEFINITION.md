@@ -15,11 +15,11 @@
 2. [Criterios de Aceptación (Definition of Done)](#criterios-de-aceptación)
 3. [Arquitectura y Dependencias](#arquitectura-y-dependencias)
 4. [Fase 0: Preparación del Terreno](#fase-0-preparación-del-terreno)
-5. [Fase 1: TDD - RED (Tests que Fallan)](#fase-1-tdd---red-tests-que-fallan)
+5. [Fase 1: TDD - RED (Pruebas que Fallan)](#fase-1-tdd---red-pruebas-que-fallan)
 6. [Fase 2: TDD - GREEN (Implementación)](#fase-2-tdd---green-implementación)
 7. [Fase 3: TDD - REFACTOR (Mejoras y Robustez)](#fase-3-tdd---refactor-mejoras-y-robustez)
-8. [Fase 4: Integration Testing (E2E)](#fase-4-integration-testing-e2e)
-9. [Fase 5: Documentación y Validación](#fase-5-documentación-y-validación)
+8. [Fase 4: Integración Pruebaing (E2E)](#fase-4-integration-pruebaing-e2e)
+9. [Fase 5: Documentoación y Validación](#fase-5-documentoación-y-validación)
 10. [Fase 6: CI/CD y Pipeline](#fase-6-cicd-y-pipeline)
 11. [Entregables Finales](#entregables-finales)
 
@@ -38,7 +38,7 @@
 - Implementar retry logic con backoff exponencial.
 
 ### 3. **Idempotencia**
-- Ejecutar el script `ingest.py` 100 veces **NO duplica documentos**.
+- Ejecutar el script `ingest.py` 100 veces **NO duplica documentoos**.
 - Usamos **hashing de contenido** para generar IDs deterministas.
 - Chroma's `upsert` semantics: si ID existe → actualiza; si no → inserta.
 
@@ -48,9 +48,9 @@
 - En Docker: se persiste en volumen para no re-descargar.
 - **Cumple:** Latencia baja (<200ms UI), operación offline, gestión eficiente RAM.
 
-### 5. **Testing Robusto (TDD + Coverage >80%)**
-- Unit tests con **Mocking** (sin necesidad de contenedor).
-- Integration tests que validen E2E.
+### 5. **Pruebaing Robusto (TDD + Coverage >80%)**
+- Unit pruebas con **Mocking** (sin necesidad de contenedor).
+- Integración pruebas que validen E2E.
 - CI/CD pasa en verde sin necesidad de Docker en Actions.
 
 ---
@@ -58,17 +58,17 @@
 ## ✅ Criterios de Aceptación (Definition of Done)
 
 ### Criterios POSITIVOS (Must Have)
-- ✅ El script `ingest.py` lee documentos de HU-2.1 y los almacena en ChromaDB.
-- ✅ Los **metadatos críticos** (`source`, `filename`, `header`) se preservan en la metadata de Chroma.
+- ✅ El script `ingest.py` lee documentoos de HU-2.1 y los almacena en ChromaDB.
+- ✅ Los **metadatos críticos** (`source`, `archivoname`, `header`) se preservan en la metadata de Chroma.
 - ✅ Se generan **IDs deterministas** (hash MD5 de contenido + source) para garantizar idempotencia.
 - ✅ La carpeta `chroma_data` (volumen de Docker) **aumenta de tamaño** tras la ingesta.
 - ✅ Una **consulta de prueba** devuelve los fragmentos del Tech Pack correcto (similaridad > 0.7).
 - ✅ **Funciona offline** después de la primera descarga del modelo.
-- ✅ Tests unitarios con **mocking** pasan al 100%.
+- ✅ Pruebas unitarios con **mocking** pasan al 100%.
 - ✅ Coverage de código > 80% en servicios críticos.
 
 ### Criterios NEGATIVOS (Must NOT)
-- ❌ NO se duplican documentos después de 2 ejecuciones.
+- ❌ NO se duplican documentoos después de 2 ejecuciones.
 - ❌ NO explota el backend si ChromaDB está caído → reporta SYS_001.
 - ❌ NO llama a APIs externas (OpenAI, Azure, Anthropic).
 - ❌ NO se compromete privacidad de datos (todo local).
@@ -177,11 +177,11 @@ class VectorStoreError(BaseAppException):
 
 ---
 
-## 🔴 FASE 1: TDD - RED (Tests que Fallan)
+## 🔴 FASE 1: TDD - RED (Pruebas que Fallan)
 
-### 1.1 - Crear Test Suite
+### 1.1 - Crear Prueba Suite
 
-**Archivo:** `src/server/tests/unit/services/rag/test_vector_store.py`
+**Archivo:** `src/server/pruebas/unit/services/rag/prueba_vector_store.py`
 
 ```python
 """
@@ -446,7 +446,7 @@ class TestErrorHandling:
         assert error_dict["details"]["host"] == "localhost"
 ```
 
-### 1.2 - Ejecutar Tests (Expectativa: TODOS FALLAN)
+### 1.2 - Ejecutar Pruebas (Expectativa: TODOS FALLAN)
 
 ```bash
 cd src/server
@@ -727,7 +727,7 @@ class VectorStoreService:
             )
 ```
 
-### 2.3 - Ejecutar Tests (Expectativa: TODOS PASAN)
+### 2.3 - Ejecutar Pruebas (Expectativa: TODOS PASAN)
 
 ```bash
 cd src/server
@@ -840,9 +840,9 @@ logger.info(
 
 ---
 
-## 📊 FASE 4: Integration Testing (E2E)
+## 📊 FASE 4: Integración Pruebaing (E2E)
 
-**Archivo:** `src/server/tests/integration/services/rag/test_vector_store_e2e.py`
+**Archivo:** `src/server/pruebas/integration/services/rag/prueba_vector_store_e2e.py`
 
 ```python
 """
@@ -898,7 +898,7 @@ def test_e2e_full_ingestion_flow():
 
 ---
 
-## 📝 FASE 5: Documentación y Validación
+## 📝 FASE 5: Documentoación y Validación
 
 ### 5.1 - Crear README Técnico
 
@@ -918,7 +918,7 @@ def test_e2e_full_ingestion_flow():
 # 1. Start Docker ChromaDB
 docker-compose up -d chroma
 
-# 2. Run ingestion script
+# 2. Ejecutar ingestion script
 python src/server/scripts/ingest.py
 
 # 3. Check results
@@ -950,7 +950,7 @@ poetry run pytest tests/unit/services/rag/ -v --cov=services.rag --cov-report=ht
 
 ### 6.1 - Workflow en GitHub Actions
 
-Estos tests se ejecutarán automáticamente en CI (sin Docker).
+Estos pruebas se ejecutarán automáticamente en CI (sin Docker).
 
 **.github/workflows/backend-ci.yaml** (sección relevant):
 
@@ -1010,13 +1010,13 @@ requirements.txt / pyproject.toml
 
 ### Validaciones Finales
 
-- ✅ Unit tests: 8+ tests, 100% passing, >80% coverage
-- ✅ No mocking issues: Todos los tests aislados
+- ✅ Unit pruebas: 8+ pruebas, 100% passing, >80% coverage
+- ✅ No mocking issues: Todos los pruebas aislados
 - ✅ Linting: `ruff check` y `ruff format` pasan
 - ✅ No hardcoded secrets
-- ✅ Docstrings: 100% de métodos públicos documentados
-- ✅ Error handling: Todos los caminos de error testados
-- ✅ Idempotency: Verificado (test_upsert_twice_no_duplicates)
+- ✅ Docstrings: 100% de métodos públicos documentoados
+- ✅ Error handling: Todos los caminos de error pruebaados
+- ✅ Idempotency: Verificado (prueba_upsert_twice_no_duplicates)
 - ✅ Offline mode: Verificado (embeddings locales)
 
 ### Criterios de Aceptación Cumplidos
@@ -1024,28 +1024,28 @@ requirements.txt / pyproject.toml
 | Criterio | Estado | Nota |
 |----------|--------|------|
 | ✅ Persistencia en ChromaDB | ✅ | Vectores almacenados |
-| ✅ Metadatos preservados | ✅ | source, filename, header |
+| ✅ Metadatos preservados | ✅ | source, archivoname, header |
 | ✅ IDs deterministas | ✅ | Hash-based para idempotencia |
 | ✅ chroma_data crece | ✅ | ~50MB por 1000 docs |
 | ✅ Query funciona | ✅ | Similaridad semántica validada |
 | ✅ Offline | ✅ | Modelos locales en ~/.cache |
-| ✅ Tests >80% coverage | ✅ | 87% actual |
-| ✅ SYS_001 en fallo | ✅ | Controlado y testado |
+| ✅ Pruebas >80% coverage | ✅ | 87% actual |
+| ✅ SYS_001 en fallo | ✅ | Controlado y pruebaado |
 
 ---
 
 ## 🎯 Próximos Pasos (Después de tu OK)
 
 1. **Implementación:** Crear todos los archivos según especificación
-2. **Testing Local:** Ejecutar pytest y validar coverage
-3. **Docker Test:** Correr `python ingest.py` contra ChromaDB real
+2. **Pruebaing Local:** Ejecutar pyprueba y validar coverage
+3. **Docker Prueba:** Correr `python ingest.py` contra ChromaDB real
 4. **Git Commit:** Commit con mensaje estructurado
-5. **PR a develop:** Preparar PR con documentación completa
+5. **PR a develop:** Preparar PR con documentoación completa
 
 ---
 
 **ESTADO ACTUAL:** ⏸️ **AWAITING YOUR APPROVAL** ✋
 
-No avanzaré sin tu indicación expresa. Este documento define el workflow completo y mejorado.
+No avanzaré sin tu indicación expresa. Este documentoo define el workflow completo y mejorado.
 
 ¿Quieres que proceda con la implementación de todas las fases?

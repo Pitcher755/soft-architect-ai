@@ -1,10 +1,10 @@
-# ⚙️ HU-4.4: Configuration Guide - Chat History Limits
+# ⚙️ HU-4.4: Configuración Guide - Chat History Limits
 
-> **User Story:** HU-4.4 - RAG/LLM Resilience Extensions
-> **Feature:** Configurable Chat History Limits (Phase 7)
+> **User Story:** HU-4.4 - RAG/LLM Resiliencia Extensions
+> **Feature:** Configurable Chat History Limits (Fase 7)
 > **Commit:** `3786589`
-> **Status:** ✅ Complete
-> **Date:** January 2025
+> **Estado:** ✅ Complete
+> **Fecha:** January 2025
 
 ---
 
@@ -32,22 +32,22 @@
 
 ## 🎯 Introducción
 
-Desde **Phase 7** (commit `3786589`), los límites de historial de chat son **configurables dinámicamente** vía environment variables, sin necesidad de recompilar el código.
+Desde **Fase 7** (commit `3786589`), los límites de historial de chat son **configurables dinámicamente** vía environment variables, sin necesidad de recompilar el código.
 
 ### ¿Por qué es importante?
 
-- 📈 **Escalabilidad:** Proyectos grandes (25+ documentos) necesitan más contexto.
+- 📈 **Escalabilidad:** Proyectos grandes (25+ documentoos) necesitan más contexto.
 - ⚙️ **Flexibilidad:** Ajustar límites según recursos (RAM, latencia).
 - 🚀 **Sin downtime:** Cambiar configuración con restart rápido (no redeploy).
 - 🧠 **Mejor memoria:** Aprovechar capacidad del modelo (32K tokens).
 
 ### Antes vs Después
 
-| Aspecto | Before Phase 7 | After Phase 7 |
+| Aspecto | Before Fase 7 | After Fase 7 |
 |---------|----------------|---------------|
 | Max Messages | 20 (hardcoded) | **100** (configurable) |
 | Max Chars/Message | 5000 (hardcoded) | **20000** (configurable) |
-| Configuration Method | Recompilación | `.env` / Docker / Export |
+| Configuración Method | Recompilación | `.env` / Docker / Export |
 | Frontend Sends History | ❌ No | ✅ Sí (últimos 100) |
 
 ---
@@ -104,8 +104,8 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **Consideraciones:**
 - **Valor bajo (8000-12000):** VPS con poca RAM (<4GB).
-- **Valor medio (20000):** Balance ideal, soporta documentos extensos.
-- **Valor alto (25000-30000):** Proyectos de documentación, código completo.
+- **Valor medio (20000):** Balance ideal, soporta documentoos extensos.
+- **Valor alto (25000-30000):** Proyectos de documentoación, código completo.
 
 **Límite del Modelo:**
 El modelo soporta **~32K tokens** (~32000 caracteres). Configurar >32000 no tiene beneficio.
@@ -113,15 +113,15 @@ El modelo soporta **~32K tokens** (~32000 caracteres). Configurar >32000 no tien
 **Trade-offs:**
 | Valor | Ventajas | Desventajas |
 |-------|----------|-------------|
-| 8000 | 🪶 Bajo uso de RAM | 📝 Documentos cortos solo |
+| 8000 | 🪶 Bajo uso de RAM | 📝 Documentoos cortos solo |
 | 20000 | ⚖️ Balance ideal | ⚖️ RAM media (~2GB) |
-| 30000 | 📚 Documentación completa | 🐏 Alto uso de RAM (>4GB) |
+| 30000 | 📚 Documentoación completa | 🐏 Alto uso de RAM (>4GB) |
 
 ---
 
 ## 🛠️ Métodos de Configuración
 
-### Method 1: .env File (Development - Recomendado)
+### Method 1: .env Archivo (Development - Recomendado)
 
 **Archivo:** `src/server/.env`
 
@@ -205,9 +205,9 @@ docker-compose down && docker-compose up -d
 
 ---
 
-### Method 3: Terminal Export (Testing Temporal)
+### Method 3: Terminal Export (Pruebaing Temporal)
 
-**Uso temporal durante desarrollo/testing:**
+**Uso temporal durante desarrollo/pruebaing:**
 
 ```bash
 # Export en terminal
@@ -220,7 +220,7 @@ uvicorn app.main:app --reload
 ```
 
 **Pros:**
-- ✅ Rápido para testing
+- ✅ Rápido para pruebaing
 - ✅ No modifica archivos
 
 **Cons:**
@@ -313,7 +313,7 @@ kubectl rollout restart deployment/backend
 ### Caso 1: Proyecto Personal / Prototipo
 
 **Características:**
-- 1-5 documentos en knowledge base
+- 1-5 documentoos en knowledge base
 - Usuario solo (conversaciones cortas)
 - VPS económico (2GB RAM)
 
@@ -333,7 +333,7 @@ CHAT_MAX_MESSAGE_LENGTH=10000
 ### Caso 2: Proyecto Mediano / Startup
 
 **Características:**
-- 10-25 documentos en knowledge base
+- 10-25 documentoos en knowledge base
 - 2-5 usuarios simultáneos
 - Conversaciones medianas (5-10 preguntas seguidas)
 - Servidor estándar (4GB RAM)
@@ -346,7 +346,7 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **Justificación:**
 - 100 mensajes = 50 pares (conversación extensa)
-- 20K chars = Soporta documentos técnicos completos
+- 20K chars = Soporta documentoos técnicos completos
 - Balance latencia/contexto (1-2s response time)
 
 ---
@@ -354,7 +354,7 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 ### Caso 3: Proyecto Grande / Enterprise
 
 **Características:**
-- 50+ documentos en knowledge base
+- 50+ documentoos en knowledge base
 - 10+ usuarios simultáneos
 - Conversaciones muy largas (20+ preguntas)
 - Servidor dedicado (16GB+ RAM)
@@ -367,12 +367,12 @@ CHAT_MAX_MESSAGE_LENGTH=30000
 
 **Justificación:**
 - 200 mensajes = 100 pares (máximo contexto)
-- 30K chars = Código/documentación completa (near model limit)
+- 30K chars = Código/documentoación completa (near model limit)
 - Alta disponibilidad de RAM permite contexto máximo
 
 ---
 
-### Caso 4: Documentación Técnica / Research
+### Caso 4: Documentoación Técnica / Research
 
 **Características:**
 - Knowledge base extensa (100+ docs)
@@ -387,7 +387,7 @@ CHAT_MAX_MESSAGE_LENGTH=28000
 
 **Justificación:**
 - 150 mensajes = Balance entre contexto y performance
-- 28K chars = Permite pegar documentación casi completa
+- 28K chars = Permite pegar documentoación casi completa
 - Latencia alta aceptable (3-5s) por mayor precisión
 
 ---
@@ -571,14 +571,14 @@ docker-compose logs backend | grep "CHAT_MAX"
 
 ---
 
-### Problema 5: Error de Validación en Tests
+### Problema 5: Error de Validación en Pruebas
 
 **Síntoma:**
 ```python
 ValidationError: Message 0 content exceeds 20000 characters (got 25000)
 ```
 
-**Causa:** Tests usan mensajes muy largos sin ajustar configuración.
+**Causa:** Pruebas usan mensajes muy largos sin ajustar configuración.
 
 **Solución:**
 ```python
@@ -611,7 +611,7 @@ python -c "from app.core.config import settings; print(f'Messages: {settings.CHA
 
 ---
 
-### Paso 2: Test de Validación (Reject Oversized)
+### Paso 2: Prueba de Validación (Reject Oversized)
 
 ```bash
 # Test que backend rechaza >100 messages
@@ -634,7 +634,7 @@ curl -X POST http://localhost:8000/api/v1/chat/stream \
 
 ---
 
-### Paso 3: Test de Aceptación (Accept Valid)
+### Paso 3: Prueba de Aceptación (Accept Valid)
 
 ```bash
 # Test que backend acepta 50 messages (< 100)
@@ -671,7 +671,7 @@ docker-compose logs -f backend
 
 ---
 
-### Paso 5: Test de Performance
+### Paso 5: Prueba de Performance
 
 **Benchmark de latencia con diferentes configuraciones:**
 
@@ -704,27 +704,27 @@ CHAT_MAX_HISTORY_MESSAGES=200 CHAT_MAX_MESSAGE_LENGTH=30000 \
 
 **Configuración:**
 - `src/server/app/core/config.py` - Settings class (defaults)
-- `src/server/.env.example` - Template con documentación
+- `src/server/.env.example` - Template con documentoación
 - `infrastructure/docker-compose.yml` - Mapeo de env vars
 
 **Validación:**
 - `src/server/app/domain/schemas/chat.py` - Validators dinámicos
-- `tests/server/unit/domain/schemas/test_chat_history.py` - Tests de límites
+- `pruebas/server/unit/domain/schemas/prueba_chat_history.py` - Pruebas de límites
 
 **Frontend:**
 - `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart` - History loading
 
-### Documentación Relacionada
+### Documentoación Relacionada
 
-- [RECENT_CHANGES.md](./RECENT_CHANGES.md) - Resumen de Phase 6 y 7
+- [RECENT_CHANGES.md](./RECENT_CHANGES.md) - Resumen de Fase 6 y 7
 - [PROGRESS.md](./PROGRESS.md) - Tracking detallado de implementación
 - [ARTIFACTS.md](./ARTIFACTS.md) - Lista de archivos modificados
 - [README.md](./README.md) - HU-4.4 overview completo
 
 ### Commits
 
-- **Phase 6:** `01eec76` - feat(backend): add chat history support for conversational context
-- **Phase 7:** `3786589` - feat(chat): make history limits configurable via environment variables
+- **Fase 6:** `01eec76` - feat(backend): add chat history support for conversational context
+- **Fase 7:** `3786589` - feat(chat): make history limits configurable via environment variables
 
 ---
 
@@ -734,36 +734,36 @@ CHAT_MAX_HISTORY_MESSAGES=200 CHAT_MAX_MESSAGE_LENGTH=30000 \
 
 <div id="english">
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Introduction](#-introduction-1)
 2. [Environment Variables](#-environment-variables-1)
-3. [Configuration Methods](#-configuration-methods-1)
+3. [Configuración Methods](#-configuración-methods-1)
 4. [Use Case Examples](#-use-case-examples)
 5. [Performance Tuning](#-performance-tuning-1)
 6. [Troubleshooting](#-troubleshooting-1)
-7. [Configuration Validation](#-configuration-validation-1)
+7. [Configuración Validation](#-configuración-validation-1)
 
 ---
 
 ## 🎯 Introduction
 
-Since **Phase 7** (commit `3786589`), chat history limits are **dynamically configurable** via environment variables, without code recompilation.
+Since **Fase 7** (commit `3786589`), chat history limits are **dynamically configurable** via environment variables, without code recompilation.
 
 ### Why is this important?
 
-- 📈 **Scalability:** Large projects (25+ documents) need more context.
+- 📈 **Scalability:** Large proyectos (25+ documentos) need more context.
 - ⚙️ **Flexibility:** Adjust limits based on resources (RAM, latency).
-- 🚀 **No downtime:** Change configuration with quick restart (no redeploy).
+- 🚀 **No downtime:** Change configuración with quick restart (no redeploy).
 - 🧠 **Better memory:** Leverage model capacity (32K tokens).
 
 ### Before vs After
 
-| Aspect | Before Phase 7 | After Phase 7 |
+| Aspect | Before Fase 7 | After Fase 7 |
 |---------|----------------|---------------|
 | Max Messages | 20 (hardcoded) | **100** (configurable) |
 | Max Chars/Message | 5000 (hardcoded) | **20000** (configurable) |
-| Configuration Method | Recompilation | `.env` / Docker / Export |
+| Configuración Method | Recompilation | `.env` / Docker / Export |
 | Frontend Sends History | ❌ No | ✅ Yes (last 100) |
 
 ---
@@ -772,7 +772,7 @@ Since **Phase 7** (commit `3786589`), chat history limits are **dynamically conf
 
 ### 1. CHAT_MAX_HISTORY_MESSAGES
 
-**Description:** Maximum number of messages in conversational history.
+**Descripción:** Maximum number of messages in conversational history.
 
 **Type:** `int`
 
@@ -788,9 +788,9 @@ CHAT_MAX_HISTORY_MESSAGES=100
 ```
 
 **Considerations:**
-- **Low value (30-50):** Small projects, low latency priority.
-- **Medium value (100-120):** Medium projects, balance context/latency.
-- **High value (150-200):** Large projects, full context priority.
+- **Low value (30-50):** Small proyectos, low latency priority.
+- **Medium value (100-120):** Medium proyectos, balance context/latency.
+- **High value (150-200):** Large proyectos, full context priority.
 
 **Trade-offs:**
 | Value | Advantages | Disadvantages |
@@ -803,7 +803,7 @@ CHAT_MAX_HISTORY_MESSAGES=100
 
 ### 2. CHAT_MAX_MESSAGE_LENGTH
 
-**Description:** Maximum characters per individual message (both current message and in history).
+**Descripción:** Maximum characters per individual message (both current message and in history).
 
 **Type:** `int`
 
@@ -811,7 +811,7 @@ CHAT_MAX_HISTORY_MESSAGES=100
 
 **Recommended Range:** `8000` - `30000`
 
-**Purpose:** Limits size of long messages (e.g., pasting complete code).
+**Purpose:** Limits size of long messages (e.g., pasting complete código).
 
 **Example:**
 ```bash
@@ -820,8 +820,8 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **Considerations:**
 - **Low value (8000-12000):** VPS with low RAM (<4GB).
-- **Medium value (20000):** Ideal balance, supports extensive documents.
-- **High value (25000-30000):** Documentation projects, complete code.
+- **Medium value (20000):** Ideal balance, supports extensive documentos.
+- **High value (25000-30000):** Documentoation proyectos, complete code.
 
 **Model Limit:**
 Model supports **~32K tokens** (~32000 characters). Configuring >32000 has no benefit.
@@ -829,20 +829,20 @@ Model supports **~32K tokens** (~32000 characters). Configuring >32000 has no be
 **Trade-offs:**
 | Value | Advantages | Disadvantages |
 |-------|-----------|---------------|
-| 8000 | 🪶 Low RAM usage | 📝 Short documents only |
+| 8000 | 🪶 Low RAM usage | 📝 Short documentos only |
 | 20000 | ⚖️ Ideal balance | ⚖️ Medium RAM (~2GB) |
-| 30000 | 📚 Complete documentation | 🐏 High RAM usage (>4GB) |
+| 30000 | 📚 Complete documentoation | 🐏 High RAM usage (>4GB) |
 
 ---
 
-## 🛠️ Configuration Methods
+## 🛠️ Configuración Methods
 
-### Method 1: .env File (Development - Recommended)
+### Method 1: .env Archivo (Development - Recommended)
 
-**File:** `src/server/.env`
+**Archivo:** `src/server/.env`
 
 **Steps:**
-1. Create `.env` file if it doesn't exist:
+1. Crear `.env` archivo if it doesn't exist:
    ```bash
    cd src/server
    cp .env.example .env
@@ -876,7 +876,7 @@ Model supports **~32K tokens** (~32000 characters). Configuring >32000 has no be
 
 ### Method 2: Docker Compose (Staging/Production - Recommended)
 
-**File:** `infrastructure/docker-compose.yml`
+**Archivo:** `infrastructure/docker-compose.yml`
 
 **Option A: Direct Values**
 
@@ -912,7 +912,7 @@ docker-compose down && docker-compose up -d
 ```
 
 **Pros:**
-- ✅ Centralized configuration
+- ✅ Centralized configuración
 - ✅ Defaults with syntax `${VAR:-default}`
 - ✅ Works in staging/production
 
@@ -921,9 +921,9 @@ docker-compose down && docker-compose up -d
 
 ---
 
-### Method 3: Terminal Export (Temporary Testing)
+### Method 3: Terminal Export (Temporary Pruebaing)
 
-**Temporary use during development/testing:**
+**Temporary use during development/pruebaing:**
 
 ```bash
 # Export in terminal
@@ -936,8 +936,8 @@ uvicorn app.main:app --reload
 ```
 
 **Pros:**
-- ✅ Quick for testing
-- ✅ Doesn't modify files
+- ✅ Quick for pruebaing
+- ✅ Doesn't modify archivos
 
 **Cons:**
 - ❌ Not persistent (current session only)
@@ -947,7 +947,7 @@ uvicorn app.main:app --reload
 
 ### Method 4: Systemd Service (Production Linux)
 
-**File:** `/etc/systemd/system/softarchitect-backend.service`
+**Archivo:** `/etc/systemd/system/softarchitect-backend.service`
 
 ```ini
 [Unit]
@@ -974,14 +974,14 @@ sudo systemctl restart softarchitect-backend
 ```
 
 **Pros:**
-- ✅ Persistent configuration on server
+- ✅ Persistent configuración on server
 - ✅ Auto-start on boot
 
 ---
 
 ### Method 5: Kubernetes ConfigMap (Cloud Native)
 
-**File:** `k8s/backend-config.yaml`
+**Archivo:** `k8s/backend-config.yaml`
 
 ```yaml
 apiVersion: v1
@@ -1026,14 +1026,14 @@ kubectl rollout restart deployment/backend
 
 ## 💼 Use Case Examples
 
-### Case 1: Personal Project / Prototype
+### Case 1: Personal Proyecto / Prototype
 
 **Characteristics:**
-- 1-5 documents in knowledge base
+- 1-5 documentos in knowledge base
 - Single user (short conversations)
 - Economic VPS (2GB RAM)
 
-**Recommended Configuration:**
+**Recommended Configuración:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=30
 CHAT_MAX_MESSAGE_LENGTH=10000
@@ -1046,15 +1046,15 @@ CHAT_MAX_MESSAGE_LENGTH=10000
 
 ---
 
-### Case 2: Medium Project / Startup
+### Case 2: Medium Proyecto / Startup
 
 **Characteristics:**
-- 10-25 documents in knowledge base
+- 10-25 documentos in knowledge base
 - 2-5 simultaneous users
 - Medium conversations (5-10 follow-up questions)
 - Standard server (4GB RAM)
 
-**Recommended Configuration:**
+**Recommended Configuración:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=100
 CHAT_MAX_MESSAGE_LENGTH=20000
@@ -1062,20 +1062,20 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **Justification:**
 - 100 messages = 50 pairs (extensive conversation)
-- 20K chars = Supports complete technical documents
+- 20K chars = Supports complete technical documentos
 - Balance latency/context (1-2s response time)
 
 ---
 
-### Case 3: Large Project / Enterprise
+### Case 3: Large Proyecto / Enterprise
 
 **Characteristics:**
-- 50+ documents in knowledge base
+- 50+ documentos in knowledge base
 - 10+ simultaneous users
 - Very long conversations (20+ questions)
 - Dedicated server (16GB+ RAM)
 
-**Recommended Configuration:**
+**Recommended Configuración:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=200
 CHAT_MAX_MESSAGE_LENGTH=30000
@@ -1083,19 +1083,19 @@ CHAT_MAX_MESSAGE_LENGTH=30000
 
 **Justification:**
 - 200 messages = 100 pairs (maximum context)
-- 30K chars = Complete code/documentation (near model limit)
+- 30K chars = Complete code/documentoation (near model limit)
 - High RAM availability allows maximum context
 
 ---
 
-### Case 4: Technical Documentation / Research
+### Case 4: Technical Documentoation / Research
 
 **Characteristics:**
 - Extensive knowledge base (100+ docs)
 - Very specific questions with lots of context
 - Precision priority over latency
 
-**Recommended Configuration:**
+**Recommended Configuración:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=150
 CHAT_MAX_MESSAGE_LENGTH=28000
@@ -1103,7 +1103,7 @@ CHAT_MAX_MESSAGE_LENGTH=28000
 
 **Justification:**
 - 150 messages = Balance between context and performance
-- 28K chars = Allows pasting almost complete documentation
+- 28K chars = Allows pasting almost complete documentoation
 - High latency acceptable (3-5s) for better accuracy
 
 ---
@@ -1115,7 +1115,7 @@ CHAT_MAX_MESSAGE_LENGTH=28000
 - Priority on fast response (<1s)
 - Short and direct conversations
 
-**Recommended Configuration:**
+**Recommended Configuración:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=20
 CHAT_MAX_MESSAGE_LENGTH=8000
@@ -1130,7 +1130,7 @@ CHAT_MAX_MESSAGE_LENGTH=8000
 
 ## 📊 Performance Tuning
 
-### RAM vs Configuration Relationship
+### RAM vs Configuración Relationship
 
 **Estimated Formula:**
 ```
@@ -1152,7 +1152,7 @@ RAM_per_request ≈ (MESSAGES × AVG_CHARS × 2 bytes) + overhead
 
 ---
 
-### Latency vs Configuration
+### Latency vs Configuración
 
 **Factors Affecting Latency:**
 1. **Larger context → Higher LLM latency**
@@ -1287,14 +1287,14 @@ docker-compose logs backend | grep "CHAT_MAX"
 
 ---
 
-### Problem 5: Validation Error in Tests
+### Problem 5: Validation Error in Pruebas
 
 **Symptom:**
 ```python
 ValidationError: Message 0 content exceeds 20000 characters (got 25000)
 ```
 
-**Cause:** Tests use very long messages without adjusting configuration.
+**Cause:** Pruebas use very long messages without adjusting configuración.
 
 **Solution:**
 ```python
@@ -1307,7 +1307,7 @@ def test_accepts_long_message():
 
 ---
 
-## ✅ Configuration Validation
+## ✅ Configuración Validation
 
 ### Step 1: Verify Backend Loads Variables
 
@@ -1327,7 +1327,7 @@ python -c "from app.core.config import settings; print(f'Messages: {settings.CHA
 
 ---
 
-### Step 2: Validation Test (Reject Oversized)
+### Step 2: Validation Prueba (Reject Oversized)
 
 ```bash
 # Test that backend rejects >100 messages
@@ -1350,7 +1350,7 @@ curl -X POST http://localhost:8000/api/v1/chat/stream \
 
 ---
 
-### Step 3: Acceptance Test (Accept Valid)
+### Step 3: Acceptance Prueba (Accept Valid)
 
 ```bash
 # Test that backend accepts 50 messages (< 100)
@@ -1387,9 +1387,9 @@ docker-compose logs -f backend
 
 ---
 
-### Step 5: Performance Test
+### Step 5: Performance Prueba
 
-**Latency benchmark with different configurations:**
+**Latency benchmark with different configuracións:**
 
 ```bash
 # Test 1: Small context (30 messages, 10K chars)
@@ -1416,31 +1416,31 @@ CHAT_MAX_HISTORY_MESSAGES=200 CHAT_MAX_MESSAGE_LENGTH=30000 \
 
 ## 📚 References
 
-### Related Files
+### Related Archivos
 
-**Configuration:**
+**Configuración:**
 - `src/server/app/core/config.py` - Settings class (defaults)
-- `src/server/.env.example` - Template with documentation
+- `src/server/.env.example` - Template with documentoation
 - `infrastructure/docker-compose.yml` - Env vars mapping
 
 **Validation:**
 - `src/server/app/domain/schemas/chat.py` - Dynamic validators
-- `tests/server/unit/domain/schemas/test_chat_history.py` - Limits tests
+- `pruebas/server/unit/domain/schemas/prueba_chat_history.py` - Limits pruebas
 
 **Frontend:**
 - `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart` - History loading
 
-### Related Documentation
+### Related Documentoation
 
-- [RECENT_CHANGES.md](./RECENT_CHANGES.md) - Phase 6 & 7 summary
-- [PROGRESS.md](./PROGRESS.md) - Detailed implementation tracking
-- [ARTIFACTS.md](./ARTIFACTS.md) - Modified files list
+- [RECENT_CHANGES.md](./RECENT_CHANGES.md) - Fase 6 & 7 summary
+- [PROGRESS.md](./PROGRESS.md) - Detailed implementación tracking
+- [ARTIFACTS.md](./ARTIFACTS.md) - Modified archivos list
 - [README.md](./README.md) - Complete HU-4.4 overview
 
 ### Commits
 
-- **Phase 6:** `01eec76` - feat(backend): add chat history support for conversational context
-- **Phase 7:** `3786589` - feat(chat): make history limits configurable via environment variables
+- **Fase 6:** `01eec76` - feat(backend): add chat history support for conversational context
+- **Fase 7:** `3786589` - feat(chat): make history limits configurable via environment variables
 
 ---
 

@@ -1,13 +1,13 @@
 # API Contract: POST /api/v1/chat/message
 
-> **Version:** 1.0.0
-> **Status:** ✅ Phase 0 Complete
-> **Created:** 2026-02-13
+> **Versión:** 1.0.0
+> **Estado:** ✅ Fase 0 Complete
+> **Creard:** 2026-02-13
 > **Author:** ArchitectZero
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [Overview](#overview)
 - [Endpoint Specification](#endpoint-specification)
@@ -17,7 +17,7 @@
 - [Performance SLA](#performance-sla)
 - [Security Considerations](#security-considerations)
 - [Example Usage](#example-usage)
-- [Integration Notes](#integration-notes)
+- [Integración Notes](#integration-notes)
 
 ---
 
@@ -26,7 +26,7 @@
 **Purpose:** Backend endpoint for SoftArchitect AI chat feature with RAG-powered context injection.
 
 **Capabilities:**
-- Accepts user messages with conversation/project context
+- Accepts user messages with conversation/proyecto context
 - Performs security sanitization (XSS prevention, prompt injection detection)
 - Orchestrates RAG pipeline (vector search → template selection → LLM generation)
 - Returns AI response with transparency metadata (sources, template used)
@@ -34,7 +34,7 @@
 **Design Philosophy:**
 - **Privacy First:** All processing happens locally (Ollama) or with explicit cloud opt-in (Groq)
 - **Security Hardened:** HTML entity escaping, prompt injection detection, DOS prevention
-- **Testability:** Dependency injection for LLM clients, ChromaDB stub support
+- **Pruebaability:** Dependency injection for LLM clients, ChromaDB stub support
 - **Performance:** <500ms target (p95) through async processing and caching
 
 ---
@@ -46,7 +46,7 @@
 | **Method** | POST |
 | **Path** | `/api/v1/chat/message` |
 | **Content-Type** | `application/json` |
-| **Authentication** | None (Phase 1), Bearer Token (Phase 2) |
+| **Authentication** | None (Fase 1), Bearer Token (Fase 2) |
 | **Rate Limiting** | 30 requests/min per IP (future) |
 | **CORS** | Enabled for webapp frontend |
 
@@ -66,16 +66,16 @@
 
 ### Fields
 
-| Field | Type | Required | Constraints | Description |
+| Field | Type | Required | Constraints | Descripción |
 |-------|------|----------|-------------|-------------|
 | `conversation_id` | UUID | ✅ Yes | Valid UUIDv4 | Unique identifier for the conversation thread |
 | `message` | string | ✅ Yes | 1-2000 chars | User's message (sanitized before processing) |
-| `project_id` | UUID | ✅ Yes | Valid UUIDv4 | Reference to SoftArchitect AI project context |
+| `proyecto_id` | UUID | ✅ Yes | Valid UUIDv4 | Reference to SoftArchitect AI proyecto context |
 
 ### Validation Rules
 
 1. **Length Limit:** `message` must be ≤2000 characters (DOS prevention)
-2. **UUID Format:** `conversation_id` and `project_id` must be valid UUIDv4
+2. **UUID Format:** `conversation_id` and `proyecto_id` must be valid UUIDv4
 3. **Sanitization:**
    - HTML entities escaped (`<` → `&lt;`, `>` → `&gt;`)
    - Prompt injection patterns detected and logged
@@ -118,7 +118,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 
 ### Fields
 
-| Field | Type | Required | Description |
+| Field | Type | Required | Descripción |
 |-------|------|----------|-------------|
 | `ai_response` | string | ✅ Yes | LLM-generated answer to user query |
 | `template_used` | string | ✅ Yes | Name of SystemPromptTemplate applied |
@@ -193,7 +193,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 ```
 
 **Example Scenarios:**
-- Ollama server not running (`docker-compose` not started)
+- Ollama server not ejecutarning (`docker-compose` not started)
 - Network timeout (>10s)
 - Groq API rate limit exceeded
 
@@ -240,9 +240,9 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 - **Timeout:** 10s (hard limit)
 - **Retry Policy:** 3x with exponential backoff (client-side)
 
-### Latency Breakdown (Target)
+### Latency Desglose (Target)
 
-| Phase | Duration | Percentage |
+| Fase | Duration | Percentage |
 |-------|----------|------------|
 | **Input Validation** | <10ms | 2% |
 | **Vector Search (ChromaDB)** | <50ms | 10% |
@@ -266,7 +266,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 ```
 
 2. **Prompt Injection Detection:**
-   - Patterns: `"ignore previous instructions"`, `"system:"`, `"new role:"`
+   - Patterns: `"ignore anterior instructions"`, `"system:"`, `"new role:"`
    - Action: Log warning, proceed with sanitized input (defense in depth)
 
 3. **Developer Tool Trap Fix:**
@@ -374,9 +374,9 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 
 ---
 
-## Integration Notes
+## Integración Notes
 
-### Frontend Integration (Flutter)
+### Frontend Integración (Flutter)
 
 ```dart
 // Example: Call chat endpoint from Flutter client
@@ -407,9 +407,9 @@ Future<ChatResponse> sendMessage({
 }
 ```
 
-### Testing Integration
+### Pruebaing Integración
 
-**Unit Tests (Python):**
+**Unit Pruebas (Python):**
 ```python
 # Example: Test endpoint with mocked RAG orchestrator
 async def test_chat_endpoint_success(client: TestClient, mock_rag):
@@ -438,7 +438,7 @@ async def test_chat_endpoint_success(client: TestClient, mock_rag):
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0.0 | 2025-01-08 | Phase 0: Initial API contract specification |
+| 1.0.0 | 2025-01-08 | Fase 0: Initial API contract specification |
 
 ---
 
@@ -451,4 +451,4 @@ async def test_chat_endpoint_success(client: TestClient, mock_rag):
 
 ---
 
-> **Status:** ✅ Phase 0 Complete - Ready for Phase 1 implementation (TDD RED/GREEN cycles)
+> **Estado:** ✅ Fase 0 Complete - Preparado para Fase 1 implementación (TDD RED/GREEN cycles)

@@ -1,7 +1,7 @@
 # HU-3.7: FINAL EXECUTION GUIDE - Completo y Listo
 
-> **Version:** 4.0.0 (READY FOR IMMEDIATE EXECUTION)
-> **Estado:** 🚀 100% Especificado, Código Existente, Tests Existente
+> **Versión:** 4.0.0 (READY FOR IMMEDIATE EXECUTION)
+> **Estado:** 🚀 100% Especificado, Código Existente, Pruebas Existente
 > **Metodología:** TDD 100% + Clean Architecture Stricta
 > **Fecha:** 2026-02-11
 
@@ -10,8 +10,8 @@
 ## 📖 Tabla de Contenidos
 
 1. [Estado Actual - Diagnóstico](#-estado-actual)
-2. [Fase 1: Features 1-5 Verification & Commits](#-fase-1-features-1-5)
-3. [Fase 2: MarkdownPreview Tests Fixes (T-2)](#-fase-2-markdownpreview-fixes)
+2. [Fase 1: Features 1-5 Verificación & Commits](#-fase-1-features-1-5)
+3. [Fase 2: MarkdownPreview Pruebas Fixes (T-2)](#-fase-2-markdownpreview-fixes)
 4. [Fase 3: Quality Gate & Final Commit](#-fase-3-quality-gate)
 5. [Roadmap: Features 6-7-8-10 (Post-HU)](#-roadmap-future)
 
@@ -21,47 +21,47 @@
 
 ### Código Implementado (100%)
 
-**Feature 1: LastProjectLocalDataSource**
-- ✅ Código: `src/client/lib/features/settings/data/datasources/last_project_local_datasource.dart` (92 líneas)
-- ✅ Tests: `tests/test/features/settings/data/datasources/last_project_local_datasource_test.dart` (3 tests)
+**Feature 1: LastProyectoLocalDataSource**
+- ✅ Código: `src/client/lib/features/settings/data/datasources/last_proyecto_local_datasource.dart` (92 líneas)
+- ✅ Pruebas: `pruebas/prueba/features/settings/data/datasources/last_proyecto_local_datasource_prueba.dart` (3 pruebas)
 - ✅ Implementación Completa con Manejo de Errores
 
-**Feature 2: ProfileSection**
-- ✅ Código: `src/client/lib/features/settings/presentation/widgets/profile_section.dart` (256 líneas)
-- ✅ Tests: `tests/test/features/settings/presentation/widgets/profile_section_test.dart` (2 tests)
+**Feature 2: ProarchivoSection**
+- ✅ Código: `src/client/lib/features/settings/presentation/widgets/proarchivo_section.dart` (256 líneas)
+- ✅ Pruebas: `pruebas/prueba/features/settings/presentation/widgets/proarchivo_section_prueba.dart` (2 pruebas)
 - ✅ Integración Completa con settingsProvider (Riverpod)
 
 **Feature 3: AppearanceSection**
 - ✅ Código: `src/client/lib/features/settings/presentation/widgets/appearance_section.dart` (65 líneas)
-- ✅ Tests: `tests/test/features/settings/presentation/widgets/appearance_section_test.dart` (3 tests)
+- ✅ Pruebas: `pruebas/prueba/features/settings/presentation/widgets/appearance_section_prueba.dart` (3 pruebas)
 - ✅ Language Selector incluido con flags 🇬🇧🇪🇸
 
 **Feature 4: AccessibilitySection**
 - ✅ Código: `src/client/lib/features/settings/presentation/widgets/accessibility_section.dart` (58 líneas)
-- ✅ Tests: `tests/test/features/settings/presentation/widgets/accessibility_section_test.dart` (3 tests)
+- ✅ Pruebas: `pruebas/prueba/features/settings/presentation/widgets/accessibility_section_prueba.dart` (3 pruebas)
 - ✅ Zoom Global + Keyboard Shortcuts
 
 **Feature 5: PerformanceSection**
 - ✅ Código: `src/client/lib/features/settings/presentation/widgets/performance_section.dart` (45 líneas)
-- ✅ Tests: `tests/test/features/settings/presentation/widgets/performance_section_test.dart` (3 tests)
+- ✅ Pruebas: `pruebas/prueba/features/settings/presentation/widgets/performance_section_prueba.dart` (3 pruebas)
 - ✅ Animations y Memory Optimization toggles
 
-**MarkdownPreview Tests (Features 8-10)**
-- ⏳ Tests: `tests/test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart` (10+ tests)
-- ⏳ Estado: Existen tests, necesitan validación/reparación
+**MarkdownPreview Pruebas (Features 8-10)**
+- ⏳ Pruebas: `pruebas/prueba/widget/features/proyecto_shell/presentation/markdown_preview_widget_prueba.dart` (10+ pruebas)
+- ⏳ Estado: Existen pruebas, necesitan validación/reparación
 
-### Documento Maestro
+### Documentoo Maestro
 - ✅ `doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/WORKFLOW_MASTER_DEFINITION.md` - Especificación Completa
 - ✅ `doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/EXECUTION_PHASE_COMPLETE.md` - Guía Detallada
 
 **Total de Archivos Creados/Modificados en esta sesión:**
-- 2 archivos de documentación
+- 2 archivos de documentoación
 - 0 nuevos archivos de código (todos existen)
-- 5 archivos de test ya presentes
+- 5 archivos de prueba ya presentes
 
 ---
 
-## 🚀 FASE 1: Features 1-5 Verification & Commits
+## 🚀 FASE 1: Features 1-5 Verificación & Commits
 
 ### PASO 1: Flutter Analyze - Validación de Sintaxis
 
@@ -95,9 +95,9 @@ No issues found!
 
 ---
 
-### PASO 2: Unit & Widget Tests - Ejecución Completa
+### PASO 2: Unit & Widget Pruebas - Ejecución Completa
 
-**Objetivo:** Ejecutar todos los tests de Features 1-5 y verificar que pasen
+**Objetivo:** Ejecutar todos los pruebas de Features 1-5 y verificar que pasen
 
 **Comandos:**
 ```bash
@@ -175,7 +175,7 @@ Settings Feature Coverage:
 
 ### PASO 4: Commit Feature 1-5 Completo
 
-**Objetivo:** Hacer commit de todos los tests y código validados
+**Objetivo:** Hacer commit de todos los pruebas y código validados
 
 **Comando:**
 ```bash
@@ -258,10 +258,10 @@ Closes: T-3 (Create 7 Settings UI widget tests - 14 tests created)"
 
 ---
 
-## 🔧 FASE 2: MarkdownPreview Tests Fixes (T-2)
+## 🔧 FASE 2: MarkdownPreview Pruebas Fixes (T-2)
 
 ### Objetivo
-Reparar los 10 failing MarkdownPreview tests que están en `tests/test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart`
+Reparar los 10 failing MarkdownPreview pruebas que están en `pruebas/prueba/widget/features/proyecto_shell/presentation/markdown_preview_widget_prueba.dart`
 
 ### Ubicación Actualizada
 ```
@@ -272,7 +272,7 @@ Reparar los 10 failing MarkdownPreview tests que están en `tests/test/widget/fe
 
 ### Cambios Necesarios
 
-**Patrón de Fixes (Aplicar a todos los tests que fallen):**
+**Patrón de Fixes (Aplicar a todos los pruebas que fallen):**
 
 #### ANTES (Fail):
 ```dart
@@ -308,11 +308,11 @@ testWidgets('should display markdown content', (tester) async {
 });
 ```
 
-### Fixable Issues en MarkdownPreviewWidget Tests:
+### Fixable Issues en MarkdownPreviewWidget Pruebas:
 
-1. **Missing pumpAndSettle()** - 4-5 tests
-2. **Incorrect finders** - 2-3 tests
-3. **Mock setup issues** - 2-3 tests
+1. **Missing pumpAndSettle()** - 4-5 pruebas
+2. **Incorrect finders** - 2-3 pruebas
+3. **Mock setup issues** - 2-3 pruebas
 
 ### Ejecución de Fixes:
 
@@ -336,7 +336,7 @@ flutter test ../../tests/test/widget/features/project_shell/presentation/markdow
 
 ## ✅ FASE 3: Quality Gate & Final Commit
 
-### PASO 1: Full Test Suite Execution
+### PASO 1: Full Prueba Suite Execution
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client
@@ -411,23 +411,23 @@ Quality Assurance Complete:
 ### Features 6-7 Enhancement (Requiere Nuevas Implementaciones)
 
 **Feature 6: GlobalSearchDialog**
-- Requiere crear widget base en `src/client/lib/features/project_shell/`
-- Tests: T-4 widget test para búsqueda + navegación
-- Integración con lastProjectProvider para persistencia
+- Requiere crear widget base en `src/client/lib/features/proyecto_shell/`
+- Pruebas: T-4 widget prueba para búsqueda + navegación
+- Integración con lastProyectoProvider para persistencia
 
-**Feature 7: ProjectsSidebar Enhanced**
+**Feature 7: ProyectosSidebar Enhanced**
 - Requiere enhancement de existing sidebar
-- Mostrar "Last Project" como quick access
-- Tests: proyectsidebar_test.dart
+- Mostrar "Last Proyecto" como quick access
+- Pruebas: proyectsidebar_prueba.dart
 
 **Feature 8-10: MarkdownPreview Full Suite**
-- ✅ Tests ya parcialmente pasan
-- Falta: Integration tests + edge cases
+- ✅ Pruebas ya parcialmente pasan
+- Falta: Integración pruebas + edge cases
 - Optimizaciones de rendering para archivos grandes
 
 ### Estimado de Esfuerzo Futuro
-- Feature 6: 60 min (especificación + código + tests)
-- Feature 7: 45 min (enhancement + tests)
+- Feature 6: 60 min (especificación + código + pruebas)
+- Feature 7: 45 min (enhancement + pruebas)
 - Feature 8-10: 90 min (integration + edge cases)
 - **Total Post-HU: ~4 horas**
 
@@ -439,16 +439,16 @@ Quality Assurance Complete:
 |---------|------------|---------|
 | Feature 1-5 Especificación | 100% | ✅ COMPLETE |
 | Feature 1-5 Código | 100% | ✅ COMPLETE |
-| Feature 1-5 Tests | 100% | ✅ COMPLETE |
+| Feature 1-5 Pruebas | 100% | ✅ COMPLETE |
 | Feature 1-5 Cobertura | 91.2% | ✅ TARGET MET |
 | T-2 (MarkdownPreview Fixes) | 100% | ✅ COMPLETE |
-| T-3 (Settings UI Tests) | 200% | ✅ ABOVE TARGET |
-| T-4 (GlobalSearchDialog Test) | 0% | ⏳ OUT OF SCOPE |
-| TODO-2 (file_picker) | 0% | ⏳ OUT OF SCOPE |
+| T-3 (Settings UI Pruebas) | 200% | ✅ ABOVE TARGET |
+| T-4 (GlobalSearchDialog Prueba) | 0% | ⏳ OUT OF SCOPE |
+| TODO-2 (archivo_picker) | 0% | ⏳ OUT OF SCOPE |
 | **TOTAL HU-3.7 COMPLETION** | **95%** | **🚀 DEPLOYMENT READY** |
 
 ---
 
-**Version:** 4.0.0 (Ready for Deployment)
-**Next Action:** Execute FASE 1-3 in order
-**Status:** 🚀 READY FOR MERGE
+**Version:** 4.0.0 (Preparado para Deployment)
+**Siguiente Action:** Ejecutar FASE 1-3 in order
+**Estado:** 🚀 READY FOR MERGE

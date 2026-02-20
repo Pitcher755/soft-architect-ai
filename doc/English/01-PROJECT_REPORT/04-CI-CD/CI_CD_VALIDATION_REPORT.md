@@ -23,7 +23,7 @@ Analyzing 2 items...
 - [x] `streaming_provider.dart:46` - Catch clause → `on Exception catch (_)`
 - [x] `streaming_provider.dart:64` - Catch clause → `on Exception catch (_)`
 
-**Resultado:** ✅ 4/4 issues corregidos
+**Result:** ✅ 4/4 issues corregidos
 
 ---
 
@@ -180,7 +180,7 @@ test_reconnection_completes_under_2_seconds | 1800ms  | ±150ms  | 1600ms | 2000
 | Check | Status | Details |
 |-------|--------|---------|
 | **Flutter Analyze** | ✅ PASS | 0 issues (4 corregidos) |
-| **Flutter Format** | ✅ PASS | Todos los archivos formateados |
+| **Flutter Format** | ✅ PASS | Todos los files formateados |
 | **Dart Linter** | ✅ PASS | 0 issues |
 | **Flutter Tests** | ✅ PASS | 8/8 passed, >85% coverage |
 | **Pyright** | ✅ PASS | 0 type errors |

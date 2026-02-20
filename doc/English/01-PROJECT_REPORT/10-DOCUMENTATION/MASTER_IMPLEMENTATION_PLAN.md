@@ -1,20 +1,20 @@
 # 🎯 PLAN MAESTRO DE IMPLEMENTACIÓN: HU-3.x Project-First Refactor (Sprint 3)
 
-> **Fecha:** 02/02/2026
-> **Versión:** 1.0 - Plan Integral
-> **Estado:** ✅ LISTO PARA EJECUCIÓN
+> **Date:** 02/02/2026
+> **Version:** 1.0 - Plan Integral
+> **Status:** ✅ LISTO PARA EJECUCIÓN
 > **Responsable:** ArchitectZero (AI Lead) + Development Team
 > **Rama Base:** `feature/ui-project-shell` (rebasada sobre `develop` - e948025)
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Resumen Ejecutivo](#-resumen-ejecutivo)
 2. [Visión General del Refactor](#-visión-general-del-refactor)
-3. [Cronograma de Implementación (8 Semanas)](#-cronograma-de-implementación-8-semanas)
+3. [Cronograma de Implementation (8 Semanas)](#-cronograma-de-implementation-8-semanas)
 4. [Estructura de Ramas y Git Workflow](#-estructura-de-ramas-y-git-workflow)
-5. [Detalles por Fase](#-detalles-por-fase)
+5. [Detalles por Phase](#-detalles-por-phase)
 6. [Asignación de Recursos](#-asignación-de-recursos)
 7. [Riesgos y Mitigaciones](#-riesgos-y-mitigaciones)
 8. [Métricas de Éxito](#-métricas-de-éxito)
@@ -41,7 +41,7 @@ DESPUÉS: Usuario crea Proyecto → IA propone 25 documentos secuenciales → Us
 | Métrica | Valor |
 |---------|-------|
 | **Total Puntos** | 70 pts |
-| **Duración** | 8 semanas (vs. 6 anterior) |
+| **Duración** | 8 semanas (vs. 6 previous) |
 | **HUs** | 5 (HU-3.1 a HU-3.5) |
 | **Ramas** | 5 (1 por HU) |
 | **Testing Target** | >85% cobertura |
@@ -52,7 +52,7 @@ DESPUÉS: Usuario crea Proyecto → IA propone 25 documentos secuenciales → Us
 
 **¿Proceder con refactor Project-First?**
 
-- ✅ **SÍ** → Ejecutar este plan
+- ✅ **SÍ** → Execute este plan
 - ❌ **NO** → Mantener HU-3.x original
 - 🤔 **MODIFICAR** → Especificar cambios
 
@@ -160,7 +160,7 @@ TOTAL: 55 pts en 5 HUs independientes
 
 ---
 
-## ⏱️ Cronograma de Implementación (8 Semanas)
+## ⏱️ Cronograma de Implementation (8 Semanas)
 
 ### Timeline General
 
@@ -236,7 +236,7 @@ DURACIÓN TOTAL: 8 semanas
 
 ## 🌿 Estructura de Ramas y Git Workflow
 
-### Nombre Padrón de Ramas
+### Name Padrón de Ramas
 
 ```
 Base Branch: develop (no main)
@@ -290,7 +290,7 @@ Step 7: CI/CD Pipeline
 - All checks must pass before merge
 ```
 
-### Estado de Ramas (Actual)
+### Status de Ramas (Actual)
 
 ```
 ✅ feature/ui-project-shell (ACTUAL BRANCH)
@@ -314,11 +314,11 @@ Step 7: CI/CD Pipeline
 
 ---
 
-## 📋 Detalles por Fase
+## 📋 Detalles por Phase
 
-### FASE 0: Pre-Sprint (02/02 - 05/02)
+### PHASE 0: Pre-Sprint (02/02 - 05/02)
 
-**Objetivo:** Finalizar análisis, obtener aprobaciones, preparar ambiente
+**Objetivo:** Finalizar analysis, obtener aprobaciones, preparar ambiente
 
 #### Tareas
 
@@ -334,14 +334,14 @@ Step 7: CI/CD Pipeline
    - Rama disponible en GitHub
    - Documentación visible para revisar
 
-3. **Crear PR Draft** (02/02-03/02)
+3. **Create PR Draft** (02/02-03/02)
    - Título: "refactor(hu-3): Project-First Sequential Document Generation"
    - Base: `develop`
    - Head: `feature/ui-project-shell`
-   - Estado: DRAFT (no reviewers aún)
+   - Status: DRAFT (no reviewers aún)
 
 4. **Revisión Arquitectónica** (03/02-04/02)
-   - Tech Lead revisa análisis completo
+   - Tech Lead revisa analysis completo
    - Verifica: Especificaciones, Timeline, Riesgos
    - Aprobación: "OK para proceder"
 
@@ -366,7 +366,7 @@ Step 7: CI/CD Pipeline
 
 ---
 
-### FASE 1: Foundation (Week 1-2)
+### PHASE 1: Foundation (Week 1-2)
 
 **Objetivo:** Implementar HU-3.1 + HU-3.2 (Foundation)
 
@@ -378,7 +378,7 @@ Step 7: CI/CD Pipeline
 
 **Tareas:**
 
-1. **Crear ProjectSidebar Widget** (Day 1-2)
+1. **Create ProjectSidebar Widget** (Day 1-2)
    ```dart
    // src/client/lib/presentation/screens/main_screen.dart
 
@@ -390,7 +390,7 @@ Step 7: CI/CD Pipeline
    ```
    - Tests: Widget tests (100% coverage)
 
-2. **Crear ProjectDashboard Widget** (Day 3-4)
+2. **Create ProjectDashboard Widget** (Day 3-4)
    ```dart
    // src/client/lib/presentation/screens/project_dashboard.dart
 
@@ -402,7 +402,7 @@ Step 7: CI/CD Pipeline
    ```
    - Tests: Widget tests (100% coverage)
 
-3. **Crear Modal CreateProject** (Day 5)
+3. **Create Modal CreateProject** (Day 5)
    ```dart
    // src/client/lib/presentation/widgets/create_project_dialog.dart
 
@@ -426,15 +426,15 @@ Step 7: CI/CD Pipeline
 5. **Testing Completo** (Day 7)
    - Unit tests: 100% coverage
    - Widget tests: Interacciones
-   - Integration test: E2E flow (crear proyecto)
+   - Integration test: E2E flow (create project)
 
 **Puntos:** 13 (estimado)
 
 **Criterios de Aceptación:**
 - ✅ UI sigue DESIGN_SYSTEM.md (Dark Mode)
-- ✅ Crear proyecto abre modal
+- ✅ Create project abre modal
 - ✅ Validar modal → Backend (próximo)
-- ✅ Dashboard muestra proyectos
+- ✅ Dashboard muestra projects
 - ✅ Responsive (redimensionamiento)
 - ✅ Tests >85% cobertura
 
@@ -448,7 +448,7 @@ Step 7: CI/CD Pipeline
 
 **Tareas:**
 
-1. **Crear FileSystemService Core** (Day 1-3)
+1. **Create FileSystemService Core** (Day 1-3)
    ```python
    # src/server/services/filesystem/file_system_service.py
 
@@ -485,7 +485,7 @@ Step 7: CI/CD Pipeline
    ```
    - Tests: Unit tests (mocked file system)
 
-2. **Crear PathValidator** (Day 2-3)
+2. **Create PathValidator** (Day 2-3)
    ```python
    # src/server/services/filesystem/path_validator.py
 
@@ -500,7 +500,7 @@ Step 7: CI/CD Pipeline
    ```
    - Tests: Security tests (path traversal, permissions)
 
-3. **Crear Endpoint POST /api/v1/projects/create** (Day 4-5)
+3. **Create Endpoint POST /api/v1/projects/create** (Day 4-5)
    ```python
    # src/server/api/v1/endpoints/projects.py
 
@@ -515,7 +515,7 @@ Step 7: CI/CD Pipeline
    ```
    - Tests: Integration tests (mock DB)
 
-4. **Crear Endpoints GET /api/v1/projects** (Day 5)
+4. **Create Endpoints GET /api/v1/projects** (Day 5)
    ```python
    # GET /projects/ → lista proyectos
    # GET /projects/{id} → metadatos proyecto
@@ -524,7 +524,7 @@ Step 7: CI/CD Pipeline
 5. **Testing Completo** (Day 6-7)
    - Unit tests: FileSystemService (pytest)
    - Integration tests: Endpoints
-   - E2E: Crear proyecto + verificar estructura en disk
+   - E2E: Create project + verificar estructura en disk
 
 **Puntos:** 8 (estimado)
 
@@ -549,10 +549,10 @@ Step 7: CI/CD Pipeline
 
 1. **Analizar Templates** (Day 1-2)
    - Revisar 01-TEMPLATES/ en packages/knowledge_base
-   - Mapear 25 templates → fases 10-CONTEXT, 20-REQUIREMENTS, etc.
+   - Mapear 25 templates → phases 10-CONTEXT, 20-REQUIREMENTS, etc.
    - Documentar dependencias (Doc X requiere output de Doc Y)
 
-2. **Diseñar Orquestador RAG** (Day 3-4)
+2. **Diseñar Orqustatusr RAG** (Day 3-4)
    ```python
    # Pseudocódigo de RAG Orchestrator
 
@@ -574,7 +574,7 @@ Step 7: CI/CD Pipeline
    ```
 
 3. **Documentar State Machine** (Day 5)
-   - Diagrama: Estados posibles por documento
+   - Diagrama: Statuss posibles por document
    - Transiciones: Propuesto → Validado → Guardado
    - Excepciones: Qué pasa si usuario rechaza
 
@@ -585,7 +585,7 @@ Step 7: CI/CD Pipeline
 
 ---
 
-#### Checklist Fase 1
+#### Checklist Phase 1
 
 ```
 Semana 1:
@@ -604,7 +604,7 @@ Semana 2:
 
 ---
 
-### FASE 2: Core Logic (Week 3-5)
+### PHASE 2: Core Logic (Week 3-5)
 
 **Objetivo:** Implementar HU-3.3 (Chat Sequential Document Generation)
 
@@ -621,11 +621,11 @@ Semana 2:
 1. **Backend: RAGOrchestrator Implementation** (Week 3-4)
    - Implementar RAGOrchestrator basado en spike
    - Conectar con VectorStoreService (S2)
-   - Inyectar contexto de proyecto
+   - Inyectar contexto de project
    - Manejo de templates
 
 2. **Backend: DocumentProposalService** (Week 3-4)
-   - Servicio que mantiene estado de propuestas
+   - Servicio que mantiene status de propuestas
    - Persistencia en BD (PROPOSAL_DOCUMENT table)
    - Historial de versiones
 
@@ -642,11 +642,11 @@ Semana 2:
 
 5. **Integration: Chat ↔ RAG Pipeline** (Week 4-5)
    - WebSocket para streaming (opcional SSE en W5)
-   - Manejo de estado complejo
+   - Manejo de status complejo
    - Error handling (próxima HU)
 
 **Criterios de Aceptación:**
-- ✅ User describe proyecto en chat
+- ✅ User describe project en chat
 - ✅ RAG genera Doc 1 propuesta
 - ✅ Frontend muestra propuesta
 - ✅ User puede "Validar" o "Iterar"
@@ -655,14 +655,14 @@ Semana 2:
 - ✅ Flujo es secuencial (nunca paralelo)
 - ✅ Tests >85% cobertura
 
-**Hitos Intermedios:**
+**Hitos Intermediates:**
 - [ ] Week 3: Backend 50%, Frontend 30%
 - [ ] Week 4: Backend 100%, Frontend 70%
 - [ ] Week 5: Frontend 100%, Integration 100%, Tests 100%
 
 ---
 
-### FASE 3: Resilience & Performance (Week 6)
+### PHASE 3: Resilience & Performance (Week 6)
 
 **Objetivo:** Implementar HU-3.4 + HU-3.5
 
@@ -692,7 +692,7 @@ Semana 2:
 
 ---
 
-### FASE 4: Testing & Polish (Week 7-8)
+### PHASE 4: Testing & Polish (Week 7-8)
 
 **Objetivo:** QA, bug fixes, documentación final
 
@@ -760,8 +760,8 @@ Semana 2:
 
 **Severidad:** MEDIUM | **Probabilidad:** HIGH
 
-**Descripción:**
-Orquestar 25 documentos secuenciales con dependencias complejas requiere state machine sofisticada.
+**Description:**
+Orquestar 25 documents secuenciales con dependencias complejas requiere state machine sofisticada.
 
 **Impacto:**
 - Delays en HU-3.3 (impacta W4-W5)
@@ -769,21 +769,21 @@ Orquestar 25 documentos secuenciales con dependencias complejas requiere state m
 
 **Mitigación:**
 1. **Spike exhaustiva (W1):** 3-4 días diseñando RAGOrchestrator
-2. **Prototyping:** Crear POC con 3-5 documentos antes de 25
+2. **Prototyping:** Create POC con 3-5 documents antes de 25
 3. **Documentation:** Pseudocódigo + diagramas claros
 4. **Code review temprana:** Tech Lead revisa W3 día 3
 
 **Contingency:**
-- Si spike falla: Reducir a 10 documentos clave (HU-3.3 Lite)
+- Si spike falla: Reducir a 10 documents clave (HU-3.3 Lite)
 - Timeline: +1 semana si necesario
 
 ---
 
-### Riesgo 2: Permisos del Sistema de Archivos
+### Riesgo 2: Permisos del Sistema de Files
 
 **Severidad:** MEDIUM | **Probabilidad:** MEDIUM
 
-**Descripción:**
+**Description:**
 FileSystemService necesita escribir en disco con permisos variables (Windows vs. Linux).
 
 **Impacto:**
@@ -808,7 +808,7 @@ FileSystemService necesita escribir en disco con permisos variables (Windows vs.
 
 **Severidad:** HIGH | **Probabilidad:** MEDIUM
 
-**Descripción:**
+**Description:**
 Scope creep, underestimation, o delays externos.
 
 **Impacto:**
@@ -816,7 +816,7 @@ Scope creep, underestimation, o delays externos.
 - Sprint 4 afectado
 
 **Mitigación:**
-1. **Estimación realista (70 pts):** Buffer incluido vs. 50 anterior
+1. **Estimación realista (70 pts):** Buffer incluido vs. 50 previous
 2. **Paralelización:** HU-3.1 + HU-3.2 en paralelo
 3. **Daily standup:** Detectar delays temprano
 4. **Scope control:** Decir "No" a cambios nuevos
@@ -832,7 +832,7 @@ Scope creep, underestimation, o delays externos.
 
 **Severidad:** MEDIUM | **Probabilidad:** MEDIUM
 
-**Descripción:**
+**Description:**
 RAG puede generar propuestas de baja calidad si templates o contexto es pobre.
 
 **Impacto:**
@@ -850,15 +850,15 @@ RAG puede generar propuestas de baja calidad si templates o contexto es pobre.
 
 ---
 
-### Riesgo 5: Gestión de Estado Conversacional
+### Riesgo 5: Gestión de Status Conversacional
 
 **Severidad:** MEDIUM | **Probabilidad:** MEDIUM
 
-**Descripción:**
-Mantener contexto conversacional a través de 25 documentos y múltiples iteraciones.
+**Description:**
+Mantener contexto conversacional a través de 25 documents y múltiples iteraciones.
 
 **Impacto:**
-- Chat pierde contexto entre documentos
+- Chat pierde contexto entre documents
 - Generaciones incoherentes
 
 **Mitigación:**
@@ -1011,14 +1011,14 @@ Mantener contexto conversacional a través de 25 documentos y múltiples iteraci
 
 ### Apéndice A: Especificaciones Técnicas Detalladas
 
-Ver documentos:
+Ver documents:
 - [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md) - Especificación completa de cada HU
 - [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md) - Código de ejemplo + arquitectura
 
-### Apéndice B: Análisis y Justificación
+### Apéndice B: Analysis y Justificación
 
-Ver documentos:
-- [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md) - Análisis comparativo
+Ver documents:
+- [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md) - Analysis comparativo
 - [HU-3_EXECUTIVE_SUMMARY.es.md](./HU-3_EXECUTIVE_SUMMARY.es.md) - Resumen ejecutivo
 
 ### Apéndice C: Guía de Desarrollo
@@ -1126,5 +1126,5 @@ Este Plan Maestro proporciona:
 **Plan Maestro Versión 1.0**
 **Creado por:** ArchitectZero (AI Lead)
 **Fecha:** 02/02/2026
-**Estado:** ✅ LISTO PARA EJECUCIÓN
+**Status:** ✅ LISTO PARA EJECUCIÓN
 **Responsable de Ejecución:** Development Team + Tech Lead

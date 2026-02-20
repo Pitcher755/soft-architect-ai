@@ -1,7 +1,7 @@
 # 📋 HU-1.1: Progress Tracker
 
 > **Última Actualización:** 29 de Enero de 2026
-> **Estado:** 🔄 FASE 0 EN VALIDACIÓN
+> **Status:** 🔄 FASE 0 EN VALIDACIÓN
 
 ---
 
@@ -13,18 +13,18 @@
 
 ---
 
-## 📋 FASE 0: PREPARACIÓN INICIAL
+## 📋 PHASE 0: PREPARACIÓN INICIAL
 
 **Tiempo estimado:** 15 minutos
 **Status:** ✅ COMPLETADA (Esperando validación)
 
-### ✅ 0.1 - Crear rama feature desde develop
+### ✅ 0.1 - Create rama feature desde develop
 - [x] Rama `feature/infra-docker-setup` creada
 - [x] Sincronizada con `origin/develop`
 - [x] Push a remoto completado
-- **Verificación:** https://github.com/Pitcher755/soft-architect-ai/tree/feature/infra-docker-setup
+- **Verification:** https://github.com/Pitcher755/soft-architect-ai/tree/feature/infra-docker-setup
 
-### ✅ 0.2 - Crear estructura de directorios base
+### ✅ 0.2 - Create estructura de directorios base
 - [x] `infrastructure/data/chromadb/` creado
 - [x] `infrastructure/data/ollama/` creado
 - [x] `tests/integration/` creado
@@ -33,19 +33,19 @@
 - [x] Documentación en `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/` creada
 
 ### ✅ 0.3 - Documentar pre-requisitos
-- [x] `README.md` (Descripción de HU)
-- [x] `PROGRESS.md` (Este archivo - Checklist)
-- [x] `ARTIFACTS.md` (Archivos a generar)
-- [x] `WORKFLOW.md` (Fases detalladas)
+- [x] `README.md` (Description de HU)
+- [x] `PROGRESS.md` (Este file - Checklist)
+- [x] `ARTIFACTS.md` (Files a generar)
+- [x] `WORKFLOW.md` (Phases detalladas)
 
 ---
 
-## 🔴 FASE 1: TDD - TEST FIRST (Red Phase)
+## 🔴 PHASE 1: TDD - TEST FIRST (Red Phase)
 
 **Tiempo estimado:** 1-1.5 horas
 **Status:** ⏳ PENDIENTE
 
-### Pre-Requisito: Validar Fase 0
+### Pre-Requisito: Validar Phase 0
 - [ ] **Esperando validación del usuario...**
 - [ ] ¿Directorios creados correctamente?
 - [ ] ¿Permisos asignados correctamente?
@@ -58,13 +58,13 @@ Si todo está OK, proceder a:
 - [ ] Script verifica Docker instalado
 - [ ] Script verifica puertos (8000, 8001, 11434) disponibles
 - [ ] Script verifica `.env` existe
-- [ ] **Resultado esperado:** 🔴 FALLA (porque Docker Compose aún no está activo)
+- [ ] **Result esperado:** 🔴 FALLA (porque Docker Compose aún no está activo)
 
 ### 1.2 - Post-Test: Verificar Stack Online
 - [ ] `infrastructure/verify_setup.py` creado
 - [ ] Script valida servicios respondiendo (3 puertos)
 - [ ] Script con reintentos (espera a que servicios arranquen)
-- [ ] **Resultado esperado:** 🔴 FALLA (porque servicios no están levantados)
+- [ ] **Result esperado:** 🔴 FALLA (porque servicios no están levantados)
 
 ### 1.3 - Definir Variables de Entorno
 - [ ] `.env.example` actualizado/mejorado
@@ -74,7 +74,7 @@ Si todo está OK, proceder a:
 
 ---
 
-## 🟢 FASE 2: IMPLEMENTACIÓN (Green Phase)
+## 🟢 PHASE 2: IMPLEMENTACIÓN (Green Phase)
 
 **Tiempo estimado:** 2-3 horas
 **Status:** ⏳ PENDIENTE
@@ -87,12 +87,12 @@ Si todo está OK, proceder a:
 - [ ] Puerto 8000 expuesto
 - [ ] PYTHONUNBUFFERED=1 configurado
 
-### 2.2 - Crear .dockerignore del Backend
+### 2.2 - Create .dockerignore del Backend
 - [ ] `src/server/.dockerignore` creado
 - [ ] Excluye `__pycache__`, `*.pyc`, `.env`, `.git`
 - [ ] Previene leaks de secretos
 
-### 2.3 - Crear docker-compose.yml
+### 2.3 - Create docker-compose.yml
 - [ ] `infrastructure/docker-compose.yml` creado
 - [ ] Servicio `api-server` (FastAPI)
   - [ ] Puerto 8000 expuesto
@@ -110,7 +110,7 @@ Si todo está OK, proceder a:
 - [ ] Network bridge creado (172.25.0.0/16)
 - [ ] Volúmenes nombrados definidos
 
-### 2.4 - Crear Script de Orquestación
+### 2.4 - Create Script de Orquestación
 - [ ] `start_stack.sh` creado en raíz
 - [ ] Script ejecutable (chmod +x)
 - [ ] Verifica pre-requisitos
@@ -118,14 +118,14 @@ Si todo está OK, proceder a:
 - [ ] Verifica servicios con `verify_setup.py`
 - [ ] Muestra URLs de acceso
 
-### 2.5 - Crear Script de Shutdown
+### 2.5 - Create Script de Shutdown
 - [ ] `stop_stack.sh` creado en raíz
 - [ ] Script ejecutable
 - [ ] Ejecuta `docker compose down`
 
 ---
 
-## 🔵 FASE 3: HARDENING Y SEGURIDAD
+## 🔵 PHASE 3: HARDENING Y SEGURIDAD
 
 **Tiempo estimado:** 45 minutos
 **Status:** ⏳ PENDIENTE
@@ -145,7 +145,7 @@ Si todo está OK, proceder a:
 
 ---
 
-## 📝 FASE 4: DOCUMENTACIÓN
+## 📝 PHASE 4: DOCUMENTACIÓN
 
 **Tiempo estimado:** 1 hora
 **Status:** ⏳ PENDIENTE
@@ -162,7 +162,7 @@ Si todo está OK, proceder a:
 - [ ] Comando `./start_stack.sh` prominente
 - [ ] URLs de acceso listadas
 
-### 4.3 - Crear DOCKER_SETUP_LOG.md
+### 4.3 - Create DOCKER_SETUP_LOG.md
 - [ ] `doc/01-PROJECT_REPORT/DOCKER_SETUP_LOG.md` creado
 - [ ] Artifacts listados
 - [ ] Validation results documentados
@@ -170,27 +170,27 @@ Si todo está OK, proceder a:
 
 ---
 
-## ✅ FASE 5: VALIDACIÓN Y TESTING
+## ✅ PHASE 5: VALIDACIÓN Y TESTING
 
 **Tiempo estimado:** 1 hora
 **Status:** ⏳ PENDIENTE
 
-### 5.1 - Ejecutar Pre-Check
+### 5.1 - Execute Pre-Check
 - [ ] `python3 infrastructure/pre_check.py` ejecutado
 - [ ] Todos los checks en ✅ verde
 - [ ] Docker instalado confirmado
 - [ ] Puertos disponibles confirmados
 
-### 5.2 - Ejecutar Script de Arranque
+### 5.2 - Execute Script de Arranque
 - [ ] `./start_stack.sh` ejecutado
 - [ ] 3 contenedores levantados exitosamente
 - [ ] URLs mostradas
 
-### 5.3 - Ejecutar Post-Check
+### 5.3 - Execute Post-Check
 - [ ] `python3 infrastructure/verify_setup.py` ejecutado
 - [ ] Todos los servicios responden
 
-### 5.4 - Verificación Manual
+### 5.4 - Verification Manual
 - [ ] `curl http://localhost:8000/api/v1/health` - 200 OK
 - [ ] `curl http://localhost:8001/api/v1/heartbeat` - ChromaDB responde
 - [ ] `curl http://localhost:11434/api/tags` - Ollama responde
@@ -209,7 +209,7 @@ Si todo está OK, proceder a:
 
 ---
 
-## 📋 FASE 6: GIT & CODE REVIEW
+## 📋 PHASE 6: GIT & CODE REVIEW
 
 **Tiempo estimado:** 30 minutos
 **Status:** ⏳ PENDIENTE
@@ -219,10 +219,10 @@ Si todo está OK, proceder a:
 - [ ] Commit message sigue Conventional Commits
 - [ ] Referencia HU-1.1
 
-### 6.2 - Push y Crear PR
+### 6.2 - Push y Create PR
 - [ ] `git push origin feature/infra-docker-setup`
 - [ ] PR abierta en GitHub
-- [ ] Descripción completa
+- [ ] Description completa
 - [ ] Referencia `Fixes #HU-1.1`
 
 ### 6.3 - Code Review & Merge

@@ -1,27 +1,27 @@
 # 🚀 HU-3.3 QUICK START GUIDE
 
-> **Status:** 🟢 READY
+> **Estado:** 🟢 READY
 > **Time to Read:** 5 min
-> **Time to First Test:** 10 min
+> **Time to First Prueba:** 10 min
 
 ---
 
 ## 📖 5-Minute Overview
 
-HU-3.3 implementa un **Chat Secuencial** que procesa documentos grandes en chunks, manteniendo contexto a través de múltiples mensajes usando RAG (Retrieval-Augmented Generation).
+HU-3.3 implementa un **Chat Secuencial** que procesa documentoos grandes en chunks, manteniendo contexto a través de múltiples mensajes usando RAG (Retrieval-Augmented Generation).
 
 **Stack:**
 - Backend: Python 3.12 + FastAPI
-- Tests: pytest en `tests/python/`
+- Pruebas: pyprueba en `pruebas/python/`
 - LLM: Ollama (local) + Groq (cloud fallback)
 - Data: ChromaDB (vector store)
 
 **6 Fases TDD:**
-1. 🔴 RED: Write failing tests
+1. 🔴 RED: Write failing pruebas
 2. 🟢 GREEN: Implement minimum code
 3. 🔵 REFACTOR: Optimize & clean
 4. 🔗 INTEGRATION: Connect components
-5. ✅ VALIDATION: Full test suite
+5. ✅ VALIDATION: Full prueba suite
 6. 📝 DOCUMENTATION: Final docs
 
 ---
@@ -45,7 +45,7 @@ cat doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLO
 code doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md
 ```
 
-### Step 3: Create First Test (5 min)
+### Step 3: Crear First Prueba (5 min)
 ```bash
 # Create feature branch
 git checkout -b feature/hu-3.3-phase-1 develop
@@ -60,18 +60,18 @@ cd src/server && pytest ../../tests/python/unit/services/rag/test_orchestrator.p
 
 ---
 
-## 📁 Key Files
+## 📁 Key Archivos
 
-| File | Purpose | Action |
+| Archivo | Purpose | Action |
 |------|---------|--------|
 | **HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md** | Complete guide | 📖 READ |
 | **HU-3.3_READY.md** | Checklist | ✅ CHECK |
-| **HU-3.3_DASHBOARD.md** | Status metrics | 📊 REFERENCE |
-| **tests/python/README_MIGRATION.md** | Test organization | 📚 REFERENCE |
+| **HU-3.3_DASHBOARD.md** | Estado metrics | 📊 REFERENCE |
+| **pruebas/python/README_MIGRATION.md** | Prueba organization | 📚 REFERENCE |
 
 ---
 
-## 🧪 Running Tests
+## 🧪 Ejecutarning Pruebas
 
 ```bash
 # All tests
@@ -92,12 +92,12 @@ pytest ../../tests/python/unit/services/rag/test_orchestrator.py::TestOrchestrat
 ## 🔍 Critical Sections in Workflow Master
 
 **Section 4.2 - Fase 1 RED:** `[Line 450-550]`
-- Basic test cases to write
-- Test file structure
+- Basic prueba cases to write
+- Prueba archivo structure
 - Expected failures
 
 **Section 4.3 - Fase 2 GREEN:** `[Line 550-650]`
-- Implementation skeleton
+- Implementación skeleton
 - Database schema
 - Error handling setup
 
@@ -106,8 +106,8 @@ pytest ../../tests/python/unit/services/rag/test_orchestrator.py::TestOrchestrat
 - Performance improvements
 - Security hardening
 
-**Section 5 - Integration & Validation:** `[Line 750-850]`
-- End-to-end tests
+**Section 5 - Integración & Validation:** `[Line 750-850]`
+- End-to-end pruebas
 - Docker integration
 - Performance benchmarks
 
@@ -153,45 +153,45 @@ git commit -m "test(rag): RED phase - basic orchestrator tests [HU-3.3]
 ## 📞 Help & Reference
 
 **"Where do I find X?"**
-- Test specifications → Section 4 of Workflow Master
-- Implementation details → Section 5 of Workflow Master
+- Prueba specifications → Section 4 of Workflow Master
+- Implementación details → Section 5 of Workflow Master
 - Architecture decisions → context/30-ARCHITECTURE/
 - Security requirements → context/SECURITY_HARDENING_POLICY.en.md
-- Test organization → tests/python/README_MIGRATION.md
+- Prueba organization → pruebas/python/README_MIGRATION.md
 
 **"How do I fix Y?"**
-- Type errors → Run `pyright` and read error messages
-- Test failures → Check assertion messages + read test code
-- Import errors → Check `tests/python/conftest.py` paths
+- Type errors → Ejecutar `pyright` and read error messages
+- Prueba failures → Check assertion messages + read prueba code
+- Import errors → Check `pruebas/python/confprueba.py` paths
 - CI/CD failures → Check `.github/workflows/backend-ci.yaml`
 
 ---
 
 ## 🚦 Go / No-Go Checklist
 
-Before starting Phase 1:
+Before starting Fase 1:
 
-- [ ] `validate_tests_migration.sh` returns 5/5 ✅
-- [ ] Can run `pytest ../../tests/python/ -v` successfully
+- [ ] `validate_pruebas_migration.sh` returns 5/5 ✅
+- [ ] Can ejecutar `pyprueba ../../pruebas/python/ -v` successfully
 - [ ] Read HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md
 - [ ] Understand section 4.2 (Fase 1 RED)
-- [ ] Feature branch created: `feature/hu-3.3-phase-1`
+- [ ] Feature branch creard: `feature/hu-3.3-fase-1`
 - [ ] Code editor open with proper Python path
 - [ ] Pre-commit hooks installed and working
 
-**Result:** 🟢 **READY TO WRITE FIRST TEST**
+**Resultado:** 🟢 **READY TO WRITE FIRST TEST**
 
 ---
 
 ## 📊 Expected Timeline
 
-| Phase | Duration | Deliverable |
+| Fase | Duration | Deliverable |
 |-------|----------|-------------|
-| RED (Write Tests) | 2-3 days | 15-20 failing tests |
-| GREEN (Implement) | 2-3 days | Basic implementation |
+| RED (Write Pruebas) | 2-3 days | 15-20 failing pruebas |
+| GREEN (Implement) | 2-3 days | Basic implementación |
 | REFACTOR | 1-2 days | Optimized code |
 | INTEGRATION | 2-3 days | Connected components |
-| VALIDATION | 1 day | All tests passing |
+| VALIDATION | 1 day | All pruebas passing |
 | DOCUMENTATION | 1 day | Complete docs |
 | **TOTAL** | **~2 weeks** | **Production-ready** |
 
@@ -200,17 +200,17 @@ Before starting Phase 1:
 ## 🎓 TDD Reminders
 
 ✅ **DO:**
-- Write test FIRST, then code
-- Make tests fail before implementing
-- Run tests frequently (after every change)
-- Commit after each phase
-- Document as you go
+- Write prueba FIRST, then code
+- Make pruebas fail before implementing
+- Ejecutar pruebas frequently (after every change)
+- Commit after each fase
+- Documento as you go
 
 ❌ **DON'T:**
-- Write all tests at once
-- Skip the RED phase
+- Write all pruebas at once
+- Skip the RED fase
 - Skip type checking
-- Commit untested code
+- Commit unpruebaed code
 - Ignore linting errors
 
 ---
@@ -252,7 +252,7 @@ git push origin feature/hu-3.3-phase-1
 
 ## 🎉 You're Ready!
 
-**Next Step:** Open the Workflow Master and read section 4.2 (Fase 1 RED).
+**Siguiente Step:** Open the Workflow Master and read section 4.2 (Fase 1 RED).
 
 ```bash
 # Quick read in terminal
@@ -264,9 +264,9 @@ code doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFL
 
 ---
 
-> **Status:** 🟢 **READY FOR PHASE 1 (RED)**
+> **Estado:** 🟢 **READY FOR PHASE 1 (RED)**
 >
-> All preparation complete. Environment validated. Tests organized.
-> Documentation ready. You have everything needed to start.
+> All preparation complete. Environment validated. Pruebas organized.
+> Documentoation ready. You have everything needed to start.
 >
-> **Go write some tests! 🧪**
+> **Go write some pruebas! 🧪**

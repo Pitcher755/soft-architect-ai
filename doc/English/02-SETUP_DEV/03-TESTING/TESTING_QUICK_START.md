@@ -1,6 +1,6 @@
 # 🧪 TESTING QUICK START - Sistema Híbrido Corregido
 
-**Objetivo:** Validar que proyectos REALES se muestran junto con MOCK project
+**Objetivo:** Validar que projects REALES se muestran junto con MOCK project
 
 ---
 
@@ -19,7 +19,7 @@ VERIFICAR:
 
 ---
 
-## ✅ Test 2: Crear Nuevo Proyecto
+## ✅ Test 2: Create Nuevo Project
 ```
 PASOS:
 1. En grid de proyectos, click "Nuevo Proyecto"
@@ -39,7 +39,7 @@ VERIFICAR:
 
 ---
 
-## ✅ Test 3: Botón "Ver todos los proyectos"
+## ✅ Test 3: Button "Ver todos los projects"
 ```
 PASOS:
 1. Crear 8+ proyectos (repite Test 2 varias veces)
@@ -140,7 +140,7 @@ Solución: El FutureBuilder debe estar activo
 - Verificar getMockProjectsData() es Future (async)
 ```
 
-### 2. Solo muestra Guía, no proyectos reales
+### 2. Solo muestra Guía, no projects reales
 ```
 Solución: _loadRealProjects() no encuentra proyectos
 - Crear carpeta ~/projects/ o /Espacio-de-trabajo/projects/
@@ -148,7 +148,7 @@ Solución: _loadRealProjects() no encuentra proyectos
 - Reiniciar app
 ```
 
-### 3. Botón "Ver todos" no aparece
+### 3. Button "Ver todos" no aparece
 ```
 Solución: Menos de 8 proyectos
 - Crear más proyectos (necesita > 8)
@@ -166,18 +166,18 @@ Solución: Problema de setState()
 
 ## 📊 Matriz de Validación
 
-| Test | Paso | Esperado | Resultado |
+| Test | Paso | Esperado | Result |
 |------|------|----------|-----------|
 | 1 | Loading | Spinner | ✅ 🔲 |
 | 1 | Datos | Guía visible | ✅ 🔲 |
-| 2 | Crear | Nueva carpeta | ✅ 🔲 |
-| 2 | Dashboard | Proyecto aparece | ✅ 🔲 |
-| 3 | 8+ proyectos | Botón visible | ✅ 🔲 |
+| 2 | Create | Nueva folder | ✅ 🔲 |
+| 2 | Dashboard | Project aparece | ✅ 🔲 |
+| 3 | 8+ projects | Button visible | ✅ 🔲 |
 | 3 | Expandir | Lista abierta | ✅ 🔲 |
 | 4 | Ordenamiento | A-Z correcto | ✅ 🔲 |
-| 5 | Real project | Archivos reales | ✅ 🔲 |
+| 5 | Real project | Files reales | ✅ 🔲 |
 | 5 | Mock project | Guía visible | ✅ 🔲 |
-| 6 | Persistencia | Proyecto persiste | ✅ 🔲 |
+| 6 | Persistencia | Project persiste | ✅ 🔲 |
 
 ---
 
@@ -185,11 +185,11 @@ Solución: Problema de setState()
 
 ✅ **SISTEMA LISTO** si:
 - [ ] Loading spinner aparece en inicio
-- [ ] Proyecto Guía SoftArchitect visible
-- [ ] Nuevos proyectos creados aparecen en grid
-- [ ] Botón "Ver todos" aparece cuando > 8
+- [ ] Project Guía SoftArchitect visible
+- [ ] Nuevos projects creados aparecen en grid
+- [ ] Button "Ver todos" aparece cuando > 8
 - [ ] ProjectListView abre/cierra correctamente
-- [ ] Proyectos ordenados alfabéticamente en lista
-- [ ] Puedo navegar a proyecto real y ver archivos
+- [ ] Projects ordenados alfabéticamente en lista
+- [ ] Puedo navegar a project real y ver files
 - [ ] Puedo navegar a Guía y ver documentación
-- [ ] Proyectos persisten después de cerrar app
+- [ ] Projects persisten después de cerrar app

@@ -1,8 +1,8 @@
 # 🧪 GUÍA DE TESTING - SISTEMA HÍBRIDO MEJORADO
 
-> **Fecha:** 9 de febrero de 2026
-> **Cambios Validados:** ✅ 2 archivos, 0 errores
-> **Estado:** Listo para Testing Manual
+> **Date:** 9 de febrero de 2026
+> **Cambios Validados:** ✅ 2 files, 0 errores
+> **Status:** Listo para Testing Manual
 
 ---
 
@@ -17,114 +17,114 @@
 
 ---
 
-## 🧪 TEST 1: Proyectos Reales Se Muestran
+## 🧪 TEST 1: Projects Reales Se Muestran
 
 ### Pasos
 1. Abrir SoftArchitect AI
 2. Ir a Dashboard (ProjectWorkspaceScreen)
 3. Esperar a que cargue (ver spinner si es necesario)
-4. Observar grid de proyectos
+4. Observar grid de projects
 
-### Resultado Esperado ✅
-- Si existen proyectos reales en DB → Aparecen en grid
+### Result Esperado ✅
+- Si existen projects reales en DB → Aparecen en grid
 - Si NO existen → Muestra solo guía (es correcto)
-- Cada proyecto muestra: nombre, icono, fase, fecha
+- Cada project muestra: nombre, icono, phase, fecha
 
-### Resultado Incorrecto ❌
-- Grid vacío aunque existan proyectos
-- Proyectos no aparecen tras crear uno nuevo
+### Result Incorrecto ❌
+- Grid vacío aunque existan projects
+- Projects no aparecen tras create uno nuevo
 - Spinner infinito sin cargar
 
 ---
 
-## 🧪 TEST 2: Proyectos Mock (Guía) Se Muestran
+## 🧪 TEST 2: Projects Mock (Guía) Se Muestran
 
 ### Pasos
 1. Abrir Dashboard
 2. Buscar en grid: "Guía SoftArchitect" (o "Quick Start")
-3. Verificar que está junto a otros proyectos
+3. Verificar que está junto a otros projects
 
-### Resultado Esperado ✅
+### Result Esperado ✅
 - Guía aparece en el grid
 - Se muestra con ícono de libro
 - Tiene badge de "Documentación"
 - Ordenada por fecha junto a otros
 
-### Resultado Incorrecto ❌
+### Result Incorrecto ❌
 - Guía no aparece
 - Aparece duplicada
 - No se puede interactuar con ella
 
 ---
 
-## 🧪 TEST 3: Botón "Ver Todos los Proyectos"
+## 🧪 TEST 3: Button "Ver Todos los Projects"
 
 ### Pasos
-1. Dashboard con múltiples proyectos (>8)
-2. Buscar botón "Ver todos los proyectos (X)"
-3. Hacer click en botón
+1. Dashboard con múltiples projects (>8)
+2. Buscar button "Ver todos los projects (X)"
+3. Hacer click en button
 4. Verificar que se expande
 
-### Resultado Esperado ✅
-- Botón visible cuando hay >8 proyectos
+### Result Esperado ✅
+- Button visible cuando hay >8 projects
 - Al hacer click: aparece lista expandible
-- Botón cambia a "Ocultar proyectos"
-- Lista muestra TODOS los proyectos (reales + mock)
+- Button cambia a "Ocultar projects"
+- Lista muestra TODOS los projects (reales + mock)
 - Ordenados alfabéticamente
 
-### Resultado Incorrecto ❌
-- Botón no aparece aunque hay >8
+### Result Incorrecto ❌
+- Button no aparece aunque hay >8
 - Al hacer click no sucede nada
-- Lista no muestra todos los proyectos
-- Faltan proyectos reales o mock
+- Lista no muestra todos los projects
+- Faltan projects reales o mock
 
 ---
 
-## 🧪 TEST 4: Crear Nuevo Proyecto Real
+## 🧪 TEST 4: Create Nuevo Project Real
 
 ### Pasos
-1. Dashboard → Click en "+ Nuevo Proyecto"
+1. Dashboard → Click en "+ Nuevo Project"
 2. Llenar formulario:
-   - Nombre: "Mi Proyecto Test"
-   - Ruta: Seleccionar carpeta vacía
-   - Descripción: "Test del sistema híbrido"
-3. Click en "Crear Proyecto"
+   - Name: "Mi Project Test"
+   - Ruta: Seleccionar folder vacía
+   - Description: "Test del sistema híbrido"
+3. Click en "Create Project"
 
-### Resultado Esperado ✅
+### Result Esperado ✅
 - Diálogo se cierra
-- Mensaje: "Proyecto creado exitosamente"
-- Navega a project-shell (proyecto nuevo)
+- Mensaje: "Project creado exitosamente"
+- Navega a project-shell (project nuevo)
 - Vuelve al dashboard
-- Nuevo proyecto aparece en grid
+- Nuevo project aparece en grid
 - Se puede expandir y ver todos (aparece ahí)
 
-### Resultado Incorrecto ❌
+### Result Incorrecto ❌
 - Diálogo no se cierra
-- Error al crear proyecto
-- Proyecto no aparece en grid
-- Proyecto no aparece al expandir
+- Error al create project
+- Project no aparece en grid
+- Project no aparece al expandir
 
 ---
 
-## 🧪 TEST 5: Navegar a Proyecto Real
+## 🧪 TEST 5: Navegar a Project Real
 
 ### Pasos
-1. Dashboard → Grid con proyectos reales
-2. Click en una tarjeta de proyecto real
+1. Dashboard → Grid with projects reales
+2. Click en una tarjeta de project real
 3. Esperar a que navegue
 
-### Resultado Esperado ✅
+### Result Esperado ✅
 - URL cambia a `/project-shell?path=/home/user/...`
 - ProjectShellScreen carga
-- FileTreeWidget muestra árbol de archivos REALES
-- Se pueden expandir carpetas
-- Se pueden leer archivos reales
+- FileTreeWidget muestra árbol de files REALES
+- Se pueden expandir folders
+- Se pueden leer files reales
 
-### Resultado Incorrecto ❌
+### Result Incorrecto ❌
 - No navega
 - Navega a URL incorrecto
 - Muestra árbol mock en lugar de real
-- Archivos no se pueden leer
+- Files no se pueden leer
 
 ---
 
@@ -132,21 +132,21 @@
 
 ### Pasos
 1. Dashboard → Grid
-2. Click en "Guía SoftArchitect" (o proyecto mock)
+2. Click en "Guía SoftArchitect" (o project mock)
 3. Esperar a que navegue
 
-### Resultado Esperado ✅
+### Result Esperado ✅
 - URL cambia a `/project-shell?path=mock://softarchitect-guide`
 - ProjectShellScreen carga
 - FileTreeWidget muestra árbol de GUÍA
-- Archivos: "00-Bienvenido.md", "features/Chat-IA.md", etc.
-- Al hacer click en archivo: muestra contenido markdown
+- Files: "00-Bienvenido.md", "features/Chat-IA.md", etc.
+- Al hacer click en file: muestra contenido markdown
 
-### Resultado Incorrecto ❌
+### Result Incorrecto ❌
 - No navega a guía
 - URL incorrecto (no tiene mock://)
 - Árbol vacío o incorrecto
-- Archivos no muestran contenido
+- Files no muestran contenido
 
 ---
 
@@ -158,12 +158,12 @@
 2. Abrir Dashboard
 3. Observar mientras carga
 
-### Resultado Esperado ✅
+### Result Esperado ✅
 - Spinner circular visible mientras carga
 - Mensaje "Cargando..."
 - Spinner desaparece al completar
 
-### Resultado Incorrecto ❌
+### Result Incorrecto ❌
 - No muestra spinner
 - Interfaz se congela
 - Spinner infinito sin cargar
@@ -179,12 +179,12 @@
 2. Abrir Dashboard
 3. Observar UI de error
 
-### Resultado Esperado ✅
-- Muestra mensaje: "Error al cargar proyectos: [error]"
+### Result Esperado ✅
+- Muestra mensaje: "Error al cargar projects: [error]"
 - Ícono de error rojo
 - Usuario puede intentar de nuevo (recargar)
 
-### Resultado Incorrecto ❌
+### Result Incorrecto ❌
 - Pantalla blanca sin mensaje
 - App se crashea
 - Error stack trace expuesto
@@ -194,40 +194,40 @@
 ## 🧪 TEST 9: Expandir/Contraer Lista
 
 ### Pasos
-1. Dashboard con >8 proyectos
-2. Botón "Ver todos los proyectos"
+1. Dashboard con >8 projects
+2. Button "Ver todos los projects"
 3. Click: se expande → muestra lista
 4. Click de nuevo: se contrae → oculta lista
 5. Repetir 3 veces
 
-### Resultado Esperado ✅
+### Result Esperado ✅
 - Cada click expande/contrae
 - Lista muestra todos (real + mock)
 - Sin lag o delays
 - Animación suave
 
-### Resultado Incorrecto ❌
-- Estado no cambia
+### Result Incorrecto ❌
+- Status no cambia
 - Lista parcial
 - Lag visible
-- Proyecto falta al expandir
+- Project falta al expandir
 
 ---
 
-## 🧪 TEST 10: Orden de Proyectos
+## 🧪 TEST 10: Orden de Projects
 
 ### Pasos
-1. Crear 3 proyectos nuevos en diferentes momentos
+1. Create 3 projects nuevos en diferentes momentos
 2. Dashboard → Grid (primeros 8)
 3. Dashboard → Expandir (todos)
 4. Verificar orden
 
-### Resultado Esperado ✅
+### Result Esperado ✅
 - Grid: ordenados por fecha DESC (más recientes primero)
 - Lista: ordenados alfabéticamente (como está implementado)
 - Guía aparece en posición correcta
 
-### Resultado Incorrecto ❌
+### Result Incorrecto ❌
 - Orden aleatorio
 - Duplicados
 - Guía desaparece
@@ -236,12 +236,12 @@
 
 ## 📊 Scoring del Testing
 
-| Test | Crítico | Resultado | Estado |
+| Test | Crítico | Result | Status |
 |------|---------|-----------|--------|
 | 1. Reales muestran | 🔴 | ? | ⏳ |
 | 2. Mock muestra | 🔴 | ? | ⏳ |
-| 3. Botón expandir | 🟡 | ? | ⏳ |
-| 4. Crear proyecto | 🔴 | ? | ⏳ |
+| 3. Button expandir | 🟡 | ? | ⏳ |
+| 4. Create project | 🔴 | ? | ⏳ |
 | 5. Navegar real | 🔴 | ? | ⏳ |
 | 6. Navegar mock | 🔴 | ? | ⏳ |
 | 7. Loading state | 🟡 | ? | ⏳ |
@@ -256,12 +256,12 @@
 ## ✅ Criterios de Aceptación
 
 ### DEBE CUMPLIR (Critical Path)
-- [x] Proyectos reales se obtienen del repositorio
-- [x] Proyectos mock se muestran (guía)
+- [x] Projects reales se obtienen del repositorio
+- [x] Projects mock se muestran (guía)
 - [x] Ambos combinados en misma lista
-- [x] Botón expandir funciona
-- [x] Puede crear proyecto y aparece
-- [x] Puede navegar a proyecto real
+- [x] Button expandir funciona
+- [x] Puede create project y aparece
+- [x] Puede navegar a project real
 - [x] Puede navegar a guía
 - [x] Sin errores de compilación
 
@@ -275,7 +275,7 @@
 
 ## 🐛 Si Encuentras Bugs
 
-### Bug: Proyectos reales no aparecen
+### Bug: Projects reales no aparecen
 ```
 Causa probable: allProjectsProvider falla
 Solución: Verificar que repository.getAllProjects() funciona
@@ -291,7 +291,7 @@ Solución: Verificar getMockProjectsData() retorna datos
          Revisar que no se filtren
 ```
 
-### Bug: Botón no aparece
+### Bug: Button no aparece
 ```
 Causa probable: allProjects.length <= 8
 Solución: Agregar más proyectos para llegar a >8
@@ -311,10 +311,10 @@ Solución: Revisar repository.getAllProjects()
 ## 📝 Notas Importantes
 
 1. **Sistema Híbrido:** Real + Mock en misma interfaz
-2. **Proyectos Reales:** Vienen de repositorio (DB/API)
-3. **Proyectos Mock:** Vienen de constantes en mock_data.dart
+2. **Projects Reales:** Vienen de repositorio (DB/API)
+3. **Projects Mock:** Vienen de constantes en mock_data.dart
 4. **Protocolo Virtual:** mock:// para identificar guía
-5. **Estados:** loading, error, data correctamente manejados
+5. **Statuss:** loading, error, data correctamente manejados
 
 ---
 

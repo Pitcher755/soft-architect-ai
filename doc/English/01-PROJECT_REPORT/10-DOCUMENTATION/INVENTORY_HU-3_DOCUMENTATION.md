@@ -1,15 +1,15 @@
 # 📋 INVENTARIO COMPLETO: Documentación HU-3.x Project-First Refactor
 
-> **Fecha:** 02/02/2026
+> **Date:** 02/02/2026
 > **Rama:** feature/ui-project-shell
-> **Status:** ✅ DOCUMENTACIÓN COMPLETA (7 archivos)
+> **Status:** ✅ DOCUMENTACIÓN COMPLETA (7 files)
 > **Tamaño Total:** ~25,000 palabras
 
 ---
 
 ## 📑 LISTA DE DOCUMENTOS GENERADOS
 
-### ✅ DOCUMENTOS COMPLETADOS (7 archivos)
+### ✅ DOCUMENTOS COMPLETADOS (7 files)
 
 #### 1. 📄 README_HU-3_CENTRAL.es.md (ESTE ES EL ÍNDICE)
 
@@ -18,19 +18,19 @@
 **Propósito:** Central de navegación para toda la documentación
 
 **Contenido:**
-- Tabla de documentos
+- Tabla de documents
 - Guía de lectura por rol
 - Matriz de relaciones
 - Checklist para usuario
 
 **Tamaño:** ~4,500 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Cómo usarlo:**
-1. Leer este archivo primero
+1. Leer este file primero
 2. Seleccionar tu rol
-3. Hacer clic en links a documentos específicos
+3. Hacer clic en links a documents específicos
 
 ---
 
@@ -42,14 +42,14 @@
 
 **Contenido:**
 - Resumen ejecutivo (60 seg)
-- 5 documentos con descripción
+- 5 documents con description
 - Lectura por rol (producto owner, arquitecto, developer, QA)
 - Referencias cruzadas
 - Checklist de decisión
 
 **Tamaño:** ~3,500 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Cuándo leerlo:** Segunda lectura (después de este central)
 
@@ -72,7 +72,7 @@
 
 **Tamaño:** ~2,000 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Para:** Product Owners, Stakeholders, Decisores
 
@@ -84,7 +84,7 @@
 
 **Ubicación:** `doc/01-PROJECT_REPORT/HU-3_REFACTOR_ANALYSIS.es.md`
 
-**Propósito:** Análisis arquitectónico profundo y comparativo
+**Propósito:** Analysis arquitectónico profundo y comparativo
 
 **Contenido:**
 - Situación actual (Chat-First)
@@ -99,7 +99,7 @@
 
 **Tamaño:** ~6,500 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Para:** Tech Leads, Arquitectos, Desarrolladores
 
@@ -126,12 +126,12 @@
 
 **Incluye:**
 - Tabla resumen de 5 HUs
-- Secuencia de implementación
+- Secuencia de implementation
 - Matriz de dependencias visual
 
 **Tamaño:** ~4,500 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Para:** Desarrolladores, QA, Tech Leads
 
@@ -158,7 +158,7 @@
 
 **Tamaño:** ~5,500 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Para:** Desarrolladores senior, Code reviewers
 
@@ -175,15 +175,15 @@
 **Contenido:**
 - Decisiones requeridas
 - Estructura de rama
-- Cambios en archivos (paso a paso)
-- Pasos de implementación (Fase 0-5)
+- Cambios en files (paso a paso)
+- Pasos de implementation (Phase 0-5)
 - Timeline estimado
 - Criterios de aceptación
 - Comandos git concretos
 
 **Tamaño:** ~3,500 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Para:** DevLead, Developers, PM
 
@@ -202,12 +202,12 @@
 - Visión general del refactor
 - Cronograma 8 semanas (detallado)
 - Estructura de ramas y Git workflow
-- Detalles por fase:
-  - Fase 0: Pre-Sprint (análisis, aprobaciones)
-  - Fase 1: Foundation (HU-3.1 + 3.2)
-  - Fase 2: Core Logic (HU-3.3)
-  - Fase 3: Resilience (HU-3.4 + 3.5)
-  - Fase 4: Testing & Release (E2E, QA)
+- Detalles por phase:
+  - Phase 0: Pre-Sprint (analysis, aprobaciones)
+  - Phase 1: Foundation (HU-3.1 + 3.2)
+  - Phase 2: Core Logic (HU-3.3)
+  - Phase 3: Resilience (HU-3.4 + 3.5)
+  - Phase 4: Testing & Release (E2E, QA)
 - Asignación de recursos (5 roles, 3.5 FTE)
 - Riesgos y mitigaciones (5 riesgos identificados)
 - Métricas de éxito (código, proceso, UX)
@@ -216,7 +216,7 @@
 
 **Tamaño:** ~8,000 palabras
 
-**Estado:** ✅ COMPLETO
+**Status:** ✅ COMPLETO
 
 **Para:** Tech Lead, PM, Developers, Stakeholders
 
@@ -228,9 +228,9 @@
 
 ## 📊 ESTADÍSTICAS
 
-### Por Documento
+### Por Document
 
-| Archivo | Palabras | Líneas | Secciones |
+| File | Palabras | Líneas | Secciones |
 |---------|----------|--------|-----------|
 | README_HU-3_CENTRAL.es.md | 4,500 | 300+ | 15 |
 | INDEX_HU-3_ANALYSIS.es.md | 3,500 | 250+ | 12 |
@@ -247,8 +247,8 @@
 | Tipo | Cantidad | Palabras |
 |------|----------|----------|
 | Resumen Ejecutivo | 2 | 6,500 |
-| Análisis & Spec | 3 | 15,500 |
-| Implementación | 2 | 11,500 |
+| Analysis & Spec | 3 | 15,500 |
+| Implementation | 2 | 11,500 |
 | Navegación | 1 | 4,500 |
 | **TOTAL** | **8** | **38,000** |
 
@@ -406,11 +406,11 @@ DECISIÓN
 ### De Parte de ArchitectZero (AI Lead)
 
 1. **Esperar Confirmación** ⏳
-2. **Si ✅:** Comenzar Fase 0 (Pre-Sprint)
+2. **Si ✅:** Comenzar Phase 0 (Pre-Sprint)
    - Push de rama
-   - Crear PR Draft
+   - Create PR Draft
    - Buscar aprobaciones
-3. **Si ❌:** Archivar análisis
+3. **Si ❌:** Archivar analysis
 4. **Si 🤔:** Re-analizar con cambios
 
 ---
@@ -428,7 +428,7 @@ Git Branch: feature/ui-project-shell
 └─ Working tree: Limpio
 ```
 
-### Documentos Previos en Proyecto
+### Documents Previos en Project
 
 ```
 AGENTS.md ........................... Arquitectura y principios
@@ -450,7 +450,7 @@ packages/knowledge_base/
 ## 💬 PREGUNTAS FRECUENTES
 
 ### P: ¿Dónde empiezo?
-**R:** Lee este archivo (README_HU-3_CENTRAL.es.md), luego selecciona tu rol.
+**R:** Lee este file (README_HU-3_CENTRAL.es.md), luego selecciona tu rol.
 
 ### P: ¿Cuánto tiempo necesito para leer todo?
 **R:** Depende de tu rol:
@@ -459,7 +459,7 @@ packages/knowledge_base/
 - Developer: 60 min
 - COMPLETO: 4 horas
 
-### P: ¿Qué documento es el plan a ejecutar?
+### P: ¿Qué document es el plan a execute?
 **R:** MASTER_IMPLEMENTATION_PLAN.es.md - Contains 8-week timeline with all phases.
 
 ### P: ¿Cuál es la decisión requerida?
@@ -467,17 +467,17 @@ packages/knowledge_base/
 
 ### P: ¿Qué pasa después de confirmar?
 **R:**
-- Si ✅: Fase 0 (Pre-Sprint) → Week 1-8 execution
-- Si ❌: Archivar este análisis
+- Si ✅: Phase 0 (Pre-Sprint) → Week 1-8 execution
+- Si ❌: Archivar este analysis
 - Si 🤔: Discutir cambios propuestos
 
 ---
 
 ## 🏁 CONCLUSIÓN
 
-Tienes **7 documentos** (~38,000 palabras) que contienen:
+Tienes **7 documents** (~38,000 palabras) que contienen:
 
-✅ **Análisis completo** del refactor (Chat-First → Project-First)
+✅ **Analysis completo** del refactor (Chat-First → Project-First)
 ✅ **Especificación detallada** de 5 HUs
 ✅ **Código de ejemplo** en Dart y Python
 ✅ **Plan maestro** de 8 semanas
@@ -487,7 +487,7 @@ Tienes **7 documentos** (~38,000 palabras) que contienen:
 
 **Próximo Paso:**
 
-Lee los documentos según tu rol, luego comenta tu decisión:
+Lee los documents según tu rol, luego comenta tu decisión:
 
 ```
 ✅ SÍ - Proceder (RECOMENDADO)
@@ -499,6 +499,6 @@ Lee los documentos según tu rol, luego comenta tu decisión:
 
 **INVENTARIO COMPLETO**
 **Fecha:** 02/02/2026
-**Estado:** ✅ DOCUMENTACIÓN LISTA PARA LEER
+**Status:** ✅ DOCUMENTACIÓN LISTA PARA LEER
 **Responsable:** ArchitectZero (AI Lead)
 **Próximo Paso:** Tu confirmación de decisión

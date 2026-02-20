@@ -14,10 +14,10 @@ Se ha implementado exitosamente un **sistema híbrido que integra proyectos real
 
 1. ✅ **Interfaz Unificada:** Dashboard muestra guía + proyectos
 2. ✅ **Navegación Seamless:** Un click lleva a proyecto/guía indistintamente
-3. ✅ **Type-Safe:** Todo es `Project` entity (0 Maps)
+3. ✅ **Type-Safe:** Todo es `Proyecto` entity (0 Maps)
 4. ✅ **Rendimiento:** Guía carga en 0ms (en memoria)
 5. ✅ **Escalable:** Fácil agregar más contenido
-6. ✅ **Documentado:** 4 archivos de documentación
+6. ✅ **Documentoado:** 4 archivos de documentoación
 7. ✅ **Validado:** 22/22 verificaciones pasadas
 8. ✅ **0 Errores:** Compilación limpia
 
@@ -27,28 +27,28 @@ Se ha implementado exitosamente un **sistema híbrido que integra proyectos real
 
 ### ✨ Archivos Creados (2)
 
-1. **[projects_provider.dart](src/client/lib/features/project_shell/presentation/providers/projects_provider.dart)**
-   - Helper `buildHybridProjectsList()`
+1. **[proyectos_provider.dart](src/client/lib/features/proyecto_shell/presentation/providers/proyectos_provider.dart)**
+   - Helper `buildHybridProyectosList()`
    - Combina proyectos reales + mock
    - Ordena por fecha
 
 2. **[doc/HYBRID_SYSTEM_IMPLEMENTATION.md](doc/HYBRID_SYSTEM_IMPLEMENTATION.md)**
-   - Documentación técnica completa
+   - Documentoación técnica completa
    - Casos de uso y flujos
    - FAQ y guía de extensión
 
 ### ✏️ Archivos Modificados (8)
 
-1. **project.dart** - Getter `phase` (derives from path)
-2. **mock_projects_data.dart** - Simplificado a `getMockProjectsData()`
-3. **mock_data.dart** - Agregados `guideRootNode` + `guideFileContents`
-4. **file_tree_widget.dart** - Detección `mock://` para guía
-5. **project_shell_screen.dart** - Lectura híbrida de archivos
-6. **project_workspace_screen.dart** - Usa `buildHybridProjectsList()`
-7. **project_list_view.dart** - Acepta `List<Project>`
-8. **project_model.dart** + **web_mock_project_repository.dart** - Sincronizados
+1. **proyecto.dart** - Getter `fase` (derives from path)
+2. **mock_proyectos_data.dart** - Simplificado a `getMockProyectosData()`
+3. **mock_data.dart** - Agregados `guideRootNode` + `guideArchivoContents`
+4. **archivo_tree_widget.dart** - Detección `mock://` para guía
+5. **proyecto_shell_screen.dart** - Lectura híbrida de archivos
+6. **proyecto_workspace_screen.dart** - Usa `buildHybridProyectosList()`
+7. **proyecto_list_view.dart** - Acepta `List<Proyecto>`
+8. **proyecto_model.dart** + **web_mock_proyecto_repository.dart** - Sincronizados
 
-### 📚 Documentación Generada (5)
+### 📚 Documentoación Generada (5)
 
 1. **[HYBRID_SYSTEM_READY.md](HYBRID_SYSTEM_READY.md)** - Resumen ejecutivo
 2. **[HYBRID_SYSTEM_SUMMARY.md](doc/HYBRID_SYSTEM_SUMMARY.md)** - Visión general
@@ -130,7 +130,7 @@ Project Shell features → ✅ No errors detected
 ### Protocolo Virtual: `mock://`
 
 - Rutas mock: `mock://softarchitect-guide/00-Bienvenido.md`
-- Rutas reales: `/home/user/Projects/MyApp/README.md`
+- Rutas reales: `/home/user/Proyectos/MyApp/README.md`
 - Detección: `if (path.startsWith('mock://'))`
 
 ### Flujo de Datos
@@ -185,10 +185,10 @@ Project Shell features → ✅ No errors detected
 ### Para Desarrolladores
 
 - ✅ Editar `mock_data.dart` para actualizar guía
-- ✅ Agregar FileNode para nuevos archivos
-- ✅ Agregar contenido markdown a `guideFileContents`
+- ✅ Agregar ArchivoNode para nuevos archivos
+- ✅ Agregar contenido markdown a `guideArchivoContents`
 - ✅ Hot reload → cambios inmediatos
-- ✅ Type-safe (0 runtime surprises)
+- ✅ Type-safe (0 ejecutartime surprises)
 
 ### Para DevOps
 
@@ -215,7 +215,7 @@ Project Shell features → ✅ No errors detected
 ### Inmediato (Pre-Release)
 - [ ] QA completo en Desktop
 - [ ] Performance profiling
-- [ ] Testing en múltiples resoluciones
+- [ ] Pruebaing en múltiples resoluciones
 
 ### Corto Plazo (v1.1)
 - [ ] Guía editable desde UI
@@ -229,14 +229,14 @@ Project Shell features → ✅ No errors detected
 
 ---
 
-## 📖 Documentación Disponible
+## 📖 Documentoación Disponible
 
 ### Para Usuarios
 - [HYBRID_SYSTEM_READY.md](HYBRID_SYSTEM_READY.md) - Cómo usar
 
 ### Para Desarrolladores
 - [HYBRID_SYSTEM_IMPLEMENTATION.md](doc/HYBRID_SYSTEM_IMPLEMENTATION.md) - Arquitectura técnica
-- [HYBRID_SYSTEM_VERIFICATION_GUIDE.md](HYBRID_SYSTEM_VERIFICATION_GUIDE.md) - Testing y validación
+- [HYBRID_SYSTEM_VERIFICATION_GUIDE.md](HYBRID_SYSTEM_VERIFICATION_GUIDE.md) - Pruebaing y validación
 
 ### Para DevOps
 - [HYBRID_SYSTEM_SUMMARY.md](doc/HYBRID_SYSTEM_SUMMARY.md) - Resumen ejecutivo
@@ -255,7 +255,7 @@ Project Shell features → ✅ No errors detected
 | **Performance** | Guía instantánea (0ms, en memoria) |
 | **Educación** | Tutorial integrado, siempre accesible |
 | **Escalabilidad** | Fácil agregar más guías/contenido |
-| **Mantenibilidad** | Código limpio, bien documentado |
+| **Mantenibilidad** | Código limpio, bien documentoado |
 | **Seguridad** | Guía inmutable, datos protegidos |
 | **DevEx** | Type-safe, zero Map confusion |
 
@@ -267,14 +267,14 @@ Project Shell features → ✅ No errors detected
 
 La implementación del sistema híbrido está **completada, validada y lista para deploy**.
 
-**Resultados:**
+**Resultadoados:**
 
 ✅ 22/22 verificaciones pasadas
 ✅ 0 errores de compilación
 ✅ 0 warnings críticos
 ✅ 100% type-safe
 ✅ Performance validado
-✅ Documentación completa
+✅ Documentoación completa
 ✅ 2 archivos creados
 ✅ 8 archivos modernizados
 
@@ -285,7 +285,7 @@ La implementación del sistema híbrido está **completada, validada y lista par
 3. ✅ Navegar entre ambos de forma transparente
 4. ✅ Aprender y trabajar simultáneamente
 
-**Resultado Final:** 🎉 **Un sistema educativo y profesional integrado en una sola interfaz**
+**Resultadoado Final:** 🎉 **Un sistema educativo y profesional integrado en una sola interfaz**
 
 ---
 
@@ -295,14 +295,14 @@ Para preguntas o issues:
 
 1. Revisar [HYBRID_SYSTEM_VERIFICATION_GUIDE.md](HYBRID_SYSTEM_VERIFICATION_GUIDE.md)
 2. Ejecutar `bash VERIFY_HYBRID_SYSTEM.sh`
-3. Revisar documentación en `doc/` y archivos `.md` en raíz
+3. Revisar documentoación en `doc/` y archivos `.md` en raíz
 4. Contactar al team de arquitectura
 
 ---
 
 **Implementación completada:** ✅
 **Validación completada:** ✅
-**Documentación completada:** ✅
+**Documentoación completada:** ✅
 **Listo para producción:** ✅
 
 🚀 **¡SISTEMA HÍBRIDO OPERATIVO!** 🚀

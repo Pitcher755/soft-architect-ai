@@ -1,7 +1,7 @@
 # 📋 Script Organization Log
 
 > **Actualización:** 13 Feb 2026
-> **Estado:** ✅ Reorganización v2 aplicada
+> **Status:** ✅ Reorganización v2 aplicada
 
 ## 🔄 Update 2026-02-13 (Current Layout)
 
@@ -33,15 +33,15 @@ Se consolidó la organización por categoría dentro de `scripts/` y se actualiz
 
 ---
 
-> **Fecha:** 04 Feb 2025
-> **Estado:** ✅ Completado
+> **Date:** 04 Feb 2025
+> **Status:** ✅ Completed
 > **Commit:** c7b7932 - `refactor(scripts): organize executable scripts to scripts/ directory`
 
 ---
 
 ## 📚 Resumen
 
-Se ha completado la **reorganización de scripts ejecutables** moviendo todos los archivos `.sh` del directorio raíz a `scripts/`, manteniendo la estructura limpia y ordenada del monorepo.
+Se ha completado la **reorganización de scripts ejecutables** moviendo todos los files `.sh` del directorio raíz a `scripts/`, manteniendo la estructura limpia y ordenada del monorepo.
 
 ### ✅ Cambios Implementados
 
@@ -52,7 +52,7 @@ Se ha completado la **reorganización de scripts ejecutables** moviendo todos lo
 | `generate_coverage_html.sh` | Generador de reportes HTML | ✅ rwxrwxr-x |
 | `start_stack.sh` | Inicia servicios Docker | ✅ rwxrwxr-x |
 | `stop_stack.sh` | Detiene servicios Docker | ✅ rwxrwxr-x |
-| `STATUS_DASHBOARD.sh` | Dashboard de estado | ✅ rwxrwxr-x |
+| `STATUS_DASHBOARD.sh` | Dashboard de status | ✅ rwxrwxr-x |
 
 #### Scripts Ya Organizados (Sin Cambios)
 | Script | Ubicación |
@@ -120,7 +120,7 @@ soft-architect-ai/
 └── ...
 ```
 
-### 🧪 Verificación
+### 🧪 Verification
 
 ✅ **run_tests.sh** - Funciona desde cualquier directorio
 ```bash
@@ -147,14 +147,14 @@ ls -lh scripts/*.sh | grep rwxrwxr-x
 3. **Paths actualizados** - Todas las referencias documentadas han sido actualizadas
 4. **Pre-commit hooks** - Pasaron correctamente el check de trailing whitespace
 
-### 🎯 Próximos Pasos (Recomendados)
+### 🎯 Next Steps (Recomendados)
 
 1. **Arreglar tests fallidos** (8/185 failing) - Problemas con fixtures y DateTim
 e const
 2. **Actualizar CI/CD** - Si existen workflows en GitHub Actions, actualizar referencias
-3. **Documentación distribuida** - Revisar si hay referencias a scripts en otros archivos
+3. **Documentación distribuida** - Revisar si hay referencias a scripts en otros files
 
-### 🔗 Archivos Relacionados
+### 🔗 Files Relacionados
 
 - [run_tests.sh](../scripts/run_tests.sh)
 - [README.md](../README.md)
@@ -165,4 +165,4 @@ e const
 
 **Realizado por:** GitHub Copilot (ArchitectZero Agent)
 **Método:** Monorepo Best Practices - Clean Architecture
-**Prioridad:** Organización de estructura de proyecto
+**Prioridad:** Organización de estructura de project

@@ -1,25 +1,25 @@
 # HU-3.6: Artifacts Manifest
 
-> **Purpose:** Comprehensive list of all files to be created, modified, or generated during HU-3.6 implementation.
-> **Status:** 📋 Planning
+> **Purpose:** Comprehensive list of all archivos to be creard, modified, or generated during HU-3.6 implementación.
+> **Estado:** 📋 Planificación
 > **Last Updated:** 2026-02-10
 
 ---
 
-## 📂 File Categories
+## 📂 Archivo Categories
 
-- [Documentation](#-documentation)
+- [Documentoation](#-documentoation)
 - [Python Backend](#-python-backend)
 - [Flutter Frontend](#-flutter-frontend)
-- [Configuration](#️-configuration)
-- [Tests](#-tests)
+- [Configuración](#️-configuración)
+- [Pruebas](#-pruebas)
 - [CI/CD](#-cicd)
 
 ---
 
-## 📚 Documentation
+## 📚 Documentoation
 
-### HU Tracking Documents
+### HU Tracking Documentos
 ```
 doc/03-HU-TRACKING/HU-3.6_TEST_SUITE_I18N/
 ├── README.md                           ✅ CREATED
@@ -88,7 +88,7 @@ src/server/app/
 
 ## 📱 Flutter Frontend
 
-### i18n Infrastructure
+### i18n Infraestructura
 ```
 src/client/lib/l10n/
 ├── l10n.yaml                           🔄 TO CREATE
@@ -132,7 +132,7 @@ src/client/lib/features/settings/
         └── settings_providers.dart     🔄 TO UPDATE
 ```
 
-### UI Files to Update (Replace Hardcoded Strings)
+### UI Archivos to Update (Replace Hardcoded Strings)
 ```
 src/client/lib/features/
 ├── chat/
@@ -161,9 +161,9 @@ src/client/lib/features/
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Configuración
 
-### Flutter Configuration
+### Flutter Configuración
 ```
 src/client/
 ├── pubspec.yaml                        🔄 TO UPDATE (add intl, flutter_localizations)
@@ -171,7 +171,7 @@ src/client/
 └── l10n.yaml                           🔄 TO CREATE
 ```
 
-### Python Configuration
+### Python Configuración
 ```
 pyproject.toml                          🔄 TO UPDATE (if needed)
 pyrightconfig.json                      🔄 TO UPDATE (if needed)
@@ -179,9 +179,9 @@ pyrightconfig.json                      🔄 TO UPDATE (if needed)
 
 ---
 
-## 🧪 Tests
+## 🧪 Pruebas
 
-### Python Tests - New
+### Python Pruebas - New
 ```
 tests/python/
 ├── unit/
@@ -200,7 +200,7 @@ tests/python/
     └── test_end_to_end_workflow.py              🔄 TO CREATE
 ```
 
-### Python Tests - To Fix
+### Python Pruebas - To Fix
 ```
 tests/python/
 ├── unit/
@@ -215,7 +215,7 @@ tests/python/
     └── test_streaming_flow.py                   🔄 TO FIX
 ```
 
-### Flutter Tests - New
+### Flutter Pruebas - New
 ```
 tests/test/
 ├── unit/
@@ -243,7 +243,7 @@ tests/test/
         └── settings_e2e_test.dart               🔄 TO CREATE
 ```
 
-### Flutter Tests - To Fix
+### Flutter Pruebas - To Fix
 ```
 tests/test/
 ├── unit/
@@ -280,7 +280,7 @@ tests/test/
         └── project_creation_e2e_test.dart       🔄 TO FIX
 ```
 
-### Test Helpers
+### Prueba Helpers
 ```
 tests/
 ├── python/
@@ -330,77 +330,77 @@ doc/03-HU-TRACKING/HU-3.6_TEST_SUITE_I18N/reports/
 
 ## 📈 Summary Statistics
 
-### Files to Create
-- **Documentation:** 17 files
-- **Python Backend:** 8 files
-- **Flutter Frontend:** 9 files
-- **Configuration:** 3 files
-- **Tests (New):** 18 files
-- **Test Helpers:** 4 files
-- **CI/CD:** 1-2 files
-- **Reports:** 5 files
+### Archivos to Crear
+- **Documentoation:** 17 archivos
+- **Python Backend:** 8 archivos
+- **Flutter Frontend:** 9 archivos
+- **Configuración:** 3 archivos
+- **Pruebas (New):** 18 archivos
+- **Prueba Helpers:** 4 archivos
+- **CI/CD:** 1-2 archivos
+- **Reports:** 5 archivos
 
-**Total New Files:** ~65 files
+**Total New Archivos:** ~65 archivos
 
-### Files to Modify
-- **Python Backend:** 5 files
-- **Flutter Frontend:** 25+ UI files
-- **Tests (Fix):** 20+ test files
-- **Configuration:** 3 files
+### Archivos to Modify
+- **Python Backend:** 5 archivos
+- **Flutter Frontend:** 25+ UI archivos
+- **Pruebas (Fix):** 20+ prueba archivos
+- **Configuración:** 3 archivos
 
-**Total Modified Files:** ~53+ files
+**Total Modified Archivos:** ~53+ archivos
 
-### Files to Generate
-- **Flutter l10n:** 1 file (app_localizations.dart)
-- **Reports:** 5 files
+### Archivos to Generate
+- **Flutter l10n:** 1 archivo (app_localizations.dart)
+- **Reports:** 5 archivos
 
-**Total Generated Files:** 6 files
+**Total Generated Archivos:** 6 archivos
 
 ---
 
-## ✅ Checklist by Phase
+## ✅ Checklist by Fase
 
-### Phase 1: RED
+### Fase 1: RED
 - [ ] TEST_FAILURE_ANALYSIS.md
 - [ ] SQLITE_INVESTIGATION_REPORT.md
 - [ ] I18N_ARCHITECTURE_DESIGN.md
 
-### Phase 2: GREEN
-- [ ] All Python backend files (new + fixes)
-- [ ] All Flutter frontend files (new + fixes)
-- [ ] All test files (new + fixes)
+### Fase 2: GREEN
+- [ ] All Python backend archivos (new + fixes)
+- [ ] All Flutter frontend archivos (new + fixes)
+- [ ] All prueba archivos (new + fixes)
 - [ ] i18n infrastructure complete
 
-### Phase 3: REFACTOR
+### Fase 3: REFACTOR
 - [ ] Code quality improvements applied
-- [ ] Documentation comments added
+- [ ] Documentoation comments added
 
-### Phase 4: OPTIMIZATION
+### Fase 4: OPTIMIZATION
 - [ ] Performance optimizations applied
 - [ ] Security audit report generated
 
-### Phase 5: DOCUMENTATION
-- [ ] All technical guides created
+### Fase 5: DOCUMENTATION
+- [ ] All technical guides creard
 - [ ] All reports generated
-- [ ] Completion summaries created
+- [ ] Completion summaries creard
 
-### Phase 6: VALIDATION
+### Fase 6: VALIDATION
 - [ ] CI/CD logs captured
-- [ ] Final metrics documented
+- [ ] Final metrics documentoed
 
 ---
 
 ## 🔄 Change Log
 
-| Date | Phase | Files Added | Files Modified | Notes |
+| Date | Fase | Archivos Added | Archivos Modified | Notes |
 |------|-------|-------------|----------------|-------|
-| 2026-02-10 | 1 | 3 | 0 | Initial artifacts manifest created |
+| 2026-02-10 | 1 | 3 | 0 | Initial artifacts manifest creard |
 
 ---
 
 ## 📝 Notes
 
-- All documentation must be bilingual (EN/ES)
-- All test files must follow naming conventions
-- All generated files excluded from version control (add to .gitignore)
-- Reports stored in HU tracking folder for historical reference
+- All documentoation must be bilingual (EN/ES)
+- All prueba archivos must follow naming conventions
+- All generated archivos excluded from version control (add to .gitignore)
+- Reports stored in HU tracking carpeta for historical reference

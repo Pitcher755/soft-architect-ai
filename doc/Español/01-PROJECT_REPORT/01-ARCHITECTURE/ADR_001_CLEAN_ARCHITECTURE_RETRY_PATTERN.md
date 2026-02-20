@@ -1,17 +1,17 @@
 # ADR-001: Clean Architecture + Retry Pattern Separation
 
-> **Date:** 2026-02-16
-> **Status:** ✅ Accepted
-> **Context:** HU-4.4 Phase 2 - Backend Retry LLM Logic
+> **Fecha:** 2026-02-16
+> **Estado:** ✅ Accepted
+> **Context:** HU-4.4 Fase 2 - Backend Retry LLM Logic
 > **Decision Makers:** ArchitectZero, Development Team
 
 ---
 
 ## 📋 Context
 
-During implementation of HU-4.4 GAP 2 (Retry Logic for LLM calls), we encountered a **critical architectural dilemma**:
+During implementación of HU-4.4 GAP 2 (Retry Logic for LLM calls), we encountered a **critical architectural dilemma**:
 
-**Initial Implementation (Phase 2):**
+**Initial Implementación (Fase 2):**
 ```python
 @with_retry(max_retries=3, ...)
 async def generate(...) -> str:
@@ -22,7 +22,7 @@ async def generate(...) -> str:
 
 **Problem:** To allow retry decorator to work, we removed try-except blocks. This violated **Clean Architecture** by letting infrastructure exceptions (httpx.RequestError) leak into domain layer.
 
-**Test Failures:** 5 tests failed expecting domain exceptions (LLMConnectionError) but receiving infrastructure exceptions (httpx.RequestError).
+**Prueba Failures:** 5 pruebas failed expecting domain exceptions (LLMConnectionError) but receiving infrastructure exceptions (httpx.RequestError).
 
 ---
 
@@ -30,7 +30,7 @@ async def generate(...) -> str:
 
 Implement **Layered Retry Architecture** that separates concerns:
 
-### Layer 1: Infrastructure (Retry Logic)
+### Layer 1: Infraestructura (Retry Logic)
 ```python
 @with_retry(max_retries=3, base_delay=0.5, ...)
 async def _generate_with_retry(...) -> str:
@@ -61,7 +61,7 @@ async def generate(...) -> str:
 
 1. **Preserves Clean Architecture**
    - Domain layer only sees domain exceptions (LLMConnectionError, LLMTimeoutError)
-   - Infrastructure concerns (httpx, retry) isolated in private methods
+   - Infraestructura concerns (httpx, retry) isolated in private methods
 
 2. **Maintains Retry Functionality**
    - @with_retry decorator works on internal method
@@ -72,8 +72,8 @@ async def generate(...) -> str:
    - Internal method: Handles network + retry logic
    - Public method: Handles exception translation
 
-4. **Testability**
-   - Tests validate domain exceptions (not infrastructure exceptions)
+4. **Pruebaability**
+   - Pruebas validate domain exceptions (not infrastructure exceptions)
    - Mocking simplified (only need to mock internal method)
 
 ---
@@ -86,7 +86,7 @@ async def generate(...) -> str:
 
 ### Alternative 2: Custom Retry Decorator for Domain Exceptions
 - ❌ **Rejected:** Over-engineering
-- Complexity: Need to maintain custom decorator + tests
+- Complexity: Need to maintain custom decorator + pruebas
 
 ### Alternative 3: Retry in Caller (Orchestrator)
 - ❌ **Rejected:** Violates Single Responsibility
@@ -99,16 +99,16 @@ async def generate(...) -> str:
 ### Positive
 ✅ Clean Architecture maintained (domain isolation)
 ✅ Retry functionality preserved (3x exponential backoff)
-✅ All 256 tests pass (0 skipped, 0 warnings)
+✅ All 256 pruebas pass (0 skipped, 0 warnings)
 ✅ Clear separation of concerns (retry vs exception mapping)
-✅ Easy to test (mock internal method)
+✅ Easy to prueba (mock internal method)
 
 ### Negative
 ⚠️ Slightly more code (2 methods instead of 1)
 ⚠️ Internal method naming convention (underscore prefix)
 
 ### Neutral
-🔹 Pattern documented in codebase (DartDoc, PyDoc)
+🔹 Pattern documentoed in codebase (DartDoc, PyDoc)
 🔹 Future LLM clients must follow same pattern
 
 ---
@@ -122,7 +122,7 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
     yield "token"  # Decorator can't handle generators
 ```
 
-**Why?** AsyncGenerators execute lazily (on first `anext()`). Decorator tries to retry before generator starts.
+**Why?** AsyncGenerators ejecutar lazily (on first `asiguiente()`). Decorator tries to retry before generator starts.
 
 ### Solution: Manual Retry Loop
 ```python
@@ -144,8 +144,8 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
 ```
 
 **Benefits:**
-- ✅ Retry logic applies to **connection phase only**
-- ✅ Once stream starts, failures propagate immediately (no retry mid-stream)
+- ✅ Retry logic applies to **connection fase only**
+- ✅ Once stream starts, failures propagate inmediataly (no retry mid-stream)
 - ✅ AsyncGenerator works naturally
 - ✅ Same exponential backoff as synchronous method
 
@@ -161,9 +161,9 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
    - Don't work with AsyncGenerators (lazy evaluation)
    - Manual retry loops are sometimes cleaner
 
-3. **Test Failures Are Design Feedback**
-   - 5 failing tests revealed architectural violation
-   - Tests expected domain exceptions → fixed by layered approach
+3. **Prueba Failures Are Design Feedback**
+   - 5 failing pruebas revealed architectural violation
+   - Pruebas expected domain exceptions → fixed by layered approach
 
 4. **Pragmatism Over Purity**
    - Used decorator where it works (generate)
@@ -171,7 +171,7 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
 
 ---
 
-## 📝 Related Documents
+## 📝 Related Documentos
 
 - [HU-4.4 PROGRESS.md](../03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/PROGRESS.md)
 - [Clean Architecture Principles](../30-ARCHITECTURE/CLEAN_ARCHITECTURE_RULES.md)
@@ -181,7 +181,7 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
 
 ## 🔄 Review & Evolution
 
-**Next Review:** 2026-03-15 (1 month)
+**Siguiente Review:** 2026-03-15 (1 month)
 
 **Future Considerations:**
 - Monitor retry success rate in production
@@ -192,4 +192,4 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
 
 **Signed-off by:** ArchitectZero (Lead Architect)
 **Approved by:** Development Team
-**Implementation:** [Commit ec32cae](https://github.com/Pitcher755/soft-architect-ai/commit/ec32cae)
+**Implementación:** [Commit ec32cae](https://github.com/Pitcher755/soft-architect-ai/commit/ec32cae)

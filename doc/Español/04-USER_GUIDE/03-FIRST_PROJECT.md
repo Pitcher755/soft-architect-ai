@@ -1,43 +1,43 @@
-# 🎯 Your First Project - SoftArchitect AI
+# 🎯 Your First Proyecto - SoftArchitect AI
 
-> **Date:** 02/19/2026
-> **Status:** ✅ Step-by-step guide
+> **Fecha:** 02/19/2026
+> **Estado:** ✅ Step-by-step guide
 > **Estimated time:** 30-45 minutes
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [What Are We Creating?](#what-are-we-creating)
-- [Step 1: Create the Project](#step-1-create-the-project)
+- [Step 1: Crear the Proyecto](#step-1-crear-the-proyecto)
 - [Step 2: Define Your Vision](#step-2-define-your-vision)
-- [Step 3: Execute PHASE 1](#step-3-execute-phase-1)
-- [Step 4: Review Results](#step-4-review-results)
-- [What's Next?](#whats-next)
+- [Step 3: Ejecutar PHASE 1](#step-3-ejecutar-fase-1)
+- [Step 4: Review Resultados](#step-4-review-results)
+- [What's Siguiente?](#whats-siguiente)
 
 ---
 
 ## 🎓 What Are We Creating?
 
-In this tutorial, we'll create a **Sample Project** that demonstrates how SoftArchitect AI works.
+In this tutorial, we'll crear a **Sample Proyecto** that demonstrates how SoftArchitect AI works.
 
-### Proposed Project: "Academic Blog Platform"
+### Proposed Proyecto: "Academic Blog Platform"
 
 A platform where:
 - 👥 Professors publish technical articles
 - 📚 Students comment and discuss
 - 🏆 Best content gets recognition
-- 🔍 Advanced search system
+- 🔍 Avanzado search system
 
 ### Why This Example:
 ✅ Simple but realistic
-✅ Demonstrates all Master Workflow phases
+✅ Demonstrates all Master Workflow fases
 ✅ Easy to visualize
 ✅ Complete in 45 minutes
 
 ---
 
-## 🚀 Step 1: Create the Project
+## 🚀 Step 1: Crear the Proyecto
 
 ### 1.1 Open SoftArchitect AI
 
@@ -46,12 +46,12 @@ In your browser:
 http://localhost:3000
 ```
 
-You should see the main screen with a big button:
+You should see the main screen with a big botón:
 ```
 📝 + New Project
 ```
 
-### 1.2 Click "New Project"
+### 1.2 Click "Nuevo Proyecto"
 
 A simple form will open:
 
@@ -73,15 +73,15 @@ A simple form will open:
 Academic Blog Platform
 ```
 
-**"Description" field:**
+**"Descripción" field:**
 ```
 Collaborative platform for publishing and discussing academic articles between professors and students.
 ```
 
-### 1.4 Click "Create Project"
+### 1.4 Click "Crear Proyecto"
 
-✅ The project will be created in seconds
-✅ You'll be redirected to the project dashboard
+✅ The proyecto will be creard in seconds
+✅ You'll be redirected al proyecto dashboard
 
 ---
 
@@ -104,7 +104,7 @@ You'll see an interface like this:
 └─────────────────────────────────┘
 ```
 
-### 2.1 First Question: "What is your purpose?"
+### 2.1 First Question: "Qué es your purpose?"
 
 Answer with your core mission:
 
@@ -128,7 +128,7 @@ Identify the problem:
 Currently, sharing academic articles requires email submissions or using generic platforms not designed for researchers. We need a specialized place.
 ```
 
-### 2.4 Fourth Question: "What is your differentiator?"
+### 2.4 Fourth Question: "Qué es your differentiator?"
 
 What makes you unique:
 
@@ -136,7 +136,7 @@ What makes you unique:
 It combines peer review validation with gamification (quality badges), incentivizing both quality and engagement.
 ```
 
-### 2.5 Fifth Question: "What is your horizon?"
+### 2.5 Fifth Question: "Qué es your horizon?"
 
 Where you want to go:
 
@@ -157,9 +157,9 @@ Define your metrics:
 
 ---
 
-## ⚙️ Step 3: Execute PHASE 1
+## ⚙️ Step 3: Ejecutar PHASE 1
 
-Once you complete the 6 questions, SoftArchitect AI will begin analyzing your project.
+Once you complete the 6 questions, SoftArchitect AI will begin analyzing your proyecto.
 
 ### 3.1 Wait while AI Works
 
@@ -181,26 +181,26 @@ You'll see a screen like:
 └──────────────────────────────────┘
 ```
 
-### 3.2 What is AI Doing?
+### 3.2 Qué es AI Doing?
 
 Behind the scenes, SoftArchitect AI is:
 
 1. **Analyzing your vision** via RAG (Retrieval Augmented Generation)
-   - Searching for patterns in similar projects
+   - Searching for patterns in similar proyectos
    - Evaluating feasibility based on historical data
 
-2. **Generating documents**
-   - Project Manifesto (My Promise)
-   - Strategic feasibility analysis
+2. **Generating documentos**
+   - Proyecto Manifesto (My Promise)
+   - Strategic feasibility análisis
    - Initial risk matrix
-   - Market analysis
+   - Market análisis
 
 3. **Creating an action plan**
    - 12-month roadmap
    - Key milestones
    - Estimated resources
 
-### 3.3 Auto-generated Documents
+### 3.3 Auto-generated Documentos
 
 Once complete, you'll see a table:
 
@@ -220,11 +220,11 @@ Once complete, you'll see a table:
 
 ---
 
-## 📋 Step 4: Review Results
+## 📋 Step 4: Review Resultados
 
-### 4.1 Read "My Promise" (Project Manifesto)
+### 4.1 Read "My Promise" (Proyecto Manifesto)
 
-Click the eye icon 👁️ to view the document.
+Click the eye icon 👁️ to view the documento.
 
 You'll see something like:
 
@@ -254,9 +254,9 @@ with peer validation and community recognition.
 └─ 50 featured articles per month
 ```
 
-### 4.2 Review "Feasibility Analysis"
+### 4.2 Review "Feasibility Análisis"
 
-This document analyzes:
+This documento analyzes:
 - ✅ Technical feasibility
 - ✅ Market feasibility
 - ✅ Financial feasibility
@@ -276,13 +276,13 @@ MARKET FEASIBILITY: ✅ HIGH
 - TAM (Total Addressable Market): $2.3B
 ```
 
-### 4.3 Download Documents
+### 4.3 Download Documentos
 
-If you want to save documents for later review:
+If you want to save documentos for later review:
 
 **Option A: Within the app**
 1. Click [📥] to download as PDF
-2. It will save to your downloads folder
+2. It will save to your downloads carpeta
 
 **Option B: Online**
 1. Copy the text directly
@@ -292,9 +292,9 @@ If you want to save documents for later review:
 
 ## 🎓 Understanding What You See
 
-### Why These Documents?
+### Why These Documentos?
 
-SoftArchitect AI follows the **4-Phase Master Workflow**:
+SoftArchitect AI follows the **4-Fase Master Workflow**:
 
 ```
 PHASE 1: GOVERNANCE & IDENTITY (Where you are)
@@ -339,7 +339,7 @@ You just completed **PHASE 1** ✅
 
 ---
 
-### Issue 2: "Documents are badly formatted"
+### Issue 2: "Documentos are badly formatted"
 
 **Solution:**
 ```
@@ -350,7 +350,7 @@ You just completed **PHASE 1** ✅
 
 ---
 
-### Issue 3: "I want to regenerate the documents"
+### Issue 3: "I want to regenerate the documentos"
 
 **Solution:**
 ```
@@ -366,51 +366,51 @@ You just completed **PHASE 1** ✅
 
 Check what you've completed:
 
-- [ ] Project "Academic Blog Platform" created
-- [ ] Completed the 6 Phase 1 questions
+- [ ] Proyecto "Academic Blog Platform" creard
+- [ ] Completado the 6 Fase 1 questions
 - [ ] Waited for AI to process
 - [ ] Read "My Promise"
-- [ ] Reviewed "Feasibility Analysis"
-- [ ] Downloaded at least one document
-- [ ] Understand the 4 Master Workflow Phases
+- [ ] Reviewed "Feasibility Análisis"
+- [ ] Downloaded at least one documento
+- [ ] Understand the 4 Master Workflow Fases
 
 ---
 
-## 🎯 Next Step
+## 🎯 Siguiente Step
 
 Now that you completed PHASE 1, you have two options:
 
 ### Option A: Continue with PHASE 2 (Architecture)
-→ AI will guide you through architectural analysis and design
+→ AI will guide you through architectural análisis and design
 → **Time:** 45 minutes
 
 ### Option B: Explore the Dashboard
-→ Review the generated documents
+→ Review the generated documentos
 → Download them to share with your team
 → **Time:** Variable
 
-### Option C: Read Additional Documentation
+### Option C: Read Additional Documentoation
 - [Complete Master Workflow](04-MASTER_WORKFLOW.md)
 - [AI Chat Guide](05-CHAT_INTERFACE.md)
 - [FAQ](09-FAQ.md)
 
 ---
 
-## 💡 Tips for Better Results
+## 💡 Tips for Better Resultados
 
 ### ✅ DO's (What You Should Do)
 - ✅ Be specific in your answers
 - ✅ Think in numbers (users, revenue, etc)
 - ✅ Include details about your market
 - ✅ Mention competitors if they exist
-- ✅ Review generated documents critically
+- ✅ Review generated documentos critically
 
 ### ❌ DON'Ts (What You Shouldn't Do)
-- ❌ Don't give vague answers ("It's an important project")
+- ❌ Don't give vague answers ("It's an important proyecto")
 - ❌ Don't confuse users with customers
 - ❌ Don't ignore identified risks
 - ❌ Don't expect AI to know everything (provide context)
-- ❌ Don't make destructive changes to documents (save a copy)
+- ❌ Don't make destructive changes to documentos (save a copy)
 
 ---
 
@@ -447,9 +447,9 @@ Now that you completed PHASE 1, you have two options:
 ---
 
 <p align="center">
-  ✅ Completed Your First Project
+  ✅ Completado Your First Proyecto
   <br/>
-  🎯 Next: <a href="04-MASTER_WORKFLOW.md"><strong>Understand the Master Workflow</strong></a>
+  🎯 Siguiente: <a href="04-MASTER_WORKFLOW.md"><strong>Understand the Master Workflow</strong></a>
   <br/><br/>
   <a href="01-QUICK_START.md">← Back to Quick Start</a>
 </p>

@@ -1,4 +1,4 @@
-# 📋 Test Suite Roadmap & Pending Tasks
+# 📋 Prueba Suite Roadmap & Pendiente Tasks
 
 > **Fecha:** 2025-01-31
 > **Estado:** In Progress
@@ -6,7 +6,7 @@
 
 ---
 
-## 🎯 Current Status
+## 🎯 Current Estado
 
 ```
 ✅ COMPLETED (This Session)
@@ -27,11 +27,11 @@
 
 ---
 
-## 📌 Phase 1: Immediate Actions (This Week)
+## 📌 Fase 1: Immediate Actions (This Week)
 
-### Task 1.1: Validate E2E Tests Run Successfully
+### Task 1.1: Validate E2E Pruebas Ejecutar Successfully
 
-**Status:** ⏳ NOT STARTED
+**Estado:** ⏳ NOT STARTED
 **Effort:** 30 min
 **Steps:**
 ```bash
@@ -49,27 +49,27 @@ pytest tests/integration/ -v
 ```
 
 **Success Criteria:**
-- [ ] All 5 E2E tests execute (not skipped)
-- [ ] All 5 tests PASS without errors
+- [ ] All 5 E2E pruebas ejecutar (not skipped)
+- [ ] All 5 pruebas PASS without errors
 - [ ] Coverage report shows ChromaDB integration working
-- [ ] No flaky tests detected (run 2x)
+- [ ] No flaky pruebas detected (ejecutar 2x)
 
 **Owner:** ArchitectZero
 **Due:** 2025-02-01
 
 ---
 
-### Task 1.2: Document Docker Setup for E2E Tests
+### Task 1.2: Documento Docker Setup for E2E Pruebas
 
-**Status:** ⏳ NOT STARTED
+**Estado:** ⏳ NOT STARTED
 **Effort:** 45 min
 **Output:** `doc/DOCKER_SETUP_FOR_TESTING.md`
 
 **Content Scope:**
 - [ ] Prerequisites (Docker, docker-compose)
 - [ ] Service startup commands
-- [ ] Environment variable configuration
-- [ ] Health check verification
+- [ ] Environment variable configuración
+- [ ] Health check verificación
 - [ ] Troubleshooting guide
 - [ ] Cleanup procedures
 
@@ -78,10 +78,10 @@ pytest tests/integration/ -v
 
 ---
 
-### Task 1.3: Create Test Verification Script
+### Task 1.3: Crear Prueba Verificación Script
 
-**Status:** ✅ COMPLETED
-**File:** `scripts/verify-tests.sh`
+**Estado:** ✅ COMPLETED
+**Archivo:** `scripts/verify-pruebas.sh`
 
 **Usage:**
 ```bash
@@ -92,11 +92,11 @@ bash scripts/verify-tests.sh all          # All tests
 
 ---
 
-## 📌 Phase 2: High Priority (Next Sprint)
+## 📌 Fase 2: High Priority (Siguiente Sprint)
 
-### Task 2.1: Create API Endpoint E2E Test Suite
+### Task 2.1: Crear API Endpoint E2E Prueba Suite
 
-**Status:** ❌ NOT STARTED
+**Estado:** ❌ NOT STARTED
 **Effort:** 5-8 hours
 **Priority:** 🔴 CRITICAL
 
@@ -132,32 +132,32 @@ Tests to Create (20+):
    └─ Error handling across layers
 ```
 
-**Implementation Steps:**
-1. [ ] Setup API E2E test fixtures (TestClient, mock RAG)
-2. [ ] Implement health endpoint tests
-3. [ ] Implement chat endpoint tests (with streaming)
-4. [ ] Implement knowledge search tests
+**Implementación Steps:**
+1. [ ] Setup API E2E prueba fixtures (PruebaClient, mock RAG)
+2. [ ] Implement health endpoint pruebas
+3. [ ] Implement chat endpoint pruebas (with streaming)
+4. [ ] Implement knowledge search pruebas
 5. [ ] Add integration scenarios
 6. [ ] Measure coverage (target: >95% of API surface)
-7. [ ] Document API contract expectations
+7. [ ] Documento API contract expectations
 
 **Success Criteria:**
-- [ ] 20+ tests created
-- [ ] All tests PASS
+- [ ] 20+ pruebas creard
+- [ ] All pruebas PASS
 - [ ] Coverage >95% of public API endpoints
 - [ ] No mocked dependencies (real RAG backend used)
 - [ ] Streaming responses validated
 - [ ] Error scenarios covered
 
 **Owner:** TBD (ArchitectZero if capacity)
-**Sprint:** Next (Feb 3-14)
+**Sprint:** Siguiente (Feb 3-14)
 **Due:** 2025-02-14
 
 ---
 
-### Task 2.2: Setup CI/CD Pipeline for Selective Test Runs
+### Task 2.2: Setup CI/CD Pipeline for Selective Prueba Ejecutars
 
-**Status:** ❌ NOT STARTED
+**Estado:** ❌ NOT STARTED
 **Effort:** 3-4 hours
 **Priority:** 🟡 IMPORTANT
 
@@ -174,7 +174,7 @@ CI Pipeline Strategy:
    └─ Time: ~2 min | Docker: YES | Load tests: YES
 ```
 
-**Implementation:**
+**Implementación:**
 1. [ ] Review current GitHub Actions workflow
 2. [ ] Add conditional Docker startup (matrix strategy)
 3. [ ] Separate unit vs E2E vs integration stages
@@ -182,22 +182,22 @@ CI Pipeline Strategy:
 5. [ ] Add coverage reporting to PR comments
 6. [ ] Configure branch protections (min 80% coverage)
 
-**Files to Modify:**
-- `.github/workflows/test.yml`
-- `pyproject.toml` (pytest config)
+**Archivos to Modify:**
+- `.github/workflows/prueba.yml`
+- `pyproyecto.toml` (pyprueba config)
 - `.env.example` (for CI setup)
 
 **Owner:** TBD
-**Sprint:** Next (Feb 3-14)
+**Sprint:** Siguiente (Feb 3-14)
 **Due:** 2025-02-14
 
 ---
 
-## 📌 Phase 3: Medium Priority (Q1 2025)
+## 📌 Fase 3: Medium Priority (Q1 2025)
 
-### Task 3.1: Implement Load Testing Infrastructure
+### Task 3.1: Implement Load Pruebaing Infraestructura
 
-**Status:** ❌ NOT STARTED
+**Estado:** ❌ NOT STARTED
 **Effort:** 6-8 hours
 **Priority:** 🟡 MEDIUM
 
@@ -218,21 +218,21 @@ Metrics:
 └─ Memory/CPU usage
 ```
 
-**Implementation:**
+**Implementación:**
 - [ ] Choose Locust or JMeter
-- [ ] Create test scenarios
+- [ ] Crear prueba scenarios
 - [ ] Setup baseline measurements
 - [ ] Integrate with CI/CD (optional)
-- [ ] Document performance regression limits
+- [ ] Documento performance regression limits
 
 **Owner:** TBD
 **Sprint:** TBD (Q1 2025)
 
 ---
 
-### Task 3.2: API Contract Testing
+### Task 3.2: API Contract Pruebaing
 
-**Status:** ❌ NOT STARTED
+**Estado:** ❌ NOT STARTED
 **Effort:** 4-6 hours
 **Priority:** 🟡 MEDIUM
 
@@ -247,22 +247,22 @@ Validations:
 └─ Backward compatibility checks
 ```
 
-**Implementation:**
+**Implementación:**
 - [ ] Generate/validate OpenAPI spec
-- [ ] Create consumer-driven contract tests
+- [ ] Crear consumer-driven contract pruebas
 - [ ] Setup contract validation in CI
-- [ ] Document API versioning strategy
+- [ ] Documento API versioning strategy
 
 **Owner:** TBD
 **Sprint:** TBD (Q1 2025)
 
 ---
 
-## 📌 Phase 4: Lower Priority (Q2 2025+)
+## 📌 Fase 4: Lower Priority (Q2 2025+)
 
-### Task 4.1: Browser/UI E2E Tests (Flutter)
+### Task 4.1: Browser/UI E2E Pruebas (Flutter)
 
-**Status:** ❌ DEFERRED
+**Estado:** ❌ DEFERRED
 **Effort:** 15-20 hours
 **Priority:** 🟢 LOW (post-MVP)
 
@@ -270,10 +270,10 @@ Validations:
 
 **Options:**
 1. **Appium + Flutter Driver**
-   - Pro: Native Flutter testing
-   - Con: Requires app compilation for each test
+   - Pro: Native Flutter pruebaing
+   - Con: Requires app compilation for each prueba
 
-2. **Integration Testing (API Mock)**
+2. **Integración Pruebaing (API Mock)**
    - Pro: Fast, no UI overhead
    - Con: Doesn't catch UI bugs
 
@@ -281,11 +281,11 @@ Validations:
 
 ---
 
-### Task 4.2: Security Penetration Testing
+### Task 4.2: Security Penetration Pruebaing
 
-**Status:** ❌ DEFERRED
+**Estado:** ❌ DEFERRED
 **Effort:** 10-15 hours
-**Priority:** 🟢 LOW (security hardening phase)
+**Priority:** 🟢 LOW (security hardening fase)
 
 **Scope:**
 ```
@@ -323,15 +323,15 @@ Phase 4 (Q2 2025+)
 
 ---
 
-## 🔗 Related Documentation
+## 🔗 Related Documentoation
 
-- [TEST_SUITE_STATUS_REPORT.md](TEST_SUITE_STATUS_REPORT.md) - Full status report
+- [TEST_SUITE_STATUS_REPORT.md](TEST_SUITE_STATUS_REPORT.md) - Full estado report
 - [E2E_TESTS_QUICKSTART.md](E2E_TESTS_QUICKSTART.md) - Quick start guide
-- [context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Testing strategy
-- [scripts/verify-tests.sh](../../scripts/verify-tests.sh) - Test verification script
+- [context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Pruebaing strategy
+- [scripts/verify-pruebas.sh](../../scripts/verify-pruebas.sh) - Prueba verificación script
 
 ---
 
 **Last Updated:** 2025-01-31
-**Next Review:** 2025-02-07
+**Siguiente Review:** 2025-02-07
 **Owner:** ArchitectZero

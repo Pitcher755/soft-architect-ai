@@ -1,12 +1,12 @@
 # 📐 Testing Pyramid & Quality Gates - HU-3.1
 
-> **Fecha:** 4 de febrero de 2026
-> **Estado:** ✅ Documentado
+> **Date:** 4 de febrero de 2026
+> **Status:** ✅ Documentado
 > **Objetivo:** Definir estructura correcta de tests según pirámide y AGENTS.md
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Pirámide de Tests](#pirámide-de-tests)
 2. [Distribución de Cobertura](#distribución-de-cobertura)

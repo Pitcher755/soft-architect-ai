@@ -1,15 +1,15 @@
-# 🔴 FASE 5: Integration The Gate (TDD RED)
+# 🔴 FASE 5: Integración The Gate (TDD RED)
 
 > **Fecha:** 6 de febrero de 2026
-> **Estado:** 🔴 RED - Test Failing (13 errores identificados)
-> **Objetivo:** Conectar Frontend → Backend → FileSystem (HU-3.2)
+> **Estado:** 🔴 RED - Prueba Failing (13 errores identificados)
+> **Objetivo:** Conectar Frontend → Backend → ArchivoSystem (HU-3.2)
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 - [1. Resumen Ejecutivo](#1-resumen-ejecutivo)
-- [2. Test de Integración Creado](#2-test-de-integración-creado)
+- [2. Prueba de Integración Creado](#2-prueba-de-integración-creado)
 - [3. Errores RED Identificados](#3-errores-red-identificados)
 - [4. Análisis de Gaps](#4-análisis-de-gaps)
 - [5. Checklist de Implementación (GREEN)](#5-checklist-de-implementación-green)
@@ -55,26 +55,26 @@ UI Update (Success Toast + Progress)
 
 ---
 
-## 2. Test de Integración Creado
+## 2. Prueba de Integración Creado
 
 ### 📝 Archivo
 
-**Ubicación:** `tests/test/integration/features/chat/chat_flow_test.dart`
+**Ubicación:** `pruebas/prueba/integration/features/chat/chat_flow_prueba.dart`
 
 ### 🧪 Casos de Prueba
 
-#### Test 1: `should complete full document generation cycle`
+#### Prueba 1: `should complete full documento generation cycle`
 
 **Escenario:**
 1. Launch app
 2. Navigate to "Nuevo Proyecto" (chat screen)
-3. Enter prompt: "Genera el Project Manifesto"
+3. Enter prompt: "Genera el Proyecto Manifesto"
 4. Wait for streaming (5 segundos)
 5. Validate proposal widget appears
 6. Tap "Validar y Guardar"
 7. Verify success toast + progress counter
 
-#### Test 2: `should handle streaming errors gracefully`
+#### Prueba 2: `should handle streaming errors gracefully`
 
 **Escenario:**
 1. Launch app
@@ -82,7 +82,7 @@ UI Update (Success Toast + Progress)
 3. Send message
 4. Wait 3 segundos (para que falle la conexión)
 5. Verify error message appears
-6. Verify "Reintentar" button visible
+6. Verify "Reintentar" botón visible
 
 ---
 
@@ -98,11 +98,11 @@ could not find any matching widgets.
 
 **Causa:** El widget SoftArchitectApp no renderiza un botón con ese texto en la pantalla principal.
 
-**Ubicación:** `src/client/lib/main.dart` → `SoftArchitectApp` (Presentation Layer)
+**Ubicación:** `src/client/lib/main.dart` → `SoftArchitectApp` (Presentación Layer)
 
 **Qué Falta:**
 - [ ] Main navigation screen con botón "Nuevo Proyecto"
-- [ ] Router configuration para navegar a chat screen
+- [ ] Router configuración para navegar a chat screen
 - [ ] La pantalla inicial no existe o no tiene este botón
 
 ---
@@ -114,34 +114,34 @@ could not find any matching widgets.
 LateInitializationError: Field 'isWeb' has already been initialized.
 ```
 
-**Causa:** Al ejecutar dos tests seguidos, `initializeSqfliteForDesktop()` intenta inicializar `isWeb` dos veces.
+**Causa:** Al ejecutar dos pruebas seguidos, `initializeSqfliteForDesktop()` intenta inicializar `isWeb` dos veces.
 
 **Ubicación:** `src/client/lib/core/database_initializer.dart` (Late field)
 
 **Qué Falta:**
-- [ ] Setup/Teardown logic para tests que resetee el estado de late fields
+- [ ] Setup/Teardown logic para pruebas que resetee el estado de late fields
 - [ ] Singleton pattern para evitar reinicialización
-- [ ] Test harness que isole cada test
+- [ ] Prueba harness que isole cada prueba
 
 ---
 
 ### 🔴 Error #3-#6: Missing TextField y Input Handling
 
-**Problema:** El test busca un `TextField` en la UI para ingresar el prompt.
+**Problema:** El prueba busca un `TextField` en la UI para ingresar el prompt.
 
 **Qué Falta:**
-- [ ] Chat input widget (TextField + send button)
+- [ ] Chat input widget (TextField + send botón)
 - [ ] Input handling en ChatNotifier
-- [ ] Integration entre UI input → backend request
+- [ ] Integración entre UI input → backend request
 
 ---
 
-### 🔴 Error #7-#9: Missing Backend API Integration
+### 🔴 Error #7-#9: Missing Backend API Integración
 
 **Problema:** No existe backend API conectada con el frontend.
 
 **Qué Falta:**
-- [ ] Backend FastAPI running (en `src/server/main.py`)
+- [ ] Backend FastAPI ejecutarning (en `src/server/main.py`)
 - [ ] `/api/v1/chat/stream` endpoint (POST)
 - [ ] RAG service integration (LLM streaming)
 - [ ] Request serialization (DTOs)
@@ -155,12 +155,12 @@ LateInitializationError: Field 'isWeb' has already been initialized.
 
 **Qué Falta:**
 - [ ] ChatNotifier debe emitir estado con `currentProposal` no null
-- [ ] Presentation layer debe renderizar ProposalCardWidget cuando `state.currentProposal != null`
-- [ ] Streaming debe parsear respuesta y crear DocumentProposal entity
+- [ ] Presentación layer debe renderizar ProposalCardWidget cuando `state.currentProposal != null`
+- [ ] Streaming debe parsear respuesta y crear DocumentoProposal entity
 
 ---
 
-### 🔴 Error #11: Missing "Validar y Guardar" Button
+### 🔴 Error #11: Missing "Validar y Guardar" Botón
 
 **Problema:** El botón para validar y guardar proposal no existe.
 
@@ -181,8 +181,8 @@ expect(find.text('✅ Documento guardado'), findsOneWidget);
 
 **Qué Falta:**
 - [ ] Toast/Snackbar component (UI)
-- [ ] Handler que dispare toast cuando documento se guarda exitosamente
-- [ ] Integration con FileSystem
+- [ ] Handler que dispare toast cuando documentoo se guarda exitosamente
+- [ ] Integración con ArchivoSystem
 
 ---
 
@@ -193,11 +193,11 @@ expect(find.text('✅ Documento guardado'), findsOneWidget);
 expect(find.text('Doc 2/25'), findsOneWidget);
 ```
 
-**Problema:** No existe contador de documentos generados.
+**Problema:** No existe contador de documentoos generados.
 
 **Qué Falta:**
 - [ ] Progress widget en chat screen que muestre "Doc X/25"
-- [ ] ChatNotifier debe trackear `completedDocuments` y `totalDocuments`
+- [ ] ChatNotifier debe trackear `completedDocumentos` y `totalDocumentos`
 - [ ] UI debe actualizar en tiempo real
 
 ---
@@ -231,7 +231,7 @@ INTEGRATION POINTS
 
 ### 📋 Dependencias por Implementar
 
-**Order of Implementation (Critical Path):**
+**Order of Implementación (Critical Path):**
 
 1. **Backend API Setup** ← BLOCKER
    - FastAPI server debe correr en `http://localhost:8000`
@@ -251,7 +251,7 @@ INTEGRATION POINTS
    - Navigate to chat screen
 
 5. **Chat Input Widget**
-   - TextField + send button
+   - TextField + send botón
    - Input validation
 
 6. **UI Components**
@@ -265,41 +265,41 @@ INTEGRATION POINTS
 
 ### ✅ Backend Layer (Python FastAPI)
 
-- [ ] Create `src/server/api/v1/endpoints/chat.py`
+- [ ] Crear `src/server/api/v1/endpoints/chat.py`
   - [ ] `POST /api/v1/chat/stream` endpoint
   - [ ] Request validation (message: str)
   - [ ] Response streaming (SSE or WebSocket)
   - [ ] Error handling (return 500 + error message)
 
-- [ ] Create `src/server/services/rag/chat_service.py`
+- [ ] Crear `src/server/services/rag/chat_service.py`
   - [ ] `query()` method that calls Ollama
   - [ ] Response parsing
   - [ ] Token-by-token streaming
 
-- [ ] Create `src/server/services/filesystem/writer.py`
-  - [ ] `save_document()` method
-  - [ ] File validation
+- [ ] Crear `src/server/services/archivosystem/writer.py`
+  - [ ] `save_documento()` method
+  - [ ] Archivo validation
   - [ ] Directory creation
 
 ### ✅ Frontend Data Layer
 
-- [ ] Create `src/client/lib/features/chat/data/datasources/chat_remote_datasource.dart`
+- [ ] Crear `src/client/lib/features/chat/data/datasources/chat_remote_datasource.dart`
   - [ ] HTTP client initialization
   - [ ] `streamMessage()` method
   - [ ] Error handling
 
-- [ ] Create `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
+- [ ] Crear `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
   - [ ] Implement `ChatRepository` with HTTP calls
   - [ ] Stream handling
 
-### ✅ Frontend Presentation Layer
+### ✅ Frontend Presentación Layer
 
-- [ ] Create `src/client/lib/features/chat/presentation/widgets/chat_input_widget.dart`
+- [ ] Crear `src/client/lib/features/chat/presentation/widgets/chat_input_widget.dart`
   - [ ] TextField
-  - [ ] Send button
+  - [ ] Send botón
   - [ ] Input validation
 
-- [ ] Create `src/client/lib/features/chat/presentation/widgets/chat_screen.dart`
+- [ ] Crear `src/client/lib/features/chat/presentation/widgets/chat_screen.dart`
   - [ ] Build main chat interface
   - [ ] Render message bubbles
   - [ ] Render proposals
@@ -310,11 +310,11 @@ INTEGRATION POINTS
   - [ ] Add `validateAndSaveProposal()` method
   - [ ] Add progress tracking
 
-- [ ] Create `src/client/lib/core/widgets/toast_widget.dart`
+- [ ] Crear `src/client/lib/core/widgets/toast_widget.dart`
   - [ ] Show success/error toast
   - [ ] Auto-dismiss after 3 seconds
 
-- [ ] Create `src/client/lib/core/widgets/progress_counter_widget.dart`
+- [ ] Crear `src/client/lib/core/widgets/progress_counter_widget.dart`
   - [ ] Display "Doc X/25"
   - [ ] Update in real-time
 
@@ -324,13 +324,13 @@ INTEGRATION POINTS
   - [ ] Define routes (home, chat, etc.)
   - [ ] Navigation handlers
 
-- [ ] Create home screen
-  - [ ] "Nuevo Proyecto" button
+- [ ] Crear home screen
+  - [ ] "Nuevo Proyecto" botón
   - [ ] Navigate to chat on tap
 
-### ✅ Configuration
+### ✅ Configuración
 
-- [ ] Create/Update `.env` file
+- [ ] Crear/Update `.env` archivo
   - [ ] `BACKEND_URL=http://localhost:8000`
   - [ ] `API_TIMEOUT=30s`
 
@@ -338,20 +338,20 @@ INTEGRATION POINTS
   - [ ] Read backend URL from env
   - [ ] Expose as provider
 
-### ✅ Testing Infrastructure
+### ✅ Pruebaing Infraestructura
 
-- [ ] Create test setup/teardown
+- [ ] Crear prueba setup/teardown
   - [ ] Mock backend (mockito or dio_mock)
-  - [ ] Reset late fields between tests
+  - [ ] Reset late fields between pruebas
   - [ ] Database cleanup
 
-- [ ] Create `tests/test/integration/fixtures/`
+- [ ] Crear `pruebas/prueba/integration/fixtures/`
   - [ ] Sample streaming responses
   - [ ] Error scenarios
 
 ---
 
-## 📊 Next Phase: VERDE (GREEN)
+## 📊 Siguiente Fase: VERDE (GREEN)
 
 **Cuando todas las checklist items estén ✅:**
 
@@ -374,12 +374,12 @@ Full E2E Flow Working:
 
 ## 🔗 Referencias
 
-- HU-3.2: Document Sequential Generation with Backend Integration
-- AGENTS.md: Testing & QA section (TDD workflow)
+- HU-3.2: Documento Sequential Generation with Backend Integración
+- AGENTS.md: Pruebaing & QA section (TDD workflow)
 - `context/30-ARCHITECTURE/TECHNICAL_STACK.en.md`: FastAPI + Flutter integration
 
 ---
 
 **Autor:** ArchitectZero (AI Agent)
-**Estado:** 🔴 RED - Ready for GREEN phase
+**Estado:** 🔴 RED - Preparado para GREEN fase
 **Próximo:** Implement Backend `/api/v1/chat/stream` endpoint

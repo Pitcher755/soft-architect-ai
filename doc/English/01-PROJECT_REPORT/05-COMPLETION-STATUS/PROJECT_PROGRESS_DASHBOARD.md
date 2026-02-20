@@ -1,7 +1,7 @@
 # 📊 PROYECTO PROGRESS DASHBOARD - MASTER WORKFLOW 0-100
 
-> **Fecha:** 2025-01-28
-> **Versión:** v0.2.0 (PHASE 3 RED Complete)
+> **Date:** 2025-01-28
+> **Version:** v0.2.0 (PHASE 3 RED Complete)
 > **Estadio:** MVP Implementation Sprint
 
 ---
@@ -55,29 +55,29 @@ COMPLETION RATE: ████████░░░░░░░░░░░░░
 
 ## 📋 HITOS COMPLETADOS
 
-### ✅ FASE 1: Backend RAG Orchestration (COMPLETE)
+### ✅ PHASE 1: Backend RAG Orchestration (COMPLETE)
 - **Objetivo:** Implementar pipeline RAG (Retrieval Augmented Generation) con soporte a Doc1-25
 - **Status:** 🟢 GREEN (All Tests Passing)
 - **Tests:** 11/11 ✅
-- **Archivos:**
+- **Files:**
   - Backend: `src/server/services/rag/` - RAG pipeline implementation
   - Tests: `tests/python/services/rag/` - Comprehensive test coverage
 - **Key Achievement:** Backend puede procesar queries de usuario contra ChromaDB y retornar respuestas contextualizadas
 
-### ✅ FASE 2: Backend SSE Streaming (COMPLETE)
+### ✅ PHASE 2: Backend SSE Streaming (COMPLETE)
 - **Objetivo:** Implementar streaming en tiempo real via Server-Sent Events (SSE)
 - **Status:** 🟢 GREEN (All Tests Passing)
 - **Tests:** 11/11 ✅
-- **Archivos:**
+- **Files:**
   - Endpoint: `src/server/api/v1/router.py` - `/api/v1/chat/generate` SSE endpoint
   - Tests: `tests/python/api/v1/` - SSE streaming validation
 - **Key Achievement:** Backend puede streamear respuestas LLM token-by-token hacia cliente
 
-### 🔴 FASE 3: Frontend State Machine (RED PHASE COMPLETE)
-- **Objetivo:** Implementar máquina de estados para orquestar generación secuencial de 25 docs
+### 🔴 PHASE 3: Frontend State Machine (RED PHASE COMPLETE)
+- **Objetivo:** Implementar máquina de statuss para orquestar generación secuencial de 25 docs
 - **Status:** 🔴 RED Phase Complete (Tests Written, Awaiting Implementation)
 - **Tests:** 8/8 ✅ + 6/6 🟡 Pending Implementation
-- **Archivos Creados:**
+- **Files Creados:**
   - Entities: `ChatMessage`, `DocumentProposal` con enums
   - State: `ChatState`, `ChatNotifier` (StateNotifier<ChatState>)
   - Interface: `ChatRepository` abstract
@@ -88,7 +88,7 @@ COMPLETION RATE: ████████░░░░░░░░░░░░░
 ## 📈 MÉTRICAS DE CÓDIGO
 
 ### Backend (Python)
-| Métrica | Valor | Estado |
+| Métrica | Valor | Status |
 |---------|-------|--------|
 | Tests | 22 tests passing | ✅ GREEN |
 | Coverage | >85% en services/ | ✅ GOOD |
@@ -96,7 +96,7 @@ COMPLETION RATE: ████████░░░░░░░░░░░░░
 | Code Quality | Black + Ruff passing | ✅ CLEAN |
 
 ### Frontend (Dart/Flutter)
-| Métrica | Valor | Estado |
+| Métrica | Valor | Status |
 |---------|-------|--------|
 | Tests | 14/14 compiling (8 passing) | ✅ READY |
 | Entities | 2 (ChatMessage, DocumentProposal) | ✅ COMPLETE |

@@ -1,6 +1,6 @@
 # ✅ AUDITORÍA DOCKER COMPOSE - RESULTADO FINAL
 
-## 📊 Estado Actual vs Esperado
+## 📊 Status Actual vs Esperado
 
 ```
 ANTES (Enero 28, 10:00 AM):
@@ -32,7 +32,7 @@ DESPUÉS (Enero 28, 22:25 PM):
 
 ---
 
-## 📦 ENTREGABLES (8 archivos)
+## 📦 ENTREGABLES (8 files)
 
 ### 1. **Dockerfile** `src/server/Dockerfile`
 ```dockerfile
@@ -326,9 +326,9 @@ open http://localhost:8000/docs   # Swagger UI
 
 ## 📚 REFERENCIAS
 
-| Documento | Ubicación | Descripción |
+| Document | Ubicación | Description |
 |-----------|-----------|-------------|
-| AGENTS.md | `/AGENTS.md` | Arquitectura del proyecto |
+| AGENTS.md | `/AGENTS.md` | Arquitectura of the project |
 | Tech Stack | `/context/30-ARCHITECTURE/TECH_STACK_DETAILS.es.md` | Stack tecnológico |
 | Security | `/context/20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.es.md` | Seguridad y privacidad |
 | Requirements | `/context/20-REQUIREMENTS_AND_SPEC/REQUIREMENTS_ANALYSIS.es.md` | Requisitos funcionales |
@@ -343,9 +343,9 @@ open http://localhost:8000/docs   # Swagger UI
 
 El docker-compose está **completamente reescrito, validado y documentado**.
 
-**Estado:** ✅ **LISTO PARA PRODUCCIÓN**
+**Status:** ✅ **LISTO PARA PRODUCCIÓN**
 
-Developers pueden ejecutar:
+Developers pueden execute:
 ```bash
 cd infrastructure
 docker compose up --build
@@ -357,4 +357,4 @@ Y todo funciona sin problemas.
 
 **Fecha:** 28 de enero de 2026
 **Responsable:** ArchitectZero Agent
-**Estado:** COMPLETADO
+**Status:** COMPLETADO

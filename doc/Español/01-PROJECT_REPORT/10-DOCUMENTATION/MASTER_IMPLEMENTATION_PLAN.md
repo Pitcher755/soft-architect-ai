@@ -1,10 +1,10 @@
-# 🎯 PLAN MAESTRO DE IMPLEMENTACIÓN: HU-3.x Project-First Refactor (Sprint 3)
+# 🎯 PLAN MAESTRO DE IMPLEMENTACIÓN: HU-3.x Proyecto-First Refactor (Sprint 3)
 
 > **Fecha:** 02/02/2026
 > **Versión:** 1.0 - Plan Integral
 > **Estado:** ✅ LISTO PARA EJECUCIÓN
 > **Responsable:** ArchitectZero (AI Lead) + Development Team
-> **Rama Base:** `feature/ui-project-shell` (rebasada sobre `develop` - e948025)
+> **Rama Base:** `feature/ui-proyecto-shell` (rebasada sobre `develop` - e948025)
 
 ---
 
@@ -27,7 +27,7 @@
 
 ### Propósito
 
-Refactorizar Sprint 3 de **Chat-First** (3 HUs, 50 pts) a **Project-First Sequential Document Generation** (5 HUs, 70 pts) para mejorar UX, control del usuario y calidad de salidas documentales.
+Refactorizar Sprint 3 de **Chat-First** (3 HUs, 50 pts) a **Proyecto-First Sequential Documento Generation** (5 HUs, 70 pts) para mejorar UX, control del usuario y calidad de salidas documentoales.
 
 ### Cambio Fundamental
 
@@ -44,13 +44,13 @@ DESPUÉS: Usuario crea Proyecto → IA propone 25 documentos secuenciales → Us
 | **Duración** | 8 semanas (vs. 6 anterior) |
 | **HUs** | 5 (HU-3.1 a HU-3.5) |
 | **Ramas** | 5 (1 por HU) |
-| **Testing Target** | >85% cobertura |
+| **Pruebaing Target** | >85% cobertura |
 | **Inicio Esperado** | 06/02/2026 |
 | **Finalización** | 01/04/2026 |
 
 ### Decisión Requerida
 
-**¿Proceder con refactor Project-First?**
+**¿Proceder con refactor Proyecto-First?**
 
 - ✅ **SÍ** → Ejecutar este plan
 - ❌ **NO** → Mantener HU-3.x original
@@ -82,7 +82,7 @@ Problemas:
 - ❌ Sin control de flujo
 ```
 
-### Modelo Propuesto (HU-3.x v2 - Project-First Sequential)
+### Modelo Propuesto (HU-3.x v2 - Proyecto-First Sequential)
 
 ```
 Arquitectura Project-First Sequential:
@@ -332,12 +332,12 @@ Step 7: CI/CD Pipeline
    git push origin feature/ui-project-shell
    ```
    - Rama disponible en GitHub
-   - Documentación visible para revisar
+   - Documentoación visible para revisar
 
 3. **Crear PR Draft** (02/02-03/02)
-   - Título: "refactor(hu-3): Project-First Sequential Document Generation"
+   - Título: "refactor(hu-3): Proyecto-First Sequential Documento Generation"
    - Base: `develop`
-   - Head: `feature/ui-project-shell`
+   - Head: `feature/ui-proyecto-shell`
    - Estado: DRAFT (no reviewers aún)
 
 4. **Revisión Arquitectónica** (03/02-04/02)
@@ -359,26 +359,26 @@ Step 7: CI/CD Pipeline
 
 #### Criterios de Aceptación
 - ✅ Usuario confirmó (✅ Opción)
-- ✅ Rama en GitHub con documentación
+- ✅ Rama en GitHub con documentoación
 - ✅ PR Draft creada
 - ✅ Tech Lead aprobó
 - ✅ Team está listo
 
 ---
 
-### FASE 1: Foundation (Week 1-2)
+### FASE 1: Fundación (Week 1-2)
 
-**Objetivo:** Implementar HU-3.1 + HU-3.2 (Foundation)
+**Objetivo:** Implementar HU-3.1 + HU-3.2 (Fundación)
 
-#### HU-3.1: Project Shell (Semana 1-2)
+#### HU-3.1: Proyecto Shell (Semana 1-2)
 
-**Rama:** `feature/ui-project-shell` (ya existe)
+**Rama:** `feature/ui-proyecto-shell` (ya existe)
 
 **Responsable:** Frontend Lead
 
 **Tareas:**
 
-1. **Crear ProjectSidebar Widget** (Day 1-2)
+1. **Crear ProyectoSidebar Widget** (Day 1-2)
    ```dart
    // src/client/lib/presentation/screens/main_screen.dart
 
@@ -388,9 +388,9 @@ Step 7: CI/CD Pipeline
      // Selección proyecto
    }
    ```
-   - Tests: Widget tests (100% coverage)
+   - Pruebas: Widget pruebas (100% coverage)
 
-2. **Crear ProjectDashboard Widget** (Day 3-4)
+2. **Crear ProyectoDashboard Widget** (Day 3-4)
    ```dart
    // src/client/lib/presentation/screens/project_dashboard.dart
 
@@ -400,9 +400,9 @@ Step 7: CI/CD Pipeline
      // FileTreePanel (lista dirs)
    }
    ```
-   - Tests: Widget tests (100% coverage)
+   - Pruebas: Widget pruebas (100% coverage)
 
-3. **Crear Modal CreateProject** (Day 5)
+3. **Crear Modal CrearProyecto** (Day 5)
    ```dart
    // src/client/lib/presentation/widgets/create_project_dialog.dart
 
@@ -411,9 +411,9 @@ Step 7: CI/CD Pipeline
      // Botón: Crear
    }
    ```
-   - Tests: Modal interaction tests
+   - Pruebas: Modal interaction pruebas
 
-4. **Conectar con ProjectProvider (Riverpod)** (Day 6)
+4. **Conectar con ProyectoProvider (Riverpod)** (Day 6)
    ```dart
    // src/client/lib/providers/project_provider.dart
 
@@ -423,10 +423,10 @@ Step 7: CI/CD Pipeline
    });
    ```
 
-5. **Testing Completo** (Day 7)
-   - Unit tests: 100% coverage
-   - Widget tests: Interacciones
-   - Integration test: E2E flow (crear proyecto)
+5. **Pruebaing Completo** (Day 7)
+   - Unit pruebas: 100% coverage
+   - Widget pruebas: Interacciones
+   - Integración prueba: E2E flow (crear proyecto)
 
 **Puntos:** 13 (estimado)
 
@@ -436,19 +436,19 @@ Step 7: CI/CD Pipeline
 - ✅ Validar modal → Backend (próximo)
 - ✅ Dashboard muestra proyectos
 - ✅ Responsive (redimensionamiento)
-- ✅ Tests >85% cobertura
+- ✅ Pruebas >85% cobertura
 
 ---
 
-#### HU-3.2: FileSystemService (Semana 1-2, paralelo con HU-3.1)
+#### HU-3.2: ArchivoSystemService (Semana 1-2, paralelo con HU-3.1)
 
-**Rama:** `feature/backend-filesystem-service` (nueva)
+**Rama:** `feature/backend-archivosystem-service` (nueva)
 
 **Responsable:** Backend Lead
 
 **Tareas:**
 
-1. **Crear FileSystemService Core** (Day 1-3)
+1. **Crear ArchivoSystemService Core** (Day 1-3)
    ```python
    # src/server/services/filesystem/file_system_service.py
 
@@ -483,7 +483,7 @@ Step 7: CI/CD Pipeline
            # Validar permisos
            # Escribir archivo
    ```
-   - Tests: Unit tests (mocked file system)
+   - Pruebas: Unit pruebas (mocked archivo system)
 
 2. **Crear PathValidator** (Day 2-3)
    ```python
@@ -498,9 +498,9 @@ Step 7: CI/CD Pipeline
        def validate_permissions(path: str) -> bool:
            """Verificar permisos read/write"""
    ```
-   - Tests: Security tests (path traversal, permissions)
+   - Pruebas: Security pruebas (path traversal, permissions)
 
-3. **Crear Endpoint POST /api/v1/projects/create** (Day 4-5)
+3. **Crear Endpoint POST /api/v1/proyectos/crear** (Day 4-5)
    ```python
    # src/server/api/v1/endpoints/projects.py
 
@@ -513,29 +513,29 @@ Step 7: CI/CD Pipeline
        # Guardar en DB
        # Retornar respuesta
    ```
-   - Tests: Integration tests (mock DB)
+   - Pruebas: Integración pruebas (mock DB)
 
-4. **Crear Endpoints GET /api/v1/projects** (Day 5)
+4. **Crear Endpoints GET /api/v1/proyectos** (Day 5)
    ```python
    # GET /projects/ → lista proyectos
    # GET /projects/{id} → metadatos proyecto
    ```
 
-5. **Testing Completo** (Day 6-7)
-   - Unit tests: FileSystemService (pytest)
-   - Integration tests: Endpoints
+5. **Pruebaing Completo** (Day 6-7)
+   - Unit pruebas: ArchivoSystemService (pyprueba)
+   - Integración pruebas: Endpoints
    - E2E: Crear proyecto + verificar estructura en disk
 
 **Puntos:** 8 (estimado)
 
 **Criterios de Aceptación:**
-- ✅ create_project() crea estructura correcta
-- ✅ get_project_state() retorna docs existentes
-- ✅ write_validated_document() crea backup
+- ✅ crear_proyecto() crea estructura correcta
+- ✅ get_proyecto_state() retorna docs existentes
+- ✅ write_validated_documento() crea backup
 - ✅ Validación de permisos funciona
 - ✅ Path traversal prevenido
-- ✅ Endpoint POST /projects retorna JSON
-- ✅ Tests >90% cobertura
+- ✅ Endpoint POST /proyectos retorna JSON
+- ✅ Pruebas >90% cobertura
 
 ---
 
@@ -550,7 +550,7 @@ Step 7: CI/CD Pipeline
 1. **Analizar Templates** (Day 1-2)
    - Revisar 01-TEMPLATES/ en packages/knowledge_base
    - Mapear 25 templates → fases 10-CONTEXT, 20-REQUIREMENTS, etc.
-   - Documentar dependencias (Doc X requiere output de Doc Y)
+   - Documentoar dependencias (Doc X requiere output de Doc Y)
 
 2. **Diseñar Orquestador RAG** (Day 3-4)
    ```python
@@ -573,8 +573,8 @@ Step 7: CI/CD Pipeline
            # 5. Retornar propuesta
    ```
 
-3. **Documentar State Machine** (Day 5)
-   - Diagrama: Estados posibles por documento
+3. **Documentoar State Machine** (Day 5)
+   - Diagrama: Estados posibles por documentoo
    - Transiciones: Propuesto → Validado → Guardado
    - Excepciones: Qué pasa si usuario rechaza
 
@@ -604,11 +604,11 @@ Semana 2:
 
 ---
 
-### FASE 2: Core Logic (Week 3-5)
+### FASE 2: Lógica Central (Week 3-5)
 
-**Objetivo:** Implementar HU-3.3 (Chat Sequential Document Generation)
+**Objetivo:** Implementar HU-3.3 (Chat Sequential Documento Generation)
 
-#### HU-3.3: Chat Sequential Document Generation
+#### HU-3.3: Chat Sequential Documento Generation
 
 **Rama:** `feature/ui-chat-sequential-docs` (nueva)
 
@@ -618,29 +618,29 @@ Semana 2:
 
 **Tareas (Resumidas):**
 
-1. **Backend: RAGOrchestrator Implementation** (Week 3-4)
+1. **Backend: RAGOrchestrator Implementación** (Week 3-4)
    - Implementar RAGOrchestrator basado en spike
    - Conectar con VectorStoreService (S2)
    - Inyectar contexto de proyecto
    - Manejo de templates
 
-2. **Backend: DocumentProposalService** (Week 3-4)
+2. **Backend: DocumentoProposalService** (Week 3-4)
    - Servicio que mantiene estado de propuestas
    - Persistencia en BD (PROPOSAL_DOCUMENT table)
    - Historial de versiones
 
 3. **Frontend: ChatPanel Enhanced** (Week 3-5)
    - Input area para chat (user messages)
-   - Display de propuestas (DocumentProposalWidget)
+   - Display de propuestas (DocumentoProposalWidget)
    - Botones: Validar | Iterar
    - ProgressBar: "Doc X/25"
 
-4. **Frontend: DocumentProposalWidget** (Week 4)
+4. **Frontend: DocumentoProposalWidget** (Week 4)
    - Preview de markdown
    - Edit mode opcional
    - Botones de acción
 
-5. **Integration: Chat ↔ RAG Pipeline** (Week 4-5)
+5. **Integración: Chat ↔ RAG Pipeline** (Week 4-5)
    - WebSocket para streaming (opcional SSE en W5)
    - Manejo de estado complejo
    - Error handling (próxima HU)
@@ -653,16 +653,16 @@ Semana 2:
 - ✅ Si "Iterar" → Chat refina → RAG regenera
 - ✅ Si "Validar" → Doc guardado → Doc 2 propuesta
 - ✅ Flujo es secuencial (nunca paralelo)
-- ✅ Tests >85% cobertura
+- ✅ Pruebas >85% cobertura
 
 **Hitos Intermedios:**
 - [ ] Week 3: Backend 50%, Frontend 30%
 - [ ] Week 4: Backend 100%, Frontend 70%
-- [ ] Week 5: Frontend 100%, Integration 100%, Tests 100%
+- [ ] Week 5: Frontend 100%, Integración 100%, Pruebas 100%
 
 ---
 
-### FASE 3: Resilience & Performance (Week 6)
+### FASE 3: Resiliencia & Performance (Week 6)
 
 **Objetivo:** Implementar HU-3.4 + HU-3.5
 
@@ -692,15 +692,15 @@ Semana 2:
 
 ---
 
-### FASE 4: Testing & Polish (Week 7-8)
+### FASE 4: Pruebaing & Polish (Week 7-8)
 
-**Objetivo:** QA, bug fixes, documentación final
+**Objetivo:** QA, bug fixes, documentoación final
 
 #### Tareas
-- Testing E2E completo (flow 25 docs)
+- Pruebaing E2E completo (flow 25 docs)
 - Performance profiling
-- Cross-platform testing (Windows/Linux/macOS)
-- Documentación usuario
+- Cross-platform pruebaing (Windows/Linux/macOS)
+- Documentoación usuario
 - Staging deployment
 
 ---
@@ -761,7 +761,7 @@ Semana 2:
 **Severidad:** MEDIUM | **Probabilidad:** HIGH
 
 **Descripción:**
-Orquestar 25 documentos secuenciales con dependencias complejas requiere state machine sofisticada.
+Orquestar 25 documentoos secuenciales con dependencias complejas requiere state machine sofisticada.
 
 **Impacto:**
 - Delays en HU-3.3 (impacta W4-W5)
@@ -769,12 +769,12 @@ Orquestar 25 documentos secuenciales con dependencias complejas requiere state m
 
 **Mitigación:**
 1. **Spike exhaustiva (W1):** 3-4 días diseñando RAGOrchestrator
-2. **Prototyping:** Crear POC con 3-5 documentos antes de 25
-3. **Documentation:** Pseudocódigo + diagramas claros
+2. **Prototyping:** Crear POC con 3-5 documentoos antes de 25
+3. **Documentoation:** Pseudocódigo + diagramas claros
 4. **Code review temprana:** Tech Lead revisa W3 día 3
 
 **Contingency:**
-- Si spike falla: Reducir a 10 documentos clave (HU-3.3 Lite)
+- Si spike falla: Reducir a 10 documentoos clave (HU-3.3 Lite)
 - Timeline: +1 semana si necesario
 
 ---
@@ -784,16 +784,16 @@ Orquestar 25 documentos secuenciales con dependencias complejas requiere state m
 **Severidad:** MEDIUM | **Probabilidad:** MEDIUM
 
 **Descripción:**
-FileSystemService necesita escribir en disco con permisos variables (Windows vs. Linux).
+ArchivoSystemService necesita escribir en disco con permisos variables (Windows vs. Linux).
 
 **Impacto:**
 - Fallos en multi-OS (impacta HU-3.2)
 - User confusion si no tiene permisos
 
 **Mitigación:**
-1. **Testing multi-OS (W1-W2):**
+1. **Pruebaing multi-OS (W1-W2):**
    - Windows: Vagrant VM o GitHub Actions
-   - Linux: Native testing
+   - Linux: Native pruebaing
    - macOS: GitHub Actions
 2. **Path validation exhaustiva:** Detectar problemas temprano
 3. **Clear error messages:** User sabe qué hacer
@@ -824,7 +824,7 @@ Scope creep, underestimation, o delays externos.
 **Contingency:**
 1. Si W1-W2 slip: Reducir HU-3.4 (error handling) a "básico"
 2. Si W3-W5 slip: Reducir HU-3.5 (streaming) a "versión 2"
-3. Si W6-W7 slip: Omitir cross-platform testing (solo Linux)
+3. Si W6-W7 slip: Omitir cross-platform pruebaing (solo Linux)
 
 ---
 
@@ -842,7 +842,7 @@ RAG puede generar propuestas de baja calidad si templates o contexto es pobre.
 **Mitigación:**
 1. **Templates quality (Pre-W1):** Revisar packages/knowledge_base/
 2. **Context injection (W3):** Diseñar bien cómo se inyecta contexto
-3. **Feedback loop (W4):** User testing temprana con propuestas reales
+3. **Feedback loop (W4):** User pruebaing temprana con propuestas reales
 4. **Fine-tuning (W5-W6):** Ajustar prompts según feedback
 
 **Contingency:**
@@ -855,16 +855,16 @@ RAG puede generar propuestas de baja calidad si templates o contexto es pobre.
 **Severidad:** MEDIUM | **Probabilidad:** MEDIUM
 
 **Descripción:**
-Mantener contexto conversacional a través de 25 documentos y múltiples iteraciones.
+Mantener contexto conversacional a través de 25 documentoos y múltiples iteraciones.
 
 **Impacto:**
-- Chat pierde contexto entre documentos
+- Chat pierde contexto entre documentoos
 - Generaciones incoherentes
 
 **Mitigación:**
 1. **State machine clara (Spike):** Definir exactamente qué contexto persiste
 2. **DB schema (HU-3.3):** Diseñar bien cómo guardar conversación
-3. **Unit tests (W4):** Verificar contexto se mantiene
+3. **Unit pruebas (W4):** Verificar contexto se mantiene
 
 ---
 
@@ -945,7 +945,7 @@ Mantener contexto conversacional a través de 25 documentos y múltiples iteraci
 
 ## ✅ Checklist de Hitos
 
-### HITO 1: Foundation Ready (05/02 - antes de W1)
+### HITO 1: Fundación Ready (05/02 - antes de W1)
 
 ```
 ☐ Usuario confirmó decisión (✅ Opción A)
@@ -958,7 +958,7 @@ Mantener contexto conversacional a través de 25 documentos y múltiples iteraci
 
 ---
 
-### HITO 2: Foundation Complete (12/02 - fin W2)
+### HITO 2: Fundación Complete (12/02 - fin W2)
 
 ```
 ☐ HU-3.1 Merged (UI completa, tests >85%)
@@ -970,7 +970,7 @@ Mantener contexto conversacional a través de 25 documentos y múltiples iteraci
 
 ---
 
-### HITO 3: Core Logic Complete (12/03 - fin W5)
+### HITO 3: Lógica Central Complete (12/03 - fin W5)
 
 ```
 ☐ HU-3.3 Merged (Chat sequential, tests >85%)
@@ -1011,13 +1011,13 @@ Mantener contexto conversacional a través de 25 documentos y múltiples iteraci
 
 ### Apéndice A: Especificaciones Técnicas Detalladas
 
-Ver documentos:
+Ver documentoos:
 - [HU-3_SPECIFICATIONS.es.md](./HU-3_SPECIFICATIONS.es.md) - Especificación completa de cada HU
 - [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md) - Código de ejemplo + arquitectura
 
 ### Apéndice B: Análisis y Justificación
 
-Ver documentos:
+Ver documentoos:
 - [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md) - Análisis comparativo
 - [HU-3_EXECUTIVE_SUMMARY.es.md](./HU-3_EXECUTIVE_SUMMARY.es.md) - Resumen ejecutivo
 
@@ -1102,7 +1102,7 @@ SEMANA 2 (13/02 - 19/02)
 
 Este Plan Maestro proporciona:
 
-✅ **Visión clara:** De Chat-First a Project-First Sequential
+✅ **Visión clara:** De Chat-First a Proyecto-First Sequential
 ✅ **Timeline realista:** 8 semanas con mitigaciones
 ✅ **Estructura definida:** 5 HUs independientes y secuenciales
 ✅ **Recursos asignados:** 3.5 FTE

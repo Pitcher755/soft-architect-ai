@@ -38,7 +38,7 @@ Validación ejecutada antes de push para la rama `feature/settings-ui-completion
 
 ### Cambios validados
 - Corrección de issues de `flutter analyze` en tests:
-  - uso deprecado de `Color.value` en pruebas de AppColors
+  - uso deprecado de `Color.value` en tests de AppColors
   - warnings de `setMockInitialValues` en tests de localización/proveedores
   - warnings por uso protegido de `state` en tests de locale provider
 - Corrección de infos de analyzer en cliente (`avoid_catches_without_on_clauses`).
@@ -53,7 +53,7 @@ Validación ejecutada antes de push para la rama `feature/settings-ui-completion
 - Corrección de test de arquitectura frágil:
   - `tests/server/unit/test_architecture.py` deja de exigir un directorio `tests/` anidado inexistente.
 
-### Resultado de validaciones
+### Result de validaciones
 - `flutter analyze` (client): **sin issues**
 - `flutter analyze` (tests): **sin issues**
 - `pytest tests/server/unit/`: **173 passed**

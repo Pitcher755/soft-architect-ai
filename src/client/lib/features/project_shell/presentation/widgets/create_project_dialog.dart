@@ -65,7 +65,7 @@ class CreateProjectDialog {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Campo Nombre del Proyecto
+                // Project Name Field
                 LabeledTextField(
                   label: 'Nombre del Proyecto',
                   controller: nameController,
@@ -75,7 +75,7 @@ class CreateProjectDialog {
                 ),
                 const SizedBox(height: 24),
 
-                // Campo Ruta Base
+                // Base Path Field
                 PathPickerField(
                   label: 'Ruta Base (Carpeta Contenedora)',
                   controller: pathController,
@@ -84,7 +84,7 @@ class CreateProjectDialog {
                 ),
                 const SizedBox(height: 24),
 
-                // Campo Descripción
+                // Description Field
                 LabeledTextArea(
                   label: 'Descripción Corta',
                   controller: descController,
@@ -142,7 +142,7 @@ class CreateProjectDialog {
     String basePath,
     String description,
   ) async {
-    // 1. Validaciones básicas usando el helper
+    // 1. Basic validations using the helper
     final validationError = validateProjectInputs(
       projectName: projectName,
       basePath: basePath,
@@ -153,11 +153,11 @@ class CreateProjectDialog {
       return;
     }
 
-    // 2. Construcción de rutas usando package:path para ser cross-platform
+    // 2. Path construction using package:path for cross-platform support
     final fullProjectPath = '$basePath/$projectName';
 
     try {
-      // 3. Usar el servicio para crear la estructura completa
+      // 3. Use the service to create the complete structure
       final filesystemService = FilesystemService();
       await filesystemService.createProjectStructure(
         basePath,
@@ -165,21 +165,21 @@ class CreateProjectDialog {
         description,
       );
 
-      // 4. ACTUALIZAR ESTADO GLOBAL (Riverpod)
-      // Esto hace que aparezca en la lista inmediatamente
+      // 4. UPDATE GLOBAL STATE (Riverpod)
+      // This makes it appear in the list immediately
       await ref
           .read(projectsProvider.notifier)
           .addProject(projectName, fullProjectPath, description);
 
-      // 5. Cerrar diálogo y navegar
+      // 5. Close dialog and navigate
       if (dialogContext.mounted) {
-        Navigator.pop(dialogContext); // Cierra el modal
+        Navigator.pop(dialogContext); // Close the modal
       }
 
       if (parentContext.mounted) {
         showSuccess(
           parentContext,
-          'Proyecto "$projectName" creado exitosamente',
+          'Project "$projectName" created successfully',
         );
         await navigateToProjectShell(parentContext, ref, fullProjectPath);
       }

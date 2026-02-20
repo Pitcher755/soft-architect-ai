@@ -11,20 +11,20 @@
 ### Implementación
 
 ✅ **ValidationConstants.dart** - Constantes centralizadas
-- `projectNamePattern`: `^[a-zA-Z0-9_-]{3,50}$`
+- `proyectoNamePattern`: `^[a-zA-Z0-9_-]{3,50}$`
 - `disallowedPathComponents`: `['..', '~', '$', '`']`
-- `maxFilePathLength`: 4096
+- `maxArchivoPathLength`: 4096
 - Whitelist de extensiones permitidas
 
 ✅ **PathValidator.dart** - Seguridad de rutas
-- `validateFilePathInProject()` - Validación completa
+- `validateArchivoPathInProyecto()` - Validación completa
 - Rechaza: rutas absolutas, traversal (..), componentes disallowed
-- Valida boundary: archivo dentro de project dir
+- Valida boundary: archivo dentro de proyecto dir
 - Extrae y valida extensiones
 
-✅ **ProjectValidationUseCase.dart** - Validación mejorada
+✅ **ProyectoValidationUseCase.dart** - Validación mejorada
 - `isValidName()` - Regex + length checks
-- `isSafeName()` - Rechaza hidden files, patrones sospechosos
+- `isSafeName()` - Rechaza hidden archivos, patrones sospechosos
 - `validateCompleteOrThrow()` - Validación total (sintaxis + seguridad)
 
 ### Checklist
@@ -42,26 +42,26 @@
 
 ### Implementación
 
-✅ **Base Class: ProjectShellException**
+✅ **Base Class: ProyectoShellException**
 - `code`: SYS_001, DB_ERR_001, etc.
 - `message`: Técnico (para logs)
 - `toUserMessage()`: Traducido, user-friendly
 - Nunca expone stack traces al usuario
 
 ✅ **Excepciones Específicas:**
-- `InvalidProjectNameException` (PROJ_001)
-- `DuplicateProjectNameException` (PROJ_002)
-- `ProjectNotFoundException` (PROJ_003)
+- `InvalidProyectoNameException` (PROJ_001)
+- `DuplicateProyectoNameException` (PROJ_002)
+- `ProyectoNotFoundException` (PROJ_003)
 - `PathTraversalException` (SEC_001)
 - `UnauthorizedException` (SEC_002)
 - `DatabaseException` (DB_ERR_001)
-- `FileSystemException` (FS_ERR_001)
-- `InvalidFileTypeException` (FILE_001)
+- `ArchivoSystemException` (FS_ERR_001)
+- `InvalidArchivoTypeException` (FILE_001)
 
 ### Checklist
 
 ✅ NUNCA expongas stack traces al usuario
-✅ Error codes documentados
+✅ Error codes documentoados
 ✅ Mensajes amigables en `toUserMessage()`
 ✅ Logging estructurado con `developer.log()`
 ✅ Stack traces solo en desarrollo
@@ -101,13 +101,13 @@ logger.info('API Key: ${apiKey}');
 ✅ Métodos de logging usarán:
 - Nombres sin rutas absolutas
 - IDs en lugar de valores sensibles
-- Truncado a maxLogLength
+- Tejecutarcado a maxLogLength
 
 ---
 
 ## 🔐 D. Type Safety (0 Errors)
 
-### Resultados
+### Resultadoados
 
 ```
 ✅ flutter analyze: 43 issues (0 ERRORS)
@@ -119,8 +119,8 @@ logger.info('API Key: ${apiKey}');
 
 ✅ **Return types:**
 - `Future<void>` - Sin valor de retorno
-- `Future<List<Project>>` - Con valor
-- `String validateFilePathInProject()` - Retorna String
+- `Future<List<Proyecto>>` - Con valor
+- `String validateArchivoPathInProyecto()` - Retorna String
 
 ✅ **Exception handling:**
 - Excepciones específicas con `on ExceptionType`
@@ -172,7 +172,7 @@ await database.transaction((txn) async {
 
 ✅ TODOS los queries usan `whereArgs`
 ✅ NO concatenación de strings en SQL
-✅ UNIQUE constraint en `projects.name`
+✅ UNIQUE constraint en `proyectos.name`
 ✅ Transacciones para multi-operaciones
 ✅ Input validation antes de DB
 
@@ -231,26 +231,26 @@ dart format lib/ tests/
 
 ### AGENTS.md § 8 Compliance
 
-| Item | Status | Evidence |
+| Item | Estado | Evidence |
 |------|--------|----------|
 | Type Safety 0 errors | ✅ | `flutter analyze: 0 ERRORS` |
-| Return types ALL funcs | ✅ | ProjectValidationUseCase, PathValidator |
-| Path traversal prevention | ✅ | PathValidator.validateFilePathInProject() |
+| Return types ALL funcs | ✅ | ProyectoValidationUseCase, PathValidator |
+| Path traversal prevention | ✅ | PathValidator.validateArchivoPathInProyecto() |
 | Logging no rutas | ✅ | ValidationConstants.sensitivePatterns |
-| Exception hierarchy | ✅ | ProjectShellException + 8 subclases |
+| Exception hierarchy | ✅ | ProyectoShellException + 8 subclases |
 | DB parameterized | ✅ | whereArgs en todas las queries |
 | UNIQUE constraints | ✅ | SQLiteDataSource creation |
-| Validación input | ✅ | ProjectValidationUseCase + PathValidator |
+| Validación input | ✅ | ProyectoValidationUseCase + PathValidator |
 
 ### OWASP Top 10
 
-| Issue | Mitigación | Status |
+| Issue | Mitigación | Estado |
 |-------|-----------|--------|
 | A01: Broken Access Control | Authorization checks (future) | ✅ Preparado |
 | A02: Cryptographic Failures | Parameterized queries | ✅ |
 | A03: Injection | Input validation + parameterized | ✅ |
 | A04: Insecure Design | Security-by-design patterns | ✅ |
-| A05: Security Misconfiguration | Constants centralizadas | ✅ |
+| A05: Security Misconfiguración | Constants centralizadas | ✅ |
 | A06: Vulnerable Components | Dependencies actualizadas | ✅ |
 | A07: Auth Failures | Exception handling seguro | ✅ |
 | A08: Data Integrity | Transactions, UNIQUE constraints | ✅ |
@@ -259,15 +259,15 @@ dart format lib/ tests/
 
 ---
 
-## 📝 Files Modified/Created
+## 📝 Archivos Modified/Creard
 
 **Nuevos archivos:**
 - ✅ `core/constants/validation_constants.dart` - Constantes centralizadas
 - ✅ `core/security/path_validator.dart` - Validación de rutas
 
 **Mejorados:**
-- ✅ `core/exceptions/project_shell_exceptions.dart` - 8 excepciones
-- ✅ `domain/use_cases/project_validation_use_case.dart` - Validación mejorada
+- ✅ `core/exceptions/proyecto_shell_exceptions.dart` - 8 excepciones
+- ✅ `domain/use_cases/proyecto_validation_use_case.dart` - Validación mejorada
 - ✅ `main.dart` - Catch con tipo explícito
 - ✅ Otros 25+ archivos - Formateados y linted
 
@@ -285,4 +285,4 @@ dart format lib/ tests/
 - ✅ OWASP compliance
 - ✅ AGENTS.md compliance
 
-**Status:** 🟢 APROBADO PARA PRODUCCIÓN
+**Estado:** 🟢 APROBADO PARA PRODUCCIÓN

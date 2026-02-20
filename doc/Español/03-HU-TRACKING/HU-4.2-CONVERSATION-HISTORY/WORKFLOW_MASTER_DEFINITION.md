@@ -1,22 +1,22 @@
 # 💾 WORKFLOW MASTER: HU-4.2 Conversation History & Persistence
 
-> **Version:** 1.0.0
+> **Versión:** 1.0.0
 > **Methodology:** TDD Strict + Clean Architecture + Security-First
 > **Author:** ArchitectZero
 > **Last Updated:** 2026-02-14
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Introduction & Philosophy](#1-introduction--philosophy)
-2. [Phase 0: Setup & Database Schema](#phase-0-setup--database-schema)
-3. [Phase 1: Domain Layer (TDD Red/Green)](#phase-1-domain-layer-tdd-redgreen)
-4. [Phase 2: Infrastructure - SQLAlchemy (TDD Red/Green)](#phase-2-infrastructure---sqlalchemy-tdd-redgreen)
-5. [Phase 3: Service Layer - Context Window (TDD Red/Green)](#phase-3-service-layer---context-window-tdd-redgreen)
-6. [Phase 4: FastAPI Endpoints (TDD Red/Green)](#phase-4-fastapi-endpoints-tdd-redgreen)
-7. [Phase 5: Quality & Security Hardening](#phase-5-quality--security-hardening)
-8. [Phase 6: Validation & PR](#phase-6-validation--pr)
+2. [Fase 0: Setup & Database Schema](#fase-0-setup--database-schema)
+3. [Fase 1: Domain Layer (TDD Red/Green)](#fase-1-domain-layer-tdd-redgreen)
+4. [Fase 2: Infraestructura - SQLAlchemy (TDD Red/Green)](#fase-2-infrastructure---sqlalchemy-tdd-redgreen)
+5. [Fase 3: Service Layer - Context Window (TDD Red/Green)](#fase-3-service-layer---context-window-tdd-redgreen)
+6. [Fase 4: FastAPI Endpoints (TDD Red/Green)](#fase-4-fastapi-endpoints-tdd-redgreen)
+7. [Fase 5: Quality & Security Hardening](#fase-5-quality--security-hardening)
+8. [Fase 6: Validation & PR](#fase-6-validation--pr)
 9. [Emergency Procedures](#emergency-procedures)
 10. [Success Criteria Matrix](#success-criteria-matrix)
 
@@ -29,8 +29,8 @@
 **"Construir el sistema de memoria persistente del proyecto con paranoia sobre SQL injection y consistencia de datos"**
 
 Este workflow está diseñado para:
-- ✅ **TDD Estricto:** Ninguna línea de código sin test previo (Red → Green → Refactor).
-- ✅ **Clean Architecture:** Separación de capas (Domain → Infrastructure → Service → API).
+- ✅ **TDD Estricto:** Ninguna línea de código sin prueba previo (Red → Green → Refactor).
+- ✅ **Clean Architecture:** Separación de capas (Domain → Infraestructura → Service → API).
 - ✅ **Security-First:** Prevención de inyecciones SQL mediante ORM exclusivamente (ZERO raw SQL).
 - ✅ **Type Safety:** 0 errores de Pyright, contratos explícitos con Protocols.
 - ✅ **Async-First:** SQLAlchemy 2.0 async API para escalabilidad.
@@ -41,11 +41,11 @@ Este workflow está diseñado para:
 
 | Factor | Acceptance | Validation Method |
 |--------|-----------|------------------|
-| **Test Coverage** | ≥85% (domain ≥95%) | `pytest --cov --cov-fail-under=85` |
+| **Prueba Coverage** | ≥85% (domain ≥95%) | `pyprueba --cov --cov-fail-under=85` |
 | **SQL Injection Prevention** | 0 vulnerabilities | `bandit -r app/` + manual ORM validation |
 | **Type Safety** | 0 Pyright errors | `python -m pyright app/` |
-| **Data Integrity** | Foreign keys enforced | Integration tests with constraint violations |
-| **Concurrent Writes** | No data corruption | Parallel transaction tests |
+| **Data Integrity** | Foreign keys enforced | Integración pruebas with constraint violations |
+| **Concurrent Writes** | No data corruption | Parallel transaction pruebas |
 | **Code Quality** | Black + Ruff clean | PRE_PUSH_VALIDATION_MASTER.sh |
 
 ---
@@ -54,14 +54,14 @@ Este workflow está diseñado para:
 
 1. **NEVER use raw SQL** (only ORM queries to prevent SQL injection)
 2. **NEVER expose SQLAlchemy models outside infrastructure layer** (domain entities only)
-3. **NEVER commit code without tests passing**
+3. **NEVER commit code without pruebas passing**
 4. **NEVER skip foreign key constraints** (enforce referential integrity)
-5. **NEVER push without running `PRE_PUSH_VALIDATION_MASTER.sh`**
+5. **NEVER push without ejecutarning `PRE_PUSH_VALIDATION_MASTER.sh`**
 6. **ALWAYS use async/await** for database operations (AsyncSession only)
 
 ---
 
-## Phase 0: Setup & Database Schema
+## Fase 0: Setup & Database Schema
 
 **Duration:** 1-2 hours
 **Objective:** Define exact database schema and API contracts before coding
@@ -85,7 +85,7 @@ mkdir -p doc/03-HU-TRACKING/HU-4.2-CONVERSATION-HISTORY
 
 ---
 
-#### 0.2 Define Database Schema (Design Phase)
+#### 0.2 Define Database Schema (Design Fase)
 
 **Tables Required:**
 
@@ -121,15 +121,15 @@ CREATE INDEX idx_messages_created_at ON messages(created_at);
 
 **Relationships:**
 - `conversations` 1:N `messages` (one conversation has many messages)
-- Foreign key cascade: Deleting conversation deletes all messages
+- Foreign key cascade: Deleting conversation eliminars all messages
 
 ---
 
 #### 0.3 Define Pydantic Schema Contracts
 
-**File:** `src/server/app/domain/schemas/conversation.py`
+**Archivo:** `src/server/app/domain/schemas/conversation.py`
 
-Create schema skeleton (structure only):
+Crear schema skeleton (structure only):
 
 ```python
 """
@@ -201,9 +201,9 @@ class ConversationList(BaseModel):
 
 ---
 
-### 📝 Phase 0 Validation
+### 📝 Fase 0 Validation
 
-Run this checklist before proceeding to Phase 1:
+Ejecutar this checklist before proceeding to Fase 1:
 
 ```bash
 # 1. Verify branch
@@ -217,22 +217,22 @@ ls doc/03-HU-TRACKING/HU-4.2-CONVERSATION-HISTORY/
 cat doc/03-HU-TRACKING/HU-4.2-CONVERSATION-HISTORY/WORKFLOW_MASTER_DEFINITION.md | grep "conversations table"
 ```
 
-✅ **Phase 0 Complete** when all files created and schema validated.
+✅ **Fase 0 Complete** when all archivos creard and schema validated.
 
 ---
 
-## Phase 1: Domain Layer (TDD Red/Green)
+## Fase 1: Domain Layer (TDD Red/Green)
 
 **Duration:** 2 hours
-**Objective:** Create domain entities and repository protocol with TDD validation
+**Objective:** Crear domain entities and repository protocol with TDD validation
 
 ---
 
 ### 🔴 Step 1.1: Domain Entities (Red → Green)
 
-#### 1.1.1 Create Test First (RED)
+#### 1.1.1 Crear Prueba First (RED)
 
-**File:** `tests/server/unit/domain/entities/test_message.py`
+**Archivo:** `pruebas/server/unit/domain/entities/prueba_message.py`
 
 ```python
 """
@@ -328,7 +328,7 @@ def test_message_role_must_be_valid_enum():
         )
 ```
 
-#### 1.1.2 Run Test (Should FAIL - RED)
+#### 1.1.2 Ejecutar Prueba (Should FAIL - RED)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
@@ -342,7 +342,7 @@ pytest tests/server/unit/domain/entities/test_message.py -v
 
 #### 1.1.3 Implement Minimum Code (GREEN)
 
-**File:** `src/server/app/domain/entities/message.py`
+**Archivo:** `src/server/app/domain/entities/message.py`
 
 ```python
 """
@@ -394,21 +394,21 @@ class Message:
             raise ValueError(f"Invalid role: {self.role}. Must be MessageRole enum.")
 ```
 
-#### 1.1.4 Run Test (Should PASS - GREEN)
+#### 1.1.4 Ejecutar Prueba (Should PASS - GREEN)
 
 ```bash
 pytest tests/server/unit/domain/entities/test_message.py -v
 ```
 
-**Expected Output:** All 4 tests pass ✅
+**Expected Output:** All 4 pruebas pass ✅
 
 ---
 
 ### 🔴 Step 1.2: Conversation Entity (Red → Green)
 
-#### 1.2.1 Create Test First (RED)
+#### 1.2.1 Crear Prueba First (RED)
 
-**File:** `tests/server/unit/domain/entities/test_conversation.py`
+**Archivo:** `pruebas/server/unit/domain/entities/prueba_conversation.py`
 
 ```python
 """
@@ -523,7 +523,7 @@ def test_conversation_can_have_messages():
 
 #### 1.2.2 Implement Conversation Entity (GREEN)
 
-**File:** `src/server/app/domain/entities/conversation.py`
+**Archivo:** `src/server/app/domain/entities/conversation.py`
 
 ```python
 """
@@ -580,7 +580,7 @@ class Conversation:
         return self.messages[-n:] if len(self.messages) >= n else self.messages
 ```
 
-#### 1.2.3 Run Tests (GREEN)
+#### 1.2.3 Ejecutar Pruebas (GREEN)
 
 ```bash
 pytest tests/server/unit/domain/entities/test_conversation.py -v
@@ -592,7 +592,7 @@ pytest tests/server/unit/domain/entities/test_conversation.py -v
 
 #### 1.3.1 Define Protocol
 
-**File:** `src/server/app/domain/repositories/conversation_repository.py`
+**Archivo:** `src/server/app/domain/repositories/conversation_repository.py`
 
 ```python
 """
@@ -716,9 +716,9 @@ class ConversationRepository(Protocol):
 
 ---
 
-### 📝 Phase 1 Validation
+### 📝 Fase 1 Validation
 
-Run these commands:
+Ejecutar these commands:
 
 ```bash
 # 1. Run domain entity tests
@@ -734,14 +734,14 @@ python -m pyright src/server/app/domain/
 black src/server/app/domain/
 ```
 
-✅ **Phase 1 Complete** when:
-- 8 tests pass
+✅ **Fase 1 Complete** when:
+- 8 pruebas pass
 - Coverage >95%
 - 0 Pyright errors
 
 ---
 
-## Phase 2: Infrastructure - SQLAlchemy (TDD Red/Green)
+## Fase 2: Infraestructura - SQLAlchemy (TDD Red/Green)
 
 **Duration:** 3 hours
 **Objective:** Implement database models and repository adapter with async support
@@ -750,9 +750,9 @@ black src/server/app/domain/
 
 ### 🔴 Step 2.1: SQLAlchemy Models (Red → Green)
 
-#### 2.1.1 Create Database Configuration
+#### 2.1.1 Crear Database Configuración
 
-**File:** `src/server/app/infrastructure/persistence/database.py`
+**Archivo:** `src/server/app/infrastructure/persistence/database.py`
 
 ```python
 """
@@ -821,9 +821,9 @@ async def drop_tables():
         await conn.run_sync(Base.metadata.drop_all)
 ```
 
-#### 2.1.2 Create SQLAlchemy Models
+#### 2.1.2 Crear SQLAlchemy Models
 
-**File:** `src/server/app/infrastructure/persistence/models/conversation_model.py`
+**Archivo:** `src/server/app/infrastructure/persistence/models/conversation_model.py`
 
 ```python
 """
@@ -887,7 +887,7 @@ class ConversationModel(Base):
     )
 ```
 
-**File:** `src/server/app/infrastructure/persistence/models/message_model.py`
+**Archivo:** `src/server/app/infrastructure/persistence/models/message_model.py`
 
 ```python
 """
@@ -950,9 +950,9 @@ class MessageModel(Base):
 
 ### 🔴 Step 2.2: Repository Adapter (Red → Green)
 
-#### 2.2.1 Create Test First (RED)
+#### 2.2.1 Crear Prueba First (RED)
 
-**File:** `tests/server/unit/infrastructure/persistence/test_sqlalchemy_conversation_repository.py`
+**Archivo:** `pruebas/server/unit/infrastructure/persistence/prueba_sqlalchemy_conversation_repository.py`
 
 ```python
 """
@@ -1043,7 +1043,7 @@ async def test_get_conversation_returns_none_when_not_found():
 
 #### 2.2.2 Implement Repository Adapter (GREEN)
 
-**File:** `src/server/app/infrastructure/persistence/repositories/sqlalchemy_conversation_repository.py`
+**Archivo:** `src/server/app/infrastructure/persistence/repositories/sqlalchemy_conversation_repository.py`
 
 ```python
 """
@@ -1201,9 +1201,9 @@ class SQLAlchemyConversationRepository:
 
 ---
 
-### 🔴 Step 2.3: Integration Tests (Database)
+### 🔴 Step 2.3: Integración Pruebas (Database)
 
-**File:** `tests/server/integration/persistence/test_conversation_crud.py`
+**Archivo:** `pruebas/server/integration/persistence/prueba_conversation_crud.py`
 
 ```python
 """
@@ -1325,9 +1325,9 @@ async def test_get_last_n_messages_returns_correct_count(db_session):
 
 ---
 
-### 📝 Phase 2 Validation
+### 📝 Fase 2 Validation
 
-Run these commands:
+Ejecutar these commands:
 
 ```bash
 # 1. Run unit tests for repository
@@ -1343,25 +1343,25 @@ python -m pyright src/server/app/infrastructure/
 black src/server/app/infrastructure/
 ```
 
-✅ **Phase 2 Complete** when:
-- All tests pass (unit + integration)
+✅ **Fase 2 Complete** when:
+- All pruebas pass (unit + integration)
 - Coverage >90%
 - 0 Pyright errors
 
 ---
 
-## Phase 3: Service Layer - Context Window (TDD Red/Green)
+## Fase 3: Service Layer - Context Window (TDD Red/Green)
 
 **Duration:** 2 hours
-**Objective:** Create service layer with context window logic and integrate with chat endpoint
+**Objective:** Crear service layer with context window logic and integrate with chat endpoint
 
 ---
 
 ### 🔴 Step 3.1: Conversation Service (Red → Green)
 
-#### 3.1.1 Create Test First (RED)
+#### 3.1.1 Crear Prueba First (RED)
 
-**File:** `tests/server/unit/services/conversation/test_conversation_service.py`
+**Archivo:** `pruebas/server/unit/services/conversation/prueba_conversation_service.py`
 
 ```python
 """
@@ -1441,7 +1441,7 @@ async def test_create_conversation_calls_repository():
 
 #### 3.1.2 Implement Service (GREEN)
 
-**File:** `src/server/app/services/conversation/conversation_service.py`
+**Archivo:** `src/server/app/services/conversation/conversation_service.py`
 
 ```python
 """
@@ -1521,7 +1521,7 @@ class ConversationService:
 
 ---
 
-### 📝 Phase 3 Validation
+### 📝 Fase 3 Validation
 
 ```bash
 # 1. Run service tests
@@ -1534,14 +1534,14 @@ python -m pyright src/server/app/services/
 black src/server/app/services/
 ```
 
-✅ **Phase 3 Complete** when:
-- All tests pass
+✅ **Fase 3 Complete** when:
+- All pruebas pass
 - Coverage >90%
 - 0 Pyright errors
 
 ---
 
-## Phase 4: FastAPI Endpoints (TDD Red/Green)
+## Fase 4: FastAPI Endpoints (TDD Red/Green)
 
 **Duration:** 2 hours
 **Objective:** Implement REST endpoints for conversation CRUD
@@ -1550,9 +1550,9 @@ black src/server/app/services/
 
 ### 🔴 Step 4.1: API Endpoints (Red → Green)
 
-#### 4.1.1 Create Test First (RED)
+#### 4.1.1 Crear Prueba First (RED)
 
-**File:** `tests/server/integration/api/v1/test_conversation_endpoints.py`
+**Archivo:** `pruebas/server/integration/api/v1/prueba_conversation_endpoints.py`
 
 ```python
 """
@@ -1624,7 +1624,7 @@ async def test_list_conversations_returns_200():
 
 #### 4.1.2 Implement Endpoints (GREEN)
 
-**File:** `src/server/app/api/v1/conversations.py`
+**Archivo:** `src/server/app/api/v1/conversations.py`
 
 ```python
 """
@@ -1723,7 +1723,7 @@ app.include_router(conversations.router)
 
 ---
 
-### 📝 Phase 4 Validation
+### 📝 Fase 4 Validation
 
 ```bash
 # 1. Run integration tests
@@ -1736,23 +1736,23 @@ python -m pyright src/server/app/api/
 black src/server/app/api/
 ```
 
-✅ **Phase 4 Complete** when:
-- All integration tests pass
+✅ **Fase 4 Complete** when:
+- All integration pruebas pass
 - Coverage >85%
 - 0 Pyright errors
 
 ---
 
-## Phase 5: Quality & Security Hardening
+## Fase 5: Quality & Security Hardening
 
 **Duration:** 2 hours
-**Objective:** Verify coverage, audit security, create documentation
+**Objective:** Verify coverage, audit security, crear documentoation
 
 ---
 
 ### ✅ Checklist
 
-#### 5.1 Test Coverage Verification
+#### 5.1 Prueba Coverage Verificación
 
 ```bash
 # Run full test suite with coverage
@@ -1782,11 +1782,11 @@ bandit -r src/server/app/ -ll -q
 
 ---
 
-#### 5.3 Create Documentation
+#### 5.3 Crear Documentoation
 
-Create these files:
+Crear these archivos:
 
-1. **COVERAGE_REPORT.md** - Test coverage analysis
+1. **COVERAGE_REPORT.md** - Prueba coverage análisis
 2. **SECURITY_AUDIT.md** - Bandit results + SQL injection validation
 3. **API_CONTRACT.md** - OpenAPI spec for conversation endpoints
 4. **ARCHITECTURE_DIAGRAM.md** - System architecture with Mermaid diagrams
@@ -1808,19 +1808,19 @@ python -m pyright src/server/app/
 
 ---
 
-### 📝 Phase 5 Validation
+### 📝 Fase 5 Validation
 
-✅ **Phase 5 Complete** when:
+✅ **Fase 5 Complete** when:
 - Coverage ≥85%
 - Bandit: 0 high-severity issues
-- All documentation created
+- All documentoation creard
 - Black formatted
 - Ruff clean
 - 0 Pyright errors
 
 ---
 
-## Phase 6: Validation & PR
+## Fase 6: Validation & PR
 
 **Duration:** 1 hour
 **Objective:** Final validation and Pull Request submission
@@ -1829,14 +1829,14 @@ python -m pyright src/server/app/
 
 ### ✅ Checklist
 
-#### 6.1 Run PRE_PUSH Validation
+#### 6.1 Ejecutar PRE_PUSH Validation
 
 ```bash
 # MANDATORY: Run validation script before push
 ./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh
 ```
 
-**Expected:** All phases pass (formatting, linting, type checking, tests, security)
+**Expected:** All fases pass (formatting, linting, type checking, pruebas, security)
 
 ---
 
@@ -1863,11 +1863,11 @@ git push origin feature/backend-conversation-history
 
 ---
 
-#### 6.3 Create Pull Request
+#### 6.3 Crear Pull Request
 
 **PR Title:** `feat(backend): HU-4.2 - Conversation History & Persistence`
 
-**PR Description Template:**
+**PR Descripción Template:**
 
 ```markdown
 ## 📝 Summary
@@ -1922,25 +1922,25 @@ Implements conversation persistence using SQLite with SQLAlchemy ORM for HU-4.2.
 
 ---
 
-### 📝 Phase 6 Validation
+### 📝 Fase 6 Validation
 
-✅ **Phase 6 Complete** when:
+✅ **Fase 6 Complete** when:
 - PRE_PUSH validation passes
 - Changes committed and pushed
-- Pull Request created with complete description
+- Pull Request creard with complete descripción
 
 ---
 
 ## Emergency Procedures
 
-### 🚨 If Tests Fail
+### 🚨 If Pruebas Fail
 
-1. **Identify failing test:**
+1. **Identify failing prueba:**
    ```bash
    pytest tests/server/ -v --tb=short
    ```
 
-2. **Debug specific test:**
+2. **Debug specific prueba:**
    ```bash
    pytest tests/server/path/to/test_file.py::test_function_name -vv --pdb
    ```
@@ -1954,14 +1954,14 @@ Implements conversation persistence using SQLite with SQLAlchemy ORM for HU-4.2.
 
 ### 🚨 If Coverage Below 85%
 
-1. **Identify untested code:**
+1. **Identify unpruebaed code:**
    ```bash
    pytest --cov=src/server/app --cov-report=term-missing
    ```
 
-2. **Write missing tests** (focus on uncovered lines)
+2. **Write missing pruebas** (focus on uncovered lines)
 
-3. **Re-run coverage:**
+3. **Re-ejecutar coverage:**
    ```bash
    pytest --cov --cov-fail-under=85
    ```
@@ -1970,7 +1970,7 @@ Implements conversation persistence using SQLite with SQLAlchemy ORM for HU-4.2.
 
 ### 🚨 If Type Errors
 
-1. **Run Pyright:**
+1. **Ejecutar Pyright:**
    ```bash
    python -m pyright src/server/app/
    ```
@@ -1988,30 +1988,30 @@ Implements conversation persistence using SQLite with SQLAlchemy ORM for HU-4.2.
 
 ### Overall Success Criteria
 
-| Criterion | Target | Validation | Status |
+| Criterion | Target | Validation | Estado |
 |-----------|--------|-----------|--------|
-| **Functional Tests** | All pass | `pytest tests/server/ -v` | ⏳ |
-| **Coverage** | ≥85% overall | `pytest --cov-fail-under=85` | ⏳ |
+| **Functional Pruebas** | All pass | `pyprueba pruebas/server/ -v` | ⏳ |
+| **Coverage** | ≥85% overall | `pyprueba --cov-fail-under=85` | ⏳ |
 | **Domain Coverage** | ≥95% | Coverage report | ⏳ |
 | **Type Safety** | 0 errors | `pyright src/server/app/` | ⏳ |
 | **Security** | 0 high-severity | `bandit -r src/server/app/` | ⏳ |
 | **Code Quality** | Clean | `black --check` + `ruff check` | ⏳ |
-| **Documentation** | Complete | All 9 docs exist | ⏳ |
+| **Documentoation** | Complete | All 9 docs exist | ⏳ |
 | **PRE_PUSH** | Pass | `PRE_PUSH_VALIDATION_MASTER.sh` | ⏳ |
 
 ---
 
-### Phase-Specific Success Criteria
+### Fase-Specific Success Criteria
 
-| Phase | Criterion | Status |
+| Fase | Criterion | Estado |
 |-------|-----------|--------|
-| **Phase 0** | Documentation structure created | ✅ |
-| **Phase 1** | Domain entities + repository protocol | ⏳ |
-| **Phase 2** | SQLAlchemy models + adapter | ⏳ |
-| **Phase 3** | Service layer + context window | ⏳ |
-| **Phase 4** | FastAPI endpoints + integration tests | ⏳ |
-| **Phase 5** | Coverage >85% + security audit | ⏳ |
-| **Phase 6** | PRE_PUSH pass + PR created | ⏳ |
+| **Fase 0** | Documentoation structure creard | ✅ |
+| **Fase 1** | Domain entities + repository protocol | ⏳ |
+| **Fase 2** | SQLAlchemy models + adapter | ⏳ |
+| **Fase 3** | Service layer + context window | ⏳ |
+| **Fase 4** | FastAPI endpoints + integration pruebas | ⏳ |
+| **Fase 5** | Coverage >85% + security audit | ⏳ |
+| **Fase 6** | PRE_PUSH pass + PR creard | ⏳ |
 
 ---
 
@@ -2019,11 +2019,11 @@ Implements conversation persistence using SQLite with SQLAlchemy ORM for HU-4.2.
 
 Before marking HU-4.2 as COMPLETE:
 
-- [ ] All 6 phases completed
-- [ ] 100% of verification criteria met
-- [ ] Documentation complete (9 files)
+- [ ] All 6 fases completed
+- [ ] 100% of verificación criteria met
+- [ ] Documentoation complete (9 archivos)
 - [ ] PRE_PUSH validation passed
-- [ ] Pull Request created and reviewed
+- [ ] Pull Request creard and reviewed
 - [ ] No outstanding bugs or blockers
 
 ---

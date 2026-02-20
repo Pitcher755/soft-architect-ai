@@ -8,7 +8,7 @@
 
 Resumen
 
-Este documento lista los artefactos producidos para la HU-1.2 y su ubicación en el repositorio, indicando el estado actual y los siguientes pasos recomendados para adjuntar informes de validación.
+Este documentoo lista los artefactos producidos para la HU-1.2 y su ubicación en el repositorio, indicando el estado actual y los siguientes pasos recomendados para adjuntar informes de validación.
 
 Artefactos principales y estado
 
@@ -18,7 +18,7 @@ Artefactos principales y estado
 - `src/server/core/config.py` — Pydantic Settings (configuración tipada) — ✅ Creado
 - `src/server/core/errors.py` — Errores personalizados y handlers — ✅ Creado
 - `src/server/domain/schemas/health.py` — DTOs de health — ✅ Creado
-- `src/server/tests/` — Tests unitarios e integración — ✅ Creado
+- `src/server/pruebas/` — Pruebas unitarios e integración — ✅ Creado
 - `src/server/requirements.txt` — Exportado para Docker — ✅ Creado
 - `src/server/htmlcov/index.html` — Informe HTML de coverage (~98%) — ✅ Generado
 - `infrastructure/docker-compose.yml` — Docker Compose de integración — ✅ Presente
@@ -32,7 +32,7 @@ Artefactos principales y estado
 Validación y reportes
 
 - Ruff linting: ✅ Ejecutado; auto-fixes aplicados donde fue necesario.
-- Pytest + Coverage: ✅ Ejecutado localmente; cobertura ≈98% (informe HTML en `src/server/htmlcov`).
+- Pyprueba + Coverage: ✅ Ejecutado localmente; cobertura ≈98% (informe HTML en `src/server/htmlcov`).
 - Bandit: ⏸ Pendiente (se recomienda ejecutar y adjuntar el informe).
 - Escaneo de secrets (`infrastructure/security-validation.sh`): ⏸ Pendiente (se recomienda ejecutar y adjuntar el informe).
 - Logs de Docker: ✅ Generados localmente; endpoint de health verificado (`GET /api/v1/system/health` → 200).
@@ -46,7 +46,7 @@ Artefactos opcionales a adjuntar
 
 Notas
 
-Los ficheros críticos para aceptación están implementados y testeados. Los escaneos de seguridad quedan pendientes y pueden añadirse a esta lista cuando se disponga de sus informes.
+Los ficheros críticos para aceptación están implementados y pruebaeados. Los escaneos de seguridad quedan pendientes y pueden añadirse a esta lista cuando se disponga de sus informes.
 
 **Última actualización:** 29/01/2026
 **Responsable:** Backend Dev

@@ -12,7 +12,7 @@
 2. [Ejemplos Válidos vs Inválidos](#ejemplos-válidos-vs-inválidos)
 3. [Herramientas de Validación](#herramientas-de-validación)
 4. [Checklist Antes de Commit](#checklist-antes-de-commit)
-5. [GitHub Actions Integration](#github-actions-integration)
+5. [GitHub Actions Integración](#github-actions-integration)
 6. [Resolución de Problemas](#resolución-de-problemas)
 
 ---
@@ -23,7 +23,7 @@ Según **AGENTS.md §6**, todo lo escrito en el código debe estar en **INGLÉS*
 
 - ✅ **Nombres de variables, funciones, clases**
 - ✅ **Comentarios inline y docstrings**
-- ✅ **Documentación (DartDoc, PyDoc)**
+- ✅ **Documentoación (DartDoc, PyDoc)**
 - ✅ **TODO, FIXME, NOTE comments**
 - ✅ **Strings de usuario (mensajes, etiquetas)**
 
@@ -153,7 +153,7 @@ Asegura:
 - ✅ Espacios alrededor de operadores
 - ✅ Saltos de línea apropiados
 
-#### 3. Custom Lints (analysis_options.yaml)
+#### 3. Custom Lints (análisis_options.yaml)
 
 ```bash
 cd src/client
@@ -162,10 +162,10 @@ flutter analyze
 ```
 
 **Reglas configuradas:**
-- `slash_for_doc_comments` - Usar `///` para documentación
+- `slash_for_doc_comments` - Usar `///` para documentoación
 - `camel_case_types` - Nombres de clases en PascalCase
 - `library_names` - Nombres de librerías en snake_case
-- `package_api_docs` - Requiere documentación en APIs públicas
+- `package_api_docs` - Requiere documentoación en APIs públicas
 - `public_member_api_docs` - Requiere docs en miembros públicos
 
 ---
@@ -199,7 +199,7 @@ Detecta:
 - ❌ Retornos inconsistentes
 - ❌ Acceso a atributos inexistentes
 
-**Configuración:** `pyproject.toml [tool.mypy]`
+**Configuración:** `pyproyecto.toml [tool.mypy]`
 
 #### 3. Black (Format)
 
@@ -213,7 +213,7 @@ Asegura:
 - ✅ Comillas dobles en strings
 - ✅ Espacios alrededor de operadores
 
-**Configuración:** `pyproject.toml [tool.black]`
+**Configuración:** `pyproyecto.toml [tool.black]`
 
 #### 4. isort (Import Sorting)
 
@@ -227,7 +227,7 @@ Organiza imports en:
 2. Dependencias externas
 3. Módulos locales
 
-**Configuración:** `pyproject.toml [tool.isort]`
+**Configuración:** `pyproyecto.toml [tool.isort]`
 
 ---
 
@@ -265,12 +265,12 @@ cd ../..
 - [ ] ✅ `pylint` score > 8.5 (Python)
 - [ ] ✅ `mypy` sin errores críticos
 - [ ] ✅ `black` format OK
-- [ ] ✅ Pruebas pasan: `flutter test` / `pytest`
+- [ ] ✅ Pruebas pasan: `flutter prueba` / `pyprueba`
 - [ ] ✅ No hay archivos `*.pyc`, `.DS_Store`, etc.
 
 ---
 
-## 🔄 GitHub Actions Integration
+## 🔄 GitHub Actions Integración
 
 El proyecto ejecuta validaciones automáticas en cada **push** y **pull request**.
 
@@ -293,7 +293,7 @@ El proyecto ejecuta validaciones automáticas en cada **push** y **pull request*
    - Busca caracteres españoles en comentarios
    - Ejecuta auditoría completa
 
-**Resultado:**
+**Resultadoado:**
 - ❌ Si algo falla → PR no se puede mergear
 - ⚠️ Si hay warnings → Se muestra en el PR
 - ✅ Si todo pasa → PR listo para revisar
@@ -374,7 +374,7 @@ git diff src/server/app/
 
 | Métrica | Target | Herramienta |
 |---------|--------|-------------|
-| **Code Coverage** | > 80% | `pytest --cov` |
+| **Code Coverage** | > 80% | `pyprueba --cov` |
 | **Linting Pass** | 100% | `flutter analyze`, `pylint` |
 | **English Compliance** | 100% | `audit-english-compliance.sh` |
 | **DocStrings** | > 95% | Manual review |
@@ -386,11 +386,11 @@ git diff src/server/app/
 ## 🔗 Referencias
 
 - [AGENTS.md §6 - Code Language Standards](../../AGENTS.md#-6-restricciones-lo-que-está-prohibido)
-- [Dart Style Guide](https://dart.dev/guides/language/effective-dart/style)
+- [Dart Estilo Guide](https://dart.dev/guides/language/effective-dart/estilo)
 - [PEP 257 - Docstring Conventions](https://www.python.org/dev/peps/pep-0257/)
-- [Black Code Style](https://black.readthedocs.io/)
+- [Black Code Estilo](https://black.readthedocs.io/)
 - [Flutter Lints](https://pub.dev/packages/flutter_lints)
 
 ---
 
-**Última revisión:** 29/01/2026 | **Versión:** 1.0 | **Status:** ✅ Activo
+**Última revisión:** 29/01/2026 | **Versión:** 1.0 | **Estado:** ✅ Activo

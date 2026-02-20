@@ -730,9 +730,9 @@ Text(AppLocalizations.of(context)!.createProject)
 ```
 
 **Files to Update:**
-- Button labels (Crear Proyecto, Examinar, etc.)
-- Dialog titles (Nuevo Proyecto)
-- Messages (Archivo guardado en, Error al guardar)
+- Button labels (Create Project, Examinar, etc.)
+- Dialog titles (Nuevo Project)
+- Messages (File guardado en, Error al guardar)
 
 ### Phase 2.6: Create i18n Tests
 
@@ -764,13 +764,13 @@ Text(AppLocalizations.of(context)!.createProject)
 
 | # | Spanish String | English Key | Type | Files Affected | Count |
 |---|---|---|---|---|---|
-| 1 | Crear Proyecto | `createProject` | Button | create_project_dialog.dart, workspace_header.dart | **2** |
-| 2 | Nuevo Proyecto | `newProject` | Title | create_project_dialog.dart | **1** |
+| 1 | Create Project | `createProject` | Button | create_project_dialog.dart, workspace_header.dart | **2** |
+| 2 | Nuevo Project | `newProject` | Title | create_project_dialog.dart | **1** |
 | 3 | Examinar... | `browse` | Button | path_picker_field.dart | **1** |
 | 4 | Validar y Guardar | `validateAndSave` | Button | proposal_card_widget.dart, chat_notifier.dart | **2** |
 | 5 | Refinar | `refine` | Button | proposal_card_widget.dart | **1** |
 | 6 | Rechazar | `reject` | Button | proposal_card_widget.dart | **1** |
-| 7 | Archivo guardado en: `{outputFile}` | `fileSaved` | Message | filesystem_service_impl.dart | **1** |
+| 7 | File guardado en: `{outputFile}` | `fileSaved` | Message | filesystem_service_impl.dart | **1** |
 | 8 | Contenido copiado al portapapeles | `contentCopied` | Message | markdown_preview_widget.dart | **1** |
 | 9 | Error al guardar: `{error}` | `saveError` | Message | filesystem_service_impl.dart | **1** |
 

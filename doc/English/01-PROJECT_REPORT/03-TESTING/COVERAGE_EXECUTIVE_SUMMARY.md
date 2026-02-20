@@ -6,7 +6,7 @@
 
 ---
 
-## 🎯 Estado Actual
+## 🎯 Status Actual
 
 ### Scorecard de Cobertura
 
@@ -23,9 +23,9 @@
 └────────────────────────────────────────────────────┘
 ```
 
-### Desglose por Área
+### Breakdown por Área
 
-| Área | Cobertura | Estado | Trend |
+| Área | Cobertura | Status | Trend |
 |------|-----------|--------|-------|
 | **Unit Tests** | 98.8% (167/169) | ✅ Excelente | ➡️ Estable |
 | **Widget Tests** | 80.6% (29/36) | 🟡 Bueno | 📈 +11.2% |
@@ -58,7 +58,7 @@ VELOCIDAD:         200% por semana
 ## 🔴 Áreas de Enfoque
 
 ### 1. ProjectShellScreen State Management
-- **Problema:** 7 tests fallando por inyección de estado incompleta
+- **Problema:** 7 tests fallando por inyección de status incompleta
 - **Impacto:** 19.4% mejora potencial
 - **ETA Solución:** 2-3 horas
 - **Priority:** 🔴 CRÍTICA
@@ -111,7 +111,7 @@ Hito 3: E2E & Edge Cases (Próximo Mes)
 
 ---
 
-## 📞 Próximos Pasos
+## 📞 Next Steps
 
 1. **HOY:** Reportar hallazgos a equipo
 2. **ESTA SEMANA:** Resolver ProjectShellScreen (ETA: 2-3 hrs)

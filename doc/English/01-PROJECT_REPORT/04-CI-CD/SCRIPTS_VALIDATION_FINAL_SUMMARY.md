@@ -1,18 +1,18 @@
 # ✅ RESUMEN FINAL: Mejoras de Scripts de Validación
 
-> **Fecha:** 16/02/2026
+> **Date:** 16/02/2026
 > **Rama:** `feature/rag-llm-resilience`
-> **Estado:** ✅ COMPLETADO (90%)
+> **Status:** ✅ COMPLETADO (90%)
 
 ---
 
-## 🎯 Objetivo Completado
+## 🎯 Objetivo Completed
 
-Se han mejorado **todos los scripts críticos de validación** del proyecto para garantizar:
+Se han mejorado **todos los scripts críticos de validación** of the project para garantizar:
 - ✅ **Funcionamiento desde cualquier directorio** (rutas relativas)
-- ✅ **Documentación completa inline** (headers con usage, requirements, descripción)
-- ✅ **Validación de requisitos previos** (checks de dependencias antes de ejecutar)
-- ✅ **Cobertura total del proyecto** (no solo features específicas)
+- ✅ **Documentación completa inline** (headers con usage, requirements, description)
+- ✅ **Validación de requisitos previos** (checks de dependencias antes de execute)
+- ✅ **Cobertura total of the project** (no solo features específicas)
 - ✅ **Mensajes claros y consistentes** (colores, formato, exit codes)
 
 ---
@@ -32,7 +32,7 @@ Se han mejorado **todos los scripts críticos de validación** del proyecto para
 - ✅ **Paths configurables** (PYTHON_VENV, BLACK_BIN, RUFF_BIN, etc.)
 - ✅ **Exit codes correctos** (0=pass, 1=fail)
 
-#### Resultado:
+#### Result:
 ```bash
 ./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh
 
@@ -55,10 +55,10 @@ Se han mejorado **todos los scripts críticos de validación** del proyecto para
 
 #### Mejoras Aplicadas:
 - ✅ **Header completo con instalación de act**
-- ✅ **Check de Docker + act antes de ejecutar**
+- ✅ **Check de Docker + act antes de execute**
 - ✅ **Menú interactivo mejorado** (11 opciones organizadas)
 - ✅ **Validación de todos los workflows** (.github/workflows/*.yaml)
-- ✅ **Mensajes de siguiente paso** (run PRE_PUSH después de success)
+- ✅ **Mensajes de next paso** (run PRE_PUSH después de success)
 
 #### Workflows Soportados:
 - `backend-ci.yaml`: Code Quality, Unit Tests, Security, Startup
@@ -74,7 +74,7 @@ Se han mejorado **todos los scripts críticos de validación** del proyecto para
 
 **Path:** `scripts/workflows/validate-workflows.sh`
 
-#### Estado:
+#### Status:
 Script funciona correctamente, pero se proponen mejoras adicionales documentadas en `SCRIPTS_IMPROVEMENTS_PHASE2.md`.
 
 #### Mejoras Propuestas (para HU futura):
@@ -89,12 +89,12 @@ Script funciona correctamente, pero se proponen mejoras adicionales documentadas
 
 **Path:** `scripts/quality/audit-english-compliance.sh`
 
-#### Estado:
+#### Status:
 Script funciona, mejoras propuestas documentadas.
 
 #### Mejoras Propuestas:
 - Header completo
-- Validación de TODO el proyecto (no solo app/)
+- Validación de TODO el project (no solo app/)
 - Reportes detallados con paths exactos
 - Exit codes estrictos
 
@@ -104,7 +104,7 @@ Script funciona, mejoras propuestas documentadas.
 
 **Path:** `scripts/quality/validate-quality-gates.sh`
 
-#### Estado:
+#### Status:
 Script funciona, mejoras propuestas documentadas.
 
 #### Quality Gates a Validar:
@@ -120,7 +120,7 @@ Script funciona, mejoras propuestas documentadas.
 
 **Path:** `scripts/testing/generate_coverage_html.sh`
 
-#### Estado:
+#### Status:
 Script funciona para Flutter, mejoras propuestas para Python.
 
 #### Mejoras Propuestas:
@@ -134,7 +134,7 @@ Script funciona para Flutter, mejoras propuestas para Python.
 
 **Path:** `scripts/testing/run_tests.sh`
 
-#### Estado:
+#### Status:
 ✅ **Script bien implementado**, no requiere cambios.
 
 #### Características:
@@ -149,7 +149,7 @@ Script funciona para Flutter, mejoras propuestas para Python.
 
 **Path:** `scripts/testing/RUN_COMPLETE_TEST_SUITE.sh`
 
-#### Estado:
+#### Status:
 ✅ **Wrapper correcto**, no requiere cambios.
 
 ```bash
@@ -253,40 +253,40 @@ No hay ambigüedad, tests ejecutados correctamente.
 
 ---
 
-## 📈 Resultado de Validación (Estado Actual)
+## 📈 Result de Validación (Status Actual)
 
-### Fase 1: ✅ CODE FORMATTING
+### Phase 1: ✅ CODE FORMATTING
 - ✅ Black (Python formatting)
 - ✅ Dart formatting
 
-### Fase 2: ✅ LINTING & CODE QUALITY
+### Phase 2: ✅ LINTING & CODE QUALITY
 - ✅ Ruff (Python linting)
 - ✅ Dart analysis
 - ✅ Ruff security codes (S-codes)
 
-### Fase 3: ✅ TYPE CHECKING
+### Phase 3: ✅ TYPE CHECKING
 - ⚠️  Pyright (optional - not installed)
 - ✅ Dart type checking
 
-### Fase 4: ⏳ UNIT TESTS (EN PROGRESO)
+### Phase 4: ⏳ UNIT TESTS (EN PROGRESO)
 - ⏳ Python Unit Tests (executing...)
 - ⏳ Flutter Unit Tests (pending)
 - ⏳ Flutter Widget Tests (pending)
 
-### Fase 5: ⏳ INTEGRATION TESTS (PENDING)
+### Phase 5: ⏳ INTEGRATION TESTS (PENDING)
 - ⏳ Python Integration Tests
 - ⏳ Flutter Integration Tests
 - ⏳ Flutter E2E Tests
 
-### Fase 6: ⏳ SECURITY AUDIT (PENDING)
+### Phase 6: ⏳ SECURITY AUDIT (PENDING)
 - ⏳ Bandit (Python security)
 - ⏳ SQL Injection Protection
 
-### Fase 7: ⏳ CODE COVERAGE (PENDING)
+### Phase 7: ⏳ CODE COVERAGE (PENDING)
 - ⏳ Python Coverage ≥80%
 - ⏳ Flutter Coverage ≥80%
 
-### Fase 8: ⏳ BUILD VALIDATION (PENDING)
+### Phase 8: ⏳ BUILD VALIDATION (PENDING)
 - ⏳ Docker Compose
 - ⏳ Python dependencies
 
@@ -320,7 +320,7 @@ timeout 60 bash -c './venv/bin/pytest tests/server/unit/ -q --tb=no --timeout=60
 ### Solución Propuesta (para HU futura):
 1. Agregar `pytest-timeout` con timeout más agresivo (10s por test)
 2. Revisar tests async para cleanup correcto
-3. Ejecutar tests en parallel (`pytest-xdist`)
+3. Execute tests en parallel (`pytest-xdist`)
 4. Agregar logging debug en PRE_PUSH script
 
 ---
@@ -330,11 +330,11 @@ timeout 60 bash -c './venv/bin/pytest tests/server/unit/ -q --tb=no --timeout=60
 1. **SCRIPTS_IMPROVEMENTS_PHASE2.md** (`doc/01-PROJECT_REPORT/`)
    - Reporte completo de mejoras aplicadas
    - Templates para scripts pendientes
-   - Análisis de cada script
+   - Analysis de cada script
 
-2. **SCRIPTS_VALIDATION_FINAL_SUMMARY.md** (este documento)
+2. **SCRIPTS_VALIDATION_FINAL_SUMMARY.md** (este document)
    - Resumen ejecutivo de mejoras
-   - Estado actual de validaciones
+   - Status actual de validaciones
    - Issues detectados y soluciones propuestas
 
 ---
@@ -348,7 +348,7 @@ timeout 60 bash -c './venv/bin/pytest tests/server/unit/ -q --tb=no --timeout=60
 - ✅ **Documentación completa inline en scripts**
 - ✅ **Rutas relativas en todos los scripts**
 
-### Pendientes (HU futura):
+### Pendings (HU futura):
 - ⏳ Investigar y resolver performance issue en tests
 - ⏳ Completar mejoras en validate-workflows.sh
 - ⏳ Completar mejoras en audit-english-compliance.sh

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../gen/app_localizations.dart';
 
-/// Campo selector de ruta de directorio
-/// Permite al usuario seleccionar una carpeta usando un diálogo nativo
+/// Directory path picker field widget
+/// Allows the user to select a folder using a native dialog
 class PathPickerField extends StatelessWidget {
   const PathPickerField({
     required this.label,

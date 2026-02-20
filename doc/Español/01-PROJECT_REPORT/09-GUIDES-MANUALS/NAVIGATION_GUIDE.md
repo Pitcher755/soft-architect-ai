@@ -2,7 +2,7 @@
 
 **Date:** 06/02/2026
 **Version:** 1.0
-**Status:** ✅ Ready for Testing
+**Estado:** ✅ Preparado para Pruebaing
 
 ---
 
@@ -10,9 +10,9 @@
 
 1. [Architecture Overview](#architecture-overview)
 2. [Route Structure](#route-structure)
-3. [How to Run](#how-to-run)
+3. [How to Ejecutar](#how-to-ejecutar)
 4. [Navigation Flows](#navigation-flows)
-5. [Testing Scenarios](#testing-scenarios)
+5. [Pruebaing Scenarios](#pruebaing-scenarios)
 6. [Mock Data](#mock-data)
 
 ---
@@ -58,9 +58,9 @@ The navigation system uses **GoRouter** with a clean separation of concerns:
 
 | Path | Screen | Parameters | Purpose |
 |------|--------|------------|---------|
-| `/` | `_ProjectSelectionScreen` | None | Dashboard with available projects |
-| `/workspace/:projectId` | `ProjectWorkspaceScreen` | `projectId` | Main IDE workspace |
-| `/project-shell` | `ProjectShellScreen` | None | Legacy file tree view |
+| `/` | `_ProyectoSelectionScreen` | None | Dashboard with available proyectos |
+| `/workspace/:proyectoId` | `ProyectoWorkspaceScreen` | `proyectoId` | Main IDE workspace |
+| `/proyecto-shell` | `ProyectoShellScreen` | None | Legacy archivo tree view |
 | `/chat` | `ChatScreen` | None | Chat interface |
 | `/settings` | `_SettingsScreen` | None | App settings |
 
@@ -79,7 +79,7 @@ GoRoute(
 
 ---
 
-## 🚀 How to Run
+## 🚀 How to Ejecutar
 
 ### Prerequisites
 - Flutter 3.10+ (Desktop target: Linux/Windows/macOS)
@@ -90,12 +90,12 @@ GoRoute(
 cd src/client
 ```
 
-### Step 2: Run on Linux Desktop
+### Step 2: Ejecutar on Linux Desktop
 ```bash
 flutter run -d linux
 ```
 
-### Step 3: Run on Windows/macOS
+### Step 3: Ejecutar on Windows/macOS
 ```bash
 flutter run -d windows
 # or
@@ -131,7 +131,7 @@ You'll land on the **Home Dashboard** (`/`):
 
 ## 🔄 Navigation Flows
 
-### Flow 1: Explore Available Projects
+### Flow 1: Explore Available Proyectos
 
 ```
 Dashboard (/)
@@ -150,7 +150,7 @@ See 3-column IDE:
 Dashboard (/) ← Back to projects list
 ```
 
-### Flow 2: Create New Project
+### Flow 2: Crear Nuevo Proyecto
 
 ```
 Dashboard (/)
@@ -183,10 +183,10 @@ SettingsScreen (/settings)
 
 ---
 
-## 🧪 Testing Scenarios
+## 🧪 Pruebaing Scenarios
 
-### Scenario 1: Basic Project Navigation
-**Goal:** Verify project selection and workspace loading
+### Scenario 1: Basic Proyecto Navigation
+**Goal:** Verify proyecto selection and workspace loading
 
 1. **Start App**
    ```bash
@@ -194,46 +194,46 @@ SettingsScreen (/settings)
    ```
 
 2. **Verify Dashboard**
-   - Confirm 3 mock projects display
-   - Each project shows ID, name, description
+   - Confirm 3 mock proyectos display
+   - Each proyecto shows ID, name, descripción
 
-3. **Click First Project (proj-001)**
+3. **Click First Proyecto (proj-001)**
    - Should navigate to `/workspace/proj-001`
    - Workspace screen should load with:
-     - Project ID shown in AppBar
-     - File tree on left
+     - Proyecto ID shown in AppBar
+     - Archivo tree on left
      - Chat interface in center
      - Preview panel on right
 
-4. **Click Back Button**
+4. **Click Back Botón**
    - Should return to Dashboard (`/`)
-   - Project list should still be visible
+   - Proyecto list should still be visible
 
-✅ **Expected Result:** Smooth navigation between screens
+✅ **Expected Resultado:** Smooth navigation between screens
 
 ---
 
-### Scenario 2: Create New Project
-**Goal:** Verify dynamic project creation
+### Scenario 2: Crear Nuevo Proyecto
+**Goal:** Verify dynamic proyecto creation
 
-1. **From Dashboard, click "+ New Project"**
+1. **From Dashboard, click "+ Nuevo Proyecto"**
    - Dialog should appear with text field
 
-2. **Enter Project Name**
+2. **Enter Proyecto Name**
    ```
    "My Test Project"
    ```
 
-3. **Click Create**
+3. **Click Crear**
    - Dialog closes
    - Auto-navigates to `/workspace/proj-{TIMESTAMP}`
-   - New project ID shown in AppBar
+   - New proyecto ID shown in AppBar
 
 4. **Click Back**
    - Returns to Dashboard
-   - Can verify creation worked by looking at project list
+   - Can verify creation worked by looking at proyecto list
 
-✅ **Expected Result:** New project created and navigable
+✅ **Expected Resultado:** New proyecto creard and navigable
 
 ---
 
@@ -242,17 +242,17 @@ SettingsScreen (/settings)
 
 | From | To | Method | Expected |
 |------|----|---------| ---------|
-| Dashboard | Workspace | Click project | Navigate with ID |
+| Dashboard | Workspace | Click proyecto | Navigate with ID |
 | Workspace | Dashboard | Click back | Return cleanly |
 | Dashboard | Settings | Settings icon | Navigate |
-| Dashboard | Project Shell | Quick nav button | Navigate |
-| Dashboard | Chat | Quick nav button | Navigate |
+| Dashboard | Proyecto Shell | Quick nav botón | Navigate |
+| Dashboard | Chat | Quick nav botón | Navigate |
 
-✅ **Expected Result:** All navigation paths functional
+✅ **Expected Resultado:** All navigation paths functional
 
 ---
 
-### Scenario 4: URL Bar Testing
+### Scenario 4: URL Bar Pruebaing
 **Goal:** Verify direct URL access works
 
 1. **In Flutter web emulator, manually enter URL:**
@@ -262,21 +262,21 @@ SettingsScreen (/settings)
 
 2. **Expected:**
    - Workspace loads
-   - ProjectId "proj-test-123" shown in AppBar
+   - ProyectoId "proj-prueba-123" shown in AppBar
    - All panels render correctly
 
-3. **Create new via URL:**
+3. **Crear new via URL:**
    ```
    http://localhost:XXXX/workspace/my-custom-project-id
    ```
 
-✅ **Expected Result:** Direct URL access works
+✅ **Expected Resultado:** Direct URL access works
 
 ---
 
 ## 📊 Mock Data
 
-### Mock Projects (in `_ProjectSelectionScreen`)
+### Mock Proyectos (in `_ProyectoSelectionScreen`)
 
 ```dart
 final mockProjects = [
@@ -298,9 +298,9 @@ final mockProjects = [
 ];
 ```
 
-### Dynamic Project Creation
+### Dynamic Proyecto Creation
 
-When user creates a new project:
+When user crears a nuevo proyecto:
 ```dart
 final projectId = 'proj-${DateTime.now().millisecondsSinceEpoch}';
 // Example: proj-1707250432102
@@ -318,16 +318,16 @@ Phase: Vision
 
 ## ✅ Checklist: Before Deployment
 
-- [ ] All routes configured in `createAppRouter()`
-- [ ] ProjectSelectionScreen shows mock projects
-- [ ] Clicking project navigates with correct ID
-- [ ] ProjectWorkspaceScreen displays projectId in AppBar
-- [ ] Back button returns to Dashboard
-- [ ] Create project dialog works
+- [ ] All routes configured in `crearAppRouter()`
+- [ ] ProyectoSelectionScreen shows mock proyectos
+- [ ] Clicking proyecto navigates with correct ID
+- [ ] ProyectoWorkspaceScreen displays proyectoId in AppBar
+- [ ] Back botón returns to Dashboard
+- [ ] Crear proyecto dialog works
 - [ ] Dynamic ID generation successful
 - [ ] GoRouter dependency in pubspec.yaml
 - [ ] No compilation errors: `flutter analyze`
-- [ ] No runtime errors on startup
+- [ ] No ejecutartime errors on startup
 
 ---
 
@@ -336,34 +336,34 @@ Phase: Vision
 ### Issue: "Route not found" error
 **Solution:** Verify all route paths in `app_router.dart` match the `path:` parameter exactly.
 
-### Issue: ProjectId not showing in AppBar
-**Solution:** Confirm `ProjectWorkspaceScreen` receives `projectPath` parameter and displays it in UI.
+### Issue: ProyectoId not showing in AppBar
+**Solution:** Confirm `ProyectoWorkspaceScreen` receives `proyectoPath` parameter and displays it in UI.
 
-### Issue: Back button doesn't work
-**Solution:** Ensure `Navigator.of(context).pop()` is called in back button onPressed.
+### Issue: Back botón doesn't work
+**Solution:** Ensure `Navigator.of(context).pop()` is called in back botón onPressed.
 
-### Issue: Create project doesn't navigate
-**Solution:** Verify `context.go('/workspace/$projectId')` is called after dialog closes.
+### Issue: Crear proyecto doesn't navigate
+**Solution:** Verify `context.go('/workspace/$proyectoId')` is called after dialog closes.
 
 ---
 
-## 📚 File References
+## 📚 Archivo References
 
-- **Router Configuration:** [lib/core/router/app_router.dart](../../lib/core/router/app_router.dart)
-- **Workspace Screen:** [lib/features/project_shell/presentation/screens/project_workspace_screen.dart](../../lib/features/project_shell/presentation/screens/project_workspace_screen.dart)
+- **Router Configuración:** [lib/core/router/app_router.dart](../../lib/core/router/app_router.dart)
+- **Workspace Screen:** [lib/features/proyecto_shell/presentation/screens/proyecto_workspace_screen.dart](../../lib/features/proyecto_shell/presentation/screens/proyecto_workspace_screen.dart)
 - **Main Entry:** [lib/main.dart](../../lib/main.dart)
 - **GoRouter Docs:** https://pub.dev/packages/go_router
 
 ---
 
-## 🎯 Next Steps
+## 🎯 Siguiente Steps
 
-1. **Test with `flutter run -d linux`**
+1. **Prueba with `flutter ejecutar -d linux`**
 2. **Verify all 5 scenarios pass**
 3. **Check console for errors**
-4. **Test on Windows/macOS if needed**
-5. **Ready for backend integration (Phase 7)**
+4. **Prueba on Windows/macOS if needed**
+5. **Preparado para backend integration (Fase 7)**
 
 ---
 
-**Status:** ✅ Navigation system fully implemented and ready for testing.
+**Estado:** ✅ Navigation system fully implemented and preparado para pruebaing.

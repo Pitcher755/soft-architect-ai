@@ -1,7 +1,7 @@
 # 📊 Test Coverage Report - HU-3.1 (Enhanced)
 
-> **Fecha:** 03/02/2026
-> **Estado:** ✅ Tests Implementados (Cobertura Estimada: 90%+)
+> **Date:** 03/02/2026
+> **Status:** ✅ Tests Implementados (Cobertura Estimada: 90%+)
 > **Branch:** `feature/ui-project-shell`
 
 ---
@@ -349,7 +349,7 @@ TOTAL COVERAGE: 91% (1,245 / 1,368 lines)
 
 ## 📚 Tests Creados
 
-**Archivos de Test Nuevos (8):**
+**Files de Test Nuevos (8):**
 1. `test/features/project_shell/domain/entities/project_entity_test.dart` (45 tests)
 2. `test/features/project_shell/domain/entities/file_node_entity_test.dart` (58 tests)
 3. `test/features/project_shell/domain/use_cases/project_validation_use_case_test.dart` (48 tests)

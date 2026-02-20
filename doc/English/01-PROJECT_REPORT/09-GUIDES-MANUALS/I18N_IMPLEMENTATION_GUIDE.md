@@ -1,7 +1,7 @@
 # i18n Implementation Guide
 
-> **Fecha:** 10/02/2025
-> **Estado:** ✅ COMPLETE
+> **Date:** 10/02/2025
+> **Status:** ✅ COMPLETE
 > **Responsable:** ArchitectZero (Localization)
 
 ---

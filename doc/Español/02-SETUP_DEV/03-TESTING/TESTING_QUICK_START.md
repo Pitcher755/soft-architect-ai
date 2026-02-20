@@ -1,10 +1,10 @@
 # 🧪 TESTING QUICK START - Sistema Híbrido Corregido
 
-**Objetivo:** Validar que proyectos REALES se muestran junto con MOCK project
+**Objetivo:** Validar que proyectos REALES se muestran junto con MOCK proyecto
 
 ---
 
-## ✅ Test 1: Visualización Inicial
+## ✅ Prueba 1: Visualización Inicial
 ```
 PASOS:
 1. Ejecutar app: flutter run -d linux
@@ -19,7 +19,7 @@ VERIFICAR:
 
 ---
 
-## ✅ Test 2: Crear Nuevo Proyecto
+## ✅ Prueba 2: Crear Nuevo Proyecto
 ```
 PASOS:
 1. En grid de proyectos, click "Nuevo Proyecto"
@@ -39,7 +39,7 @@ VERIFICAR:
 
 ---
 
-## ✅ Test 3: Botón "Ver todos los proyectos"
+## ✅ Prueba 3: Botón "Ver todos los proyectos"
 ```
 PASOS:
 1. Crear 8+ proyectos (repite Test 2 varias veces)
@@ -66,7 +66,7 @@ VERIFICAR:
 
 ---
 
-## ✅ Test 4: Lista Expandida
+## ✅ Prueba 4: Lista Expandida
 ```
 PASOS:
 1. Con botón "Ver todos" visible, click para expandir
@@ -88,7 +88,7 @@ VERIFICAR:
 
 ---
 
-## ✅ Test 5: Hybrid Detection (Real vs Mock)
+## ✅ Prueba 5: Hybrid Detection (Real vs Mock)
 ```
 PASOS:
 1. Crear proyecto: "Proyecto Real"
@@ -113,7 +113,7 @@ VERIFICAR:
 
 ---
 
-## ✅ Test 6: Persistencia
+## ✅ Prueba 6: Persistencia
 ```
 PASOS:
 1. Crear "Proyecto A"
@@ -155,7 +155,7 @@ Solución: Menos de 8 proyectos
 - O reducir número en código: if (allProjects.length > 3)
 ```
 
-### 4. ProjectListView no aparece
+### 4. ProyectoListView no aparece
 ```
 Solución: Problema de setState()
 - Verificar que showAllProjects cambia
@@ -166,7 +166,7 @@ Solución: Problema de setState()
 
 ## 📊 Matriz de Validación
 
-| Test | Paso | Esperado | Resultado |
+| Prueba | Paso | Esperado | Resultadoado |
 |------|------|----------|-----------|
 | 1 | Loading | Spinner | ✅ 🔲 |
 | 1 | Datos | Guía visible | ✅ 🔲 |
@@ -175,8 +175,8 @@ Solución: Problema de setState()
 | 3 | 8+ proyectos | Botón visible | ✅ 🔲 |
 | 3 | Expandir | Lista abierta | ✅ 🔲 |
 | 4 | Ordenamiento | A-Z correcto | ✅ 🔲 |
-| 5 | Real project | Archivos reales | ✅ 🔲 |
-| 5 | Mock project | Guía visible | ✅ 🔲 |
+| 5 | Real proyecto | Archivos reales | ✅ 🔲 |
+| 5 | Mock proyecto | Guía visible | ✅ 🔲 |
 | 6 | Persistencia | Proyecto persiste | ✅ 🔲 |
 
 ---
@@ -188,8 +188,8 @@ Solución: Problema de setState()
 - [ ] Proyecto Guía SoftArchitect visible
 - [ ] Nuevos proyectos creados aparecen en grid
 - [ ] Botón "Ver todos" aparece cuando > 8
-- [ ] ProjectListView abre/cierra correctamente
+- [ ] ProyectoListView abre/cierra correctamente
 - [ ] Proyectos ordenados alfabéticamente en lista
 - [ ] Puedo navegar a proyecto real y ver archivos
-- [ ] Puedo navegar a Guía y ver documentación
+- [ ] Puedo navegar a Guía y ver documentoación
 - [ ] Proyectos persisten después de cerrar app

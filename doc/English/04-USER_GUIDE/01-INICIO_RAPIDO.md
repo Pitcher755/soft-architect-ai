@@ -1,19 +1,19 @@
 # 🚀 Quick Start - SoftArchitect AI
 
-> **Tiempo de lectura:** 15 minutos
-> **Nivel:** Principiante
-> **Requisitos:** Nada, comenzaremos desde cero
+> **Reading Time:** 15 minutos
+> **Level:** Beginner
+> **Requirements:** Nothing, we'll start from scratch
 
 ---
 
-## 📌 ¿Qué es SoftArchitect AI?
+## 📌 What is SoftArchitect AI?
 
 SoftArchitect AI es tu **arquitecto de software personal**. Es una aplicación que te guía paso a paso para **convertir ideas en arquitectura técnica profesional** sin todas las decisiones abrumadoras.
 
-### En lugar de:
-❌ "¿Qué stack uso? ¿Flutter o React? ¿FastAPI o Django? ¿PostgreSQL o MongoDB?"
+### Instead of:
+❌ "What stack should I use? ¿Flutter o React? ¿FastAPI o Django? ¿PostgreSQL o MongoDB?"
 
-### Te ayuda a:
+### It helps you:
 ✅ Definir primero **QUÉ** construirás (visión)
 ✅ Luego **POR QUÉ** en cada decisión (seguridad, escalabilidad)
 ✅ Luego **CÓMO** (arquitectura técnica)
@@ -21,7 +21,7 @@ SoftArchitect AI es tu **arquitecto de software personal**. Es una aplicación q
 
 ---
 
-## ⚡ Instalación (2 minutos)
+## ⚡ Installation (2 minutos)
 
 ### Opción 1: Docker (Recomendado)
 
@@ -55,7 +55,7 @@ flutter run -d windows/macos/linux
 
 ---
 
-## 🎯 Tu Primer Proyecto (5 minutos)
+## 🎯 Tu Primer Project (5 minutos)
 
 ### Paso 1: Abre la App
 
@@ -73,13 +73,13 @@ Verás la pantalla de inicio:
 └────────────────────────────┘
 ```
 
-### Paso 2: Crea un Proyecto
+### Paso 2: Crea un Project
 
 Haz clic en **"+CREAR NUEVO PROYECTO"**
 
 Completa:
-- **Nombre:** "Mi App de Notas" (o cualquier idea que tengas)
-- **Descripción:** "App para tomar notas colaborativas" (2-3 líneas)
+- **Name:** "Mi App de Notas" (o cualquier idea que tengas)
+- **Description:** "App para tomar notas colaborativas" (2-3 líneas)
 
 Haz clic en **CREAR**
 
@@ -88,7 +88,7 @@ Haz clic en **CREAR**
 La app te mostrará la vista de chat con un mensaje:
 
 > **SoftArchitect AI:**
-> "Hola, veo que quieres crear 'Mi App de Notas'. Cuéntame más sobre tu visión: ¿Quién la usará? ¿Qué problema resuelve?"
+> "Hola, veo que quieres create 'Mi App de Notas'. Cuéntame más sobre tu visión: ¿Quién la usará? ¿Qué problema resuelve?"
 
 ### Paso 4: Responde
 
@@ -103,12 +103,12 @@ Haz clic en **ENVIAR** (o presiona Ctrl+Enter)
 La IA analizará tu respuesta y generará:
 
 ✅ **PROJECT_MANIFESTO.md**
-- Tu visión en documento profesional
-- Principios del proyecto
+- Tu visión en document profesional
+- Principios of the project
 - Promesa al usuario
 
 ✅ **AGENTS.md**
-- Roles en el proyecto
+- Roles in the project
 - Responsabilidades
 
 ✅ **USER_JOURNEY_MAP.md**
@@ -117,33 +117,33 @@ La IA analizará tu respuesta y generará:
 
 ---
 
-## 📚 El Master Workflow (4 Fases)
+## 📚 El Master Workflow (4 Phases)
 
-SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
+SoftArchitect te guía por 4 phases secuenciales. Cada una responde una pregunta:
 
-### FASE 1: Gobernanza e Identidad
+### PHASE 1: Gobernanza e Identidad
 **Pregunta:** ¿Cuál es el "Por qué"?
 **Duración:** 10-15 minutos
-**Documentos:** 4 (Manifesto, Agents, Rules, User Journey)
-**Resultado:** Todo el mundo entiende la visión
+**Documents:** 4 (Manifesto, Agents, Rules, User Journey)
+**Result:** Todo el mundo entiende la visión
 
-### FASE 2: Especificación y Seguridad
+### PHASE 2: Especificación y Seguridad
 **Pregunta:** ¿Cuál es el "Qué"?
 **Duración:** 30 minutos
-**Documentos:** 3 (Requirements, User Stories, Security Policy)
-**Resultado:** Criterios claros de aceptación
+**Documents:** 3 (Requirements, User Stories, Security Policy)
+**Result:** Criterios claros de aceptación
 
-### FASE 3: Arquitectura Técnica
+### PHASE 3: Arquitectura Técnica
 **Pregunta:** ¿Cuál es el "Cómo"?
 **Duración:** 45 minutos
-**Documentos:** 4 (Tech Stack, Structure Map, API Contract, Threat Model)
-**Resultado:** Arquitectura técnica profesional
+**Documents:** 4 (Tech Stack, Structure Map, API Contract, Threat Model)
+**Result:** Arquitectura técnica profesional
 
-### FASE 4: Planificación y Calidad
+### PHASE 4: Planificación y Calidad
 **Pregunta:** ¿Cuándo? ¿Con qué calidad?
 **Duración:** 20 minutos
-**Documentos:** 2 (Roadmap Phases, Testing Strategy)
-**Resultado:** Plan de ejecución y métricas de éxito
+**Documents:** 2 (Roadmap Phases, Testing Strategy)
+**Result:** Plan de ejecución y métricas de éxito
 
 ---
 
@@ -155,22 +155,22 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
    - ❌ "App de chat"
    - ✅ "Chat en tiempo real para equipos remotos de máx 50 personas"
 
-2. **Sigue las fases en orden**
+2. **Sigue las phases en orden**
    - No saltes de FASE 1 a FASE 3
-   - Cada fase te preparapara la siguiente
+   - Cada phase te preparapara la next
 
 3. **Usa el chat para aclaraciones**
    - "¿Por qué recomiendas PostgreSQL y no MongoDB?"
    - La IA explicará sus decisiones
 
-4. **Descarga los documentos generados**
+4. **Descarga los documents generados**
    - Úsalos como referencia en tu equipo
    - Son Copyright tuyo, haz lo que quieras
 
 ### ❌ DON'Ts (No lo hagas)
 
 1. **No pidas código todavía**
-   - Las primeras 3 fases son diseño puro
+   - Las primeras 3 phases son diseño puro
    - Si pides código ante de FASE 4, la IA te lo dirá (educadamente)
 
 2. **No cambies decisiones sin documentar**
@@ -202,13 +202,13 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 - **Mensaje de arriba:** Última pregunta de la IA
 - **Historial:** Tu conversación completa (scrolleable)
 - **Cuadro de entrada:** Donde escribes
-- **Botón ENVIAR:** O Ctrl+Enter
+- **Button ENVIAR:** O Ctrl+Enter
 
-### El Panel Derecho (Documentos)
+### El Panel Derecho (Documents)
 
-- **Preview** del documento que la IA acaba de generar
-- **Botón DESCARGAR**
-- **Botón EDITAR** (si quieres ajustar manualmente)
+- **Preview** del document que la IA acaba de generar
+- **Button DESCARGAR**
+- **Button EDITAR** (si quieres ajustar manualmente)
 
 ---
 
@@ -217,8 +217,8 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 | Atajo | Acción |
 |-------|--------|
 | `Ctrl+Enter` | Enviar mensaje |
-| `Ctrl+D` | Descargar documento actual |
-| `Ctrl+.` | Abrir configuración |
+| `Ctrl+D` | Descargar document actual |
+| `Ctrl+.` | Abrir configuration |
 | `Escape` | Cerrar diálogos |
 
 ---
@@ -235,7 +235,7 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 → Recarga la página (Ctrl+R). Tu chat se guarda automáticamente.
 
 ### "Quiero empezar de cero"
-→ Crea un nuevo proyecto. El anterior se archiva.
+→ Crea un nuevo project. El previous se archiva.
 
 ---
 
@@ -244,10 +244,10 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 Para ir más allá de Quick Start:
 
 - **[Guía de Instalación Completa](02-INSTALLATION.md)** - Todos los pasos para cada SO
-- **[Master Workflow Detallado](04-MASTER_WORKFLOW.md)** - Explicación profunda de cada fase
+- **[Master Workflow Detallado](04-MASTER_WORKFLOW.md)** - Explicación profunda de cada phase
 - **[Interfaz de Chat](05-CHAT_INTERFACE.md)** - Cómo usar todas las opciones
 - **[Streaming en Tiempo Real](06-STREAMING.md)** - Cómo funciona la IA streaming
-- **[Persistencia y Guardado](07-PERSISTENCE.md)** - Dónde se guardan tus proyectos
+- **[Persistencia y Guardado](07-PERSISTENCE.md)** - Dónde se guardan tus projects
 - **[Resolución de Problemas](08-TROUBLESHOOTING.md)** - FAQ y soluciones
 - **[Video Tutoriales](10-VIDEO_TUTORIALS.md)** - Links a videos paso a paso
 
@@ -257,7 +257,7 @@ Para ir más allá de Quick Start:
 
 Ahora que ya sabes:
 1. ✅ Instalar la app
-2. ✅ Crear un proyecto
+2. ✅ Create un project
 3. ✅ Completar FASE 1
 
 Tu próximo paso:
@@ -273,7 +273,7 @@ La IA te pedirá que definas los requisitos funcionales y no-funcionales.
 ¿Preguntas?
 
 - **GitHub Issues:** [github.com/Pitcher755/soft-architect-ai/issues](https://github.com/Pitcher755/soft-architect-ai/issues)
-- **Documentación Técnica:** Ver carpeta `doc/English/01-PROJECT_REPORT`
+- **Documentación Técnica:** Ver folder `doc/English/01-PROJECT_REPORT`
 - **FAQ:** [08-TROUBLESHOOTING.md](08-TROUBLESHOOTING.md)
 
 ---

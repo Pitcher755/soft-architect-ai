@@ -1,17 +1,17 @@
-# 🟢 NEXT: PHASE 3 GREEN - Implementation Instructions
+# 🟢 NEXT: PHASE 3 GREEN - Implementación Instructions
 
 > **Start Date:** Jan 29, 2025
 > **Duration:** ~1 week
-> **Objective:** Implement streaming logic to pass all 14 tests
-> **Success Criteria:** `flutter test test/unit/features/chat/` → 14/14 PASSING ✅
+> **Objective:** Implement streaming logic to pass all 14 pruebas
+> **Success Criteria:** `flutter prueba prueba/unit/features/chat/` → 14/14 PASSING ✅
 
 ---
 
 ## 🎯 WHAT YOU NEED TO DO
 
-### Step 1: Create ChatRepositoryImpl (Data Layer)
+### Step 1: Crear ChatRepositoryImpl (Data Layer)
 
-**File:** `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
+**Archivo:** `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
 
 ```dart
 import 'package:http/http.dart' as http;
@@ -87,9 +87,9 @@ class ChatRepositoryImpl implements ChatRepository {
 
 ### Step 2: Complete ChatNotifier Streaming Logic
 
-**File:** `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart`
+**Archivo:** `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart`
 
-**Current state:** Has skeleton, needs implementation
+**Current state:** Has skeleton, needs implementación
 
 **What to implement:**
 
@@ -253,7 +253,7 @@ dependencies:
   http: ^1.1.0
 ```
 
-**Then run:**
+**Then ejecutar:**
 
 ```bash
 cd src/client && flutter pub get
@@ -261,7 +261,7 @@ cd src/client && flutter pub get
 
 ---
 
-### Step 4: Run Tests
+### Step 4: Ejecutar Pruebas
 
 **Command:**
 
@@ -280,34 +280,34 @@ cd tests && flutter test test/unit/features/chat/ --coverage
 
 ## 📋 TESTING CHECKLIST
 
-### Pre-Test Verification
-- [ ] ChatRepositoryImpl created and imported
+### Pre-Prueba Verificación
+- [ ] ChatRepositoryImpl creard and imported
 - [ ] ChatNotifier async logic implemented
 - [ ] All TODO comments addressed
 - [ ] Type safety verified (no analyzer warnings)
 
-### Test Execution
-- [ ] Remove `skip: true` from all 6 ChatNotifier tests
-- [ ] Run: `flutter test test/unit/features/chat/ --coverage`
+### Prueba Execution
+- [ ] Remove `skip: true` from all 6 ChatNotifier pruebas
+- [ ] Ejecutar: `flutter prueba prueba/unit/features/chat/ --coverage`
 - [ ] Verify: 14/14 PASSING
 
-### Post-Test Validation
+### Post-Prueba Validation
 - [ ] Coverage >80% for presentation layer
-- [ ] All error paths tested
+- [ ] All error paths pruebaed
 - [ ] Streaming behavior verified
 
 ---
 
 ## 🐛 DEBUGGING TIPS
 
-### If Tests Fail
+### If Pruebas Fail
 
 #### Issue: "ChatRepositoryImpl not found"
-- ✅ Solution: Create file with correct import path
-- Ensure: `import` statement matches file location
+- ✅ Solution: Crear archivo with correct import path
+- Ensure: `import` statement matches archivo location
 
 #### Issue: "Stream returned 0 tokens"
-- ✅ Solution: Verify Backend is running on correct port
+- ✅ Solution: Verify Backend is ejecutarning on correct port
 - Check: `http://localhost:8000/api/v1/chat/generate`
 
 #### Issue: "Type mismatch in copyWith()"
@@ -352,13 +352,13 @@ ChatRepository (interface) ← ChatRepositoryImpl (implementation)
 
 ## 📊 PHASE 3 GREEN TIMELINE
 
-| Day | Task | Expected Result |
+| Day | Task | Expected Resultado |
 |-----|------|-----------------|
-| Day 1 | Create ChatRepositoryImpl | File created, imports resolved |
+| Day 1 | Crear ChatRepositoryImpl | Archivo creard, imports resolved |
 | Day 2 | Complete ChatNotifier logic | Async methods implemented |
 | Day 3 | Update dependencies | `flutter pub get` succeeds |
-| Day 4 | Remove test skips | Tests unskipped |
-| Day 5 | Run tests | All 14 passing ✅ |
+| Day 4 | Remove prueba skips | Pruebas unskipped |
+| Day 5 | Ejecutar pruebas | All 14 passing ✅ |
 | Day 6 | Validation & docs | Coverage >80%, PR ready |
 | Day 7 | Code review & merge | PR merged to develop |
 
@@ -366,7 +366,7 @@ ChatRepository (interface) ← ChatRepositoryImpl (implementation)
 
 ## 🚀 SUCCESS CRITERIA
 
-### GREEN Phase Success
+### GREEN Fase Success
 ```
 ✅ ChatRepositoryImpl implements all methods
 ✅ ChatNotifier handles streaming correctly
@@ -382,13 +382,13 @@ ChatRepository (interface) ← ChatRepositoryImpl (implementation)
 ## 📚 REFERENCES
 
 ### Code to Review
-- [ChatRepositoryImpl template](#step-1-create-chatrepositoryimpl-data-layer)
-- [ChatNotifier implementation](#step-2-complete-chatnotifier-streaming-logic)
+- [ChatRepositoryImpl template](#step-1-crear-chatrepositoryimpl-data-layer)
+- [ChatNotifier implementación](#step-2-complete-chatnotifier-streaming-logic)
 - [Existing ChatState](./streaming_state.dart) - Study copyWith pattern
 
-### Tests to Inspect
-- [chat_notifier_test.dart](../tests/test/unit/features/chat/presentation/notifiers/chat_notifier_test.dart)
-- FakeChatRepository in test file (shows expected behavior)
+### Pruebas to Inspect
+- [chat_notifier_prueba.dart](../pruebas/prueba/unit/features/chat/presentation/notifiers/chat_notifier_prueba.dart)
+- FakeChatRepository in prueba archivo (shows expected behavior)
 
 ### Backend Reference
 - Endpoint: POST `/api/v1/chat/generate`
@@ -399,26 +399,26 @@ ChatRepository (interface) ← ChatRepositoryImpl (implementation)
 
 ## 🎯 NEXT AFTER GREEN
 
-Once all 14 tests PASSING:
+Once all 14 pruebas PASSING:
 
-1. **Create UI Widgets** (Phase 3 continuation)
+1. **Crear UI Widgets** (Fase 3 continuation)
    - ProposalCard (display proposal)
    - StreamingIndicator (real-time feedback)
    - MessageBubble (chat display)
 
-2. **Integration Testing** (Phase 4)
-   - E2E workflow: User input → 1 complete document
+2. **Integración Pruebaing** (Fase 4)
+   - E2E workflow: User input → 1 complete documento
    - Error scenarios: Connection failure, timeout
    - Local caching for offline support
 
-3. **Production Ready** (Phases 5-6)
-   - Load testing (concurrent users)
+3. **Production Ready** (Fases 5-6)
+   - Load pruebaing (concurrent users)
    - Performance optimization (token buffering)
    - Docker & deployment
 
 ---
 
-**Status:** Ready to START GREEN Phase
+**Estado:** Ready to START GREEN Fase
 **Confidence:** 95% (All architecture verified)
 **Timeline:** 1 week to completion
 

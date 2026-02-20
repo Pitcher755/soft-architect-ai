@@ -1,16 +1,16 @@
 # 📋 Paso 3.2: Widgets Principales - COMPLETADO ✅
 
-> **Estado:** COMPLETED
-> **Fecha:** 03/02/2026
+> **Status:** COMPLETED
+> **Date:** 03/02/2026
 > **Commit:** `9060771` - feat(paso-3.2): Create main UI widgets with GitHub Dark theme
 
 ---
 
 ## 🎯 Resumen Ejecutivo
 
-Se han completado exitosamente los 4 componentes de **Paso 3.2** (Crear Widgets Principales):
+Se han completado exitosamente los 4 componentes de **Paso 3.2** (Create Widgets Principales):
 
-| Componente | Líneas | Estado | Detalles |
+| Componente | Líneas | Status | Detalles |
 |-----------|--------|--------|----------|
 | **DirectoryTreeWidget** | 176 | ✅ | Árbol expandible de directorios (VS Code style) |
 | **MarkdownPreviewWidget** | 154 | ✅ | Visualizador de markdown con header |
@@ -22,7 +22,7 @@ Se han completado exitosamente los 4 componentes de **Paso 3.2** (Crear Widgets 
 
 ## 📊 Calidad de Código
 
-### Análisis de Compilación
+### Analysis de Compilación
 
 ```
 ✅ flutter analyze: 0 ERRORES
@@ -39,7 +39,7 @@ Se han completado exitosamente los 4 componentes de **Paso 3.2** (Crear Widgets 
 | `border` atributo no definido en Container | 162 | Cambiar a `decoration: BoxDecoration()` |
 | `border` atributo no definido en Container | 170 | Cambiar a `decoration: BoxDecoration()` |
 
-**Estado:** ✅ **TODOS CORREGIDOS**
+**Status:** ✅ **TODOS CORREGIDOS**
 
 ---
 
@@ -126,9 +126,9 @@ ProjectShellScreen (ConsumerStatefulWidget)
 ### DirectoryTreeWidget
 
 - ✅ Árbol expandible de directorios (VS Code style)
-- ✅ Iconos específicos por tipo de archivo (.dart, .py, .md, .json, etc.)
-- ✅ Selección de archivos con `ValueChanged<FileNode>` callback
-- ✅ Estado expandido/colapsado memorizado (Set<String>)
+- ✅ Iconos específicos por tipo de file (.dart, .py, .md, .json, etc.)
+- ✅ Selección de files con `ValueChanged<FileNode>` callback
+- ✅ Status expandido/colapsado memorizado (Set<String>)
 - ✅ Hover effects y colores del tema
 - ✅ Recursive tree building
 - ✅ Logging con `developer.log()`
@@ -143,7 +143,7 @@ ProjectShellScreen (ConsumerStatefulWidget)
 
 - ✅ Visualización de contenido Markdown
 - ✅ Empty state con placeholder
-- ✅ Header con nombre de archivo y ícono
+- ✅ Header con nombre de file y ícono
 - ✅ Texto selectable
 - ✅ `flutter_markdown` integration
 - ✅ Links clickeables (TODO: implementar navegación)
@@ -151,7 +151,7 @@ ProjectShellScreen (ConsumerStatefulWidget)
 - ✅ Scroll suave
 
 **Componentes privados:**
-- `_EmptyPreview` - Estado vacío
+- `_EmptyPreview` - Status vacío
 - `_MarkdownContent` - Contenido con header
 
 ### ProjectShellScreen
@@ -159,16 +159,16 @@ ProjectShellScreen (ConsumerStatefulWidget)
 - ✅ Layout tipo IDE (3 panes: AppBar + Sidebar + Preview)
 - ✅ ConsumerStatefulWidget (Riverpod listo)
 - ✅ Integration con `projectShellProvider`
-- ✅ Selección de archivos con estado local
+- ✅ Selección de files con status local
 - ✅ Mock tree structure (reemplazable)
 - ✅ Mock content loading
-- ✅ AppBar con información del proyecto
+- ✅ AppBar con información of the project
 - ✅ No project selected state
 - ✅ Logging integrado
 
-**Estados manejados:**
+**Statuss manejados:**
 - `_selectedNode` - Nodo seleccionado actual
-- `_fileContent` - Contenido del archivo cargado
+- `_fileContent` - Contenido del file cargado
 
 ### AppColors
 
@@ -181,9 +181,9 @@ ProjectShellScreen (ConsumerStatefulWidget)
 
 ---
 
-## 📈 Integración con Fase Anterior
+## 📈 Integración con Phase Previous
 
-### Paso 3.1 (Completado anteriormente)
+### Paso 3.1 (Completed previousmente)
 
 ```dart
 // ProjectShellNotifier - State Management ✅
@@ -194,7 +194,7 @@ final projectRepositoryProvider = Provider<ProjectRepository>(...);
 final projectShellProvider = StateNotifierProvider<ProjectShellNotifier, ProjectShellState>(...);
 ```
 
-### Paso 3.2 (Ahora Completado)
+### Paso 3.2 (Ahora Completed)
 
 ```dart
 // DirectoryTreeWidget - UI Component ✅
@@ -221,9 +221,9 @@ class AppColors { ... }
 
 ---
 
-## 📝 Cambios en Archivos
+## 📝 Cambios en Files
 
-### Nuevos Archivos Creados
+### Nuevos Files Creados
 
 ```
 src/client/lib/
@@ -250,7 +250,7 @@ doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL/
 
 ## 🔗 Conexión Riverpod
 
-### Estado del Flujo
+### Status del Flujo
 
 ```
 user interaction (DirectoryTreeWidget)
@@ -280,7 +280,7 @@ DirectoryTreeWidget and MarkdownPreviewWidget refresh
 
 ---
 
-## 🚀 Próximos Pasos (Paso 3.3)
+## 🚀 Next Steps (Paso 3.3)
 
 ### Widget Testing
 
@@ -306,11 +306,11 @@ testWidgets('ProjectShellScreen displays IDE layout', (WidgetTester tester) asyn
 1. **Database Integration**
    - Implementar `projectRepositoryProvider` con SQLite real
    - Cargar tree structure desde FileSystem
-   - Cargar contenido de archivos reales
+   - Cargar contenido de files reales
 
 2. **Performance**
    - Lazy loading de directorios grandes
-   - Caching de contenido de archivos
+   - Caching de contenido de files
    - Virtualization para árboles enormes
 
 3. **UI Refinements**
@@ -321,7 +321,7 @@ testWidgets('ProjectShellScreen displays IDE layout', (WidgetTester tester) asyn
 
 ---
 
-## 📊 Métricas del Proyecto
+## 📊 Métricas del Project
 
 ### Progreso General
 
@@ -342,9 +342,9 @@ PROYECTO OVERALL:              ~53% (completado)
 
 ### Código Generado
 
-| Fase | Líneas | Archivos | Tests | Status |
+| Phase | Líneas | Files | Tests | Status |
 |------|--------|----------|-------|--------|
-| Fase 2 | ~500 | 9 | 17/17 | ✅ 100% |
+| Phase 2 | ~500 | 9 | 17/17 | ✅ 100% |
 | Paso 3.1 | 122 | 2 | 0 | ✅ 100% |
 | Paso 3.2 | 724 | 4 | 0 | ✅ 100% |
 | **TOTAL** | **1,346** | **15** | **17** | **~53%** |
@@ -365,7 +365,7 @@ PROYECTO OVERALL:              ~53% (completado)
 - [x] Git commit exitoso
 - [x] Documentación completada
 
-**ESTADO: ✅ 100% COMPLETADO**
+**STATUS: ✅ 100% COMPLETADO**
 
 ---
 
@@ -419,4 +419,4 @@ const textSecondary = Color(0xFF8b949e);
 
 ---
 
-**Siguiente paso:** Paso 3.3 - Widget Tests para todos los componentes UI creados.
+**Next paso:** Paso 3.3 - Widget Tests para todos los componentes UI creados.

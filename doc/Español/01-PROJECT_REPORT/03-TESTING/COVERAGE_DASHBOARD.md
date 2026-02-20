@@ -1,4 +1,4 @@
-# 📈 Test Coverage Dashboard - February 2026
+# 📈 Prueba Coverage Dashboard - February 2026
 
 > **Última Actualización:** 4 de febrero de 2026
 > **Estado:** ✅ En Mejora Continua
@@ -38,7 +38,7 @@ INTEGRATION TESTS
 
 ## 📊 Métricas por Módulo
 
-### Backend (Unit Tests)
+### Backend (Unit Pruebas)
 ```
 ┌────────────────────────────────────────┐
 │ UNIT TEST MODULES                      │
@@ -57,7 +57,7 @@ INTEGRATION TESTS
 └────────────────────────────────────────┘
 ```
 
-### Frontend (Widget Tests)
+### Frontend (Widget Pruebas)
 ```
 ┌────────────────────────────────────────┐
 │ WIDGET TEST MODULES                    │
@@ -70,7 +70,7 @@ INTEGRATION TESTS
 └────────────────────────────────────────┘
 ```
 
-### End-to-End (Integration Tests)
+### End-to-End (Integración Pruebas)
 ```
 ┌────────────────────────────────────────┐
 │ INTEGRATION TEST FLOWS                 │
@@ -86,27 +86,27 @@ INTEGRATION TESTS
 
 ---
 
-## 🟢 Tests Pasando (202 total)
+## 🟢 Pruebas Pasando (202 total)
 
 ### ✅ 100% Completitud
-- ValidationConstants (36 tests)
-- PathValidator (24 tests)
-- ProjectShellNotifier (10 tests)
-- FileNode Entity (27 tests)
-- Project Entity (18 tests)
-- DirectoryTreeUseCase (2 tests)
-- ProjectValidationUseCase (26 tests)
-- FileSearchUseCase (24 tests)
-- MarkdownPreviewWidget (12 tests)
-- Markdown Preview Flow (6 tests)
+- ValidationConstants (36 pruebas)
+- PathValidator (24 pruebas)
+- ProyectoShellNotifier (10 pruebas)
+- ArchivoNode Entity (27 pruebas)
+- Proyecto Entity (18 pruebas)
+- DirectoryTreeUseCase (2 pruebas)
+- ProyectoValidationUseCase (26 pruebas)
+- ArchivoSearchUseCase (24 pruebas)
+- MarkdownPreviewWidget (12 pruebas)
+- Markdown Preview Flow (6 pruebas)
 
-**Total: 187 Tests con Cobertura Completa**
+**Total: 187 Pruebas con Cobertura Completa**
 
 ---
 
-## 🔴 Tests Fallando (10 total)
+## 🔴 Pruebas Fallando (10 total)
 
-### 🟡 Sobrepasos Menores (1 test)
+### 🟡 Sobrepasos Menores (1 prueba)
 ```
 DirectoryTreeWidget:
   ❌ should highlight selected file
@@ -115,9 +115,9 @@ DirectoryTreeWidget:
      Priority: LOW
 ```
 
-### 🔴 Bloqueadores (9 tests)
+### 🔴 Bloqueadores (9 pruebas)
 
-#### ProjectShellScreen State Injection (7 tests)
+#### ProyectoShellScreen State Injection (7 pruebas)
 ```
 ❌ should display no project view when no project is selected
    Expected: Text('No Project Selected')
@@ -136,7 +136,7 @@ DirectoryTreeWidget:
 ❌ should update UI when project changes
 ```
 
-#### Project Creation Integration (3 tests)
+#### Proyecto Creation Integración (3 pruebas)
 ```
 ❌ should create and retrieve project successfully
    Expected: Project created in SQLite
@@ -202,7 +202,7 @@ Total Coverage            +39.2%       Excepcional 🎉
 
 ## 🎯 Quality Gates
 
-### Status Actual
+### Estado Actual
 ```
 ┌─────────────────────────────────────────┐
 │        QUALITY GATES STATUS             │
@@ -281,22 +281,22 @@ Build Success        100%  → 100%  → 100% → 100%
 ## 📌 Hitos Alcanzados
 
 ### ✅ Completados
-- [x] Unit tests > 95%
-- [x] Widget tests > 70%
-- [x] Integration tests > 50%
+- [x] Unit pruebas > 95%
+- [x] Widget pruebas > 70%
+- [x] Integración pruebas > 50%
 - [x] Overall coverage > 90%
 - [x] Security validation 100%
 - [x] Build pipeline stable
 
 ### 🔄 En Progreso
-- [ ] Widget tests > 90%
-- [ ] Integration tests > 80%
+- [ ] Widget pruebas > 90%
+- [ ] Integración pruebas > 80%
 - [ ] Overall coverage > 98%
 - [ ] E2E coverage > 70%
 
 ### ⏳ Pendientes
 - [ ] Overall coverage 99%+
-- [ ] Integration tests 100%
+- [ ] Integración pruebas 100%
 - [ ] Performance benchmarks
 - [ ] Automated coverage reports
 
@@ -304,7 +304,7 @@ Build Success        100%  → 100%  → 100% → 100%
 
 ## 📞 Consultas Frecuentes
 
-### ¿Cuál es el siguiente test que debo arreglar?
+### ¿Cuál es el siguiente prueba que debo arreglar?
 ```
 1️⃣ ProjectShellScreen state injection (7 tests) - MÁXIMA PRIORIDAD
    └─ Resolviendo esto sube coverage a 92%+
@@ -313,7 +313,7 @@ Build Success        100%  → 100%  → 100% → 100%
    └─ Resolviendo esto sube coverage a 98%+
 ```
 
-### ¿Por qué fallan los tests de ProjectShellScreen?
+### ¿Por qué fallan los pruebas de ProyectoShellScreen?
 ```
 El patrón de inyección de estado (FakeProjectShellNotifier)
 no propaga el estado inicial al árbol de widgets de forma
@@ -331,7 +331,7 @@ Estimado: 11-12 de Febrero (~1 semana)
 
 ---
 
-## 🎓 Documentación Relacionada
+## 🎓 Documentoación Relacionada
 
 - [COVERAGE_ANALYSIS_LATEST.md](./COVERAGE_ANALYSIS_LATEST.md) - Análisis detallado
 - [TEST_COVERAGE_FINAL_REPORT.md](./TEST_COVERAGE_FINAL_REPORT.es.md) - Historial completo

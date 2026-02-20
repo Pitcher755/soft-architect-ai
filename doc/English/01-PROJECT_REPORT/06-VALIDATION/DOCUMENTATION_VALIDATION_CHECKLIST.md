@@ -1,7 +1,7 @@
 # 📋 Guía de Validación: Estructura de Documentación
 
-> **Propósito:** Verificación rápida de que la documentación cumple con AGENTS.md §8
-> **Fecha:** 29 de enero de 2026
+> **Propósito:** Verification rápida de que la documentación cumple con AGENTS.md §8
+> **Date:** 29 de enero de 2026
 > **Aplicable a:** Toda nueva documentación
 
 ---
@@ -10,7 +10,7 @@
 
 Antes de agregar documentación nueva, verifica:
 
-### 1. **¿Dónde va el archivo?**
+### 1. **¿Dónde va el file?**
 
 ```bash
 # ¿Es un concepto/paper estratégico?
@@ -107,9 +107,9 @@ $ find doc -type f -name "*.md" | sort | head -20
 
 ---
 
-## 🔍 Verificación de Compliance
+## 🔍 Verification de Compliance
 
-Después de crear nuevo archivo, ejecuta:
+Después de create nuevo file, ejecuta:
 
 ```bash
 cd /path/to/soft-architect-ai
@@ -137,7 +137,7 @@ $ grep "](/" doc/NUEVA_CATEGORIA/NUEVO_ARCHIVO.md
 
 ---
 
-## 📚 Ejemplos de Archivo Bien Clasificado
+## 📚 Ejemplos de File Bien Clasificado
 
 ### ✅ CORRECTO: Reporte en 01-PROJECT_REPORT/
 
@@ -187,7 +187,7 @@ Estructura: Dedicada por HU
 Ubicación: ✅ CORRECTA
 ```
 
-### ❌ INCORRECTO: Archivo en raíz
+### ❌ INCORRECTO: File en raíz
 
 ```
 soft-architect-ai/NUEVA_GUIA.md
@@ -221,7 +221,7 @@ Solución: Crear dos archivos:
 
 ---
 
-## 🚀 Workflow: Crear Nuevo Documento
+## 🚀 Workflow: Create Nuevo Document
 
 ### PASO 1: Decidir Categoría
 ```
@@ -233,7 +233,7 @@ Solución: Crear dos archivos:
 └─ Documentación interna → private/
 ```
 
-### PASO 2: Nombrar Archivo
+### PASO 2: Nombrar File
 ```
 Formato: UPPERCASE_SNAKE_CASE[.{es,en}].md
 
@@ -243,7 +243,7 @@ Ejemplos:
 ✅ TESTING_STRATEGY.en.md
 ```
 
-### PASO 3: Crear Estructura Base
+### PASO 3: Create Estructura Base
 ```markdown
 # 📚 [Título]
 
@@ -298,7 +298,7 @@ git commit -m "📚 Agregar NUEVO_ARCHIVO en CATEGORIA"
 ### Si tienes dudas sobre estructura:
 → Consulta ejemplos en [doc/](.)
 
-### Si encontraste un archivo mal clasificado:
+### Si encontraste un file mal clasificado:
 → Úsalo como anti-patrón y reubícalo correctamente
 
 ---

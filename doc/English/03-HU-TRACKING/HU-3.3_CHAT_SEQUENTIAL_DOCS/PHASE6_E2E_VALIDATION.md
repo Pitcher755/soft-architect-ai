@@ -1,6 +1,6 @@
-# 🧪 FASE 6: End-to-End Validation (TDD GREEN)
+# 🧪 PHASE 6: End-to-End Validation (TDD GREEN)
 
-> **Estado:** 📋 LISTA PARA INICIAR (Scaffold completado, mocks en lugar)
+> **Status:** 📋 LISTA PARA INICIAR (Scaffold completado, mocks en lugar)
 > **Propósito:** Verificar el flujo completo E2E con backend real
 > **Estimación:** 3-4 días
 > **Tests Coverage Target:** Backend >85%, Frontend >80%
@@ -33,22 +33,22 @@ docker-compose up -d chroma
 cd src/client && flutter run -d linux
 ```
 
-### ✅ Flujo 1: Creación de Proyecto
+### ✅ Flujo 1: Creación de Project
 
-**Objetivo:** Verificar que la creación de proyecto funciona correctamente
+**Objetivo:** Verificar que la creación de project funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
-| 1.1 | Click "Nuevo Proyecto" button | [ ] |
+| 1.1 | Click "New Project" button | [ ] |
 | 1.2 | Modal dialog aparece | [ ] |
-| 1.3 | Selector de carpeta funciona (click "Examinar") | [ ] |
-| 1.4 | Seleccionar carpeta válida | [ ] |
-| 1.5 | Nombre del proyecto: "TestProject" | [ ] |
-| 1.6 | Click "Crear" button | [ ] |
+| 1.3 | Selector de folder funciona (click "Examinar") | [ ] |
+| 1.4 | Seleccionar folder válida | [ ] |
+| 1.5 | Name of the project: "TestProject" | [ ] |
+| 1.6 | Click "Create" button | [ ] |
 | 1.7 | Dashboard carga correctamente | [ ] |
 | 1.8 | Barra de progreso muestra "Doc 1/25" | [ ] |
-| 1.9 | Carpeta del proyecto se crea en disco | [ ] |
-| 1.10 | Subcarpetas (10-CONTEXT, 20-REQUIREMENTS, etc.) se crean | [ ] |
+| 1.9 | Folder of the project se crea en disco | [ ] |
+| 1.10 | Subfolders (10-CONTEXT, 20-REQUIREMENTS, etc.) se crean | [ ] |
 
 **Expected Result:** Dashboard visible con chat listo para Doc 1
 
@@ -58,12 +58,12 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que la entrada de usuario funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
 | 2.1 | Input field visible y enfocable | [ ] |
-| 2.2 | Input field vacío → Botón enviar **deshabilitado** (gris) | [ ] |
+| 2.2 | Input field vacío → Button enviar **deshabilitado** (gris) | [ ] |
 | 2.3 | Escribir: "Genera el Project Manifesto para un sistema de gestión de tareas" | [ ] |
-| 2.4 | Botón enviar habilitado (color activo) | [ ] |
+| 2.4 | Button enviar habilitado (color activo) | [ ] |
 | 2.5 | Click enviar | [ ] |
 | 2.6 | Input field se limpia automáticamente | [ ] |
 | 2.7 | Teclado: Enter también envía mensaje | [ ] |
@@ -76,7 +76,7 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar streaming token-a-token con indicador visual
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
 | 3.1 | Mensaje usuario aparece alineado a la **derecha** | [ ] |
 | 3.2 | Streaming indicator aparece (ej: "IA escribe...") | [ ] |
@@ -94,12 +94,12 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que la propuesta se renderiza correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
 | 4.1 | ProposalCard aparece después de streaming | [ ] |
 | 4.2 | Contenido es Markdown válido (títulos, listas, énfasis) | [ ] |
 | 4.3 | Bloques de código renderizados con syntax highlighting | [ ] |
-| 4.4 | **Botón "Copiar" en cabecera de cada bloque de código** | [ ] |
+| 4.4 | **Button "Copiar" en cabecera de cada bloque de código** | [ ] |
 | 4.5 | Click en "Copiar" → contenido en clipboard (verificar Ctrl+V) | [ ] |
 | 4.6 | Propuesta tiene los 3 botones: [Rechazar] [Regenerar] [Validar y Guardar] | [ ] |
 | 4.7 | Botones bien espaciados y visibles | [ ] |
@@ -113,36 +113,36 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que la propuesta se valida y persiste correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
-| 5.1 | Click botón "Validar y Guardar" | [ ] |
-| 5.2 | Toast notificación aparece: **"✅ Documento guardado"** | [ ] |
+| 5.1 | Click button "Validar y Guardar" | [ ] |
+| 5.2 | Toast notificación aparece: **"✅ Document guardado"** | [ ] |
 | 5.3 | Toast desaparece después de 3s | [ ] |
 | 5.4 | Barra de progreso actualiza: "Doc 2/25" | [ ] |
 | 5.5 | ProposalCard desaparece | [ ] |
-| 5.6 | Abrir explorador de archivos | [ ] |
+| 5.6 | Abrir explorador de files | [ ] |
 | 5.7 | Navegar a: `TestProject/context/10-CONTEXT/` | [ ] |
-| 5.8 | Archivo existe: `PROJECT_MANIFESTO.md` | [ ] |
-| 5.9 | Contenido del archivo **coincide exactamente** con propuesta | [ ] |
+| 5.8 | File existe: `PROJECT_MANIFESTO.md` | [ ] |
+| 5.9 | Contenido del file **coincide exactamente** con propuesta | [ ] |
 | 5.10 | Chat automáticamente pregunta por Doc 2 | [ ] |
 
-**Expected Result:** Documento guardado correctamente en disco
+**Expected Result:** Document guardado correctamente en disco
 
 ---
 
 ### ✅ Flujo 6: Regeneración de Propuesta
 
-**Objetivo:** Verificar que el botón "Regenerar" funciona correctamente
+**Objetivo:** Verificar que el button "Regenerar" funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
 | 6.1 | Generar Doc 2 (respuesta cualquiera) | [ ] |
 | 6.2 | Propuesta aparece | [ ] |
-| 6.3 | Click botón "Regenerar" | [ ] |
+| 6.3 | Click button "Regenerar" | [ ] |
 | 6.4 | Streaming indicator aparece nuevamente | [ ] |
 | 6.5 | Nueva propuesta aparece (contenido diferente) | [ ] |
-| 6.6 | Historial del chat mantiene mensajes anteriores | [ ] |
-| 6.7 | Propuesta anterior desaparece (solo la última visible) | [ ] |
+| 6.6 | Historial del chat mantiene mensajes previouses | [ ] |
+| 6.7 | Propuesta previous desaparece (solo la última visible) | [ ] |
 
 **Expected Result:** Regeneración funciona sin perder historial
 
@@ -150,17 +150,17 @@ cd src/client && flutter run -d linux
 
 ### ✅ Flujo 7: Rechazo de Propuesta
 
-**Objetivo:** Verificar que el botón "Rechazar" funciona correctamente
+**Objetivo:** Verificar que el button "Rechazar" funciona correctamente
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
 | 7.1 | Generar Doc 3 (respuesta cualquiera) | [ ] |
 | 7.2 | Propuesta aparece | [ ] |
-| 7.3 | Click botón "Rechazar" | [ ] |
+| 7.3 | Click button "Rechazar" | [ ] |
 | 7.4 | Propuesta desaparece **sin guardar** | [ ] |
 | 7.5 | Chat espera nueva instrucción del usuario | [ ] |
 | 7.6 | Progreso sigue en "Doc 3/25" (no avanza) | [ ] |
-| 7.7 | Archivo **NO se crea** en disco | [ ] |
+| 7.7 | File **NO se crea** en disco | [ ] |
 
 **Expected Result:** Rechazo descarta propuesta sin persistencia
 
@@ -170,14 +170,14 @@ cd src/client && flutter run -d linux
 
 **Objetivo:** Verificar que los errores se manejan elegantemente
 
-| Paso | Verificación | Status |
+| Paso | Verification | Status |
 |------|--------------|--------|
 | 8.1 | Parar backend: `Ctrl+C` en terminal del servidor | [ ] |
 | 8.2 | Enviar mensaje en chat | [ ] |
 | 8.3 | Error aparece en <5s: "❌ No se pudo conectar al servidor" | [ ] |
-| 8.4 | Botón "Reintentar" visible | [ ] |
+| 8.4 | Button "Reintentar" visible | [ ] |
 | 8.5 | Reiniciar backend | [ ] |
-| 8.6 | Click botón "Reintentar" | [ ] |
+| 8.6 | Click button "Reintentar" | [ ] |
 | 8.7 | Streaming funciona correctamente | [ ] |
 | 8.8 | **NO hay stack traces** mostrados al usuario | [ ] |
 
@@ -189,22 +189,22 @@ cd src/client && flutter run -d linux
 
 ### ✅ Positivos (Must Have)
 
-| ID | Criterio | Verificación |
+| ID | Criterio | Verification |
 |----|----------|--------------|
-| **P1** | Chat inicial pregunta descripción y genera 'Propuesta Doc 1' | [ ] |
+| **P1** | Chat inicial pregunta description y genera 'Propuesta Doc 1' | [ ] |
 | **P2** | Propuesta es temporal (NO persiste hasta 'Validar') | [ ] |
-| **P3** | Botón enviar deshabilitado si campo vacío/espacios | [ ] |
-| **P4** | Bloques código con botón 'Copiar' funcional | [ ] |
-| **P5** | Botón 'Validar y Guardar' llama FileSystemService (HU-3.2) | [ ] |
+| **P3** | Button enviar deshabilitado si campo vacío/espacios | [ ] |
+| **P4** | Bloques código con button 'Copiar' funcional | [ ] |
+| **P5** | Button 'Validar y Guardar' llama FileSystemService (HU-3.2) | [ ] |
 | **P6** | Streaming SSE con <200ms TTFT | [ ] |
 | **P7** | Barra de progreso actualiza (Doc N/25) tras validar | [ ] |
 | **P8** | Flujo 100% secuencial (nunca 2 docs paralelos) | [ ] |
 
 ### ❌ Negativos (Must NOT Have)
 
-| ID | Criterio | Verificación |
+| ID | Criterio | Verification |
 |----|----------|--------------|
-| **N1** | Documentos NO se guardan sin clic en 'Validar' | [ ] |
+| **N1** | Documents NO se guardan sin clic en 'Validar' | [ ] |
 | **N2** | Stack traces no aparecen en UI (errores genéricos amigables) | [ ] |
 | **N3** | App no se cuelga con conexión de red inestable | [ ] |
 
@@ -674,10 +674,10 @@ for doc_type in ['PROJECT_MANIFESTO', 'VISION_PROMISE', 'USER_JOURNEY']:
 
 **Tiempo Estimado:** 3-4 días
 
-**Siguiente Fase:** Deployment + Release Candidacy
+**Next Phase:** Deployment + Release Candidacy
 
 ---
 
 **Última actualización:** 6 febrero 2026
-**Estado:** 📋 LISTA PARA INICIAR
+**Status:** 📋 LISTA PARA INICIAR
 **Rama:** feature/chat-sequential-docs

@@ -19,7 +19,7 @@
 
 ## 🚨 Problemas Identificados
 
-### Error 1: Poetry Lock File Desactualizado
+### Error 1: Poetry Lock Archivo Desactualizado
 ```
 The lock file might not be compatible with the current version of Poetry.
 pyproject.toml changed significantly since poetry.lock was last generated.
@@ -27,9 +27,9 @@ Run `poetry lock [--no-update]` to fix the lock file.
 ```
 
 **Impacto:** 🔴 CRÍTICO
-El workflow de GitHub Actions fallaba al instalar dependencias porque `poetry.lock` no coincidía con `pyproject.toml`.
+El workflow de GitHub Actions fallaba al instalar dependencias porque `poetry.lock` no coincidía con `pyproyecto.toml`.
 
-### Error 2: Poetry No Instalado en Runner
+### Error 2: Poetry No Instalado en Ejecutarner
 ```
 /home/runner/work/_temp/...sh: line 2: poetry: command not found
 Error: Process completed with exit exit code 127
@@ -43,7 +43,7 @@ Aunque Poetry se instalaba explícitamente (`pip install poetry==1.8.3`), había
 ## 🔍 Análisis de Raíz
 
 ### Causa Principal
-Los cambios en HU-2.2 (RAG Vectorization) agregaron nuevas dependencias a `pyproject.toml`:
+Los cambios en HU-2.2 (RAG Vectorization) agregaron nuevas dependencias a `pyproyecto.toml`:
 - `chromadb>=1.4.2`
 - `langchain-core>=0.3.0`
 - Otras dependencias transitivas
@@ -51,9 +51,9 @@ Los cambios en HU-2.2 (RAG Vectorization) agregaron nuevas dependencias a `pypro
 Sin embargo, **`poetry.lock` no fue regenerado** después de estos cambios, causando una divergencia.
 
 ### Timeline del Problema
-1. **HU-2.2 Implementation:** Modificar `pyproject.toml` con nuevas dependencias
-2. **Git Commit:** Se commiteó el cambio a pyproject.toml
-3. **poetry.lock Desactualizado:** No se regeneró el lockfile
+1. **HU-2.2 Implementación:** Modificar `pyproyecto.toml` con nuevas dependencias
+2. **Git Commit:** Se commiteó el cambio a pyproyecto.toml
+3. **poetry.lock Desactualizado:** No se regeneró el lockarchivo
 4. **CI/CD Trigger:** GitHub Actions ejecuta pero falla en `poetry install`
 
 ---
@@ -69,7 +69,7 @@ Sin embargo, **`poetry.lock` no fue regenerado** después de estos cambios, caus
 cd src/server && poetry lock
 ```
 
-**Resultado:**
+**Resultadoado:**
 ```
 Resolving dependencies...
 Writing lock file
@@ -139,7 +139,7 @@ cd src/server && poetry install
 Error: Process completed with exit code 127
 ```
 
-**Causa Raíz Final:** Las soluciones manuales (pipx, PATH update) eran frágiles y dependían de factores externos del runner. **Mejor solución: usar acción oficial de terceros ya probada**.
+**Causa Raíz Final:** Las soluciones manuales (pipx, PATH update) eran frágiles y dependían de factores externos del ejecutarner. **Mejor solución: usar acción oficial de terceros ya probada**.
 
 **Solución DEFINITIVA Implementada:**
 1. Reemplazar instalación manual con `snok/install-poetry@v1` action
@@ -189,7 +189,7 @@ Error: Process completed with exit code 127
 
 ## 🧪 Validación
 
-### Tests Locales (Post-Fix)
+### Pruebas Locales (Post-Fix)
 ```bash
 cd src/server && poetry run pytest tests/unit/services/rag/test_vector_store.py -v
 
@@ -204,7 +204,7 @@ cd src/server && poetry lock --check
 ✅ poetry.lock is up-to-date with pyproject.toml
 ```
 
-### Git Status
+### Git Estado
 ```bash
 git status --short
 # → No output (clean working directory)
@@ -220,7 +220,7 @@ git status --short
 - **Acción:** Ejecutar `poetry lock` sin --no-update
 - **Archivos:** `src/server/poetry.lock`
 - **Tamaño:** Actualizado con todas las dependencias transitivas
-- **Cambios:** Sincronizado con pyproject.toml (HU-2.2 dependencies incluidas)
+- **Cambios:** Sincronizado con pyproyecto.toml (HU-2.2 dependencies incluidas)
 
 #### 2. GitHub Actions Workflow Actualizado (v1)
 - **Archivo:** `.github/workflows/lint.yml`
@@ -236,7 +236,7 @@ c5c8c92 fix(ci-cd): regenerate poetry.lock and fix GitHub Actions workflow
 └─ GitHub Actions workflow now includes feature branch for testing
 ```
 
-#### 4. Documentación Inicial
+#### 4. Documentoación Inicial
 - **Archivo:** `doc/01-PROJECT_REPORT/CI_CD_FIX_REPORT.es.md`
 - **Contenido:** Análisis, soluciones, validación y lecciones aprendidas
 
@@ -255,7 +255,7 @@ c5c8c92 fix(ci-cd): regenerate poetry.lock and fix GitHub Actions workflow
   - Agregar paso de verificación de Poetry
   - Agregar caché de dependencias para acelerar workflows
 - **Beneficio:** Intento de solución robusta (pero aún falló en GitHub)
-- **Status:** ⚠️ No funcionó en GitHub Actions runner
+- **Estado:** ⚠️ No funcionó en GitHub Actions ejecutarner
 
 #### 7. Commit v3 (EXPERIMENTAL)
 ```
@@ -270,7 +270,7 @@ e20161e fix(github-actions): use pipx for Poetry installation and add PATH updat
 #### 8. GitHub Actions Workflow Actualizado (v3 - DEFINITIVA)
 - **Archivo:** `.github/workflows/lint.yml`
 - **Cambios FINALES:**
-  - Usar `snok/install-poetry@v1` action (oficial, battle-tested)
+  - Usar `snok/install-poetry@v1` action (oficial, battle-pruebaed)
   - Usar `working-directory` en lugar de `cd`
   - Simplificar gestión de PATH - la acción lo maneja
   - Remover pasos duplicados
@@ -300,11 +300,11 @@ e08922e fix(github-actions): use official snok/install-poetry action for reliabi
 - [ ] Code review aprobado
 - [ ] Todos los checks CI/CD pasando (✅ DEFINITIVAMENTE funciona ahora)
 
-- [ ] Tests integrales ejecutados
+- [ ] Pruebas integrales ejecutados
 
 ### Post-Merge
 - [ ] Sincronizar desarrolladores con el nuevo estado
-- [ ] Actualizar documentación de setup si es necesario
+- [ ] Actualizar documentoación de setup si es necesario
 - [ ] Monitorear CI/CD para futuras issues
 
 ---
@@ -312,7 +312,7 @@ e08922e fix(github-actions): use official snok/install-poetry action for reliabi
 ## 📚 Lecciones Aprendidas
 
 ### Buena Práctica
-> **Regla:** Siempre regenerar `poetry.lock` después de modificar `pyproject.toml`
+> **Regla:** Siempre regenerar `poetry.lock` después de modificar `pyproyecto.toml`
 
 ```bash
 # Después de cambiar pyproject.toml, ejecutar:
@@ -322,11 +322,11 @@ git commit -m "chore: regenerate poetry.lock after dependency changes"
 ```
 
 ### Procedimiento Recomendado para Cambios de Dependencias
-1. Editar `pyproject.toml`
+1. Editar `pyproyecto.toml`
 2. Ejecutar `poetry lock` localmente
 3. Ejecutar `poetry install` para validar
-4. Ejecutar tests: `poetry run pytest`
-5. Commit de ambos archivos: `pyproject.toml` + `poetry.lock`
+4. Ejecutar pruebas: `poetry ejecutar pyprueba`
+5. Commit de ambos archivos: `pyproyecto.toml` + `poetry.lock`
 
 ### Configuración de CI/CD
 - Incluir todas las feature branches activas en el trigger
@@ -335,18 +335,18 @@ git commit -m "chore: regenerate poetry.lock after dependency changes"
 
 ---
 
-## ✨ Resultado Final
+## ✨ Resultadoado Final
 
-## ✨ Resultado Final
+## ✨ Resultadoado Final
 
 ### Estado del CI/CD (DEFINITIVO - ITERACIÓN 3)
-| Aspecto | Status Iteración 1 | Status Iteración 2 | Status Iteración 3 |
+| Aspecto | Estado Iteración 1 | Estado Iteración 2 | Estado Iteración 3 |
 |--------|-------|-------|--------|
 | poetry.lock sincronizado | ✅ | ✅ | ✅ |
 | GitHub Actions workflow | ❌ (branch faltaba) | ❌ (pipx PATH issue) | ✅ RESUELTO |
 | Verificación de Poetry | ❌ | ✅ (paso added) | ✅ (action built-in) |
 | Caché de dependencias | ❌ | ✅ | ✅ |
-| Tests locales | ✅ (24/24) | ✅ (24/24) | ✅ (24/24) |
+| Pruebas locales | ✅ (24/24) | ✅ (24/24) | ✅ (24/24) |
 | Branch en trigger | ✅ | ✅ | ✅ |
 | Git commits pusheados | ✅ (1) | ✅ (+1) | ✅ (+1) |
 | **CONFIABILIDAD** | ⚠️ | ⚠️ Manual | ✅ OFFICIAL ACTION |
@@ -354,15 +354,15 @@ git commit -m "chore: regenerate poetry.lock after dependency changes"
 ### Resumen de Iteraciones
 
 **Iteración 1:** Regenerar `poetry.lock` + agregar branch al workflow trigger
-- ✅ Resolvió problema de lock file
+- ✅ Resolvió problema de lock archivo
 - ❌ No resolvió el problema de PATH en GitHub Actions
 
 **Iteración 2:** Usar `pipx` + actualizar PATH explícitamente
 - ✅ Solución técnicamente correcta
-- ⚠️ Frágil en ambientes de GitHub Actions runner
+- ⚠️ Frágil en ambientes de GitHub Actions ejecutarner
 
 **Iteración 3:** Usar acción oficial `snok/install-poetry@v1`
-- ✅ Battle-tested en miles de workflows
+- ✅ Battle-pruebaed en miles de workflows
 - ✅ Manejo automatizado de virtualenvs y PATH
 - ✅ Mantenimiento activo de la acción
 - ✅ RECOMENDADO para producción
@@ -370,11 +370,11 @@ git commit -m "chore: regenerate poetry.lock after dependency changes"
 ### Readiness para PR (DEFINITIVO)
 - ✅ poetry.lock sincronizado
 - ✅ GitHub Actions workflow definitivo (v3 con acción oficial)
-- ✅ pyproject.toml corregido para estructura de paquetes real
-- ✅ Cobertura funcionando correctamente (82% unit tests)
-- ✅ 24/24 tests PASANDO (15 unit + 9 E2E)
-- ✅ 9 commits pusheados y documentados
-- ✅ Documentación completa con 3 iteraciones + corrección adicional
+- ✅ pyproyecto.toml corregido para estructura de paquetes real
+- ✅ Cobertura funcionando correctamente (82% unit pruebas)
+- ✅ 24/24 pruebas PASANDO (15 unit + 9 E2E)
+- ✅ 9 commits pusheados y documentoados
+- ✅ Documentoación completa con 3 iteraciones + corrección adicional
 - ✅ CI/CD debería funcionar correctamente AHORA
 - ✅ **LISTO PARA PRODUCCIÓN**
 
@@ -386,7 +386,7 @@ git commit -m "chore: regenerate poetry.lock after dependency changes"
 ## 🔧 CORRECCIÓN ADICIONAL: Consistencia en Workflows
 
 ### Problema Descubierto
-Después de resolver los problemas de Poetry en `lint.yml`, se descubrió que **otro workflow** (`backend-ci.yaml`) también usaba Poetry sin instalarlo, causando el mismo error "poetry: command not found" en el job de "Run Backend Unit Tests".
+Después de resolver los problemas de Poetry en `lint.yml`, se descubrió que **otro workflow** (`backend-ci.yaml`) también usaba Poetry sin instalarlo, causando el mismo error "poetry: command not found" en el job de "Ejecutar Backend Unit Pruebas".
 
 ### Análisis del Problema
 ```bash
@@ -397,7 +397,7 @@ Después de resolver los problemas de Poetry en `lint.yml`, se descubrió que **
     poetry run pytest tests/ -v --tb=short
 ```
 
-**Problema:** El workflow `backend-ci.yaml` usaba `poetry run pytest` pero nunca instalaba Poetry, mientras que `lint.yml` sí lo hacía correctamente.
+**Problema:** El workflow `backend-ci.yaml` usaba `poetry ejecutar pyprueba` pero nunca instalaba Poetry, mientras que `lint.yml` sí lo hacía correctamente.
 
 ### Solución Implementada
 **Archivo modificado:** `.github/workflows/backend-ci.yaml`
@@ -412,7 +412,7 @@ Después de resolver los problemas de Poetry en `lint.yml`, se descubrió que **
   working-directory: src/server
 ```
 
-**Razón:** Para mantener consistencia con el resto del workflow que usa `pip` en lugar de Poetry, se reemplazó el comando para usar `python -m pytest` directamente.
+**Razón:** Para mantener consistencia con el resto del workflow que usa `pip` en lugar de Poetry, se reemplazó el comando para usar `python -m pyprueba` directamente.
 
 ### Validación de la Corrección
 ```bash
@@ -422,7 +422,7 @@ grep -r "poetry" .github/workflows/
 # backend-ci.yaml ahora usa pip consistentemente
 ```
 
-### Commit Documentado
+### Commit Documentoado
 ```
 49485a0 fix(backend-ci): replace poetry with python -m pytest for consistency
 ├─ Remove poetry usage from backend-ci.yaml unit tests job
@@ -432,9 +432,9 @@ grep -r "poetry" .github/workflows/
 └─ Backend CI now uses pip consistently across all jobs
 ```
 
-### 🔧 CORRECCIÓN CONFIGURACIÓN: pyproject.toml Package Structure
+### 🔧 CORRECCIÓN CONFIGURACIÓN: pyproyecto.toml Package Structure
 
-**Problema Descubierto:** Los tests pasaban localmente pero la cobertura reportaba 0% en CI/CD porque `pyproject.toml` estaba configurado para un paquete `app` que no existe.
+**Problema Descubierto:** Los pruebas pasaban localmente pero la cobertura reportaba 0% en CI/CD porque `pyproyecto.toml` estaba configurado para un paquete `app` que no existe.
 
 **Análisis del Problema:**
 ```toml
@@ -463,9 +463,9 @@ packages = [
 --cov=core
 ```
 
-**Resultado:** Cobertura ahora funciona correctamente (82% en unit tests).
+**Resultadoado:** Cobertura ahora funciona correctamente (82% en unit pruebas).
 
-**Commit Documentado:**
+**Commit Documentoado:**
 ```
 6887c8b fix(config): update pyproject.toml for correct package structure
 ├─ Change packages from 'app' to actual modules: services, core, api, domain, utils
@@ -487,7 +487,7 @@ does not contain any element
 ```
 
 **Análisis del Problema:**
-El error ocurrió porque `pyproject.toml` estaba configurado para incluir paquetes inexistentes o vacíos:
+El error ocurrió porque `pyproyecto.toml` estaba configurado para incluir paquetes inexistentes o vacíos:
 ```toml
 # ANTES (incorrecto)
 packages = [
@@ -510,21 +510,21 @@ packages = [
 ```
 
 **Cambios Adicionales:**
-1. **Removed coverage hardcoding** - Eliminada la configuración de coverage de `pyproject.toml`
-   - Permite que el CLI de pytest tenga control total
+1. **Removed coverage hardcoding** - Eliminada la configuración de coverage de `pyproyecto.toml`
+   - Permite que el CLI de pyprueba tenga control total
    - Evita conflictos entre diferentes targets de cobertura
 
-2. **Updated isort configuration** - Actualizada para los paquetes reales:
+2. **Updated isort configuración** - Actualizada para los paquetes reales:
    ```toml
    known_first_party = ["app", "core", "services"]
    ```
 
-**Resultado:**
+**Resultadoado:**
 - ✅ Poetry install funciona sin errores
-- ✅ Coverage funciona correctamente (82% para módulos testeados)
-- ✅ Todos los tests pasan
+- ✅ Coverage funciona correctamente (82% para módulos pruebaeados)
+- ✅ Todos los pruebas pasan
 
-**Commit Documentado:**
+**Commit Documentoado:**
 ```
 03b467d fix(config): correct pyproject.toml package configuration
 ├─ Include all existing packages: app, core, services
@@ -543,7 +543,7 @@ packages = [
 AttributeError: module 'services' has no attribute 'rag'
 ```
 
-Este error ocurría cuando los tests intentaban hacer patch a `services.rag.vector_store.chromadb`:
+Este error ocurría cuando los pruebas intentaban hacer patch a `services.rag.vector_store.chromadb`:
 ```python
 @patch("services.rag.vector_store.chromadb")  # ❌ Falla porque Python no encuentra services.rag
 ```
@@ -575,14 +575,14 @@ from services import rag  # Exponer rag como atributo
 from services.rag.vector_store import VectorStoreService  # Import absoluto
 ```
 
-**Resultado:**
+**Resultadoado:**
 - ✅ Python ahora puede resolver `services.rag` como módulo
 - ✅ El patch `@patch("services.rag.vector_store.chromadb")` funciona correctamente
-- ✅ Todos los 15 tests unitarios pasan
-- ✅ Todos los 9 tests E2E pasan
-- ✅ Coverage correcta: 82% para módulos testeados
+- ✅ Todos los 15 pruebas unitarios pasan
+- ✅ Todos los 9 pruebas E2E pasan
+- ✅ Coverage correcta: 82% para módulos pruebaeados
 
-**Commit Documentado:**
+**Commit Documentoado:**
 ```
 3bb1007 fix(imports): properly expose rag module in services package hierarchy
 ├─ Create core/__init__.py to make core a proper Python package
@@ -599,14 +599,14 @@ from services.rag.vector_store import VectorStoreService  # Import absoluto
 **Fecha:** 01/02/2026
 **Commit:** `f70bf41`
 **Descripción del Problema:**
-GitHub Actions seguía fallando con 14 test failures:
+GitHub Actions seguía fallando con 14 prueba failures:
 ```
 ModuleNotFoundError: No module named 'chromadb'
 services/rag/vector_store.py:20: ModuleNotFoundError
 ```
 
 **Análisis del Problema:**
-Aunque `chromadb` estaba definido en `src/server/pyproject.toml` (Poetry config), el workflow de CI/CD instala dependencias desde el `requirements.txt` raíz:
+Aunque `chromadb` estaba definido en `src/server/pyproyecto.toml` (Poetry config), el workflow de CI/CD instala dependencias desde el `requirements.txt` raíz:
 ```yaml
 # .github/workflows/backend-ci.yaml
 - run: |
@@ -615,7 +615,7 @@ Aunque `chromadb` estaba definido en `src/server/pyproject.toml` (Poetry config)
 ```
 
 **Root Cause:**
-- `pyproject.toml` solo es usado por Poetry localmente
+- `pyproyecto.toml` solo es usado por Poetry localmente
 - GitHub Actions usa `pip install -r requirements.txt`
 - `chromadb` y sus dependencias NO estaban en requirements.txt
 - Por lo tanto, el import fallaba en CI aunque funcionara localmente
@@ -634,7 +634,7 @@ onnxruntime>=1.16.0
 **Por qué estas dependencias:**
 - `chromadb>=0.4.0` - Vector database para RAG (VectorStoreService)
 - `sentence-transformers>=2.2.0` - Modelos de embedding (requerido por ChromaDB)
-- `onnxruntime>=1.16.0` - Runtime optimizado para inferencia (requerido por sentence-transformers)
+- `onnxejecutartime>=1.16.0` - Ejecutartime optimizado para inferencia (requerido por sentence-transformers)
 
 **Verificación Local:**
 ```bash
@@ -642,13 +642,13 @@ $ python -c "import chromadb; print(f'✅ ChromaDB version: {chromadb.__version_
 ✅ ChromaDB version: 1.4.1
 ```
 
-**Resultado Esperado:**
+**Resultadoado Esperado:**
 - ✅ GitHub Actions instalará chromadb correctamente
-- ✅ Los 14 test failures se resolverán
-- ✅ Coverage volverá a 82% (actualmente 25% porque los tests fallan)
+- ✅ Los 14 prueba failures se resolverán
+- ✅ Coverage volverá a 82% (actualmente 25% porque los pruebas fallan)
 - ✅ Job 62129459030 pasará exitosamente
 
-**Commit Documentado:**
+**Commit Documentoado:**
 ```
 f70bf41 fix(deps): add chromadb and dependencies to requirements.txt for CI
 ├─ Added chromadb>=0.4.0 for VectorStoreService
@@ -663,6 +663,6 @@ f70bf41 fix(deps): add chromadb and dependencies to requirements.txt for CI
 
 ---
 
-**Documento preparado por:** ArchitectZero
+**Documentoo preparado por:** ArchitectZero
 **Validado:** 01/02/2026
 **Referencia:** context/SECURITY_HARDENING_POLICY.es.md, doc/02-SETUP_DEV/SETUP_GUIDE.es.md

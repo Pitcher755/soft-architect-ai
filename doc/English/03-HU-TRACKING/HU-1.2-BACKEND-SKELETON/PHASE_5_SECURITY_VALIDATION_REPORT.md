@@ -1,16 +1,16 @@
-# 🔒 Fase 5: Security Validation Report
+# 🔒 Phase 5: Security Validation Report
 
-> **Fecha:** 29/01/2026
-> **Estado:** ✅ COMPLETADA
+> **Date:** 29/01/2026
+> **Status:** ✅ COMPLETADA
 > **Ejecutado por:** ArchitectZero (Agente Principal)
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Resumen Ejecutivo](#resumen-ejecutivo)
 - [5.1 Validación con Bandit](#51-validación-con-bandit)
-- [5.2 Verificación de Secrets](#52-verificación-de-secrets)
+- [5.2 Verification de Secrets](#52-verification-de-secrets)
 - [5.3 Validación de CORS](#53-validación-de-cors)
 - [5.4 Validación de .env](#54-validación-de-env)
 - [5.5 Checklist Manual de Seguridad](#55-checklist-manual-de-seguridad)
@@ -20,11 +20,11 @@
 
 ## Resumen Ejecutivo
 
-Fase 5 ha sido completada exitosamente. Se ejecutaron 5 validaciones de seguridad sistemáticas siguiendo el estándar de [SECURITY_AND_PRIVACY_RULES.en.md](../../20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.en.md).
+Phase 5 ha sido completada exitosamente. Se executeon 5 validaciones de seguridad sistemáticas siguiendo el estándar de [SECURITY_AND_PRIVACY_RULES.en.md](../../20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.en.md).
 
-**Resultado Overall:** ✅ **PASS - Sin vulnerabilidades críticas**
+**Result Overall:** ✅ **PASS - Sin vulnerabilidades críticas**
 
-| Validación | Resultado | Detalles |
+| Validación | Result | Detalles |
 |------------|-----------|----------|
 | 5.1 Bandit | ✅ PASS | 1 issue Medium (B104 - aceptable) |
 | 5.2 Secrets | ✅ PASS | 0 secrets hardcodeados detectados |
@@ -37,7 +37,7 @@ Fase 5 ha sido completada exitosamente. Se ejecutaron 5 validaciones de segurida
 
 ## 5.1 Validación con Bandit
 
-### Descripción
+### Description
 Bandit es un analizador de seguridad para Python que escanea código fuente buscando vulnerabilidades comunes (hardcoded passwords, binding inseguro, uso de `eval()`, etc.).
 
 ### Ejecución
@@ -50,7 +50,7 @@ poetry add --group dev bandit==1.8.0
 poetry run bandit -r app -x tests,htmlcov
 ```
 
-### Resultados
+### Results
 
 ```
 Total issues: 1
@@ -75,7 +75,7 @@ Lines scanned: 594
   ```
 - **Razón de Aceptación:**
   - ✅ La intención es que el servidor escuche en todas las interfaces dentro del contenedor Docker
-  - ✅ La seguridad de la red se garantiza mediante aislamiento de contenedores y configuración de firewall
+  - ✅ La seguridad de la red se garantiza mediante aislamiento de contenedores y configuration de firewall
   - ✅ El comentario `noqa: S104` documenta la intención
   - ✅ En producción, se usaría reverse proxy (Nginx) frente al contenedor
 
@@ -84,9 +84,9 @@ Lines scanned: 594
 
 ---
 
-## 5.2 Verificación de Secrets
+## 5.2 Verification de Secrets
 
-### Descripción
+### Description
 Validación de que ningún secret (API keys, contraseñas, tokens) está hardcodeado en el código fuente.
 
 ### Herramientas Utilizadas
@@ -104,7 +104,7 @@ bash infrastructure/security-validation.sh
 grep -r "password\|secret\|api_key\|token" app/ --include="*.py" | grep -v "noqa\|comment\|docstring"
 ```
 
-### Resultados
+### Results
 
 ```
 ✅ PASS: No obvious hardcoded credentials detected
@@ -113,9 +113,9 @@ grep -r "password\|secret\|api_key\|token" app/ --include="*.py" | grep -v "noqa
 ✅ PASS: .env files in repository are Protected
 ```
 
-### Configuración de Environment Variables
+### Configuration de Environment Variables
 
-**Archivo:** `src/server/app/core/config.py`
+**File:** `src/server/app/core/config.py`
 
 ```python
 class Settings(BaseSettings):
@@ -142,12 +142,12 @@ class Settings(BaseSettings):
 
 ## 5.3 Validación de CORS
 
-### Descripción
+### Description
 Cross-Origin Resource Sharing (CORS) debe estar configurado con una lista blanca explícita (nunca con wildcard `*`).
 
-### Configuración Actual
+### Configuration Actual
 
-**Archivo:** `src/server/app/main.py`
+**File:** `src/server/app/main.py`
 
 ```python
 app.add_middleware(
@@ -176,9 +176,9 @@ curl -H "Origin: http://malicious.com" http://localhost:8000/api/v1/system/healt
 # Resultado: No "Access-Control-Allow-Origin" header ✅
 ```
 
-### Resultados
+### Results
 
-| Parámetro | Configuración | Estado |
+| Parámetro | Configuration | Status |
 |-----------|---------------|--------|
 | `allow_origins` | Lista explícita (localhost only) | ✅ OK |
 | Wildcard `*` | NO presente | ✅ OK |
@@ -193,8 +193,8 @@ curl -H "Origin: http://malicious.com" http://localhost:8000/api/v1/system/healt
 
 ## 5.4 Validación de .env
 
-### Descripción
-El archivo `.env` contiene secretos y NO debe estar versionado en Git.
+### Description
+El file `.env` contiene secretos y NO debe estar versionado en Git.
 
 ### Validación
 
@@ -214,7 +214,7 @@ ls -la infrastructure/.env.example
 
 ### Estructura de .env.example
 
-**Archivo:** `infrastructure/.env.example`
+**File:** `infrastructure/.env.example`
 
 ```env
 # Copy this file to .env and fill in actual values
@@ -225,9 +225,9 @@ OLLAMA_BASE_URL=http://localhost:11434
 GROQ_API_KEY=<replace-with-your-groq-key>
 ```
 
-✅ **Nota:** Archivo template sin valores reales
+✅ **Nota:** File template sin valores reales
 
-### Estado en Git
+### Status en Git
 
 ```
 .env
@@ -238,13 +238,13 @@ GROQ_API_KEY=<replace-with-your-groq-key>
 ```
 
 ### Conclusión 5.4
-✅ **PASS** - Archivo `.env` correctamente protegido.
+✅ **PASS** - File `.env` correctamente protegido.
 
 ---
 
 ## 5.5 Checklist Manual de Seguridad
 
-### Descripción
+### Description
 Validaciones manuales adicionales de prácticas de seguridad en el desarrollo.
 
 ### Check 1: No uso de `os.getenv()`
@@ -279,7 +279,7 @@ grep -r "password\|secret\|api_key\|apikey\|token" app/ \
 grep -A 8 "allow_origins=" app/main.py
 ```
 
-**Resultado:**
+**Result:**
 ```python
 allow_origins=[
     "http://localhost:3000",
@@ -314,7 +314,7 @@ grep -r "from pydantic\|from fastapi.security\|import secrets\|import hashlib" \
   app/ --include="*.py"
 ```
 
-**Resultado:**
+**Result:**
 ```
 app/core/config.py: from pydantic import Field, validator
 app/core/config.py: from pydantic_settings import BaseSettings
@@ -334,7 +334,7 @@ app/api/v1/health.py: from fastapi import APIRouter
 grep -A 5 "@app.exception_handler" app/main.py
 ```
 
-**Resultado:**
+**Result:**
 ```python
 @app.exception_handler(ValueError)
 async def value_error_handler(request: Request, exc: ValueError):
@@ -366,7 +366,7 @@ async def general_exception_handler(request: Request, exc: Exception):
 
 ### Resumen de Check List
 
-| # | Validación | Resultado | Notas |
+| # | Validación | Result | Notas |
 |---|-----------|-----------|-------|
 | 1 | No `os.getenv()` | ✅ PASS | Pydantic Settings usado |
 | 2 | Sin secrets | ✅ PASS | Código limpio |
@@ -382,7 +382,7 @@ async def general_exception_handler(request: Request, exc: Exception):
 
 ### ✅ Conclusiones
 
-1. **Fase 5 Completada:** Todas las 5 validaciones ejecutadas exitosamente.
+1. **Phase 5 Completada:** Todas las 5 validaciones ejecutadas exitosamente.
 2. **Seguridad Verificada:** Sin vulnerabilidades críticas. 1 issue medium (aceptable y documentado).
 3. **Secrets Protegidos:** Variables de entorno gestionadas correctamente con Pydantic.
 4. **CORS Seguro:** Lista blanca explícita sin wildcard.
@@ -396,7 +396,7 @@ async def general_exception_handler(request: Request, exc: Exception):
 3. **Monitoring & Logging:** Integrar con servicio de logging centralizado (CloudWatch, DataDog).
 4. **WAF (Web Application Firewall):** En producción, agregar WAF Nginx/Azure para protección adicional.
 5. **Penetration Testing:** Post-MVP, considerar penetration testing profesional.
-6. **Audit Logging:** Registrar todas las operaciones sensibles (acceso a knowledge base, cambios de configuración).
+6. **Audit Logging:** Registrar todas las operaciones sensibles (acceso a knowledge base, cambios de configuration).
 
 ### 📋 Validaciones de Referencia
 
@@ -407,17 +407,17 @@ Este reporte sigue los estándares de:
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
-**Fase 6: Git & Code Review**
+**Phase 6: Git & Code Review**
 
 1. `git add .` - Stage todas las modificaciones
 2. `git commit -m "feat(HU-1.2): Complete Phase 5 Security Validation"`
 3. `git push origin feature/backend-skeleton`
-4. Crear PR en GitHub: `develop` ← `feature/backend-skeleton`
+4. Create PR en GitHub: `develop` ← `feature/backend-skeleton`
 5. Merge a `develop` después de code review
 
-**Estado:** ⏸ **Pendiente ejecución de Fase 6**
+**Status:** ⏸ **Pending ejecución de Phase 6**
 
 ---
 

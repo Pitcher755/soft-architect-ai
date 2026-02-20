@@ -1,13 +1,13 @@
 # 🏗️ QUÉ ESTAMOS CONSTRUYENDO
 
-> **Fecha:** 30 de Enero de 2026
-> **Estado:** ✅ Definición Completa
+> **Date:** 30 de Enero de 2026
+> **Status:** ✅ Definición Completa
 > **Audiencia:** Todos (Equipo, Stakeholders, Investors)
-> **Versión:** 1.0
+> **Version:** 1.0
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [La Esencia](#la-esencia)
 - [El Flujo Core](#el-flujo-core)
@@ -17,7 +17,7 @@
 - [La Propuesta de Valor Única](#la-propuesta-de-valor-única)
 - [Por Qué Local-First & Sin Fisuras](#por-qué-local-first--sin-fisuras)
 - [El Próximo Acto: Phase 6.1](#el-próximo-acto-phase-61)
-- [El Estado Actual](#el-estado-actual)
+- [El Status Actual](#el-status-actual)
 - [Por Qué Esto Importa](#por-qué-esto-importa)
 - [La Pregunta Fundamental](#la-pregunta-fundamental)
 
@@ -37,7 +37,7 @@
 - ✅ Un **Quality Gate inteligente** que guía a desarrolladores a través de un **workflow de ingeniería estricto**
 - ✅ Un **asistente de arquitectura** que construye cimiento ANTES del código
 - ✅ Un **sistema offline-first** que respeta tu privacidad total
-- ✅ Un **motor de contexto** que entiende tu proyecto completamente
+- ✅ Un **motor de contexto** que entiende tu project completamente
 
 **La premisa fundamental:** *"No se debe escribir una sola línea de código sin haber documentado y validado completamente la arquitectura que lo soportará."*
 
@@ -53,11 +53,11 @@ Un usuario (emprendedor, tech lead, developer) entra al sistema con una idea:
 "App estilo Tinder para adoptar mascotas, hecha en Flutter, sin fines de lucro"
 ```
 
-### El Viaje por 5 Fases
+### El Viaje por 5 Phases
 
 El sistema (powered by RAG + Knowledge Base) guía al usuario a través de un workflow estrictamente estructurado:
 
-#### **FASE 1: GOBERNANZA E IDENTIDAD**
+#### **PHASE 1: GOBERNANZA E IDENTIDAD**
 ```
 ¿Quiénes somos? ¿Qué queremos construir? ¿Para quién? ¿Por qué?
 
@@ -82,7 +82,7 @@ Interacción:
     ❓ PREGUNTAR → RAG consulta Knowledge Base
 ```
 
-#### **FASE 2: REQUISITOS Y SEGURIDAD**
+#### **PHASE 2: REQUISITOS Y SEGURIDAD**
 ```
 ¿Qué exactamente vamos a construir? ¿Qué riesgos hay?
 
@@ -104,7 +104,7 @@ Interacción:
   Usuario puede refinar completamente los requisitos
 ```
 
-#### **FASE 3: ARQUITECTURA TÉCNICA**
+#### **PHASE 3: ARQUITECTURA TÉCNICA**
 ```
 ¿Cómo vamos a construirlo? ¿Qué tecnologías?
 
@@ -129,7 +129,7 @@ Interacción:
   Usuario puede cambiar cualquier tecnología y regenerar
 ```
 
-#### **FASE 4: EXPERIENCIA Y FRONTERA**
+#### **PHASE 4: EXPERIENCIA Y FRONTERA**
 ```
 ¿Cómo se verá? ¿Cómo interactuará el usuario?
 
@@ -148,7 +148,7 @@ Interacción:
       ¿Te gustan? ¿Cambio la paleta de colores?"
 ```
 
-#### **FASE 5: OPERACIONES Y CALIDAD**
+#### **PHASE 5: OPERACIONES Y CALIDAD**
 ```
 ¿Cuándo lanzamos? ¿Con qué rigor probamos?
 
@@ -168,7 +168,7 @@ Interacción:
       ¿Son realistas estas fechas? ¿Ajustamos?"
 ```
 
-### El Resultado Final
+### El Result Final
 
 ```
 🏁 CONTEXTO COMPLETADO
@@ -274,7 +274,7 @@ packages/knowledge_base/
 
 El sistema implementa validación en **5 capas independientes** para garantizar que nada se escape:
 
-| Gate | Capa | Responsabilidad | Documento |
+| Gate | Capa | Responsabilidad | Document |
 |------|------|-----------------|-----------|
 | 1️⃣ | **LEGAL** | ¿Cumple regulaciones (GDPR/CCPA/HIPAA)? | COMPLIANCE_MATRIX.md |
 | 2️⃣ | **DATA** | ¿Trata datos sensibles correctamente? | SECURITY_PRIVACY_POLICY.md |
@@ -282,7 +282,7 @@ El sistema implementa validación en **5 capas independientes** para garantizar 
 | 4️⃣ | **HISTÓRICA** | ¿Hemos cometido este error antes? | ARCH_DECISION_RECORDS.md |
 | 5️⃣ | **PERSONA** | ¿El agente IA sigue sus directivas? | CONTEXT_GENERATOR_PROMPT.md |
 
-**Ningún documento se genera sin pasar por estas 5 capas.**
+**Ningún document se genera sin pasar por estas 5 capas.**
 
 ---
 
@@ -455,18 +455,18 @@ RAG genera templates + Tech Pack guidance
 
 ---
 
-## 📊 El Estado Actual
+## 📊 El Status Actual
 
-| Componente | Estado | Líneas | Progreso |
+| Componente | Status | Líneas | Progreso |
 |-----------|--------|--------|----------|
-| **00-META** (Brain) | ✅ Completado | 228 | 100% |
-| **01-TEMPLATES** (Plantillas) | ✅ Completado | 706 | 100% |
-| **Knowledge Base Total** | ✅ Completado | 934 | 100% |
-| **Documentación** | ✅ Completado | 630+ | 100% |
-| **E2E Workflow Diagram** | ✅ Completado | 303 | 100% |
-| **02-TECH-PACKS** (Contenido) | 🏗️ En progreso | 0 → ∞ | 0% |
-| **Frontend (Flutter)** | 🏗️ En progreso | ~2000 | 60% |
-| **Backend (Python)** | ✅ Completado | ~1500 | 100% |
+| **00-META** (Brain) | ✅ Completed | 228 | 100% |
+| **01-TEMPLATES** (Plantillas) | ✅ Completed | 706 | 100% |
+| **Knowledge Base Total** | ✅ Completed | 934 | 100% |
+| **Documentación** | ✅ Completed | 630+ | 100% |
+| **E2E Workflow Diagram** | ✅ Completed | 303 | 100% |
+| **02-TECH-PACKS** (Contenido) | 🏗️ In progress | 0 → ∞ | 0% |
+| **Frontend (Flutter)** | 🏗️ In progress | ~2000 | 60% |
+| **Backend (Python)** | ✅ Completed | ~1500 | 100% |
 | **Tests** | ✅ Funcionales | ~400 | 80% |
 | **CI/CD Pipeline** | ✅ GitHub Actions | - | 100% |
 
@@ -496,7 +496,7 @@ Un junior con **SoftArchitect AI** puede tomar decisiones arquitectónicas que n
 
 Un equipo remoto puede llegar a consenso sobre arquitectura en **2 horas** en lugar de 2 semanas.
 
-Una startup puede **documentar completamente su proyecto** sin contratar a un arquitecto.
+Una startup puede **documentar completamente su project** sin contratar a un arquitecto.
 
 ---
 
@@ -535,4 +535,4 @@ Eso es **SoftArchitect AI**.
 
 **Última Actualización:** 30 de Enero de 2026
 **Responsable:** ArchitectZero AI + Usuario
-**Estado:** ✅ VISIÓN CLARA Y ARTICULADA
+**Status:** ✅ VISIÓN CLARA Y ARTICULADA

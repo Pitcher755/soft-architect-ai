@@ -2,7 +2,7 @@
 
 > **User Story:** HU-4.4 - RAG/LLM Resilience Extensions
 > **Branch:** `feature/rag-llm-resilience`
-> **Purpose:** Lista completa de archivos a modificar/crear para completar los 4 GAPS críticos
+> **Purpose:** Lista completa de files a modificar/create para completar los 4 GAPS críticos
 
 ---
 
@@ -21,7 +21,7 @@
 
 ## 📝 Files to Modify
 
-### Backend (3 archivos)
+### Backend (3 files)
 
 | # | File Path | Purpose | LOC Changed | Tests | Priority |
 |---|-----------|---------|-------------|-------|----------|
@@ -33,7 +33,7 @@
 
 ---
 
-### Frontend (1 archivo)
+### Frontend (1 file)
 
 | # | File Path | Purpose | LOC Changed | Tests | Priority |
 |---|-----------|---------|-------------|-------|----------|
@@ -45,7 +45,7 @@
 
 ## 🆕 Files to Create
 
-### Test Files (3 archivos nuevos)
+### Test Files (3 files nuevos)
 
 | # | File Path | Purpose | LOC | Tests | Priority |
 |---|-----------|---------|-----|-------|----------|

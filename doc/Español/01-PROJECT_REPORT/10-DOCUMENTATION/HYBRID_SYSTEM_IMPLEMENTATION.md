@@ -11,7 +11,7 @@
 - [Flujo de Datos](#flujo-de-datos)
 - [Archivos Modificados](#archivos-modificados)
 - [Guía de Uso](#guía-de-uso)
-- [Testing](#testing)
+- [Pruebaing](#pruebaing)
 
 ---
 
@@ -45,14 +45,14 @@ Ruta mock:  mock://softarchitect-guide
 
 **Uso:**
 - Detectar tipo en `if (path.startsWith('mock://'))`
-- Nunca intentar leer del filesystem
-- Usar `MockProjectData.guideFileContents[path]` para contenido
+- Nunca intentar leer del archivosystem
+- Usar `MockProyectoData.guideArchivoContents[path]` para contenido
 
 ---
 
-### 2. **MockProjectData (Datos en Memoria)**
+### 2. **MockProyectoData (Datos en Memoria)**
 
-Ubicación: `lib/features/project_shell/data/mock_data.dart`
+Ubicación: `lib/features/proyecto_shell/data/mock_data.dart`
 
 **Estructura:**
 ```dart
@@ -66,17 +66,17 @@ MockProjectData.guideFileContents
 └── "mock://softarchitect-guide/features/Chat-IA.md" → String (markdown)
 ```
 
-**Ventaja:** FileNode + Strings hacen muy eficiente la navegación.
+**Ventaja:** ArchivoNode + Strings hacen muy eficiente la navegación.
 
 ---
 
-### 3. **buildHybridProjectsList() Helper**
+### 3. **buildHybridProyectosList() Helper**
 
-Ubicación: `lib/features/project_shell/presentation/providers/projects_provider.dart`
+Ubicación: `lib/features/proyecto_shell/presentation/providers/proyectos_provider.dart`
 
 **Responsabilidad:**
 - Recibe lista de proyectos reales
-- Convierte mock data a objetos `Project`
+- Convierte mock data a objetos `Proyecto`
 - Combina y ordena por fecha de modificación
 
 **Código:**
@@ -91,9 +91,9 @@ List<Project> buildHybridProjectsList(List<Project> userProjects) {
 
 ---
 
-### 4. **Entidad Project - Getter `phase`**
+### 4. **Entidad Proyecto - Getter `fase`**
 
-Ubicación: `lib/features/project_shell/domain/entities/project.dart`
+Ubicación: `lib/features/proyecto_shell/domain/entities/proyecto.dart`
 
 **Nuevo getter:**
 ```dart
@@ -103,13 +103,13 @@ String get phase {
 }
 ```
 
-**Propósito:** Mostrar badge de fase en ProjectCard sin datos adicionales.
+**Propósito:** Mostrar badge de fase en ProyectoCard sin datos adicionales.
 
 ---
 
 ### 5. **Detección Hybrid en 3 Puntos Clave**
 
-#### A. **FileTreeWidget** → Detección de árbol
+#### A. **ArchivoTreeWidget** → Detección de árbol
 ```dart
 if (widget.projectPath?.startsWith('mock://') ?? false) {
   // Usa MockProjectData.guideRootNode
@@ -118,7 +118,7 @@ if (widget.projectPath?.startsWith('mock://') ?? false) {
 }
 ```
 
-#### B. **ProjectShellScreen** → Detección de contenido
+#### B. **ProyectoShellScreen** → Detección de contenido
 ```dart
 if (node.path.startsWith('mock://')) {
   // Lee de MockProjectData.guideFileContents[path]
@@ -127,7 +127,7 @@ if (node.path.startsWith('mock://')) {
 }
 ```
 
-#### C. **ProjectWorkspaceScreen** → Detección de lista
+#### C. **ProyectoWorkspaceScreen** → Detección de lista
 ```dart
 final allProjects = buildHybridProjectsList([]);
 // Incluye Guía + Proyectos reales
@@ -187,14 +187,14 @@ final allProjects = buildHybridProjectsList([]);
 
 | Archivo | Cambios | Propósito |
 |---------|---------|----------|
-| **project.dart** | ➕ Getter `phase` | Derivar fase de ruta |
-| **mock_projects_data.dart** | ✏️ Función `getMockProjectsData()` | Retornar guía como proyecto mock |
-| **mock_data.dart** | ✏️ guideRootNode, guideFileContents | Datos de guía en memoria |
-| **projects_provider.dart** | ✨ `buildHybridProjectsList()` | Helper para mezclar proyectos |
-| **file_tree_widget.dart** | ✏️ Detección mock:// | Mostrar guía o filesystem |
-| **project_shell_screen.dart** | ✏️ Lectura híbrida | Leer de mock o disco |
-| **project_workspace_screen.dart** | ✏️ Usar Project entities | GridView con objetos Project |
-| **project_list_view.dart** | ✏️ Aceptar List<Project> | Mostrar lista híbrida |
+| **proyecto.dart** | ➕ Getter `fase` | Derivar fase de ruta |
+| **mock_proyectos_data.dart** | ✏️ Función `getMockProyectosData()` | Retornar guía como proyecto mock |
+| **mock_data.dart** | ✏️ guideRootNode, guideArchivoContents | Datos de guía en memoria |
+| **proyectos_provider.dart** | ✨ `buildHybridProyectosList()` | Helper para mezclar proyectos |
+| **archivo_tree_widget.dart** | ✏️ Detección mock:// | Mostrar guía o archivosystem |
+| **proyecto_shell_screen.dart** | ✏️ Lectura híbrida | Leer de mock o disco |
+| **proyecto_workspace_screen.dart** | ✏️ Usar Proyecto entities | GridView con objetos Proyecto |
+| **proyecto_list_view.dart** | ✏️ Aceptar List<Proyecto> | Mostrar lista híbrida |
 
 ---
 
@@ -217,7 +217,7 @@ final allProjects = buildHybridProjectsList([]);
    );
    ```
 
-2. **Agregar contenido en `guideFileContents`:**
+2. **Agregar contenido en `guideArchivoContents`:**
    ```dart
    static const Map<String, String> guideFileContents = {
      'mock://softarchitect-guide/02-Nueva-Sección.md': '''# 📚 Nueva Sección
@@ -242,12 +242,12 @@ final allProjects = buildHybridProjectsList([]);
    );
    ```
 
-2. **Agregar archivos en `guideFileContents`:**
+2. **Agregar archivos en `guideArchivoContents`:**
    ```dart
    'mock://example-project/README.md': '''...''',
    ```
 
-3. **Registrar en `mock_projects_data.dart`:**
+3. **Registrar en `mock_proyectos_data.dart`:**
    ```dart
    List<Map<String, dynamic>> getMockProjectsData() => [
      {
@@ -261,9 +261,9 @@ final allProjects = buildHybridProjectsList([]);
 
 ---
 
-## Testing
+## Pruebaing
 
-### Test 1: Detectar Guía en Dashboard
+### Prueba 1: Detectar Guía en Dashboard
 
 ```dart
 test('buildHybridProjectsList includes guide project', () {
@@ -276,7 +276,7 @@ test('buildHybridProjectsList includes guide project', () {
 });
 ```
 
-### Test 2: Leer Archivo Mock
+### Prueba 2: Leer Archivo Mock
 
 ```dart
 test('project_shell_screen reads mock file content', () async {
@@ -287,7 +287,7 @@ test('project_shell_screen reads mock file content', () async {
 });
 ```
 
-### Test 3: FileTreeWidget Muestra Estructura Mock
+### Prueba 3: ArchivoTreeWidget Muestra Estructura Mock
 
 ```dart
 test('file_tree_widget displays guide structure', () {
@@ -298,11 +298,11 @@ test('file_tree_widget displays guide structure', () {
 });
 ```
 
-### Manual Test: Full Flow
+### Manual Prueba: Full Flow
 
 1. ✅ Abrir app
 2. ✅ Ver "Guía SoftArchitect" en dashboard
-3. ✅ Click → Navegar a project-shell
+3. ✅ Click → Navegar a proyecto-shell
 4. ✅ Ver árbol de archivos (00-Bienvenido.md, features/Chat-IA.md)
 5. ✅ Click en archivo → Ver contenido en panel central
 6. ✅ Volver al dashboard
@@ -318,10 +318,10 @@ test('file_tree_widget displays guide structure', () {
 No puede. Es de solo lectura (const). Perfectamente seguro.
 
 **¿Puedo agregar más guías (English, French)?**
-Sí. Agrega otro FileNode + contenido en `mock_data.dart` y regístralo en `mock_projects_data.dart`.
+Sí. Agrega otro ArchivoNode + contenido en `mock_data.dart` y regístralo en `mock_proyectos_data.dart`.
 
 **¿Performance?**
-Excelente. Mock data está en memoria (const), zero I/O. Real projects usan I/O.
+Excelente. Mock data está en memoria (const), zero I/O. Real proyectos usan I/O.
 
 **¿Puede el usuario borrar la guía?**
 No. Es virtual (mock://). No se puede eliminar directorios.
@@ -336,4 +336,4 @@ No. Es virtual (mock://). No se puede eliminar directorios.
 - Datos mock en memoria (eficiente)
 - Escalable y mantenible
 
-🎉 **Resultado:** El usuario ve proyectos reales y una guía interactiva, todo en el mismo lugar.
+🎉 **Resultadoado:** El usuario ve proyectos reales y una guía interactiva, todo en el mismo lugar.

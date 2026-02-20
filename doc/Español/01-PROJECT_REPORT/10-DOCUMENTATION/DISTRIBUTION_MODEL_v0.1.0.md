@@ -2,7 +2,7 @@
 
 **Fecha**: 2 de febrero de 2026
 **Audiencia**: Arquitectos, DevOps, Product Managers
-**Status**: Definición de v0.1.0
+**Estado**: Definición de v0.1.0
 
 ---
 
@@ -264,7 +264,7 @@ Esto es importante para:
 | `packages/knowledge_base/*.md` | ✅ SÍ | Es contenido fuente | `repo/packages/knowledge_base/` |
 | `infrastructure/chroma_data/` | ❌ NO | Son artefactos generados | `.gitignore` |
 | `~/.softarchitect/chroma_data/` (user) | ❌ NO | Usuario-específicos, persistentes localmente | No synced |
-| `src/server/pyproject.toml` | ✅ SÍ | Define dependencies | `repo/src/server/` |
+| `src/server/pyproyecto.toml` | ✅ SÍ | Define dependencies | `repo/src/server/` |
 | `src/server/venv/` | ❌ NO | Virtual env generado | `.gitignore` |
 | `src/server/__pycache__/` | ❌ NO | Bytecode generado | `.gitignore` |
 
@@ -321,7 +321,7 @@ Detalle del Build Pipeline:
 
 ---
 
-## ⚡ Fase 2: Primer Inicio (First-Run Automation)
+## ⚡ Fase 2: Primer Inicio (First-Ejecutar Automation)
 
 ### Visión General
 En el primer inicio, la aplicación ejecuta automáticamente 6 pasos sin que el usuario intervenga:
@@ -569,7 +569,7 @@ def show_onboarding():
     return 100
 ```
 
-**Timing:** UI appears immediately
+**Timing:** UI appears inmediataly
 
 ### 📊 Tabla de Tiempos Totales
 
@@ -579,7 +579,7 @@ def show_onboarding():
 | **Solo embeddings** (Ollama existente) | 30-60 seg | 60-120 seg |
 | **Todo en caché** (segundo inicio) | <100 ms | <100 ms |
 
-### 🛠️ Manejo de Errores During First Run
+### 🛠️ Manejo de Errores During First Ejecutar
 
 ```python
 # Si Ollama descarga falla:
@@ -705,7 +705,7 @@ Usuario quiere usar SoftArchitect AI:
 
 Además de la versión desktop standalone con **Qwen2.5:3b local**, se desarrollará una **versión web optimizada** para ejecutar en el homelab del desarrollador con las siguientes características:
 
-- **Runtime**: Flutter Web (misma codebase que desktop)
+- **Ejecutartime**: Flutter Web (misma codebase que desktop)
 - **Despliegue**: Docker en homelab (kubernetes o docker-compose)
 - **LLM Backend**: **Groq API Cloud** (no local Ollama)
 - **Caso de Uso**: Presentación interactiva, demostraciones en vivo, pruebas sin instalación
@@ -1048,9 +1048,9 @@ GROQ_MODEL=llama-3.3-70b-versatile
 
 **Sprint 5** (Docker Web):
 - Crear `docker-compose.web.yml`
-- Build imagen: `softarchitect-ai:web-latest`
+- Build imagen: `softarchitect-ai:web-laprueba`
 - Probar en homelab local
-- Documentar guía de deploy
+- Documentoar guía de deploy
 
 **MVP+** (Futuro):
 - Soporte para múltiples LLMs (Anthropic Claude, OpenAI GPT-4)
@@ -1093,7 +1093,7 @@ Esto permite:
 | **¿Dónde se almacenan datos?** | `~/.softarchitect/chroma_data/` (user home directory) |
 | **¿Se syncronizan a la nube?** | NO, todo offline y local (privacidad first) |
 | **¿Se puede regenerar?** | SÍ, desde Settings → "Regenerate KB" o CLI |
-| **¿Qué incluye el instalador?** | Runtime (Python, Flutter) + código compilado + KB fuente |
+| **¿Qué incluye el instalador?** | Ejecutartime (Python, Flutter) + código compilado + KB fuente |
 | **¿Tamaño del instalador?** | 200-300 MB (comprimido) |
 | **¿Tamaño después instalar?** | ~510 MB en disco |
 
@@ -1112,6 +1112,6 @@ Esto permite:
 
 ---
 
-**Documento creado**: 2 de febrero de 2026
+**Documentoo creado**: 2 de febrero de 2026
 **Versión**: 1.0
-**Status**: Definición arquitectónica para v0.1.0
+**Estado**: Definición arquitectónica para v0.1.0

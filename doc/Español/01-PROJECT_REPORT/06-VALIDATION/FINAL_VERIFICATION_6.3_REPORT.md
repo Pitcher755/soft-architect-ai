@@ -1,4 +1,4 @@
-# 📊 Verificación Final 6.3: Integration Checklist
+# 📊 Verificación Final 6.3: Integración Checklist
 **Fecha:** 06/02/2026
 **Estado:** 🔄 In Progress (2/6 criterios completados, 4 en desarrollo)
 **Rama:** `feature/chat-sequential-docs`
@@ -7,9 +7,9 @@
 
 ## 📋 6 Criterios de Verificación Final
 
-### 1️⃣ [ ✅ ] Validate button saves file to disk
+### 1️⃣ [ ✅ ] Validate botón saves archivo to disk
 
-**Status:** ✅ **COMPLETO**
+**Estado:** ✅ **COMPLETO**
 
 **Evidencia en código:**
 
@@ -57,22 +57,22 @@ Future<void> validateProposal() async {
 
 **Funcionalidad verificada:**
 - ✅ ProposalCardWidget.onValidate → ChatNotifier.validateProposal()
-- ✅ saveDocument() guarda contenido en disk
+- ✅ saveDocumento() guarda contenido en disk
 - ✅ Archivo se crea en ruta correcta: `{section}/{docType}.md`
 - ✅ Error handling integrado con estado (hasError, errorMessage)
 
-**Test Coverage:** No hay test explícito, pero la lógica está implementada.
+**Prueba Coverage:** No hay prueba explícito, pero la lógica está implementada.
 
 ---
 
-### 2️⃣ [ ⚠️ PARCIAL ] File tree updates automatically
+### 2️⃣ [ ⚠️ PARCIAL ] Archivo tree updates automatically
 
-**Status:** ⚠️ **INCOMPLETO** (Requiere listener reactivo)
+**Estado:** ⚠️ **INCOMPLETO** (Requiere listener reactivo)
 
 **Problema Identificado:**
-- `ChatNotifier.validateProposal()` llama `_fileSystemService.saveDocument()`
-- El archivo se guarda en disco **PERO** FileSystemTreeWidget no se notifica automáticamente
-- Falta: Reactive listener en FileSystemTreeWidget cuando cambia el filesystem
+- `ChatNotifier.validateProposal()` llama `_archivoSystemService.saveDocumento()`
+- El archivo se guarda en disco **PERO** ArchivoSystemTreeWidget no se notifica automáticamente
+- Falta: Reactive listener en ArchivoSystemTreeWidget cuando cambia el archivosystem
 
 **Evidencia:**
 ```dart
@@ -90,23 +90,23 @@ Implementar streaming de cambios o usar `invalidateCache()` pattern en Riverpod.
 
 ---
 
-### 3️⃣ [ ⚠️ PARCIAL ] Preview shows newly created file
+### 3️⃣ [ ⚠️ PARCIAL ] Preview shows newly creard archivo
 
-**Status:** ⚠️ **INCOMPLETO** (Depende de 2️⃣)
+**Estado:** ⚠️ **INCOMPLETO** (Depende de 2️⃣)
 
 **Problema Identificado:**
-- `MarkdownPreviewWidget` muestra archivo cuando se selecciona en FileSystemTreeWidget
+- `MarkdownPreviewWidget` muestra archivo cuando se selecciona en ArchivoSystemTreeWidget
 - Pero NO se refresca automáticamente cuando archivo es guardado desde chat
-- Requiere: FileSystemTreeWidget se actualice primero → entonces usuario selecciona → Preview carga
+- Requiere: ArchivoSystemTreeWidget se actualice primero → entonces usuario selecciona → Preview carga
 
 **Solución Pendiente:**
-Same como 2️⃣ - Necesita listener reactivo en filesystem.
+Same como 2️⃣ - Necesita listener reactivo en archivosystem.
 
 ---
 
-### 4️⃣ [ ✅ ] Chat advances to next document
+### 4️⃣ [ ✅ ] Chat advances to siguiente documento
 
-**Status:** ✅ **COMPLETO**
+**Estado:** ✅ **COMPLETO**
 
 **Evidencia:**
 ```dart
@@ -126,14 +126,14 @@ if (state.currentDocIndex <= state.totalDocs) {
 **Funcionalidad verificada:**
 - ✅ currentDocIndex incrementa correctamente
 - ✅ currentProposal se limpia (clearProposal: true)
-- ✅ Si hay más documentos, triggerNextQuestion() se ejecuta automáticamente
-- ✅ App bar muestra "Doc X/25" reactivamente via ProjectWorkspaceScreen.watch(chatNotifierProvider)
+- ✅ Si hay más documentoos, triggerSiguienteQuestion() se ejecuta automáticamente
+- ✅ App bar muestra "Doc X/25" reactivamente via ProyectoWorkspaceScreen.watch(chatNotifierProvider)
 
 ---
 
 ### 5️⃣ [ ✅ ] Error handling displays user-friendly messages
 
-**Status:** ✅ **COMPLETO**
+**Estado:** ✅ **COMPLETO**
 
 **Implementación Realizada:**
 
@@ -142,7 +142,7 @@ if (state.currentDocIndex <= state.totalDocs) {
    - Líneas: 60 lines (completo)
    - Features:
      - Error icon + message display
-     - Dismiss button (X) para cerrar
+     - Dismiss botón (X) para cerrar
      - Material Design styling (red[900] background)
      - Responsive layout con Row + Expanded
 
@@ -174,16 +174,16 @@ if (state.currentDocIndex <= state.totalDocs) {
 3. Usuario hace click en X → `onDismiss()` llama `chatNotifier.clearError()`
 4. Estado limpia error → ErrorBannerWidget desaparece
 
-**Testing:**
-- Unit tests de ChatNotifier cubren error path (línea 119, 164 error handling)
-- Widget tests pueden verificar ErrorBannerWidget rendering
-- Integration test puede verificar flujo completo
+**Pruebaing:**
+- Unit pruebas de ChatNotifier cubren error path (línea 119, 164 error handling)
+- Widget pruebas pueden verificar ErrorBannerWidget rendering
+- Integración prueba puede verificar flujo completo
 
 ---
 
-### 6️⃣ [ ❌ INCOMPLETO ] Tests pass: flutter test test/integration/
+### 6️⃣ [ ❌ INCOMPLETO ] Pruebas pass: flutter prueba prueba/integration/
 
-**Status:** ❌ **TESTS FALLANDO** (Compilation errors)
+**Estado:** ❌ **TESTS FALLANDO** (Compilation errors)
 
 **Errores Actuales:**
 ```
@@ -195,18 +195,18 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
 
 **Cambios Pendientes:**
 
-1. **Reescribir filesystem_integration_test.dart**
+1. **Reescribir archivosystem_integration_prueba.dart**
    - Usar imports correctos
-   - Remover ProviderContainer (no compatible con integration tests)
-   - Usar widget tests en su lugar
+   - Remover ProviderContainer (no compatible con integration pruebas)
+   - Usar widget pruebas en su lugar
 
-2. **Implementar chat_integration_test.dart**
-   - Test: Send message → Receive proposal → Validate saves file
-   - Test: Validate advances to next document
-   - Test: Error handling shows banner
+2. **Implementar chat_integration_prueba.dart**
+   - Prueba: Send message → Receive proposal → Validate saves archivo
+   - Prueba: Validate advances to siguiente documento
+   - Prueba: Error handling shows banner
 
-3. **Implementar validation_integration_test.dart**
-   - End-to-end: Chat → File saves → Tree updates → Preview shows
+3. **Implementar validation_integration_prueba.dart**
+   - End-to-end: Chat → Archivo saves → Tree updates → Preview shows
 
 ---
 
@@ -220,17 +220,17 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
 
 ### ⏳ PENDIENTES PARA FASE 6
 
-#### PRIORIDAD 1: File System Reactivity (2️⃣, 3️⃣)
-- [ ] Implementar invalidateCache pattern en FileSystemService
-- [ ] Agregar listener en FileSystemTreeWidget
+#### PRIORIDAD 1: Archivo System Reactivity (2️⃣, 3️⃣)
+- [ ] Implementar invalidateCache pattern en ArchivoSystemService
+- [ ] Agregar listener en ArchivoSystemTreeWidget
 - [ ] Agregar listener en MarkdownPreviewWidget
-- [ ] Integration tests
+- [ ] Integración pruebas
 
-#### PRIORIDAD 2: Fix Integration Tests (6️⃣)
-- [ ] Reescribir filesystem_integration_test.dart
-- [ ] Crear chat_integration_test.dart
-- [ ] Crear validation_integration_test.dart
-- [ ] All tests passing
+#### PRIORIDAD 2: Fix Integración Pruebas (6️⃣)
+- [ ] Reescribir archivosystem_integration_prueba.dart
+- [ ] Crear chat_integration_prueba.dart
+- [ ] Crear validation_integration_prueba.dart
+- [ ] All pruebas passing
 
 ---
 
@@ -238,12 +238,12 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
 
 | Criterio | Estado | Commit | Detalles |
 |----------|--------|--------|----------|
-| 1️⃣ Validate saves to disk | ✅ 100% | N/A | validateProposal() → _fileSystemService.saveDocument() |
-| 2️⃣ File tree auto-update | ⚠️ 20% | PHASE 6 | Requiere listener reactivo en FileSystemService |
-| 3️⃣ Preview shows new file | ⚠️ 20% | PHASE 6 | Depende de 2️⃣ |
-| 4️⃣ Chat advances | ✅ 100% | N/A | currentDocIndex++, triggerNextQuestion() automático |
+| 1️⃣ Validate saves to disk | ✅ 100% | N/A | validateProposal() → _archivoSystemService.saveDocumento() |
+| 2️⃣ Archivo tree auto-update | ⚠️ 20% | PHASE 6 | Requiere listener reactivo en ArchivoSystemService |
+| 3️⃣ Preview shows new archivo | ⚠️ 20% | PHASE 6 | Depende de 2️⃣ |
+| 4️⃣ Chat advances | ✅ 100% | N/A | currentDocIndex++, triggerSiguienteQuestion() automático |
 | 5️⃣ Error messages | ✅ 100% | 6bfd1b8 | ErrorBannerWidget + clearError() implementados |
-| 6️⃣ Integration tests | ❌ 0% | PHASE 6 | Tests con compilation errors, requieren reescritura |
+| 6️⃣ Integración pruebas | ❌ 0% | PHASE 6 | Pruebas con compilation errors, requieren reescritura |
 
 **Overall Progress:** 50% (3/6 completos, 2/6 en roadmap, 1/6 pendiente)
 
@@ -253,11 +253,11 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
 
 1. ✅ **Ahora:** Crear ErrorBannerWidget
 2. ✅ **Ahora:** Integrar en chat_screen.dart
-3. ⏳ **Después:** Implementar filesystem listeners
-4. ⏳ **Final:** Reescribir integration tests
+3. ⏳ **Después:** Implementar archivosystem listeners
+4. ⏳ **Final:** Reescribir integration pruebas
 
 ---
 
 **Last Updated:** 06/02/2026
-**Created By:** GitHub Copilot (ArchitectZero)
+**Creard By:** GitHub Copilot (ArchitectZero)
 **Branch:** `feature/chat-sequential-docs`

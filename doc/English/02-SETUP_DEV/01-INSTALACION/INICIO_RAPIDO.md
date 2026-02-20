@@ -71,11 +71,11 @@ Resultado: Se discuten cambios y se re-analiza
    - ¿Qué riesgos? 5 identificados
 
 3. **MASTER_IMPLEMENTATION_PLAN.es.md** - Solo "Resumen Ejecutivo" + "Cronograma" (15 min)
-   - ¿Cómo se ejecuta? 5 Fases
+   - ¿Cómo se ejecuta? 5 Phases
    - ¿Cuándo? Timeline 8 semanas
    - ¿Quiénes? Team de 3.5 FTE
 
-4. **PHASE-0_INITIATION.es.md** - Sección "Resumen Fase 0" (3 min)
+4. **PHASE-0_INITIATION.es.md** - Sección "Resumen Phase 0" (3 min)
    - ¿Qué sigue después? Checklist
 
 ---
@@ -91,13 +91,13 @@ Resultado: Se discuten cambios y se re-analiza
 - [ ] PHASE-0_INITIATION.es.md (20 min)
 - [ ] Comenta tu decisión (3 min)
 
-**Resultado:** Decisión completamente informada
+**Result:** Decisión completamente informada
 
 ---
 
 ## ⚡ COMANDOS RÁPIDOS
 
-### Ver todos los documentos
+### Ver todos los documents
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
@@ -127,7 +127,7 @@ bash STATUS_DASHBOARD.sh
 
 ## 📋 LOS 12 DOCUMENTOS (En Orden)
 
-| # | Documento | Tiempo | Públco |
+| # | Document | Tiempo | Públco |
 |----|-----------|--------|--------|
 | 1️⃣ | **FINAL_SUMMARY.es.md** | 2 min | **← EMPIEZA AQUÍ** |
 | 2️⃣ | README_HU-3_CENTRAL.es.md | 5 min | Todos |
@@ -148,7 +148,7 @@ bash STATUS_DASHBOARD.sh
 
 ### Cómo comentar tu decisión
 
-**Haz lo siguiente en esta conversación:**
+**Haz lo next en esta conversación:**
 
 ```
 Copiar y pegar UNO de estos:
@@ -193,7 +193,7 @@ Discutamos estas modificaciones antes de proceder.
 
 - **Ideal:** Hoy (02/02/2026)
 - **Máximo:** Mañana EOD (02/03/2026)
-- **Después:** Se asume "No proceder" (análisis archivado)
+- **Después:** Se asume "No proceder" (analysis archivado)
 
 ---
 
@@ -245,7 +245,7 @@ Si comentas "🤔 MODIFICAR":
 
 ### P: ¿Dónde empiezo a leer?
 
-**R:** Lee este archivo primero, luego:
+**R:** Lee este file primero, luego:
 1. FINAL_SUMMARY.es.md (2 min)
 2. README_HU-3_CENTRAL.es.md (5 min)
 3. HU-3_EXECUTIVE_SUMMARY.es.md (10 min)
@@ -269,22 +269,22 @@ Lee la tabla de ROL en README_HU-3_CENTRAL.es.md
 ### P: ¿Es recomendable proceder?
 
 **R:** SÍ, basándome en:
-- ✅ Análisis completo (no hay dudas técnicas)
+- ✅ Analysis completo (no hay dudas técnicas)
 - ✅ Especificación detallada (sabemos qué hacer)
 - ✅ Timeline realista (8 semanas es factible)
-- ✅ Beneficios claros (proyectos persistentes, docs estructurados)
+- ✅ Beneficios claros (projects persistentes, docs estructurados)
 - ✅ Riesgos identificados y mitigados
 
 Pero tú tienes la última palabra.
 
-### P: ¿Si proyecto falla a mitad de camino?
+### P: ¿Si project falla a mitad de camino?
 
 **R:** Mitigaciones definidas en MASTER_IMPLEMENTATION_PLAN:
 - Riesgo: Feature scope creep
-  - Mitigation: Congelar HU-3 specs hasta Fase 3
+  - Mitigation: Congelar HU-3 specs hasta Phase 3
 - Riesgo: Team unavailable
   - Mitigation: Reservar calendarios ahora
-- [Ver todos en documento maestro]
+- [Ver todos en document maestro]
 
 ---
 
@@ -313,9 +313,9 @@ Chat-First ephemeral → Project-First persistent sequential docs
 
 ### LO FINAL (Cuando ✅)
 
-1. Tech Lead ejecuta Fase 0 (1 semana)
+1. Tech Lead ejecuta Phase 0 (1 semana)
 2. Aprobaciones obtenidas
-3. Fase 1 comienza (desarrollo real)
+3. Phase 1 comienza (desarrollo real)
 
 ---
 
@@ -323,7 +323,7 @@ Chat-First ephemeral → Project-First persistent sequential docs
 
 **Tienes TODO lo que necesitas para decidir:**
 
-✅ Análisis completo
+✅ Analysis completo
 ✅ Especificación técnica
 ✅ Plan de 8 semanas
 ✅ Código de ejemplo

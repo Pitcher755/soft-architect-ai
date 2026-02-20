@@ -12,8 +12,8 @@
 | Item | Estado | Priority | Nota |
 |------|--------|----------|------|
 | Implementación técnica | ✅ 95% | - | MVP funcional en feature branch |
-| Documentación base | ✅ 100% | - | README, PROGRESS, ARTIFACTS, WORKFLOW |
-| Tests unitarios | ❌ FAILING | CRÍTICO | Python pytest en rojo |
+| Documentoación base | ✅ 100% | - | README, PROGRESS, ARTIFACTS, WORKFLOW |
+| Pruebas unitarios | ❌ FAILING | CRÍTICO | Python pyprueba en rojo |
 | Cobertura >90% módulo | ❌ PENDING | CRÍTICO | No reportado formalmente |
 | Criterios de aceptación | ⚠️ 75% | HIGH | 6/8 validados; 2 requieren reporte |
 | Descripción de PR | ❌ TODO | MEDIUM | Falta redacción final |
@@ -22,24 +22,24 @@
 
 ## 🔴 FALLOS DETECTADOS - Pre-Push Validation
 
-### PHASE 4: UNIT TESTS (Python)
-**Status:** ❌ FAILED
+### FASE 4: UNIT TESTS (Python)
+**Estado:** ❌ FAILED
 **Impacto:** Bloqueador para merge
 **Síntomas:**
-- Tests no ejecutan completamente
+- Pruebas no ejecutan completamente
 - Posible timeout o fixture rota
 - Entorno venv no completamente sincronizado
 
-### PHASE 5: INTEGRATION TESTS
-**Status:** ❌ FAILED
-**Tests afectados:**
-- `test_sqlite_persistence.py`
-- `test_sqlite_performance.py`
-- `test_streaming_flow.py`
-- `test_error_handling_flow.py`
+### FASE 5: INTEGRATION TESTS
+**Estado:** ❌ FAILED
+**Pruebas afectados:**
+- `prueba_sqlite_persistence.py`
+- `prueba_sqlite_performance.py`
+- `prueba_streaming_flow.py`
+- `prueba_error_handling_flow.py`
 
-### PHASE 7: CODE COVERAGE
-**Status:** ❌ Coverage < 80% global
+### FASE 7: CODE COVERAGE
+**Estado:** ❌ Coverage < 80% global
 **Objetivo HU:** >90% para módulos de fase
 **Acción:** Medir cobertura específica de módulo HU-3.8
 
@@ -47,45 +47,45 @@
 
 ## ✅ CRITERIOS DE ACEPTACIÓN - Estado
 
-### AC-1: Phase model equals template folder sequence
-**Status:** ✅ VALIDADO
-**Evidencia:** `WORKFLOW_MASTER_DEFINITION.md` documenta orden ROOT→99-META
-**Implementado en:** `project_structure_constants.dart`
+### AC-1: Fase model equals template carpeta sequence
+**Estado:** ✅ VALIDADO
+**Evidencia:** `WORKFLOW_MASTER_DEFINITION.md` documentoa orden ROOT→99-META
+**Implementado en:** `proyecto_structure_constants.dart`
 
-### AC-2: Mandatory artifacts are validated per phase
-**Status:** ⚠️ IMPLEMENTADO | TEST FLAKEY
-**Evidencia:** Reglas en `project_phase_service.dart`
-**Riesgo:** Tests de validación intermitentes
+### AC-2: Mandatory artifacts are validated per fase
+**Estado:** ⚠️ IMPLEMENTADO | TEST FLAKEY
+**Evidencia:** Reglas en `proyecto_fase_service.dart`
+**Riesgo:** Pruebas de validación intermitentes
 
 ### AC-3: `Doc N/25` is computed from real generated artifacts
-**Status:** ✅ IMPLEMENTADO
-**Cálculo:** Formula `(docs_generated / 25)` en `project_providers.dart`
-**Riesgo:** Contabilidad referencial pendiente de test
+**Estado:** ✅ IMPLEMENTADO
+**Cálculo:** Formula `(docs_generated / 25)` en `proyecto_providers.dart`
+**Riesgo:** Contabilidad referencial pendiente de prueba
 
 ### AC-4: ROOT logic enforces required root docs
-**Status:** ✅ IMPLEMENTADO
+**Estado:** ✅ IMPLEMENTADO
 **Validar:** AGENTS.md + README.md obligatorios
-**Test:** `unit/domain/test_project_phase_validation.dart`
+**Prueba:** `unit/domain/prueba_proyecto_fase_validation.dart`
 
-### AC-5: All non-ROOT phases require full folder completion
-**Status:** ✅ IMPLEMENTADO
+### AC-5: All non-ROOT fases require full carpeta completion
+**Estado:** ✅ IMPLEMENTADO
 **Validar:** 100% docs antes de avanzar
 **Nota:** Depende de sincronización con `01-TEMPLATES`
 
-### AC-6: Phase transition is idempotent and resumable
-**Status:** ⚠️ PARCIAL
+### AC-6: Fase transition is idempotent and resumable
+**Estado:** ⚠️ PARCIAL
 **Validar:** Re-scan no duplica estado
-**Test pendiente:** `test_idempotent_phase_transition`
+**Prueba pendiente:** `prueba_idempotent_fase_transition`
 
 ### AC-7: Errors are explicit and user-friendly
-**Status:** ✅ IMPLEMENTADO
+**Estado:** ✅ IMPLEMENTADO
 **Mapeo:** error codes registrados en `core/exceptions/`
 **UI:** Snackbars sin stacktraces en proyecto shell
 
-### AC-8: Tests cover phase rules and progress computation (≥90% HU module)
-**Status:** ❌ PENDIENTE
+### AC-8: Pruebas cover fase rules and progress computation (≥90% HU module)
+**Estado:** ❌ PENDIENTE
 **Target:** ≥90% cobertura específica en módulo fase
-**Bloqueador:** Tests fallando impiden medir cobertura real
+**Bloqueador:** Pruebas fallando impiden medir cobertura real
 
 ---
 
@@ -93,30 +93,30 @@
 
 ### 🔴 CRÍTICOS (Bloquean merge)
 
-- [ ] **OBJ-1** - Fijar tests unitarios de Python
+- [ ] **OBJ-1** - Fijar pruebas unitarios de Python
   - **Tareas:**
-    - Verificar conftest.py fixtures
-    - Revisar SQLite test database setup
-    - Ejecutar pytest -vv para ver errores reales
-    - Posible: actualizar dependencias en pyproject.toml
+    - Verificar confprueba.py fixtures
+    - Revisar SQLite prueba database setup
+    - Ejecutar pyprueba -vv para ver errores reales
+    - Posible: actualizar dependencias en pyproyecto.toml
   - **Dependencies:** Ambiente Python sincronizado
   - **Responsable:** Backend engineer
   - **Estimación:** 2-4h
 
-- [ ] **OBJ-2** - Fijar tests de integración
+- [ ] **OBJ-2** - Fijar pruebas de integración
   - **Tareas:**
-    - Revisar `test_sqlite_persistence.py` - database locks
-    - Revisar `test_streaming_flow.py` - conexión mock
-    - Revisar `test_error_handling_flow.py` - fixtures async
-    - Ejecutar localmente: `pytest tests/server/integration/ -v`
+    - Revisar `prueba_sqlite_persistence.py` - database locks
+    - Revisar `prueba_streaming_flow.py` - conexión mock
+    - Revisar `prueba_error_handling_flow.py` - fixtures async
+    - Ejecutar localmente: `pyprueba pruebas/server/integration/ -v`
   - **Dependencies:** OBJ-1 completado
   - **Estimación:** 2-3h
 
 - [ ] **OBJ-3** - Validar cobertura ≥90% módulo HU-3.8
   - **Tareas:**
-    - Una vez tests pasan: `pytest tests/server/unit/domain/test_project_phase_*.py --cov=services.project_phase --cov-report=term-missing`
+    - Una vez pruebas pasan: `pyprueba pruebas/server/unit/domain/prueba_proyecto_fase_*.py --cov=services.proyecto_fase --cov-report=term-missing`
     - Reporte: Coverage % en `FINAL_SUMMARY.md`
-    - Incrementar tests si < 90%
+    - Incrementar pruebas si < 90%
   - **Dependencies:** OBJ-1 y OBJ-2 completados
   - **Estimación:** 1-2h
 
@@ -125,7 +125,7 @@
 - [ ] **OBJ-4** - Validar todos AC-1 a AC-8 con evidencia
   - **Tareas:**
     - Crear matriz de validación en `ACCEPTANCE_CRITERIA_VERIFICATION.md`
-    - Para cada AC: Test unit + evidencia visual
+    - Para cada AC: Prueba unit + evidencia visual
     - AC-8 especialmente: incluir reporte de cobertura
   - **Dependencies:** OBJ-1, OBJ-2, OBJ-3
   - **Estimación:** 1h
@@ -133,7 +133,7 @@
 - [ ] **OBJ-5** - Redactar descripción de PR HU-3.8
   - **Tareas:**
     - Template: título, descripción, checklist
-    - Incluir: objetivo, cambios principales, testing, breaking changes
+    - Incluir: objetivo, cambios principales, pruebaing, breaking changes
     - Enlazar: issue #HU-3.8 en ROADMAP
     - Incluir screenshots: dashboard con progreso real
   - **Dependencies:** OBJ-4
@@ -145,16 +145,16 @@
   - **Tareas:**
     - Resumen: qué se logró, qué se omitió por falta de scope
     - Cobertura final
-    - Deuda técnica documentada (si aplica)
+    - Deuda técnica documentoada (si aplica)
     - Recomendaciones H.U siguientes
   - **Estimación:** 30min
 
-- [ ] **OBJ-7** - Validar integración en Project Shell en vivo
+- [ ] **OBJ-7** - Validar integración en Proyecto Shell en vivo
   - **Tareas:**
-    - `flutter run` en escritorio
+    - `flutter ejecutar` en escritorio
     - Verificar dashboard muestra `Doc N/25` real
     - Verificar fase avanza cuando docs nuevos aparecen
-    - Test manual: crear proyecto, escanear, validar estado
+    - Prueba manual: crear proyecto, escanear, validar estado
   - **Estimación:** 45min
 
 - [ ] **OBJ-8** - Ejecutar PRE_PUSH_VALIDATION_MASTER.sh final
@@ -189,38 +189,38 @@ tests/client/widget/
 
 | Fase | Tareas | Estado |
 |------|--------|--------|
-| **ROJO** | Escribir tests que fallan | ⚠️ Parcial |
+| **ROJO** | Escribir pruebas que fallan | ⚠️ Parcial |
 | **VERDE** | Implementar lógica mínima | ✅ Completo |
 | **REFACTOR** | Limpiar, consolidar | ✅ Completo |
 | **INTEGRACIÓN** | Conectar con UI | ✅ Completo |
 | **SEGURIDAD** | Quality gates | ⚠️ En progreso |
-| **CIERRE** | Documentación + PR | ❌ Iniciando |
+| **CIERRE** | Documentoación + PR | ❌ Iniciando |
 
 ---
 
 ## 🚨 RIESGOS IDENTIFICADOS
 
-### RIESGO-1: Timeout en tests
+### RIESGO-1: Timeout en pruebas
 **Probabilidad:** ALTA
 **Impacto:** CRÍTICO (bloquea CI/CD)
 **Mitigación:**
-- [ ] Revisar `conftest.py` fixtures temporizadas
+- [ ] Revisar `confprueba.py` fixtures temporizadas
 - [ ] Verificar ChromaDB/SQLite no "hangs"
-- [ ] Aumentar pytest timeout si necesario
+- [ ] Aumentar pyprueba timeout si necesario
 
-### RIESGO-2: Regresión en Project Shell
+### RIESGO-2: Regresión en Proyecto Shell
 **Probabilidad:** MEDIA
 **Impacto:** ALTO
 **Mitigación:**
-- [ ] Ejecutar full test suite Flutter antes de merge
+- [ ] Ejecutar full prueba suite Flutter antes de merge
 - [ ] Validar Dashboard sigue mostrando progreso
-- [ ] Test de rollback si regresa a develop
+- [ ] Prueba de rollback si regresa a develop
 
 ### RIESGO-3: Divergencia de contabilidad
 **Probabilidad:** MEDIA
 **Impacto:** MEDIO
 **Mitigación:**
-- [ ] Congelar "contrato de conteo" en tests de dominio
+- [ ] Congelar "contrato de conteo" en pruebas de dominio
 - [ ] Auditoria: comparar templates vs implementación
 
 ---
@@ -236,7 +236,7 @@ cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
 # Capturar output completo para diagnóstico
 ```
 
-### 2️⃣ DESPUÉS (si aún fallan tests)
+### 2️⃣ DESPUÉS (si aún fallan pruebas)
 ```bash
 # Debug específico de pytest
 cd tests/server
@@ -249,7 +249,7 @@ python -m pytest unit/domain/test_project_phase_service.py --setup-show
 ### 3️⃣ SI NO SE RESUELVE RÁPIDO
 - Considerar: ¿Es problema de ambiente o de código?
 - Rollback a último commit estable en `develop`
-- Crear issue HU-3.8.1 "Test flakiness" para siguiente sprint
+- Crear issue HU-3.8.1 "Prueba flakiness" para siguiente sprint
 
 ---
 
@@ -258,11 +258,11 @@ python -m pytest unit/domain/test_project_phase_service.py --setup-show
 | Aspecto | Calificación | Acción |
 |---------|-----------|--------|
 | **Implementación lógica** | A+ | Completada y bien diseñada |
-| **Documentación** | A+ | Comprensiva y clara |
-| **Testing** | D | 🔴 BLOQUEADOR - fijar URGENTE |
+| **Documentoación** | A+ | Comprensiva y clara |
+| **Pruebaing** | D | 🔴 BLOQUEADOR - fijar URGENTE |
 | **Integración UI** | B+ | Funcional, pulir visual |
 | **Seguridad** | A | Artefactos validados, no traversal |
-| **Overall Readiness** | ⚠️ 70% | Esperar resolución tests → merge |
+| **Overall Readiness** | ⚠️ 70% | Esperar resolución pruebas → merge |
 
 ---
 
@@ -270,11 +270,11 @@ python -m pytest unit/domain/test_project_phase_service.py --setup-show
 
 **HU-3.8 estará 100% DONE cuando:**
 
-1. ✅ Todos los tests codebase pasen
+1. ✅ Todos los pruebas codebase pasen
 2. ✅ Cobertura módulo fase ≥90%
 3. ✅ Criterios AC-1 a AC-8 validados con evidencia
 4. ✅ PR creada y revisada
 5. ✅ PRE_PUSH_VALIDATION_MASTER.sh retorna exit code 0
 6. ✅ Merge a develop aprobado
 
-**Estimación para DoD:** 4-6h trabajo (si tests se resuelven rápido)
+**Estimación para DoD:** 4-6h trabajo (si pruebas se resuelven rápido)

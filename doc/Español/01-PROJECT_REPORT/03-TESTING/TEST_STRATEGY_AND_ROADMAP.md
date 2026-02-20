@@ -1,8 +1,8 @@
-# 🎯 Test Strategy & Robustness Roadmap
+# 🎯 Prueba Strategy & Robustness Roadmap
 
 > **Propósito:** Plan detallado para alcanzar robustez PRODUCTION-READY
 > **Actualizado:** 29 de enero de 2026
-> **Status:** ✅ Phase 5 Complete, 🎯 Phase 6 Planning
+> **Estado:** ✅ Fase 5 Complete, 🎯 Fase 6 Planificación
 
 ---
 
@@ -39,17 +39,17 @@ TIMELINE: ~8-10 weeks (Phases 6-8)
 ### Riesgo 1: Database Interaction (CRÍTICO)
 
 **Problema:**
-- ✅ ChromaDB initialization testeado (unit)
-- ❌ ChromaDB con datos reales NO testeado
-- ❌ SQLite connection pool NO testeado
-- ❌ Concurrent database access NO testeado
+- ✅ ChromaDB initialization pruebaeado (unit)
+- ❌ ChromaDB con datos reales NO pruebaeado
+- ❌ SQLite connection pool NO pruebaeado
+- ❌ Concurrent database access NO pruebaeado
 
 **Impacto:**
 - 🔴 **HIGH**: Posibles deadlocks bajo concurrencia
 - 🔴 **HIGH**: Memory leaks en connection pool
 - 🔴 **HIGH**: Data inconsistency bajo fallas
 
-**Solución (Phase 6):**
+**Solución (Fase 6):**
 ```python
 @pytest.mark.integration
 async def test_database_with_concurrent_operations():
@@ -78,7 +78,7 @@ async def test_database_with_concurrent_operations():
 - 🔴 **HIGH**: No hay automatic recovery
 - 🔴 **HIGH**: Posible data loss
 
-**Solución (Phase 7):**
+**Solución (Fase 7):**
 ```python
 @pytest.mark.resilience
 async def test_database_connection_failure():
@@ -108,7 +108,7 @@ async def test_graceful_shutdown():
 - 🟡 **MEDIUM**: Posible SLA breach
 - 🟡 **MEDIUM**: Escalabilidad desconocida
 
-**Solución (Phase 7):**
+**Solución (Fase 7):**
 ```bash
 # Load testing con Locust
 locust -f load_tests.py --users=100 --spawn-rate=5 --run-time=5m
@@ -125,18 +125,18 @@ locust -f load_tests.py --users=100 --spawn-rate=5 --run-time=5m
 ### Riesgo 4: Security (IMPORTANTE)
 
 **Problema:**
-- ✅ Token validation testeado
-- ✅ Input sanitization testeado
-- ❌ OWASP Top 10 NO testeado
+- ✅ Token validation pruebaeado
+- ✅ Input sanitization pruebaeado
+- ❌ OWASP Top 10 NO pruebaeado
 - ❌ SQL injection protection NO verificado
-- ❌ Rate limiting NO testeado
-- ❌ Penetration testing NO realizado
+- ❌ Rate limiting NO pruebaeado
+- ❌ Penetration pruebaing NO realizado
 
 **Impacto:**
 - 🟡 **MEDIUM**: Posibles vulnerabilidades
 - 🟡 **MEDIUM**: No cumplimiento de seguridad
 
-**Solución (Phase 8):**
+**Solución (Fase 8):**
 ```python
 @pytest.mark.security
 async def test_sql_injection_protection():
@@ -153,7 +153,7 @@ async def test_xss_protection():
 
 ---
 
-## 📋 Testing Pyramid (Recomendado)
+## 📋 Pruebaing Pyramid (Recomendado)
 
 ```
                    △
@@ -185,9 +185,9 @@ Total:  20 tests       Total:  75-100 tests
 
 ## 🚀 Roadmap Detallado
 
-### PHASE 6: Integration & E2E Testing (Weeks 1-2)
+### FASE 6: Integración & E2E Pruebaing (Weeks 1-2)
 
-#### Week 1: Infrastructure Setup
+#### Week 1: Infraestructura Setup
 
 **Tareas:**
 ```
@@ -213,13 +213,13 @@ Total:  20 tests       Total:  75-100 tests
 ```
 
 **Estimado:** 3-5 días
-**Files to Create:**
-- `app/tests/conftest.py` (updated)
-- `app/tests/fixtures/database.py` (new)
-- `app/tests/fixtures/client.py` (new)
-- `app/tests/seed_data.py` (new)
+**Archivos to Crear:**
+- `app/pruebas/confprueba.py` (updated)
+- `app/pruebas/fixtures/database.py` (new)
+- `app/pruebas/fixtures/client.py` (new)
+- `app/pruebas/seed_data.py` (new)
 
-#### Week 2: Integration & E2E Tests
+#### Week 2: Integración & E2E Pruebas
 
 **Tareas:**
 ```
@@ -251,13 +251,13 @@ Total:  20 tests       Total:  75-100 tests
 ```
 
 **Estimado:** 5-7 días
-**Files to Create:**
-- `app/tests/integration/test_startup_flow.py` (new)
-- `app/tests/integration/test_database_flow.py` (new)
-- `app/tests/integration/test_api_flow.py` (new)
-- `app/tests/integration/test_error_recovery.py` (new)
+**Archivos to Crear:**
+- `app/pruebas/integration/prueba_startup_flow.py` (new)
+- `app/pruebas/integration/prueba_database_flow.py` (new)
+- `app/pruebas/integration/prueba_api_flow.py` (new)
+- `app/pruebas/integration/prueba_error_recovery.py` (new)
 
-**Expected Results:**
+**Expected Resultados:**
 ```
 Integration Tests: 15-20 tests
 ├─ Startup flow: 4 tests
@@ -273,9 +273,9 @@ Coverage after Phase 6:
 
 ---
 
-### PHASE 7: Performance & Load Testing (Weeks 3-4)
+### FASE 7: Performance & Load Pruebaing (Weeks 3-4)
 
-#### Week 3: Load Testing Infrastructure
+#### Week 3: Load Pruebaing Infraestructura
 
 **Tareas:**
 ```
@@ -300,9 +300,9 @@ Coverage after Phase 6:
     └─ Error rate: <0.1%
 ```
 
-**Files to Create:**
-- `load_tests/locustfile.py` (new)
-- `load_tests/scenarios.py` (new)
+**Archivos to Crear:**
+- `load_pruebas/locustarchivo.py` (new)
+- `load_pruebas/scenarios.py` (new)
 - `doc/PERFORMANCE_BASELINE.md` (new)
 
 #### Week 4: Stress & Optimization
@@ -327,7 +327,7 @@ Coverage after Phase 6:
     ├─ CI integration para performance alerts
 ```
 
-**Expected Results:**
+**Expected Resultados:**
 ```
 Performance Baseline:
 ├─ Latency: p99 <500ms ✅
@@ -339,7 +339,7 @@ Performance Baseline:
 
 ---
 
-### PHASE 8: Chaos & Security (Weeks 5-6)
+### FASE 8: Chaos & Security (Weeks 5-6)
 
 #### Week 5: Chaos Engineering
 
@@ -388,7 +388,7 @@ Performance Baseline:
     ├─ Buffer overflow attempts
 ```
 
-**Expected Results:**
+**Expected Resultados:**
 ```
 Security Vulnerabilities Found: 0 (or documented with fixes)
 Chaos Tests Passing: ≥75%
@@ -397,7 +397,7 @@ Recovery Time: <30 seconds for all failures
 
 ---
 
-## 📚 Testing Technologies Needed
+## 📚 Pruebaing Technologies Needed
 
 ### Already Have ✅
 
@@ -426,7 +426,7 @@ hypothesis        pip install hypothesis      Property testing    Phase 8
 
 ## 🎯 Quality Gates (Acceptance Criteria)
 
-### Phase 6 Gate (Must Pass)
+### Fase 6 Gate (Must Pass)
 
 ```
 ✅ Integration Tests: ≥80% coverage
@@ -437,7 +437,7 @@ hypothesis        pip install hypothesis      Property testing    Phase 8
 ✅ Shutdown time: <3s
 ```
 
-### Phase 7 Gate (Must Pass)
+### Fase 7 Gate (Must Pass)
 
 ```
 ✅ Load tests passing at 100 concurrent users
@@ -448,7 +448,7 @@ hypothesis        pip install hypothesis      Property testing    Phase 8
 ✅ Performance within SLA
 ```
 
-### Phase 8 Gate (Must Pass)
+### Fase 8 Gate (Must Pass)
 
 ```
 ✅ All chaos tests: ≥75% passing
@@ -463,28 +463,28 @@ hypothesis        pip install hypothesis      Property testing    Phase 8
 
 ## 📈 Success Metrics
 
-### Current State (Phase 5)
+### Current State (Fase 5)
 
-| Metric | Value | Status |
+| Metric | Value | Estado |
 |--------|-------|--------|
-| Unit Test Coverage | 98.13% | ✅ EXCELLENT |
-| Tests Count | 20 | ✅ GOOD |
+| Unit Prueba Coverage | 98.13% | ✅ EXCELLENT |
+| Pruebas Count | 20 | ✅ GOOD |
 | Code Quality | 0 errors | ✅ EXCELLENT |
 | Security Issues | 0 HIGH | ✅ GOOD |
-| API Tested | 0% | ❌ CRITICAL |
-| Concurrency Tested | 0% | ❌ CRITICAL |
+| API Pruebaed | 0% | ❌ CRITICAL |
+| Concurrency Pruebaed | 0% | ❌ CRITICAL |
 | Robustness Score | 50/100 | 🟡 MODERATE |
 
-### Target State (Phase 8)
+### Target State (Fase 8)
 
-| Metric | Value | Status |
+| Metric | Value | Estado |
 |--------|-------|--------|
-| Unit Test Coverage | ≥95% | ✅ TARGET |
-| Integration Coverage | ≥80% | 🎯 TARGET |
+| Unit Prueba Coverage | ≥95% | ✅ TARGET |
+| Integración Coverage | ≥80% | 🎯 TARGET |
 | E2E Coverage | ≥90% | 🎯 TARGET |
-| Load Test Coverage | ≥85% | 🎯 TARGET |
-| API Tested | 100% | 🎯 TARGET |
-| Concurrency Tested | ✅ | 🎯 TARGET |
+| Load Prueba Coverage | ≥85% | 🎯 TARGET |
+| API Pruebaed | 100% | 🎯 TARGET |
+| Concurrency Pruebaed | ✅ | 🎯 TARGET |
 | Robustness Score | 90/100 | 🎯 TARGET |
 
 ---
@@ -493,11 +493,11 @@ hypothesis        pip install hypothesis      Property testing    Phase 8
 
 - [TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md) - Live metrics
 - [TEST_EXECUTION_LOG.md](TEST_EXECUTION_LOG.md) - Execution history
-- [../../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Overall testing strategy
+- [../../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Overall pruebaing strategy
 - [../../AGENTS.md](../../AGENTS.md) - Agent responsibilities
 
 ---
 
-**Created:** 29 de enero de 2026
-**Status:** ✅ Planning Complete, 🎯 Ready for Phase 6
-**Next Review:** After Phase 6 completion
+**Creard:** 29 de enero de 2026
+**Estado:** ✅ Planificación Complete, 🎯 Preparado para Fase 6
+**Siguiente Review:** After Fase 6 completion

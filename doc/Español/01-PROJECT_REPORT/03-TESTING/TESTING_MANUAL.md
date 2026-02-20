@@ -1,18 +1,18 @@
-# 🧪 Manual de Prueba - Project Shell Screen
+# 🧪 Manual de Prueba - Proyecto Shell Screen
 
 > **Objetivo:** Validar todas las características implementadas
 > **Duración Estimada:** 10-15 minutos
-> **Compilación Requerida:** ✅ `flutter run`
+> **Compilación Requerida:** ✅ `flutter ejecutar`
 
 ---
 
 ## ✅ Checklist de Pruebas Funcionales
 
-### Test 1: Interfaz General ✅
+### Prueba 1: Interfaz General ✅
 
 **Pasos:**
-1. Ejecuta `flutter run` en src/client/
-2. Navega a Project Shell Screen
+1. Ejecuta `flutter ejecutar` en src/client/
+2. Navega a Proyecto Shell Screen
 3. Verifica visualmente:
 
 ```
@@ -30,10 +30,10 @@ RESULTADO ESPERADO:
 
 ---
 
-### Test 2: Árbol de Directorios 📁
+### Prueba 2: Árbol de Directorios 📁
 
 **Pasos:**
-1. Observa el panel "Files" (columna 1)
+1. Observa el panel "Archivos" (columna 1)
 2. Verifica estructura:
 
 ```
@@ -46,7 +46,7 @@ RESULTADO ESPERADO:
 └─ ► 30-ARCHITECTURE/
 ```
 
-**Sub-tests:**
+**Sub-pruebas:**
 
 a) **Expandir carpeta:**
    - Haz clic en `►` de PROJECT-ALPHA
@@ -78,7 +78,7 @@ d) **Seleccionar archivo:**
 
 ---
 
-### Test 3: Preview Markdown 📄
+### Prueba 3: Preview Markdown 📄
 
 **Pasos:**
 1. Selecciona un archivo .md del árbol
@@ -98,7 +98,7 @@ RESULTADO ESPERADO:
 │ ...
 ```
 
-**Sub-tests:**
+**Sub-pruebas:**
 
 a) **Contenido visible:**
    - **Esperado:** Markdown content se muestra correctamente
@@ -116,7 +116,7 @@ c) **Botones toolbar:**
 
 ---
 
-### Test 4: Chat Panel 💬
+### Prueba 4: Chat Panel 💬
 
 **Pasos:**
 1. Observa panel central (CHAT)
@@ -133,7 +133,7 @@ RESULTADO ESPERADO:
 │ [Input field] [Send button]
 ```
 
-**Sub-tests:**
+**Sub-pruebas:**
 
 a) **Progress bar:**
    - Visible con animación
@@ -149,19 +149,19 @@ c) **Input field:**
    - Campo de texto vacío y clickeable
    - **Confirmado:** ✅ / ❌
 
-d) **Send button:**
+d) **Send botón:**
    - Botón visible con icono ✈
    - Clickeable (aunque no hace nada en demo)
    - **Confirmado:** ✅ / ❌
 
 ---
 
-### Test 5: Columnas Resizables 🔄
+### Prueba 5: Columnas Resizables 🔄
 
-**Test 5a: Redimensionar Files Panel**
+**Prueba 5a: Redimensionar Archivos Panel**
 
 Pasos:
-1. Posiciona mouse en el borde DERECHO del Files panel
+1. Posiciona mouse en el borde DERECHO del Archivos panel
 2. Observa cambio de cursor
 3. Arrastra a la izquierda/derecha
 
@@ -177,7 +177,7 @@ RESULTADO ESPERADO:
 
 **Confirmado:** ✅ / ❌
 
-**Test 5b: Redimensionar Preview Panel**
+**Prueba 5b: Redimensionar Preview Panel**
 
 Pasos:
 1. Posiciona mouse en el borde IZQUIERDO del Preview panel
@@ -194,13 +194,13 @@ RESULTADO ESPERADO:
 
 ---
 
-### Test 6: Columnas Ocultables 👁
+### Prueba 6: Columnas Ocultables 👁
 
-**Test 6a: Toggle Files Panel**
+**Prueba 6a: Toggle Archivos Panel**
 
 Pasos:
 1. Ubica los 2 FABs en esquina inferior derecha
-2. Haz clic en FAB superior (📁 folder icon)
+2. Haz clic en FAB superior (📁 carpeta icon)
 
 ```
 RESULTADO ESPERADO:
@@ -210,12 +210,12 @@ RESULTADO ESPERADO:
 └─ Chat gana espacio horizontal
 ```
 
-**Sub-test:**
+**Sub-prueba:**
 - Haz clic nuevamente en el FAB
-- **Esperado:** Files panel reaparece en su posición
+- **Esperado:** Archivos panel reaparece en su posición
 - **Confirmado:** ✅ / ❌
 
-**Test 6b: Toggle Preview Panel**
+**Prueba 6b: Toggle Preview Panel**
 
 Pasos:
 1. Haz clic en FAB inferior (👁 visibility icon)
@@ -228,28 +228,28 @@ RESULTADO ESPERADO:
 └─ Chat gana espacio horizontal
 ```
 
-**Sub-test:**
+**Sub-prueba:**
 - Haz clic nuevamente
 - **Esperado:** Preview panel reaparece
 - **Confirmado:** ✅ / ❌
 
 ---
 
-### Test 7: Interacción Completa 🎭
+### Prueba 7: Interacción Completa 🎭
 
-**Escenario:** Revisar documentos y cambiar layout
+**Escenario:** Revisar documentoos y cambiar layout
 
 Pasos:
-1. ✅ Files panel visible (test 2 passed)
-2. ✅ Expande 10-CONTEXT (test 2d passed)
+1. ✅ Archivos panel visible (prueba 2 passed)
+2. ✅ Expande 10-CONTEXT (prueba 2d passed)
 3. ✅ Selecciona 01-vision.md (preview actualiza)
-4. ✅ Redimensiona Files panel (test 5a)
-5. ✅ Redimensiona Preview panel (test 5b)
+4. ✅ Redimensiona Archivos panel (prueba 5a)
+5. ✅ Redimensiona Preview panel (prueba 5b)
 6. ✅ Oculta Preview (ganas espacio para chat)
-7. ✅ Oculta Files (solo Chat)
+7. ✅ Oculta Archivos (solo Chat)
 8. ✅ Muestra ambos nuevamente
 9. ✅ Selecciona otro archivo (02-constraints.md)
-10. ✅ Preview se actualiza sin cerrar Files
+10. ✅ Preview se actualiza sin cerrar Archivos
 
 ```
 RESULTADO ESPERADO:
@@ -281,32 +281,32 @@ Verifica estos elementos visuales:
 
 ## 🐛 Pruebas de Error (Edge Cases)
 
-### Test E1: Árbol profundo
+### Prueba E1: Árbol profundo
 - ✅ Expande múltiples niveles
 - ✅ Scroll funciona correctamente
 - ✅ Indentación coherente
 
-### Test E2: Columnas extremas
-- Redimensiona Files a 200px (mínimo)
+### Prueba E2: Columnas extremas
+- Redimensiona Archivos a 200px (mínimo)
 - Redimensiona Preview a 300px (mínimo)
 - **Esperado:** Todo cabe en pantalla, no hay overflow
 
-### Test E3: Selecciones múltiples
+### Prueba E3: Selecciones múltiples
 - Selecciona archivo A
 - Selecciona archivo B
 - **Esperado:** Solo B está resaltado, A se deselecciona
 
-### Test E4: Toggle rápido
+### Prueba E4: Toggle rápido
 - Haz clic rápidamente en FAB 5+ veces
 - **Esperado:** Panel togglea sin errores (sin lag)
 
 ---
 
-## 📊 Resultados
+## 📊 Resultadoados
 
 ### Resumen de Pruebas
 
-| Test | Resultado | Notas |
+| Prueba | Resultadoado | Notas |
 |------|-----------|-------|
 | T1: Interfaz General | ✅ / ❌ | |
 | T2: Árbol Directorios | ✅ / ❌ | |
@@ -320,7 +320,7 @@ Verifica estos elementos visuales:
 | E3: Edge Case Múltiple | ✅ / ❌ | |
 | E4: Edge Case Rápido | ✅ / ❌ | |
 
-**Total:** __ / 11 tests ✅
+**Total:** __ / 11 pruebas ✅
 
 ---
 
@@ -344,7 +344,7 @@ Issue #2:
 
 ## ✨ Conclusión
 
-Si todos los tests son **✅**, entonces:
+Si todos los pruebas son **✅**, entonces:
 
 ```
 🎉 PROJECT SHELL SCREEN ESTÁ LISTO PARA PRODUCCIÓN
@@ -352,6 +352,6 @@ Si todos los tests son **✅**, entonces:
 
 ---
 
-**Tester:** ________________
+**Pruebaer:** ________________
 **Fecha:** ________________
-**Resultado Final:** ✅ PASS / ❌ FAIL
+**Resultadoado Final:** ✅ PASS / ❌ FAIL

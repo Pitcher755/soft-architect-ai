@@ -1,10 +1,10 @@
 # 🔒 HU-4.1: Security Audit Report
 
 > **Generated:** 2026-02-14
-> **Status:** ✅ Zero high-severity vulnerabilities
-> **Security Level:** Production-Ready
+> **Estado:** ✅ Zero high-severity vulnerabilities
+> **Security Nivel:** Production-Ready
 > **Compliance:** OWASP Top 10 (2021) - All applicable items addressed
-> **Test Environment:** AMD Ryzen 9, 16GB RAM, NVIDIA RTX 3050 4GB
+> **Prueba Environment:** AMD Ryzen 9, 16GB RAM, NVIDIA RTX 3050 4GB
 
 ---
 
@@ -21,16 +21,16 @@ The HU-4.1 chat endpoint has undergone **comprehensive security auditing** with 
 
 ---
 
-## 📊 Security Scan Results
+## 📊 Security Scan Resultados
 
-### Bandit Static Analysis (Python)
+### Bandit Static Análisis (Python)
 
 ```bash
 Run: bandit -r src/server/app/ -ll -f json
 Severity Levels: HIGH, MEDIUM, LOW, INFO
 ```
 
-| Severity | Count | Status |
+| Severity | Count | Estado |
 |----------|-------|--------|
 | **HIGH** | 0 | ✅ PASS |
 | **MEDIUM** | 0 | ✅ PASS |
@@ -73,7 +73,7 @@ doc_id = hashlib.sha256(content.encode()).hexdigest()  # ✅ SHA-256
 doc_id = hashlib.md5(content.encode()).hexdigest()  # noqa: S324 - Non-crypto use
 ```
 
-**Status:** ✅ RESOLVED (SHA-256 for cryptographic purposes, MD5 only for deterministic IDs with explicit justification)
+**Estado:** ✅ RESOLVED (SHA-256 for cryptographic purposes, MD5 only for deterministic IDs with explicit justification)
 
 ---
 
@@ -90,14 +90,14 @@ doc_id = hashlib.md5(content.encode()).hexdigest()  # noqa: S324 - Non-crypto us
 
 ---
 
-#### 2. B101: assert_used (Test Code Only)
+#### 2. B101: assert_used (Prueba Code Only)
 ```python
 # File: tests/server/unit/domain/schemas/test_chat_schemas.py:67
 # Issue: Use of assert statement in tests
 # Justification: Standard pytest practice
 ```
 
-**Assessment:** ✅ SAFE (test code, not production)
+**Assessment:** ✅ SAFE (prueba code, not production)
 
 ---
 
@@ -131,7 +131,7 @@ class InputSanitizer:
       ✅ Unicode Normalization (homograph attacks)
 ```
 
-**Test Coverage:** 100% (10 dedicated security tests)
+**Prueba Coverage:** 100% (10 dedicated security pruebas)
 
 **Evidence:**
 ```python
@@ -173,7 +173,7 @@ output = "List&lt;String&gt; names = new ArrayList&lt;&gt;();"  # Preserved!
 }
 ```
 
-**Test Coverage:** ✅ 100% (dedicated test cases for all patterns)
+**Prueba Coverage:** ✅ 100% (dedicated prueba cases for all patterns)
 
 ---
 
@@ -181,7 +181,7 @@ output = "List&lt;String&gt; names = new ArrayList&lt;&gt;();"  # Preserved!
 
 **Policy:** NEVER expose stack traces or internal errors to client
 
-**Implementation:**
+**Implementación:**
 ```python
 # src/server/app/api/v1/chat.py
 @router.post("/message")
@@ -205,7 +205,7 @@ async def chat_message(...):
         )
 ```
 
-**Test:** ✅ Integration tests verify error messages are generic
+**Prueba:** ✅ Integración pruebas verify error messages are generic
 
 ---
 
@@ -264,13 +264,13 @@ uvicorn       | 0.27.0  | None       | ✅
 
 ## 🔐 OWASP Top 10 (2021) Compliance Matrix
 
-| # | Threat | Relevant? | Mitigation | Status |
+| # | Threat | Relevant? | Mitigation | Estado |
 |---|--------|-----------|------------|--------|
 | **A01:2021** | Broken Access Control | ⚠️ Yes | API key validation (future HU) | ⏳ Planned |
 | **A02:2021** | Cryptographic Failures | ✅ Yes | SHA-256 for hashing, TLS for transport | ✅ Implemented |
 | **A03:2021** | Injection | ✅ Yes | HTML escaping, parameterized queries, prompt injection detection | ✅ Implemented |
 | **A04:2021** | Insecure Design | ✅ Yes | Security-first architecture, input validation at boundaries | ✅ Implemented |
-| **A05:2021** | Security Misconfiguration | ✅ Yes | No debug mode in prod, secrets in .env (not committed) | ✅ Implemented |
+| **A05:2021** | Security Misconfiguración | ✅ Yes | No debug mode in prod, secrets in .env (not committed) | ✅ Implemented |
 | **A06:2021** | Vulnerable Components | ✅ Yes | pip-audit clean, deps up-to-date | ✅ Monitored |
 | **A07:2021** | Auth/AuthZ Failures | ⏳ N/A | MVP has no auth (single user), future HU-5.x | ⏳ Deferred |
 | **A08:2021** | Software/Data Integrity | ✅ Yes | Type checking (Pyright), code signing (future) | ✅ Partial |
@@ -281,9 +281,9 @@ uvicorn       | 0.27.0  | None       | ✅
 
 ---
 
-## 🧪 Security Testing Coverage
+## 🧪 Security Pruebaing Coverage
 
-### Automated Security Tests
+### Automated Security Pruebas
 
 ```python
 tests/server/unit/domain/schemas/test_chat_schemas.py
@@ -298,13 +298,13 @@ tests/server/integration/api/v1/test_chat_endpoints.py
 └─ test_chat_endpoint_handles_llm_failure ✅ (no error leakage)
 ```
 
-**Total Security Tests:** 7 dedicated + 12 incidental = **19 tests**
+**Total Security Pruebas:** 7 dedicated + 12 incidental = **19 pruebas**
 
 ---
 
-### Manual Penetration Testing
+### Manual Penetration Pruebaing
 
-**Tests Performed:**
+**Pruebas Performed:**
 
 1. **XSS Attack Vectors** ✅ BLOCKED
    ```bash
@@ -385,8 +385,8 @@ tests/server/integration/api/v1/test_chat_endpoints.py
 - [x] Error handling (no info disclosure) ✅
 - [x] No hardcoded secrets ✅
 - [x] Dependency scanning (pip-audit) ✅
-- [x] Static code analysis (Bandit) ✅
-- [x] Security test coverage >80% ✅
+- [x] Static code análisis (Bandit) ✅
+- [x] Security prueba coverage >80% ✅
 - [x] Logging without PII ✅
 - [ ] API authentication (deferred to HU-5.2) ⏳
 - [ ] Rate limiting (deferred to HU-4.4) ⏳
@@ -399,9 +399,9 @@ tests/server/integration/api/v1/test_chat_endpoints.py
 ## 🎯 Recommendations
 
 ### Immediate (Before Merge)
-1. ✅ **DONE:** Verify no `.env` file in Git history
+1. ✅ **DONE:** Verify no `.env` archivo in Git history
 2. ✅ **DONE:** Add security disclaimer in README (data sovereignty)
-3. ✅ **DONE:** Document error codes (no internal info)
+3. ✅ **DONE:** Documento error codes (no internal info)
 
 ### Short-term (Sprint 4-5)
 1. **Add API Key Auth:** Prevent unauthorized access (HU-5.2)
@@ -409,7 +409,7 @@ tests/server/integration/api/v1/test_chat_endpoints.py
 3. **Add Security Headers:** CORS, CSP, X-Frame-Options
 
 ### Long-term (Post-MVP)
-1. **Third-Party Security Audit:** Hire pentesting firm
+1. **Third-Party Security Audit:** Hire penpruebaing firm
 2. **Bug Bounty Program:** Crowdsource vulnerability discovery
 3. **Compliance Certifications:** SOC 2, ISO 27001 (if commercial)
 
@@ -417,7 +417,7 @@ tests/server/integration/api/v1/test_chat_endpoints.py
 
 ## 🏆 Conclusion
 
-**Security Status:** ✅ PRODUCTION-READY FOR MVP
+**Security Estado:** ✅ PRODUCTION-READY FOR MVP
 
 **Key Achievements:**
 - Zero high/medium severity vulnerabilities

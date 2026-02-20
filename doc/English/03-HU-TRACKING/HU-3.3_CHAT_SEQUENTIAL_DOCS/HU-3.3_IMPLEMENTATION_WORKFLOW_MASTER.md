@@ -1,26 +1,26 @@
 # 🚀 HU-3.3: Master Implementation Workflow
 ## Sequential Chat & Document Generation Engine
 
-> **Historia de Usuario:** Como Usuario, quiero un chat que me guíe secuencialmente para generar documentos (Doc 1→25) usando templates RAG e iteración conversacional.
+> **Historia de Usuario:** Como Usuario, quiero un chat que me guíe secuencialmente para generar documents (Doc 1→25) usando templates RAG e iteración conversacional.
 >
 > **Rama:** `feature/chat-sequential-docs`
 > **Estimación:** XXL (21 puntos)
 > **Prioridad:** CRITICAL
-> **Estado:** 🟡 READY FOR IMPLEMENTATION
+> **Status:** 🟡 READY FOR IMPLEMENTATION
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Metadata y Contexto](#metadata-y-contexto)
-2. [Análisis de Dependencias](#análisis-de-dependencias)
+2. [Analysis de Dependencias](#analysis-de-dependencias)
 3. [Estrategia de Arquitectura](#estrategia-de-arquitectura)
-4. [Fase 1: Backend RAG Orchestration (TDD RED)](#fase-1-backend-rag-orchestration-tdd-red)
-5. [Fase 2: Backend SSE Streaming (TDD GREEN)](#fase-2-backend-sse-streaming-tdd-green)
-6. [Fase 3: Frontend State Machine (TDD RED)](#fase-3-frontend-state-machine-tdd-red)
-7. [Fase 4: UI Components Golden Kit (TDD GREEN)](#fase-4-ui-components-golden-kit-tdd-green)
-8. [Fase 5: Integration The Gate (TDD RED)](#fase-5-integration-the-gate-tdd-red)
-9. [Fase 6: End-to-End Validation (TDD GREEN)](#fase-6-end-to-end-validation-tdd-green)
+4. [Phase 1: Backend RAG Orchestration (TDD RED)](#phase-1-backend-rag-orchestration-tdd-red)
+5. [Phase 2: Backend SSE Streaming (TDD GREEN)](#phase-2-backend-sse-streaming-tdd-green)
+6. [Phase 3: Frontend State Machine (TDD RED)](#phase-3-frontend-state-machine-tdd-red)
+7. [Phase 4: UI Components Golden Kit (TDD GREEN)](#phase-4-ui-components-golden-kit-tdd-green)
+8. [Phase 5: Integration The Gate (TDD RED)](#phase-5-integration-the-gate-tdd-red)
+9. [Phase 6: End-to-End Validation (TDD GREEN)](#phase-6-end-to-end-validation-tdd-green)
 10. [Checklist de Validación](#checklist-de-validación)
 11. [Referencias y Comandos](#referencias-y-comandos)
 
@@ -43,44 +43,44 @@ Estimated Duration: 3-4 days
 
 ### 1.2 Objetivos Clave
 
-1. **Orquestación Secuencial:** Máquina de estados que avanza Doc 1→25
+1. **Orquestación Secuencial:** Máquina de statuss que avanza Doc 1→25
 2. **RAG Integration:** Templates inteligentes con contexto del knowledge base
 3. **Streaming Real-Time:** SSE con latencia <200ms (Time To First Token)
-4. **Validación Controlada:** Documentos NO persisten hasta que usuario confirma
+4. **Validación Controlada:** Documents NO persisten hasta que usuario confirma
 5. **UX Golden Kit:** Interfaz de alta fidelidad con feedback inmediato
 
 ### 1.3 Criterios de Aceptación (del Roadmap)
 
 #### ✅ Criterios Positivos
 
-- [ ] Chat inicial pregunta descripción del proyecto y genera 'Propuesta Doc 1'
+- [ ] Chat inicial pregunta description of the project y genera 'Propuesta Doc 1'
 - [ ] Propuesta es JSON/Markdown temporal (NO persiste hasta 'Validar')
-- [ ] Control UX: Botón enviar (➤) deshabilitado si campo vacío o solo espacios
-- [ ] Herramientas Código: Bloques código con botón 'Copiar' en cabecera → portapapeles
-- [ ] Botón 'Validar y Guardar' llama a FileSystemService (HU-3.2) para persistencia en disco
+- [ ] Control UX: Button enviar (➤) deshabilitado si campo vacío o solo espacios
+- [ ] Herramientas Código: Bloques código con button 'Copiar' en cabecera → portapapeles
+- [ ] Button 'Validar y Guardar' llama a FileSystemService (HU-3.2) para persistencia en disco
 - [ ] Streaming token-a-token usando SSE (<200ms TTF - Time To First Token)
 - [ ] Barra de progreso: Doc N/25 actualiza tras validar
 - [ ] Flujo 100% secuencial (nunca 2 docs en paralelo)
 
 #### ❌ Criterios Negativos
 
-- [ ] Documentos NO se guardan si usuario no hace clic 'Validar'
+- [ ] Documents NO se guardan si usuario no hace clic 'Validar'
 
 ---
 
-## 2. Análisis de Dependencias
+## 2. Analysis de Dependencias
 
 ### 2.1 Dependencias BLOQUEANTES (MUST)
 
-| HU | Estado | Componente Necesario | Impacto |
+| HU | Status | Componente Necesario | Impacto |
 |----|--------|---------------------|---------|
-| **HU-3.1** | ✅ DONE | ProjectShell + SQLite | Estado del proyecto, progreso Doc N/25 |
-| **HU-3.2** | ✅ DONE | FileSystemService | Persistencia de documentos validados |
+| **HU-3.1** | ✅ DONE | ProjectShell + SQLite | Status of the project, progreso Doc N/25 |
+| **HU-3.2** | ✅ DONE | FileSystemService | Persistencia de documents validados |
 | **HU-2.2** | ✅ DONE | ChromaDB + RAG | Templates y contexto vectorizado |
 
 ### 2.2 Dependencias OPCIONALES (NICE-TO-HAVE)
 
-| HU | Estado | Beneficio |
+| HU | Status | Beneficio |
 |----|--------|-----------|
 | HU-3.4 | ⚠️ PENDING | Manejo robusto de errores con retry logic |
 | HU-3.5 | ⚠️ PENDING | Optimización de streaming y cache |
@@ -110,13 +110,13 @@ packages/knowledge_base/
 #### 🧠 Backend: Stateless Brain
 
 - **Responsabilidad:** Recibe `(user_input, doc_type, context)` → Devuelve `Stream<tokens>`
-- **NO conoce:** En qué paso (Doc N) está el proyecto
+- **NO conoce:** En qué paso (Doc N) está el project
 - **SÍ conoce:** Qué template usar según `doc_type` recibido
 
 #### 🎭 Frontend: Stateful Orchestrator
 
-- **Responsabilidad:** Gestiona la Máquina de Estados (Doc 1→25)
-- **Conoce:** Progreso actual, historial de chat, estado de validación
+- **Responsabilidad:** Gestiona la Máquina de Statuss (Doc 1→25)
+- **Conoce:** Progreso actual, historial de chat, status de validación
 - **Controla:** Cuándo llamar al Backend, cuándo persistir (via HU-3.2)
 
 ### 3.2 Flujo de Datos Completo
@@ -257,13 +257,13 @@ tests/test/
 
 ---
 
-## 4. FASE 1: Backend RAG Orchestration (TDD RED)
+## 4. PHASE 1: Backend RAG Orchestration (TDD RED)
 
-**Objetivo:** Crear el cerebro que genera contenido inteligente usando RAG.
+**Objetivo:** Create el cerebro que genera contenido inteligente usando RAG.
 
 ### 4.1 Actualizar Contrato de API
 
-**Archivo:** `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md`
+**File:** `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md`
 
 ```markdown
 ### POST /api/v1/chat/generate
@@ -310,7 +310,7 @@ data: {"total_tokens": 450, "duration_ms": 3200}
 
 #### Test 1: Orchestrator Basic Flow
 
-**Archivo:** `tests/python/unit/services/rag/test_orchestrator.py`
+**File:** `tests/python/unit/services/rag/test_orchestrator.py`
 
 ```python
 import pytest
@@ -426,7 +426,7 @@ class TestSequentialOrchestrator:
 
 #### Test 2: Template Loader
 
-**Archivo:** `tests/python/unit/services/rag/test_template_loader.py`
+**File:** `tests/python/unit/services/rag/test_template_loader.py`
 
 ```python
 import pytest
@@ -501,7 +501,7 @@ class TestTemplateLoader:
 
 #### Test 3: SSE Streaming
 
-**Archivo:** `tests/python/unit/api/v1/test_chat_endpoints.py`
+**File:** `tests/python/unit/api/v1/test_chat_endpoints.py`
 
 ```python
 import pytest
@@ -587,9 +587,9 @@ class TestChatEndpoints:
             yield item
 ```
 
-### 4.3 Implementación Backend (GREEN Phase - Placeholder)
+### 4.3 Implementation Backend (GREEN Phase - Placeholder)
 
-**Archivo:** `src/server/app/services/rag/sequential_orchestrator.py`
+**File:** `src/server/app/services/rag/sequential_orchestrator.py`
 
 ```python
 """
@@ -677,7 +677,7 @@ class SequentialOrchestrator:
         raise NotImplementedError("TDD RED: Test first!")
 ```
 
-**🔴 CHECKPOINT:** Todos los tests deben FALLAR en este punto. Ejecutar:
+**🔴 CHECKPOINT:** Todos los tests deben FALLAR en este punto. Execute:
 
 ```bash
 cd src/server && pytest tests/unit/services/rag/ -v
@@ -686,13 +686,13 @@ cd src/server && pytest tests/unit/services/rag/ -v
 
 ---
 
-## 5. FASE 2: Backend SSE Streaming (TDD GREEN)
+## 5. PHASE 2: Backend SSE Streaming (TDD GREEN)
 
 **Objetivo:** Implementar el endpoint FastAPI con streaming SSE funcional.
 
 ### 5.1 Implementar Endpoint SSE
 
-**Archivo:** `src/server/app/api/v1/chat.py`
+**File:** `src/server/app/api/v1/chat.py`
 
 ```python
 """
@@ -793,9 +793,9 @@ def get_orchestrator() -> SequentialOrchestrator:
     raise NotImplementedError("DI setup pending")
 ```
 
-### 5.2 Completar Implementación Orchestrator
+### 5.2 Completar Implementation Orchestrator
 
-**Archivo:** `src/server/app/services/rag/sequential_orchestrator.py`
+**File:** `src/server/app/services/rag/sequential_orchestrator.py`
 
 Completar los métodos `_retrieve_context` y `_build_prompt`:
 
@@ -845,7 +845,7 @@ def _build_prompt(
     return prompt
 ```
 
-**🟢 CHECKPOINT:** Ejecutar tests backend:
+**🟢 CHECKPOINT:** Execute tests backend:
 
 ```bash
 cd src/server && pytest tests/unit/ -v --cov=app
@@ -854,15 +854,15 @@ cd src/server && pytest tests/unit/ -v --cov=app
 
 ---
 
-## 6. FASE 3: Frontend State Machine (TDD RED)
+## 6. PHASE 3: Frontend State Machine (TDD RED)
 
-**Objetivo:** Crear la máquina de estados que orquesta el flujo secuencial.
+**Objetivo:** Create la máquina de statuss que orquesta el flujo secuencial.
 
 ### 6.1 Tests Domain Layer (TDD RED)
 
 #### Test 1: ChatMessage Entity
 
-**Archivo:** `tests/test/unit/features/chat/domain/entities/chat_message_test.dart`
+**File:** `tests/test/unit/features/chat/domain/entities/chat_message_test.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -947,7 +947,7 @@ void main() {
 
 #### Test 2: DocumentProposal Entity
 
-**Archivo:** `tests/test/unit/features/chat/domain/entities/document_proposal_test.dart`
+**File:** `tests/test/unit/features/chat/domain/entities/document_proposal_test.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -1025,7 +1025,7 @@ Goals content
 
 #### Test 3: ChatNotifier State Machine
 
-**Archivo:** `tests/test/unit/features/chat/presentation/notifiers/chat_notifier_test.dart`
+**File:** `tests/test/unit/features/chat/presentation/notifiers/chat_notifier_test.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -1152,9 +1152,9 @@ void main() {
 }
 ```
 
-### 6.2 Implementación Domain Layer (GREEN Phase - Placeholder)
+### 6.2 Implementation Domain Layer (GREEN Phase - Placeholder)
 
-**Archivo:** `src/client/lib/features/chat/domain/entities/chat_message.dart`
+**File:** `src/client/lib/features/chat/domain/entities/chat_message.dart`
 
 ```dart
 /// Represents a single message in the chat.
@@ -1213,7 +1213,7 @@ class ChatMessage {
 enum MessageRole { user, assistant, system }
 ```
 
-**Archivo:** `src/client/lib/features/chat/domain/entities/document_proposal.dart`
+**File:** `src/client/lib/features/chat/domain/entities/document_proposal.dart`
 
 ```dart
 /// Represents a generated document proposal awaiting validation.
@@ -1276,15 +1276,15 @@ cd tests && flutter test test/unit/features/chat/ --coverage
 
 ---
 
-## 7. FASE 4: UI Components Golden Kit (TDD GREEN)
+## 7. PHASE 4: UI Components Golden Kit (TDD GREEN)
 
-**Objetivo:** Crear widgets de alta fidelidad basados en el diseño aprobado.
+**Objetivo:** Create widgets de alta fidelidad basados en el diseño aprobado.
 
 ### 7.1 Widget Tests (TDD RED)
 
 #### Test 1: ProposalCardWidget
 
-**Archivo:** `tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart`
+**File:** `tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1421,9 +1421,9 @@ void main() {
 }
 ```
 
-### 7.2 Implementación Widgets (GREEN Phase)
+### 7.2 Implementation Widgets (GREEN Phase)
 
-**Archivo:** `src/client/lib/features/chat/presentation/widgets/proposal_card_widget.dart`
+**File:** `src/client/lib/features/chat/presentation/widgets/proposal_card_widget.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1616,13 +1616,13 @@ cd tests && flutter test test/widget/features/chat/presentation/widgets/ --cover
 
 ---
 
-## 8. FASE 5: Integration The Gate (TDD RED)
+## 8. PHASE 5: Integration The Gate (TDD RED)
 
 **Objetivo:** Conectar Frontend → Backend → FileSystem (HU-3.2).
 
 ### 8.1 Integration Test (TDD RED)
 
-**Archivo:** `tests/test/integration/features/chat/chat_flow_test.dart`
+**File:** `tests/test/integration/features/chat/chat_flow_test.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1695,7 +1695,7 @@ void main() {
 
 ### 8.2 Implementar ChatNotifier (GREEN Phase)
 
-**Archivo:** `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart`
+**File:** `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart`
 
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -1969,13 +1969,13 @@ cd tests && flutter test integration_test/ --coverage
 
 ---
 
-## 9. FASE 6: End-to-End Validation (TDD GREEN)
+## 9. PHASE 6: End-to-End Validation (TDD GREEN)
 
 **Objetivo:** Verificar el flujo completo con backend real.
 
 ### 9.1 Script de Validación Completa
 
-**Archivo:** `scripts/validate_hu_3_3.sh`
+**File:** `scripts/validate_hu_3_3.sh`
 
 ```bash
 #!/bin/bash
@@ -2115,18 +2115,18 @@ echo -e "${GREEN}✅ All automated tests passed!${NC}"
 
 #### ✅ Positivos
 
-- [ ] **P1:** Chat inicial pregunta descripción y genera 'Propuesta Doc 1'
+- [ ] **P1:** Chat inicial pregunta description y genera 'Propuesta Doc 1'
 - [ ] **P2:** Propuesta es temporal (NO persiste hasta 'Validar')
-- [ ] **P3:** Botón enviar deshabilitado si campo vacío/espacios
-- [ ] **P4:** Bloques código con botón 'Copiar' funcional
-- [ ] **P5:** Botón 'Validar y Guardar' llama FileSystemService (HU-3.2)
+- [ ] **P3:** Button enviar deshabilitado si campo vacío/espacios
+- [ ] **P4:** Bloques código con button 'Copiar' funcional
+- [ ] **P5:** Button 'Validar y Guardar' llama FileSystemService (HU-3.2)
 - [ ] **P6:** Streaming SSE con <200ms TTF
 - [ ] **P7:** Barra de progreso actualiza (Doc N/25) tras validar
 - [ ] **P8:** Flujo 100% secuencial (nunca 2 docs paralelos)
 
 #### ❌ Negativos
 
-- [ ] **N1:** Documentos NO se guardan sin clic en 'Validar'
+- [ ] **N1:** Documents NO se guardan sin clic en 'Validar'
 
 ### 10.2 Tests Coverage
 
@@ -2176,7 +2176,7 @@ genhtml coverage/lcov.info -o coverage/html
 
 ## 11. Referencias y Comandos
 
-### 11.1 Archivos Clave
+### 11.1 Files Clave
 
 ```
 # Backend
@@ -2276,7 +2276,7 @@ flutter run --profile --trace-startup
 # Usar DevTools para analizar memoria
 ```
 
-### 11.5 Diagrama de Estados
+### 11.5 Diagrama de Statuss
 
 ```mermaid
 stateDiagram-v2
@@ -2315,7 +2315,7 @@ Esta HU es el **corazón de la aplicación** y requiere coordinación perfecta e
 | Crashes en streaming | Error boundaries + Retry logic | MEDIA |
 | UX no intuitiva | User testing temprano + Iteración | MEDIA |
 
-### Próximos Pasos (Post-HU-3.3)
+### Next Steps (Post-HU-3.3)
 
 Una vez completada esta HU:
 - [ ] **HU-3.4:** Error handling robusto (gates de validación)
@@ -2329,4 +2329,4 @@ Una vez completada esta HU:
 
 *Última actualización: 2026-02-05*
 *Versión: 1.0.0*
-*Estado: READY FOR IMPLEMENTATION*
+*Status: READY FOR IMPLEMENTATION*

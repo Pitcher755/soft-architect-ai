@@ -1,7 +1,7 @@
 # 🚀 HU-3.3 SUPER WORKSPACE - ROADMAP MAESTRO
 
 > **Fecha de Creación:** 06/02/2026 15:45 CET
-> **Estado:** ✅ PLANIFICACIÓN COMPLETA
+> **Status:** ✅ PLANIFICACIÓN COMPLETA
 > **Estimación:** XXL (21 Story Points)
 > **Branch:** `feature/chat-sequential-docs`
 
@@ -9,13 +9,13 @@
 
 ## 📋 Executive Summary
 
-La **HU-3.3 Super-Vitaminada** expande el alcance original para incluir el **Workspace IDE completo** (3 columnas estilo VS Code), integrando:
+La **HU-3.3 Super-Vitaminada** expande el alcance original para incluir el **Workspace IDE completo** (3 columnas style VS Code), integrando:
 
-- **Explorador de Archivos** (Columna Izquierda)
+- **Explorador de Files** (Columna Izquierda)
 - **Chat Secuencial** (Columna Central)
 - **Preview Markdown** (Columna Derecha)
 
-**Objetivo:** Crear una experiencia IDE completa donde el usuario puede generar documentos secuencialmente, verlos en tiempo real, y navegar por la estructura del proyecto.
+**Objetivo:** Create una experiencia IDE completa donde el usuario puede generar documents secuencialmente, verlos en tiempo real, y navegar por la estructura of the project.
 
 ---
 
@@ -23,12 +23,12 @@ La **HU-3.3 Super-Vitaminada** expande el alcance original para incluir el **Wor
 
 ### ✅ **Pantallas y Componentes del Mapa de Widgets**
 
-| Pantalla | Archivo HTML Ref | Estado | Inclusión en HU-3.3 |
+| Pantalla | File HTML Ref | Status | Inclusión en HU-3.3 |
 |----------|------------------|--------|---------------------|
 | Dashboard | `dashboard.html` | ✅ Ya implementado | HU-3.1 (previo) |
-| Modal Crear Proyecto | `create_project_modal.html` | ✅ Ya implementado | HU-3.1 (previo) |
+| Modal Create Project | `create_project_modal.html` | ✅ Ya implementado | HU-3.1 (previo) |
 | **Workspace IDE** | `workspace.html` | ⚠️ **NUEVO** | **HU-3.3 SUPER** |
-| └─ Explorador Archivos | (Columna Izquierda) | ⚠️ **NUEVO** | **HU-3.3 SUPER** |
+| └─ Explorador Files | (Columna Izquierda) | ⚠️ **NUEVO** | **HU-3.3 SUPER** |
 | └─ Chat Secuencial | (Columna Central) | ✅ Widgets implementados | **HU-3.3 SUPER** |
 | └─ Preview Markdown | (Columna Derecha) | ⚠️ **NUEVO** | **HU-3.3 SUPER** |
 | Chat Components | `chat_components.html` | ✅ Widgets implementados | HU-3.3 (original) |
@@ -62,7 +62,7 @@ La **HU-3.3 Super-Vitaminada** expande el alcance original para incluir el **Wor
 
 ---
 
-## 📦 Estructura de Carpetas (Clean Architecture)
+## 📦 Estructura de Folders (Clean Architecture)
 
 ```
 src/client/lib/
@@ -125,11 +125,11 @@ src/client/lib/
 
 ---
 
-## 🎯 Workflow Maestro: Implementación TDD (6 Fases)
+## 🎯 Workflow Maestro: Implementation TDD (6 Phases)
 
-### **FASE 1: Workspace Shell (El Contenedor Principal)**
+### **PHASE 1: Workspace Shell (El Contenedor Principal)**
 
-**Objetivo:** Crear `ProjectWorkspaceScreen` con 3 columnas vacías.
+**Objetivo:** Create `ProjectWorkspaceScreen` con 3 columnas vacías.
 
 #### 1.1 Tests (RED)
 ```bash
@@ -139,7 +139,7 @@ src/client/lib/
 - test_appbar_shows_progress_indicator()
 ```
 
-#### 1.2 Implementación (GREEN)
+#### 1.2 Implementation (GREEN)
 ```dart
 // Archivo: lib/features/project_shell/presentation/screens/project_workspace_screen.dart
 class ProjectWorkspaceScreen extends ConsumerWidget {
@@ -175,7 +175,7 @@ class ProjectWorkspaceScreen extends ConsumerWidget {
 
 ---
 
-### **FASE 2: Explorador de Archivos (Columna Izquierda)**
+### **PHASE 2: Explorador de Files (Columna Izquierda)**
 
 **Objetivo:** Implementar `FileSystemTreeWidget` conectado a `FileSystemService`.
 
@@ -188,7 +188,7 @@ class ProjectWorkspaceScreen extends ConsumerWidget {
 - test_shows_file_icons_by_type()
 ```
 
-#### 2.2 Implementación (GREEN)
+#### 2.2 Implementation (GREEN)
 ```dart
 // Archivo: lib/features/project_shell/presentation/widgets/file_system_tree_widget.dart
 class FileSystemTreeWidget extends ConsumerWidget {
@@ -212,16 +212,16 @@ class FileSystemTreeWidget extends ConsumerWidget {
 
 #### 2.3 Integración
 - Conectar con `FileSystemService` (HU-3.2)
-- Leer estructura de `context/` del proyecto activo
-- Iconos por tipo de archivo (.md, .json, carpetas)
+- Leer estructura de `context/` of the project activo
+- Iconos por tipo de file (.md, .json, folders)
 
-**Entregable:** Árbol navegable que muestra estructura real del proyecto.
+**Entregable:** Árbol navegable que muestra estructura real of the project.
 
 ---
 
-### **FASE 3: Preview Markdown (Columna Derecha)**
+### **PHASE 3: Preview Markdown (Columna Derecha)**
 
-**Objetivo:** Implementar `MarkdownPreviewWidget` con estilos GitHub Dark.
+**Objetivo:** Implementar `MarkdownPreviewWidget` con styles GitHub Dark.
 
 #### 3.1 Tests (RED)
 ```bash
@@ -232,7 +232,7 @@ class FileSystemTreeWidget extends ConsumerWidget {
 - test_scrolls_to_section_on_click()
 ```
 
-#### 3.2 Implementación (GREEN)
+#### 3.2 Implementation (GREEN)
 ```dart
 // Archivo: lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart
 class MarkdownPreviewWidget extends ConsumerWidget {
@@ -260,11 +260,11 @@ class MarkdownPreviewWidget extends ConsumerWidget {
 - Links internos navegables
 - Auto-scroll al encabezado clickeado en el explorador
 
-**Entregable:** Preview funcional con estilos GitHub Dark.
+**Entregable:** Preview funcional con styles GitHub Dark.
 
 ---
 
-### **FASE 4: Chat Secuencial (Columna Central - Integración)**
+### **PHASE 4: Chat Secuencial (Columna Central - Integración)**
 
 **Objetivo:** Integrar `SequentialChatScreen` con widgets ya creados.
 
@@ -278,7 +278,7 @@ class MarkdownPreviewWidget extends ConsumerWidget {
 - test_streaming_indicator_appears_during_generation()
 ```
 
-#### 4.2 Implementación (GREEN)
+#### 4.2 Implementation (GREEN)
 ```dart
 // Archivo: lib/features/chat/presentation/screens/sequential_chat_screen.dart
 class SequentialChatScreen extends ConsumerStatefulWidget {
@@ -343,11 +343,11 @@ void _handleValidate(WidgetRef ref) async {
 
 ---
 
-### **FASE 5: Resizable Panes (UX Enhancement)**
+### **PHASE 5: Resizable Panes (UX Enhancement)**
 
 **Objetivo:** Hacer que las columnas sean redimensionables.
 
-#### 5.1 Implementación
+#### 5.1 Implementation
 ```dart
 // Archivo: lib/features/project_shell/presentation/widgets/resizable_pane.dart
 class ResizablePanes extends StatefulWidget {
@@ -392,9 +392,9 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ---
 
-### **FASE 6: Integración E2E y Validación**
+### **PHASE 6: Integración E2E y Validación**
 
-**Objetivo:** Validar el flujo completo de generación de documentos.
+**Objetivo:** Validar el flujo completo de generación de documents.
 
 #### 6.1 Test E2E
 ```bash
@@ -411,10 +411,10 @@ class _ResizablePanesState extends State<ResizablePanes> {
 ```
 
 #### 6.2 Casos de Validación
-- ✅ No se puede saltar documentos sin validar
+- ✅ No se puede saltar documents sin validar
 - ✅ Propuestas rechazadas no se guardan
 - ✅ Progress bar se actualiza al validar
-- ✅ Árbol de archivos refleja cambios en tiempo real
+- ✅ Árbol de files refleja cambios en tiempo real
 - ✅ Preview sincroniza con selección del árbol
 
 **Entregable:** Test E2E completo con cobertura >80%.
@@ -423,10 +423,10 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ## 📊 Mapeo: Widgets HTML → Widgets Dart
 
-| HTML Component (mapa_widgets.md) | Dart Widget | Ubicación | Estado |
+| HTML Component (mapa_widgets.md) | Dart Widget | Ubicación | Status |
 |-----------------------------------|-------------|-----------|--------|
 | Sidebar (Explorador) | `FileSystemTreeWidget` | `project_shell/widgets/` | ⚠️ Nuevo |
-| Tree Node (Carpeta) | `TreeTile` | `project_shell/widgets/` | ⚠️ Nuevo |
+| Tree Node (Folder) | `TreeTile` | `project_shell/widgets/` | ⚠️ Nuevo |
 | Preview Panel | `MarkdownPreviewWidget` | `project_shell/widgets/` | ⚠️ Nuevo |
 | Chat Message (User) | `MessageBubbleWidget` | `chat/widgets/` | ✅ Hecho |
 | Chat Message (AI) | `MessageBubbleWidget` | `chat/widgets/` | ✅ Hecho |
@@ -439,7 +439,7 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ## 🧪 Cobertura de Tests Requerida
 
-| Categoría | Objetivo | Archivos |
+| Categoría | Objetivo | Files |
 |-----------|----------|----------|
 | **Unit Tests** | >80% | `*_test.dart` |
 | **Widget Tests** | 100% componentes críticos | `*_widget_test.dart` |
@@ -459,14 +459,14 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ---
 
-## 📅 Cronograma de Implementación
+## 📅 Cronograma de Implementation
 
 ### Sprint Breakdown (Estimación 21 SP)
 
-| Fase | Tarea | SP | Duración Estimada | Dependencias |
+| Phase | Tarea | SP | Duración Estimada | Dependencias |
 |------|-------|----|--------------------|--------------|
 | **FASE 1** | Workspace Shell | 2 | 1 día | Ninguna |
-| **FASE 2** | Explorador Archivos | 3 | 2 días | HU-3.2 |
+| **FASE 2** | Explorador Files | 3 | 2 días | HU-3.2 |
 | **FASE 3** | Preview Markdown | 3 | 2 días | FASE 1 |
 | **FASE 4** | Chat Secuencial | 8 | 4 días | FASE 1, 2, 3 |
 | **FASE 5** | Resizable Panes | 2 | 1 día | FASE 1 |
@@ -479,8 +479,8 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |--------|--------------|---------|------------|
-| **Complejidad del árbol de archivos** | Alta | Alto | Usar librería `flutter_treeview` |
-| **Performance con 25 documentos** | Media | Medio | Virtualización de listas |
+| **Complejidad del árbol de files** | Alta | Alto | Usar librería `flutter_treeview` |
+| **Performance con 25 documents** | Media | Medio | Virtualización de listas |
 | **Sincronización 3 columnas** | Media | Alto | StateNotifier global con Riverpod |
 | **Streaming SSE bloqueante** | Baja | Alto | Async/await correcto, tests extensivos |
 | **Redimensionamiento buggy** | Media | Bajo | Constraints mínimos/máximos |
@@ -490,7 +490,7 @@ class _ResizablePanesState extends State<ResizablePanes> {
 ## 🎯 Definition of Done (HU-3.3 SUPER)
 
 ### Funcionalidad
-- [ ] Workspace carga al abrir proyecto
+- [ ] Workspace carga al abrir project
 - [ ] 3 columnas visibles y funcionales
 - [ ] Explorador muestra estructura real
 - [ ] Preview renderiza Markdown correctamente
@@ -508,8 +508,8 @@ class _ResizablePanesState extends State<ResizablePanes> {
 
 ### Documentación
 - [ ] README.md en `doc/03-HU-TRACKING/HU-3.3-SUPER-WORKSPACE/`
-- [ ] PROGRESS.md actualizado (6 fases)
-- [ ] ARTIFACTS.md con todos los archivos creados
+- [ ] PROGRESS.md actualizado (6 phases)
+- [ ] ARTIFACTS.md con todos los files creados
 - [ ] Comentarios en código (DartDoc)
 - [ ] Diagramas de flujo en documentación
 
@@ -517,11 +517,11 @@ class _ResizablePanesState extends State<ResizablePanes> {
 - [ ] Commits atómicos y descriptivos
 - [ ] Branch `feature/chat-sequential-docs`
 - [ ] Sin conflictos con `develop`
-- [ ] PR abierto con descripción completa
+- [ ] PR abierto con description completa
 
 ---
 
-## 📚 Documentos de Referencia
+## 📚 Documents de Referencia
 
 ### Internos
 - [`doc/03-HU-TRACKING/HU-3.3-SUPER-WORKSPACE/README.md`](doc/03-HU-TRACKING/HU-3.3-SUPER-WORKSPACE/README.md)
@@ -543,7 +543,7 @@ Antes de empezar a codificar:
 - [x] Leer este roadmap completo
 - [x] Revisar `mapa_widgets.md` (HTML de referencia)
 - [x] Confirmar HU-3.1 y HU-3.2 completadas
-- [ ] Crear branch `feature/chat-sequential-docs` (si no existe)
+- [ ] Create branch `feature/chat-sequential-docs` (si no existe)
 - [ ] Verificar que `flutter analyze` pasa actualmente
 - [ ] Confirmar que todos los tests previos pasan (289/289)
 - [ ] Instalar dependencias adicionales:
@@ -555,16 +555,16 @@ Antes de empezar a codificar:
 
 ---
 
-## 🎉 Resultado Final Esperado
+## 🎉 Result Final Esperado
 
 Al completar la HU-3.3 SUPER, el usuario podrá:
 
-1. ✅ **Abrir un proyecto** desde el Dashboard
-2. ✅ **Ver el Workspace IDE** con 3 columnas estilo VS Code
-3. ✅ **Navegar por archivos** en el explorador lateral
-4. ✅ **Chatear con la IA** para generar documentos secuencialmente
+1. ✅ **Abrir un project** desde el Dashboard
+2. ✅ **Ver el Workspace IDE** con 3 columnas style VS Code
+3. ✅ **Navegar por files** en el explorador lateral
+4. ✅ **Chatear con la IA** para generar documents secuencialmente
 5. ✅ **Validar propuestas** que se guardan automáticamente
-6. ✅ **Ver el preview** del documento validado en tiempo real
+6. ✅ **Ver el preview** del document validado en tiempo real
 7. ✅ **Seguir el progreso** con la barra de avance (Doc X/25)
 8. ✅ **Redimensionar columnas** según preferencias
 

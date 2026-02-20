@@ -1,27 +1,27 @@
-# 🎯 Tu Primer Proyecto - SoftArchitect AI
+# 🎯 Tu Primer Project - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Guía paso a paso
+> **Date:** 19/02/2026
+> **Status:** ✅ Guía paso a paso
 > **Tiempo aproximado:** 30-45 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-- [¿Qué vamos a crear?](#qué-vamos-a-crear)
-- [Paso 1: Crear el proyecto](#paso-1-crear-el-proyecto)
+- [¿Qué vamos a create?](#qué-vamos-a-create)
+- [Paso 1: Create el project](#paso-1-create-el-project)
 - [Paso 2: Definir tu visión](#paso-2-definir-tu-visión)
-- [Paso 3: Ejecutar FASE 1](#paso-3-ejecutar-fase-1)
+- [Paso 3: Execute FASE 1](#paso-3-execute-phase-1)
 - [Paso 4: Revisar resultados](#paso-4-revisar-resultados)
 - [¿Qué sigue?](#qué-sigue)
 
 ---
 
-## 🎓 ¿Qué vamos a crear?
+## 🎓 ¿Qué vamos a create?
 
-En este tutorial crearemos un **Proyecto de Ejemplo** que demuestra cómo funciona SoftArchitect AI.
+En este tutorial createemos un **Project de Ejemplo** que demuestra cómo funciona SoftArchitect AI.
 
-### Proyecto Propuesto: "Plataforma de Blog Académico"
+### Project Propuesto: "Plataforma de Blog Académico"
 
 Un sitio donde:
 - 👥 Profesores publican artículos técnicos
@@ -31,13 +31,13 @@ Un sitio donde:
 
 ### Por Qué Este Ejemplo:
 ✅ Simple pero realista
-✅ Demuestra todas las fases del Master Workflow
+✅ Demuestra todas las phases del Master Workflow
 ✅ Fácil de visualizar
 ✅ Completo en 45 minutos
 
 ---
 
-## 🚀 Paso 1: Crear el Proyecto
+## 🚀 Paso 1: Create el Project
 
 ### 1.1 Abre SoftArchitect AI
 
@@ -46,12 +46,12 @@ En tu navegador:
 http://localhost:3000
 ```
 
-Deberías ver la pantalla principal con un botón grande:
+Deberías ver la pantalla principal con un button grande:
 ```
 📝 + Nuevo Proyecto
 ```
 
-### 1.2 Haz clic en "Nuevo Proyecto"
+### 1.2 Haz clic en "New Project"
 
 Se abrirá un formulario simple:
 
@@ -68,20 +68,20 @@ Se abrirá un formulario simple:
 
 ### 1.3 Completa los campos
 
-**Campo "Nombre":**
+**Campo "Name":**
 ```
 Plataforma de Blog Académico
 ```
 
-**Campo "Descripción":**
+**Campo "Description":**
 ```
 Plataforma colaborativa para publicar y discutir artículos académicos entre profesores y estudiantes.
 ```
 
-### 1.4 Haz clic en "Crear Proyecto"
+### 1.4 Haz clic en "Create Project"
 
-✅ El proyecto se creará en segundos
-✅ Serás redirigido al dashboard del proyecto
+✅ El project se createá en segundos
+✅ Serás redirigido al dashboard of the project
 
 ---
 
@@ -157,9 +157,9 @@ Define tus métricas:
 
 ---
 
-## ⚙️ Paso 3: Ejecutar FASE 1
+## ⚙️ Paso 3: Execute FASE 1
 
-Una vez completes las 6 preguntas, SoftArchitect AI comenzará a analizar tu proyecto.
+Una vez completes las 6 preguntas, SoftArchitect AI comenzará a analizar tu project.
 
 ### 3.1 Espera mientras la IA trabaja
 
@@ -186,21 +186,21 @@ Verás una pantalla así:
 En segundo plano, SoftArchitect AI está:
 
 1. **Analizando tu visión** mediante RAG (Retrieval Augmented Generation)
-   - Buscando patrones en proyectos similares
+   - Buscando patrones en projects similares
    - Evaluando viabilidad basada en datos históricos
 
-2. **Generando documentos**
+2. **Generando documents**
    - Project Manifesto (Mi Promesa)
-   - Análisis de viabilidad estratégica
+   - Analysis de viabilidad estratégica
    - Matriz de riesgos iniciales
-   - Análisis de mercado
+   - Analysis de mercado
 
 3. **Creando un plan de acción**
    - Roadmap de 12 meses
    - Hitos clave
    - Recursos estimados
 
-### 3.3 Documentos generados automáticamente
+### 3.3 Documents generados automáticamente
 
 Una vez complete, verás una tabla:
 
@@ -220,11 +220,11 @@ Una vez complete, verás una tabla:
 
 ---
 
-## 📋 Paso 4: Revisar Resultados
+## 📋 Paso 4: Revisar Results
 
 ### 4.1 Lee "Mi Promesa" (Project Manifesto)
 
-Haz clic en el icono de ojo 👁️ para ver el documento.
+Haz clic en el icono de ojo 👁️ para ver el document.
 
 Verás algo como:
 
@@ -255,9 +255,9 @@ comunitario.
 └─ 50 artículos destacados por mes
 ```
 
-### 4.2 Revisa "Análisis de Viabilidad"
+### 4.2 Revisa "Analysis de Viabilidad"
 
-Este documento analiza:
+Este document analiza:
 - ✅ Viabilidad técnica
 - ✅ Viabilidad de mercado
 - ✅ Viabilidad financiera
@@ -277,13 +277,13 @@ VIABILIDAD DE MERCADO: ✅ ALTA
 - TAM (Total Addressable Market): $2.3B
 ```
 
-### 4.3 Descarga los documentos
+### 4.3 Descarga los documents
 
-Si quieres guardar los documentos para revisar después:
+Si quieres guardar los documents para revisar después:
 
 **Opción A: Dentro de la app**
 1. Haz clic en [📥] para descargar como PDF
-2. Se guardará en tu carpeta de descargas
+2. Se guardará en tu folder de descargas
 
 **Opción B: En línea**
 1. Copia el texto directamente
@@ -293,9 +293,9 @@ Si quieres guardar los documentos para revisar después:
 
 ## 🎓 Entender lo que ves
 
-### ¿Por qué estos documentos?
+### ¿Por qué estos documents?
 
-SoftArchitect AI sigue el **Master Workflow de 4 Fases**:
+SoftArchitect AI sigue el **Master Workflow de 4 Phases**:
 
 ```
 FASE 1: GOBERNANZA E IDENTIDAD (Donde estás)
@@ -340,7 +340,7 @@ Acabas de completar **FASE 1** ✅
 
 ---
 
-### Problema 2: "Los documentos se ven mal formateados"
+### Problema 2: "Los documents se ven mal formateados"
 
 **Solución:**
 ```
@@ -351,7 +351,7 @@ Acabas de completar **FASE 1** ✅
 
 ---
 
-### Problema 3: "Quiero volver a generar los documentos"
+### Problema 3: "Quiero volver a generar los documents"
 
 **Solución:**
 ```
@@ -367,26 +367,26 @@ Acabas de completar **FASE 1** ✅
 
 Marca lo que ya completaste:
 
-- [ ] Proyecto "Plataforma de Blog Académico" creado
+- [ ] Project "Plataforma de Blog Académico" creado
 - [ ] Respondiste las 6 preguntas de FASE 1
 - [ ] Esperaste a que la IA procesara
 - [ ] Leíste "Mi Promesa"
-- [ ] Revisaste "Análisis de Viabilidad"
-- [ ] Descargaste al menos un documento
-- [ ] Entiendes las 4 Fases del Master Workflow
+- [ ] Revisaste "Analysis de Viabilidad"
+- [ ] Descargaste al menos un document
+- [ ] Entiendes las 4 Phases del Master Workflow
 
 ---
 
-## 🎯 Siguiente Paso
+## 🎯 Next Paso
 
 Ahora que completaste FASE 1, tienes dos opciones:
 
 ### Opción A: Continuar con FASE 2 (Arquitectura)
-→ La IA te guiará a través del análisis y diseño arquitectónico
+→ La IA te guiará a través del analysis y diseño arquitectónico
 → **Tiempo:** 45 minutos
 
 ### Opción B: Explorar el Dashboard
-→ Revisa los documentos generados
+→ Revisa los documents generados
 → Descárgalos para compartir con tu equipo
 → **Tiempo:** Variable
 
@@ -397,21 +397,21 @@ Ahora que completaste FASE 1, tienes dos opciones:
 
 ---
 
-## 💡 Consejos para Mejores Resultados
+## 💡 Consejos para Mejores Results
 
 ### ✅ DO's (Que SÍ Hagas)
 - ✅ Sé específico en tus respuestas
 - ✅ Piensa en números (usuarios, ingresos, etc)
 - ✅ Incluye detalles sobre tu mercado
 - ✅ Menciona competidores si existen
-- ✅ Revisa los documentos generados críticamente
+- ✅ Revisa los documents generados críticamente
 
 ### ❌ DON'Ts (Que NO Hagas)
-- ❌ No des respuestas vagas ("Es un proyecto importante")
+- ❌ No des respuestas vagas ("Es un project importante")
 - ❌ No confundas usuarios con clientes
 - ❌ No ignores los riesgos identificados
 - ❌ No esperes que la IA lo sepa todo (brinda contexto)
-- ❌ No hagas cambios destructivos en documentos (guarda copia)
+- ❌ No hagas cambios destructivos en documents (guarda copia)
 
 ---
 
@@ -448,7 +448,7 @@ Ahora que completaste FASE 1, tienes dos opciones:
 ---
 
 <p align="center">
-  ✅ Completaste tu Primer Proyecto
+  ✅ Completaste tu Primer Project
   <br/>
   🎯 Próximo: <a href="04-MASTER_WORKFLOW.md"><strong>Entender el Master Workflow</strong></a>
   <br/><br/>

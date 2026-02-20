@@ -7,27 +7,27 @@
 
 ---
 
-## 📋 Documentación del Workflow
+## 📋 Documentoación del Workflow
 
-**✅ WORKFLOW_MASTER_DEFINITION.md creado** - Documento completo con:
+**✅ WORKFLOW_MASTER_DEFINITION.md creado** - Documentoo completo con:
 - 6 fases TDD (RED → GREEN → REFACTOR → OPTIMIZE → DOCUMENT → VALIDATE)
 - Comandos bash específicos para cada tarea
 - Deliverables esperados por fase
-- Checklists detallados (26 tests, 45 archivos)
+- Checklists detallados (26 pruebas, 45 archivos)
 - Quality gates y acceptance criteria
-- Métricas y status tracking
+- Métricas y estado tracking
 
 ---
 
-## ✅ Trabajo Completado (Phases 1-3 + Partial 4)
+## ✅ Trabajo Completado (Fases 1-3 + Partial 4)
 
-### Phase 1: Setup & Analysis ✅ COMPLETE
-- ✅ Documentación HU creada (README, PROGRESS, ARTIFACTS, WORKFLOW_MASTER_DEFINITION)
+### Fase 1: Setup & Análisis ✅ COMPLETE
+- ✅ Documentoación HU creada (README, PROGRESS, ARTIFACTS, WORKFLOW_MASTER_DEFINITION)
 - ✅ Rama feature/settings-ui-completion creada y actualizada
-- ✅ Dependencias verificadas (file_picker, shared_preferences ya disponibles)
+- ✅ Dependencias verificadas (archivo_picker, shared_preferences ya disponibles)
 - ✅ Arquitectura Clean Architecture diseñada
 
-### Phase 2: Domain Layer ✅ COMPLETE
+### Fase 2: Domain Layer ✅ COMPLETE
 **Archivos Creados: 11**
 
 **Entities (5 archivos):**
@@ -42,12 +42,12 @@
 - `save_settings_usecase.dart`
 - `update_language_usecase.dart`
 - `update_storage_path_usecase.dart` (con validación de paths)
-- `load_last_project_usecase.dart`
-- `save_last_project_usecase.dart`
+- `load_last_proyecto_usecase.dart`
+- `save_last_proyecto_usecase.dart`
 
 **Repository Interfaces (2 archivos):**
 - `i_settings_repository.dart`
-- `i_last_project_repository.dart`
+- `i_last_proyecto_repository.dart`
 
 **✅ Calidad:**
 - 100% DartDoc coverage
@@ -57,54 +57,54 @@
 
 ---
 
-### Phase 3: Data Layer ✅ COMPLETE
+### Fase 3: Data Layer ✅ COMPLETE
 **Archivos Creados: 5**
 
 **Data Sources (3 archivos):**
 - `settings_local_datasource.dart` - SharedPreferences con JSON (dart:convert)
-- `file_picker_datasource.dart` - Wrapper para file_picker package
-- `last_project_local_datasource.dart` - Persistencia último proyecto
+- `archivo_picker_datasource.dart` - Wrapper para archivo_picker package
+- `last_proyecto_local_datasource.dart` - Persistencia último proyecto
 
-**Repository Implementations (2 archivos):**
+**Repository Implementacións (2 archivos):**
 - `settings_repository_impl .dart` - Implementa ISettingsRepository
-- `last_project_repository_impl.dart` - Implementa ILastProjectRepository
+- `last_proyecto_repository_impl.dart` - Implementa ILastProyectoRepository
 
 **✅ Calidad:**
 - JSON serialization con dart:convert
 - Error handling con custom exceptions
-- Keys namespace: `settings.*`, `lastProject.*`
+- Keys namespace: `settings.*`, `lastProyecto.*`
 - DartDoc completo
 
 ---
 
-### Phase 4: Presentation Layer ⚠️ PARTIAL (60%)
+### Fase 4: Presentación Layer ⚠️ PARTIAL (60%)
 **Archivos Creados/Modificados: 3**
 
 **✅ Completado:**
 - `settings_notifier.dart` - StateNotifier con todos los métodos de actualización
 - `settings_providers.dart` - Riverpod providers completos (data sources → repositories → use cases → notifiers)
-- `storage_section.dart` - ✅ **TODO-2 COMPLETED**: file_picker nativo implementado
+- `storage_section.dart` - ✅ **TODO-2 COMPLETED**: archivo_picker nativo implementado
 
 **⏳ Pendiente:**
-- Modificar `profile_section.dart` para conectar a providers
+- Modificar `proarchivo_section.dart` para conectar a providers
 - Modificar `appearance_section.dart` para añadir language_selector y conectar providers
 - Modificar `accessibility_section.dart` para conectar providers
 - Modificar `performance_section.dart` para conectar providers
 - Modificar `language_selector_widget.dart` (ya existe, revisar si necesita ajustes)
 - Modificar `global_search_dialog.dart` para navegación al proyecto
-- Modificar `projects_sidebar.dart` para mostrar último proyecto
+- Modificar `proyectos_sidebar.dart` para mostrar último proyecto
 
 ---
 
 ## 📋 Plan para Completar HU-3.7
 
-### Paso 1: Completar Phase 4 (UI Widgets)
+### Paso 1: Completar Fase 4 (UI Widgets)
 **Tiempo estimado: 2-3 horas**
 
-1. **profile_section.dart**
+1. **proarchivo_section.dart**
    - Conectar a `settingsProvider`
    - Campos userName, email
-   - Botón guardar → `updateUserProfile()`
+   - Botón guardar → `updateUserProarchivo()`
 
 2. **appearance_section.dart**
    - Conectar a `settingsProvider`
@@ -143,64 +143,64 @@
      }
      ```
 
-7. **projects_sidebar.dart**
-   - Conectar a `lastProjectProvider`
-   - Leer último proyecto: `ref.watch(lastProjectProvider)`
+7. **proyectos_sidebar.dart**
+   - Conectar a `lastProyectoProvider`
+   - Leer último proyecto: `ref.watch(lastProyectoProvider)`
    - Botón "Proyecto Activo" navega a última ruta
    - Si null, mostrar disabled o default
 
 ---
 
-### Paso 2: Phase 5 - Testing Suite
+### Paso 2: Fase 5 - Pruebaing Suite
 **Tiempo estimado: 4-6 horas**
 
-#### 5.1 Unit Tests - Domain Layer (5 tests)
-- `settings_entity_test.dart`
-- `load_settings_usecase_test.dart`
-- `save_settings_usecase_test.dart`
-- `update_language_usecase_test.dart`
-- `update_storage_path_usecase_test.dart` (incluir validación errors)
+#### 5.1 Unit Pruebas - Domain Layer (5 pruebas)
+- `settings_entity_prueba.dart`
+- `load_settings_usecase_prueba.dart`
+- `save_settings_usecase_prueba.dart`
+- `update_language_usecase_prueba.dart`
+- `update_storage_path_usecase_prueba.dart` (incluir validación errors)
 
-#### 5.2 Unit Tests - Data Layer (5 tests)
-- `settings_local_datasource_test.dart` (mock SharedPreferences)
-- `file_picker_datasource_test.dart` (mock FilePicker)
-- `last_project_local_datasource_test.dart`
-- `settings_repository_impl_test.dart`
-- `last_project_repository_impl_test.dart`
+#### 5.2 Unit Pruebas - Data Layer (5 pruebas)
+- `settings_local_datasource_prueba.dart` (mock SharedPreferences)
+- `archivo_picker_datasource_prueba.dart` (mock ArchivoPicker)
+- `last_proyecto_local_datasource_prueba.dart`
+- `settings_repository_impl_prueba.dart`
+- `last_proyecto_repository_impl_prueba.dart`
 
-#### 5.3 Widget Tests - Settings UI (7 tests - T-3)
-- `profile_section_test.dart`
-- `storage_section_test.dart`
-- `appearance_section_test.dart`
-- `accessibility_section_test.dart`
-- `performance_section_test.dart`
-- `settings_screen_test.dart`
-- `language_selector_widget_test.dart`
+#### 5.3 Widget Pruebas - Settings UI (7 pruebas - T-3)
+- `proarchivo_section_prueba.dart`
+- `storage_section_prueba.dart`
+- `appearance_section_prueba.dart`
+- `accessibility_section_prueba.dart`
+- `performance_section_prueba.dart`
+- `settings_screen_prueba.dart`
+- `language_selector_widget_prueba.dart`
 
-#### 5.4 Widget Test - GlobalSearchDialog (1 test - T-4)
-- `global_search_dialog_test.dart` (search + navigation)
+#### 5.4 Widget Prueba - GlobalSearchDialog (1 prueba - T-4)
+- `global_search_dialog_prueba.dart` (search + navigation)
 
-#### 5.5 Fix MarkdownPreview Tests (10 tests - T-2)
+#### 5.5 Fix MarkdownPreview Pruebas (10 pruebas - T-2)
 - Identificar causas de fallo
 - Refactorizar con `pumpAndSettle()`
 - Mock MarkdownController
 - Fix widget finders
 - Verificar todos pasen
 
-#### 5.6 Integration Tests (3 tests)
-- `settings_persistence_test.dart` (change → save → restart → verify)
-- `language_change_test.dart` (change → UI updates → persists)
-- `last_project_navigation_test.dart` (open project → sidebar updates → navigate)
+#### 5.6 Integración Pruebas (3 pruebas)
+- `settings_persistence_prueba.dart` (change → save → restart → verify)
+- `language_change_prueba.dart` (change → UI updates → persists)
+- `last_proyecto_navigation_prueba.dart` (abrir proyecto → sidebar updates → navigate)
 
-#### 5.7 Coverage Verification
-- Ejecutar `flutter test --coverage`
+#### 5.7 Coverage Verificación
+- Ejecutar `flutter prueba --coverage`
 - Generar reporte: `genhtml coverage/lcov.info -o coverage/html`
 - Verificar >90% en Settings feature
-- Identificar líneas sin cubrir y añadir tests
+- Identificar líneas sin cubrir y añadir pruebas
 
 ---
 
-### Paso 3: Phase 6 - Documentation & CI/CD
+### Paso 3: Fase 6 - Documentoation & CI/CD
 **Tiempo estimado: 1-2 horas**
 
 1. **DartDoc Generation**
@@ -209,25 +209,25 @@
    - Revisar claridad
 
 2. **Quality Gates**
-   - `dart format lib/ test/`
+   - `dart format lib/ prueba/`
    - `flutter analyze` (0 warnings)
    - Verificar SOLID principles
    - Security audit (no hardcoded paths, input sanitization)
 
-3. **Documentation Updates**
+3. **Documentoation Updates**
    - Actualizar PROGRESS.md (marcar todo ✅)
    - Verificar ARTIFACTS.md matches archivos reales
    - Actualizar doc/INDEX.md con referencia a HU-3.7
-   - Crear PR description
+   - Crear PR descripción
 
 4. **Pre-Push Validation**
    - Ejecutar `./scripts/PRE_PUSH_VALIDATION_MASTER.sh`
    - Fix any failures
 
 5. **Git & PR**
-   - Commit final: `feat(HU-3.7): complete settings UI with tests and documentation`
+   - Commit final: `feat(HU-3.7): complete settings UI with pruebas and documentoation`
    - Push: `git push origin feature/settings-ui-completion`
-   - Create PR → develop
+   - Crear PR → develop
 
 ---
 
@@ -235,11 +235,11 @@
 
 | Métrica | Estado Actual | Objetivo Final |
 |---------|---------------|----------------|
-| **Archivos Creados** | 19 nuevos | ~45 (con tests) |
+| **Archivos Creados** | 19 nuevos | ~45 (con pruebas) |
 | **Archivos Modificados** | 1 | ~8-10 |
 | **Líneas de Código** | +3107 | +5000-6000 |
-| **Tests Creados** | 0 | +18 tests |
-| **Tests Fixed** | 0/10 | 10/10 (MarkdownPreview) |
+| **Pruebas Creados** | 0 | +18 pruebas |
+| **Pruebas Fixed** | 0/10 | 10/10 (MarkdownPreview) |
 | **Cobertura** | N/A | >90% (Settings) |
 | **DartDoc** | Domain+Data ✅ | 100% (all layers) |
 | **TODOs Completados** | 1/4 (TODO-2) | 4/4 |
@@ -248,25 +248,25 @@
 
 ## 🎯 TODOs Tracker
 
-| TODO | Status | Descripción |
+| TODO | Estado | Descripción |
 |------|--------|-------------|
-| **T-2** | ⏳ 0/10 | Fix 10 failing MarkdownPreview tests |
-| **T-3** | ⏳ 0/7 | Create 7 Settings UI widget tests |
-| **T-4** | ⏳ 0/1 | Create GlobalSearchDialog widget test |
-| **TODO-2** | ✅ DONE | Implement file_picker in storage_section.dart:68 |
+| **T-2** | ⏳ 0/10 | Fix 10 failing MarkdownPreview pruebas |
+| **T-3** | ⏳ 0/7 | Crear 7 Settings UI widget pruebas |
+| **T-4** | ⏳ 0/1 | Crear GlobalSearchDialog widget prueba |
+| **TODO-2** | ✅ DONE | Implement archivo_picker in storage_section.dart:68 |
 
 ---
 
 ## 🚀 Próximos Pasos Inmediatos
 
 1. ✅ Commit progreso actual y crear WORKFLOW_MASTER_DEFINITION.md (DONE - e08a70d + workflow)
-2. ⏳ Modificar widgets de Settings (profile, appearance, accessibility, performance)
+2. ⏳ Modificar widgets de Settings (proarchivo, appearance, accessibility, performance)
 3. ⏳ Añadir language_selector a appearance_section
 4. ⏳ Implementar navegación en global_search_dialog
-5. ⏳ Implementar último proyecto en projects_sidebar
+5. ⏳ Implementar último proyecto en proyectos_sidebar
 6. ⏳ Ejecutar `flutter analyze` y verificar 0 warnings
-7. ⏳ Crear suite completa de tests (Phase 5)
-8. ⏳ Fix 10 MarkdownPreview tests
+7. ⏳ Crear suite completa de pruebas (Fase 5)
+8. ⏳ Fix 10 MarkdownPreview pruebas
 9. ⏳ Verificar cobertura >90%
 10. ⏳ Ejecutar PRE_PUSH_VALIDATION_MASTER.sh
 11. ⏳ Push y crear PR
@@ -276,7 +276,7 @@
 ## 🔍 Notas Técnicas
 
 ### Arquitectura Implementada
-- ✅ Clean Architecture (Domain → Data → Presentation)
+- ✅ Clean Architecture (Domain → Data → Presentación)
 - ✅ SOLID Principles
 - ✅ Dependency Injection (Riverpod)
 - ✅ Immutable Entities
@@ -287,7 +287,7 @@
 - Flutter 3.38.0+
 - Dart 3.10.8+
 - Riverpod 3.2.1
-- file_picker 10.3.10
+- archivo_picker 10.3.10
 - shared_preferences 2.5.4
 
 ### SharedPreferences Keys Namespace
@@ -318,4 +318,4 @@ lastProject.path -> String path del último proyecto
 
 **Última Actualización:** 11/02/2026 - Commit e08a70d
 **Responsable:** ArchitectZero
-**Estado:** 🚧 Phase 4 en progreso (60% completado)
+**Estado:** 🚧 Fase 4 en progreso (60% completado)

@@ -1,4 +1,4 @@
-# HU-3.3: Widget Integration Verification
+# HU-3.3: Widget Integración Verificación
 
 > **Fecha:** 6 de febrero de 2026
 > **Estado:** ✅ **WIDGETS CONECTADOS E INTEGRADOS**
@@ -25,7 +25,7 @@ Se han conectado exitosamente los tres widgets creados en HU-3.3 a sus correspon
 |-----------|--------|-----------|
 | **ChatScreen** | Creado | `src/client/lib/features/chat/presentation/screens/chat_screen.dart` |
 | **Router** | Actualizado | `src/client/lib/core/router/app_router.dart` |
-| **ProjectShellScreen** | Actualizado | `src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart` |
+| **ProyectoShellScreen** | Actualizado | `src/client/lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart` |
 
 ---
 
@@ -89,7 +89,7 @@ GoRouter createAppRouter() => GoRouter(
 
 ### 🎯 Acceso a ChatScreen
 
-**Desde ProjectShellScreen:**
+**Desde ProyectoShellScreen:**
 ```dart
 // En el AppBar se agregó un botón de Chat
 IconButton(
@@ -101,8 +101,8 @@ IconButton(
 ),
 ```
 
-**Resultado Visual:**
-- Botón de chat en la barra superior del ProjectShell
+**Resultadoado Visual:**
+- Botón de chat en la barra superior del ProyectoShell
 - Click abre la pantalla de chat con transición suave
 - SnackBar confirma la navegación
 
@@ -119,7 +119,7 @@ IconButton(
 - Diseño diferenciado por color según el rol
 - Timestamps en cada mensaje
 - Selectable text para copiar
-- Tema oscuro GitHub-style
+- Tema oscuro GitHub-estilo
 
 **Integración en ChatScreen:**
 ```dart
@@ -140,9 +140,9 @@ MessageBubbleWidget(
 **Ubicación:** `src/client/lib/features/chat/presentation/widgets/streaming_indicator_widget.dart`
 
 **Características:**
-- Muestra progreso de generación de documentos
+- Muestra progreso de generación de documentoos
 - Animación suave de barra de progreso
-- Contador de documentos (X/25)
+- Contador de documentoos (X/25)
 - Porcentaje en tiempo real
 
 **Integración en ChatScreen:**
@@ -170,7 +170,7 @@ if (chatState.isStreaming)
 **Ubicación:** `src/client/lib/features/chat/presentation/widgets/proposal_card_widget.dart`
 
 **Características:**
-- Muestra propuestas de documentos generadas
+- Muestra propuestas de documentoos generadas
 - Vista previa de contenido con scroll
 - Botones de acción: Aceptar, Rechazar, Refinar
 - Botón copiar con feedback visual
@@ -211,13 +211,13 @@ flutter run -d linux
 
 ### 🧪 Pruebas Manuales
 
-#### Test 1: Navegación a ChatScreen
-1. Ejecutar: `flutter run -d linux`
+#### Prueba 1: Navegación a ChatScreen
+1. Ejecutar: `flutter ejecutar -d linux`
 2. Buscar el botón de chat (ícono de chat) en la AppBar
 3. Clickear el botón
-4. **Resultado esperado:** La pantalla cambia a ChatScreen
+4. **Resultadoado esperado:** La pantalla cambia a ChatScreen
 
-#### Test 2: Elementos Visibles en ChatScreen
+#### Prueba 2: Elementos Visibles en ChatScreen
 1. **AppBar:** Título "SoftArchitect AI - Chat"
 2. **Empty State:** Mensaje de bienvenida cuando no hay mensajes
 3. **Input Area:** Campo de texto + botón enviar en la parte inferior
@@ -225,26 +225,26 @@ flutter run -d linux
    - Campo deshabilitado cuando `isStreaming` es true
    - Spinner de carga en el campo cuando se procesa
 
-#### Test 3: Enviar Mensaje (Mock)
+#### Prueba 3: Enviar Mensaje (Mock)
 1. Escribir un mensaje en el input
 2. Presionar el botón enviar o Enter
-3. **Resultado esperado:**
+3. **Resultadoado esperado:**
    - El mensaje aparece como MessageBubbleWidget
    - Input se limpia
    - Mensaje alineado a la derecha (usuario)
 
-#### Test 4: Simulación de Streaming
+#### Prueba 4: Simulación de Streaming
 1. Enviar mensaje (se simula con ChatNotifier)
-2. **Resultado esperado:**
+2. **Resultadoado esperado:**
    - Botón enviar se deshabilita
    - Spinner aparece en el campo
    - StreamingIndicatorWidget se muestra (si `isStreaming` es true)
    - Respuesta del asistente aparece a la izquierda
 
-#### Test 5: Volver a ProjectShell
+#### Prueba 5: Volver a ProyectoShell
 1. Desde ChatScreen, usar navegador atrás o el router
-2. Cambia de ruta a `/project-shell`
-3. **Resultado esperado:** Vuelve a ProjectShellScreen
+2. Cambia de ruta a `/proyecto-shell`
+3. **Resultadoado esperado:** Vuelve a ProyectoShellScreen
 
 ---
 
@@ -266,7 +266,7 @@ $ git log --oneline | head -1
 
 ### 📋 Próximas Mejoras (Fase 7+)
 
-1. **ProposalCardWidget Integration**
+1. **ProposalCardWidget Integración**
    - Conectar con lista de propuestas en ChatState
    - Implementar callbacks (onValidate, onRefine)
    - Mostrar propuestas en la pantalla
@@ -276,7 +276,7 @@ $ git log --oneline | head -1
    - Implementar método `rejectProposal()`
    - Guardar propuestas en persistencia
 
-3. **Real Backend Integration**
+3. **Real Backend Integración**
    - Conectar con Python RAG service
    - Implementar streaming real del backend
    - Persistencia de conversaciones
@@ -287,10 +287,10 @@ $ git log --oneline | head -1
    - Reacciones y menús contextuales
    - Búsqueda en historial de chat
 
-5. **Testing**
-   - E2E tests de navegación
-   - Widget tests de interacción
-   - Integration tests con notifier completo
+5. **Pruebaing**
+   - E2E pruebas de navegación
+   - Widget pruebas de interacción
+   - Integración pruebas con notifier completo
 
 ---
 
@@ -301,7 +301,7 @@ $ git log --oneline | head -1
 
 ### Modificados
 - ✅ `src/client/lib/core/router/app_router.dart` (+4 líneas)
-- ✅ `src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart` (+19 líneas)
+- ✅ `src/client/lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart` (+19 líneas)
 
 ### Total
 - **Líneas agregadas:** 213
@@ -315,11 +315,11 @@ $ git log --oneline | head -1
 Los widgets de presentación creados en HU-3.3 están ahora:
 - ✅ Integrados en el ChatScreen
 - ✅ Conectados a la navegación de la app
-- ✅ Accesibles desde el ProjectShellScreen
+- ✅ Accesibles desde el ProyectoShellScreen
 - ✅ Compilable sin errores
 - ✅ Listos para pruebas manuales
 
-**Próximo paso:** Ejecutar `flutter run -d linux` y verificar la interfaz visualmente.
+**Próximo paso:** Ejecutar `flutter ejecutar -d linux` y verificar la interfaz visualmente.
 
 ---
 

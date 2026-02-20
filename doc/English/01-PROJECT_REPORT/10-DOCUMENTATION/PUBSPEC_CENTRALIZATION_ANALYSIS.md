@@ -1,4 +1,4 @@
-# 📦 Análisis de Centralización de pubspec.yaml
+# 📦 Analysis de Centralización de pubspec.yaml
 
 **Fecha:** 2026-02-11
 **Objetivo:** Decidir estrategia de centralización de dependencias Flutter
@@ -18,7 +18,7 @@
    - **Propósito:** Test suite con dependency a client
    - **Dependencies:** flutter, sqflite, riverpod, shared_preferences, softarchitect_ai (path: ../src/client), mockito, flutter_markdown_plus, web_socket_channel
    - **Dependency override:** softarchitect_ai: path: ../src/client
-   - **Uso:** Ejecutar tests con `cd tests && flutter test client/`
+   - **Uso:** Execute tests con `cd tests && flutter test client/`
 
 3. **src/client/ (pubspec.yaml)**
    - **Propósito:** Flutter app principal
@@ -27,7 +27,7 @@
 
 ---
 
-## 📊 Análisis de Dependencias Compartidas
+## 📊 Analysis de Dependencias Compartidas
 
 | Paquete | Raíz | Tests | Client | Versión Sincronizada? |
 |---------|------|-------|--------|------------------------|
@@ -44,8 +44,8 @@
 
 1. **Redundancia:** pubspec.yaml de raíz contiene dependencias duplicadas de tests/client
 2. **Desincronización:** flutter_highlighter solo en raíz y client, falta en tests
-3. **Mantenimiento:** 3 archivos pubspec.yaml para actualizar manualmente
-4. **Confusión:** No está claro qué pubspec.yaml usar al ejecutar tests
+3. **Mantenimiento:** 3 files pubspec.yaml para actualizar manualmente
+4. **Confusión:** No está claro qué pubspec.yaml usar al execute tests
 
 ---
 
@@ -127,7 +127,7 @@
 **Beneficios:**
 - ✅ Separación clara de responsabilidades
 - ✅ Tests pueden importar código de client sin duplicar dependencias
-- ✅ CI/CD puede ejecutar tests desde raíz
+- ✅ CI/CD puede execute tests desde raíz
 - ✅ Evita dependency hell en monorepo
 
 ---
@@ -147,11 +147,11 @@ cd src/client && flutter run -d linux
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
 1. ✅ Limpiar pubspec.yaml de raíz (solo SDK)
 2. ✅ Verificar versiones en tests/pubspec.yaml y src/client/pubspec.yaml
 3. ✅ Actualizar dependencias desincronizadas
-4. ✅ Ejecutar `flutter pub get` en cada directorio
+4. ✅ Execute `flutter pub get` en cada directorio
 5. ✅ Validar que tests sigan funcionando
 6. ✅ Commitear cambios

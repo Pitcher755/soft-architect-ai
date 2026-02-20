@@ -46,9 +46,9 @@ find . -name "mock_data.dart" -type f
 
 El sistema debe usar `mock://` para identificar rutas virtuales. Debe haber exactamente:
 
-- **3 detecciones en FileTreeWidget** (para mostrar árbol)
-- **3 detecciones en ProjectShellScreen** (para leer archivo)
-- **1 registro en MockProjectsData** (la ruta de la guía)
+- **3 detecciones en ArchivoTreeWidget** (para mostrar árbol)
+- **3 detecciones en ProyectoShellScreen** (para leer archivo)
+- **1 registro en MockProyectosData** (la ruta de la guía)
 - **Total: 6-7 matches**
 
 ```bash
@@ -58,7 +58,7 @@ grep -r "mock://" --include="*.dart" src/client/
 # Resultado esperado: ~6-7 matches
 ```
 
-### Buscar Getter `phase` en Project
+### Buscar Getter `fase` en Proyecto
 
 ```dart
 // Debe existir en project.dart
@@ -74,7 +74,7 @@ grep -n "String get phase" src/client/lib/features/project_shell/domain/entities
 # Resultado: Debe encontrar 1 match
 ```
 
-### Buscar `buildHybridProjectsList()`
+### Buscar `buildHybridProyectosList()`
 
 ```dart
 // Debe existir en projects_provider.dart
@@ -95,7 +95,7 @@ grep -n "buildHybridProjectsList" src/client/lib/features/project_shell/presenta
 # Resultado: Debe encontrar 1 match (llamada)
 ```
 
-### Buscar `guideRootNode` y `guideFileContents`
+### Buscar `guideRootNode` y `guideArchivoContents`
 
 ```bash
 # Deben estar en mock_data.dart
@@ -108,25 +108,25 @@ grep -n "guideRootNode\|guideFileContents" src/client/lib/features/project_shell
 
 ## 3️⃣ Verificación de Imports
 
-### ProjectWorkspaceScreen debe importar
+### ProyectoWorkspaceScreen debe importar
 
 ```dart
 import '../providers/projects_provider.dart';  // ✅ DEBE ESTAR
 ```
 
-### FileTreeWidget debe importar
+### ArchivoTreeWidget debe importar
 
 ```dart
 import '../../data/mock_data.dart';  // ✅ DEBE ESTAR
 ```
 
-### ProjectShellScreen debe importar
+### ProyectoShellScreen debe importar
 
 ```dart
 import '../../data/mock_data.dart';  // ✅ DEBE ESTAR
 ```
 
-### ProjectListView debe importar
+### ProyectoListView debe importar
 
 ```dart
 import '../../domain/entities/project.dart';  // ✅ DEBE ESTAR (Project entity)
@@ -154,11 +154,11 @@ flutter analyze
 
 ### Errores Comunes (Y Cómo Fijarlos)
 
-#### Error: "The operator '[]' isn't defined for the type 'Project'"
+#### Error: "The operator '[]' isn't defined for the type 'Proyecto'"
 
-**Significa:** Código intenta usar `project['name']` en lugar de `project.name`
+**Significa:** Código intenta usar `proyecto['name']` en lugar de `proyecto.name`
 
-**Ubicación probable:** GridView.builder en project_workspace_screen.dart
+**Ubicación probable:** GridView.builder en proyecto_workspace_screen.dart
 
 **Cómo Fijar:**
 ```dart
@@ -169,11 +169,11 @@ name: project['name'] as String,
 name: project.name,
 ```
 
-#### Error: "The getter 'phase' isn't defined for the type 'Project'"
+#### Error: "The getter 'fase' isn't defined for the type 'Proyecto'"
 
-**Significa:** No hay getter `phase` en la entidad Project
+**Significa:** No hay getter `fase` en la entidad Proyecto
 
-**Ubicación probable:** project.dart
+**Ubicación probable:** proyecto.dart
 
 **Cómo Fijar:**
 ```dart
@@ -183,11 +183,11 @@ String get phase {
 }
 ```
 
-#### Error: "The method '_getPhaseColor' isn't defined"
+#### Error: "The method '_getFaseColor' isn't defined"
 
 **Significa:** Falta el método helper
 
-**Ubicación probable:** project_workspace_screen.dart
+**Ubicación probable:** proyecto_workspace_screen.dart
 
 **Cómo Fijar:**
 ```dart
@@ -202,9 +202,9 @@ Color _getPhaseColor(String phase) {
 
 ---
 
-## 5️⃣ Verificación Funcional (Manual Testing)
+## 5️⃣ Verificación Funcional (Manual Pruebaing)
 
-### Test 1: Dashboard Muestra Guía
+### Prueba 1: Dashboard Muestra Guía
 
 ```
 1. Abrir app
@@ -214,7 +214,7 @@ Color _getPhaseColor(String phase) {
 5. VERIFICAR: Ordenada junto con otros proyectos
 ```
 
-### Test 2: Navegación a Guía
+### Prueba 2: Navegación a Guía
 
 ```
 1. Hacer click en "Guía SoftArchitect"
@@ -225,7 +225,7 @@ Color _getPhaseColor(String phase) {
    - features/Chat-IA.md (u otros)
 ```
 
-### Test 3: Leer Contenido de Guía
+### Prueba 3: Leer Contenido de Guía
 
 ```
 1. Estando en la guía, hacer click en "00-Bienvenido.md"
@@ -234,7 +234,7 @@ Color _getPhaseColor(String phase) {
 4. VERIFICAR: Formatea correctamente (headers, bullets, etc.)
 ```
 
-### Test 4: Navegar Entre Archivos Mock
+### Prueba 4: Navegar Entre Archivos Mock
 
 ```
 1. Hacer click en "features/" para expandir
@@ -244,7 +244,7 @@ Color _getPhaseColor(String phase) {
 5. VERIFICAR: Panel muestra contenido diferente
 ```
 
-### Test 5: Crear Proyecto Real
+### Prueba 5: Crear Proyecto Real
 
 ```
 1. Hacer click en "+Nuevo Proyecto"
@@ -253,7 +253,7 @@ Color _getPhaseColor(String phase) {
 4. VERIFICAR: Aparece junto a guía en la lista
 ```
 
-### Test 6: Navegar Proyecto Real
+### Prueba 6: Navegar Proyecto Real
 
 ```
 1. Hacer click en proyecto real
@@ -263,7 +263,7 @@ Color _getPhaseColor(String phase) {
 5. VERIFICAR: Contenido real aparece en panel
 ```
 
-### Test 7: Verificar Performance
+### Prueba 7: Verificar Performance
 
 ```
 1. Ir a dashboard
@@ -278,7 +278,7 @@ Color _getPhaseColor(String phase) {
 
 ## 6️⃣ Verificación de Estructura de Datos
 
-### MockProjectData debe contener
+### MockProyectoData debe contener
 
 ```dart
 // 1. Debe tener guideRootNode (const FileNode)
@@ -299,7 +299,7 @@ static const Map<String, String> guideFileContents = {
 };
 ```
 
-### getMockProjectsData() debe retornar
+### getMockProyectosData() debe retornar
 
 ```dart
 List<Map<String, dynamic>> getMockProjectsData() => [
@@ -316,7 +316,7 @@ List<Map<String, dynamic>> getMockProjectsData() => [
 
 ## 7️⃣ Verificación de Integración
 
-### buildHybridProjectsList() debe
+### buildHybridProyectosList() debe
 
 ```
 ✅ Recibir List<Project> (proyectos reales)
@@ -326,7 +326,7 @@ List<Map<String, dynamic>> getMockProjectsData() => [
 ✅ Retornar List<Project> (híbrido)
 ```
 
-### FileTreeWidget debe
+### ArchivoTreeWidget debe
 
 ```
 ✅ Recibir projectPath como parámetro
@@ -336,7 +336,7 @@ List<Map<String, dynamic>> getMockProjectsData() => [
 ✅ Mostrar árbol en ambos casos
 ```
 
-### ProjectShellScreen debe
+### ProyectoShellScreen debe
 
 ```
 ✅ Recibir path como query parameter
@@ -447,6 +447,6 @@ R: Sí, agregar más guías es trivial (copiar/pegar en mock_data.dart)
 Si encuentras problemas:
 
 1. Ejecutar `flutter analyze` para ver errores de compilación
-2. Ejecutar tests unitarios para verificar lógica
+2. Ejecutar pruebas unitarios para verificar lógica
 3. Revisar esta guía y el archivo HYBRID_SYSTEM_IMPLEMENTATION.md
 4. Contactar al team de arquitectura

@@ -2,7 +2,7 @@
 
 **Fecha:** 6 de febrero de 2026
 **Rama:** feature/chat-sequential-docs
-**HU:** HU-3.3 - Chat Secuencial con Generación de Documentos Guiada por RAG
+**HU:** HU-3.3 - Chat Secuencial con Generación de Documentoos Guiada por RAG
 
 ---
 
@@ -12,18 +12,18 @@
 - [x] ProposalCardWidget (100+ líneas, logística de propuestas)
 - [x] StreamingIndicatorWidget (animación typing)
 - [x] MessageBubbleWidget (renderización de mensajes)
-- [x] 20/20 Widget Tests PASSING
+- [x] 20/20 Widget Pruebas PASSING
 - [x] Color centralization (AppColors)
 - [x] API modernization (withValues vs withOpacity)
 - [x] Flutter analyze: 0 issues
 
-### FASE 5: Integration the Gate (TDD RED → GREEN)
+### FASE 5: Integración the Gate (TDD RED → GREEN)
 - [x] ChatNotifier (351 líneas, stream-to-save workflow)
-- [x] FileSystemService (157 líneas, CRUD + persistence)
-- [x] Mock Services (167 líneas, testing infrastructure)
-- [x] Integration test scaffold (2 test cases)
-- [x] Project path tracking
-- [x] Document-to-folder mapping (25 documents)
+- [x] ArchivoSystemService (157 líneas, CRUD + persistence)
+- [x] Mock Services (167 líneas, pruebaing infrastructure)
+- [x] Integración prueba scaffold (2 prueba cases)
+- [x] Proyecto path tracking
+- [x] Documento-to-carpeta mapping (25 documentos)
 - [x] Auto-advance logic
 - [x] Error recovery
 
@@ -34,7 +34,7 @@
 - [x] Definition of Done (34 items)
 - [x] Acceptance Criteria (P1-P8, N1-N3)
 - [x] Troubleshooting guide (6 scenarios)
-- [x] Performance metrics documented
+- [x] Performance metrics documentoed
 
 ---
 
@@ -42,12 +42,12 @@
 
 | Requisito | Componente | Estado | Evidencia |
 |-----------|-----------|--------|-----------|
-| Chat input | MessageInputField | ✅ | Widget + test |
-| Button disable si vacío | SendButton state | ✅ | Logic in ChatNotifier |
-| Streaming <200ms TTFT | SSE mock | ✅ | Documented metric |
+| Chat input | MessageInputField | ✅ | Widget + prueba |
+| Botón disable si vacío | SendBotón state | ✅ | Logic in ChatNotifier |
+| Streaming <200ms TTFT | SSE mock | ✅ | Documentoed metric |
 | ProposalCard render | Widget + Markdown | ✅ | Golden Kit |
-| Copy button código | ProposalCardWidget | ✅ | Button in code blocks |
-| Validar y guardar | FileSystemService | ✅ | CRUD operations |
+| Copy botón código | ProposalCardWidget | ✅ | Botón in code blocks |
+| Validar y guardar | ArchivoSystemService | ✅ | CRUD operations |
 | Progress bar Doc N/25 | ChatState | ✅ | State management |
 | Flujo secuencial | ChatNotifier logic | ✅ | Auto-advance |
 | RAG templates | Knowledge base | ✅ | 25 doc mapping |
@@ -57,17 +57,17 @@
 
 ## 📊 REQUISITOS NO FUNCIONALES VERIFICADOS
 
-| Requisito | Status | Métrica |
+| Requisito | Estado | Métrica |
 |-----------|--------|---------|
 | Code Quality | ✅ PASS | 0 linting issues (Ruff) |
 | Type Safety | ✅ PASS | Pyright clean |
-| Documentation | ✅ PASS | 10 docs en HU-3.3 |
+| Documentoation | ✅ PASS | 10 docs en HU-3.3 |
 | Git Hygiene | ✅ PASS | 4 commits profesionales |
 | Pre-commit Hooks | ✅ PASS | Black, Ruff, Pyright, trailing-ws |
-| Clean Architecture | ✅ PASS | Domain/Data/Presentation layers |
+| Clean Architecture | ✅ PASS | Domain/Data/Presentación layers |
 | TDD Compliance | ✅ PASS | RED → GREEN → REFACTOR |
 | Performance | ⏳ READY | Métricas definidas, awaiting impl |
-| Offline-First | ✅ PASS | Mock services + file storage |
+| Offline-First | ✅ PASS | Mock services + archivo storage |
 | Data Privacy | ✅ PASS | Local persistence, no cloud |
 
 ---
@@ -78,14 +78,14 @@
 - [x] P1: Chat genera Doc 1
 - [x] P2: Propuesta temporal (no persiste sin "Validar")
 - [x] P3: Botón enviar deshabilitado si vacío
-- [x] P4: Copy button en código
-- [x] P5: FileSystemService integration
-- [x] P6: Streaming documented
+- [x] P4: Copy botón en código
+- [x] P5: ArchivoSystemService integration
+- [x] P6: Streaming documentoed
 - [x] P7: Progress bar actualiza
 - [x] P8: Flujo secuencial
 
 ### ❌ Negativos (N1-N3: MUST NOT HAVE)
-- [x] N1: Documentos NO se guardan sin "Validar"
+- [x] N1: Documentoos NO se guardan sin "Validar"
 - [x] N2: NO hay stack traces en UI
 - [x] N3: NO crashes con errores de red
 
@@ -145,7 +145,7 @@ src/client/lib/
     └── theme/app_colors.dart ✅
 ```
 
-### Tests
+### Pruebas
 ```
 tests/
 ├── test/
@@ -165,17 +165,17 @@ tests/
 
 ## 📈 RESUMEN FINAL
 
-**Status Global:** 🟡 85% COMPLETO
+**Estado Global:** 🟡 85% COMPLETO
 
-- ✅ FASE 4: 100% (Widgets + Tests)
-- ✅ FASE 5: 100% (ChatNotifier + FileSystemService)
-- ✅ FASE 6: 100% (Documentación + Script)
-- ⏳ Backend API: READY (awaiting FASE 6 implementation)
-- ⏳ HTTP Client: READY (awaiting FASE 6 implementation)
-- ⏳ Coverage Tests: PENDING (need execution)
+- ✅ FASE 4: 100% (Widgets + Pruebas)
+- ✅ FASE 5: 100% (ChatNotifier + ArchivoSystemService)
+- ✅ FASE 6: 100% (Documentoación + Script)
+- ⏳ Backend API: READY (awaiting FASE 6 implementación)
+- ⏳ HTTP Client: READY (awaiting FASE 6 implementación)
+- ⏳ Coverage Pruebas: PENDING (need execution)
 
-**Next Steps:**
-1. Ejecutar test suite completa
+**Siguiente Steps:**
+1. Ejecutar prueba suite completa
 2. Medir coverage (Backend + Frontend)
-3. Mejorar run_tests.sh
-4. Ejecutar `flutter run -d linux`
+3. Mejorar ejecutar_pruebas.sh
+4. Ejecutar `flutter ejecutar -d linux`

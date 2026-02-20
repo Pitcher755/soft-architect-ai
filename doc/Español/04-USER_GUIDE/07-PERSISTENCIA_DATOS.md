@@ -53,7 +53,7 @@ soft-architect-ai/
 
 ## 🏗️ Estructura de Archivos
 
-### 1. Proyectos (`data/projects/`)
+### 1. Proyectos (`data/proyectos/`)
 
 Cada proyecto tiene esta estructura:
 
@@ -365,7 +365,7 @@ python scripts/export_to_confluence.py \
 
 #### A PDF
 
-**Exportar documentación completa:**
+**Exportar documentoación completa:**
 ```bash
 # Requiere Pandoc
 pandoc data/projects/academic-blog/**/*.md \
@@ -435,7 +435,7 @@ icacls "data" /reset /t
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documentoos Relacionados
 
 - [Instalación](02-INSTALLATION.md) - Configuración inicial
 - [Solución de Problemas](08-SOLUCIÓN_DE_PROBLEMAS.md) - Errores comunes

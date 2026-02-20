@@ -1,32 +1,32 @@
-# 🔴 PHASE 3: Frontend State Machine - TDD RED Checkpoint
+# 🔴 FASE 3: Frontend State Machine - TDD RED Checkpoint
 
-> **Estado:** ✅ **RED PHASE COMPLETE**
+> **Estado:** ✅ **FASE ROJA COMPLETE**
 > **Fecha:** 2025-01-28
-> **Objetivo:** Verificar que estructura de tests y domain layer está lista para TDD RED
+> **Objetivo:** Verificar que estructura de pruebas y domain layer está lista para TDD RED
 
 ---
 
 ## 📋 Verificación de Completeness
 
-### ✅ Test Files Creados
+### ✅ Prueba Archivos Creados
 
-| Test File | Tests | Status |
+| Prueba Archivo | Pruebas | Estado |
 |-----------|-------|--------|
-| `chat_message_test.dart` | 5 test cases | ✅ PASSING |
-| `document_proposal_test.dart` | 3 test cases | ✅ PASSING |
-| `chat_notifier_test.dart` | 6 test cases (skipped) | ✅ COMPILED |
-| **Total** | **14 test cases** | **✅ READY** |
+| `chat_message_prueba.dart` | 5 prueba cases | ✅ PASSING |
+| `documento_proposal_prueba.dart` | 3 prueba cases | ✅ PASSING |
+| `chat_notifier_prueba.dart` | 6 prueba cases (skipped) | ✅ COMPILED |
+| **Total** | **14 prueba cases** | **✅ READY** |
 
 ### ✅ Domain Layer Entities
 
 | Entidad | Métodos | Getters | Estado |
 |---------|---------|---------|--------|
 | `ChatMessage` | copyWith() | isUser, isAssistant, isComplete | ✅ COMPLETE |
-| `DocumentProposal` | copyWith(), extractSections() | isPending, isValidated, isRejected | ✅ COMPLETE |
+| `DocumentoProposal` | copyWith(), extractSections() | isPendiente, isValidated, isRejected | ✅ COMPLETE |
 | `MessageRole` enum | - | user, assistant, system | ✅ COMPLETE |
 | `ValidationState` enum | - | pending, validated, rejected | ✅ COMPLETE |
 
-### ✅ Presentation Layer (State Management)
+### ✅ Presentación Layer (State Management)
 
 | Clase | Tipo | Responsabilidad | Estado |
 |-------|------|-----------------|--------|
@@ -37,18 +37,18 @@
 
 | Interfaz | Métodos | Estado |
 |----------|---------|--------|
-| `ChatRepository` | generateDocument(), saveProposal(), getChatHistory(), clearChatHistory() | ✅ COMPLETE |
+| `ChatRepository` | generateDocumento(), saveProposal(), getChatHistory(), clearChatHistory() | ✅ COMPLETE |
 
 ---
 
-## 🧪 Test Execution Results
+## 🧪 Prueba Execution Resultados
 
 ### Comando Ejecutado
 ```bash
 cd tests && flutter test test/unit/features/chat/ --coverage
 ```
 
-### Resultado
+### Resultadoado
 ```
 ✅ All tests passed!
 Total: 14 test cases
@@ -56,7 +56,7 @@ Total: 14 test cases
 - 6 test cases SKIPPED (ChatNotifier - waiting for implementation)
 ```
 
-### Test Summary
+### Prueba Summary
 ```
 ChatMessage Entity Tests (5 tests):
 ✅ should create user message
@@ -108,9 +108,9 @@ src/client/lib/features/chat/
 
 ---
 
-## 🔄 State Machine Flow (Documented)
+## 🔄 State Machine Flow (Documentoed)
 
-### Sequential Document Generation (Doc 1 → 25)
+### Sequential Documento Generation (Doc 1 → 25)
 
 ```
 User Input
@@ -140,29 +140,29 @@ User Input
 
 ---
 
-## ✅ Red Phase Completion Criteria Met
+## ✅ Red Fase Completion Criteria Met
 
 ### Domain Layer
 - [x] `ChatMessage` entity with `MessageRole` enum
-- [x] `DocumentProposal` entity with `ValidationState` enum
+- [x] `DocumentoProposal` entity with `ValidationState` enum
 - [x] `ChatRepository` abstract interface
 - [x] `ChatState` immutable state class
-- [x] `ChatNotifier` StateNotifier implementation
+- [x] `ChatNotifier` StateNotifier implementación
 
-### Test Infrastructure
-- [x] Test files created with proper structure
-- [x] Entity tests passing (8/8)
-- [x] Notifier tests skipped and ready for implementation
+### Prueba Infraestructura
+- [x] Prueba archivos creard with proper structure
+- [x] Entity pruebas passing (8/8)
+- [x] Notifier pruebas skipped and preparado para implementación
 - [x] FakeChatRepository for dependency injection
 
 ### Compilation
-- [x] No compilation errors in test files
+- [x] No compilation errors in prueba archivos
 - [x] All imports resolved correctly
 - [x] Dart analyzer satisfied with type safety
 
 ---
 
-## 🚀 Next Steps: GREEN Phase
+## 🚀 Siguiente Steps: GREEN Fase
 
 ### 1. Implement ChatNotifier Full Logic
 ```dart
@@ -173,7 +173,7 @@ User Input
 - Error handling: Capture and display error messages
 ```
 
-### 2. Create ChatRepositoryImpl (Data Layer)
+### 2. Crear ChatRepositoryImpl (Data Layer)
 ```dart
 // Implement HTTP SSE client
 - Connect to Backend: POST /api/v1/chat/generate
@@ -181,7 +181,7 @@ User Input
 - Handle connection errors gracefully
 ```
 
-### 3. Implement ChatNotifier Tests
+### 3. Implement ChatNotifier Pruebas
 ```dart
 // Use FakeChatRepository to mock API responses
 - Enable skipped tests (remove skip: true)
@@ -189,10 +189,10 @@ User Input
 - Expected: All 14/14 tests PASSING (GREEN phase)
 ```
 
-### 4. UI Component Integration
-- `ProposalCard` widget for displaying document proposals
+### 4. UI Component Integración
+- `ProposalCard` widget for displaying documento proposals
 - `StreamingIndicator` for real-time feedback
-- `ProgressBar` for Doc X/25 status
+- `ProgressBar` for Doc X/25 estado
 
 ---
 
@@ -200,14 +200,14 @@ User Input
 
 | Métrica | Valor |
 |---------|-------|
-| Test Files | 3 |
-| Test Cases | 14 (8 passing, 6 pending) |
+| Prueba Archivos | 3 |
+| Prueba Cases | 14 (8 passing, 6 pending) |
 | Entity Classes | 2 |
 | Enums | 2 |
 | Interfaces | 1 |
 | State Notifiers | 1 |
-| Lines of Test Code | ~250 |
-| Lines of Implementation Code | ~450 |
+| Lines of Prueba Code | ~250 |
+| Lines of Implementación Code | ~450 |
 
 ---
 
@@ -223,10 +223,10 @@ User Input
 - ✅ Repository pattern for data abstraction
 - ✅ Entities with rich behavior (extractSections, copyWith)
 
-### 3. TDD Red Phase Strategy
-- ✅ Tests written BEFORE implementation
+### 3. TDD Red Fase Strategy
+- ✅ Pruebas written BEFORE implementación
 - ✅ Entities implement business rules (extractSections)
-- ✅ State machine documented in code comments
+- ✅ State machine documentoed in code comments
 
 ---
 
@@ -240,7 +240,7 @@ User Input
    - TODO: Specific exception types (ConnectionError, ValidationError)
    - TODO: Retry logic with exponential backoff
 
-3. **Data Persistence**: No repository implementation yet
+3. **Data Persistence**: No repository implementación yet
    - TODO: HTTP client with SSE support
    - TODO: Local caching for offline support
 
@@ -250,6 +250,6 @@ User Input
 
 **PHASE 3 TDD RED CHECKPOINT: ✅ PASSED**
 
-All domain layer entities, test infrastructure, and state management skeleton are in place and compiling. The test suite is ready to transition to GREEN phase by implementing the remaining logic in `ChatNotifier` and creating the `ChatRepositoryImpl` data layer.
+All domain layer entities, prueba infrastructure, and state management skeleton are in place and compiling. The prueba suite is ready to transition to GREEN fase by implementing the remaining logic in `ChatNotifier` and creating the `ChatRepositoryImpl` data layer.
 
-Ready for next sprint: **Implement GREEN phase (make tests pass)**
+Preparado para siguiente sprint: **Implement GREEN fase (make pruebas pass)**

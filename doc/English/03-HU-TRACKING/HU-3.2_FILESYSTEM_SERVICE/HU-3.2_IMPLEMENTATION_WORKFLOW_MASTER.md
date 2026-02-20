@@ -1,20 +1,20 @@
 # 🚀 HU-3.2: FileSystem Service - Master Implementation Workflow
 
-> **Estado:** 🔄 LISTO PARA EJECUTAR
-> **Fecha:** 05/02/2026
+> **Status:** 🔄 LISTO PARA EJECUTAR
+> **Date:** 05/02/2026
 > **Basado en:** AGENTS.md § 8 + TDD + Security by Design
 > **Objetivo:** Implementar el motor de I/O en Dart con seguridad absoluta ("Trust no path")
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-0. [Análisis de Requisitos & Arquitectura](#0️⃣-análisis-de-requisitos--arquitectura)
-1. [Fase 1: Seguridad y Validación (TDD RED)](#fase-1-seguridad-y-validación-tdd-red)
-2. [Fase 2: Core FileSystem Service (TDD GREEN)](#fase-2-core-filesystem-service-tdd-green)
-3. [Fase 3: Audit Logger & Persistencia (TDD GREEN)](#fase-3-audit-logger--persistencia-tdd-green)
-4. [Fase 4: Integración Riverpod & UI Bridge (TDD REFACTOR)](#fase-4-integración-riverpod--ui-bridge-tdd-refactor)
-5. [Fase 5: Testing E2E & Security Hardening](#fase-5-testing-e2e--security-hardening)
+0. [Analysis de Requisitos & Arquitectura](#0️⃣-analysis-de-requisitos--arquitectura)
+1. [Phase 1: Seguridad y Validación (TDD RED)](#phase-1-seguridad-y-validación-tdd-red)
+2. [Phase 2: Core FileSystem Service (TDD GREEN)](#phase-2-core-filesystem-service-tdd-green)
+3. [Phase 3: Audit Logger & Persistencia (TDD GREEN)](#phase-3-audit-logger--persistencia-tdd-green)
+4. [Phase 4: Integración Riverpod & UI Bridge (TDD REFACTOR)](#phase-4-integración-riverpod--ui-bridge-tdd-refactor)
+5. [Phase 5: Testing E2E & Security Hardening](#phase-5-testing-e2e--security-hardening)
 6. [Checklist de Aceptación](#checklist-de-aceptación)
 7. [Comandos de Referencia Rápida](#comandos-de-referencia-rápida)
 
@@ -25,7 +25,7 @@
 ## 0.1: Contexto de la HU-3.2
 
 **Historia de Usuario:**
-> "Como Frontend (Dart), quiero un FileSystemService que maneje la creación de carpetas y persistencia de documentos en el Host."
+> "Como Frontend (Dart), quiero un FileSystemService que maneje la creación de folders y persistencia de documents en el Host."
 
 **Filosofía:** **"Trust no path"** - Ninguna ruta puede ser confiable sin validación exhaustiva.
 
@@ -40,12 +40,12 @@
 
 | ID | Requisito | Prioridad |
 |----|-----------|-----------|
-| RF-1 | Crear estructura de directorios estándar (10-CONTEXT, 20-REQUIREMENTS, etc.) | 🔴 CRÍTICA |
+| RF-1 | Create estructura de directorios estándar (10-CONTEXT, 20-REQUIREMENTS, etc.) | 🔴 CRÍTICA |
 | RF-2 | Validar todas las rutas antes de cualquier operación I/O | 🔴 CRÍTICA |
-| RF-3 | Guardar archivos con contenido UTF-8 | 🔴 CRÍTICA |
+| RF-3 | Guardar files con contenido UTF-8 | 🔴 CRÍTICA |
 | RF-4 | Registrar cada operación en `.audit.log` con timestamp | 🟡 ALTA |
 | RF-5 | Detectar y rechazar path traversal attacks (`../`, rutas absolutas) | 🔴 CRÍTICA |
-| RF-6 | Operaciones idempotentes (no fallar si carpeta existe) | 🟡 ALTA |
+| RF-6 | Operaciones idempotentes (no fallar si folder existe) | 🟡 ALTA |
 | RF-7 | Manejo de errores de disco (espacio, permisos) | 🟡 ALTA |
 
 ## 0.3: Requisitos No Funcionales (RNF)
@@ -54,7 +54,7 @@
 |----|-----|--------|
 | RNF-1 | Coverage de tests unitarios (seguridad) | ≥95% |
 | RNF-2 | Coverage de tests de integración | ≥85% |
-| RNF-3 | Latencia de creación de proyecto | <1s |
+| RNF-3 | Latencia de creación de project | <1s |
 | RNF-4 | Type Safety (Dart analyzer) | 0 errors |
 | RNF-5 | Seguridad: path traversal detection | 100% |
 | RNF-6 | Independencia del backend Python | 100% |
@@ -90,7 +90,7 @@
 
 ## 0.5: Estructura de Directorios Estándar
 
-**Estructura a crear automáticamente:**
+**Estructura a create automáticamente:**
 
 ```
 (Project Root)/
@@ -143,11 +143,11 @@
 - **Input Validation:** Todas las rutas pasan por `PathValidator` antes de cualquier operación.
 - **Path Normalization:** Usar `path.normalize()` para resolver `.`, `..`, `//`.
 - **Boundary Check:** Verificar con `path.isWithin(projectRoot, targetPath)`.
-- **Whitelist Approach:** Solo permitir rutas relativas dentro de carpetas conocidas.
+- **Whitelist Approach:** Solo permitir rutas relativas dentro de folders conocidas.
 
 ---
 
-# 🔴 FASE 1: Seguridad y Validación (TDD RED)
+# 🔴 PHASE 1: Seguridad y Validación (TDD RED)
 
 **Duración:** 1 día
 **Sprint:** 2.1
@@ -156,9 +156,9 @@
 
 ---
 
-## 1.1: Crear Estructura de Carpetas
+## 1.1: Create Estructura de Folders
 
-### Paso 1.1.1: Crear directorio base para HU-3.2
+### Paso 1.1.1: Create directorio base para HU-3.2
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client
@@ -176,7 +176,7 @@ mkdir -p lib/features/filesystem/presentation/providers
 mkdir -p lib/features/filesystem/core/constants
 ```
 
-### Paso 1.1.2: Crear estructura de tests centralizada
+### Paso 1.1.2: Create estructura de tests centralizada
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -201,13 +201,13 @@ tree -L 4 src/client/lib/features/filesystem/
 tree -L 4 tests/test/{unit,integration,e2e}/features/filesystem/
 ```
 
-✅ **Validación:** Todas las carpetas existen.
+✅ **Validación:** Todas las folders existen.
 
 ---
 
 ## 1.2: Definir Excepciones de Dominio (Domain Layer)
 
-### Paso 1.2.1: Crear excepciones base
+### Paso 1.2.1: Create excepciones base
 
 ```bash
 cat > src/client/lib/features/filesystem/domain/exceptions/filesystem_exceptions.dart << 'EOF'
@@ -319,11 +319,11 @@ class InvalidFileOperationException extends FileSystemException {
 EOF
 ```
 
-✅ **Validación:** Archivo creado con 5 excepciones documentadas.
+✅ **Validación:** File creado con 5 excepciones documentadas.
 
 ---
 
-## 1.3: Crear Tests de Seguridad (RED Phase)
+## 1.3: Create Tests de Seguridad (RED Phase)
 
 ### Paso 1.3.1: Test del PathValidator (Critical Security)
 
@@ -490,7 +490,7 @@ void main() {
 EOF
 ```
 
-### Paso 1.3.2: Ejecutar tests (RED phase - Expected to fail)
+### Paso 1.3.2: Execute tests (RED phase - Expected to fail)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -503,7 +503,7 @@ flutter test test/unit/features/filesystem/infrastructure/security/path_validato
 
 ---
 
-## 1.4: Commit Fase 1 (TDD RED)
+## 1.4: Commit Phase 1 (TDD RED)
 
 ```bash
 git add -A
@@ -527,11 +527,11 @@ Sprint: 2.1
 HU: 3.2"
 ```
 
-✅ **Validación Fase 1:** Seguridad definida, tests escritos, listos para implementar.
+✅ **Validación Phase 1:** Seguridad definida, tests escritos, ready for implementar.
 
 ---
 
-# 🟢 FASE 2: Core FileSystem Service (TDD GREEN)
+# 🟢 PHASE 2: Core FileSystem Service (TDD GREEN)
 
 **Duración:** 2 días
 **Sprint:** 2.2
@@ -542,7 +542,7 @@ HU: 3.2"
 
 ## 2.1: Implementar PathValidator (The Gatekeeper)
 
-### Paso 2.1.1: Crear implementación del PathValidator
+### Paso 2.1.1: Create implementation del PathValidator
 
 ```bash
 cat > src/client/lib/features/filesystem/infrastructure/security/path_validator.dart << 'EOF'
@@ -657,7 +657,7 @@ class PathValidator {
 EOF
 ```
 
-### Paso 2.1.2: Ejecutar tests de seguridad (GREEN phase)
+### Paso 2.1.2: Execute tests de seguridad (GREEN phase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -672,7 +672,7 @@ flutter test test/unit/features/filesystem/infrastructure/security/path_validato
 
 ## 2.2: Implementar FileSystemService (Domain Interface)
 
-### Paso 2.2.1: Crear interfaz abstracta (Domain Layer)
+### Paso 2.2.1: Create interfaz abstracta (Domain Layer)
 
 ```bash
 cat > src/client/lib/features/filesystem/domain/repositories/filesystem_repository.dart << 'EOF'
@@ -759,7 +759,7 @@ abstract class FileSystemRepository {
 EOF
 ```
 
-### Paso 2.2.2: Crear implementación concreta (Infrastructure Layer)
+### Paso 2.2.2: Create implementation concreta (Infrastructure Layer)
 
 ```bash
 cat > src/client/lib/features/filesystem/infrastructure/services/filesystem_service_impl.dart << 'EOF'
@@ -989,7 +989,7 @@ Ver [context/README.md](context/README.md) para la organización completa.
 EOF
 ```
 
-### Paso 2.2.3: Crear tests unitarios del servicio
+### Paso 2.2.3: Create tests unitarios del servicio
 
 ```bash
 cat > tests/test/unit/features/filesystem/infrastructure/services/filesystem_service_test.dart << 'EOF'
@@ -1186,7 +1186,7 @@ void main() {
 EOF
 ```
 
-### Paso 2.2.4: Ejecutar tests del servicio (GREEN phase)
+### Paso 2.2.4: Execute tests del servicio (GREEN phase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -1199,7 +1199,7 @@ flutter test test/unit/features/filesystem/ --verbose
 
 ---
 
-## 2.3: Commit Fase 2 (TDD GREEN)
+## 2.3: Commit Phase 2 (TDD GREEN)
 
 ```bash
 git add -A
@@ -1226,11 +1226,11 @@ Sprint: 2.2
 HU: 3.2"
 ```
 
-✅ **Validación Fase 2:** Core service implementado, seguridad funcional.
+✅ **Validación Phase 2:** Core service implementado, seguridad funcional.
 
 ---
 
-# 📋 FASE 3: Audit Logger & Persistencia (TDD GREEN)
+# 📋 PHASE 3: Audit Logger & Persistencia (TDD GREEN)
 
 **Duración:** 1 día
 **Sprint:** 2.3
@@ -1241,7 +1241,7 @@ HU: 3.2"
 
 ## 3.1: Implementar AuditLogger
 
-### Paso 3.1.1: Crear el logger de auditoría
+### Paso 3.1.1: Create el logger de auditoría
 
 ```bash
 cat > src/client/lib/features/filesystem/infrastructure/logging/audit_logger.dart << 'EOF'
@@ -1358,7 +1358,7 @@ flutter pub add intl
 # (Agregar import y llamadas a logger en los métodos saveFile, deleteFile, initProjectStructure)
 ```
 
-### Paso 3.1.3: Crear tests del AuditLogger
+### Paso 3.1.3: Create tests del AuditLogger
 
 ```bash
 cat > tests/test/unit/features/filesystem/infrastructure/logging/audit_logger_test.dart << 'EOF'
@@ -1469,7 +1469,7 @@ void main() {
 EOF
 ```
 
-### Paso 3.1.4: Ejecutar tests (GREEN phase)
+### Paso 3.1.4: Execute tests (GREEN phase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -1482,7 +1482,7 @@ flutter test test/unit/features/filesystem/infrastructure/logging/ --verbose
 
 ---
 
-## 3.2: Commit Fase 3 (Audit & Logging)
+## 3.2: Commit Phase 3 (Audit & Logging)
 
 ```bash
 git add -A
@@ -1505,11 +1505,11 @@ Sprint: 2.3
 HU: 3.2"
 ```
 
-✅ **Validación Fase 3:** Sistema de auditoría funcional.
+✅ **Validación Phase 3:** Sistema de auditoría funcional.
 
 ---
 
-# 🔗 FASE 4: Integración Riverpod & UI Bridge (TDD REFACTOR)
+# 🔗 PHASE 4: Integración Riverpod & UI Bridge (TDD REFACTOR)
 
 **Duración:** 1 día
 **Sprint:** 2.4
@@ -1518,9 +1518,9 @@ HU: 3.2"
 
 ---
 
-## 4.1: Crear Providers de Riverpod
+## 4.1: Create Providers de Riverpod
 
-### Paso 4.1.1: Crear providers para inyección de dependencias
+### Paso 4.1.1: Create providers para inyección de dependencias
 
 ```bash
 cat > src/client/lib/features/filesystem/presentation/providers/filesystem_providers.dart << 'EOF'
@@ -1575,7 +1575,7 @@ final filesystemErrorProvider = StateProvider<String?>((ref) => null);
 EOF
 ```
 
-### Paso 4.1.2: Crear helper para UI error handling
+### Paso 4.1.2: Create helper para UI error handling
 
 ```bash
 cat > src/client/lib/features/filesystem/presentation/helpers/error_messages.dart << 'EOF'
@@ -1618,7 +1618,7 @@ class FileSystemErrorMessages {
 EOF
 ```
 
-### Paso 4.1.3: Crear tests de integración (Riverpod + Service)
+### Paso 4.1.3: Create tests de integración (Riverpod + Service)
 
 ```bash
 cat > tests/test/integration/features/filesystem/filesystem_integration_test.dart << 'EOF'
@@ -1730,7 +1730,7 @@ void main() {
 EOF
 ```
 
-### Paso 4.1.4: Ejecutar tests de integración (GREEN phase)
+### Paso 4.1.4: Execute tests de integración (GREEN phase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -1743,7 +1743,7 @@ flutter test test/integration/features/filesystem/ --verbose
 
 ---
 
-## 4.2: Commit Fase 4 (Riverpod Integration)
+## 4.2: Commit Phase 4 (Riverpod Integration)
 
 ```bash
 git add -A
@@ -1771,11 +1771,11 @@ Sprint: 2.4
 HU: 3.2"
 ```
 
-✅ **Validación Fase 4:** Servicio integrado con Riverpod, listo para consumo UI.
+✅ **Validación Phase 4:** Servicio integrado con Riverpod, listo para consumo UI.
 
 ---
 
-# 🛡️ FASE 5: Testing E2E & Security Hardening
+# 🛡️ PHASE 5: Testing E2E & Security Hardening
 
 **Duración:** 1 día
 **Sprint:** 2.5
@@ -1784,9 +1784,9 @@ HU: 3.2"
 
 ---
 
-## 5.1: Crear Tests E2E (End-to-End)
+## 5.1: Create Tests E2E (End-to-End)
 
-### Paso 5.1.1: Test de flujo completo de creación de proyecto
+### Paso 5.1.1: Test de flujo completo de creación de project
 
 ```bash
 cat > tests/test/e2e/features/filesystem/project_creation_e2e_test.dart << 'EOF'
@@ -1929,7 +1929,7 @@ Este es un proyecto de prueba para validar el FileSystemService.
 EOF
 ```
 
-### Paso 5.1.2: Ejecutar tests E2E
+### Paso 5.1.2: Execute tests E2E
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
@@ -1944,7 +1944,7 @@ flutter test test/e2e/features/filesystem/ --verbose
 
 ## 5.2: Security Audit & Hardening
 
-### Paso 5.2.1: Ejecutar security checklist
+### Paso 5.2.1: Execute security checklist
 
 ```bash
 cat > doc/02-SETUP_DEV/FILESYSTEM_SECURITY_AUDIT.md << 'EOF'
@@ -2169,7 +2169,7 @@ genhtml coverage/lcov.info -o coverage/html
 ## Code Quality
 
 ```bash
-# Análisis estático
+# Analysis estático
 cd src/client && flutter analyze lib/features/filesystem/
 
 # Formateo
@@ -2182,7 +2182,7 @@ dart fix --dry-run
 ## Development
 
 ```bash
-# Crear nueva feature branch
+# Create nueva feature branch
 git checkout -b feature/client-filesystem-service develop
 
 # Commits según TDD phases
@@ -2200,7 +2200,7 @@ git push -u origin feature/client-filesystem-service
 # Instalar dependencias
 cd src/client && flutter pub get
 
-# Ejecutar app (Desktop Linux)
+# Execute app (Desktop Linux)
 flutter run -d linux
 
 # Build release

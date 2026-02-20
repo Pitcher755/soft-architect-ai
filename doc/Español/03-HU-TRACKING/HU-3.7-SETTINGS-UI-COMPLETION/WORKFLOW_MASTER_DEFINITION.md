@@ -1,23 +1,23 @@
 # HU-3.7: Master Workflow Definition (TDD Cycle)
 
-> **Version:** 2.0.0 (**TRUE TDD CYCLES - RED→GREEN→REFACTOR per feature**)
-> **Created:** 2026-02-11
+> **Versión:** 2.0.0 (**TRUE TDD CYCLES - RED→GREEN→REFACTOR per feature**)
+> **Creard:** 2026-02-11
 > **Agent:** ArchitectZero
-> **Methodology:** TDD + Clean Architecture (Real cycles, not phases)
+> **Methodology:** TDD + Clean Architecture (Real cycles, not fases)
 
 ---
 
 ## 📖 Tabla de Contenidos
 
 1. [TDD Workflow Overview](#-tdd-workflow-overview)
-2. [Feature 1: LastProjectLocalDataSource](#feature-1-lastprojectlocaldatasource)
-3. [Feature 2: ProfileSection Provider Connection](#feature-2-profilesection-provider-connection)
+2. [Feature 1: LastProyectoLocalDataSource](#feature-1-lastproyectolocaldatasource)
+3. [Feature 2: ProarchivoSection Provider Connection](#feature-2-proarchivosection-provider-connection)
 4. [Feature 3: AppearanceSection + Language Selector](#feature-3-appearancesection--language-selector)
 5. [Feature 4: AccessibilitySection Provider Connection](#feature-4-accessibilitysection-provider-connection)
 6. [Feature 5: PerformanceSection Provider Connection](#feature-5-performancesection-provider-connection)
 7. [Feature 6: GlobalSearchDialog Navigation](#feature-6-globalsearchdialog-navigation)
-8. [Feature 7: ProjectsSidebar Last Project](#feature-7-projectssidebar-last-project)
-9. [Feature 8-10: Fix MarkdownPreview Tests](#feature-8-10-fix-markdownpreview-tests)
+8. [Feature 7: ProyectosSidebar Last Proyecto](#feature-7-proyectossidebar-last-proyecto)
+9. [Feature 8-10: Fix MarkdownPreview Pruebas](#feature-8-10-fix-markdownpreview-pruebas)
 10. [Final Quality & Validation](#-final-quality--validation)
 
 ---
@@ -58,9 +58,9 @@
 ### Success Timeline
 - **Per Feature:** 20-30 minutes (RED 5 + GREEN 10 + REFACTOR 5 + Verify 5)
 - **Total Features:** 10 main features = ~3 hours
-- **Plus:** Test fixes + full test suite + documentation = 1-2 days total
+- **Plus:** Prueba fixes + full prueba suite + documentoation = 1-2 days total
 
-### Workflow Phases Summary
+### Workflow Fases Summary
 ```
 Commit 1 (Phase 1 ✅): Documentation + Architecture
   ↓
@@ -85,17 +85,17 @@ Commit 10 (Final): PR to develop
 
 ---
 
-## FEATURE 1: LastProjectLocalDataSource
+## FEATURE 1: LastProyectoLocalDataSource
 
-**Objective:** Create missing data source for last project persistence (SharedPreferences)
+**Objective:** Crear missing data source for último proyecto persistence (SharedPreferences)
 
 **Estimated Time:** 25 minutes (RED 5 + GREEN 10 + REFACTOR 5 + Verify 5)
 
-### 🔴 RED (5 min) - Write Failing Tests
+### 🔴 RED (5 min) - Write Failing Pruebas
 
-**File:** `tests/test/features/settings/data/datasources/last_project_local_datasource_test.dart`
+**Archivo:** `pruebas/prueba/features/settings/data/datasources/last_proyecto_local_datasource_prueba.dart`
 
-**Action:** Create test file with 3 failing tests
+**Action:** Crear prueba archivo with 3 failing pruebas
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -153,7 +153,7 @@ void main() {
 }
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # Run tests → ❌ FAILS (class doesn't exist)
 flutter test tests/test/features/settings/data/datasources/last_project_local_datasource_test.dart
@@ -162,15 +162,15 @@ flutter test tests/test/features/settings/data/datasources/last_project_local_da
 # Target of URI doesn't exist: 'package:softarchitect_ai/features/settings/data/datasources/last_project_local_datasource.dart'
 ```
 
-**Deliverable:** ⏳ 3 failing tests (RED phase)
+**Deliverable:** ⏳ 3 failing pruebas (RED fase)
 
 ---
 
 ### 🟢 GREEN (10 min) - Implement Minimal Code
 
-**File:** `src/client/lib/features/settings/data/datasources/last_project_local_datasource.dart`
+**Archivo:** `src/client/lib/features/settings/data/datasources/last_proyecto_local_datasource.dart`
 
-**Action:** Create the data source with minimal implementation
+**Action:** Crear the data source with minimal implementación
 
 ```dart
 import 'package:shared_preferences/shared_preferences.dart';
@@ -207,7 +207,7 @@ class LastProjectLocalDataSource {
 }
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # Run tests → ✅ PASSES
 flutter test tests/test/features/settings/data/datasources/last_project_local_datasource_test.dart
@@ -220,13 +220,13 @@ flutter test tests/test/features/settings/data/datasources/last_project_local_da
 # All tests passed!
 ```
 
-**Deliverable:** ✅ 3 tests passing (GREEN phase)
+**Deliverable:** ✅ 3 pruebas passing (GREEN fase)
 
 ---
 
 ### 🔵 REFACTOR (5 min) - Improve Code Quality
 
-**Action:** Review code for SOLID principles, error handling, documentation
+**Action:** Review code for SOLID principles, error handling, documentoation
 
 **Improvements Made:**
 - ✅ Added comprehensive DartDoc comments
@@ -254,7 +254,7 @@ Future<void> saveLastProjectPath(String path) async {
 }
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # Run tests → ✅ STILL PASSES
 flutter test tests/test/features/settings/data/datasources/last_project_local_datasource_test.dart
@@ -265,7 +265,7 @@ flutter analyze src/client/lib/features/settings/data/datasources/last_project_l
 # Expected: No issues found!
 ```
 
-**Deliverable:** ✅ Clean, refactored code (REFACTOR phase)
+**Deliverable:** ✅ Clean, refactored code (REFACTOR fase)
 
 ---
 
@@ -286,19 +286,19 @@ git commit -m "feat(HU-3.7): implement LastProjectLocalDataSource (RED→GREEN�
 - ✅ All 3 tests passing, 0 analyze warnings"
 ```
 
-**Feature 1 Status:** ✅ COMPLETE
+**Feature 1 Estado:** ✅ COMPLETE
 
 ---
 
-## FEATURE 2: ProfileSection Provider Connection
+## FEATURE 2: ProarchivoSection Provider Connection
 
-**Objective:** Connect ProfileSection widget to settingsProvider (Riverpod)
+**Objective:** Connect ProarchivoSection widget to settingsProvider (Riverpod)
 
 **Estimated Time:** 25 minutes
 
-### 🔴 RED (5 min) - Write Failing Widget Tests
+### 🔴 RED (5 min) - Write Failing Widget Pruebas
 
-**File:** `tests/test/features/settings/presentation/widgets/profile_section_test.dart`
+**Archivo:** `pruebas/prueba/features/settings/presentation/widgets/proarchivo_section_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -356,7 +356,7 @@ void main() {
 }
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # Run tests → ❌ FAILS (ProfileSection not returning proper state)
 flutter test tests/test/features/settings/presentation/widgets/profile_section_test.dart
@@ -364,13 +364,13 @@ flutter test tests/test/features/settings/presentation/widgets/profile_section_t
 # Expected: Tests fail because ProfileSection isn't connected to provider
 ```
 
-**Deliverable:** ⏳ 2 failing widget tests
+**Deliverable:** ⏳ 2 failing widget pruebas
 
 ---
 
 ### 🟢 GREEN (10 min) - Implement Minimal Code
 
-**File:** `src/client/lib/features/settings/presentation/widgets/profile_section.dart`
+**Archivo:** `src/client/lib/features/settings/presentation/widgets/proarchivo_section.dart`
 
 **Action:** Modify to connect to settingsProvider
 
@@ -431,7 +431,7 @@ class ProfileSection extends ConsumerWidget {
 }
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # Run tests → ✅ PASSES
 flutter test tests/test/features/settings/presentation/widgets/profile_section_test.dart
@@ -439,7 +439,7 @@ flutter test tests/test/features/settings/presentation/widgets/profile_section_t
 # Expected: Both tests pass
 ```
 
-**Deliverable:** ✅ 2 tests passing
+**Deliverable:** ✅ 2 pruebas passing
 
 ---
 
@@ -548,7 +548,7 @@ class _ProfileTextFieldState extends State<_ProfileTextField> {
 }
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # Tests still pass
 flutter test tests/test/features/settings/presentation/widgets/profile_section_test.dart
@@ -573,7 +573,7 @@ git commit -m "feat(HU-3.7): connect ProfileSection to settingsProvider (RED→G
 - ✅ All 2 tests passing, 0 warnings"
 ```
 
-**Feature 2 Status:** ✅ COMPLETE
+**Feature 2 Estado:** ✅ COMPLETE
 
 ---
 
@@ -583,9 +583,9 @@ git commit -m "feat(HU-3.7): connect ProfileSection to settingsProvider (RED→G
 
 **Estimated Time:** 30 minutes (slightly longer due to language_selector creation)
 
-### 🔴 RED (5 min) - Write Failing Tests
+### 🔴 RED (5 min) - Write Failing Pruebas
 
-**File:** `tests/test/features/settings/presentation/widgets/appearance_section_test.dart`
+**Archivo:** `pruebas/prueba/features/settings/presentation/widgets/appearance_section_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -650,13 +650,13 @@ void main() {
 }
 ```
 
-**Deliverable:** ⏳ 3 failing tests
+**Deliverable:** ⏳ 3 failing pruebas
 
 ---
 
-### 🟢 GREEN (12 min) - Implement Both Files
+### 🟢 GREEN (12 min) - Implement Both Archivos
 
-**File 1:** `src/client/lib/features/settings/presentation/widgets/appearance_section.dart`
+**Archivo 1:** `src/client/lib/features/settings/presentation/widgets/appearance_section.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -716,7 +716,7 @@ class AppearanceSection extends ConsumerWidget {
 }
 ```
 
-**File 2:** `src/client/lib/features/settings/presentation/widgets/language_selector_widget.dart`
+**Archivo 2:** `src/client/lib/features/settings/presentation/widgets/language_selector_widget.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -789,7 +789,7 @@ class _LanguageButton extends StatelessWidget {
 }
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # Run tests → ✅ PASSES
 flutter test tests/test/features/settings/presentation/widgets/appearance_section_test.dart
@@ -797,21 +797,21 @@ flutter test tests/test/features/settings/presentation/widgets/appearance_sectio
 # Expected: All 3 tests pass
 ```
 
-**Deliverable:** ✅ 3 tests passing
+**Deliverable:** ✅ 3 pruebas passing
 
 ---
 
 ### 🔵 REFACTOR (5 min) - Improve Code Quality
 
 **Improvements Made:**
-- ✅ Extracted `_LanguageButton` as private widget
+- ✅ Extracted `_LanguageBotón` as private widget
 - ✅ Used `withValues(alpha:)` instead of deprecated `withOpacity()`
 - ✅ Added semantic labels
 - ✅ Clear separation of concerns
 
 **Optional:** Add theme persistence, animation
 
-**Verification:**
+**Verificación:**
 ```bash
 flutter test tests/test/features/settings/presentation/widgets/appearance_section_test.dart
 flutter analyze src/client/lib/features/settings/presentation/widgets/appearance_section.dart
@@ -835,7 +835,7 @@ git commit -m "feat(HU-3.7): connect AppearanceSection + implement LanguageSelec
 - 🇬🇧 🇪🇸 Language flags implemented"
 ```
 
-**Feature 3 Status:** ✅ COMPLETE
+**Feature 3 Estado:** ✅ COMPLETE
 
 ---
 
@@ -845,7 +845,7 @@ git commit -m "feat(HU-3.7): connect AppearanceSection + implement LanguageSelec
 
 **Estimated Time:** 20 minutes
 
-### 🔴 RED (5 min) - Write Failing Tests
+### 🔴 RED (5 min) - Write Failing Pruebas
 
 ```dart
 // tests/test/features/settings/presentation/widgets/accessibility_section_test.dart
@@ -877,7 +877,7 @@ testWidgets('should update accessibility when font size changes', (tester) async
 });
 ```
 
-**Deliverable:** ⏳ 2 failing tests
+**Deliverable:** ⏳ 2 failing pruebas
 
 ---
 
@@ -924,7 +924,7 @@ class AccessibilitySection extends ConsumerWidget {
 }
 ```
 
-**Deliverable:** ✅ 2 tests passing
+**Deliverable:** ✅ 2 pruebas passing
 
 ---
 
@@ -945,7 +945,7 @@ git add -A
 git commit -m "feat(HU-3.7): connect AccessibilitySection to provider (RED→GREEN→REFACTOR)"
 ```
 
-**Feature 4 Status:** ✅ COMPLETE
+**Feature 4 Estado:** ✅ COMPLETE
 
 ---
 
@@ -959,7 +959,7 @@ git commit -m "feat(HU-3.7): connect AccessibilitySection to provider (RED→GRE
 
 **Pattern:** Same as Feature 4
 
-**Tests:** Settings that show performance options (cache size, memory limit, etc.)
+**Pruebas:** Settings that show performance options (cache size, memory limit, etc.)
 
 ```dart
 // tests/test/features/settings/presentation/widgets/performance_section_test.dart
@@ -972,7 +972,7 @@ testWidgets('should update settings when performance option changes', (tester) a
 });
 ```
 
-**Implementation:**
+**Implementación:**
 ```dart
 // src/client/lib/features/settings/presentation/widgets/performance_section.dart
 class PerformanceSection extends ConsumerWidget {
@@ -1003,11 +1003,11 @@ class PerformanceSection extends ConsumerWidget {
 
 ## FEATURE 6: GlobalSearchDialog Navigation
 
-**Objective:** Add navigation when project is selected in GlobalSearchDialog
+**Objective:** Add navigation when proyecto is selected in GlobalSearchDialog
 
 **Estimated Time:** 25 minutes
 
-### 🔴 RED (5 min) - Widget Test
+### 🔴 RED (5 min) - Widget Prueba
 
 ```dart
 testWidgets('should navigate to project when card is tapped', (tester) async {
@@ -1019,7 +1019,7 @@ testWidgets('should close dialog after navigation', (tester) async {
 });
 ```
 
-**Deliverable:** ⏳ 2 failing tests
+**Deliverable:** ⏳ 2 failing pruebas
 
 ---
 
@@ -1034,7 +1034,7 @@ onTap: () {
 },
 ```
 
-**Deliverable:** ✅ 2 tests passing
+**Deliverable:** ✅ 2 pruebas passing
 
 ---
 
@@ -1048,9 +1048,9 @@ onTap: () {
 
 ---
 
-## FEATURE 7: ProjectsSidebar Last Project
+## FEATURE 7: ProyectosSidebar Last Proyecto
 
-**Objective:** Show and persist last opened project in sidebar
+**Objective:** Show and persist last opened proyecto in sidebar
 
 **Estimated Time:** 25 minutes
 
@@ -1069,13 +1069,13 @@ onTap: () {
 
 ---
 
-## FEATURE 8-10: Fix MarkdownPreview Tests (T-2)
+## FEATURE 8-10: Fix MarkdownPreview Pruebas (T-2)
 
-**Objective:** Fix 10 failing MarkdownPreview tests
+**Objective:** Fix 10 failing MarkdownPreview pruebas
 
 **Estimated Time:** 45 minutes (3 separate RED→GREEN→REFACTOR cycles)
 
-### CYCLE 1: Async Rendering Fixes (4-5 tests)
+### CYCLE 1: Async Rendering Fixes (4-5 pruebas)
 
 **🔴 RED (10 min):**
 ```bash
@@ -1083,29 +1083,29 @@ flutter test tests/test/features/project_shell/presentation/widgets/markdown_pre
   --reporter=expanded | grep "FAILED" | head -5
 ```
 
-Document 5 failures with root causes
+Documento 5 failures with root causes
 
 **🟢 GREEN (15 min):**
 Add `pumpAndSettle()`, fix mock setup, improve finders
 
 **🔵 REFACTOR (5 min):**
-Extract common test patterns, create test helpers
+Extract common prueba patterns, crear prueba helpers
 
-**Verification:**
+**Verificación:**
 ```bash
 flutter test tests/test/features/project_shell/presentation/widgets/markdown_preview_widget_test.dart
 # Expected: 5/10 tests pass
 ```
 
-### CYCLE 2: Mock Setup Fixes (3-4 tests)
+### CYCLE 2: Mock Setup Fixes (3-4 pruebas)
 
 Same pattern, fix mock initialization issues
 
-### CYCLE 3: Widget Finder Fixes (2-3 tests)
+### CYCLE 3: Widget Finder Fixes (2-3 pruebas)
 
 Same pattern, fix incorrect finders
 
-**Final Verification:**
+**Final Verificación:**
 ```bash
 flutter test tests/test/features/project_shell/presentation/widgets/markdown_preview_widget_test.dart
 
@@ -1118,8 +1118,8 @@ flutter test tests/test/features/project_shell/presentation/widgets/markdown_pre
 
 ### PHASE: Quality Assurance (1 day)
 
-**🔴 RED:** Run all tests, identify gaps
-**🟢 GREEN:** Create missing tests (widget, integration)
+**🔴 RED:** Ejecutar all pruebas, identify gaps
+**🟢 GREEN:** Crear missing pruebas (widget, integration)
 **🔵 REFACTOR:** Improve coverage, optimize code
 
 ### Commands Sequence:
@@ -1176,16 +1176,16 @@ Ready for PR to develop"
 
 ## 🎯 Summary
 
-| Feature | RED | GREEN | REFACTOR | Status |
+| Feature | RED | GREEN | REFACTOR | Estado |
 |---------|-----|-------|----------|--------|
-| 1. LastProjectDataSource | 5 min | 10 min | 5 min | ⏳ Ready |
-| 2. ProfileSection | 5 min | 10 min | 5 min | ⏳ Ready |
+| 1. LastProyectoDataSource | 5 min | 10 min | 5 min | ⏳ Ready |
+| 2. ProarchivoSection | 5 min | 10 min | 5 min | ⏳ Ready |
 | 3. AppearanceSection + Language | 5 min | 12 min | 5 min | ⏳ Ready |
 | 4. AccessibilitySection | 5 min | 10 min | 5 min | ⏳ Ready |
 | 5. PerformanceSection | 5 min | 10 min | 5 min | ⏳ Ready |
 | 6. GlobalSearchDialog Nav | 5 min | 10 min | 5 min | ⏳ Ready |
-| 7. ProjectsSidebar LastProject | 5 min | 10 min | 5 min | ⏳ Ready |
-| 8-10. Fix MarkdownPreview Tests | 10 min | 15 min | 5 min | ⏳ Ready (×3 cycles) |
+| 7. ProyectosSidebar LastProyecto | 5 min | 10 min | 5 min | ⏳ Ready |
+| 8-10. Fix MarkdownPreview Pruebas | 10 min | 15 min | 5 min | ⏳ Ready (×3 cycles) |
 | Quality & Validation | Daily | | | ⏳ Ready |
 
 **Total Time:** ~7 hours of work = 1 day intensive

@@ -1,6 +1,6 @@
 # FileSystem Service - Security Audit Report
 
-> **Fecha:** 05/02/2026
+> **Date:** 05/02/2026
 > **Auditor:** ArchitectZero
 > **Scope:** HU-3.2 FileSystem Service Security Review
 

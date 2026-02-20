@@ -1,10 +1,10 @@
-# 📊 HU-4.4: Manual Testing Results Report
+# 📊 HU-4.4: Manual Pruebaing Resultados Report
 
 > **Fecha de Ejecución:** 17/02/2026
 > **Branch:** `feature/rag-llm-resilience`
 > **Ejecutado por:** ArchitectZero (Automated Agent)
 > **Duración Total:** ~6 minutos
-> **Resultado Final:** ✅ **PASS** (9/9 criterios cumplidos)
+> **Resultadoado Final:** ✅ **PASS** (9/9 criterios cumplidos)
 
 ---
 
@@ -16,7 +16,7 @@
 |-----------|--------|-----------|------|----------------|
 | **Escenario 1: ChromaDB Down** | ✅ PASS | 200 | WARNING (no ERROR) | Graceful degradation aplicado correctamente |
 | **Escenario 2: Ollama Retry** | ✅ PASS | 200 | Retry logs detectados | Retry logic funcionando correctamente |
-| **Escenario 3: Timeout** | ✅ PASS | N/A | Unit test PASSED | Timeout de 30s implementado y validado |
+| **Escenario 3: Timeout** | ✅ PASS | N/A | Unit prueba PASSED | Timeout de 30s implementado y validado |
 
 **Conclusión:** El sistema cumple con todos los requisitos de resiliencia (graceful degradation, retry logic, timeouts). **La feature HU-4.4 está lista para merge.**
 
@@ -31,7 +31,7 @@
 docker compose -f infrastructure/docker-compose.yml up -d
 ```
 
-**Resultado:**
+**Resultadoado:**
 ```
 ✔ Network infrastructure_sa_network Created    0.0s
 ✔ Container sa_ollama               Healthy    5.8s
@@ -50,7 +50,7 @@ sa_ollama     Up 24 seconds (healthy)   0.0.0.0:11434->11434/tcp
 **Verificación de Endpoints:**
 - ✅ API Backend: `http://localhost:8000/api/v1/system/health` → HTTP 200
 - ✅ ChromaDB: Contenedor healthy (puerto 8001)
-- ✅ Ollama: `http://localhost:11434` → "Ollama is running"
+- ✅ Ollama: `http://localhost:11434` → "Ollama is ejecutarning"
 
 **Logs Baseline:**
 ```
@@ -82,7 +82,7 @@ Validar que el sistema continúa funcionando cuando ChromaDB falla, aplicando gr
 docker stop sa_chromadb
 ```
 
-**Resultado:**
+**Resultadoado:**
 ```
 sa_chromadb  # Contenedor detenido exitosamente
 ```
@@ -111,7 +111,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
   -s -o /tmp/scenario1_body.json -w "%{http_code}\n"
 ```
 
-**HTTP Status Code:** `200` ✅
+**HTTP Estado Code:** `200` ✅
 
 **Duración:** ~48 segundos (incluye retry de LLM en 1er intento)
 
@@ -136,7 +136,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 - ✅ `template_used` = `"FALLBACK"` (no "CONTEXT_DRIVEN")
 - ✅ `sources` = `[]` (array vacío)
 - ✅ `ai_response` contiene respuesta válida del LLM
-- ✅ HTTP Status Code = 200
+- ✅ HTTP Estado Code = 200
 
 ---
 
@@ -169,7 +169,7 @@ docker logs sa_api --tail 100 | grep -E "WARNING|ERROR|RAG|degraded"
 
 ---
 
-### Paso 1.5: Regression Test (ChromaDB Reactivado)
+### Paso 1.5: Regression Prueba (ChromaDB Reactivado)
 
 **Comando:**
 ```bash
@@ -184,13 +184,13 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
   -s | jq -r '.template_used'
 ```
 
-**Resultado:** `FALLBACK`
+**Resultadoado:** `FALLBACK`
 
 **Análisis:**
 - ⚠️ **Observación:** ChromaDB está activo pero sigue usando FALLBACK
-- ✅ **Causa Esperada:** Base de datos vectorial vacía (no hay documentos indexados para ese `project_id`)
+- ✅ **Causa Esperada:** Base de datos vectorial vacía (no hay documentoos indexados para ese `proyecto_id`)
 - ✅ **Comportamiento Correcto:** El sistema usa FALLBACK cuando no hay contexto relevante, independientemente de si ChromaDB está up o down
-- ✅ **Conclusión:** Regression test PASA - Sistema funciona con ChromaDB activo (simplemente no hay datos)
+- ✅ **Conclusión:** Regression prueba PASA - Sistema funciona con ChromaDB activo (simplemente no hay datos)
 
 **Logs Confirmatorios:**
 ```
@@ -210,7 +210,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
 | **1.4** | Log muestra WARNING (no ERROR) | ✅ PASS | Logs de Docker confirmados |
 | **1.5** | Regression: funciona con ChromaDB activo | ✅ PASS | ChromaDB healthy, sistema responde |
 
-**Resultado:** ✅ **PASS** (5/5 criteria)
+**Resultadoado:** ✅ **PASS** (5/5 criteria)
 
 ---
 
@@ -221,9 +221,9 @@ Validar que el sistema reintenta automáticamente cuando Ollama falla temporalme
 
 ---
 
-### Paso 2.1: Crear Script de Testing
+### Paso 2.1: Crear Script de Pruebaing
 
-**Script:** `/tmp/test_ollama_retry.sh`
+**Script:** `/tmp/prueba_ollama_retry.sh`
 
 **Contenido:**
 ```bash
@@ -261,14 +261,14 @@ echo "✅ Todas las requests completadas"
 
 ---
 
-### Paso 2.2: Test Baseline (Sin Fallos)
+### Paso 2.2: Prueba Baseline (Sin Fallos)
 
 **Comando:**
 ```bash
 /tmp/test_ollama_retry.sh
 ```
 
-**Resultado:**
+**Resultadoado:**
 ```
 🔄 Enviando 3 requests concurrentes al API...
 [Request 1] Iniciando...
@@ -290,14 +290,14 @@ echo "✅ Todas las requests completadas"
 
 ---
 
-### Paso 2.3: Test con Fallo Simulado (Reinicio de Ollama)
+### Paso 2.3: Prueba con Fallo Simulado (Reinicio de Ollama)
 
 **Comando:**
 ```bash
 /tmp/test_ollama_retry.sh & sleep 2 && docker restart sa_ollama && wait
 ```
 
-**Resultado:**
+**Resultadoado:**
 ```
 🔄 Enviando 3 requests concurrentes al API...
 [Request 1] Iniciando...
@@ -341,7 +341,7 @@ docker logs sa_api --tail 100 | grep -E "Retry|retry|attempt" | tail -20
 
 ---
 
-### Paso 2.5: Regression Test (Ollama Recuperado)
+### Paso 2.5: Regression Prueba (Ollama Recuperado)
 
 **Comando:**
 ```bash
@@ -349,7 +349,7 @@ docker ps --filter "name=sa_ollama" --format "table {{.Names}}\t{{.Status}}"
 curl -s http://localhost:11434 | head -1
 ```
 
-**Resultado:**
+**Resultadoado:**
 ```
 NAMES       STATUS
 sa_ollama   Up 25 seconds (healthy)
@@ -372,25 +372,25 @@ Ollama is running
 | **2.3** | Eventual success tras retries | ✅ PASS | `✅ Retry successful` confirmado |
 | **2.4** | Regression: Ollama funciona correctamente | ✅ PASS | Contenedor healthy |
 
-**Resultado:** ✅ **PASS** (4/4 criteria)
+**Resultadoado:** ✅ **PASS** (4/4 criteria)
 
 ---
 
-## ⏱️ Escenario 3: ChromaDB Timeout (Unit Test)
+## ⏱️ Escenario 3: ChromaDB Timeout (Unit Prueba)
 
 ### 🎯 Objetivo
 Validar que RAG operations tienen timeout de 30s y NO esperan indefinidamente.
 
 ---
 
-### Paso 3.1: Ejecutar Unit Test
+### Paso 3.1: Ejecutar Unit Prueba
 
 **Comando:**
 ```bash
 pytest tests/server/unit/services/rag/test_orchestrator_degradation.py::TestRAGOrchestratorGracefulDegradation::test_orchestrator_applies_30s_timeout_to_rag_search -v
 ```
 
-**Resultado:**
+**Resultadoado:**
 ```
 ======================= test session starts =======================
 platform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0
@@ -402,9 +402,9 @@ tests/server/unit/services/rag/test_orchestrator_degradation.py::TestRAGOrchestr
 ```
 
 **Análisis:**
-- ✅ Test **PASSED** (sin fallos)
+- ✅ Prueba **PASSED** (sin fallos)
 - ✅ Duración: **30.05 segundos** (coherente con timeout de 30s implementado)
-- ✅ Unit test simula búsqueda RAG que tarda >30s y valida que timeout se aplica correctamente
+- ✅ Unit prueba simula búsqueda RAG que tarda >30s y valida que timeout se aplica correctamente
 
 ---
 
@@ -412,10 +412,10 @@ tests/server/unit/services/rag/test_orchestrator_degradation.py::TestRAGOrchestr
 
 | # | Criterio | Estado | Evidencia |
 |---|----------|--------|-----------|
-| **3.1** | Unit test pasa (PASSED) | ✅ PASS | `1 passed in 30.05s` |
-| **3.2** | Coverage confirma timeout implementado | ✅ PASS | Test verifica `asyncio.wait_for(timeout=30)` |
+| **3.1** | Unit prueba pasa (PASSED) | ✅ PASS | `1 passed in 30.05s` |
+| **3.2** | Coverage confirma timeout implementado | ✅ PASS | Prueba verifica `asyncio.wait_for(timeout=30)` |
 
-**Resultado:** ✅ **PASS** (2/2 criteria)
+**Resultadoado:** ✅ **PASS** (2/2 criteria)
 
 ---
 
@@ -430,14 +430,14 @@ tests/server/unit/services/rag/test_orchestrator_degradation.py::TestRAGOrchestr
 | **1.5** | ChromaDB Down | Regression: funciona con ChromaDB activo | ✅ PASS | ChromaDB healthy, sistema responde |
 | **2.1** | Ollama Retry | Requests completan exitosamente (HTTP 200) | ✅ PASS | 3/3 requests HTTP 200 |
 | **2.2** | Ollama Retry | Log muestra retries (si hubo fallos) | ✅ PASS | `⚠️ Retry attempt 1/3` logs |
-| **2.3** | Ollama Retry | Regression: Ollama funciona correctamente | ✅ PASS | Ollama healthy después de test |
-| **3.1** | Timeout | Unit test pasa (PASSED) | ✅ PASS | `1 passed in 30.05s` |
+| **2.3** | Ollama Retry | Regression: Ollama funciona correctamente | ✅ PASS | Ollama healthy después de prueba |
+| **3.1** | Timeout | Unit prueba pasa (PASSED) | ✅ PASS | `1 passed in 30.05s` |
 
 **Total:** ✅ **9/9 criterios cumplidos (100%)**
 
 ---
 
-## 🔍 Análisis de Resultados
+## 🔍 Análisis de Resultadoados
 
 ### Fortalezas Detectadas
 
@@ -452,7 +452,7 @@ tests/server/unit/services/rag/test_orchestrator_degradation.py::TestRAGOrchestr
    - Logs informativos para debugging
 
 3. **Timeout Implementado:**
-   - Timeout de 30s validado por unit test
+   - Timeout de 30s validado por unit prueba
    - Previene esperas indefinidas en operaciones RAG
 
 4. **Infraestructura Dockerizada Estable:**
@@ -464,18 +464,18 @@ tests/server/unit/services/rag/test_orchestrator_degradation.py::TestRAGOrchestr
 
 ### Observaciones y Mejoras Potenciales
 
-#### 1. Regression Test de ChromaDB (Comportamiento Esperado)
+#### 1. Regression Prueba de ChromaDB (Comportamiento Esperado)
 
 **Observación:**
 Incluso con ChromaDB activo, el sistema usa `FALLBACK` template.
 
 **Análisis:**
-- ✅ **Comportamiento Correcto:** Base de datos vectorial está vacía (no contiene documentos para el `project_id` enviado)
+- ✅ **Comportamiento Correcto:** Base de datos vectorial está vacía (no contiene documentoos para el `proyecto_id` enviado)
 - ✅ **Lógica Esperada:** Si no hay contexto RAG disponible (porque la BD está vacía), el sistema debe usar FALLBACK
-- ⚠️ **Mejora Sugerida (Futuro):** Para testing manual más robusto, considerar:
-  - Crear un script de seed que popule ChromaDB con documentos de prueba
+- ⚠️ **Mejora Sugerida (Futuro):** Para pruebaing manual más robusto, considerar:
+  - Crear un script de seed que popule ChromaDB con documentoos de prueba
   - Validar que CON datos en ChromaDB, el sistema usa `CONTEXT_DRIVEN`
-  - Esto haría el regression test más completo (actualmente es suficiente, pero mejorable)
+  - Esto haría el regression prueba más completo (actualmente es suficiente, pero mejorable)
 
 **Impacto en HU-4.4:** ✅ **Ninguno** - El escenario principal (ChromaDB down → graceful degradation) está validado correctamente.
 
@@ -493,7 +493,7 @@ Durante el Escenario 1 (ChromaDB down), también hubo retries de Ollama:
 **Análisis:**
 - ✅ **Causa Probable:** Ollama estaba bajo carga o reiniciándose cuando se ejecutó el Escenario 1
 - ✅ **Comportamiento Correcto:** El retry logic detectó el fallo y reintentó automáticamente
-- ✅ **Resultado:** Request completó exitosamente tras retry (sistema resiliente)
+- ✅ **Resultadoado:** Request completó exitosamente tras retry (sistema resiliente)
 
 **Impacto en HU-4.4:** ✅ **Ninguno** - Demuestra que el retry logic funciona incluso fuera del escenario específico.
 
@@ -525,29 +525,29 @@ Durante el Escenario 1 (ChromaDB down), también hubo retries de Ollama:
 - ✅ **Timeout:** Operaciones RAG tienen timeout de 30s (validado)
 - ✅ **Infraestructura:** Docker stack estable y funcional
 - ✅ **Logs:** Niveles apropiados (WARNING para degradation, INFO para success)
-- ✅ **Testing:** Unit tests y manual tests pasando
+- ✅ **Pruebaing:** Unit pruebas y manual pruebas pasando
 
 **Próximos Pasos:**
-1. ✅ Manual testing completo (este documento)
-2. 🔜 Ejecutar validación final: `./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh`
+1. ✅ Manual pruebaing completo (este documentoo)
+2. 🔜 Ejecutar validación final: `./scripts/pruebaing/PRE_PUSH_VALIDATION_MASTER.sh`
 3. 🔜 Push commits: `git push origin feature/rag-llm-resilience`
 4. 🔜 Crear GitHub PR con descripción exhaustiva
 
 ---
 
-## 📝 Evidencias de Testing
+## 📝 Evidencias de Pruebaing
 
 ### Archivos Generados
 
 | Archivo | Descripción | Estado |
 |---------|-------------|--------|
 | `/tmp/scenario1_body.json` | Response body del Escenario 1 (ChromaDB down) | ✅ Generado |
-| `/tmp/ollama_test_1.json` | Response body Request 1 (baseline) | ✅ Generado |
-| `/tmp/ollama_test_2.json` | Response body Request 2 (baseline) | ✅ Generado |
-| `/tmp/ollama_test_3.json` | Response body Request 3 (con retry) | ✅ Generado |
-| `/tmp/test_ollama_retry.sh` | Script de testing concurrente | ✅ Creado |
+| `/tmp/ollama_prueba_1.json` | Response body Request 1 (baseline) | ✅ Generado |
+| `/tmp/ollama_prueba_2.json` | Response body Request 2 (baseline) | ✅ Generado |
+| `/tmp/ollama_prueba_3.json` | Response body Request 3 (con retry) | ✅ Generado |
+| `/tmp/prueba_ollama_retry.sh` | Script de pruebaing concurrente | ✅ Creado |
 
-### Docker Containers Status Post-Testing
+### Docker Containers Estado Post-Pruebaing
 
 ```
 NAMES         STATUS
@@ -580,16 +580,16 @@ tests/.../test_orchestrator_degradation.py::...::test_orchestrator_applies_30s_t
 
 ## 👤 Metadata
 
-**Ejecutado por:** ArchitectZero (Automated Testing Agent)
+**Ejecutado por:** ArchitectZero (Automated Pruebaing Agent)
 **Fecha de ejecución:** 17/02/2026
 **Hora de inicio:** 15:18 UTC
 **Hora de finalización:** 15:31 UTC
-**Duración total:** ~13 minutos (includes Docker startup, 3 escenarios, unit test)
+**Duración total:** ~13 minutos (includes Docker startup, 3 escenarios, unit prueba)
 **Infraestructura:** Docker Compose
 **Sistema Operativo:** Linux
 **Python Version:** 3.12.3
-**pytest Version:** 9.0.2
+**pyprueba Version:** 9.0.2
 
 ---
 
-**🎉 Testing Manual Completado Exitosamente - HU-4.4 Ready for Production Merge**
+**🎉 Pruebaing Manual Completado Exitosamente - HU-4.4 Preparado para Production Merge**

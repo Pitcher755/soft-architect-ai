@@ -1,4 +1,4 @@
-// Paso 3.2: Crear Widgets Principales
+// Paso 3.2: Create Widgets Principales
 // PROGRESO: ✅ COMPLETADO
 // Fecha: 03/02/2026
 // Status: Widgets creados, compilación exitosa
@@ -6,7 +6,7 @@
 ## 📋 Resumen Paso 3.2
 
 ### Objetivo
-Crear los widgets principales de la presentación siguiendo:
+Create los widgets principales de la presentación siguiendo:
 - Diseño extraído de prototipos HTML (GitHub Dark theme)
 - Arquitectura limpia (separación de concerns)
 - Riverpod integration ready
@@ -15,14 +15,14 @@ Crear los widgets principales de la presentación siguiendo:
 ### ✅ Completed Deliverables
 
 #### 1. DirectoryTreeWidget ✅
-**Archivo:** `lib/features/project_shell/presentation/widgets/directory_tree_widget.dart`
+**File:** `lib/features/project_shell/presentation/widgets/directory_tree_widget.dart`
 **Líneas:** 176
 **Funcionalidades:**
-- Árbol expandible de directorios (estilo VS Code)
-- Iconos por tipo de archivo (Dart, Python, JSON, MD, etc.)
+- Árbol expandible de directorios (style VS Code)
+- Iconos por tipo de file (Dart, Python, JSON, MD, etc.)
 - Colores del tema (primario #0d0df2, sidebar #161B22, borders #30363d)
-- Selección de archivos con callback
-- Estado expandido/colapsado memorizado
+- Selección de files con callback
+- Status expandido/colapsado memorizado
 - Logging integrado (developer.log)
 - Diseño responsive con hover effects
 
@@ -38,12 +38,12 @@ Crear los widgets principales de la presentación siguiendo:
 - Text Secondary: #8b949e (Gris texto)
 
 #### 2. MarkdownPreviewWidget ✅
-**Archivo:** `lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart`
+**File:** `lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart`
 **Líneas:** 154
 **Funcionalidades:**
 - Visualización de contenido Markdown
-- Placeholder cuando no hay archivo seleccionado
-- Header con nombre de archivo
+- Placeholder cuando no hay file seleccionado
+- Header con nombre de file
 - Código coloreado con flutter_markdown
 - Links clickeables (TODO: implementar navegación)
 - Selectable text
@@ -51,7 +51,7 @@ Crear los widgets principales de la presentación siguiendo:
 
 **Componentes:**
 - `MarkdownPreviewWidget` - Widget principal
-- `_EmptyPreview` - Estado vacío
+- `_EmptyPreview` - Status vacío
 - `_MarkdownContent` - Contenido con header y preview
 
 **Características:**
@@ -61,16 +61,16 @@ Crear los widgets principales de la presentación siguiendo:
 - Code blocks con styling específico
 
 #### 3. ProjectShellScreen ✅
-**Archivo:** `lib/features/project_shell/presentation/screens/project_shell_screen.dart`
+**File:** `lib/features/project_shell/presentation/screens/project_shell_screen.dart`
 **Líneas:** 325
 **Funcionalidades:**
 - Pantalla principal tipo IDE
 - Layout 3-panes: AppBar + Sidebar + Preview
 - Integración con Riverpod (ConsumerStatefulWidget)
 - Mock tree structure (reemplazable con datos reales)
-- Selección de archivos con carga de contenido
-- AppBar con información del proyecto
-- Status cuando no hay proyecto
+- Selección de files con carga de contenido
+- AppBar con información of the project
+- Status cuando no hay project
 
 **Estructura:**
 ```
@@ -85,13 +85,13 @@ Crear los widgets principales de la presentación siguiendo:
 └────────────────┴──────────────────────┘
 ```
 
-**Estados:**
+**Statuss:**
 - No project selected (empty view)
 - Project selected (full IDE view)
 - Loading state (TODO: conectar con Riverpod)
 
-#### 4. AppColors - Configuración Centralizada ✅
-**Archivo:** `lib/core/theme/app_colors.dart`
+#### 4. AppColors - Configuration Centralizada ✅
+**File:** `lib/core/theme/app_colors.dart`
 **Líneas:** 50
 **Función:**
 Paleta de colores centralizada reutilizable en toda la app
@@ -131,7 +131,7 @@ Error:          #f85149 (Rojo)
 - Border radius: 0.5rem (8px)
 - Border width: 1px
 
-### 📊 Compilación y Análisis
+### 📊 Compilación y Analysis
 
 **flutter analyze:**
 - ✅ 0 errores
@@ -146,7 +146,7 @@ Error:          #f85149 (Rojo)
 
 ### 🧪 Testing Status
 
-**Requisito de tests:** Pendiente para Paso 3.3
+**Requisito de tests:** Pending para Paso 3.3
 **Mock data:** Implementado en ProjectShellScreen._buildMockTree()
 **TODO items generados:**
 - [ ] Load file content asynchronously
@@ -155,9 +155,9 @@ Error:          #f85149 (Rojo)
 - [ ] Add search functionality
 - [ ] Enable code editing
 
-### 🔗 Integración con Fase Anterior
+### 🔗 Integración con Phase Previous
 
-**Paso 3.1 (Completado):**
+**Paso 3.1 (Completed):**
 - ProjectShellNotifier (state management) ✅
 - project_providers (dependency injection) ✅
 
@@ -167,7 +167,7 @@ Error:          #f85149 (Rojo)
 - ProjectShellScreen ✅
 - AppColors ✅
 
-**Paso 3.3 (Pendiente):**
+**Paso 3.3 (Pending):**
 - Widget tests para los 3 widgets
 - Integration tests
 
@@ -192,7 +192,7 @@ Error:          #f85149 (Rojo)
 
 | Métrica | Valor |
 |---------|-------|
-| Archivos creados | 4 |
+| Files creados | 4 |
 | Líneas de código | 705 |
 | Componentes widgets | 5 (+ private) |
 | Métodos helper | 6 |
@@ -201,7 +201,7 @@ Error:          #f85149 (Rojo)
 | Warnings/Info | ~40 (style) |
 | Compilación exitosa | ✅ |
 
-### 🚀 Próximos Pasos (Paso 3.3)
+### 🚀 Next Steps (Paso 3.3)
 
 1. **Widget Testing**
    - Tests para DirectoryTreeWidget
@@ -212,7 +212,7 @@ Error:          #f85149 (Rojo)
 2. **Integration**
    - Conectar projectRepositoryProvider con database
    - Cargar tree real desde FileSystem
-   - Cargar contenido de archivos reales
+   - Cargar contenido de files reales
 
 3. **Refinamiento UI**
    - Animations (fade in)
@@ -222,9 +222,9 @@ Error:          #f85149 (Rojo)
 
 ---
 
-**Estado General Fase 3:**
+**Status General Phase 3:**
 - Paso 3.1: ✅ 100% (Riverpod Infrastructure)
 - Paso 3.2: ✅ 100% (UI Widgets) **← AQUÍ**
 - Paso 3.3: 🔄 Próximo (Widget Tests)
 
-**Proyecyo Overall:** ~53% (Fase 2: 100%, Paso 3.1-3.2: 66%)
+**Proyecyo Overall:** ~53% (Phase 2: 100%, Paso 3.1-3.2: 66%)

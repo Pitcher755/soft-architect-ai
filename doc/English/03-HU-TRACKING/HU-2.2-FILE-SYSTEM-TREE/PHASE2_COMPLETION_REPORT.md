@@ -1,11 +1,11 @@
 # 📋 PHASE 2: File System Tree Widget - COMPLETION REPORT
 
-> **Fecha:** 06/02/2026
-> **Estado:** ✅ **100% COMPLETADO**
+> **Date:** 06/02/2026
+> **Status:** ✅ **100% COMPLETADO**
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Executive Summary](#executive-summary)
 2. [Completeness Checklist](#completeness-checklist)

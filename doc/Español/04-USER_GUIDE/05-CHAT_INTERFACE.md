@@ -1,18 +1,18 @@
 # 💬 Chat Interface - SoftArchitect AI
 
-> **Date:** 02/19/2026
-> **Status:** ✅ Chat usage guide
-> **Reading time:** 12 minutes
+> **Fecha:** 02/19/2026
+> **Estado:** ✅ Chat usage guide
+> **Tiempo de lectura:** 12 minutes
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [Introduction](#introduction)
 - [Interface Anatomy](#interface-anatomy)
 - [How to Write Effective Prompts](#how-to-write-effective-prompts)
 - [Context Management](#context-management)
-- [Advanced Features](#advanced-features)
+- [Avanzado Features](#advanced-features)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
 - [Conversation Examples](#conversation-examples)
 
@@ -23,7 +23,7 @@
 The chat interface is your gateway to the "brain" of SoftArchitect AI. Through natural conversations, you can:
 
 - ✅ **Design complete software architectures**
-- ✅ **Generate automated documentation** (ADRs, C4 diagrams, etc.)
+- ✅ **Generate automated documentoation** (ADRs, C4 diagrams, etc.)
 - ✅ **Explore Tech Packs** and design patterns
 - ✅ **Refine decisions** iteratively with intelligent feedback
 
@@ -60,9 +60,9 @@ The chat interface is your gateway to the "brain" of SoftArchitect AI. Through n
 |---------|----------|
 | **Top bar** | Navigation, settings, quick actions |
 | **Message area** | Conversation history |
-| **Attached files** | Generated documents (clickable) |
+| **Attached archivos** | Generated documentos (clickable) |
 | **Text input** | Writing field with smart suggestions |
-| **Send button** | Send question (or `Ctrl+Enter`) |
+| **Send botón** | Send question (or `Ctrl+Enter`) |
 
 ---
 
@@ -97,7 +97,7 @@ Team experience: PostgreSQL and MongoDB
 Which do you recommend and why?"
 ```
 
-**Result:** AI has enough context to give a well-founded recommendation.
+**Resultado:** AI has enough context to give a well-founded recommendation.
 
 ---
 
@@ -134,13 +134,13 @@ FastAPI or Flask? Other factors to consider?
 
 ## 🧠 Context Management
 
-### What is Context?
+### Qué es Context?
 
 **Context** is the conversation "memory". The AI remembers:
-- ✅ Previous messages (last 10 by default)
+- ✅ Anterior messages (last 10 by default)
 - ✅ Architectural decisions made
 - ✅ Mentioned Tech Packs
-- ✅ Generated files
+- ✅ Generated archivos
 
 ### Context Window
 
@@ -164,18 +164,18 @@ FastAPI or Flask? Other factors to consider?
 **When to do it:**
 - Conversation drifted from original topic
 - AI starts giving contradictory responses
-- You change phase (e.g., Governance → Architecture)
+- You change fase (e.g., Governance → Architecture)
 
 **How to do it:**
-1. Click `[🗑️]` (clear button)
-2. Confirm: "This will delete current history"
+1. Click `[🗑️]` (clear botón)
+2. Confirm: "This will eliminar current history"
 3. AI restarts with clean context
 
-**⚠️ Warning:** Previous decisions are NOT deleted (saved in files).
+**⚠️ Warning:** Anterior decisions are NOT eliminard (saved in archivos).
 
 ---
 
-## ⚡ Advanced Features
+## ⚡ Avanzado Features
 
 ### 1. **Response Streaming**
 
@@ -190,9 +190,9 @@ Click `[⏹️ Stop]` or press `Esc`
 
 ---
 
-### 2. **Inline Generated Files**
+### 2. **Inline Generated Archivos**
 
-AI generates Markdown files automatically:
+AI generates Markdown archivos automatically:
 
 ```
 🤖 SoftArchitect AI:
@@ -204,13 +204,13 @@ AI generates Markdown files automatically:
 **Available actions:**
 - **Click:** Open in integrated editor
 - **Hover:** Quick preview
-- **Right-click:** Download, copy link, delete
+- **Right-click:** Download, copy link, eliminar
 
 ---
 
 ### 3. **Smart Suggestions**
 
-System detects patterns and suggests next steps:
+System detects patterns and suggests siguiente steps:
 
 ```
 💡 Suggestion: "It seems you haven't defined non-functional requirements yet.
@@ -223,7 +223,7 @@ System detects patterns and suggests next steps:
 
 ### 4. **Multi-Channel Mode**
 
-Parallel conversations per phase:
+Parallel conversations per fase:
 
 ```
 Channels:
@@ -247,7 +247,7 @@ Click on channel name in top bar.
 | `Esc` | Stop streaming |
 | `Ctrl + ↑/↓` | Navigate history |
 | `Ctrl + S` | Save conversation |
-| `Ctrl + N` | New project |
+| `Ctrl + N` | New proyecto |
 
 ---
 
@@ -376,9 +376,9 @@ MongoDB would be better if:
 
 ---
 
-## 📚 Related Documents
+## 📚 Related Documentos
 
-- [Master Workflow](04-MASTER_WORKFLOW.md) - Understand the 4 phases
+- [Master Workflow](04-MASTER_WORKFLOW.md) - Understand the 4 fases
 - [Streaming](06-STREAMING_RESPONSES.md) - Technical streaming details
 - [Troubleshooting](08-TROUBLESHOOTING.md) - If AI doesn't respond
 

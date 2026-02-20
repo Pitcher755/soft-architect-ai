@@ -1,4 +1,4 @@
-# 🎨 Propuestas de Mejora: HU-3.x Project-First Paradigm
+# 🎨 Propuestas de Mejora: HU-3.x Proyecto-First Paradigm
 
 > **Fecha:** 02/02/2026
 > **Estado:** 💡 PROPUESTAS EN REVISIÓN
@@ -13,7 +13,7 @@
 2. [Mejoras en Arquitectura de Backend](#-mejoras-en-arquitectura-de-backend)
 3. [Mejoras en Experiencia de Usuario](#-mejoras-en-experiencia-de-usuario)
 4. [Mejoras en Seguridad](#-mejoras-en-seguridad)
-5. [Mejoras en Testing](#-mejoras-en-testing)
+5. [Mejoras en Pruebaing](#-mejoras-en-pruebaing)
 6. [Trade-offs y Alternativas](#-trade-offs-y-alternativas)
 
 ---
@@ -25,9 +25,9 @@
 **Mejora sobre lo propuesto:**
 
 Agregar un "Quick Access" panel que muestre:
-- Documentos completados vs. pendientes (progress bar)
+- Documentoos completados vs. pendientes (progress bar)
 - Últimas interacciones (avatar + timestamp)
-- Botón rápido "Generate Next Missing Doc"
+- Botón rápido "Generate Siguiente Missing Doc"
 
 **Código Concepto (Dart):**
 
@@ -63,13 +63,13 @@ class ProjectDashboard extends ConsumerWidget {
 ```
 
 **Beneficios:**
-- Usuario ve en tiempo real qué documentos faltan
-- "Generate Next" no requiere pregunta (IA lo sugiere automáticamente)
+- Usuario ve en tiempo real qué documentoos faltan
+- "Generate Siguiente" no requiere pregunta (IA lo sugiere automáticamente)
 - Validación visual: progreso tangible
 
 ---
 
-### 2. Document Proposal Widget (Enhanced)
+### 2. Documento Proposal Widget (Enhanced)
 
 **Propuesta Mejorada:**
 
@@ -198,7 +198,7 @@ class _DocumentProposalWidgetState extends State<DocumentProposalWidget> {
 
 ---
 
-### 3. Sidebar Project Organization
+### 3. Sidebar Proyecto Organization
 
 **Mejora Propuesta:**
 
@@ -221,7 +221,7 @@ Archivados (3)
 
 ## 🏗️ Mejoras en Arquitectura de Backend
 
-### 1. ProjectMetadataService (Nueva abstracción)
+### 1. ProyectoMetadataService (Nueva abstracción)
 
 **Propuesta:**
 
@@ -304,7 +304,7 @@ class ProjectMetadataService:
 
 ---
 
-### 2. DocumentProposalService (Nueva capa de negocio)
+### 2. DocumentoProposalService (Nueva capa de negocio)
 
 **Propuesta:**
 
@@ -416,7 +416,7 @@ class DocumentProposalService:
 
 ---
 
-### 3. Endpoint Mejorado: `/api/v1/projects/{id}/chat/stream`
+### 3. Endpoint Mejorado: `/api/v1/proyectos/{id}/chat/stream`
 
 **Propuesta:**
 
@@ -444,7 +444,7 @@ async def chat_with_project_stream(
     Retorna: SSE stream
     ```
     data: {"type": "text", "content": "Lorem ipsum..."}
-    data: {"type": "document_proposal", "proposal": {...}}
+    data: {"type": "documento_proposal", "proposal": {...}}
     ```
     """
 
@@ -549,7 +549,7 @@ async def validate_and_save_document(
 
 ## 🎯 Mejoras en Experiencia de Usuario
 
-### 1. "Project Wizard" (Onboarding Mejorado)
+### 1. "Proyecto Wizard" (Onboarding Mejorado)
 
 **Propuesta:**
 
@@ -576,11 +576,11 @@ Step 4: "Configuración de IA"
 └─ Cloud (Groq): Más rápido
 ```
 
-Resultado: proyecto pre-poblado con ciertos documentos sugeridos.
+Resultadoado: proyecto pre-poblado con ciertos documentoos sugeridos.
 
 ---
 
-### 2. "Document Generation Timeline"
+### 2. "Documento Generation Timeline"
 
 **Propuesta:**
 
@@ -608,7 +608,7 @@ Fase 3: Implementación
 ```
 
 **Beneficios:**
-- Usuario ve dependencias entre documentos
+- Usuario ve dependencias entre documentoos
 - Puede generar en orden recomendado
 - Motivación (progreso visible)
 
@@ -718,9 +718,9 @@ async def write_validated_document(self, project_path: str, ...) -> FileWriteRes
 
 ---
 
-## 🧪 Mejoras en Testing
+## 🧪 Mejoras en Pruebaing
 
-### 1. Test Strategy para FileSystemService
+### 1. Prueba Strategy para ArchivoSystemService
 
 **Propuesta:**
 
@@ -838,7 +838,7 @@ class TestFileSystemService:
         context_dir.chmod(0o755)
 ```
 
-### 2. Integration Tests
+### 2. Integración Pruebas
 
 **Propuesta:**
 
@@ -917,9 +917,9 @@ async def test_full_project_workflow(
 
 ---
 
-### Trade-off 2: FileSystemService vs. DatabaseCentric
+### Trade-off 2: ArchivoSystemService vs. DatabaseCentric
 
-**Opción A (Propuesta):** File system como source of truth
+**Opción A (Propuesta):** Archivo system como source of truth
 - ✅ Usuario ve archivos en su carpeta (tangible)
 - ✅ Compatible con Git (fácil versionado)
 - ✅ Portable (mover carpeta = mover proyecto)
@@ -928,10 +928,10 @@ async def test_full_project_workflow(
 **Opción B (Alternativa):** SQLite como source of truth
 - ✅ Más simple de gestionar
 - ✅ Queries más rápidas
-- ❌ Usuario nunca ve los "documentos reales"
+- ❌ Usuario nunca ve los "documentoos reales"
 - ❌ Acoplamiento a BD
 
-**Recomendación:** Opción A (File system) alineado con visión "local-first".
+**Recomendación:** Opción A (Archivo system) alineado con visión "local-first".
 
 ---
 
@@ -939,7 +939,7 @@ async def test_full_project_workflow(
 
 **Opción A (Propuesta):** 70 pts (descomposición en 5 HUs)
 - ✅ Más realista
-- ✅ Más testeable
+- ✅ Más pruebaeable
 - ❌ Añade "overhead" (más HUs = más PR reviews)
 
 **Opción B (Alternativa):** 50 pts (mantener 3 HUs)
@@ -956,12 +956,12 @@ async def test_full_project_workflow(
 | Mejora | Complejidad | Impacto | Prioridad |
 |--------|-------------|--------|-----------|
 | **Edit Mode** | Medio | Alto | 1 |
-| **ProjectMetadataService** | Medio | Medio | 2 |
-| **DocumentProposalService** | Bajo | Alto | 1 |
-| **Project Wizard** | Bajo | Bajo | 3 |
+| **ProyectoMetadataService** | Medio | Medio | 2 |
+| **DocumentoProposalService** | Bajo | Alto | 1 |
+| **Proyecto Wizard** | Bajo | Bajo | 3 |
 | **Timeline Checklist** | Bajo | Medio | 2 |
 | **Path Validation** | Bajo | Alto | 1 |
-| **Comprehensive Tests** | Medio | Alto | 1 |
+| **Comprehensive Pruebas** | Medio | Alto | 1 |
 
 ---
 
@@ -969,10 +969,10 @@ async def test_full_project_workflow(
 
 1. **Implementar Opción B (5 HUs)** con estimación 70 pts
 2. **Agregar Edit Mode** a HU-3.3 (impacto alto, no mucho overhead)
-3. **Crear DocumentProposalService** como arquitectura limpia (Use Case)
-4. **Inversión en Tests** desde day 1 (especialmente FileSystemService)
+3. **Crear DocumentoProposalService** como arquitectura limpia (Use Case)
+4. **Inversión en Pruebas** desde day 1 (especialmente ArchivoSystemService)
 5. **Path Validation** es crítica (seguridad del usuario)
 
 ---
 
-**Documento preparado para integración en decisiones arquitectónicas.**
+**Documentoo preparado para integración en decisiones arquitectónicas.**

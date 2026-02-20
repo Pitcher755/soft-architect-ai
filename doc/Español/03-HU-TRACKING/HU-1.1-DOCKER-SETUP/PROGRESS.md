@@ -16,7 +16,7 @@
 ## 📋 FASE 0: PREPARACIÓN INICIAL
 
 **Tiempo estimado:** 15 minutos
-**Status:** ✅ COMPLETADA (Esperando validación)
+**Estado:** ✅ COMPLETADA (Esperando validación)
 
 ### ✅ 0.1 - Crear rama feature desde develop
 - [x] Rama `feature/infra-docker-setup` creada
@@ -27,12 +27,12 @@
 ### ✅ 0.2 - Crear estructura de directorios base
 - [x] `infrastructure/data/chromadb/` creado
 - [x] `infrastructure/data/ollama/` creado
-- [x] `tests/integration/` creado
+- [x] `pruebas/integration/` creado
 - [x] `src/server/docker/` creado
 - [x] Permisos corregidos (pitcherdev ownership)
-- [x] Documentación en `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/` creada
+- [x] Documentoación en `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/` creada
 
-### ✅ 0.3 - Documentar pre-requisitos
+### ✅ 0.3 - Documentoar pre-requisitos
 - [x] `README.md` (Descripción de HU)
 - [x] `PROGRESS.md` (Este archivo - Checklist)
 - [x] `ARTIFACTS.md` (Archivos a generar)
@@ -40,10 +40,10 @@
 
 ---
 
-## 🔴 FASE 1: TDD - TEST FIRST (Red Phase)
+## 🔴 FASE 1: TDD - TEST FIRST (Red Fase)
 
 **Tiempo estimado:** 1-1.5 horas
-**Status:** ⏳ PENDIENTE
+**Estado:** ⏳ PENDIENTE
 
 ### Pre-Requisito: Validar Fase 0
 - [ ] **Esperando validación del usuario...**
@@ -53,34 +53,34 @@
 
 Si todo está OK, proceder a:
 
-### 1.1 - Pre-Test: Verificar Pre-requisitos
+### 1.1 - Pre-Prueba: Verificar Pre-requisitos
 - [ ] `infrastructure/pre_check.py` creado
 - [ ] Script verifica Docker instalado
 - [ ] Script verifica puertos (8000, 8001, 11434) disponibles
 - [ ] Script verifica `.env` existe
-- [ ] **Resultado esperado:** 🔴 FALLA (porque Docker Compose aún no está activo)
+- [ ] **Resultadoado esperado:** 🔴 FALLA (porque Docker Compose aún no está activo)
 
-### 1.2 - Post-Test: Verificar Stack Online
+### 1.2 - Post-Prueba: Verificar Stack Online
 - [ ] `infrastructure/verify_setup.py` creado
 - [ ] Script valida servicios respondiendo (3 puertos)
 - [ ] Script con reintentos (espera a que servicios arranquen)
-- [ ] **Resultado esperado:** 🔴 FALLA (porque servicios no están levantados)
+- [ ] **Resultadoado esperado:** 🔴 FALLA (porque servicios no están levantados)
 
 ### 1.3 - Definir Variables de Entorno
 - [ ] `.env.example` actualizado/mejorado
-- [ ] Todas las variables documentadas
+- [ ] Todas las variables documentoadas
 - [ ] Valores por defecto sensatos
 - [ ] Notas sobre secretos en comentarios
 
 ---
 
-## 🟢 FASE 2: IMPLEMENTACIÓN (Green Phase)
+## 🟢 FASE 2: IMPLEMENTACIÓN (Green Fase)
 
 **Tiempo estimado:** 2-3 horas
-**Status:** ⏳ PENDIENTE
+**Estado:** ⏳ PENDIENTE
 
-### 2.1 - Revisar/Mejorar Dockerfile del Backend
-- [ ] `src/server/Dockerfile` revisado
+### 2.1 - Revisar/Mejorar Dockerarchivo del Backend
+- [ ] `src/server/Dockerarchivo` revisado
 - [ ] Multi-stage build implementado
 - [ ] Usuario non-root configurado (appuser)
 - [ ] HEALTHCHECK definido
@@ -128,15 +128,15 @@ Si todo está OK, proceder a:
 ## 🔵 FASE 3: HARDENING Y SEGURIDAD
 
 **Tiempo estimado:** 45 minutos
-**Status:** ⏳ PENDIENTE
+**Estado:** ⏳ PENDIENTE
 
 ### 3.1 - .dockerignore en raíz
 - [ ] `.dockerignore` creado
-- [ ] Excluye `.git`, `.env`, `tests/`, `node_modules/`
+- [ ] Excluye `.git`, `.env`, `pruebas/`, `node_modules/`
 
 ### 3.2 - Verificar NO hay hardcoded secrets
 - [ ] Review `docker-compose.yml` - Solo `${VAR}`
-- [ ] Review `Dockerfile` - Sin passwords
+- [ ] Review `Dockerarchivo` - Sin passwords
 - [ ] Review `requirements.txt` - Sin credenciales
 
 ### 3.3 - Permisos de datos
@@ -148,7 +148,7 @@ Si todo está OK, proceder a:
 ## 📝 FASE 4: DOCUMENTACIÓN
 
 **Tiempo estimado:** 1 hora
-**Status:** ⏳ PENDIENTE
+**Estado:** ⏳ PENDIENTE
 
 ### 4.1 - Actualizar SETUP_GUIDE.es.md
 - [ ] Sección "HU-1.1: Levantamiento de Infraestructura" agregada
@@ -165,15 +165,15 @@ Si todo está OK, proceder a:
 ### 4.3 - Crear DOCKER_SETUP_LOG.md
 - [ ] `doc/01-PROJECT_REPORT/DOCKER_SETUP_LOG.md` creado
 - [ ] Artifacts listados
-- [ ] Validation results documentados
-- [ ] Security verification incluida
+- [ ] Validation results documentoados
+- [ ] Security verificación incluida
 
 ---
 
 ## ✅ FASE 5: VALIDACIÓN Y TESTING
 
 **Tiempo estimado:** 1 hora
-**Status:** ⏳ PENDIENTE
+**Estado:** ⏳ PENDIENTE
 
 ### 5.1 - Ejecutar Pre-Check
 - [ ] `python3 infrastructure/pre_check.py` ejecutado
@@ -212,7 +212,7 @@ Si todo está OK, proceder a:
 ## 📋 FASE 6: GIT & CODE REVIEW
 
 **Tiempo estimado:** 30 minutos
-**Status:** ⏳ PENDIENTE
+**Estado:** ⏳ PENDIENTE
 
 ### 6.1 - Preparar Commit
 - [ ] `git add -A` todos los cambios staged
@@ -247,7 +247,7 @@ Cuando se marquen todos estos ✅, HU-1.1 está **COMPLETADA**:
 - [ ] Puertos 8000, 8001, 11434 expuestos y responden
 - [ ] Volúmenes persistidos en `./infrastructure/data/`
 - [ ] Healthchecks en cada servicio
-- [ ] `.env.example` documentado
+- [ ] `.env.example` documentoado
 - [ ] No hay secrets en git
 - [ ] Backend corre como non-root
 - [ ] PR abierta y aprobada
@@ -257,4 +257,4 @@ Cuando se marquen todos estos ✅, HU-1.1 está **COMPLETADA**:
 ---
 
 **Última Actualización:** 29 de Enero de 2026
-**Status:** 🔄 FASE 0 EN VALIDACIÓN
+**Estado:** 🔄 FASE 0 EN VALIDACIÓN

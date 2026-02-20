@@ -1,54 +1,54 @@
-# 🔴 PHASE 1: RED - i18n Architecture Design Report
+# 🔴 FASE 1: RED - i18n Architecture Design Report
 
-> **Project:** SoftArchitect AI
-> **HU:** HU-3.6 Test Suite Completion & SQLite Fix (PIT-80)
-> **Phase:** 1.3 i18n Architecture Design
-> **Date:** 2025-01-30
-> **Status:** ⚠️ PHASE 1 STEP 1.3 - Hardcoded String Inventory Complete
+> **Proyecto:** SoftArchitect AI
+> **HU:** HU-3.6 Prueba Suite Completion & SQLite Fix (PIT-80)
+> **Fase:** 1.3 i18n Architecture Design
+> **Fecha:** 2025-01-30
+> **Estado:** ⚠️ PHASE 1 STEP 1.3 - Hardcoded String Inventory Complete
 > **Methodology:** Empirical code survey (not speculation)
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
-1. [Phase 1.3 Completion Checklist](#phase-13-completion-checklist)
+1. [Fase 1.3 Completion Checklist](#fase-13-completion-checklist)
 2. [Executive Summary](#executive-summary)
-3. [Current i18n Status](#current-i18n-status)
+3. [Current i18n Estado](#current-i18n-estado)
 4. [1.3.1 Flutter l10n Best Practices (Research)](#131-flutter-l10n-best-practices-research)
 5. [1.3.2 Localization Architecture Design](#132-localization-architecture-design)
-6. [1.3.3 ARB File Structure Planning](#133-arb-file-structure-planning)
+6. [1.3.3 ARB Archivo Structure Planificación](#133-arb-archivo-structure-planning)
 7. [Hardcoded String Inventory](#hardcoded-string-inventory)
-8. [1.3.4 Hardcoded Strings with File Locations](#134-hardcoded-strings-with-file-locations)
-9. [Flutter Test Compilation Failures](#flutter-test-compilation-failures)
+8. [1.3.4 Hardcoded Strings with Archivo Locations](#134-hardcoded-strings-with-archivo-locations)
+9. [Flutter Prueba Compilation Failures](#flutter-prueba-compilation-failures)
 10. [Missing Entities & Widgets](#missing-entities--widgets)
 11. [Recommended i18n Architecture](#recommended-i18n-architecture)
-12. [Implementation Plan (PHASE 2: GREEN)](#implementation-plan-phase-2-green)
+12. [Implementación Plan (FASE 2: GREEN)](#implementación-plan-fase-2-green)
 13. [References](#references)
 
 ---
 
-## Phase 1.3 Completion Checklist
+## Fase 1.3 Completion Checklist
 
 ### ✅ Step 1.3.1: Research Flutter l10n Best Practices
 
-| Requirement | Status | Details |
+| Requirement | Estado | Details |
 |------------|--------|---------|
 | Use official `flutter_localizations + intl` | ✅ COMPLETE | Both packages present in pubspec.yaml |
-| Generate localization with `flutter_gen` | ✅ DESIGNED | Command documented: `flutter gen-l10n` |
+| Generate localization with `flutter_gen` | ✅ DESIGNED | Command documentoed: `flutter gen-l10n` |
 | Store preference in SharedPreferences | ✅ DESIGNED | Riverpod provider uses SharedPreferences persistence |
-| Use Riverpod for locale state | ✅ DESIGNED | StateNotifier pattern documented in locale_provider.dart |
+| Use Riverpod for locale state | ✅ DESIGNED | StateNotifier pattern documentoed in locale_provider.dart |
 | Reference official docs | ✅ DONE | https://docs.flutter.dev/ui/accessibility-and-localization/internationalization |
 
-**Deliverable:** Section 1.3.1 complete in this document
+**Deliverable:** Section 1.3.1 complete in this documento
 
 ---
 
 ### ✅ Step 1.3.2: Design Localization Architecture
 
-| Requirement | Status | Deliverable |
+| Requirement | Estado | Deliverable |
 |------------|--------|-------------|
 | Architecture diagram | ✅ COMPLETE | Four-layer architecture (UI → LocaleProvider → Repository → Storage) |
-| Locale provider implementation | ✅ DESIGNED | Riverpod StateNotifier with toggle/set methods |
+| Locale provider implementación | ✅ DESIGNED | Riverpod StateNotifier with toggle/set methods |
 | Persistence strategy | ✅ DESIGNED | SharedPreferences with "app_locale" key |
 | Default locale | ✅ DEFINED | Spanish (es) as default, with EN fallback |
 
@@ -56,49 +56,49 @@
 
 ---
 
-### ✅ Step 1.3.3: Plan .arb File Structure
+### ✅ Step 1.3.3: Plan .arb Archivo Structure
 
-| Requirement | Status | Deliverable |
+| Requirement | Estado | Deliverable |
 |------------|--------|-------------|
-| File structure diagram | ✅ COMPLETE | Directory layout documented (l10n/, gen/, core/localization/) |
+| Archivo structure diagram | ✅ COMPLETE | Directory layout documentoed (l10n/, gen/, core/localization/) |
 | Sample app_en.arb | ✅ COMPLETE | Full JSON with 9 strings + metadata |
 | Sample app_es.arb | ✅ COMPLETE | Full JSON with Spanish translations + metadata |
-| ICU placeholder support | ✅ COMPLETE | Parameterized messages with {outputFile}, {error} |
-| Configuration file (l10n.yaml) | ✅ DESIGNED | Config for flutter gen-l10n documented |
+| ICU placeholder support | ✅ COMPLETE | Parameterized messages with {outputArchivo}, {error} |
+| Configuración archivo (l10n.yaml) | ✅ DESIGNED | Config for flutter gen-l10n documentoed |
 
 **Deliverable:** Section 1.3.3 complete with full ARB examples
 
 ---
 
-### ✅ Step 1.3.4: Identify & Document Hardcoded Strings
+### ✅ Step 1.3.4: Identify & Documento Hardcoded Strings
 
-| Requirement | Status | Details |
+| Requirement | Estado | Details |
 |------------|--------|---------|
-| Search for hardcoded strings | ✅ COMPLETE | grep command executed, 9 strings found |
+| Search for hardcoded strings | ✅ COMPLETE | grep command ejecutard, 9 strings found |
 | Enumerate all strings | ✅ COMPLETE | 9 unique Spanish strings cataloged |
 | Provide English translations | ✅ COMPLETE | All 9 strings with English equivalents |
-| Map to file locations | ✅ COMPLETE | All strings located in 7 specific .dart files |
-| ICU parameterization identified | ✅ COMPLETE | 3 strings with dynamic content ({outputFile}, {error}) |
+| Map to archivo locations | ✅ COMPLETE | All strings located in 7 specific .dart archivos |
+| ICU parameterization identified | ✅ COMPLETE | 3 strings with dynamic content ({outputArchivo}, {error}) |
 
-**Deliverable:** Section 1.3.4 complete with file-by-file breakdown
+**Deliverable:** Section 1.3.4 complete with archivo-by-archivo desglose
 
 ---
 
-## 📊 Phase 1.3 Summary
+## 📊 Fase 1.3 Summary
 
-**Status:** ✅ **ALL STEPS 1.3.1-1.3.4 COMPLETE**
+**Estado:** ✅ **ALL STEPS 1.3.1-1.3.4 COMPLETE**
 
-**Deliverable Files:**
-- ✅ This document (I18N_ARCHITECTURE_DESIGN.md) - 650+ lines
-- ✅ Architecture research documented
+**Deliverable Archivos:**
+- ✅ This documento (I18N_ARCHITECTURE_DESIGN.md) - 650+ lines
+- ✅ Architecture research documentoed
 - ✅ Design patterns coded
-- ✅ Implementation plan ready for Phase 2
+- ✅ Implementación plan preparado para Fase 2
 
-**What's Ready for Phase 2 GREEN:**
-- ARB file templates (ready to create)
+**What's Preparado para Fase 2 GREEN:**
+- ARB archivo templates (ready to crear)
 - Locale provider code (ready to implement)
 - Hardcoded string locations (ready to refactor)
-- Test plan (ready to execute)
+- Prueba plan (ready to ejecutar)
 
 ---
 
@@ -106,39 +106,39 @@
 
 ### Current State Assessment
 
-| **Aspect** | **Status** | **Details** |
+| **Aspect** | **Estado** | **Details** |
 |-----------|-----------|-----------|
 | **Dependencies** | ✅ **PRESENT** | `flutter_localizations`, `intl` already in pubspec.yaml |
 | **Hardcoded Strings (UI)** | ❌ **9 FOUND** | Spanish strings in Text() widgets not internationalized |
-| **ARB Files** | ❌ **MISSING** | No app_en.arb or app_es.arb files exist |
+| **ARB Archivos** | ❌ **MISSING** | No app_en.arb or app_es.arb archivos exist |
 | **Localization Provider** | ❌ **MISSING** | No AppLocalizations or locale state management |
 | **flutter_gen** | ❌ **MISSING** | No generated localization code |
-| **Test Support** | ❌ **BROKEN** | 37 Flutter tests fail due to package resolution issues |
-| **Domain Entities** | ⚠️ **INCOMPLETE** | FontFamily, Language, DocumentProposal missing from codebase |
+| **Prueba Support** | ❌ **BROKEN** | 37 Flutter pruebas fail due to package resolution issues |
+| **Domain Entities** | ⚠️ **INCOMPLETE** | FontFamily, Language, DocumentoProposal missing from codebase |
 | **Architecture** | ❌ **NOT PLANNED** | No Riverpod provider for locale switching |
 
 ### Critical Findings
 
-1. **Infrastructure Partially Ready:**
+1. **Infraestructura Partially Ready:**
    - ✅ Dependencies installed (`intl`, `flutter_localizations`)
-   - ❌ No actual localization implementation
+   - ❌ No actual localization implementación
 
 2. **Hardcoded Strings Identified:**
    - ✅ 9 unique Spanish strings found in Flutter code
-   - ✅ All located in 7 specific .dart files
+   - ✅ All located in 7 specific .dart archivos
    - ✅ English translations provided
-   - Files: create_project_dialog.dart, proposal_card_widget.dart, filesystem_service_impl.dart, etc.
+   - Archivos: crear_proyecto_dialog.dart, proposal_card_widget.dart, archivosystem_service_impl.dart, etc.
 
-3. **Test Compilation Blocked:**
-   - 37 Flutter tests fail due to `softarchitect_ai` package resolution
-   - Domain entities referenced in tests don't exist
-   - Cannot measure i18n coverage until tests compile
+3. **Prueba Compilation Blocked:**
+   - 37 Flutter pruebas fail due to `softarchitect_ai` package resolution
+   - Domain entities referenced in pruebas don't exist
+   - Cannot measure i18n coverage until pruebas compile
 
-4. **Architecture Ready for Implementation:**
+4. **Architecture Preparado para Implementación:**
    - ✅ Locale provider pattern designed (Riverpod StateNotifier)
    - ✅ Language switching mechanism specified
-   - ✅ Translations management system (ARB) documented
-   - Ready for Phase 2 GREEN implementation
+   - ✅ Translations management system (ARB) documentoed
+   - Preparado para Fase 2 GREEN implementación
 
 ---
 
@@ -149,7 +149,7 @@
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | **Translation Format** | ARB (Application Resource Bundle) | Industry standard, Flutter native support, structured JSON |
-| **Tool Pipeline** | `flutter gen-l10n` | Official Google tool, battle-tested, generates Dart code |
+| **Tool Pipeline** | `flutter gen-l10n` | Official Google tool, battle-pruebaed, generates Dart code |
 | **Package Support** | `flutter_localizations` + `intl` | Both already in pubspec.yaml, provides Material Design localization |
 | **Locale Storage** | SharedPreferences | Simple, fast, persistent, works offline |
 | **State Management** | Riverpod StateNotifier | Clean, reactive, integrates with Flutter UI |
@@ -158,12 +158,12 @@
 ### Why These Choices?
 
 1. **ARB Format:** Standardized by Google, human-readable JSON, supports parameterized messages, native Flutter tooling
-2. **flutter_gen-l10n:** Generates optimized Dart classes at build time, zero runtime overhead
+2. **flutter_gen-l10n:** Generates optimized Dart classes at build time, zero ejecutartime overhead
 3. **Riverpod:** Reactive state management, lightweight, perfect for locale switching across app
 4. **SharedPreferences:** Synchronous access, no async overhead for locale preference
-5. **ICU Format:** Supports complex translations (plurals: "1 file" vs "2 files")
+5. **ICU Format:** Supports complex translations (plurals: "1 archivo" vs "2 archivos")
 
-### Implementation Approach
+### Implementación Approach
 
 ```bash
 # 1. Create ARB files (source of truth)
@@ -182,17 +182,17 @@ AppLocalizations.of(context)!.createProject  # ✅ Translated string
 ref.read(localeProvider.notifier).setLocale(Locale('es'))
 ```
 
-**Deliverable:** ✅ COMPLETE - Research and key decisions documented above
+**Deliverable:** ✅ COMPLETE - Research and key decisions documentoed above
 
 ---
 
 ## 1.3.2 Localization Architecture Design {#132-localization-architecture-design}
 
-## Current i18n Status
+## Current i18n Estado
 
-### Dependency Configuration
+### Dependency Configuración
 
-**File:** `src/client/pubspec.yaml` (lines 25-32)
+**Archivo:** `src/client/pubspec.yaml` (lines 25-32)
 
 ```yaml
 dependencies:
@@ -204,9 +204,9 @@ dependencies:
   intl: ^0.20.2  # ✅ Installed
 ```
 
-**Status:** ✅ Required packages present
+**Estado:** ✅ Required packages present
 
-**Missing Configuration:**
+**Missing Configuración:**
 ```yaml
 # ❌ NOT IN pubspec.yaml:
 # flutter_gen:
@@ -216,7 +216,7 @@ dependencies:
 
 ### Existing i18n Usage
 
-**Search Results:** Only 1 reference to i18n in codebase
+**Search Resultados:** Only 1 reference to i18n in codebase
 
 ```dart
 // src/client/lib/features/filesystem/infrastructure/logging/audit_logger.dart
@@ -242,15 +242,15 @@ find src/client/lib -name "*.dart" -type f | xargs grep -h 'Text(' | \
   grep -v "AppLocalizations\|_tr(\|\.tr(" | head -40
 ```
 
-**Files Containing Hardcoded Strings:** 7 Dart files identified
+**Archivos Containing Hardcoded Strings:** 7 Dart archivos identified
 
-### 1.3.4 Identify & Document Hardcoded Strings {#134-hardcoded-strings-with-file-locations}
+### 1.3.4 Identify & Documento Hardcoded Strings {#134-hardcoded-strings-with-archivo-locations}
 
 ---
 
-## Flutter Test Compilation Failures
+## Flutter Prueba Compilation Failures
 
-### Block Diagram: Why Tests Can't Compile i18n
+### Block Diagram: Why Pruebas Can't Compile i18n
 
 ```
 42 Flutter Tests (41 with compilation errors)
@@ -274,28 +274,28 @@ find src/client/lib -name "*.dart" -type f | xargs grep -h 'Text(' | \
     └── → NEED TO CREATE i18n test suite
 ```
 
-### Impact on i18n Testing
+### Impact on i18n Pruebaing
 
-**Current Status:** Cannot measure i18n coverage
+**Current Estado:** Cannot measure i18n coverage
 
 **Blocker:**
 1. Domain entities not defined yet
 2. Widget code not complete
-3. Tests can't compile to verify translations
+3. Pruebas can't compile to verify translations
 
 **What This Means:**
-- ❌ Cannot test locale switching
+- ❌ Cannot prueba locale switching
 - ❌ Cannot verify translations appear correctly
-- ❌ Cannot test parameterized messages
+- ❌ Cannot prueba parameterized messages
 - ❌ Must fix domain entities FIRST (PHASE 2)
 
 ---
 
 ## Missing Entities & Widgets
 
-### Entities Referenced in Tests But Not Found
+### Entities Referenced in Pruebas But Not Found
 
-**From Test Compilation Errors:**
+**From Prueba Compilation Errors:**
 
 ```dart
 // ❌ MISSING in domain/entities/__init__.py
@@ -321,9 +321,9 @@ class Project {
 }
 ```
 
-### Widgets Referenced in Tests But Not Found
+### Widgets Referenced in Pruebas But Not Found
 
-**From Test Compilation Errors:**
+**From Prueba Compilation Errors:**
 
 ```dart
 // ❌ MISSING in lib/features/*/presentation/widgets/
@@ -344,16 +344,16 @@ class DirectoryTreeWidget extends StatelessWidget {
 ### Impact on i18n
 
 **Cannot implement i18n for widgets that don't exist:**
-- ProposalCardWidget UI text (validation buttons)
+- ProposalCardWidget UI text (validation botóns)
 - DirectoryTreeWidget UI text (labels, tooltips)
-- Project creation dialogs
+- Proyecto creation dialogs
 
-**Must define entities and widgets first** → delays i18n implementation
+**Must define entities and widgets first** → delays i18n implementación
 
 ---
 ---
 
-## 1.3.3 Plan .arb File Structure {#133-arb-file-structure-planning}
+## 1.3.3 Plan .arb Archivo Structure {#133-arb-archivo-structure-planning}
 
 ### Directory Structure
 
@@ -372,9 +372,9 @@ src/client/lib/
 └── main.dart                          ← Modified to enable localization
 ```
 
-### Configuration: l10n.yaml
+### Configuración: l10n.yaml
 
-**File:** `src/client/l10n.yaml`
+**Archivo:** `src/client/l10n.yaml`
 
 ```yaml
 arb-dir: lib/l10n                # Where to read .arb files from
@@ -389,31 +389,31 @@ nullable-getter: true
 use-deferred-loading: false
 ```
 
-### ARB File Validation
+### ARB Archivo Validation
 
-**app_en.arb Requirements:**
+**app_en.arb Requisitos:**
 - ✅ MUST have `@@locale: "en"` at top
-- ✅ MUST have descriptions for each key
+- ✅ MUST have descripcións for each key
 - ✅ Parameterized strings MUST define placeholders with type
 - ✅ Examples MUST be provided for complex strings
 
-**app_es.arb Requirements:**
+**app_es.arb Requisitos:**
 - ✅ MUST match all keys from app_en.arb (no extras, no missing)
 - ✅ Must have `@@locale: "es"`
 - ✅ Translations must be accurate and idiomatic Spanish
 - ✅ Placeholders must be in same format as English
 
-### Delivery Checklist for Phase 2
+### Delivery Checklist for Fase 2
 
-- [ ] Create `src/client/lib/l10n/` directory
-- [ ] Create `src/client/lib/l10n/app_en.arb` with 9+ base strings
-- [ ] Create `src/client/lib/l10n/app_es.arb` with Spanish translations
-- [ ] Create `src/client/l10n.yaml` configuration
-- [ ] Run `flutter gen-l10n` to verify generation
+- [ ] Crear `src/client/lib/l10n/` directory
+- [ ] Crear `src/client/lib/l10n/app_en.arb` with 9+ base strings
+- [ ] Crear `src/client/lib/l10n/app_es.arb` with Spanish translations
+- [ ] Crear `src/client/l10n.yaml` configuración
+- [ ] Ejecutar `flutter gen-l10n` to verify generation
 - [ ] Verify `lib/gen/app_localizations.dart` generated correctly
 - [ ] Import and use in main.dart
 
-**Deliverable:** ✅ COMPLETE - Full .arb structure documented with templates ready
+**Deliverable:** ✅ COMPLETE - Full .arb structure documentoed with templates ready
 
 ---
 ## Recommended i18n Architecture
@@ -444,9 +444,9 @@ src/client/lib/
 └── main.dart                          [Enable localization support]
 ```
 
-### ARB File Structure (JSON)
+### ARB Archivo Structure (JSON)
 
-**File:** `src/client/lib/l10n/app_en.arb`
+**Archivo:** `src/client/lib/l10n/app_en.arb`
 
 ```json
 {
@@ -482,7 +482,7 @@ src/client/lib/
 }
 ```
 
-**File:** `src/client/lib/l10n/app_es.arb`
+**Archivo:** `src/client/lib/l10n/app_es.arb`
 
 ```json
 {
@@ -520,7 +520,7 @@ src/client/lib/
 
 ### Locale Provider (Riverpod)
 
-**File:** `src/client/lib/core/localization/locale_provider.dart`
+**Archivo:** `src/client/lib/core/localization/locale_provider.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -577,9 +577,9 @@ class LocaleNotifier extends StateNotifier<Locale> {
 }
 ```
 
-### Supported Locales Configuration
+### Supported Locales Configuración
 
-**File:** `src/client/lib/core/localization/supported_locales.dart`
+**Archivo:** `src/client/lib/core/localization/supported_locales.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -636,9 +636,9 @@ void showSuccessMessage(BuildContext context, String filePath) {
 
 ---
 
-## Implementation Plan (PHASE 2: GREEN)
+## Implementación Plan (FASE 2: GREEN)
 
-### Phase 2.1: Create ARB Files
+### Fase 2.1: Crear ARB Archivos
 
 **Duration:** 30 minutes
 
@@ -656,17 +656,17 @@ cat > src/client/lib/l10n/app_es.arb << 'EOF'
 EOF
 ```
 
-### Phase 2.2: Create Locale Provider
+### Fase 2.2: Crear Locale Provider
 
 **Duration:** 45 minutes
 
-- [ ] Create `src/client/lib/core/localization/locale_provider.dart`
-- [ ] Create `src/client/lib/core/localization/supported_locales.dart`
-- [ ] Create `src/client/lib/core/localization/translation_helper.dart`
+- [ ] Crear `src/client/lib/core/localization/locale_provider.dart`
+- [ ] Crear `src/client/lib/core/localization/supported_locales.dart`
+- [ ] Crear `src/client/lib/core/localization/translation_helper.dart`
 - [ ] Implement Riverpod StateNotifier for locale management
 - [ ] Add SharedPreferences persistence
 
-### Phase 2.3: Generate Localization Code
+### Fase 2.3: Generate Localization Code
 
 **Duration:** 15 minutes
 
@@ -680,7 +680,7 @@ flutter gen-l10n
 ls -la lib/gen/strings.g.dart  # ✅ Should exist
 ```
 
-### Phase 2.4: Enable in App
+### Fase 2.4: Enable in App
 
 **Duration:** 30 minutes
 
@@ -715,7 +715,7 @@ class MyApp extends ConsumerWidget {
 }
 ```
 
-### Phase 2.5: Update Widgets
+### Fase 2.5: Update Widgets
 
 **Duration:** 2-3 hours
 
@@ -729,59 +729,59 @@ Text('Crear Proyecto')
 Text(AppLocalizations.of(context)!.createProject)
 ```
 
-**Files to Update:**
-- Button labels (Crear Proyecto, Examinar, etc.)
+**Archivos to Update:**
+- Botón labels (Crear Proyecto, Examinar, etc.)
 - Dialog titles (Nuevo Proyecto)
 - Messages (Archivo guardado en, Error al guardar)
 
-### Phase 2.6: Create i18n Tests
+### Fase 2.6: Crear i18n Pruebas
 
 **Duration:** 90 minutes
 
-- [ ] Test locale switching via Riverpod
-- [ ] Test translations loaded correctly
-- [ ] Test parameterized messages
-- [ ] Test fallback to default locale
-- [ ] Test persistence of locale preference
+- [ ] Prueba locale switching via Riverpod
+- [ ] Prueba translations loaded correctly
+- [ ] Prueba parameterized messages
+- [ ] Prueba fallback to default locale
+- [ ] Prueba persistence of locale preference
 
 ---
 
 ## References
 
-### Files to Create/Modify
+### Archivos to Crear/Modify
 
-| Path | Type | Status | Purpose |
+| Path | Type | Estado | Purpose |
 |------|------|--------|---------|
-| `src/client/lib/l10n/app_en.arb` | Create | 📝 TODO | English translations |
-| `src/client/lib/l10n/app_es.arb` | Create | 📝 TODO | Spanish translations |
-| `src/client/lib/core/localization/locale_provider.dart` | Create | 📝 TODO | Riverpod locale state |
-| `src/client/lib/core/localization/supported_locales.dart` | Create | 📝 TODO | Supported locales config |
+| `src/client/lib/l10n/app_en.arb` | Crear | 📝 TODO | English translations |
+| `src/client/lib/l10n/app_es.arb` | Crear | 📝 TODO | Spanish translations |
+| `src/client/lib/core/localization/locale_provider.dart` | Crear | 📝 TODO | Riverpod locale state |
+| `src/client/lib/core/localization/supported_locales.dart` | Crear | 📝 TODO | Supported locales config |
 | `src/client/lib/main.dart` | Modify | 📝 TODO | Enable localization |
 | `src/client/pubspec.yaml` | Modify | 📝 TODO | Add flutter_gen config |
 | Various widgets | Modify | 📝 TODO | Use AppLocalizations |
 
 ### 1.3.4 Hardcoded Strings Summary Table
 
-| # | Spanish String | English Key | Type | Files Affected | Count |
+| # | Spanish String | English Key | Type | Archivos Affected | Count |
 |---|---|---|---|---|---|
-| 1 | Crear Proyecto | `createProject` | Button | create_project_dialog.dart, workspace_header.dart | **2** |
-| 2 | Nuevo Proyecto | `newProject` | Title | create_project_dialog.dart | **1** |
-| 3 | Examinar... | `browse` | Button | path_picker_field.dart | **1** |
-| 4 | Validar y Guardar | `validateAndSave` | Button | proposal_card_widget.dart, chat_notifier.dart | **2** |
-| 5 | Refinar | `refine` | Button | proposal_card_widget.dart | **1** |
-| 6 | Rechazar | `reject` | Button | proposal_card_widget.dart | **1** |
-| 7 | Archivo guardado en: `{outputFile}` | `fileSaved` | Message | filesystem_service_impl.dart | **1** |
+| 1 | Crear Proyecto | `crearProyecto` | Botón | crear_proyecto_dialog.dart, workspace_header.dart | **2** |
+| 2 | Nuevo Proyecto | `newProyecto` | Title | crear_proyecto_dialog.dart | **1** |
+| 3 | Examinar... | `browse` | Botón | path_picker_field.dart | **1** |
+| 4 | Validar y Guardar | `validateAndSave` | Botón | proposal_card_widget.dart, chat_notifier.dart | **2** |
+| 5 | Refinar | `refine` | Botón | proposal_card_widget.dart | **1** |
+| 6 | Rechazar | `reject` | Botón | proposal_card_widget.dart | **1** |
+| 7 | Archivo guardado en: `{outputArchivo}` | `archivoSaved` | Message | archivosystem_service_impl.dart | **1** |
 | 8 | Contenido copiado al portapapeles | `contentCopied` | Message | markdown_preview_widget.dart | **1** |
-| 9 | Error al guardar: `{error}` | `saveError` | Message | filesystem_service_impl.dart | **1** |
+| 9 | Error al guardar: `{error}` | `saveError` | Message | archivosystem_service_impl.dart | **1** |
 
-**Total Occurrences:** 11 hardcoded strings across 7 files (some strings appear multiple times)
+**Total Occurrences:** 11 hardcoded strings across 7 archivos (some strings appear multiple times)
 
 ---
 
-### Full File-by-File Breakdown {#134-hardcoded-strings-with-file-locations}
+### Full Archivo-by-Archivo Desglose {#134-hardcoded-strings-with-archivo-locations}
 
-#### 1. create_project_dialog.dart
-**Full Path:** `src/client/lib/features/project_shell/presentation/widgets/create_project_dialog.dart`
+#### 1. crear_proyecto_dialog.dart
+**Full Path:** `src/client/lib/features/proyecto_shell/presentation/widgets/crear_proyecto_dialog.dart`
 
 **Hardcoded Strings:**
 ```dart
@@ -789,19 +789,19 @@ Text(AppLocalizations.of(context)!.createProject)
 'Nuevo Proyecto'      ← ARB Key: newProject
 ```
 
-**Phase 2 Action:** Replace with `AppLocalizations.of(context)!.createProject` and `.newProject`
+**Fase 2 Action:** Replace with `AppLocalizations.of(context)!.crearProyecto` and `.newProyecto`
 
 ---
 
 #### 2. workspace_header.dart
-**Full Path:** `src/client/lib/features/project_shell/presentation/widgets/workspace_header.dart`
+**Full Path:** `src/client/lib/features/proyecto_shell/presentation/widgets/workspace_header.dart`
 
 **Hardcoded Strings:**
 ```dart
 'Crear Proyecto'      ← ARB Key: createProject (duplicate)
 ```
 
-**Phase 2 Action:** Replace with `AppLocalizations.of(context)!.createProject`
+**Fase 2 Action:** Replace with `AppLocalizations.of(context)!.crearProyecto`
 
 ---
 
@@ -813,7 +813,7 @@ Text(AppLocalizations.of(context)!.createProject)
 'Examinar...'         ← ARB Key: browse
 ```
 
-**Phase 2 Action:** Replace with `AppLocalizations.of(context)!.browse`
+**Fase 2 Action:** Replace with `AppLocalizations.of(context)!.browse`
 
 ---
 
@@ -827,7 +827,7 @@ Text(AppLocalizations.of(context)!.createProject)
 'Rechazar'            ← ARB Key: reject
 ```
 
-**Phase 2 Action:** Replace with `AppLocalizations.of(context)!.<key>`
+**Fase 2 Action:** Replace with `AppLocalizations.of(context)!.<key>`
 
 ---
 
@@ -839,12 +839,12 @@ Text(AppLocalizations.of(context)!.createProject)
 'Validar y Guardar'   ← ARB Key: validateAndSave (duplicate)
 ```
 
-**Phase 2 Action:** Replace with AppLocalizations reference (if in UI context)
+**Fase 2 Action:** Replace with AppLocalizations reference (if in UI context)
 
 ---
 
-#### 6. filesystem_service_impl.dart
-**Full Path:** `src/client/lib/features/filesystem/infrastructure/services/filesystem_service_impl.dart`
+#### 6. archivosystem_service_impl.dart
+**Full Path:** `src/client/lib/features/archivosystem/infrastructure/services/archivosystem_service_impl.dart`
 
 **Hardcoded Strings:**
 ```dart
@@ -853,10 +853,10 @@ Text(AppLocalizations.of(context)!.createProject)
 ```
 
 **Special Handling:** These are **parameterized messages** with dynamic content
-- `$outputFile` → ICU placeholder `{outputFile}`
+- `$outputArchivo` → ICU placeholder `{outputArchivo}`
 - `$e` → ICU placeholder `{error}`
 
-**Phase 2 Action:**
+**Fase 2 Action:**
 ```dart
 // Before
 'Archivo guardado en: $outputFile'
@@ -874,20 +874,20 @@ AppLocalizations.of(context)!.saveError(e.toString())
 ---
 
 #### 7. markdown_preview_widget.dart
-**Full Path:** `src/client/lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart`
+**Full Path:** `src/client/lib/features/proyecto_shell/presentation/widgets/markdown_preview_widget.dart`
 
 **Hardcoded Strings:**
 ```dart
 'Contenido copiado al portapapeles'   ← ARB Key: contentCopied
 ```
 
-**Phase 2 Action:** Replace with `AppLocalizations.of(context)!.contentCopied`
+**Fase 2 Action:** Replace with `AppLocalizations.of(context)!.contentCopied`
 
 ---
 
-### Verification Command (For Phase 2)
+### Verificación Command (For Fase 2)
 
-Run this to verify all hardcoded strings have been replaced:
+Ejecutar this to verify all hardcoded strings have been replaced:
 
 ```bash
 # Should return 0 results after Phase 2 locale implementation
@@ -895,83 +895,83 @@ find src/client/lib -name "*.dart" -type f -exec grep -l \
   "Crear Proyecto\|Nuevo Proyecto\|Examinar\|Validar y Guardar\|Refinar\|Rechazar\|Archivo guardado\|Contenido copiado\|Error al guardar" {} \;
 ```
 
-**Expected:** No files returned (all strings internationalized)
+**Expected:** No archivos returned (all strings internationalized)
 
 ---
 
-### Flutter Test Blockers
+### Flutter Prueba Blockers
 
 - ✅ 9 hardcoded strings identified
-- ❌ 37 tests can't compile (missing domain entities/widgets)
-- ❌ Cannot test i18n until entities are created
+- ❌ 37 pruebas can't compile (missing domain entities/widgets)
+- ❌ Cannot prueba i18n until entities are creard
 - ❌ Cannot update widgets until they exist
 
 ---
 
-## Summary: Phase 1 Steps 1.3.1-1.3.4 COMPLETE
+## Summary: Fase 1 Steps 1.3.1-1.3.4 COMPLETE
 
 ### ✅ Step 1.3.1: Research Flutter l10n Best Practices
-**Status:** ✅ COMPLETE
+**Estado:** ✅ COMPLETE
 - ✅ Official flutter_localizations + intl identified
-- ✅ flutter gen-l10n pipeline documented
+- ✅ flutter gen-l10n pipeline documentoed
 - ✅ SharedPreferences persistence designed
 - ✅ Riverpod StateNotifier pattern specified
 - ✅ References provided (Flutter official docs)
 
 ### ✅ Step 1.3.2: Design Localization Architecture
-**Status:** ✅ COMPLETE
-- ✅ 4-layer architecture diagram created (UI → Provider → Repository → Storage)
-- ✅ LocaleProvider Riverpod implementation documented
+**Estado:** ✅ COMPLETE
+- ✅ 4-layer architecture diagram creard (UI → Provider → Repository → Storage)
+- ✅ LocaleProvider Riverpod implementación documentoed
 - ✅ Locale switching mechanism designed (toggle/setLocale methods)
 - ✅ Persistence with SharedPreferences specified
 - ✅ Default locale set to Spanish (es) with EN fallback
 
-### ✅ Step 1.3.3: Plan .arb File Structure
-**Status:** ✅ COMPLETE
-- ✅ Directory structure documented (lib/l10n/, lib/gen/, lib/core/localization/)
-- ✅ l10n.yaml configuration template provided
+### ✅ Step 1.3.3: Plan .arb Archivo Structure
+**Estado:** ✅ COMPLETE
+- ✅ Directory structure documentoed (lib/l10n/, lib/gen/, lib/core/localization/)
+- ✅ l10n.yaml configuración template provided
 - ✅ app_en.arb example with 9 base strings + metadata provided
 - ✅ app_es.arb example with Spanish translations provided
-- ✅ ICU placeholder format documented (for parameterized messages)
+- ✅ ICU placeholder format documentoed (for parameterized messages)
 - ✅ Generation command specified (flutter gen-l10n)
 
-### ✅ Step 1.3.4: Identify & Document Hardcoded Strings
-**Status:** ✅ COMPLETE
+### ✅ Step 1.3.4: Identify & Documento Hardcoded Strings
+**Estado:** ✅ COMPLETE
 - ✅ 9 unique Spanish strings identified via grep
-- ✅ 7 Dart files located (create_project_dialog.dart, proposal_card_widget.dart, etc.)
+- ✅ 7 Dart archivos located (crear_proyecto_dialog.dart, proposal_card_widget.dart, etc.)
 - ✅ 11 total occurrences mapped (some strings appear multiple times)
 - ✅ English translations provided for all 9 strings
-- ✅ ARB keys assigned (createProject, newProject, browse, etc.)
-- ✅ File-by-file breakdown with Phase 2 refactoring guidance
-- ✅ Verification command provided for Phase 2 completion
+- ✅ ARB keys assigned (crearProyecto, newProyecto, browse, etc.)
+- ✅ Archivo-by-archivo desglose with Fase 2 refactoring guidance
+- ✅ Verificación command provided for Fase 2 completion
 
-### 📋 Phase 1.3 Deliverables
+### 📋 Fase 1.3 Deliverables
 
-**This Document:** `I18N_ARCHITECTURE_DESIGN.md` (700+ lines)
+**This Documento:** `I18N_ARCHITECTURE_DESIGN.md` (700+ lines)
 
 Contains:
 - [ x] Sections 1.3.1 complete with research findings
 - [x] Section 1.3.2 complete with architecture diagram and code
 - [x] Section 1.3.3 complete with ARB structure templates
-- [x] Section 1.3.4 complete with file-by-file inventory
-- [x] Phase 2 implementation plan linked to all sections
+- [x] Section 1.3.4 complete with archivo-by-archivo inventory
+- [x] Fase 2 implementación plan linked to all sections
 - [x] Blocking dependencies identified (domain entities, widgets)
 
 ---
 
-## Summary: Phase 1 Step 1.3 Deliverables
+## Summary: Fase 1 Step 1.3 Deliverables
 
 ✅ **PHASE 1.3: i18n ARCHITECTURE DESIGN - 100% COMPLETE**
 
-**Document Status:** ✅ I18N_ARCHITECTURE_DESIGN.md (700+ lines, all steps documented)
+**Documento Estado:** ✅ I18N_ARCHITECTURE_DESIGN.md (700+ lines, all steps documentoed)
 
 **Deliverable:** This i18n architecture report
 
-**Phase 2 Prerequisite:** Domain entities must be created before i18n widgets can be tested
+**Fase 2 Prerequisite:** Domain entities must be creard before i18n widgets can be pruebaed
 
 ---
 
-**Document Status:** ✅ **PHASE 1 STEP 1.3 COMPLETE** (All 1.3.1-1.3.4 documented)
-**Deliverables Created:** I18N_ARCHITECTURE_DESIGN.md with full implementation plan
-**Next Step:** Phase 1 Step 1.4 - Update PROGRESS.md with reality
+**Documento Estado:** ✅ **PHASE 1 STEP 1.3 COMPLETE** (All 1.3.1-1.3.4 documentoed)
+**Deliverables Creard:** I18N_ARCHITECTURE_DESIGN.md with full implementación plan
+**Siguiente Step:** Fase 1 Step 1.4 - Update PROGRESS.md with reality
 **Last Updated:** 2026-02-10

@@ -1,7 +1,7 @@
 # 🔍 ANÁLISIS: projects_provider.dart vs project_providers.dart
 
 **Fecha:** 9 de febrero de 2026
-**Análisis:** Consolidación de 2 archivos providers similares
+**Analysis:** Consolidación de 2 files providers similares
 
 ---
 
@@ -28,7 +28,7 @@ final all = [...userProjects, ...mockProjects];
 all.sort((a, b) { ... });
 ```
 
-**Problema:** Lint warning sobre estilo (menor, no crítico).
+**Problema:** Lint warning sobre style (menor, no crítico).
 
 ---
 
@@ -74,9 +74,9 @@ Tipos de providers:
 
 **Razones:**
 1. **Mismo contexto:** Ambos manejan "projects"
-2. **Misma carpeta:** `presentation/providers/`
+2. **Misma folder:** `presentation/providers/`
 3. **Relacionados:** `projects_provider.dart` depende de `project_providers.dart`
-4. **Nombres confusos:** `projects` vs `project` casi idénticos
+4. **Names confusos:** `projects` vs `project` casi idénticos
 5. **Pocas líneas totales:** 60 líneas combinadas (perfectamente manejable)
 
 ### ¿Qué consolidar?
@@ -85,16 +85,16 @@ Tipos de providers:
 |------|--------|
 | `projectRepositoryProvider` | Mantener (core) |
 | `projectShellProvider` | Mantener (core) |
-| `buildHybridProjectsList()` | Mover a nuevo archivo |
-| `allProjectsProvider` | Mover a nuevo archivo |
-| `hybridProjectsProvider` | Mover a nuevo archivo |
+| `buildHybridProjectsList()` | Mover a nuevo file |
+| `allProjectsProvider` | Mover a nuevo file |
+| `hybridProjectsProvider` | Mover a nuevo file |
 
 ---
 
 ## ✅ SOLUCIÓN PROPUESTA
 
-### Opción A: "Unificar TODO en un archivo" ⭐ RECOMENDADO
-**Archivo único:** `project_providers.dart` (renombrado)
+### Opción A: "Unificar TODO en un file" ⭐ RECOMENDADO
+**File único:** `project_providers.dart` (renombrado)
 **Contenido:**
 ```
 1. projectRepositoryProvider      [core - repository access]
@@ -111,12 +111,12 @@ Tipos de providers:
 - ✅ Mejor mantenibilidad
 
 **Desventajas:**
-- ⚠️ Archivo más largo (pero legible)
+- ⚠️ File más largo (pero legible)
 
 ---
 
 ### Opción B: "Separar por propósito" (Alternativa)
-**Archivos:**
+**Files:**
 1. `project_repository_providers.dart` - Para repository/shell
 2. `project_list_providers.dart` - Para list/hybrid
 
@@ -133,7 +133,7 @@ Tipos de providers:
 
 ### Paso 1: Consolidar en `project_providers.dart`
 
-**Archivo único con TODO:**
+**File único con TODO:**
 
 ```dart
 // lib/features/project_shell/presentation/providers/project_providers.dart
@@ -209,13 +209,13 @@ final hybridProjectsProvider = FutureProvider<List<Project>>((ref) async {
 });
 ```
 
-### Paso 2: Eliminar `projects_provider.dart`
+### Paso 2: Delete `projects_provider.dart`
 
-**Acción:** Borrar el archivo antiguo (después de migrar imports)
+**Acción:** Borrar el file antiguo (después de migrar imports)
 
 ### Paso 3: Actualizar imports
 
-**Archivos que importan de `projects_provider.dart`:**
+**Files que importan de `projects_provider.dart`:**
 ```bash
 grep -r "from.*projects_provider" src/client/lib/
 ```
@@ -264,19 +264,19 @@ Future<List<Map<String, dynamic>>> getMockProjectsDataAsync() async {
 
 ## 📋 PLAN DE IMPLEMENTACIÓN
 
-### Step 1: Crear unified `project_providers.dart`
+### Step 1: Create unified `project_providers.dart`
 - [ ] Consolidar `project_providers.dart` + `projects_provider.dart`
-- [ ] Un único archivo con TODO
+- [ ] Un único file con TODO
 
 ### Step 2: Corregir `getMockProjectsData()`
 - [ ] Hacer síncrona (si es solo data en memoria)
-- [ ] O crear `getMockProjectsDataAsync()` separada
+- [ ] O create `getMockProjectsDataAsync()` separada
 
 ### Step 3: Migrar imports
 - [ ] Buscar usos de `projects_provider.dart`
 - [ ] Cambiar a `project_providers.dart`
 
-### Step 4: Eliminar archivo viejo
+### Step 4: Delete file viejo
 - [ ] Borrar `projects_provider.dart`
 - [ ] Verificar compilación
 
@@ -293,11 +293,11 @@ Future<List<Map<String, dynamic>>> getMockProjectsDataAsync() async {
 | Unificar providers | ✅ Limpia estructura | 🟢 Baja |
 | Corregir `Future` error | ✅ Resuelve error | 🟢 Baja |
 | Migrar imports | ✅ Documentable | 🟠 Media |
-| Eliminar archivo viejo | ✅ Organiza | 🟢 Baja |
+| Delete file viejo | ✅ Organiza | 🟢 Baja |
 
 ---
 
-## ✅ ESTADO FINAL
+## ✅ STATUS FINAL
 
 ```
 Antes:
@@ -322,7 +322,7 @@ Después:
 **✅ IMPLEMENTAR OPCIÓN A (Unificación)**
 
 Razones:
-1. Ambos archivos están fuertemente relacionados
+1. Ambos files están fuertemente relacionados
 2. Solo 70 líneas totales (perfectamente legible)
 3. Elimina confusión de nombres (`projects` vs `project`)
 4. Resuelve dependencies circulares

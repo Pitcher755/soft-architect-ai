@@ -1,7 +1,7 @@
-# 🧪 Guía de Pruebas E2E: HU-4.4 Conexión Frontend-Backend
+# 🧪 Guía de Tests E2E: HU-4.4 Conexión Frontend-Backend
 
-> **Fecha:** 17/02/2026
-> **Estado:** ✅ Implementación completa
+> **Date:** 17/02/2026
+> **Status:** ✅ Implementation completa
 > **Objetivo:** Validar la conexión E2E entre Flutter (ChatPanelWidget) y FastAPI (/api/v1/chat/stream)
 
 ---
@@ -9,7 +9,7 @@
 ## 📋 Tabla de Contenidos
 
 - [Prerequisitos](#prerequisitos)
-- [Configuración](#configuración)
+- [Configuration](#configuration)
 - [Paso 1: Levantar Backend en Docker](#paso-1-levantar-backend-en-docker)
 - [Paso 2: Lanzar Frontend con Backend Real](#paso-2-lanzar-frontend-con-backend-real)
 - [Paso 3: Validación Visual](#paso-3-validación-visual)
@@ -30,7 +30,7 @@
 
 ---
 
-## Configuración
+## Configuration
 
 ### Variables de Entorno (Backend)
 
@@ -141,7 +141,7 @@ flutter run -d chrome \
 1. Abrir la aplicación Flutter (Linux Desktop o Chrome)
 2. Navegar al panel de chat (lado derecho)
 3. Escribir: **"¿Qué es una API REST?"**
-4. Presionar el botón de enviar (📤)
+4. Presionar el button de enviar (📤)
 
 **Verificar:**
 - ✅ El mensaje del usuario aparece inmediatamente (burbuja azul a la derecha)
@@ -169,7 +169,7 @@ flutter run -d chrome \
 **Verificar:**
 - ✅ Aparece un banner rojo en la parte superior del chat
 - ✅ El mensaje de error indica problema de conexión
-- ✅ El botón de envío sigue habilitado (permite retry)
+- ✅ El button de envío sigue habilitado (permite retry)
 
 ---
 
@@ -203,9 +203,9 @@ docker logs sa_api --tail 20
 docker start sa_chromadb
 ```
 
-**Resultado Esperado:**
+**Result Esperado:**
 - El chat **NO se rompe** cuando ChromaDB falla
-- El usuario recibe una respuesta (aunque sin contexto del proyecto)
+- El usuario recibe una respuesta (aunque sin contexto of the project)
 - El sistema continúa operativo (Graceful Degradation ✅)
 
 ---
@@ -279,20 +279,20 @@ const bool _useRealBackend = true; // Forzar uso de backend real
 
 ## Criterios de Aceptación
 
-### ✅ Fase 1: State Management
+### ✅ Phase 1: State Management
 
 - [x] `ChatState` tiene `messages`, `isStreaming`, `hasError`, `errorMessage`
 - [x] `ChatNotifier.sendMessageStream()` implementado
 - [x] `chatNotifierProvider` disponible para widgets
 
-### ✅ Fase 2: UI Integration
+### ✅ Phase 2: UI Integration
 
 - [x] `ChatPanelWidget` convertido a `ConsumerStatefulWidget`
-- [x] `ref.watch(chatNotifierProvider)` obtiene mensajes del estado
-- [x] Botón de envío llama `ref.read(chatNotifierProvider.notifier).sendMessageStream()`
+- [x] `ref.watch(chatNotifierProvider)` obtiene mensajes del status
+- [x] Button de envío llama `ref.read(chatNotifierProvider.notifier).sendMessageStream()`
 - [x] `ErrorBannerWidget` se muestra cuando `state.hasError == true`
 
-### ✅ Fase 3: E2E Tests
+### ✅ Phase 3: E2E Tests
 
 - [x] Backend Docker funcional (sa_api, sa_chromadb, sa_ollama)
 - [x] Flutter se conecta a `http://localhost:8000/api/v1/chat/stream`
@@ -303,7 +303,7 @@ const bool _useRealBackend = true; // Forzar uso de backend real
 
 ## 🎯 Validación Final
 
-Si completaste todos los tests anteriores con éxito:
+Si completaste todos los tests previouses con éxito:
 
 ```
 ✅ La conexión E2E está funcional
@@ -313,7 +313,7 @@ Si completaste todos los tests anteriores con éxito:
 ✅ HU-4.4 está lista para merge
 ```
 
-**Siguiente paso:** Ejecutar suite completa de tests y Push to GitHub.
+**Next paso:** Execute suite completa de tests y Push to GitHub.
 
 ```bash
 # Ejecutar tests completos

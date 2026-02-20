@@ -1,13 +1,13 @@
-# ✨ Dynamic Resizable Columns Implementation
+# ✨ Dynamic Resizable Columns Implementación
 
 **Date:** 07/02/2026
-**Status:** ✅ **OPERATIONAL**
+**Estado:** ✅ **OPERATIONAL**
 
 ---
 
 ## 🎯 Feature Overview
 
-The ProjectShellScreen now features **fully dynamic, resizable columns** that allow users to:
+The ProyectoShellScreen now features **fully dynamic, resizable columns** that allow users to:
 - ✅ Drag column dividers to expand/shrink columns
 - ✅ Customize workspace layout to their preferences
 - ✅ Hide/minimize columns by dragging them to minimum width (180px)
@@ -49,7 +49,7 @@ Each divider between columns:
 
 ---
 
-## 🔧 Technical Implementation
+## 🔧 Technical Implementación
 
 ### State Management
 
@@ -89,7 +89,7 @@ SizedBox(
 )
 ```
 
-### Resizable Divider Implementation
+### Resizable Divider Implementación
 
 ```dart
 MouseRegion(
@@ -160,7 +160,7 @@ MouseRegion(
 
 ---
 
-## ✅ Testing Scenarios
+## ✅ Pruebaing Scenarios
 
 ### Scenario 1: Expand Left Column
 ```
@@ -212,9 +212,9 @@ MouseRegion(
 
 ---
 
-## 🚀 Code Files Modified
+## 🚀 Code Archivos Modified
 
-### `project_shell_screen.dart`
+### `proyecto_shell_screen.dart`
 
 **Changes:**
 1. Added state variables:
@@ -252,8 +252,8 @@ MouseRegion(
 ✅ **Customization:** Users can organize workspace to their preferences
 ✅ **Productivity:** Minimize distracting panels when not needed
 ✅ **Focus:** Expand Chat to full width for intensive coding sessions
-✅ **Exploration:** Expand file tree to discover project structure
-✅ **Preview:** Expand preview to see full document
+✅ **Exploration:** Expand archivo tree to discover proyecto structure
+✅ **Preview:** Expand preview to see full documento
 ✅ **Smooth:** Real-time resizing without lag
 ✅ **Safe:** Constraints prevent breaking layout
 
@@ -271,7 +271,7 @@ MouseRegion(
 
 ---
 
-## 🧪 Testing Checklist
+## 🧪 Pruebaing Checklist
 
 ```markdown
 ## Desktop (Linux) ✅
@@ -298,6 +298,6 @@ MouseRegion(
 
 ## 📝 Summary
 
-ProjectShellScreen now provides **professional-grade IDE-like resizable columns** that match VS Code, IntelliJ, and other premium editors. Users can customize their workspace in real-time with smooth, constrained resizing that maintains layout integrity.
+ProyectoShellScreen now provides **professional-grade IDE-like resizable columns** that match VS Code, IntelliJ, and other premium editors. Users can customize their workspace in real-time with smooth, constrained resizing that maintains layout integrity.
 
-**Status:** ✅ **FULLY OPERATIONAL & READY FOR PRODUCTION**
+**Estado:** ✅ **FULLY OPERATIONAL & READY FOR PRODUCTION**

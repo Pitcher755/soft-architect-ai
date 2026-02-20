@@ -8,12 +8,12 @@
 
 ## 📋 Overview
 
-Se ha implementado un dashboard de gestión de proyectos profesional que reemplaza la pantalla anterior. Los cambios principales son:
+Se ha implementado un dashboard de gestión de projects profesional que reemplaza la pantalla previous. Los cambios principales son:
 
-1. **ProjectWorkspaceScreen** → Dashboard de proyectos ("Mis Proyectos")
+1. **ProjectWorkspaceScreen** → Dashboard de projects ("Mis Projects")
 2. **ProjectShellScreen** → Ahora acepta un parámetro `projectPath`
-3. **Router actualizado** → `/workspace` ahora abre el dashboard, `/project-shell?path=...` abre un proyecto específico
-4. **Mejor UX** → Crear proyecto abre directamente en ProjectShellScreen con el directorio específico
+3. **Router actualizado** → `/workspace` ahora abre el dashboard, `/project-shell?path=...` abre un project específico
+4. **Mejor UX** → Create project abre directamente en ProjectShellScreen con el directorio específico
 
 ---
 
@@ -172,15 +172,15 @@ Each project card displays:
 |-------|---------|
 | **Icon** | Custom icon with colored background |
 | **Name** | Project name with hover effect |
-| **Phase** | Current phase (Fase 1-3) with colored badge |
+| **Phase** | Current phase (Phase 1-3) with colored badge |
 | **Path** | Local file system path (monospace) |
 | **Modified** | Last modification timestamp |
 | **Interaction** | Click to open project in ProjectShellScreen |
 
 ### Phase Badge Colors
-- **Fase 1: Contexto** → Yellow (#FCD34D)
-- **Fase 2: Requisitos** → Green (#10B981)
-- **Fase 3: Arquitectura** → Blue (#60A5FA)
+- **Phase 1: Contexto** → Yellow (#FCD34D)
+- **Phase 2: Requisitos** → Green (#10B981)
+- **Phase 3: Arquitectura** → Blue (#60A5FA)
 
 ### Icon Colors
 - **E-Commerce** → Blue (#3B82F6)
@@ -297,7 +297,7 @@ showDialog(
 ### Navigation
 - [ ] Dashboard loads with project grid
 - [ ] Click project card → Opens ProjectShellScreen
-- [ ] Click "Nuevo Proyecto" → Shows dialog
+- [ ] Click "New Project" → Shows dialog
 - [ ] Create project → Navigates to ProjectShellScreen
 - [ ] Back button → Returns to dashboard
 - [ ] Settings button → Opens settings screen

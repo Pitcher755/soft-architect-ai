@@ -1,12 +1,12 @@
 # 🎬 Video Tutorials - SoftArchitect AI
 
-> **Date:** 02/19/2026
-> **Status:** ✅ Video resources
-> **Reading time:** 5 minutes
+> **Fecha:** 02/19/2026
+> **Estado:** ✅ Video resources
+> **Tiempo de lectura:** 5 minutes
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [Available Tutorials](#available-tutorials)
 - [Learning Series](#learning-series)
@@ -17,43 +17,43 @@
 
 ## 🎥 Available Tutorials
 
-### 🚀 Getting Started (Beginners)
+### 🚀 Getting Started (Principiantes)
 
 #### 1. Complete Installation on Windows
 **Duration:** 15 minutes
-**Level:** Beginner
+**Nivel:** Principiante
 **Language:** English / Spanish subtitles
 
 **Content:**
 - Docker Desktop installation
 - Repository cloning
-- `.env` file configuration
-- First startup and verification
+- `.env` archivo configuración
+- First startup and verificación
 
 **Link:** *(Coming soon on YouTube)*
 
 ---
 
-#### 2. Your First Project in 10 Minutes
+#### 2. Your First Proyecto in 10 Minutes
 **Duration:** 12 minutes
-**Level:** Beginner
+**Nivel:** Principiante
 **Language:** English / Spanish subtitles
 
 **Content:**
-- Create new "TODO App" project
+- Crear new "TODO App" proyecto
 - Define problem and requirements
 - Conversation with AI
-- Automatic documentation generation
+- Automatic documentoation generation
 
 **Link:** *(Coming soon on YouTube)*
 
 ---
 
-### 🏗️ Architecture (Intermediate)
+### 🏗️ Architecture (Intermedio)
 
 #### 3. REST API Design with Tech Packs
 **Duration:** 25 minutes
-**Level:** Intermediate
+**Nivel:** Intermedio
 **Language:** English / Spanish subtitles
 
 **Content:**
@@ -68,44 +68,44 @@
 
 #### 4. Microservices vs Monolith: When to Use Each?
 **Duration:** 30 minutes
-**Level:** Intermediate
+**Nivel:** Intermedio
 **Language:** English / Spanish subtitles
 
 **Content:**
 - Guided conversation with AI
-- Trade-offs analysis
+- Trade-offs análisis
 - Case study: E-commerce
-- Decision documentation
+- Decision documentoation
 
 **Link:** *(Coming soon on YouTube)*
 
 ---
 
-### 🔧 Advanced (Advanced)
+### 🔧 Avanzado (Avanzado)
 
 #### 5. Customize Your Own Tech Packs
 **Duration:** 20 minutes
-**Level:** Advanced
+**Nivel:** Avanzado
 **Language:** English / Spanish subtitles
 
 **Content:**
 - Tech Pack structure
-- Create custom Tech Pack ("Svelte + SurrealDB")
+- Crear custom Tech Pack ("Svelte + SurrealDB")
 - Reindex Knowledge Base
-- Test conversation with custom Tech Pack
+- Prueba conversation with custom Tech Pack
 
 **Link:** *(Coming soon on YouTube)*
 
 ---
 
-#### 6. Integration with Notion / Jira
+#### 6. Integración with Notion / Jira
 **Duration:** 18 minutes
-**Level:** Advanced
+**Nivel:** Avanzado
 **Language:** English / Spanish subtitles
 
 **Content:**
 - Configure Notion/Jira API keys
-- Export documentation automatically
+- Export documentoation automatically
 - Sync user stories
 - Complete workflow
 
@@ -117,22 +117,22 @@
 
 ### Series 1: Master Workflow 0-100 (4 episodes)
 
-**Episode 1: Phase 0 - Governance** (15 min)
+**Episode 1: Fase 0 - Governance** (15 min)
 - Define problem
 - Identify stakeholders
 - Functional and non-functional requirements
 
-**Episode 2: Phase 1 - Architecture** (20 min)
+**Episode 2: Fase 1 - Architecture** (20 min)
 - Technical decisions
 - C4 diagrams
 - ADRs (Architecture Decision Records)
 
-**Episode 3: Phase 2 - Implementation** (25 min)
+**Episode 3: Fase 2 - Implementación** (25 min)
 - User stories
 - Prioritized backlog
 - Sprint planning
 
-**Episode 4: Phase 3 - Tracking** (18 min)
+**Episode 4: Fase 3 - Tracking** (18 min)
 - Progress metrics
 - Retrospectives
 - Continuous iteration
@@ -144,7 +144,7 @@
 ### Series 2: Real-World Use Cases (6 episodes)
 
 **Case 1: Academic Blog Platform** (30 min)
-- From concept to implementation
+- From concept to implementación
 - Real technical decisions
 - Mistakes and learnings
 
@@ -188,8 +188,8 @@
 **Video (45 minutes):**
 - Interview with CTO
 - Live design session with AI
-- Result: Complete documentation in 2 days
-- Implementation in 3 weeks
+- Resultado: Complete documentoation in 2 days
+- Implementación in 3 weeks
 - Retrospective and lessons learned
 
 **Link:** *(Coming soon on YouTube)*
@@ -203,10 +203,10 @@
 **Solution with SoftArchitect AI:**
 
 **Video (30 minutes):**
-- Integration into course syllabus
-- Students design their own projects
+- Integración into course syllabus
+- Students design their own proyectos
 - Comparison of architectural decisions
-- Results: 40% improvement in delivery quality
+- Resultados: 40% improvement in delivery quality
 
 **Link:** *(Coming soon on YouTube)*
 
@@ -222,8 +222,8 @@ Have an interesting use case? **Share it with the community.**
 2. **Upload to YouTube** (public or unlisted)
 3. **Open issue on GitHub:** https://github.com/Pitcher755/soft-architect-ai/issues
    - Title: `[VIDEO] Use case name`
-   - Description: Video link + summary
-   - Tag: `documentation`, `video-tutorial`
+   - Descripción: Video link + summary
+   - Tag: `documentoation`, `video-tutorial`
 4. **Team review** (2-3 days)
 5. **If approved:** Added to this page and official channel
 
@@ -307,7 +307,7 @@ Have an interesting use case? **Share it with the community.**
 
 ---
 
-## 📚 Related Documents
+## 📚 Related Documentos
 
 - [Quick Start](01-QUICK_START.md) - Start from scratch
 - [Master Workflow](04-MASTER_WORKFLOW.md) - Understand the methodology

@@ -1,19 +1,19 @@
 # 📋 USER STORIES REORGANIZATION - MVP v0.1.0 Extended
 
-> **Fecha:** 09/02/2026
-> **Estado:** ✅ COMPLETED
+> **Date:** 09/02/2026
+> **Status:** ✅ COMPLETED
 > **Issues Linear:** PIT-80 a PIT-96
 > **Total HU Nuevas:** 17
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Resumen Ejecutivo](#1-resumen-ejecutivo)
 2. [HU Nuevas Creadas](#2-hu-nuevas-creadas)
 3. [Mapeo con USER_STORIES_MASTER.es.json](#3-mapeo-con-user_stories_masteresjson)
 4. [Linear Issues Creadas](#4-linear-issues-creadas)
-5. [Próximos Pasos](#5-próximos-pasos)
+5. [Next Steps](#5-próximos-pasos)
 
 ---
 
@@ -21,7 +21,7 @@
 
 ### 1.1 Cambios Realizados
 
-Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual (Sprint 3 - 60% completo) hasta el MVP v0.1.0 completo.
+Se han reorganizado y creado **17 nuevas HU** que cubren desde el status actual (Sprint 3 - 60% completo) hasta el MVP v0.1.0 completo.
 
 | Acción | Cantidad |
 |--------|----------|
@@ -196,24 +196,24 @@ Se han reorganizado y creado **17 nuevas HU** que cubren desde el estado actual 
 
 ### HU Originales vs Reorganizadas
 
-| HU Original | Estado | HU Reorganizadas | Justificación |
+| HU Original | Status | HU Reorganizadas | Justificación |
 |-------------|--------|------------------|---------------|
-| **HU-3.4** (Error Handling Gates) | ❌ Pendiente | → **HU-4.4** | Mejor contexto post-backend integration |
-| **HU-3.5** (Streaming Optimization) | ❌ Pendiente | → **HU-4.5** | Depende de HU-4.3 (SSE Streaming) |
+| **HU-3.4** (Error Handling Gates) | ❌ Pending | → **HU-4.4** | Mejor contexto post-backend integration |
+| **HU-3.5** (Streaming Optimization) | ❌ Pending | → **HU-4.5** | Depende de HU-4.3 (SSE Streaming) |
 | N/A | N/A | **HU-3.6** ✨ NEW | TODOs T-1, TODO-1, I-3 integrados |
 | N/A | N/A | **HU-3.7** ✨ NEW | TODOs T-2, T-3, T-4, TODO-2 integrados |
 | N/A | N/A | **HU-3.8** ✨ NEW | TODO-3 integrado |
-| **HU-4.1** (Backend Chat) | ❌ Pendiente | ✅ **HU-4.1** | Sin cambios, mantener original |
-| **HU-4.2** (Conversation History) | ❌ Pendiente | ✅ **HU-4.2** | Sin cambios, mantener original |
-| **HU-4.3** (Backend Streaming) | ❌ Pendiente | → **HU-4.3** | Renombrado a "SSE Streaming" (más claro) |
-| **HU-5.1** (Remove Temp Endpoints) | ❌ Pendiente | → **HU-5.1** (NEW) | Reemplazado por "Integration Tests Rewrite" (mayor prioridad) |
-| **HU-5.2** (Security Hardening) | ❌ Pendiente | ✅ **HU-5.2** | Sin cambios, mantener original |
-| **HU-5.3** (Performance Profiling) | ❌ Pendiente | ✅ **HU-5.3** | Sin cambios, mantener original |
-| **HU-6.1** (Linux Installer) | ❌ Pendiente | ✅ **HU-6.1** | Ampliado con desktop integration |
-| **HU-6.2** (Onboarding Flow) | ❌ Pendiente | ✅ **HU-6.2** | Sin cambios, mantener original |
-| **HU-6.3** (Documentation Portal) | ❌ Pendiente | ✅ **HU-6.3** | TODO I-4 integrado |
-| **HU-7.1** (GitHub Actions) | ❌ Pendiente | ✅ **HU-7.1** | TODOs I-1, I-2 integrados |
-| **HU-7.2** (Release v0.1.0) | ❌ Pendiente | → **HU-7.2** (Automation) + **HU-7.3** (Release) | Dividido en 2 HU más específicas |
+| **HU-4.1** (Backend Chat) | ❌ Pending | ✅ **HU-4.1** | Sin cambios, mantener original |
+| **HU-4.2** (Conversation History) | ❌ Pending | ✅ **HU-4.2** | Sin cambios, mantener original |
+| **HU-4.3** (Backend Streaming) | ❌ Pending | → **HU-4.3** | Renombrado a "SSE Streaming" (más claro) |
+| **HU-5.1** (Remove Temp Endpoints) | ❌ Pending | → **HU-5.1** (NEW) | Reemplazado por "Integration Tests Rewrite" (mayor prioridad) |
+| **HU-5.2** (Security Hardening) | ❌ Pending | ✅ **HU-5.2** | Sin cambios, mantener original |
+| **HU-5.3** (Performance Profiling) | ❌ Pending | ✅ **HU-5.3** | Sin cambios, mantener original |
+| **HU-6.1** (Linux Installer) | ❌ Pending | ✅ **HU-6.1** | Ampliado con desktop integration |
+| **HU-6.2** (Onboarding Flow) | ❌ Pending | ✅ **HU-6.2** | Sin cambios, mantener original |
+| **HU-6.3** (Documentation Portal) | ❌ Pending | ✅ **HU-6.3** | TODO I-4 integrado |
+| **HU-7.1** (GitHub Actions) | ❌ Pending | ✅ **HU-7.1** | TODOs I-1, I-2 integrados |
+| **HU-7.2** (Release v0.1.0) | ❌ Pending | → **HU-7.2** (Automation) + **HU-7.3** (Release) | Dividido en 2 HU más específicas |
 
 ### Cambios Clave
 
@@ -265,7 +265,7 @@ Distribución por Tamaño:
 
 ---
 
-## 5. Próximos Pasos
+## 5. Next Steps
 
 ### 5.1 Acciones Inmediatas
 
@@ -311,17 +311,17 @@ Distribución por Tamaño:
 
 ---
 
-## 📊 Resumen Ejecutivo Final
+## 📊 Executive Summary Final
 
-### ✅ Completado
+### ✅ Completed
 
 - ✅ **17 HU** creadas y documentadas en Linear (PIT-80 a PIT-96)
 - ✅ **13 TODOs** integrados en las nuevas HU
-- ✅ Documento de análisis completo (HU_REORGANIZATION_ANALYSIS.md)
+- ✅ Document de analysis completo (HU_REORGANIZATION_ANALYSIS.md)
 - ✅ Roadmap reorganizado con timeline de 8-10 semanas
 - ✅ Prioridades definidas por Sprint
 
-### ⏳ Próximos Pasos
+### ⏳ Next Steps
 
 1. **Semana 1:** Comenzar HU-3.6 (PIT-80) - Test Suite Completion
 2. **Semana 2:** Completar HU-3.7 y HU-3.8
@@ -334,7 +334,7 @@ Distribución por Tamaño:
 
 ---
 
-**Documento generado:** 09/02/2026
+**Document generado:** 09/02/2026
 **Última actualización:** 09/02/2026
 **Versión:** v1.0
-**Estado:** ✅ COMPLETE
+**Status:** ✅ COMPLETE

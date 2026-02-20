@@ -1,7 +1,7 @@
 # 🚀 Quick Summary: E2E & Integration Test Status
 
 **Generado:** 2025-01-31
-**Estado:** ✅ UNIT TESTS COMPLETOS | ⚠️ E2E LISTO PERO NO EJECUTADO
+**Status:** ✅ UNIT TESTS COMPLETOS | ⚠️ E2E LISTO PERO NO EJECUTADO
 
 ---
 
@@ -36,12 +36,12 @@ Tiempo de ejecución (Unit): 7.93 segundos ⏱️
 | Gap | Impact | Action |
 |-----|--------|--------|
 | **E2E RAG Tests** | 5 tests listos | `export CHROMA_HOST=localhost && pytest tests/integration/` |
-| **API Endpoint E2E** | 0 tests | Crear suite completa (Sprint siguiente) |
+| **API Endpoint E2E** | 0 tests | Create suite completa (Sprint next) |
 | **Browser E2E** | No tests | Considerar Q2 2025 (Flutter) |
 
 ---
 
-## 🎯 Próximos Pasos
+## 🎯 Next Steps
 
 ### **INMEDIATO** (Esta semana)
 1. Validar E2E tests:
@@ -52,7 +52,7 @@ Tiempo de ejecución (Unit): 7.93 segundos ⏱️
    ```
 
 ### **PRÓXIMO SPRINT**
-1. Crear API Endpoint E2E tests
+1. Create API Endpoint E2E tests
 2. Setup CI/CD para excluir E2E (Docker overhead)
 
 ### **Q2 2025**
@@ -67,5 +67,5 @@ Ver: [TEST_SUITE_STATUS_REPORT.md](TEST_SUITE_STATUS_REPORT.md)
 
 ---
 
-**Estado Final:** Tests están en GREAT SHAPE ✨
+**Status Final:** Tests están en GREAT SHAPE ✨
 Los gaps son MENORES y ya documentados.

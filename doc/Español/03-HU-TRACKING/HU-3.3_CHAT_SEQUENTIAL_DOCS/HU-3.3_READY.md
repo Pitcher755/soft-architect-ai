@@ -10,32 +10,32 @@
 
 ### ✅ Completado
 
-- [x] **Tests de Python Centralizados**
-  - Migrados de `src/server/tests/` → `tests/python/`
-  - 22 test files validados
-  - Conftest.py actualizado
-  - Configuraciones actualizadas (pytest, pyright, CI/CD)
+- [x] **Pruebas de Python Centralizados**
+  - Migrados de `src/server/pruebas/` → `pruebas/python/`
+  - 22 prueba archivos validados
+  - Confprueba.py actualizado
+  - Configuraciones actualizadas (pyprueba, pyright, CI/CD)
 
 - [x] **Workflow Maestro HU-3.3 Creado**
-  - Documento completo: `doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md`
+  - Documentoo completo: `doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md`
   - 6 Fases TDD definidas
-  - Todos los tests planificados
+  - Todos los pruebas planificados
   - Casos de uso y validación especificada
 
-- [x] **Documentación de Migración**
-  - README_MIGRATION.md en tests/python/
+- [x] **Documentoación de Migración**
+  - README_MIGRATION.md en pruebas/python/
   - TESTS_MIGRATION_REPORT.md en doc/01-PROJECT_REPORT/
-  - Script de validación: scripts/validate_tests_migration.sh
+  - Script de validación: scripts/validate_pruebas_migration.sh
 
 - [x] **CI/CD Pipeline Actualizado**
-  - backend-ci.yaml apunta a tests/python/
-  - Pytest.ini testpaths correcto
+  - backend-ci.yaml apunta a pruebas/python/
+  - Pyprueba.ini pruebapaths correcto
   - Pyrightconfig.json actualizado
 
 ### 🚀 Listo para Iniciar
 
 - [ ] Leer el Workflow Maestro HU-3.3 completo
-- [ ] Entender los 6 phases (RED → GREEN pattern)
+- [ ] Entender los 6 fases (RED → GREEN pattern)
 - [ ] Preparar el ambiente para TDD
 - [ ] Crear branch para HU-3.3 (ya existente)
 
@@ -114,8 +114,8 @@ e iteración conversacional."
 - **Duración Estimada:** 3-4 días
 
 ### Dependencias (Todas Resueltas ✅)
-- [x] HU-3.1: ProjectShell + SQLite
-- [x] HU-3.2: FileSystemService
+- [x] HU-3.1: ProyectoShell + SQLite
+- [x] HU-3.2: ArchivoSystemService
 - [x] HU-2.2: ChromaDB + RAG
 
 ---
@@ -123,9 +123,9 @@ e iteración conversacional."
 ## 📖 Workflow Maestro: 6 Fases
 
 ### Fase 1: Backend RAG Orchestration (TDD RED)
-- Tests de orchestrator
-- Tests de template loader
-- Tests de streaming SSE
+- Pruebas de orchestrator
+- Pruebas de template loader
+- Pruebas de streaming SSE
 
 ### Fase 2: Backend SSE Streaming (TDD GREEN)
 - Implementar endpoint FastAPI
@@ -133,8 +133,8 @@ e iteración conversacional."
 - Conexión con LLM
 
 ### Fase 3: Frontend State Machine (TDD RED)
-- Tests de Domain Layer (ChatMessage, DocumentProposal)
-- Tests de ChatNotifier (máquina de estados)
+- Pruebas de Domain Layer (ChatMessage, DocumentoProposal)
+- Pruebas de ChatNotifier (máquina de estados)
 - Validación de flujo secuencial
 
 ### Fase 4: UI Components Golden Kit (TDD GREEN)
@@ -143,9 +143,9 @@ e iteración conversacional."
 - Streaming indicator
 - Progress bar (Doc N/25)
 
-### Fase 5: Integration The Gate (TDD RED)
-- Tests E2E
-- Conexión Frontend → Backend → FileSystem (HU-3.2)
+### Fase 5: Integración The Gate (TDD RED)
+- Pruebas E2E
+- Conexión Frontend → Backend → ArchivoSystem (HU-3.2)
 - Validación y persistencia
 
 ### Fase 6: End-to-End Validation (TDD GREEN)
@@ -194,12 +194,12 @@ touch tests/python/unit/services/rag/test_orchestrator.py
 
 ---
 
-## 🚦 Estatus de Dependencias
+## 🚦 Eestado de Dependencias
 
 | HU | Nombre | Estado | Impacto en HU-3.3 |
 |----|--------|--------|-------------------|
-| **HU-3.1** | ProjectShell + SQLite | ✅ DONE | Progreso Doc N/25 |
-| **HU-3.2** | FileSystemService | ✅ DONE | Persistencia |
+| **HU-3.1** | ProyectoShell + SQLite | ✅ DONE | Progreso Doc N/25 |
+| **HU-3.2** | ArchivoSystemService | ✅ DONE | Persistencia |
 | **HU-2.2** | ChromaDB + RAG | ✅ DONE | Templates |
 | **HU-3.4** | Error Handling Gates | ⏳ Optional | Validación robusta |
 | **HU-3.5** | Streaming Optimization | ⏳ Optional | Performance |
@@ -213,19 +213,19 @@ touch tests/python/unit/services/rag/test_orchestrator.py
 - [ ] Propuesta es temporal (NO persiste hasta 'Validar')
 - [ ] Botón enviar deshabilitado si campo vacío/espacios
 - [ ] Bloques código con botón 'Copiar' funcional
-- [ ] Botón 'Validar y Guardar' llama FileSystemService (HU-3.2)
+- [ ] Botón 'Validar y Guardar' llama ArchivoSystemService (HU-3.2)
 - [ ] Streaming SSE con <200ms TTF
 - [ ] Barra de progreso actualiza (Doc N/25) tras validar
 - [ ] Flujo 100% secuencial (nunca 2 docs paralelos)
 
 ### ❌ Negativos (1)
-- [ ] Documentos NO se guardan sin clic en 'Validar'
+- [ ] Documentoos NO se guardan sin clic en 'Validar'
 
 ---
 
 ## 🔍 Validación Pre-Commit
 
-Todos los tests deben pasar antes de push:
+Todos los pruebas deben pasar antes de push:
 
 ```bash
 cd src/server
@@ -236,17 +236,17 @@ pytest ../../tests/python/ -v --cov=app --cov-fail-under=80
 
 ---
 
-## 📚 Documentos de Referencia
+## 📚 Documentoos de Referencia
 
 1. **Workflow Maestro:**
    - [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md)
 
-2. **Migración de Tests:**
+2. **Migración de Pruebas:**
    - [TESTS_MIGRATION_REPORT.md](doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md)
-   - [tests/python/README_MIGRATION.md](tests/python/README_MIGRATION.md)
+   - [pruebas/python/README_MIGRATION.md](pruebas/python/README_MIGRATION.md)
 
 3. **Reglas del Proyecto:**
-   - [AGENTS.md](AGENTS.md) - Sección 8 (Estándar de Documentación)
+   - [AGENTS.md](AGENTS.md) - Sección 8 (Estándar de Documentoación)
 
 4. **Roadmap Completo:**
    - [USER_STORIES_MASTER.es.json](context/40-ROADMAP/USER_STORIES_MASTER.es.json)
@@ -281,12 +281,12 @@ pytest ../../tests/python/unit/services/rag/test_orchestrator.py -v
 
 ## ✨ Lo Que Está Listo
 
-- ✅ Tests centralizados y validados
-- ✅ Workflow maestro documentado (6 fases TDD)
+- ✅ Pruebas centralizados y validados
+- ✅ Workflow maestro documentoado (6 fases TDD)
 - ✅ CI/CD actualizado
 - ✅ Dependencias resueltas (HU-3.1, HU-3.2, HU-2.2)
 - ✅ Rama creada y limpia
-- ✅ Documentación completa
+- ✅ Documentoación completa
 
 ---
 
@@ -296,7 +296,7 @@ pytest ../../tests/python/unit/services/rag/test_orchestrator.py -v
 
 **Tiempo estimado:** 30-45 minutos
 
-**Objetivo:** Entender los 6 phases y estar listo para comenzar TDD RED de Fase 1
+**Objetivo:** Entender los 6 fases y estar listo para comenzar TDD RED de Fase 1
 
 ---
 

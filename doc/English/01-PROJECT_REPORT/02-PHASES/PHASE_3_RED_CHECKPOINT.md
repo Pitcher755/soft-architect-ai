@@ -1,12 +1,12 @@
 # 🔴 PHASE 3: Frontend State Machine - TDD RED Checkpoint
 
-> **Estado:** ✅ **RED PHASE COMPLETE**
-> **Fecha:** 2025-01-28
+> **Status:** ✅ **RED PHASE COMPLETE**
+> **Date:** 2025-01-28
 > **Objetivo:** Verificar que estructura de tests y domain layer está lista para TDD RED
 
 ---
 
-## 📋 Verificación de Completeness
+## 📋 Verification de Completeness
 
 ### ✅ Test Files Creados
 
@@ -19,7 +19,7 @@
 
 ### ✅ Domain Layer Entities
 
-| Entidad | Métodos | Getters | Estado |
+| Entidad | Métodos | Getters | Status |
 |---------|---------|---------|--------|
 | `ChatMessage` | copyWith() | isUser, isAssistant, isComplete | ✅ COMPLETE |
 | `DocumentProposal` | copyWith(), extractSections() | isPending, isValidated, isRejected | ✅ COMPLETE |
@@ -28,14 +28,14 @@
 
 ### ✅ Presentation Layer (State Management)
 
-| Clase | Tipo | Responsabilidad | Estado |
+| Clase | Tipo | Responsabilidad | Status |
 |-------|------|-----------------|--------|
 | `ChatState` | Data Class | Inmutable state holder | ✅ COMPLETE |
 | `ChatNotifier` | StateNotifier | State machine logic | ✅ COMPLETE |
 
 ### ✅ Domain Layer (Repository Interface)
 
-| Interfaz | Métodos | Estado |
+| Interfaz | Métodos | Status |
 |----------|---------|--------|
 | `ChatRepository` | generateDocument(), saveProposal(), getChatHistory(), clearChatHistory() | ✅ COMPLETE |
 
@@ -48,7 +48,7 @@
 cd tests && flutter test test/unit/features/chat/ --coverage
 ```
 
-### Resultado
+### Result
 ```
 ✅ All tests passed!
 Total: 14 test cases
@@ -81,7 +81,7 @@ ChatNotifier State Machine Tests (6 tests SKIPPED):
 
 ---
 
-## 🧩 Estructura de Archivos Creada
+## 🧩 Estructura de Files Creada
 
 ```
 tests/test/unit/features/chat/

@@ -1,16 +1,16 @@
 # 🔧 GitHub Actions Workflow - Reusable Workflow Fix
 
-> **Fecha:** 03/02/2026
-> **Estado:** ✅ RESUELTO (FINAL)
+> **Date:** 03/02/2026
+> **Status:** ✅ RESUELTO (FINAL)
 > **Commit Final:** dd68bf6 (Solución definitiva)
-> **Commits Anteriores:** 2481f5b, 3854af7, 36f57fe (Versiones experimentales)
+> **Commits Previouses:** 2481f5b, 3854af7, 36f57fe (Versiones experimentales)
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 1. [Problema Original](#problema-original)
-2. [Análisis Técnico](#análisis-técnico)
+2. [Analysis Técnico](#analysis-técnico)
 3. [Solución Implementada](#solución-implementada)
 4. [Cambios Aplicados](#cambios-aplicados)
 5. [Referencias](#referencias)
@@ -27,14 +27,14 @@
 ❌ Line length violations (yamllint)
 ```
 
-El archivo tenía:
+El file tenía:
 - Branch triggers para feature branches
 - Workflows reutilizables en esas branch triggers
 - Complejidad innecesaria en dashboard templates
 
 ---
 
-## 🔍 Análisis Técnico
+## 🔍 Analysis Técnico
 
 ### Root Cause (Causa Raíz)
 
@@ -52,18 +52,18 @@ GitHub Actions tiene una **restricción arquitectónica importante:**
 > No pueden ser usados desde feature branches
 
 El problema:
-1. Archivo configurado para ejecutarse en feature/backend-skeleton
+1. File configurado para executese en feature/backend-skeleton
 2. Intenta usar workflows reutilizables (`./.github/workflows/...`)
-3. GitHub Actions busca esos archivos en la rama feature
+3. GitHub Actions busca esos files en la rama feature
 4. No los encuentra (existen en develop/main) → 40 errores
 
 ### La Solución Correcta (Definitiva)
 
-La solución NO es agregar branch guards complejos. Es **reconocer que CI NO debe ejecutarse en feature branches**, sino SOLO en las ramas donde funciona.
+La solución NO es agregar branch guards complejos. Es **reconocer que CI NO debe executese en feature branches**, sino SOLO en las ramas donde funciona.
 
 **Cambio simple:**
 - Trigger SOLO en `main` y `develop` (las ramas default)
-- Simplificar todo el archivo (remover complejidad innecesaria)
+- Simplificar todo el file (remover complejidad innecesaria)
 - Feature branches usan pre-commit hooks en lugar de CI
 
 ---
@@ -190,7 +190,7 @@ on:
     branches: [main, develop]
 ```
 
-### Estado Final
+### Status Final
 
 ```
 ✅ VSCode errors: 0

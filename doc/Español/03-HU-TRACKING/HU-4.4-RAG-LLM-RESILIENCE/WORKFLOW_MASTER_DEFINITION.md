@@ -1,21 +1,21 @@
-# 🛡️ WORKFLOW MASTER: HU-4.4 RAG/LLM Resilience Extensions
+# 🛡️ WORKFLOW MASTER: HU-4.4 RAG/LLM Resiliencia Extensions
 
-> **Version:** 1.0.0 (Initial)
-> **Methodology:** TDD Strict + Production-Ready Resilience + Antifragile Design
+> **Versión:** 1.0.0 (Initial)
+> **Methodology:** TDD Strict + Production-Ready Resiliencia + Antifragile Design
 > **Author:** ArchitectZero
 > **Last Updated:** 2026-02-15
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Introduction & Philosophy](#1-introduction--philosophy)
-2. [Phase 0: Setup & Contracts (COMPLETED)](#phase-0-setup--contracts-completed)
-3. [Phase 1: Backend Graceful Degradation (TDD Red/Green)](#phase-1-backend-graceful-degradation-tdd-redgreen)
-4. [Phase 2: Backend Retry LLM (TDD Red/Green)](#phase-2-backend-retry-llm-tdd-redgreen)
-5. [Phase 3: Frontend Error Messages (TDD Red/Green)](#phase-3-frontend-error-messages-tdd-redgreen)
-6. [Phase 4: Quality & Security Hardening](#phase-4-quality--security-hardening)
-7. [Phase 5: Validation & PR](#phase-5-validation--pr)
+2. [Fase 0: Setup & Contracts (COMPLETED)](#fase-0-setup--contracts-completed)
+3. [Fase 1: Backend Graceful Degradation (TDD Red/Green)](#fase-1-backend-graceful-degradation-tdd-redgreen)
+4. [Fase 2: Backend Retry LLM (TDD Red/Green)](#fase-2-backend-retry-llm-tdd-redgreen)
+5. [Fase 3: Frontend Error Messages (TDD Red/Green)](#fase-3-frontend-error-messages-tdd-redgreen)
+6. [Fase 4: Quality & Security Hardening](#fase-4-quality--security-hardening)
+7. [Fase 5: Validation & PR](#fase-5-validation--pr)
 8. [Emergency Procedures](#emergency-procedures)
 9. [Success Criteria Matrix](#success-criteria-matrix)
 
@@ -56,10 +56,10 @@ ChromaDB DOWN → System CONTINUES with LLM general knowledge (100% availability
 
 | Factor | Acceptance | Validation Method |
 |--------|-----------|------------------|
-| **Graceful Degradation** | Chat funciona sin ChromaDB | Manual test: docker-compose stop chromadb |
-| **Retry Resilience** | 3 reintentos antes de fallar | Unit test: mock fail → fail → success |
-| **Timeout Prevention** | 30s hard limit RAG | Unit test: mock sleep(35s) → timeout |
-| **Test Coverage** | Backend ≥90%, Frontend ≥85% | `pytest --cov --cov-fail-under=90` |
+| **Graceful Degradation** | Chat funciona sin ChromaDB | Manual prueba: docker-compose stop chromadb |
+| **Retry Resiliencia** | 3 reintentos antes de fallar | Unit prueba: mock fail → fail → success |
+| **Timeout Prevention** | 30s hard limit RAG | Unit prueba: mock sleep(35s) → timeout |
+| **Prueba Coverage** | Backend ≥90%, Frontend ≥85% | `pyprueba --cov --cov-fail-under=90` |
 | **Type Safety** | 0 Pyright errors | `python -m pyright app/` |
 | **Code Quality** | Black + Ruff clean | PRE_PUSH_VALIDATION_MASTER.sh |
 
@@ -71,7 +71,7 @@ ChromaDB DOWN → System CONTINUES with LLM general knowledge (100% availability
 2. **NEVER expose stack traces to users during degradation**
 3. **NEVER wait indefinitely for ChromaDB (30s timeout mandatory)**
 4. **NEVER skip retry logic on LLM calls**
-5. **NEVER push without running `PRE_PUSH_VALIDATION_MASTER.sh`**
+5. **NEVER push without ejecutarning `PRE_PUSH_VALIDATION_MASTER.sh`**
 6. **NEVER log user data (messages, PII) during errors**
 
 ---
@@ -96,39 +96,39 @@ ChromaDB DOWN → System CONTINUES with LLM general knowledge (100% availability
 
 ---
 
-## Phase 0: Setup & Contracts (COMPLETED)
+## Fase 0: Setup & Contracts (COMPLETED)
 
 **Duration:** 0.5 hours
-**Status:** ✅ COMPLETED (commit `8eb41e8`)
+**Estado:** ✅ COMPLETED (commit `8eb41e8`)
 
 ---
 
-### ✅ Completed Checklist
+### ✅ Completado Checklist
 
-- ✅ Branch created: `feature/rag-llm-resilience`
-- ✅ Documentation created:
-  - `README.md` (1000+ lines, bilingual, GAP analysis)
-  - `PROGRESS.md` (1400+ lines, 6-phase TDD tracking)
-  - `ARTIFACTS.md` (400+ lines, file manifest)
-  - `WORKFLOW_MASTER_DEFINITION.md` (this file)
+- ✅ Branch creard: `feature/rag-llm-resilience`
+- ✅ Documentoation creard:
+  - `README.md` (1000+ lines, bilingual, GAP análisis)
+  - `PROGRESS.md` (1400+ lines, 6-fase TDD tracking)
+  - `ARTIFACTS.md` (400+ lines, archivo manifest)
+  - `WORKFLOW_MASTER_DEFINITION.md` (this archivo)
 - ✅ Roadmap updated: `USER_STORIES_MASTER.es.json` (new HU-4.4 definition)
-- ✅ Initial commit: `docs(hu-4.4): initialize RAG/LLM Resilience Extensions`
+- ✅ Initial commit: `docs(hu-4.4): initialize RAG/LLM Resiliencia Extensions`
 - ✅ Push to GitHub: `origin/feature/rag-llm-resilience`
 
 ---
 
-### 🎓 Phase 0 Exit Criteria
+### 🎓 Fase 0 Exit Criteria
 
 - ✅ Branch exists on GitHub
-- ✅ Documentation complete and versioned
+- ✅ Documentoation complete and versioned
 - ✅ No conflicts with HU-3.4 (used different branch name)
 - ✅ Dependencies validated (HU-3.4 ✅, HU-4.3 ✅)
 
-**Next Step:** Begin Phase 1 (Backend Graceful Degradation - CRITICAL)
+**Siguiente Step:** Begin Fase 1 (Backend Graceful Degradation - CRITICAL)
 
 ---
 
-## Phase 1: Backend Graceful Degradation (TDD Red/Green)
+## Fase 1: Backend Graceful Degradation (TDD Red/Green)
 
 **Duration:** 1.5 hours (CRITICAL PRIORITY 🔴)
 **Objective:** RAG orchestrator continúa con FALLBACK template cuando ChromaDB falla
@@ -137,7 +137,7 @@ ChromaDB DOWN → System CONTINUES with LLM general knowledge (100% availability
 
 ---
 
-### 🎯 GAP 1 Analysis
+### 🎯 GAP 1 Análisis
 
 **Current State (BROKEN):**
 ```python
@@ -185,11 +185,11 @@ async def process_message(self, request: ChatRequest) -> ChatResponse:
 
 ---
 
-### 🔴 TDD Cycle 1.1: Test Orchestrator Continues on ChromaDB Failure
+### 🔴 TDD Cycle 1.1: Prueba Orchestrator Continues on ChromaDB Failure
 
-#### Step 1: Write Failing Test
+#### Step 1: Write Failing Prueba
 
-**File:** `tests/server/unit/services/rag/test_orchestrator_degradation.py` (CREATE NEW)
+**Archivo:** `pruebas/server/unit/services/rag/prueba_orchestrator_degradation.py` (CREATE NEW)
 
 ```python
 """
@@ -418,9 +418,9 @@ class TestRAGOrchestratorGracefulDegradation:
         assert any("FALLBACK" in chunk for chunk in chunks if isinstance(chunk, str))
 ```
 
-**Expected Result:** **ALL 7 TESTS FAIL (RED phase)** ❌
+**Expected Resultado:** **ALL 7 TESTS FAIL (RED fase)** ❌
 
-Run tests:
+Ejecutar pruebas:
 ```bash
 cd tests
 pytest server/unit/services/rag/test_orchestrator_degradation.py -v
@@ -439,15 +439,15 @@ FAILED test_orchestrator_stream_degrades_when_chromadb_fails
 ============ 7 failed in 2.34s ============
 ```
 
-**Why tests fail:** Orchestrator currently raises exception instead of degrading gracefully.
+**Why pruebas fail:** Orchestrator currently raises exception instead of degrading gracefully.
 
 ---
 
 ### 🟢 TDD Cycle 1.2: Implement Graceful Degradation
 
-#### Step 2: Make Tests Pass (GREEN)
+#### Step 2: Make Pruebas Pass (GREEN)
 
-**File:** `src/server/app/services/rag/orchestrator.py` (MODIFY)
+**Archivo:** `src/server/app/services/rag/orchestrator.py` (MODIFY)
 
 **Changes Required:**
 
@@ -616,7 +616,7 @@ async def stream_message(
 
 **Validation:**
 
-Run tests again:
+Ejecutar pruebas again:
 ```bash
 cd tests
 pytest server/unit/services/rag/test_orchestrator_degradation.py -v
@@ -671,14 +671,14 @@ app/services/rag/orchestrator.py    95%    (lines 45-47 not covered)
 
 ---
 
-### 🎓 Phase 1 Exit Criteria
+### 🎓 Fase 1 Exit Criteria
 
-- ✅ 7/7 tests passing (graceful degradation)
+- ✅ 7/7 pruebas passing (graceful degradation)
 - ✅ Coverage ≥90% on orchestrator
 - ✅ Black formatted, Ruff clean, Pyright 0 errors
 - ✅ Logger uses WARNING (not ERROR) for degradation
 - ✅ No stack traces in logs during degradation
-- ✅ Manual test: `docker-compose stop chromadb` → chat still works
+- ✅ Manual prueba: `docker-compose stop chromadb` → chat still works
 
 **Commit:**
 ```bash
@@ -702,7 +702,7 @@ Related: HU-3.4 (error handling base), GAP 3 (timeout)"
 
 ---
 
-## Phase 2: Backend Retry LLM (TDD Red/Green)
+## Fase 2: Backend Retry LLM (TDD Red/Green)
 
 **Duration:** 1 hour (HIGH PRIORITY 🟡)
 **Objective:** Apply @with_retry decorator to LLM calls for transient failure resilience
@@ -711,7 +711,7 @@ Related: HU-3.4 (error handling base), GAP 3 (timeout)"
 
 ---
 
-### 🎯 GAP 2 Analysis
+### 🎯 GAP 2 Análisis
 
 **Current State (MISSING RETRY):**
 ```python
@@ -747,11 +747,11 @@ async def generate(self, prompt: str, max_tokens: int = 1500) -> str:
 
 ---
 
-### 🔴 TDD Cycle 2.1: Test LLM Retry Logic
+### 🔴 TDD Cycle 2.1: Prueba LLM Retry Logic
 
-#### Step 1: Write Failing Tests
+#### Step 1: Write Failing Pruebas
 
-**File:** `tests/server/unit/infrastructure/llm/test_ollama_retry.py` (CREATE NEW)
+**Archivo:** `pruebas/server/unit/infrastructure/llm/prueba_ollama_retry.py` (CREATE NEW)
 
 ```python
 """
@@ -952,9 +952,9 @@ class TestOllamaRetryLogic:
             assert len(chunks) > 0
 ```
 
-**Expected Result:** **ALL 8 TESTS FAIL (RED phase)** ❌
+**Expected Resultado:** **ALL 8 TESTS FAIL (RED fase)** ❌
 
-Run tests:
+Ejecutar pruebas:
 ```bash
 cd tests
 pytest server/unit/infrastructure/llm/test_ollama_retry.py -v
@@ -973,15 +973,15 @@ FAILED test_ollama_stream_also_retries
 ============ 8 failed in 3.12s ============
 ```
 
-**Why tests fail:** `@with_retry` decorator not applied to LLM methods yet.
+**Why pruebas fail:** `@with_retry` decorator not applied to LLM methods yet.
 
 ---
 
 ### 🟢 TDD Cycle 2.2: Apply Retry Decorator
 
-#### Step 2: Make Tests Pass (GREEN)
+#### Step 2: Make Pruebas Pass (GREEN)
 
-**File:** `src/server/app/infrastructure/llm/ollama_client.py` (MODIFY)
+**Archivo:** `src/server/app/infrastructure/llm/ollama_client.py` (MODIFY)
 
 **Changes Required:**
 
@@ -1108,7 +1108,7 @@ async def stream_generate(
 
 **Validation:**
 
-Run tests again:
+Ejecutar pruebas again:
 ```bash
 cd tests
 pytest server/unit/infrastructure/llm/test_ollama_retry.py -v
@@ -1164,9 +1164,9 @@ app/infrastructure/llm/ollama_client.py    97%    (line 156 not covered)
 
 ---
 
-### 🎓 Phase 2 Exit Criteria
+### 🎓 Fase 2 Exit Criteria
 
-- ✅ 8/8 tests passing (retry logic)
+- ✅ 8/8 pruebas passing (retry logic)
 - ✅ Coverage ≥95% on ollama_client
 - ✅ Black formatted, Ruff clean, Pyright 0 errors
 - ✅ Retry applied to both `generate()` and `stream_generate()`
@@ -1195,7 +1195,7 @@ Related: HU-3.4 (@with_retry decorator), GAP 1 (graceful degradation)"
 
 ---
 
-## Phase 3: Frontend Error Messages (TDD Red/Green)
+## Fase 3: Frontend Error Messages (TDD Red/Green)
 
 **Duration:** 0.5 hours (LOW PRIORITY 🟢)
 **Objective:** Add translated error messages for DB_ERR_001 and RAG_ERR_001
@@ -1204,7 +1204,7 @@ Related: HU-3.4 (@with_retry decorator), GAP 1 (graceful degradation)"
 
 ---
 
-### 🎯 GAP 4 Analysis
+### 🎯 GAP 4 Análisis
 
 **Current State (MISSING CODES):**
 ```dart
@@ -1231,13 +1231,13 @@ Map<String, String> _errorMessages = {
 
 ---
 
-### 🔴 TDD Cycle 3.1: Test Frontend Error Messages
+### 🔴 TDD Cycle 3.1: Prueba Frontend Error Messages
 
-#### Step 1: Write Failing Test
+#### Step 1: Write Failing Prueba
 
-**File:** `tests/client/unit/core/error_handling/error_mapper_test.dart` (MODIFY EXISTING)
+**Archivo:** `pruebas/client/unit/core/error_handling/error_mapper_prueba.dart` (MODIFY EXISTING)
 
-Add test at the end of the file:
+Add prueba at the end of the archivo:
 
 ```dart
 // Add to existing test file
@@ -1277,9 +1277,9 @@ group('HU-4.4 GAP 4: RAG/LLM Error Codes', () {
 });
 ```
 
-**Expected Result:** **TEST FAILS (RED phase)** ❌
+**Expected Resultado:** **TEST FAILS (RED fase)** ❌
 
-Run tests:
+Ejecutar pruebas:
 ```bash
 cd tests
 flutter test client/unit/core/error_handling/error_mapper_test.dart
@@ -1297,9 +1297,9 @@ FAILED: should map RAG_ERR_001 to Spanish message
 
 ### 🟢 TDD Cycle 3.2: Add Error Messages
 
-#### Step 2: Make Tests Pass (GREEN)
+#### Step 2: Make Pruebas Pass (GREEN)
 
-**File:** `src/client/lib/core/error_handling/error_mapper.dart` (MODIFY)
+**Archivo:** `src/client/lib/core/error_handling/error_mapper.dart` (MODIFY)
 
 Add new error codes to `_errorMessages` map:
 
@@ -1352,7 +1352,7 @@ class ErrorMapper {
 
 **Validation:**
 
-Run tests again:
+Ejecutar pruebas again:
 ```bash
 cd tests
 flutter test client/unit/core/error_handling/error_mapper_test.dart
@@ -1380,7 +1380,7 @@ cd src/client
 dart format lib/core/error_handling/error_mapper.dart
 ```
 
-**Analysis:**
+**Análisis:**
 ```bash
 flutter analyze lib/core/error_handling/error_mapper.dart
 ```
@@ -1399,11 +1399,11 @@ All tests passed
 
 ---
 
-### 🎓 Phase 3 Exit Criteria
+### 🎓 Fase 3 Exit Criteria
 
-- ✅ 4/4 tests passing (frontend error messages)
+- ✅ 4/4 pruebas passing (frontend error messages)
 - ✅ Coverage ≥85% on error_mapper
-- ✅ Dart formatted, analysis clean
+- ✅ Dart formatted, análisis clean
 - ✅ Messages in Spanish (user-facing language)
 - ✅ Messages indicate graceful degradation (not critical failures)
 
@@ -1429,10 +1429,10 @@ Related: GAP 1 (graceful degradation), HU-3.4 (ErrorMapper base)"
 
 ---
 
-## Phase 4: Quality & Security Hardening
+## Fase 4: Quality & Security Hardening
 
 **Duration:** 0.5 hours
-**Objective:** Run full quality gates and security audit
+**Objective:** Ejecutar full quality gates and security audit
 
 ---
 
@@ -1450,7 +1450,7 @@ cd ../client
 dart format lib/ --set-exit-if-changed
 ```
 
-Expected: All files formatted ✅
+Expected: All archivos formatted ✅
 
 ---
 
@@ -1509,7 +1509,7 @@ Total lines of code: 1234
 
 ---
 
-#### 4.5 Test Coverage
+#### 4.5 Prueba Coverage
 
 ```bash
 # Backend
@@ -1533,7 +1533,7 @@ Frontend:
 
 ---
 
-### 🎓 Phase 4 Exit Criteria
+### 🎓 Fase 4 Exit Criteria
 
 - ✅ Black formatted, Dart formatted
 - ✅ Ruff clean, Flutter analyze clean
@@ -1568,16 +1568,16 @@ Security:
 
 ---
 
-## Phase 5: Validation & PR
+## Fase 5: Validation & PR
 
 **Duration:** 0.5 hours
-**Objective:** Run PRE_PUSH validation, manual tests, and open PR
+**Objective:** Ejecutar PRE_PUSH validation, manual pruebas, and open PR
 
 ---
 
 ### ✅ Validation Checklist
 
-#### 5.1 Run Master Validation Script
+#### 5.1 Ejecutar Master Validation Script
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
@@ -1603,13 +1603,13 @@ Phase 8: Build Validation ✅
 Exit Code: 0
 ```
 
-If any gate fails, fix issues and re-run.
+If any gate fails, fix issues and re-ejecutar.
 
 ---
 
-#### 5.2 Manual Test Scenarios
+#### 5.2 Manual Prueba Scenarios
 
-**Test Scenario 1: ChromaDB Down (GAP 1)**
+**Prueba Scenario 1: ChromaDB Down (GAP 1)**
 
 ```bash
 # Terminal 1: Stop ChromaDB
@@ -1648,7 +1648,7 @@ docker-compose start chromadb
 
 ---
 
-**Test Scenario 2: Ollama Latency (GAP 2)**
+**Prueba Scenario 2: Ollama Latency (GAP 2)**
 
 ```bash
 # Simulate network latency (requires tc command)
@@ -1673,7 +1673,7 @@ sudo tc qdisc del dev lo root
 
 ---
 
-**Test Scenario 3: ChromaDB Timeout >30s (GAP 3)**
+**Prueba Scenario 3: ChromaDB Timeout >30s (GAP 3)**
 
 ```bash
 # Simulate ChromaDB hang (mock in tests already covers this)
@@ -1684,14 +1684,14 @@ pytest tests/server/unit/services/rag/test_orchestrator_degradation.py::test_orc
 ```
 
 **Validation:**
-- ✅ Test passes (timeout triggers after 30s)
+- ✅ Prueba passes (timeout triggers after 30s)
 - ✅ System degrades gracefully (doesn't wait forever)
 
 ---
 
-#### 5.3 Update Documentation
+#### 5.3 Update Documentoation
 
-**File:** `doc/03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/PROGRESS.md`
+**Archivo:** `doc/03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/PROGRESS.md`
 
 Update progress:
 
@@ -1714,7 +1714,7 @@ Update progress:
 
 ---
 
-#### 5.4 Push & Create PR
+#### 5.4 Push & Crear PR
 
 ```bash
 # Push all commits
@@ -1832,24 +1832,24 @@ EOF
 
 ---
 
-### 🎓 Phase 5 Exit Criteria
+### 🎓 Fase 5 Exit Criteria
 
 - ✅ PRE_PUSH_VALIDATION_MASTER.sh: 19/19 gates passed
-- ✅ Manual tests: 3/3 scenarios passed
-- ✅ Documentation updated (PROGRESS.md complete)
-- ✅ PR created on GitHub
-- ✅ PR description complete with test results, security checklist
+- ✅ Manual pruebas: 3/3 scenarios passed
+- ✅ Documentoation updated (PROGRESS.md complete)
+- ✅ PR creard on GitHub
+- ✅ PR descripción complete with prueba results, security checklist
 
 ---
 
 ## Emergency Procedures
 
-### 🚨 If Tests Fail During Development
+### 🚨 If Pruebas Fail During Development
 
-**Problem:** Test suddenly fails after code change
+**Problem:** Prueba suddenly fails after code change
 
 **Debug Steps:**
-1. Run failing test in isolation with verbose output:
+1. Ejecutar failing prueba in isolation with verbose output:
    ```bash
    pytest tests/server/unit/path/to/test.py::test_name -vv -s
    ```
@@ -1869,7 +1869,7 @@ EOF
        result = await async_function()
    ```
 
-4. If still failing, simplify test to minimal reproduction:
+4. If still failing, simplify prueba to minimal reproduction:
    ```python
    async def test_minimal():
        # Remove all mocks, test one thing
@@ -1900,7 +1900,7 @@ curl http://localhost:8000/api/v1/heartbeat
 
 ### 🚨 If Coverage Drops Below 90%
 
-**Problem:** Coverage report shows <90% on critical files
+**Problem:** Coverage report shows <90% on critical archivos
 
 **Fix:**
 ```bash
@@ -1994,8 +1994,8 @@ grep "❌" validation.log
 
 #### Non-Functional Criteria (5/5 required)
 
-- ✅ **NF1:** Test coverage: Backend ≥90%, Frontend ≥85%
-- ✅ **NF2:** All 19 tests passing (7 degradation + 8 retry + 4 frontend)
+- ✅ **NF1:** Prueba coverage: Backend ≥90%, Frontend ≥85%
+- ✅ **NF2:** All 19 pruebas passing (7 degradation + 8 retry + 4 frontend)
 - ✅ **NF3:** Pyright 0 errors (type safety)
 - ✅ **NF4:** Black formatted, Ruff clean (code quality)
 - ✅ **NF5:** Bandit 0 high/medium issues (security)
@@ -2008,11 +2008,11 @@ grep "❌" validation.log
 - ✅ **S2:** No user data (messages, PII) in error logs
 - ✅ **S3:** Timeouts prevent resource exhaustion (30s RAG, 30s LLM)
 - ✅ **S4:** Retry limits prevent infinite loops (max 3 retries)
-- ✅ **S5:** Error messages don't expose system internals (no file paths, no code)
+- ✅ **S5:** Error messages don't expose system internals (no archivo paths, no código)
 
 ---
 
-#### Manual Test Criteria (3/3 required)
+#### Manual Prueba Criteria (3/3 required)
 
 - ✅ **M1:** Scenario 1 passed: docker-compose stop chromadb → Chat works
 - ✅ **M2:** Scenario 2 passed: Network latency → Retry succeeds
@@ -2020,12 +2020,12 @@ grep "❌" validation.log
 
 ---
 
-#### Documentation Criteria (4/4 required)
+#### Documentoation Criteria (4/4 required)
 
-- ✅ **D1:** PROGRESS.md updated with final status
-- ✅ **D2:** README.md complete (bilingual, GAP analysis)
-- ✅ **D3:** ARTIFACTS.md complete (file manifest, LOC counts)
-- ✅ **D4:** WORKFLOW_MASTER_DEFINITION.md complete (this file)
+- ✅ **D1:** PROGRESS.md updated with final estado
+- ✅ **D2:** README.md complete (bilingual, GAP análisis)
+- ✅ **D3:** ARTIFACTS.md complete (archivo manifest, LOC counts)
+- ✅ **D4:** WORKFLOW_MASTER_DEFINITION.md complete (this archivo)
 
 ---
 
@@ -2033,19 +2033,19 @@ grep "❌" validation.log
 
 **Total Criteria:** 24/24 ✅ (100%)
 
-**Status:** **READY FOR MERGE** 🎉
+**Estado:** **READY FOR MERGE** 🎉
 
 ---
 
 ## 📚 References & Context
 
-### Related Documentation
+### Related Documentoation
 
-- [HU-4.4 README](README.md) - Full context and GAP analysis
-- [HU-4.4 PROGRESS](PROGRESS.md) - Phase-by-phase tracking (now complete)
-- [HU-4.4 ARTIFACTS](ARTIFACTS.md) - File manifest and LOC estimates
+- [HU-4.4 README](README.md) - Full context and GAP análisis
+- [HU-4.4 PROGRESS](PROGRESS.md) - Fase-by-fase tracking (now complete)
+- [HU-4.4 ARTIFACTS](ARTIFACTS.md) - Archivo manifest and LOC estimates
 - [HU-3.4 Tracking](../HU-3.4-ERROR-HANDLING-GATES/) - Error handling base (dependency)
-- [AGENTS.md](../../../AGENTS.md) - Project standards and rules
+- [AGENTS.md](../../../AGENTS.md) - Proyecto standards and rules
 
 ### Upstream Dependencies
 
@@ -2061,8 +2061,8 @@ grep "❌" validation.log
 
 ### Downstream Impact
 
-- **HU-5.1:** Configuration UI (will use new error codes in settings validation)
-- **HU-6.1:** Flutter Desktop Integration (will benefit from 100% availability guarantee)
+- **HU-5.1:** Configuración UI (will use new error codes in settings validation)
+- **HU-6.1:** Flutter Desktop Integración (will benefit from 100% availability guarantee)
 
 ---
 
@@ -2070,20 +2070,20 @@ grep "❌" validation.log
 
 ### Lines of Code (LOC)
 
-| Component | Production LOC | Test LOC | Total |
+| Component | Production LOC | Prueba LOC | Total |
 |-----------|---------------|----------|-------|
 | RAG Orchestrator (Modified) | 40 | 250 | 290 |
 | LLM Client (Modified) | 10 | 280 | 290 |
 | Error Mapper (Modified) | 10 | 50 | 60 |
 | **TOTAL** | **60** | **580** | **640** |
 
-**Ratio:** 9.67:1 (Test LOC : Production LOC) - Excellent for TDD ✅
+**Ratio:** 9.67:1 (Prueba LOC : Production LOC) - Excellent for TDD ✅
 
 ---
 
-### Test Distribution
+### Prueba Distribution
 
-| Phase | Component | Tests | LOC | Coverage |
+| Fase | Component | Pruebas | LOC | Coverage |
 |-------|-----------|-------|-----|----------|
 | 1 | Orchestrator Degradation | 7 | 250 | 95% |
 | 2 | LLM Client Retry | 8 | 280 | 97% |
@@ -2092,9 +2092,9 @@ grep "❌" validation.log
 
 ---
 
-### Time Breakdown
+### Time Desglose
 
-| Phase | Estimated | Actual | Variance |
+| Fase | Estimated | Actual | Variance |
 |-------|-----------|--------|----------|
 | 0: Setup | 0.5h | 0.5h | 0% |
 | 1: Graceful Degradation | 1.5h | [TBD] | - |
@@ -2110,22 +2110,22 @@ grep "❌" validation.log
 
 ### What Went Well ✅
 
-1. **TDD Discipline:** Writing tests first forced clear thinking about edge cases
+1. **TDD Discipline:** Writing pruebas first forced clear thinking about edge cases
 2. **Graceful Degradation:** Philosophy prevented over-complicated error handling
 3. **Reuse of HU-3.4:** `@with_retry` decorator already existed (saved 1-2 hours)
-4. **Clear GAP Analysis:** Knowing exactly what was missing made implementation focused
+4. **Clear GAP Análisis:** Knowing exactly what was missing made implementación focused
 
 ### What Could Improve 🔄
 
 1. **Initial Roadmap:** HU-4.4 original spec was 90% duplicate of HU-3.4 (caught late)
-2. **Documentation:** Could have found the conflict earlier with better cross-referencing
-3. **Test Mocking:** Some mock setups were complex (especially async timeouts)
+2. **Documentoation:** Could have found the conflict earlier with better cross-referencing
+3. **Prueba Mocking:** Some mock setups were complex (especially async timeouts)
 
 ### For Future HUs 📝
 
-1. **Always check for duplication** before starting implementation
-2. **Verify dependencies early** (what already exists from previous HUs)
-3. **Document GAP analysis upfront** (prevents scope creep)
+1. **Always check for duplication** before starting implementación
+2. **Verify dependencies early** (what already exists from anterior HUs)
+3. **Documento GAP análisis upfront** (prevents scope creep)
 4. **Keep workflows detailed** (this doc helped maintain focus)
 
 ---
@@ -2134,8 +2134,8 @@ grep "❌" validation.log
 
 ---
 
-> **Next Steps After Merge:**
-> 1. Close HU-4.4 in project tracking
-> 2. Update roadmap status (HU-4.4 ✅ COMPLETE)
-> 3. Start HU-5.1 (Configuration UI) or HU-6.1 (Flutter Desktop Integration)
-> 4. Document any production issues discovered during testing
+> **Siguiente Steps After Merge:**
+> 1. Close HU-4.4 in proyecto tracking
+> 2. Update roadmap estado (HU-4.4 ✅ COMPLETE)
+> 3. Start HU-5.1 (Configuración UI) or HU-6.1 (Flutter Desktop Integración)
+> 4. Documento any production issues discovered during pruebaing

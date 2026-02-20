@@ -1,8 +1,8 @@
 # 🧪 HU-4.4: Manual Testing Guide - RAG/LLM Resilience Extensions
 
-> **Fecha:** 16/02/2026
+> **Date:** 16/02/2026
 > **Branch:** `feature/rag-llm-resilience`
-> **Estado:** ✅ Ready for Execution
+> **Status:** ✅ Ready for Execution
 > **Infraestructura:** Docker (sa_api, sa_chromadb, sa_ollama)
 
 ---
@@ -10,12 +10,12 @@
 ## 📋 Tabla de Contenidos
 
 1. [Pre-requisitos](#-pre-requisitos)
-2. [Verificación de Infraestructura](#-verificación-de-infraestructura)
+2. [Verification de Infraestructura](#-verification-de-infraestructura)
 3. [Escenario 1: ChromaDB Down (Graceful Degradation)](#-escenario-1-chromadb-down-graceful-degradation)
 4. [Escenario 2: Ollama con Problemas (Retry Logic)](#-escenario-2-ollama-con-problemas-retry-logic)
 5. [Escenario 3: ChromaDB Timeout](#-escenario-3-chromadb-timeout-opcional)
 6. [Limpieza y Reset](#-limpieza-y-reset)
-7. [Interpretación de Resultados](#-interpretación-de-resultados)
+7. [Interpretación de Results](#-interpretación-de-resultados)
 
 ---
 
@@ -43,9 +43,9 @@
 
 ---
 
-## ✅ Verificación de Infraestructura
+## ✅ Verification de Infraestructura
 
-**Ejecutar ANTES de empezar los tests:**
+**Execute ANTES de empezar los tests:**
 
 ### 1.1 Levantar Stack Completo
 
@@ -70,7 +70,7 @@ sleep 10
 
 ---
 
-### 1.2 Verificar Estado de Contenedores
+### 1.2 Verificar Status de Contenedores
 
 ```bash
 docker ps --filter "name=sa_" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
@@ -84,7 +84,7 @@ sa_chromadb   Up 8 seconds (healthy)    0.0.0.0:8001->8000/tcp
 sa_ollama     Up 10 seconds (healthy)   0.0.0.0:11434->11434/tcp
 ```
 
-**✅ CRITERIO:** Los 3 contenedores deben estar "Up" y `sa_chromadb` + `sa_ollama` con estado "(healthy)".
+**✅ CRITERIO:** Los 3 contenedores deben estar "Up" y `sa_chromadb` + `sa_ollama` con status "(healthy)".
 
 ---
 
@@ -378,7 +378,7 @@ chmod +x /tmp/test_ollama_retry.sh
 docker restart sa_ollama
 ```
 
-**Timing crítico:** Ejecutar `docker restart sa_ollama` **mientras** el script de testing está corriendo.
+**Timing crítico:** Execute `docker restart sa_ollama` **mientras** el script de testing está corriendo.
 
 ---
 
@@ -469,7 +469,7 @@ Validar que RAG operations tienen **timeout de 30s** y NO esperan indefinidament
 
 ---
 
-### 3.1 Verificación Automática (Recomendado)
+### 3.1 Verification Automática (Recomendado)
 
 ```bash
 # Ejecutar unit test específico que valida timeout
@@ -515,11 +515,11 @@ docker ps --filter "name=sa_"
 
 ---
 
-## 📊 Interpretación de Resultados
+## 📊 Interpretación de Results
 
 ### ✅ Criterios de Aceptación Finales
 
-| # | Escenario | Criterio | Estado |
+| # | Escenario | Criterio | Status |
 |---|-----------|----------|---------|
 | **1.1** | ChromaDB Down | HTTP 200 recibido | ☐ |
 | **1.2** | ChromaDB Down | `template_used` = "FALLBACK" | ☐ |
@@ -537,7 +537,7 @@ docker ps --filter "name=sa_"
 
 ## 📝 Notas para el Tester
 
-### Logging de Resultados
+### Logging de Results
 
 **Guardar evidencias en cada escenario:**
 
@@ -576,7 +576,7 @@ tar -czf ~/hu-4.4-manual-test-results.tar.gz /tmp/hu-4.4-test-evidence/
 
 ## 🔗 Referencias
 
-- **PROGRESS.md:** Estado completo de HU-4.4
+- **PROGRESS.md:** Status completo de HU-4.4
 - **README.md:** Contexto y GAP analysis de la feature
 - **Docker Compose:** `infrastructure/docker-compose.yml`
 - **API Endpoints:** `src/server/app/api/v1/chat.py`
@@ -584,7 +584,7 @@ tar -czf ~/hu-4.4-manual-test-results.tar.gz /tmp/hu-4.4-test-evidence/
 
 ---
 
-**👤 Ejecutado por:** [Nombre del Tester]
+**👤 Ejecutado por:** [Name del Tester]
 **📅 Fecha de ejecución:** [DD/MM/YYYY]
 **⏱️ Duración total:** [X minutos]
-**✅ Resultado final:** [PASS / FAIL]
+**✅ Result final:** [PASS / FAIL]

@@ -1,7 +1,7 @@
 # AppColors - Reference Guide
 
 **Última actualización:** 08/02/2026
-**Archivo:** `lib/core/theme/app_colors.dart`
+**File:** `lib/core/theme/app_colors.dart`
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Colores Primarios
 
-| Nombre | Valor | Uso | Opacidad |
+| Name | Valor | Uso | Opacidad |
 |--------|-------|-----|----------|
 | `primary` | `#58A6FF` | Botones, borders, acentos | 1.0, 0.2 (hover) |
 | `primaryLight` | `#79C0FF` | Variante clara de accento | 1.0 |
@@ -17,7 +17,7 @@
 
 ### Fondos
 
-| Nombre | Valor | Uso | Opacidad |
+| Name | Valor | Uso | Opacidad |
 |--------|-------|-----|----------|
 | `mainBg` | `#0D1117` | Fondo principal de Scaffold | 1.0 |
 | `surfaceBg` | `#161B22` | Cards, sidebar, dialogs | 1.0 |
@@ -25,7 +25,7 @@
 
 ### Texto
 
-| Nombre | Valor | Uso | Opacidad |
+| Name | Valor | Uso | Opacidad |
 |--------|-------|-----|----------|
 | `textMain` | `#E6EDF3` | Títulos, contenido principal | 1.0 |
 | `textSecondary` | `#8B949E` | Subtítulos, metadata, hints | 1.0 |
@@ -33,16 +33,16 @@
 
 ### Bordes
 
-| Nombre | Valor | Uso | Opacidad |
+| Name | Valor | Uso | Opacidad |
 |--------|-------|-----|----------|
 | `border` | `#30363D` | Bordes estándar | 1.0 |
 | `borderLight` | `#6E7681` | Bordes suaves, separadores | 0.3 (light) |
 
 ---
 
-## 🎯 Fases del Proyecto
+## 🎯 Phases del Project
 
-### Fase 1: Contexto
+### Phase 1: Contexto
 ```dart
 // Color: Amarillo
 AppColors.phase1Context // #FCD34D
@@ -53,7 +53,7 @@ phaseColor.withValues(alpha: 0.4)  // Card border
 phaseColor.withValues(alpha: 0.6)  // Arrow icon
 ```
 
-### Fase 2: Requisitos
+### Phase 2: Requisitos
 ```dart
 // Color: Verde
 AppColors.phase2Requirements // #10B981
@@ -64,7 +64,7 @@ phaseColor.withValues(alpha: 0.4)  // Card border
 phaseColor.withValues(alpha: 0.6)  // Arrow icon
 ```
 
-### Fase 3: Arquitectura
+### Phase 3: Arquitectura
 ```dart
 // Color: Azul
 AppColors.phase3Architecture // #60A5FA
@@ -79,9 +79,9 @@ phaseColor.withValues(alpha: 0.6)  // Arrow icon
 
 ## 🎨 Colores de Iconos
 
-Cada proyecto puede tener su color de icono único:
+Cada project puede tener su color de icono único:
 
-| Proyecto | Color | Valor | Opacity 0.1 Use |
+| Project | Color | Valor | Opacity 0.1 Use |
 |----------|-------|-------|-----------------|
 | E-Commerce | `iconBlue` | `#3B82F6` | Icon container background |
 | Uber for Dogs | `iconPurple` | `#A855F7` | Icon container background |
@@ -210,7 +210,7 @@ Icon(
 ),
 ```
 
-### Sidebar con AppColors
+### Sidebar with AppColors
 ```dart
 // Logo background
 Container(
@@ -291,4 +291,4 @@ Cuando agregues nuevos colores:
 ## 📞 Contacto / Preguntas
 
 Para actualizar la paleta de colores o agregar nuevos, contacta al equipo de diseño.
-Todos los cambios deben ser reflejados en este documento.
+Todos los cambios deben ser reflejados en este document.

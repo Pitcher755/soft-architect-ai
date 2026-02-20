@@ -1,16 +1,16 @@
 # 📊 Test Coverage Analysis Report - February 2026
 
-> **Fecha:** 4 de febrero de 2026
-> **Estado:** ✅ Mejorado significativamente
-> **Versión:** v0.3.2-coverage-update
+> **Date:** 4 de febrero de 2026
+> **Status:** ✅ Mejorado significativamente
+> **Version:** v0.3.2-coverage-update
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Resumen Ejecutivo](#resumen-ejecutivo)
 - [Cobertura por Categoría](#cobertura-por-categoría)
-- [Análisis Detallado](#análisis-detallado)
+- [Analysis Detallado](#analysis-detallado)
 - [Tests Pasando vs Fallando](#tests-pasando-vs-fallando)
 - [Recomendaciones](#recomendaciones)
 - [Roadmap de Mejora](#roadmap-de-mejora)
@@ -28,7 +28,7 @@
 | **Tests Failing** | 10 (4.7%) | 📉 Reducción |
 | **Cobertura Promedio** | 84.5% | 📈 Arriba del umbral mínimo (80%) |
 
-### Cambios Respecto a Sesión Anterior
+### Cambios Respecto a Sesión Previous
 
 ```
 Antes:                           Después:
@@ -45,9 +45,9 @@ MEJORA TOTAL: +4.4% (de 90.9% a 95.3%)
 
 ### 1️⃣ Unit Tests: **167/169 (98.8%)**
 
-**Estado:** ✅ **EXCELENTE** - Excepto por 2 errores de loading en infrastructure
+**Status:** ✅ **EXCELENTE** - Excepto por 2 errores de loading en infrastructure
 
-#### Desglose por Módulo
+#### Breakdown por Módulo
 
 | Módulo | Tests | Pass | Fail | Coverage |
 |--------|-------|------|------|----------|
@@ -62,7 +62,7 @@ MEJORA TOTAL: +4.4% (de 90.9% a 95.3%)
 | **Infrastructure Validation** | **2** | **0** | **2** | **0%** ❌ |
 
 #### Fortalezas
-- ✅ Cobertura completa de validación de nombres de proyectos
+- ✅ Cobertura completa de validación de nombres de projects
 - ✅ Seguridad exhaustiva en validación de rutas (prevención de traversal)
 - ✅ Tests completos para entidades del dominio
 - ✅ Casos edge bien documentados
@@ -75,9 +75,9 @@ MEJORA TOTAL: +4.4% (de 90.9% a 95.3%)
 
 ### 2️⃣ Widget Tests: **29/36 (80.6%)**
 
-**Estado:** 🟡 **BUENO** - Mejora significativa, pero aún hay trabajo en ProjectShellScreen
+**Status:** 🟡 **BUENO** - Mejora significativa, pero aún hay trabajo en ProjectShellScreen
 
-#### Desglose por Widget
+#### Breakdown por Widget
 
 | Widget | Tests | Pass | Fail | Coverage |
 |--------|-------|------|------|----------|
@@ -136,15 +136,15 @@ MEJORA TOTAL: +4.4% (de 90.9% a 95.3%)
 - 🔴 should have proper layout structure (algunos aspectos)
 - 🔴 should update UI when project changes
 
-**Root Cause:** Estado del `FakeProjectShellNotifier` aún no se propaga completamente a todos los widgets UI. Algunos tests requieren timing adicional o refactoring de la inyección de estado.
+**Root Cause:** Status del `FakeProjectShellNotifier` aún no se propaga completamente a todos los widgets UI. Algunos tests requieren timing adicional o refactoring de la inyección de status.
 
 ---
 
 ### 3️⃣ Integration Tests: **6/9 (66.7%)**
 
-**Estado:** 🟡 **EN MEJORA** - Pasó de 0 compilable a 6 tests funcionales (mejora del 66.7%)
+**Status:** 🟡 **EN MEJORA** - Pasó de 0 compilable a 6 tests funcionales (mejora del 66.7%)
 
-#### Desglose por Flujo
+#### Breakdown por Flujo
 
 | Flujo | Tests | Pass | Fail | Coverage |
 |-------|-------|------|------|----------|
@@ -177,7 +177,7 @@ MEJORA TOTAL: +4.4% (de 90.9% a 95.3%)
 
 ---
 
-## 🔍 Análisis Detallado
+## 🔍 Analysis Detallado
 
 ### A. Fortalezas del Test Suite
 
@@ -203,18 +203,18 @@ MEJORA TOTAL: +4.4% (de 90.9% a 95.3%)
 
 ### B. Debilidades Identificadas
 
-#### 1. **Inyección de Estado en Riverpod**
+#### 1. **Inyección de Status en Riverpod**
 - 🔴 El patrón `FakeProjectShellNotifier` aún tiene limitaciones
-- 🔴 Algunos widgets UI no leen el estado inyectado correctamente
+- 🔴 Algunos widgets UI no leen el status inyectado correctamente
 - 🟡 Necesita investigación adicional en el ciclo de vida de Riverpod
 
 #### 2. **Integration Tests Incompletos**
 - 🔴 Base de datos de test no completamente funcional
-- 🔴 Flujos de creación de proyectos sin cobertura
+- 🔴 Flujos de creación de projects sin cobertura
 - 🟡 Necesita refinamiento de `SQLiteDataSource` para tests
 
 #### 3. **Highlighting en DirectoryTreeWidget**
-- 🟡 1 test fallando por verificación incompleta de `ListTile.selected`
+- 🟡 1 test fallando por verification incompleta de `ListTile.selected`
 - 🟡 Falta feedback visual de selección en widget
 
 ---
@@ -241,7 +241,7 @@ TOTAL: 202/212 (95.3%) ✅
 
 ### Matriz de Riesgo
 
-| Área | Criticidad | Impacto | Estado |
+| Área | Criticidad | Impacto | Status |
 |------|------------|---------|--------|
 | Unit Tests | ⚠️ Baja | No afecta funcionalidad | ✅ Aceptable |
 | ProjectShellScreen State | 🔴 Alta | Afecta 7 tests | 🔧 En trabajo |
@@ -284,7 +284,7 @@ TOTAL: 202/212 (95.3%) ✅
 
 - [ ] Investigar alternativas a FakeProjectShellNotifier
 - [ ] Documentar mejores prácticas de testing con Riverpod
-- [ ] Crear base de datos de test persistente y reutilizable
+- [ ] Create base de datos de test persistente y reutilizable
 - [ ] Implementar fixtures compartidos entre tests
 
 ### Largo Plazo (Próximo Quarter)
@@ -292,13 +292,13 @@ TOTAL: 202/212 (95.3%) ✅
 - [ ] Aumentar cobertura de integration tests a 90%+
 - [ ] Implementar end-to-end tests completos
 - [ ] Automatizar medición de cobertura en CI/CD
-- [ ] Crear dashboard de coverage público
+- [ ] Create dashboard de coverage público
 
 ---
 
 ## 🛣️ Roadmap de Mejora
 
-### Fase 1: Resolver Críticos (Esta Semana)
+### Phase 1: Resolver Críticos (Esta Semana)
 ```
 ┌─────────────────────────────────────────┐
 │ CRITICAL ISSUES                         │
@@ -310,7 +310,7 @@ TOTAL: 202/212 (95.3%) ✅
 └─────────────────────────────────────────┘
 ```
 
-### Fase 2: Optimizar (Próximas 2 Semanas)
+### Phase 2: Optimizar (Próximas 2 Semanas)
 ```
 ┌─────────────────────────────────────────┐
 │ OPTIMIZATION                            │
@@ -324,7 +324,7 @@ TOTAL: 202/212 (95.3%) ✅
 └─────────────────────────────────────────┘
 ```
 
-### Fase 3: Escala (Próximo Mes)
+### Phase 3: Escala (Próximo Mes)
 ```
 ┌─────────────────────────────────────────┐
 │ SCALE & AUTOMATE                        │
@@ -340,7 +340,7 @@ TOTAL: 202/212 (95.3%) ✅
 
 ## 📋 Quality Gates Status
 
-| Gate | Umbral | Actual | Estado |
+| Gate | Umbral | Actual | Status |
 |------|--------|--------|--------|
 | **Cobertura Global** | 80% | 95.3% | ✅ PASS |
 | **Unit Tests** | 90% | 98.8% | ✅ PASS |
@@ -414,7 +414,7 @@ class MockRepository implements dynamic { // ❌ NO
 
 ---
 
-## 🔧 Próximos Pasos
+## 🔧 Next Steps
 
 ### Acción Inmediata (Hoy)
 - [ ] Revisar fallos en ProjectShellScreen (7 tests)

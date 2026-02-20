@@ -2,7 +2,7 @@
 
 > **Fecha:** 2025-01-28
 > **Versión:** v0.2.0 (PHASE 3 RED Complete)
-> **Estadio:** MVP Implementation Sprint
+> **Estadio:** MVP Implementación Sprint
 
 ---
 
@@ -57,31 +57,31 @@ COMPLETION RATE: ████████░░░░░░░░░░░░░
 
 ### ✅ FASE 1: Backend RAG Orchestration (COMPLETE)
 - **Objetivo:** Implementar pipeline RAG (Retrieval Augmented Generation) con soporte a Doc1-25
-- **Status:** 🟢 GREEN (All Tests Passing)
-- **Tests:** 11/11 ✅
+- **Estado:** 🟢 GREEN (All Pruebas Passing)
+- **Pruebas:** 11/11 ✅
 - **Archivos:**
-  - Backend: `src/server/services/rag/` - RAG pipeline implementation
-  - Tests: `tests/python/services/rag/` - Comprehensive test coverage
+  - Backend: `src/server/services/rag/` - RAG pipeline implementación
+  - Pruebas: `pruebas/python/services/rag/` - Comprehensive prueba coverage
 - **Key Achievement:** Backend puede procesar queries de usuario contra ChromaDB y retornar respuestas contextualizadas
 
 ### ✅ FASE 2: Backend SSE Streaming (COMPLETE)
 - **Objetivo:** Implementar streaming en tiempo real via Server-Sent Events (SSE)
-- **Status:** 🟢 GREEN (All Tests Passing)
-- **Tests:** 11/11 ✅
+- **Estado:** 🟢 GREEN (All Pruebas Passing)
+- **Pruebas:** 11/11 ✅
 - **Archivos:**
   - Endpoint: `src/server/api/v1/router.py` - `/api/v1/chat/generate` SSE endpoint
-  - Tests: `tests/python/api/v1/` - SSE streaming validation
+  - Pruebas: `pruebas/python/api/v1/` - SSE streaming validation
 - **Key Achievement:** Backend puede streamear respuestas LLM token-by-token hacia cliente
 
-### 🔴 FASE 3: Frontend State Machine (RED PHASE COMPLETE)
+### 🔴 FASE 3: Frontend State Machine (FASE ROJA COMPLETE)
 - **Objetivo:** Implementar máquina de estados para orquestar generación secuencial de 25 docs
-- **Status:** 🔴 RED Phase Complete (Tests Written, Awaiting Implementation)
-- **Tests:** 8/8 ✅ + 6/6 🟡 Pending Implementation
+- **Estado:** 🔴 RED Fase Complete (Pruebas Written, Awaiting Implementación)
+- **Pruebas:** 8/8 ✅ + 6/6 🟡 Pendiente Implementación
 - **Archivos Creados:**
-  - Entities: `ChatMessage`, `DocumentProposal` con enums
+  - Entities: `ChatMessage`, `DocumentoProposal` con enums
   - State: `ChatState`, `ChatNotifier` (StateNotifier<ChatState>)
   - Interface: `ChatRepository` abstract
-- **Key Achievement:** Domain layer completamente especificado con tests
+- **Key Achievement:** Domain layer completamente especificado con pruebas
 
 ---
 
@@ -90,7 +90,7 @@ COMPLETION RATE: ████████░░░░░░░░░░░░░
 ### Backend (Python)
 | Métrica | Valor | Estado |
 |---------|-------|--------|
-| Tests | 22 tests passing | ✅ GREEN |
+| Pruebas | 22 pruebas passing | ✅ GREEN |
 | Coverage | >85% en services/ | ✅ GOOD |
 | Type Safety | Pyright 0 errors | ✅ STRICT |
 | Code Quality | Black + Ruff passing | ✅ CLEAN |
@@ -98,8 +98,8 @@ COMPLETION RATE: ████████░░░░░░░░░░░░░
 ### Frontend (Dart/Flutter)
 | Métrica | Valor | Estado |
 |---------|-------|--------|
-| Tests | 14/14 compiling (8 passing) | ✅ READY |
-| Entities | 2 (ChatMessage, DocumentProposal) | ✅ COMPLETE |
+| Pruebas | 14/14 compiling (8 passing) | ✅ READY |
+| Entities | 2 (ChatMessage, DocumentoProposal) | ✅ COMPLETE |
 | State Management | ChatState + ChatNotifier | ✅ COMPLETE |
 | Compilation | 0 errors (analyzer lag expected) | ✅ OK |
 
@@ -107,7 +107,7 @@ COMPLETION RATE: ████████░░░░░░░░░░░░░
 
 ## 🔄 FLUJO ACTUAL: PHASE 3 GREEN (NEXT STEP)
 
-### Checklist para GREEN Phase
+### Checklist para GREEN Fase
 
 ```
 🟢 PHASE 3: Frontend State Machine - GREEN (In Progress)
@@ -142,26 +142,26 @@ VALIDATION:
 
 ## 💡 PRÓXIMOS PASOS (Roadmap)
 
-### INMEDIATO (This Week - GREEN Phase)
+### INMEDIATO (This Week - GREEN Fase)
 1. ✅ Implement `ChatRepositoryImpl` with HTTP SSE client
 2. ✅ Complete `ChatNotifier` streaming logic (token accumulation)
-3. ✅ Run tests: `flutter test --coverage` → Expect 14/14 PASSING
-4. ✅ Create PR with "[HU-3.3] Frontend State Machine GREEN Phase"
+3. ✅ Ejecutar pruebas: `flutter prueba --coverage` → Expect 14/14 PASSING
+4. ✅ Crear PR with "[HU-3.3] Frontend State Machine GREEN Fase"
 
-### CORTO PLAZO (Next Sprint - UI Widgets)
-1. Create `ProposalCard` widget (displays document proposal)
-2. Create `StreamingIndicator` widget (shows real-time tokens)
-3. Create `MessageBubble` widget (chat message display)
-4. Create `ProgressBar` widget (Doc X/25 counter)
+### CORTO PLAZO (Siguiente Sprint - UI Widgets)
+1. Crear `ProposalCard` widget (displays documento proposal)
+2. Crear `StreamingIndicator` widget (shows real-time tokens)
+3. Crear `MessageBubble` widget (chat message display)
+4. Crear `ProgressBar` widget (Doc X/25 counter)
 
-### MEDIANO PLAZO (PHASE 4 - Integration)
+### MEDIANO PLAZO (PHASE 4 - Integración)
 1. Error handling & recovery (timeout, connection failure)
 2. Offline support (local caching of proposals)
 3. Performance optimization (token buffering)
-4. E2E testing (full workflow validation)
+4. E2E pruebaing (full workflow validation)
 
 ### LARGO PLAZO (PHASE 5-6)
-1. Load testing & performance benchmarks
+1. Load pruebaing & performance benchmarks
 2. Docker containerization & CI/CD
 3. Production deployment
 4. User monitoring & analytics
@@ -170,7 +170,7 @@ VALIDATION:
 
 ## 🧮 VELOCITY & TIMELINE
 
-### Completeness by Phase
+### Completeness by Fase
 ```
 Phase 1 (Backend RAG):        100% ████████████████████████████ COMPLETE
 Phase 2 (Backend Streaming):  100% ████████████████████████████ COMPLETE
@@ -183,47 +183,47 @@ OVERALL:                       30% ████░░░░░░░░░░░
 ```
 
 ### Estimated Timeline
-| Phase | Duration | Status | ETA |
+| Fase | Duration | Estado | ETA |
 |-------|----------|--------|-----|
-| Phase 1 (Backend RAG) | 1 week | ✅ DONE | Jan 28 |
-| Phase 2 (Streaming) | 1 week | ✅ DONE | Feb 4 |
-| Phase 3 (Frontend) | 1 week | 🟡 IN PROGRESS | Feb 11 |
-| Phase 4 (Integration) | 1 week | ⏳ TODO | Feb 18 |
-| Phase 5-6 (Production) | 2 weeks | ⏳ TODO | Mar 4 |
+| Fase 1 (Backend RAG) | 1 week | ✅ DONE | Jan 28 |
+| Fase 2 (Streaming) | 1 week | ✅ DONE | Feb 4 |
+| Fase 3 (Frontend) | 1 week | 🟡 IN PROGRESS | Feb 11 |
+| Fase 4 (Integración) | 1 week | ⏳ TODO | Feb 18 |
+| Fase 5-6 (Production) | 2 weeks | ⏳ TODO | Mar 4 |
 
 ---
 
 ## 🚀 NEXT IMMEDIATE ACTIONS
 
 ### TODAY (28 Jan)
-- [x] Complete PHASE 3 RED checkpoint documentation
-- [x] Verify all domain entities implemented and tests passing
-- [x] Create HU-3.3 tracking documents
+- [x] Complete PHASE 3 RED checkpoint documentoation
+- [x] Verify all domain entities implemented and pruebas passing
+- [x] Crear HU-3.3 tracking documentos
 
 ### TOMORROW (29 Jan)
 - [ ] Implement `ChatRepositoryImpl` with HTTP SSE client
-- [ ] Test integration with Backend `/api/v1/chat/generate`
-- [ ] Enable and run ChatNotifier tests
+- [ ] Prueba integration with Backend `/api/v1/chat/generate`
+- [ ] Enable and ejecutar ChatNotifier pruebas
 
 ### THIS WEEK
-- [ ] Complete GREEN phase: All 14 tests passing
-- [ ] Create UI widgets (ProposalCard, StreamingIndicator)
-- [ ] End-to-end validation: Generate 1 complete document successfully
+- [ ] Complete GREEN fase: All 14 pruebas passing
+- [ ] Crear UI widgets (ProposalCard, StreamingIndicator)
+- [ ] End-to-end validation: Generate 1 complete documento successfully
 
 ---
 
-## 🔐 QUALITY GATES (Before Each Phase)
+## 🔐 QUALITY GATES (Before Each Fase)
 
-### Entry Criteria for Phase 3 GREEN
-- [x] All domain entities complete (ChatMessage, DocumentProposal)
-- [x] All entity tests passing (8/8)
+### Entry Criteria for Fase 3 GREEN
+- [x] All domain entities complete (ChatMessage, DocumentoProposal)
+- [x] All entity pruebas passing (8/8)
 - [x] State machine skeleton (ChatNotifier + ChatState) in place
-- [x] Notifier tests written and skipped (6/6)
-- [x] Documentation complete (README + PHASE_3_RED_CHECKPOINT)
+- [x] Notifier pruebas written and skipped (6/6)
+- [x] Documentoation complete (README + PHASE_3_RED_CHECKPOINT)
 
-### Exit Criteria for Phase 3 GREEN
+### Exit Criteria for Fase 3 GREEN
 - [ ] ChatRepositoryImpl implemented
-- [ ] All 14 tests passing (8 entity + 6 notifier)
+- [ ] All 14 pruebas passing (8 entity + 6 notifier)
 - [ ] Streaming behavior verified with Backend
 - [ ] Coverage >80% for presentation layer
 - [ ] PR merged to develop
@@ -235,13 +235,13 @@ OVERALL:                       30% ████░░░░░░░░░░░
 - **Master Roadmap:** [context/40-ROADMAP/ROADMAP.en.md](../../context/40-ROADMAP/)
 - **Architecture:** [AGENTS.md](../../AGENTS.md)
 - **HU Index:** [doc/03-HU-TRACKING/README.md](../03-HU-TRACKING/README.md)
-- **Phase 3 Details:** [doc/03-HU-TRACKING/HU-3.3-FRONTEND-STATE-MACHINE/README.md](../03-HU-TRACKING/HU-3.3-FRONTEND-STATE-MACHINE/README.md)
+- **Fase 3 Details:** [doc/03-HU-TRACKING/HU-3.3-FRONTEND-STATE-MACHINE/README.md](../03-HU-TRACKING/HU-3.3-FRONTEND-STATE-MACHINE/README.md)
 
 ---
 
 ## 📌 FOOTER
 
-**Current Status:** 🔴 Phase 3 RED Complete - Ready for GREEN
+**Current Estado:** 🔴 Fase 3 RED Complete - Preparado para GREEN
 **Owner:** ArchitectZero (Lead Software Architect)
 **Last Updated:** Jan 28, 2025
-**Confidence:** 95% (All designs verified, tests compiled)
+**Confidence:** 95% (All designs verified, pruebas compiled)

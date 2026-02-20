@@ -1,6 +1,6 @@
 # 🛠️ Guía de Configuración y Desarrollo
 
-> **Propósito:** Documentación técnica de configuración organizada por categoría
+> **Propósito:** Documentoación técnica de configuración organizada por categoría
 > **Audiencia:** Desarrolladores y DevOps
 > **Última actualización:** 19 de febrero de 2026
 
@@ -36,11 +36,11 @@ Este directorio está organizado en 5 secciones principales:
 ---
 
 ### [03-PRUEBAS/](03-PRUEBAS/)
-**Estrategias de testing y ejecución**
+**Estrategias de pruebaing y ejecución**
 
-- *(Próximamente: guías de testing)*
+- *(Próximamente: guías de pruebaing)*
 
-**Empieza aquí si:** Necesitas ejecutar o escribir tests.
+**Empieza aquí si:** Necesitas ejecutar o escribir pruebas.
 
 ---
 
@@ -68,14 +68,14 @@ Este directorio está organizado en 5 secciones principales:
 
 - ✅ **Instalar el proyecto por primera vez** → [01-INSTALACION/GUIA_INICIO_RAPIDO.md](01-INSTALACION/GUIA_INICIO_RAPIDO.md)
 - 🐳 **Configurar Docker** → [02-DOCKER/DOCKER_COMPOSE_GUIDE.md](02-DOCKER/DOCKER_COMPOSE_GUIDE.md)
-- 🧪 **Ejecutar tests** → [03-PRUEBAS/](03-PRUEBAS/)
+- 🧪 **Ejecutar pruebas** → [03-PRUEBAS/](03-PRUEBAS/)
 - ⚙️ **Automatizar workflows** → [04-AUTOMATIZACION/AUTOMATIZACION.md](04-AUTOMATIZACION/AUTOMATIZACION.md)
 
 ---
 
-## 📚 Documentación Relacionada
+## 📚 Documentoación Relacionada
 
-- [Guía de Usuario](../04-USER_GUIDE/) - Documentación para usuarios finales
+- [Guía de Usuario](../04-USER_GUIDE/) - Documentoación para usuarios finales
 - [Arquitectura](../../context/30-ARCHITECTURE/) - Arquitectura del sistema
 - [Seguimiento HU](../03-HU-TRACKING/) - Tracking de historias de usuario
 

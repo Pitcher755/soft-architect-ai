@@ -1,8 +1,8 @@
 # HU-3.8 PROGRESS
 
 > **Fecha:** 12/02/2026 23:50
-> **Estado:** ✅ **COMPLETADO AL 100%** - Ready for merge
-> **Branch:** `feature/project_phase_logic`
+> **Estado:** ✅ **COMPLETADO AL 100%** - Preparado para merge
+> **Branch:** `feature/proyecto_fase_logic`
 
 ## 📖 Tabla de Contenidos
 - [Estado Global](#estado-global)
@@ -15,16 +15,16 @@
 ## 📊 Estado Global
 
 - **Fase actual:** Fase 6 (Cierre y evidencia) → **✅ COMPLETADO**
-- **Completado estimado HU:** **100%** (implementación ✅ | calidad ✅ | documentación ✅)
+- **Completado estimado HU:** **100%** (implementación ✅ | calidad ✅ | documentoación ✅)
 - **Bloqueadores:** **NINGUNO** ✅
-- **PRE_PUSH_VALIDATION Status:** ✅ 16/16 checks PASSED (optimizado con timeout protections)
+- **PRE_PUSH_VALIDATION Estado:** ✅ 16/16 checks PASSED (optimizado con timeout protections)
 - **Última actualización:** 12/02/2026 23:50
 
 ---
 
 ## ✅ Checklist por Fase
 
-### Fase 0 — Preparación documental
+### Fase 0 — Preparación documentoal
 - [x] Crear carpeta `HU-3.8-PROJECT-PHASE-LOGIC`
 - [x] Crear `README.md`
 - [x] Crear `PROGRESS.md`
@@ -32,37 +32,37 @@
 - [x] Crear `WORKFLOW_MASTER_DEFINITION_UNIFIED.md` (bilingual ES/EN)
 - [x] Revisar y aprobar workflow maestro
 
-### Fase 1 — RED (Modelado y tests que fallan)
-- [x] Definir modelo `ProjectPhase`
+### Fase 1 — RED (Modelado y pruebas que fallan)
+- [x] Definir modelo `ProyectoFase`
 - [x] Definir inventario de plantillas obligatorias por fase
-- [x] Crear tests unitarios de orden de fases (fallando)
-- [x] Crear tests unitarios de obligatoriedad por fase (fallando)
-- [x] Crear tests de cálculo `Doc N/25` (fallando)
+- [x] Crear pruebas unitarios de orden de fases (fallando)
+- [x] Crear pruebas unitarios de obligatoriedad por fase (fallando)
+- [x] Crear pruebas de cálculo `Doc N/25` (fallando)
 
 ### Fase 2 — GREEN (Implementación mínima)
 - [x] Implementar servicio de cálculo de fase actual
 - [x] Implementar validación de artefactos requeridos
-- [x] Implementar cálculo de progreso con fuente en filesystem
-- [x] Lograr pasar tests RED mínimos
+- [x] Implementar cálculo de progreso con fuente en archivosystem
+- [x] Lograr pasar pruebas RED mínimos
 
 ### Fase 3 — REFACTOR (Diseño limpio)
 - [x] Eliminar duplicaciones y consolidar mapeos de fase
-- [x] Alinear capas Clean Architecture (Domain/Data/Presentation)
+- [x] Alinear capas Clean Architecture (Domain/Data/Presentación)
 - [x] Mejorar mensajes de error y tipado
-- [x] Actualizar documentación técnica derivada
+- [x] Actualizar documentoación técnica derivada
 
 ### Fase 4 — Integración UI/Estado
-- [x] Integrar `ProjectPhaseService` en `project_providers.dart`
-- [x] Mostrar fase activa + siguiente fase bloqueada/desbloqueada en `project_shell_screen.dart`
-- [x] Integrar estado en tiempo real (escaneo on-demand MVP) vía `ProjectAnalyzer`
+- [x] Integrar `ProyectoFaseService` en `proyecto_providers.dart`
+- [x] Mostrar fase activa + siguiente fase bloqueada/desbloqueada en `proyecto_shell_screen.dart`
+- [x] Integrar estado en tiempo real (escaneo on-demand MVP) vía `ProyectoAnalyzer`
 - [x] Añadir casos de integración de transición de fase
-- [x] Implementar progress bar "Doc N%" en `project_card.dart`
-- [x] Implementar phase badge en `project_card.dart`
+- [x] Implementar progress bar "Doc N%" en `proyecto_card.dart`
+- [x] Implementar fase badge en `proyecto_card.dart`
 
 ### Fase 5 — Quality Gates y Seguridad
 - [x] ✅ `dart analyze` sin errores
-- [x] ✅ `flutter test` cliente relevant en verde (47 integration + 3 e2e)
-- [x] ✅ Cobertura backend global >80% **PASSED** (181 unit + 39 integration tests)
+- [x] ✅ `flutter prueba` cliente relevant en verde (47 integration + 3 e2e)
+- [x] ✅ Cobertura backend global >80% **PASSED** (181 unit + 39 integration pruebas)
 - [x] ✅ Cobertura módulo HU según objetivo (>90%) **ACHIEVED**
 - [x] ✅ Validación de rutas y no traversal
 - [x] ✅ Errores de fase mapeados a mensajes amigables
@@ -85,8 +85,8 @@
 
 - **Cobertura lógica HU:** ✅ ≥90% ACHIEVED (Domain/Service layer)
 - **Análisis estático:** ✅ 0 errores en análisis/lint (Dart + Python)
-- **Tests Python:** ✅ 220 tests (181 unit + 39 integration) - 100% passing
-- **Tests Flutter:** ✅ 50+ tests (unit + widget + integration + e2e) - 100% passing
+- **Pruebas Python:** ✅ 220 pruebas (181 unit + 39 integration) - 100% passing
+- **Pruebas Flutter:** ✅ 50+ pruebas (unit + widget + integration + e2e) - 100% passing
 - **Security:** ✅ 0 issues (Bandit + Ruff S-codes + SQL injection protection)
 - **PRE_PUSH_VALIDATION:** ✅ 16/16 checks PASSED
 
@@ -96,49 +96,49 @@
 
 ### ✅ Implementación Completa
 
-**ProjectPhaseService (Domain Layer):**
-- ✅ Scanning de filesystem implementado (`analyzeProject`)
-- ✅ Detección de fase 0-6 basada en folders context/
+**ProyectoFaseService (Domain Layer):**
+- ✅ Scanning de archivosystem implementado (`analyzeProyecto`)
+- ✅ Detección de fase 0-6 basada en carpetas context/
 - ✅ Cálculo "Doc N/25" con `totalExpectedDocs = 25`
 - ✅ Mapeo de artefactos requeridos por fase
 - ✅ Validación de transiciones idempotentes
 
-**UI Integration (Presentation Layer):**
-- ✅ `project_providers.dart`: Provider conectado con `ProjectPhaseService.analyzeProject`
-- ✅ `project_shell_screen.dart`: Consume `currentPhase` y `progressData`
-- ✅ `project_card.dart`: Muestra "Doc N%" y phase badge
-- ✅ `projects_grid.dart`: Usa `ProjectPhaseService.getProjectPhase()`
+**UI Integración (Presentación Layer):**
+- ✅ `proyecto_providers.dart`: Provider conectado con `ProyectoFaseService.analyzeProyecto`
+- ✅ `proyecto_shell_screen.dart`: Consume `currentFase` y `progressData`
+- ✅ `proyecto_card.dart`: Muestra "Doc N%" y fase badge
+- ✅ `proyectos_grid.dart`: Usa `ProyectoFaseService.getProyectoFase()`
 
-**Testing Evidence:**
-- ✅ Unit tests cobertura >90% (`src/client/lib/features/project_shell/domain/`)
-- ✅ Integration tests validan flujos completos
-- ✅ E2E tests validan UI end-to-end
+**Pruebaing Evidence:**
+- ✅ Unit pruebas cobertura >90% (`src/client/lib/features/proyecto_shell/domain/`)
+- ✅ Integración pruebas validan flujos completos
+- ✅ E2E pruebas validan UI end-to-end
 
 ### ✅ Acceptance Criteria Validation
 
-| AC ID | Status | Evidence File |
+| AC ID | Estado | Evidence Archivo |
 |-------|--------|---------------|
 | AC-1..AC-8 | ✅ 100% | `ACCEPTANCE_CRITERIA_VERIFICATION.md` |
 
 ### ✅ Optimizaciones Finales
 
 **PRE_PUSH_VALIDATION_MASTER.sh:**
-- ✅ Fixed Flutter test counting (pattern `\+\K\d+(?=:)` extrae correctamente count)
+- ✅ Fixed Flutter prueba counting (pattern `\+\K\d+(?=:)` extrae correctamente count)
 - ✅ Added timeout protections (120s Python, 60s Flutter coverage)
-- ✅ Added visual feedback during coverage analysis
+- ✅ Added visual feedback during coverage análisis
 - ✅ Optimized output (quiet mode, no verbose logs)
-- ✅ Unified workflow documentation (bilingual ES/EN)
+- ✅ Unified workflow documentoation (bilingual ES/EN)
 
 ---
 
-## 🚀 Ready for Merge
+## 🚀 Preparado para Merge
 
-**Next Steps:**
-1. ✅ All implementation complete
-2. ✅ All tests passing
-3. ✅ All documentation updated
-4. ✅ PR description ready
+**Siguiente Steps:**
+1. ✅ All implementación complete
+2. ✅ All pruebas passing
+3. ✅ All documentoation updated
+4. ✅ PR descripción ready
 5. ⏳ Final validation script execution (in progress)
-6. ⏳ Create PR and request review
+6. ⏳ Crear PR and request review
 
 **Estado:** **HU-3.8 COMPLETADO AL 100% - READY FOR MERGE**

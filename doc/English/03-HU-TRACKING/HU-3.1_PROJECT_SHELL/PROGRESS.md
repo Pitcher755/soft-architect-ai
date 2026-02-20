@@ -1,17 +1,17 @@
 # 📊 Progreso HU-3.1: Project Shell
 
 > **Última Actualización:** 19/02/2025 - 20:15
-> **Estado Actual:** ✅ FASE 2 GREEN + REFACTOR COMPLETADAS - 17/17 TESTS PASSING
+> **Status Actual:** ✅ FASE 2 GREEN + REFACTOR COMPLETADAS - 17/17 TESTS PASSING
 
 ---
 
 ## 🎯 Resumen Ejecutivo
 
-**Fase 2: Logic Layer Implementation - COMPLETA** ✅ (RED → GREEN → REFACTOR)
+**Phase 2: Logic Layer Implementation - COMPLETA** ✅ (RED → GREEN → REFACTOR)
 
-- ✅ Fase RED: 15 tests creados en `/tests/test/`
-- ✅ Fase GREEN: 9 clases implementadas, **17/17 tests passing** ✅
-- ✅ Fase REFACTOR: Mejoras de calidad (logging, seguridad, utilidades)
+- ✅ Phase RED: 15 tests creados en `/tests/test/`
+- ✅ Phase GREEN: 9 clases implementadas, **17/17 tests passing** ✅
+- ✅ Phase REFACTOR: Mejoras de calidad (logging, seguridad, utilidades)
   - Added: 8 nuevos métodos/getters
   - Improved: Manejo de errores, logging, ID generation
   - Enhanced: Búsqueda recursiva, validación de seguridad
@@ -23,13 +23,13 @@
 
 ---
 
-## 🗂️ Fases de Desarrollo
+## 🗂️ Phases de Desarrollo
 
-### Fase 0: Planificación y Análisis (100% COMPLETO)
+### Phase 0: Planificación y Analysis (100% COMPLETO)
 
 - [x] Especificación técnica completada
 - [x] Diseño de UI mockup
-- [x] Arquitectura de estado definida (Riverpod)
+- [x] Arquitectura de status definida (Riverpod)
 - [x] Sprint planning completado
 - [x] Tareas desglosadas en tickets
 
@@ -37,15 +37,15 @@
 
 ---
 
-### Fase 1: Infraestructura y Test Setup (100% COMPLETO) ✅
+### Phase 1: Infraestructura y Test Setup (100% COMPLETO) ✅
 
-**Completado:**
+**Completed:**
 - [x] Instalación de dependencias via `flutter pub add`
   - riverpod_annotation, path_provider, logger
   - mockito (dev), material_design_icons_flutter, custom_lint
   - 50+ transitive dependencies resueltas
 
-- [x] Estructura de carpetas creada (27 directorios)
+- [x] Estructura de folders creada (27 directorios)
   - 18 directorios: lib/features/project_shell/{core,data,domain,presentation}
   - 9 directorios: tests/{unit,widget,integration}/{domain,data,presentation}
 
@@ -63,7 +63,7 @@
 
 - [x] Test Status: 🔴 FAILING (esperado - RED phase)
   - Lint errors: Esperados (clases no existen aún)
-  - Total test cases: 25 casos listos para implementation
+  - Total test cases: 25 casos ready for implementation
 
 - [x] Code Quality
   - analysis_options.yaml: Strict linting enabled
@@ -73,16 +73,16 @@
 **Progreso:** 100% (6 de 6 items)
 **Commits:**
 - `feat(hu-3.1): Phase 1 - Infrastructure & Test Setup Complete` (f2602cf)
-- `refactor(hu-3.1): Update 6 RED phase tests to copy-paste ready` (anterior)
+- `refactor(hu-3.1): Update 6 RED phase tests to copy-paste ready` (previous)
 - `feat(hu-3.1): Phase 1 Complete - Setup Infrastructure ✅` (d9e6d98)
 
 ---
 
-### Fase 2: Implementación Logic Layer (100% RED PHASE COMPLETADA) 🔴✅
+### Phase 2: Implementation Logic Layer (100% RED PHASE COMPLETADA) 🔴✅
 
-**Fase RED (Test Driven Development):** ✅ **COMPLETA**
+**Phase RED (Test Driven Development):** ✅ **COMPLETA**
 
-#### Logros de Fase 2:
+#### Logros de Phase 2:
 
 **A. Test Infrastructure Centralizada en `/tests/`:**
 - [x] Estructura reorganizada: `tests/test/unit/features/project_shell/domain/` y `tests/test/unit/features/project_shell/data/` (CENTRALIZADO en monorepo)
@@ -164,7 +164,7 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 - [x] Package resolution: 122 dependencies installed
 - [x] Pre-commit hooks: Validating all commits
 
-**Progreso Fase 2 RED:** 100% (15 de 15 tests listos)
+**Progreso Phase 2 RED:** 100% (15 de 15 tests listos)
 **Commits:**
 - `feat(hu-3.1): Phase 2 RED - Create tests/pubspec.yaml (breakthrough!)`
 - `refactor(hu-3.1): Move tests to tests/test/ (monorepo structure)`
@@ -173,9 +173,9 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 
 ---
 
-### Fase 3: GREEN Phase - Implement Classes (100% COMPLETADA) ✅
+### Phase 3: GREEN Phase - Implement Classes (100% COMPLETADA) ✅
 
-**Fase GREEN (Implementation):** ✅ **COMPLETA**
+**Phase GREEN (Implementation):** ✅ **COMPLETA**
 
 #### 9 Clases Implementadas:
 
@@ -190,7 +190,7 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
   - Getters: `extension`, `parentPath`, `isHidden`
   - Enhanced toString() con profundidad
 
-**Domain Layer Exceptions (1 archivo, 5 tipos):**
+**Domain Layer Exceptions (1 file, 5 tipos):**
 - [x] `project_shell_exceptions.dart`
   - InvalidProjectNameException
   - DuplicateProjectNameException
@@ -209,7 +209,7 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
   - NEW: expandNodeRecursively(), collapseNode(), countVisibleNodes()
   - Tests: 3 passing
 
-- [x] `FileSearchUseCase` - Búsqueda en árbol de archivos
+- [x] `FileSearchUseCase` - Búsqueda en árbol de files
   - Methods: search() - NOW RECURSIVE! (was flat)
   - NEW: searchByExtension(), searchDirectories()
   - Features: maxResults limit (100), performance optimized
@@ -252,15 +252,15 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 └─ ProjectShellNotifier: 2 ✅ (placeholder)
 ```
 
-**Progreso Fase 2 GREEN:** 100% (9 de 9 clases implementadas) ✅
+**Progreso Phase 2 GREEN:** 100% (9 de 9 clases implementadas) ✅
 **Git Commit:**
 - `feat(phase-2-green): Complete TDD GREEN phase with 17 passing tests`
 
 ---
 
-### Fase 4: REFACTOR Phase - Code Quality (100% COMPLETADA) ✅
+### Phase 4: REFACTOR Phase - Code Quality (100% COMPLETADA) ✅
 
-**Fase REFACTOR (Optimization & Enhancement):** ✅ **COMPLETA**
+**Phase REFACTOR (Optimization & Enhancement):** ✅ **COMPLETA**
 
 #### Mejoras Aplicadas:
 
@@ -278,11 +278,11 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 **project_shell_exceptions.dart - MAJOR IMPROVEMENTS:**
 - [x] Added `stackTrace` parameter to all 5 exception types
 - [x] Added `toUserMessage()` method with Spanish user-friendly messages:
-  - InvalidProjectNameException: "El nombre del proyecto debe tener 3-50 caracteres..."
-  - DuplicateProjectNameException: "Ya existe un proyecto con ese nombre."
+  - InvalidProjectNameException: "El nombre of the project debe tener 3-50 caracteres..."
+  - DuplicateProjectNameException: "Ya existe un project con ese nombre."
   - PathTraversalException: "La ruta especificada no es válida por razones de seguridad."
   - DatabaseException: "Error de base de datos. Por favor, intente de nuevo."
-  - FileSystemException: "Error al acceder al archivo. Verifique los permisos."
+  - FileSystemException: "Error al acceder al file. Verifique los permisos."
 - [x] Added logging via `developer.log()` with stack traces for debugging
 - [x] Better error context propagation
 
@@ -331,13 +331,13 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 - **Type Safety:** Full typing, no dynamic types ✅
 - **Documentation:** DartDoc comments added to new methods
 
-**Progreso Fase 2 REFACTOR:** 100% (7 de 7 clases refactored) ✅
+**Progreso Phase 2 REFACTOR:** 100% (7 de 7 clases refactored) ✅
 **Git Commit:**
 - `refactor(phase-2): Enhance code quality with logging, security, and utility methods`
 
 ---
 
-### Fase 3: Presentación UI (0% - PRÓXIMO) 🟢
+### Phase 3: Presentación UI (0% - PRÓXIMO) 🟢
 
 **Sprint 3 Week 2-3:**
 
@@ -345,25 +345,25 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 - [ ] Tarea 2: `DirectoryTreeView` widget (2 pts)
 - [ ] Tarea 3: `DocumentPreviewPanel` widget (2 pts)
 - [ ] Tarea 4: `ProjectCreationDialog` dialog (1 pt)
-- [ ] Tarea 5: Gestión estado Riverpod (2 pts)
+- [ ] Tarea 5: Gestión status Riverpod (2 pts)
 - [ ] Tarea 6: Tema e integración de paquetes (1 pt)
 
 **Progreso:** 0%
 
 ---
 
-### Fase 4: Widget Testing (0% - A INICIAR)
+### Phase 4: Widget Testing (0% - A INICIAR)
 
 - [ ] Widget tests para DirectoryTreeView
 - [ ] Widget tests para DocumentPreviewPanel
 - [ ] Widget tests para ProjectCreationDialog
-- [ ] Integration tests con estado
+- [ ] Integration tests con status
 
 **Progreso:** 0%
 
 ---
 
-### Fase 5: Integración (0% - A INICIAR)
+### Phase 5: Integración (0% - A INICIAR)
 
 - [ ] Integración con HU-3.2 (FileSystemService)
 - [ ] Integración con HU-3.3 (Chat Sequential)
@@ -396,14 +396,14 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 
 ## 🎯 Hitos Clave
 
-| Hito | Fecha Estimada | Descripción | Estado |
+| Hito | Fecha Estimada | Description | Status |
 |------|----------------|-------------|--------|
 ## 🎯 Hitos Clave
 
-| Hito | Fecha Estimada | Descripción | Estado |
+| Hito | Fecha Estimada | Description | Status |
 |------|----------------|-------------|--------|
-| 📌 Planificación | 03-06/02 | Sprint planning, desglose de tareas | ✅ DONE |
-| 📌 Infraestructura | 03/02 | Deps, carpetas, test fixtures | ✅ DONE |
+| 📌 Planificación | 03-06/02 | Sprint planning, breakdown de tareas | ✅ DONE |
+| 📌 Infraestructura | 03/02 | Deps, folders, test fixtures | ✅ DONE |
 | 📌 Logic Layer RED | 04-05/02 | 15 tests RED creados | ✅ DONE |
 | 📌 Logic Layer GREEN | 06-07/02 | 9 clases implementadas, todos tests GREEN | ✅ DONE |
 | 📌 Logic Layer REFACTOR | 19/02 | Code quality improvements, refactors | ✅ DONE |
@@ -416,16 +416,16 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 
 ## ✅ Checklist de Completitud
 
-### Fase 1: Infraestructura ✅
+### Phase 1: Infraestructura ✅
 - [x] flutter pub add para todas las dependencias
-- [x] Estructura de carpetas (27 directories)
+- [x] Estructura de folders (27 directories)
 - [x] test_helper.dart con mocks y SQLite setup
 - [x] project_fixtures.dart con 4 fixtures
 - [x] 6 test suites creados (25 test cases)
 - [x] Lint errors esperados en RED phase
 - [x] Git commit: f2602cf
 
-### Fase 2: Logic Layer (COMPLETA) ✅
+### Phase 2: Logic Layer (COMPLETA) ✅
 - [x] Domain entities (Project, FileNode)
 - [x] Domain use cases (validation, tree, search)
 - [x] Domain exceptions (5 types con logging + user messages)
@@ -436,14 +436,14 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 - [x] Code refactored con logging, seguridad, utilidades
 - [x] Code quality: 0 errors, 25 style warnings (minor)
 
-### Fase 3: Presentación
+### Phase 3: Presentación
 - [ ] Riverpod providers
 - [ ] Notifiers (state management)
 - [ ] Widgets (shell, tree, preview, dialog)
 - [ ] Theme integration
 - [ ] Responsive layout
 
-### Fase 4+: Testing & Integration
+### Phase 4+: Testing & Integration
 - [ ] Widget tests (unit tests)
 - [ ] Integration tests
 - [ ] E2E tests
@@ -456,9 +456,9 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 
 ---
 
-## � Deliverables Fase 1
+## � Deliverables Phase 1
 
-### Archivos Creados
+### Files Creados
 ```
 ✅ src/client/analysis_options.yaml (28 líneas)
    - Strict linting rules
@@ -499,9 +499,9 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 
 ---
 
-## 🚀 Próximos Pasos (Fase 2)
+## 🚀 Next Steps (Phase 2)
 
-### Orden de Implementación (Recomendado)
+### Orden de Implementation (Recomendado)
 
 1. **Domain Layer** (Entities + Use Cases)
    - Implementar `Project` entity
@@ -525,7 +525,7 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 - **Dominio:** 2-3 horas (TDD estricto)
 - **Data:** 2-3 horas (SQLite + repository)
 - **Presentación:** 4-5 horas (widgets + state)
-- **Total Fase 2:** ~8-10 horas
+- **Total Phase 2:** ~8-10 horas
 
 ---
 
@@ -543,7 +543,7 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 
 ## 📝 Notas de Desarrollo
 
-**Sesión Fase 2 GREEN (06-07/02/2025):**
+**Sesión Phase 2 GREEN (06-07/02/2025):**
 - ✅ 9 clases implementadas completamente
 - ✅ Domain layer: 2 entities, 5 exceptions, 3 use cases
 - ✅ Data layer: 1 model, 1 data source, 1 repository
@@ -551,7 +551,7 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 - ✅ Type safe: All functions annotated, no dynamic types
 - ✅ Code review ready for presentation layer
 
-**Sesión Fase 2 REFACTOR (19/02/2025):**
+**Sesión Phase 2 REFACTOR (19/02/2025):**
 - ✅ Comprehensive code quality improvements applied
 - ✅ 8 new methods/getters added
 - ✅ Logging integrated into 3 critical classes
@@ -565,5 +565,5 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 
 **PROGRESS: HU-3.1**
 **Actualizado:** 19/02/2025 - 20:15 ✅
-**Estado:** Fase 2 COMPLETADA (RED→GREEN→REFACTOR) | Tests: 17/17 PASSING
+**Status:** Phase 2 COMPLETADA (RED→GREEN→REFACTOR) | Tests: 17/17 PASSING
 **Responsable:** [Frontend Lead]

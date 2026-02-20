@@ -1,6 +1,6 @@
-# 🔄 Test Directory Refactor - Monorepo Best Practice
+# 🔄 Prueba Directory Refactor - Monorepo Best Practice
 
-**Status:** ✅ Complete
+**Estado:** ✅ Complete
 **Date:** February 4, 2026
 **Version:** 1.0
 
@@ -8,7 +8,7 @@
 
 ## 📊 What Changed
 
-Se reorganizó completamente la estructura de tests del proyecto para seguir **best practices de monorepo** con soporte multi-lenguaje (Flutter + Python).
+Se reorganizó completamente la estructura de pruebas del proyecto para seguir **best practices de monorepo** con soporte multi-lenguaje (Flutter + Python).
 
 ### Before (Problemas)
 ```
@@ -44,7 +44,7 @@ tests/
 | **Separación Clara** | Cada tecnología en su carpeta |
 | **Escalable** | Agregar Go, JS, etc. es trivial |
 | **Estándar** | Sigue convenciones de Flutter/Python |
-| **Coverage Fácil** | `flutter test --coverage` funciona directo |
+| **Coverage Fácil** | `flutter prueba --coverage` funciona directo |
 | **CI/CD Limpio** | Workflows independientes posibles |
 | **Monorepo Pro** | Estructura de empresas de escala |
 
@@ -52,7 +52,7 @@ tests/
 
 ## 🎯 How It Works
 
-### Flutter Tests
+### Flutter Pruebas
 ```bash
 # Flutter busca ./test/
 # Con symlink: ./test → ./tests/flutter/test/
@@ -65,7 +65,7 @@ cd tests/flutter
 flutter test
 ```
 
-### Python Tests
+### Python Pruebas
 ```bash
 # Python flexible, pueda estar en cualquier sitio
 cd tests/python/unit
@@ -77,7 +77,7 @@ pytest tests/python/           # ✅ Desde raíz
 
 ## 🚀 Updated Scripts
 
-### `run_tests.sh`
+### `ejecutar_pruebas.sh`
 Completamente reescrito para nueva estructura:
 ```bash
 ./run_tests.sh all              # Flutter + Python
@@ -87,7 +87,7 @@ Completamente reescrito para nueva estructura:
 ```
 
 ### `generate_coverage_html.sh`
-Apunta a `tests/flutter/` como raíz:
+Apunta a `pruebas/flutter/` como raíz:
 ```bash
 ./generate_coverage_html.sh
 # Genera: tests/flutter/coverage/html/index.html
@@ -95,16 +95,16 @@ Apunta a `tests/flutter/` como raíz:
 
 ---
 
-## 📋 Modified Files
+## 📋 Modified Archivos
 
 | Archivo | Cambio |
 |---------|--------|
-| `tests/` | Reorganizado completamente |
-| `run_tests.sh` | Actualizado para nueva estructura |
+| `pruebas/` | Reorganizado completamente |
+| `ejecutar_pruebas.sh` | Actualizado para nueva estructura |
 | `generate_coverage_html.sh` | Actualizado paths |
 | `pubspec.yaml` | Dart SDK 3.10.9→3.10.8 |
-| `tests/flutter/pubspec.yaml` | Nuevo (copia) |
-| `tests/README_REFACTOR.md` | Nuevo (docs) |
+| `pruebas/flutter/pubspec.yaml` | Nuevo (copia) |
+| `pruebas/README_REFACTOR.md` | Nuevo (docs) |
 
 ---
 
@@ -116,9 +116,9 @@ tests/
 ```
 
 **Why?**
-- Flutter busca tests en directorio llamado `test/` relativo a `pubspec.yaml`
-- No queremos `tests/test/` (confuso), queremos `tests/flutter/test/` (claro)
-- Solución: symlink que apunta `tests/test` → `tests/flutter/test`
+- Flutter busca pruebas en directorio llamado `prueba/` relativo a `pubspec.yaml`
+- No queremos `pruebas/prueba/` (confuso), queremos `pruebas/flutter/prueba/` (claro)
+- Solución: symlink que apunta `pruebas/prueba` → `pruebas/flutter/prueba`
 
 ```bash
 # Without symlink:
@@ -130,31 +130,31 @@ flutter test            # ✅ Encuentra tests/test/ → tests/flutter/test/
 
 ---
 
-## 📖 Documentation
+## 📖 Documentoation
 
-Ver `tests/README_REFACTOR.md` para:
+Ver `pruebas/README_REFACTOR.md` para:
 - Estructura completa
-- Cómo ejecutar tests
+- Cómo ejecutar pruebas
 - Cómo agregar nuevas tecnologías
 - Best practices implementadas
 
 ---
 
-## ✅ Verification Checklist
+## ✅ Verificación Checklist
 
-- [x] Flutter tests en `tests/flutter/test/`
-- [x] Python tests en `tests/python/`
-- [x] Symlink `tests/test` → `tests/flutter/test`
+- [x] Flutter pruebas en `pruebas/flutter/prueba/`
+- [x] Python pruebas en `pruebas/python/`
+- [x] Symlink `pruebas/prueba` → `pruebas/flutter/prueba`
 - [x] Scripts actualizados
-- [x] Documentación creada
+- [x] Documentoación creada
 - [x] Backward compatibility OK
 - [x] Coverage scripts funcionan
 
 ---
 
-## 🎓 Next Steps
+## 🎓 Siguiente Steps
 
-1. **Test local:**
+1. **Prueba local:**
    ```bash
    ./run_tests.sh flutter      # Verifica Flutter tests
    ./run_tests.sh python       # Verifica Python tests
@@ -173,14 +173,14 @@ Ver `tests/README_REFACTOR.md` para:
    ```
 
 4. **Update CI/CD** (optional):
-   - Parallel Flutter + Python tests
+   - Parallel Flutter + Python pruebas
    - Separate coverage reports
    - Language-specific workflows
 
 ---
 
-**Status:** ✅ Production Ready
+**Estado:** ✅ Production Ready
 **Quality:** ⭐⭐⭐⭐⭐ Best Practice
 **Maintainability:** ✅ High
 
-Enjoy your refactored test structure! 🚀
+Enjoy your refactored prueba structure! 🚀

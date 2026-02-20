@@ -33,7 +33,7 @@ Imagina que construir un proyecto es como preparar un viaje:
 ### Duración Total:
 | Fase | Duración | Usuarios | Salidas |
 |------|----------|----------|---------|
-| **FASE 1** | 45 min | Todos | Project Manifesto + Análisis |
+| **FASE 1** | 45 min | Todos | Proyecto Manifesto + Análisis |
 | **FASE 2** | 1.5 h | Líderes técnicos | Diagrama C4 + Patterns |
 | **FASE 3** | 2 h | Líderes técnicos | Roadmap + Sprints |
 | **FASE 4** | Continuo | Todos | KPIs + Retrospectivas |
@@ -71,9 +71,9 @@ Definir la **identidad clara y compartida** del proyecto. Es el fundamento sobre
 
 ### Lo que SoftArchitect AI Genera
 
-| Documento | Propósito | Uso |
+| Documentoo | Propósito | Uso |
 |-----------|-----------|-----|
-| **Mi Promesa (Project Manifesto)** | Declaración de identidad | Comunicar visión al equipo |
+| **Mi Promesa (Proyecto Manifesto)** | Declaración de identidad | Comunicar visión al equipo |
 | **Análisis de Viabilidad** | Evaluación crítica | Identificar riesgos temprano |
 | **Matriz de Riesgos** | Mapa de amenazas | Crear plan de mitigación |
 | **Análisis de Mercado** | Contexto competitivo | Entender oportunidades |
@@ -151,7 +151,7 @@ Definir la **arquitectura técnica clara y escalable** del sistema. Transformar 
 
 ### Lo que SoftArchitect AI Genera
 
-| Documento | Propósito | Uso |
+| Documentoo | Propósito | Uso |
 |-----------|-----------|-----|
 | **Diagrama C4** | Visualización de arquitectura | Comunicar estructura a equipo |
 | **Matriz de Patrones** | Decisiones arquitectónicas | Justificar tecnologías elegidas |
@@ -254,7 +254,7 @@ Convertir el diseño arquitectónico en un **plan de trabajo concreto** con spri
 
 ### Lo que SoftArchitect AI Genera
 
-| Documento | Propósito | Uso |
+| Documentoo | Propósito | Uso |
 |-----------|-----------|-----|
 | **Roadmap Técnico** | Plan de desarrollo | Comunicar timeline a stakeholders |
 | **Definición de Sprints** | User stories desglosadas | Asignar trabajo al equipo |
@@ -315,7 +315,7 @@ Sprint 5:  ██████████ 36 pts (103%)
 
 ### Herramientas Recomendadas
 
-- **Planificación:** Jira, Linear, GitHub Projects
+- **Planificación:** Jira, Linear, GitHub Proyectos
 - **Timeline:** Gantt charts, Roadmap tools
 - **Seguimiento:** Burndown, velocity charts
 - **Comunicación:** Sprint reviews, retrospectivas
@@ -363,7 +363,7 @@ Crear un **sistema de medición y mejora continua** que asegure que el proyecto 
 |-----------|-----------|----------|--------|
 | **Sprint Review** | Cada 2 semanas | Demostrar progreso | Feedback |
 | **Retrospectiva** | Cada 2 semanas | Aprender y mejorar | Action items |
-| **Status Report** | Semanal/mensual | Comunicar estado | Dashboard |
+| **Estado Report** | Semanal/mensual | Comunicar estado | Dashboard |
 | **Análisis de Datos** | Mensual | Entender comportamiento | Insights |
 | **Milestone Revisit** | Trimestral | Ajustar roadmap | Prioridades actualizadas |
 
@@ -546,7 +546,7 @@ Para profundizar en cada fase, consulta:
 
 - **FASE 1:** [Quick Start Guide](01-QUICK_START.md)
 - **FASE 2:** [Architectural Patterns Guide](../02-SETUP_DEV/)
-- **FASE 3:** [Implementation Planning](../01-PROJECT_REPORT/)
+- **FASE 3:** [Implementación Planificación](../01-PROJECT_REPORT/)
 - **FASE 4:** [KPIs & Metrics](../01-PROJECT_REPORT/)
 
 ---

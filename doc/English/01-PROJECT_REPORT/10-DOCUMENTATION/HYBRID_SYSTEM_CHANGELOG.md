@@ -5,24 +5,24 @@ This file documents all changes made to implement the hybrid project management 
 
 # 📝 CHANGELOG: SISTEMA HÍBRIDO DE PROYECTOS
 
-> **Versión:** 1.0
-> **Fecha:** 2024
-> **Estado:** ✅ Completado
-> **Cambios Totales:** 8 archivos modificados, 2 creados
+> **Version:** 1.0
+> **Date:** 2024
+> **Status:** ✅ Completed
+> **Cambios Totales:** 8 files modificados, 2 creados
 
 ---
 
 ## 📋 Resumen de Cambios
 
-### ✨ Nuevos Archivos
+### ✨ Nuevos Files
 
 #### 1. `projects_provider.dart`
 **Ubicación:** `src/client/lib/features/project_shell/presentation/providers/`
 
 **Cambios:**
-- ✅ Creado archivo nuevo
+- ✅ Creado file nuevo
 - ✅ Función `buildHybridProjectsList(List<Project> userProjects)`
-- ✅ Combina proyectos reales + mock en una lista ordenada
+- ✅ Combina projects reales + mock en una lista ordenada
 
 **Código Clave:**
 ```dart
@@ -49,14 +49,14 @@ List<Project> buildHybridProjectsList(List<Project> userProjects) {
 
 ---
 
-### ✏️ Archivos Modificados
+### ✏️ Files Modificados
 
 #### 1. `project.dart`
 **Ubicación:** `src/client/lib/features/project_shell/domain/entities/`
 
 **Cambios:**
 - ✅ Agregado getter `phase` (derivado de la ruta)
-- ✅ Lógica: detecta palabras clave en la ruta para determinar fase
+- ✅ Lógica: detecta palabras clave en la ruta para determinar phase
 
 **Código Clave:**
 ```dart
@@ -100,7 +100,7 @@ List<Map<String, dynamic>> getMockProjectsData() => [
 ];
 ```
 
-**Antes:** Contenía múltiples proyectos mock con datos complejos
+**Antes:** Contenía múltiples projects mock con datos complejos
 **Después:** Solo la guía, referencia a MockProjectData para contenido
 
 ---
@@ -112,7 +112,7 @@ List<Map<String, dynamic>> getMockProjectsData() => [
 - ✅ Agregado `guideRootNode` (const FileNode)
 - ✅ Agregado `guideFileContents` (const Map<String, String>)
 - ✅ Estructura de árbol completa para la guía
-- ✅ Contenido markdown para cada archivo
+- ✅ Contenido markdown para cada file
 
 **Código Clave:**
 ```dart
@@ -176,7 +176,7 @@ if (widget.projectPath?.startsWith('mock://') ?? false) {
 }
 ```
 
-**Beneficio:** Mismo widget, funciona con ambos tipos de proyectos
+**Beneficio:** Mismo widget, funciona con ambos tipos de projects
 
 ---
 
@@ -184,7 +184,7 @@ if (widget.projectPath?.startsWith('mock://') ?? false) {
 **Ubicación:** `src/client/lib/features/project_shell/presentation/screens/`
 
 **Cambios:**
-- ✅ Detección híbrida al leer archivos
+- ✅ Detección híbrida al leer files
 - ✅ Si es `mock://` → lee de `MockProjectData.guideFileContents`
 - ✅ Si es real → usa `File.readAsString()`
 
@@ -218,7 +218,7 @@ void _onFileSelected(FileNode node) {
 
 **Cambios:**
 - ✅ Convertido de `StatefulWidget` a `ConsumerStatefulWidget`
-- ✅ Usa `buildHybridProjectsList()` para obtener proyectos
+- ✅ Usa `buildHybridProjectsList()` para obtener projects
 - ✅ Agregados métodos helper `_formatModified()` y `_getPhaseColor()`
 - ✅ GridView ahora usa objetos `Project` en lugar de Maps
 
@@ -421,9 +421,9 @@ Project(
 
 | Métrica | Valor |
 |---------|-------|
-| Archivos modificados | 8 |
-| Archivos creados | 2 |
-| Archivos totales | 10 |
+| Files modificados | 8 |
+| Files creados | 2 |
+| Files totales | 10 |
 | Líneas agregadas | ~450 |
 | Líneas removidas | ~100 |
 | Net lines added | ~350 |
@@ -472,7 +472,7 @@ Project(
 
 ---
 
-## 🚀 Próximos Pasos (Opcional)
+## 🚀 Next Steps (Opcional)
 
 - [ ] Agregar más secciones a la guía (idiomas, temas avanzados)
 - [ ] Hacer guía editable desde UI
@@ -490,6 +490,6 @@ Project(
 
 ---
 
-**Fecha de Implementación:** 2024
-**Estado Final:** ✅ **COMPLETADO Y VALIDADO**
+**Fecha de Implementation:** 2024
+**Status Final:** ✅ **COMPLETADO Y VALIDADO**
 **Listo para:** Producción

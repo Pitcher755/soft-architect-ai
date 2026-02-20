@@ -1,19 +1,19 @@
 # ✅ GREEN Phase Validation Report - HU-1.1
 
-> **Fecha:** 29/01/2026
-> **Estado:** ✅ COMPLETADO
-> **Fase TDD:** GREEN (Implementation + Validation)
+> **Date:** 29/01/2026
+> **Status:** ✅ COMPLETADO
+> **Phase TDD:** GREEN (Implementation + Validation)
 > **Responsable:** ArchitectZero
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
-2. [Objetivos de la Fase GREEN](#objetivos-de-la-fase-green)
-3. [Implementación Realizada](#implementación-realizada)
-4. [Resultados de Validación](#resultados-de-validación)
-5. [Configuración GPU](#configuración-gpu)
+2. [Objetivos de la Phase GREEN](#objetivos-de-la-phase-green)
+3. [Implementation Realizada](#implementation-realizada)
+4. [Results de Validación](#resultados-de-validación)
+5. [Configuration GPU](#configuration-gpu)
 6. [Issues Resueltos](#issues-resueltos)
 7. [Conclusiones](#conclusiones)
 
@@ -21,30 +21,30 @@
 
 ## 1. Resumen Ejecutivo
 
-La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitosamente. El stack completo de **SoftArchitect AI** está operativo con los siguientes servicios:
+La phase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitosamente. El stack completo de **SoftArchitect AI** está operativo con los nexts servicios:
 
 - ✅ **FastAPI Backend** (puerto 8000) - Healthy
 - ✅ **ChromaDB Vector DB** (puerto 8001) - Healthy
 - ✅ **Ollama LLM Engine** (puerto 11434) - Healthy con soporte GPU
 
-**Resultado Final:** 4/4 checks pasaron en `verify_setup.py`
+**Result Final:** 4/4 checks pasaron en `verify_setup.py`
 
 ---
 
-## 2. Objetivos de la Fase GREEN
+## 2. Objetivos de la Phase GREEN
 
 ### Criterios de Aceptación (Definition of Done)
 
 - [x] Dockerfile multi-stage implementado con usuario no-root
 - [x] docker-compose.yml con 3 servicios + healthchecks
 - [x] Orchestration scripts (start_stack.sh, stop_stack.sh) funcionales
-- [x] Todos los servicios alcanzan estado "healthy"
+- [x] Todos los servicios alcanzan status "healthy"
 - [x] verify_setup.py pasa 4/4 checks
 - [x] GPU Nvidia configurada y accesible para Ollama
 
 ---
 
-## 3. Implementación Realizada
+## 3. Implementation Realizada
 
 ### Arquitectura de Servicios
 
@@ -67,9 +67,9 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Archivos Creados/Modificados
+### Files Creados/Modificados
 
-#### Nuevos Archivos
+#### Nuevos Files
 
 1. **infrastructure/pre_check.py** (169 líneas)
    - 7 validaciones pre-flight
@@ -80,7 +80,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
    - Retry logic para servicios lentos
 
 3. **.env.example** (actualizado con sección GPU)
-   - Configuración GPU_ENABLED=true
+   - Configuration GPU_ENABLED=true
    - GPU_DEVICE_COUNT=1
    - Instrucciones para equipos sin GPU
 
@@ -91,7 +91,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 5. **stop_stack.sh** (shutdown script)
    - Graceful shutdown de servicios
 
-#### Archivos Modificados
+#### Files Modificados
 
 1. **src/server/Dockerfile**
    - Bug fix: `CMD ["uvicorn", "app.main:app", ...]` (era `main:app`)
@@ -114,7 +114,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 
 ---
 
-## 4. Resultados de Validación
+## 4. Results de Validación
 
 ### Pre-Flight Checks (pre_check.py)
 
@@ -131,7 +131,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 ✨ 7/7 checks pasaron. Listo para docker compose up.
 ```
 
-**Nota:** Warnings en puertos son esperados cuando los servicios ya están corriendo (fase GREEN).
+**Nota:** Warnings en puertos son esperados cuando los servicios ya están corriendo (phase GREEN).
 
 ### Post-Deployment Checks (verify_setup.py)
 
@@ -145,7 +145,7 @@ La fase GREEN de la HU-1.1 "Docker Infrastructure Setup" se ha completado exitos
 ✨ 4/4 checks pasaron. Stack completamente operativo.
 ```
 
-### Estado Final de Contenedores
+### Status Final de Contenedores
 
 ```bash
 NAMES         STATUS                    PORTS
@@ -169,7 +169,7 @@ sa_ollama     Up (healthy)              0.0.0.0:11434->11434/tcp
 
 ---
 
-## 5. Configuración GPU
+## 5. Configuration GPU
 
 ### Hardware Detectado
 
@@ -191,7 +191,7 @@ $ sudo docker exec sa_ollama nvidia-smi
 
 ✅ **Conclusión:** Ollama tiene acceso completo a la GPU Nvidia.
 
-### Configuración en .env
+### Configuration en .env
 
 ```bash
 # ========================
@@ -236,7 +236,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-**Estado:** ✅ RESUELTO
+**Status:** ✅ RESUELTO
 
 ---
 
@@ -248,7 +248,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 **Causa Raíz:**
-Script ejecutaba `docker compose -f infrastructure/docker-compose.yml ps -q` desde carpeta raíz, pero se debe ejecutar desde `infrastructure/`.
+Script ejecutaba `docker compose -f infrastructure/docker-compose.yml ps -q` desde folder raíz, pero se debe execute desde `infrastructure/`.
 
 **Solución:**
 Cambio en [infrastructure/verify_setup.py](../../infrastructure/verify_setup.py) línea 39:
@@ -260,7 +260,7 @@ Cambio en [infrastructure/verify_setup.py](../../infrastructure/verify_setup.py)
 ['docker', 'compose', 'ps', '-q']
 ```
 
-**Estado:** ✅ RESUELTO
+**Status:** ✅ RESUELTO
 
 ---
 
@@ -282,7 +282,7 @@ healthcheck:
   test: [ "CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8000'" ]
 ```
 
-**Estado:** ✅ RESUELTO
+**Status:** ✅ RESUELTO
 
 ---
 
@@ -291,19 +291,19 @@ healthcheck:
 ### Logros
 
 1. ✅ **Stack Completamente Operativo:**
-   - 3 servicios corriendo en estado "healthy"
+   - 3 servicios corriendo en status "healthy"
    - Healthchecks validados con bash /dev/tcp
    - Orchestration scripts funcionando end-to-end
 
 2. ✅ **GPU Configurada y Funcional:**
    - Nvidia RTX 3050 Ti accesible desde Ollama
-   - Configuración portable documentada en .env
+   - Configuration portable documentada en .env
    - Modelo LLM descargado y disponible
 
-3. ✅ **TDD Workflow Completado:**
+3. ✅ **TDD Workflow Completed:**
    - RED phase: Tests creados (pre_check.py, verify_setup.py)
-   - GREEN phase: Implementación + validación exitosa
-   - REFACTOR phase: Pendiente (optimización + documentación)
+   - GREEN phase: Implementation + validación exitosa
+   - REFACTOR phase: Pending (optimización + documentación)
 
 4. ✅ **Debugging Sistemático:**
    - 3 issues críticos identificados y resueltos
@@ -314,8 +314,8 @@ healthcheck:
 
 - **Tiempo Total:** ~4 horas (incluyendo debugging de healthchecks)
 - **Issues Resueltos:** 3 críticos
-- **Archivos Modificados:** 5
-- **Archivos Creados:** 5
+- **Files Modificados:** 5
+- **Files Creados:** 5
 - **Líneas de Código:** ~600 (scripts + configs)
 - **Cobertura de Tests:** 100% de servicios validados
 
@@ -324,7 +324,7 @@ healthcheck:
 1. [ ] Remover warning de `version: '3.9'` en docker-compose.yml
 2. [ ] Añadir monitoring con Prometheus/Grafana (HU futura)
 3. [ ] Documentar workflow completo en doc/02-SETUP_DEV/
-4. [ ] Crear troubleshooting guide para issues comunes
+4. [ ] Create troubleshooting guide para issues comunes
 5. [ ] Optimizar start_period de healthchecks (reducir tiempos de espera)
 6. [ ] Añadir smoke tests de endpoints en verify_setup.py
 
@@ -333,13 +333,13 @@ healthcheck:
 ## 📚 Referencias
 
 - [AGENTS.md §8](../../AGENTS.md#8-estándar-de-documentación-doc-as-code) - Estándar de Documentación
-- [docker-compose.yml](../../infrastructure/docker-compose.yml) - Configuración Final
+- [docker-compose.yml](../../infrastructure/docker-compose.yml) - Configuration Final
 - [start_stack.sh](../../infrastructure/start_stack.sh) - Orchestration Script
 - [verify_setup.py](../../infrastructure/verify_setup.py) - Post-Deployment Checks
 
 ---
 
-**🎉 Fase GREEN: COMPLETADA**
+**🎉 Phase GREEN: COMPLETADA**
 
 > "La infraestructura es el fundamento de todo sistema robusto. Sin un stack sólido y validado, ninguna feature puede construirse con confianza."
 > — ArchitectZero

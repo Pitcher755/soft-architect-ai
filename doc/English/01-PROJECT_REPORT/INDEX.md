@@ -1,7 +1,7 @@
 # 📚 HU-3.1: Project Shell UI - Índice Completo
 
 > **Consolidado:** 05/02/2026
-> **Estado:** ✅ COMPLETADO (Documentación Centralizada)
+> **Status:** ✅ COMPLETADO (Documentación Centralizada)
 > **Rama:** feature/ui-project-shell
 
 ---
@@ -11,46 +11,46 @@
 Este directorio contiene TODA la documentación de HU-3.1 consolidada en un solo lugar.
 
 ### 🚀 Para Comenzar (5 minutos)
-1. **[README.md](README.md)** - Descripción general y quick links
+1. **[README.md](README.md)** - Description general y quick links
 2. **[HU-3.1_IMPLEMENTATION_WORKFLOW_MASTER.md](HU-3.1_IMPLEMENTATION_WORKFLOW_MASTER.md)** - Workflow maestro completo
 
-### 📊 Para Entender el Estado
+### 📊 Para Entender el Status
 3. **[FINAL_STATUS_REPORT.md](FINAL_STATUS_REPORT.md)** - Reporte final ejecutivo
-4. **[ACCEPTANCE_CRITERIA_VERIFICATION.md](ACCEPTANCE_CRITERIA_VERIFICATION.md)** - Verificación de criterios de aceptación
+4. **[ACCEPTANCE_CRITERIA_VERIFICATION.md](ACCEPTANCE_CRITERIA_VERIFICATION.md)** - Verification de criterios de aceptación
 
 ### 📋 Para Revisar el Progreso
-5. **[COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md)** - Resumen de fase 2 completada
+5. **[COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md)** - Resumen de phase 2 completada
 6. **[PROGRESS.md](PROGRESS.md)** - Registro histórico de progreso
 7. **[PASO_3_2_RESUMEN.md](PASO_3_2_RESUMEN.md)** - Resumen ejecutivo del Paso 3.2
 8. **[PASO_3_2_WIDGETS_PROGRESS.md](PASO_3_2_WIDGETS_PROGRESS.md)** - Detalles técnicos de widgets
 
-### 📦 Para Implementación Técnica
+### 📦 Para Implementation Técnica
 9. **[ARTIFACTS.md](ARTIFACTS.md)** - Lista de artefactos generados
 
 ---
 
-## 📖 Descripción Rápida de Archivos
+## 📖 Description Rápida de Files
 
-| Archivo | Propósito | Audiencia |
+| File | Propósito | Audiencia |
 |---------|-----------|-----------|
 | **README.md** | Portada y navegación rápida | Todos |
-| **HU-3.1_IMPLEMENTATION_WORKFLOW_MASTER.md** | Workflow 4 fases completo (rojo→verde→refactor) | Desarrolladores |
-| **FINAL_STATUS_REPORT.md** | Estado final 100% completado | Product Owner / Tech Lead |
+| **HU-3.1_IMPLEMENTATION_WORKFLOW_MASTER.md** | Workflow 4 phases completo (rojo→verde→refactor) | Desarrolladores |
+| **FINAL_STATUS_REPORT.md** | Status final 100% completado | Product Owner / Tech Lead |
 | **ACCEPTANCE_CRITERIA_VERIFICATION.md** | Criterios funcionales/técnicos verificados | QA / Stakeholders |
-| **COMPLETION_SUMMARY.md** | Resumen Fase 2 (17/17 tests passing) | Developers |
+| **COMPLETION_SUMMARY.md** | Resumen Phase 2 (17/17 tests passing) | Developers |
 | **PROGRESS.md** | Histórico de cambios y progreso | Project Manager |
 | **PASO_3_2_RESUMEN.md** | Widgets principales completados | Developers |
-| **PASO_3_2_WIDGETS_PROGRESS.md** | Análisis técnico de widgets | Technical Team |
-| **ARTIFACTS.md** | Checklist de archivos generados | Developers |
+| **PASO_3_2_WIDGETS_PROGRESS.md** | Analysis técnico de widgets | Technical Team |
+| **ARTIFACTS.md** | Checklist de files generados | Developers |
 
 ---
 
-## ✅ Estado Consolidado
+## ✅ Status Consolidado
 
-| Métrica | Resultado |
+| Métrica | Result |
 |---------|-----------|
 | **Documentación** | ✅ 100% Consolidada en 1 directorio |
-| **Implementación** | ✅ 4/4 Fases Completadas |
+| **Implementation** | ✅ 4/4 Phases Completadas |
 | **Tests** | ✅ 17/17 Passing |
 | **Coverage** | ✅ 75%+ objetivo cumplido |
 | **Criterios Aceptación** | ✅ 11/11 Verificados |
@@ -71,7 +71,7 @@ Este directorio contiene TODA la documentación de HU-3.1 consolidada en un solo
 Este directorio (`HU-3.1_PROJECT_SHELL`) es ahora el punto único de referencia para toda la documentación de HU-3.1.
 
 Los antiguos directorios:
-- ~~HU-3.1-PROJECT-SHELL~~ (archivos copiados y consolidados)
-- ~~HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION~~ (archivos copiados y consolidados)
+- ~~HU-3.1-PROJECT-SHELL~~ (files copiados y consolidados)
+- ~~HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION~~ (files copiados y consolidados)
 
 Han sido **reemplazados** por este directorio unificado.

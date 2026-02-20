@@ -15,11 +15,11 @@
 2. [Criterios de Aceptación (Definition of Done)](#criterios-de-aceptación-definition-of-done)
 3. [Arquitectura y Dependencias](#arquitectura-y-dependencias)
 4. [Fase 0: Preparación del Terreno](#fase-0-preparación-del-terreno)
-5. [Fase 1: TDD - ROJO (Tests que Fallan)](#fase-1-tdd---rojo-tests-que-fallan)
+5. [Fase 1: TDD - ROJO (Pruebas que Fallan)](#fase-1-tdd---rojo-pruebas-que-fallan)
 6. [Fase 2: TDD - VERDE (Implementación)](#fase-2-tdd---verde-implementación)
 7. [Fase 3: TDD - REFACTOR (Optimización de Performance)](#fase-3-tdd---refactor-optimización-de-performance)
-8. [Fase 4: Testing de Integración (E2E)](#fase-4-testing-de-integración-e2e)
-9. [Fase 5: Documentación y Validación](#fase-5-documentación-y-validación)
+8. [Fase 4: Pruebaing de Integración (E2E)](#fase-4-pruebaing-de-integración-e2e)
+9. [Fase 5: Documentoación y Validación](#fase-5-documentoación-y-validación)
 10. [Fase 6: CI/CD y Pipeline](#fase-6-cicd-y-pipeline)
 11. [Entregables Finales](#entregables-finales)
 
@@ -74,8 +74,8 @@
 - ✅ **Network Stability:** WebSocket mantiene conexión estable con +500 tokens transmitidos.
 - ✅ **Memory Management:** Buffer circular implementado (máx 100 mensajes en RAM).
 - ✅ **Auto-Reconnection:** Reconecta automáticamente en <2 segundos ante desconexión.
-- ✅ **Cobertura de Tests:** >85% en lógica de streaming y buffer management.
-- ✅ **Profiling:** Métricas documentadas en PERFORMANCE_TARGETS.md con evidencia.
+- ✅ **Cobertura de Pruebas:** >85% en lógica de streaming y buffer management.
+- ✅ **Profiling:** Métricas documentoadas en PERFORMANCE_TARGETS.md con evidencia.
 
 ### Criterios NEGATIVOS (No Debe)
 - ❌ **Sin Latencia Perceptible:** Usuario no debe percibir delays >200ms.
@@ -129,7 +129,7 @@
 - **API_INTERFACE_CONTRACT.md:** Debe existir en context/30-ARCHITECTURE/
 
 ### Bloquea (Downstream)
-- **HU-4.1:** Advanced RAG Features (requiere streaming estable)
+- **HU-4.1:** Avanzado RAG Features (requiere streaming estable)
 - **HU-4.2:** Multi-Turn Conversations (requiere buffer circular funcional)
 
 ---
@@ -151,7 +151,7 @@ rg "StreamProvider\|WebSocket\|asyncio.stream" src/ -A 3
 **Entregable:** Inventario de capacidades existentes y gaps de streaming.
 
 ### 0.2 Definir Métricas de Performance
-Crear documento de especificación de performance:
+Crear documentoo de especificación de performance:
 
 **Archivo:** `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/PERFORMANCE_METRICS.md`
 
@@ -207,13 +207,13 @@ flutter pub global run devtools
 
 ---
 
-## 🔴 Fase 1: TDD - ROJO (Tests que Fallan)
+## 🔴 Fase 1: TDD - ROJO (Pruebas que Fallan)
 
-**Objetivo:** Escribir tests comprehensivos que FALLEN (sin implementación todavía).
+**Objetivo:** Escribir pruebas comprehensivos que FALLEN (sin implementación todavía).
 
-### 1.1 Backend: Tests de WebSocket Handler
+### 1.1 Backend: Pruebas de WebSocket Handler
 
-**Archivo:** `tests/python/unit/api/websocket/test_streaming_handler.py`
+**Archivo:** `pruebas/python/unit/api/websocket/prueba_streaming_handler.py`
 
 ```python
 """Tests unitarios para WebSocket streaming handler."""
@@ -310,11 +310,11 @@ class TestStreamingHandler:
         assert total_time > 2.0  # 10 tokens * 200ms = 2000ms
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (StreamingHandler no existe todavía).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (StreamingHandler no existe todavía).
 
-### 1.2 Backend: Tests de Token Buffer
+### 1.2 Backend: Pruebas de Token Buffer
 
-**Archivo:** `tests/python/unit/services/streaming/test_token_buffer.py`
+**Archivo:** `pruebas/python/unit/services/streaming/prueba_token_buffer.py`
 
 ```python
 """Tests unitarios para buffer de tokens."""
@@ -398,11 +398,11 @@ class TestTokenBuffer:
         assert buffer.size == 0
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (TokenBuffer no existe todavía).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (TokenBuffer no existe todavía).
 
-### 1.3 Frontend: Tests de StreamProvider
+### 1.3 Frontend: Pruebas de StreamProvider
 
-**Archivo:** `tests/test/unit/features/chat/streaming_provider_test.dart`
+**Archivo:** `pruebas/prueba/unit/features/chat/streaming_provider_prueba.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -500,11 +500,11 @@ void main() {
 }
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (StreamingProvider no existe).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (StreamingProvider no existe).
 
-### 1.4 Frontend: Tests de Circular Buffer
+### 1.4 Frontend: Pruebas de Circular Buffer
 
-**Archivo:** `tests/test/unit/core/buffer/circular_buffer_test.dart`
+**Archivo:** `pruebas/prueba/unit/core/buffer/circular_buffer_prueba.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -596,11 +596,11 @@ void main() {
 }
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (CircularBuffer no existe).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (CircularBuffer no existe).
 
-### 1.5 Frontend: Tests de Auto-Scroll Controller
+### 1.5 Frontend: Pruebas de Auto-Scroll Controller
 
-**Archivo:** `tests/test/unit/features/chat/auto_scroll_controller_test.dart`
+**Archivo:** `pruebas/prueba/unit/features/chat/auto_scroll_controller_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -720,9 +720,9 @@ void main() {
 }
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (AutoScrollController no existe).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (AutoScrollController no existe).
 
-### 1.6 Ejecutar Todos los Tests ROJOS
+### 1.6 Ejecutar Todos los Pruebas ROJOS
 
 ```bash
 # Tests backend (Python)
@@ -737,19 +737,19 @@ cd tests && flutter test test/unit/features/chat/auto_scroll_controller_test.dar
 ```
 
 **Checklist Fase 1:**
-- [ ] 5+ tests de WebSocket handler backend escritos (todos fallando)
-- [ ] 6+ tests de TokenBuffer backend escritos (todos fallando)
-- [ ] 5+ tests de StreamingProvider frontend escritos (todos fallando)
-- [ ] 6+ tests de CircularBuffer frontend escritos (todos fallando)
-- [ ] 4+ tests de AutoScrollController frontend escritos (todos fallando)
-- [ ] Todos los tests documentados con docstrings/DartDoc
-- [ ] Objetivo de cobertura de tests: >85%
+- [ ] 5+ pruebas de WebSocket handler backend escritos (todos fallando)
+- [ ] 6+ pruebas de TokenBuffer backend escritos (todos fallando)
+- [ ] 5+ pruebas de StreamingProvider frontend escritos (todos fallando)
+- [ ] 6+ pruebas de CircularBuffer frontend escritos (todos fallando)
+- [ ] 4+ pruebas de AutoScrollController frontend escritos (todos fallando)
+- [ ] Todos los pruebas documentoados con docstrings/DartDoc
+- [ ] Objetivo de cobertura de pruebas: >85%
 
 ---
 
 ## 🟢 Fase 2: TDD - VERDE (Implementación)
 
-**Objetivo:** Implementar código MÍNIMO para hacer pasar los tests (sin optimización todavía).
+**Objetivo:** Implementar código MÍNIMO para hacer pasar los pruebas (sin optimización todavía).
 
 ### 2.1 Backend: Implementación de WebSocket Handler
 
@@ -1408,7 +1408,7 @@ class AutoScrollController {
 }
 ```
 
-### 2.6 Ejecutar Tests VERDES
+### 2.6 Ejecutar Pruebas VERDES
 
 ```bash
 # Tests backend
@@ -1428,7 +1428,7 @@ cd tests && flutter test test/unit/features/chat/auto_scroll_controller_test.dar
 - [ ] StreamingProvider implementado con Riverpod StreamNotifier
 - [ ] CircularBuffer implementado con evicción FIFO
 - [ ] AutoScrollController implementado con detección de scroll manual
-- [ ] Todos los tests ROJOS ahora VERDES
+- [ ] Todos los pruebas ROJOS ahora VERDES
 - [ ] Sin duplicación de código (principio DRY)
 
 ---
@@ -1662,13 +1662,13 @@ class StreamingMessageWidget extends StatelessWidget {
 
 ---
 
-## 🧪 Fase 4: Testing de Integración (E2E)
+## 🧪 Fase 4: Pruebaing de Integración (E2E)
 
-**Objetivo:** Testear flujo completo de streaming end-to-end con métricas reales.
+**Objetivo:** Pruebaear flujo completo de streaming end-to-end con métricas reales.
 
-### 4.1 Test de Integración Backend
+### 4.1 Prueba de Integración Backend
 
-**Archivo:** `tests/python/integration/test_streaming_flow.py`
+**Archivo:** `pruebas/python/integration/prueba_streaming_flow.py`
 
 ```python
 import pytest
@@ -1774,9 +1774,9 @@ class TestStreamingFlow:
                 f"Reconnection took {reconnection_time_ms}ms (expected <2000ms)"
 ```
 
-### 4.2 Test de Integración Frontend
+### 4.2 Prueba de Integración Frontend
 
-**Archivo:** `tests/test/integration/features/chat/streaming_flow_test.dart`
+**Archivo:** `pruebas/prueba/integration/features/chat/streaming_flow_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1895,17 +1895,17 @@ void main() {
 ```
 
 **Checklist Fase 4:**
-- [ ] Tests E2E backend pasan (4+ escenarios)
-- [ ] Tests E2E frontend pasan (3+ escenarios)
+- [ ] Pruebas E2E backend pasan (4+ escenarios)
+- [ ] Pruebas E2E frontend pasan (3+ escenarios)
 - [ ] Flujo de streaming validado end-to-end
 - [ ] Métricas de performance verificadas (TTFB, token rate, FPS)
 - [ ] Reconexión automática validada
 
 ---
 
-## 📚 Fase 5: Documentación y Validación
+## 📚 Fase 5: Documentoación y Validación
 
-### 5.1 Crear Documento de Performance Targets
+### 5.1 Crear Documentoo de Performance Targets
 
 **Archivo:** `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md`
 
@@ -1964,13 +1964,13 @@ void main() {
 
 ### Test Execution Logs
 ```bash
-# Backend Performance Tests
-pytest tests/python/integration/test_streaming_flow.py -v --benchmark-only
-# Result: TTFB p95 = 185ms ✅
+# Backend Performance Pruebas
+pyprueba pruebas/python/integration/prueba_streaming_flow.py -v --benchmark-only
+# Resultado: TTFB p95 = 185ms ✅
 
-# Frontend Performance Tests
-flutter test tests/test/integration/features/chat/streaming_flow_test.dart
-# Result: 60 FPS maintained ✅
+# Frontend Performance Pruebas
+flutter prueba pruebas/prueba/integration/features/chat/streaming_flow_prueba.dart
+# Resultado: 60 FPS maintained ✅
 ```
 
 ### Chrome DevTools Screenshot
@@ -2064,7 +2064,7 @@ flutter test tests/test/integration/features/chat/streaming_flow_test.dart
 - [ ] PERFORMANCE_TARGETS.md creado con métricas validadas
 - [ ] API_INTERFACE_CONTRACT.md actualizado con spec WebSocket
 - [ ] Evidencia de profiling capturada (screenshots, logs)
-- [ ] Todos los targets de performance documentados
+- [ ] Todos los targets de performance documentoados
 - [ ] Guía de troubleshooting agregada
 
 ---
@@ -2093,9 +2093,9 @@ pytest tests/python/integration/test_streaming_flow.py --benchmark-only
 # Todo debe pasar ✅
 ```
 
-### 6.2 Agregar Workflow de Performance Testing
+### 6.2 Agregar Workflow de Performance Pruebaing
 
-**Archivo:** `.github/workflows/performance-tests.yml`
+**Archivo:** `.github/workflows/performance-pruebas.yml`
 
 ```yaml
 name: Performance Tests
@@ -2157,8 +2157,8 @@ jobs:
 **Checklist Fase 6:**
 - [ ] Todo el linting pasa (black, ruff, dart format)
 - [ ] Todos los type checks pasan (pyright, flutter analyze)
-- [ ] Cobertura de tests >85%
-- [ ] Performance tests pasan (<200ms TTFB, 60 FPS)
+- [ ] Cobertura de pruebas >85%
+- [ ] Performance pruebas pasan (<200ms TTFB, 60 FPS)
 - [ ] GitHub Actions actualizado con performance workflow
 - [ ] Pipeline CI verde
 
@@ -2181,20 +2181,20 @@ jobs:
 - ✅ `src/client/lib/core/buffer/circular_buffer.dart`
 - ✅ `src/client/lib/core/network/websocket_client.dart`
 
-### Artefactos de Tests
+### Artefactos de Pruebas
 
-#### Backend Tests
-- ✅ `tests/python/unit/api/websocket/test_streaming_handler.py` (5+ tests)
-- ✅ `tests/python/unit/services/streaming/test_token_buffer.py` (6+ tests)
-- ✅ `tests/python/integration/test_streaming_flow.py` (5+ tests E2E)
+#### Backend Pruebas
+- ✅ `pruebas/python/unit/api/websocket/prueba_streaming_handler.py` (5+ pruebas)
+- ✅ `pruebas/python/unit/services/streaming/prueba_token_buffer.py` (6+ pruebas)
+- ✅ `pruebas/python/integration/prueba_streaming_flow.py` (5+ pruebas E2E)
 
-#### Frontend Tests
-- ✅ `tests/test/unit/features/chat/streaming_provider_test.dart` (5+ tests)
-- ✅ `tests/test/unit/core/buffer/circular_buffer_test.dart` (6+ tests)
-- ✅ `tests/test/unit/features/chat/auto_scroll_controller_test.dart` (4+ tests)
-- ✅ `tests/test/integration/features/chat/streaming_flow_test.dart` (3+ tests E2E)
+#### Frontend Pruebas
+- ✅ `pruebas/prueba/unit/features/chat/streaming_provider_prueba.dart` (5+ pruebas)
+- ✅ `pruebas/prueba/unit/core/buffer/circular_buffer_prueba.dart` (6+ pruebas)
+- ✅ `pruebas/prueba/unit/features/chat/auto_scroll_controller_prueba.dart` (4+ pruebas)
+- ✅ `pruebas/prueba/integration/features/chat/streaming_flow_prueba.dart` (3+ pruebas E2E)
 
-### Artefactos de Documentación
+### Artefactos de Documentoación
 - ✅ `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md`
 - ✅ `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md` (actualizado con WebSocket spec)
 - ✅ `doc/02-SETUP_DEV/STREAMING_OPTIMIZATION_GUIDE.md`
@@ -2202,7 +2202,7 @@ jobs:
 - ✅ `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/COMPLETION_SUMMARY.md`
 
 ### Métricas
-- **Cobertura de Tests:** >85% (objetivo alcanzado)
+- **Cobertura de Pruebas:** >85% (objetivo alcanzado)
 - **TTFB (p95):** <200ms (185ms medido) ✅
 - **Token Rate:** 10+ tokens/sec (12 medido) ✅
 - **UI Frame Rate:** 60 FPS (sin jank) ✅
@@ -2214,17 +2214,17 @@ jobs:
 ## 🎉 Criterios de Éxito
 
 **HU-3.5 se considera COMPLETA cuando:**
-- [ ] Todos los tests unitarios pasan (backend + frontend)
-- [ ] Todos los tests E2E pasan con métricas validadas
+- [ ] Todos los pruebas unitarios pasan (backend + frontend)
+- [ ] Todos los pruebas E2E pasan con métricas validadas
 - [ ] TTFB p95 <200ms (evidencia con Chrome DevTools)
 - [ ] Token rate ≥10 tokens/sec (evidencia con benchmarks)
 - [ ] UI mantiene 60 FPS durante streaming (evidencia con Dart DevTools)
-- [ ] WebSocket estable con +500 tokens (test de carga)
+- [ ] WebSocket estable con +500 tokens (prueba de carga)
 - [ ] Buffer circular implementado (previene memory leaks)
-- [ ] Auto-reconexión funcional <2s (test de resiliencia)
-- [ ] Cobertura de tests >85%
-- [ ] Pipeline CI/CD verde (incluyendo performance tests)
-- [ ] Documentación completa y revisada
+- [ ] Auto-reconexión funcional <2s (prueba de resiliencia)
+- [ ] Cobertura de pruebas >85%
+- [ ] Pipeline CI/CD verde (incluyendo performance pruebas)
+- [ ] Documentoación completa y revisada
 - [ ] Mergeado a rama `develop`
 
 **Timeline Estimado:** 5-7 días

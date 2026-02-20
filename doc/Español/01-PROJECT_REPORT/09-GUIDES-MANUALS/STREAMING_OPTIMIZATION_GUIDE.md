@@ -62,7 +62,7 @@ cd src/client
 flutter pub get
 ```
 
-2. Ejecutar app en modo profile:
+2. Ejecutar app en modo proarchivo:
 
 ```bash
 flutter run --profile
@@ -74,7 +74,7 @@ flutter run --profile
 
 ### Backend
 - Chrome DevTools → Network → WS → TTFB
-- `pytest-benchmark` para latencia p95
+- `pyprueba-benchmark` para latencia p95
 
 ### Frontend
 - Dart DevTools → Timeline → FPS

@@ -1,8 +1,8 @@
-# 🧪 Test Suite Status Report
+# 🧪 Prueba Suite Estado Report
 
-> **Date:** 09/02/2026
-> **Status:** ⚠️ Tests require updates after refactoring
-> **Test Count:** 100+ existing tests
+> **Fecha:** 09/02/2026
+> **Estado:** ⚠️ Pruebas require updates after refactoring
+> **Prueba Count:** 100+ existing pruebas
 > **Coverage Target:** >80%
 
 ---
@@ -10,77 +10,77 @@
 ## 📋 Table of Contents
 
 - [Executive Summary](#executive-summary)
-- [Test Categories Status](#test-categories-status)
+- [Prueba Categories Estado](#prueba-categories-estado)
 - [Known Issues](#known-issues)
-- [New Features Without Tests](#new-features-without-tests)
+- [New Features Without Pruebas](#new-features-without-pruebas)
 - [Action Items](#action-items)
-- [Test Execution Commands](#test-execution-commands)
+- [Prueba Execution Commands](#prueba-execution-commands)
 
 ---
 
 ## 🎯 Executive Summary
 
-After recent refactorings (Settings SOLID refactoring, Global Search implementation), the test suite requires comprehensive updates. The client code has **0 errors and 0 warnings** in `flutter analyze`, but the test suite has **100+ errors** due to:
+After recent refactorings (Settings SOLID refactoring, Global Search implementación), the prueba suite requires comprehensive updates. The client code has **0 errors and 0 warnings** in `flutter analyze`, but the prueba suite has **100+ errors** due to:
 
-- **Import path changes**: `FileNode` and other entities moved locations
+- **Import path changes**: `ArchivoNode` and other entities moved locations
 - **Provider refactoring**: Old provider references need updating
-- **Missing tests**: New features (settings widgets, global search) lack test coverage
+- **Missing pruebas**: New features (settings widgets, global search) lack prueba coverage
 
 ---
 
-## 📊 Test Categories Status
+## 📊 Prueba Categories Estado
 
-### ✅ Unit Tests (Partial)
+### ✅ Unit Pruebas (Partial)
 
-| Category | Tests | Status | Issues |
+| Category | Pruebas | Estado | Issues |
 |----------|-------|--------|--------|
 | **Chat** | 3 | ✅ Passing | None |
-| **Settings (NEW)** | 1 file created | ⚠️ Needs fixes | ThemeMode index mismatch |
-| **Filesystem** | 5+ | ❌ Failing | FileNode import errors |
-| **Project Shell** | 10+ | ❌ Failing | FileNode import errors |
+| **Settings (NEW)** | 1 archivo creard | ⚠️ Needs fixes | ThemeMode index mismatch |
+| **Archivosystem** | 5+ | ❌ Failing | ArchivoNode import errors |
+| **Proyecto Shell** | 10+ | ❌ Failing | ArchivoNode import errors |
 
-**New Test File Created:**
-- `tests/test/unit/features/settings/presentation/providers/settings_provider_test.dart`
-  - 16 tests total
+**New Prueba Archivo Creard:**
+- `pruebas/prueba/unit/features/settings/presentation/providers/settings_provider_prueba.dart`
+  - 16 pruebas total
   - 14 passing ✅
   - 2 failing ⚠️ (JSON serialization logic)
 
-### ⚠️ Widget Tests (Partial)
+### ⚠️ Widget Pruebas (Partial)
 
-| Category | Tests | Status | Issues |
+| Category | Pruebas | Estado | Issues |
 |----------|-------|--------|--------|
 | **Chat Widgets** | 5+ | ⚠️ Mixed | Import errors |
-| **Settings Widgets (NEW)** | 0 | ❌ Missing | Not created yet |
-| **Project Shell Widgets** | 8+ | ❌ Failing | FileNode import errors |
+| **Settings Widgets (NEW)** | 0 | ❌ Missing | Not creard yet |
+| **Proyecto Shell Widgets** | 8+ | ❌ Failing | ArchivoNode import errors |
 
-### ❌ Integration Tests (Outdated)
+### ❌ Integración Pruebas (Outdated)
 
-| Category | Tests | Status | Issues |
+| Category | Pruebas | Estado | Issues |
 |----------|-------|--------|--------|
 | **Chat Flow** | 2 | ⚠️ Needs update | Minor issues |
-| **Filesystem Integration** | 3+ | ❌ Failing | FileNode, provider errors |
-| **Project Shell Flow** | 4+ | ❌ Failing | FileNode, projectPath missing |
+| **Archivosystem Integración** | 3+ | ❌ Failing | ArchivoNode, provider errors |
+| **Proyecto Shell Flow** | 4+ | ❌ Failing | ArchivoNode, proyectoPath missing |
 
-### ❌ E2E Tests (Outdated)
+### ❌ E2E Pruebas (Outdated)
 
-| Category | Tests | Status | Issues |
+| Category | Pruebas | Estado | Issues |
 |----------|-------|--------|--------|
-| **Project Creation** | 1 | ❌ Failing | FileNode import errors |
-| **Settings Flow (NEW)** | 0 | ❌ Missing | Not created yet |
-| **Global Search (NEW)** | 0 | ❌ Missing | Not created yet |
+| **Proyecto Creation** | 1 | ❌ Failing | ArchivoNode import errors |
+| **Settings Flow (NEW)** | 0 | ❌ Missing | Not creard yet |
+| **Global Search (NEW)** | 0 | ❌ Missing | Not creard yet |
 
 ---
 
 ## 🚨 Known Issues
 
-### Critical (Blocks all tests)
+### Critical (Blocks all pruebas)
 
-1. **FileNode Import Errors (100+ occurrences)**
+1. **ArchivoNode Import Errors (100+ occurrences)**
    ```
    Target of URI doesn't exist: 'package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart'
    ```
-   **Root Cause:** `FileNode` moved to `filesystem` feature
-   **Impact:** Breaks 50+ tests
+   **Root Cause:** `ArchivoNode` moved to `archivosystem` feature
+   **Impact:** Breaks 50+ pruebas
    **Fix Required:** Update all imports:
    ```dart
    // OLD (incorrect)
@@ -90,12 +90,12 @@ After recent refactorings (Settings SOLID refactoring, Global Search implementat
    import 'package:softarchitect_ai/features/filesystem/domain/entities/file_node.dart';
    ```
 
-2. **ProjectRepositoryProvider Undefined (10+ occurrences)**
+2. **ProyectoRepositoryProvider Undefined (10+ occurrences)**
    ```
    Undefined name 'projectRepositoryProvider'
    ```
    **Root Cause:** Provider refactored/renamed
-   **Impact:** Breaks integration tests
+   **Impact:** Breaks integration pruebas
    **Fix Required:** Update provider references
 
 3. **Missing Required Arguments (5+ occurrences)**
@@ -103,8 +103,8 @@ After recent refactorings (Settings SOLID refactoring, Global Search implementat
    The named parameter 'projectPath' is required, but there's no corresponding argument
    ```
    **Root Cause:** Constructor signature changed
-   **Impact:** Breaks widget tests
-   **Fix Required:** Add missing `projectPath` parameter
+   **Impact:** Breaks widget pruebas
+   **Fix Required:** Add missing `proyectoPath` parameter
 
 ### Non-Critical (Warnings)
 
@@ -117,102 +117,102 @@ After recent refactorings (Settings SOLID refactoring, Global Search implementat
 
 ---
 
-## 🆕 New Features Without Tests
+## 🆕 New Features Without Pruebas
 
 ### 1. Settings Refactoring (HIGH PRIORITY)
 
-**Missing Widget Tests:**
-- `ProfileSection` widget test
-- `StorageSection` widget test
-- `AppearanceSection` widget test
-- `AccessibilitySection` widget test
-- `PerformanceSection` widget test
-- `SettingsCard` widget test
-- `SettingItem` widget test
+**Missing Widget Pruebas:**
+- `ProarchivoSection` widget prueba
+- `StorageSection` widget prueba
+- `AppearanceSection` widget prueba
+- `AccessibilitySection` widget prueba
+- `PerformanceSection` widget prueba
+- `SettingsCard` widget prueba
+- `SettingItem` widget prueba
 
-**Missing Integration Tests:**
-- Settings persistence flow test
-- Avatar picker interaction test
-- Theme switching flow test
-- Slider/switch interactions test
+**Missing Integración Pruebas:**
+- Settings persistence flow prueba
+- Avatar picker interaction prueba
+- Theme switching flow prueba
+- Slider/switch interactions prueba
 
-**Missing E2E Tests:**
-- Complete user profile configuration journey
-- Project directory selection flow
+**Missing E2E Pruebas:**
+- Complete user proarchivo configuración journey
+- Proyecto directory selection flow
 - Settings persistence across app restarts
 
-### 2. Global Search Implementation (HIGH PRIORITY)
+### 2. Global Search Implementación (HIGH PRIORITY)
 
-**Missing Widget Tests:**
-- `GlobalSearchDialog` widget test
-- Search input interaction test
-- Results list rendering test
-- Empty state test
+**Missing Widget Pruebas:**
+- `GlobalSearchDialog` widget prueba
+- Search input interaction prueba
+- Resultados list rendering prueba
+- Empty state prueba
 
-**Missing Integration Tests:**
-- Search by project name flow
-- Search by phase flow
+**Missing Integración Pruebas:**
+- Search by proyecto name flow
+- Search by fase flow
 - Search by date flow
 - Search result navigation
 
-**Missing E2E Tests:**
+**Missing E2E Pruebas:**
 - Complete search journey (open dialog → search → select result → navigate)
 
 ---
 
 ## ✅ Action Items
 
-### Phase 1: Fix Existing Tests (Priority: HIGH)
+### Fase 1: Fix Existing Pruebas (Priority: HIGH)
 
-- [ ] **Task 1.1**: Create bulk find-and-replace script for FileNode imports
+- [ ] **Task 1.1**: Crear bulk find-and-replace script for ArchivoNode imports
   ```bash
   find tests/test -name "*.dart" -type f -exec sed -i 's|project_shell/domain/entities/file_node|filesystem/domain/entities/file_node|g' {} \;
   ```
 
 - [ ] **Task 1.2**: Update all provider references
-  - Search for `projectRepositoryProvider`
+  - Search for `proyectoRepositoryProvider`
   - Replace with correct provider name
   - Verify all provider imports
 
 - [ ] **Task 1.3**: Fix constructor arguments
-  - Identify all `ProjectShellScreen` instantiations
-  - Add missing `projectPath` parameter
-  - Update test fixtures
+  - Identify all `ProyectoShellScreen` instantiations
+  - Add missing `proyectoPath` parameter
+  - Update prueba fixtures
 
-- [ ] **Task 1.4**: Fix SettingsNotifier tests
+- [ ] **Task 1.4**: Fix SettingsNotifier pruebas
   - Correct ThemeMode index logic (ThemeMode.light is index 1, not 2)
-  - Fix JSON serialization tests
+  - Fix JSON serialization pruebas
 
-### Phase 2: Create New Tests (Priority: MEDIUM)
+### Fase 2: Crear New Pruebas (Priority: MEDIUM)
 
-- [ ] **Task 2.1**: Settings widget tests (7 files)
-  - Create test file for each widget
-  - Test rendering, user interactions, provider updates
-  - Test edge cases (empty values, invalid ranges)
+- [ ] **Task 2.1**: Settings widget pruebas (7 archivos)
+  - Crear prueba archivo for each widget
+  - Prueba rendering, user interactions, provider updates
+  - Prueba edge cases (empty values, invalid ranges)
 
-- [ ] **Task 2.2**: Global search tests (3 test types)
-  - Widget test: Dialog rendering, search input, results
-  - Integration test: Search functionality, filtering logic
-  - E2E test: Complete search journey
+- [ ] **Task 2.2**: Global search pruebas (3 prueba types)
+  - Widget prueba: Dialog rendering, search input, results
+  - Integración prueba: Search functionality, filtering logic
+  - E2E prueba: Complete search journey
 
-### Phase 3: Run Full Test Suite (Priority: MEDIUM)
+### Fase 3: Ejecutar Full Prueba Suite (Priority: MEDIUM)
 
-- [ ] **Task 3.1**: Execute all unit tests
+- [ ] **Task 3.1**: Ejecutar all unit pruebas
   ```bash
   cd tests && flutter test test/unit/
   ```
 
-- [ ] **Task 3.2**: Execute all integration tests
+- [ ] **Task 3.2**: Ejecutar all integration pruebas
   ```bash
   cd tests && flutter test test/integration/
   ```
 
-- [ ] **Task 3.3**: Execute all E2E tests
+- [ ] **Task 3.3**: Ejecutar all E2E pruebas
   ```bash
   cd tests && flutter test test/e2e/
   ```
 
-### Phase 4: Coverage Analysis (Priority: LOW)
+### Fase 4: Coverage Análisis (Priority: LOW)
 
 - [ ] **Task 4.1**: Generate coverage report
   ```bash
@@ -224,44 +224,44 @@ After recent refactorings (Settings SOLID refactoring, Global Search implementat
   - Target: >70% for UI widgets
   - Target: >90% for critical paths (persistence, security)
 
-- [ ] **Task 4.3**: Document coverage gaps
-  - Identify untested code paths
+- [ ] **Task 4.3**: Documento coverage gaps
+  - Identify unpruebaed code paths
   - Prioritize based on risk
-  - Create follow-up tasks
+  - Crear follow-up tasks
 
 ---
 
-## 🔧 Test Execution Commands
+## 🔧 Prueba Execution Commands
 
-### Run Specific Test File
+### Ejecutar Specific Prueba Archivo
 
 ```bash
 cd tests
 flutter test test/unit/features/settings/presentation/providers/settings_provider_test.dart
 ```
 
-### Run All Unit Tests
+### Ejecutar All Unit Pruebas
 
 ```bash
 cd tests
 flutter test test/unit/
 ```
 
-### Run All Tests with Coverage
+### Ejecutar All Pruebas with Coverage
 
 ```bash
 cd src/client
 flutter test --coverage
 ```
 
-### Analyze Test Code Quality
+### Analyze Prueba Code Quality
 
 ```bash
 cd tests
 flutter analyze
 ```
 
-### Current Results (09/02/2026)
+### Current Resultados (09/02/2026)
 
 ```
 Client Code (src/client):
@@ -279,22 +279,22 @@ Test Code (tests):
 
 ## 📚 References
 
-- **AGENTS.md**: Testing strategy (TDD, >80% coverage requirement)
-- **context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md**: Testing guidelines
-- **doc/01-PROJECT_REPORT/TEST_SUITE_COMPLETE_ANALYSIS.md**: Previous test analysis
-- **tests/README.md**: Test structure and conventions
+- **AGENTS.md**: Pruebaing strategy (TDD, >80% coverage requirement)
+- **context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md**: Pruebaing guidelines
+- **doc/01-PROJECT_REPORT/TEST_SUITE_COMPLETE_ANALYSIS.md**: Anterior prueba análisis
+- **pruebas/README.md**: Prueba structure and conventions
 
 ---
 
 ## 🎯 Success Criteria
 
-- [ ] All existing tests pass (0 errors)
-- [ ] New features have complete test coverage (unit + integration + E2E)
+- [ ] All existing pruebas pass (0 errors)
+- [ ] New features have complete prueba coverage (unit + integration + E2E)
 - [ ] Overall coverage >80% on business logic
-- [ ] flutter analyze returns 0 errors on both client and tests
+- [ ] flutter analyze returns 0 errors on both client and pruebas
 - [ ] CI/CD pipeline passes all checks
 
 ---
 
 **Last Updated:** 09/02/2026 by ArchitectZero
-**Next Review:** After Phase 1 completion
+**Siguiente Review:** After Fase 1 completion

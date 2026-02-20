@@ -1,13 +1,13 @@
-# 🚀 HU-4.1: End-to-End Testing Guide
+# 🚀 HU-4.1: End-to-End Pruebaing Guide
 
-> **Purpose:** Step-by-step guide to test the complete HU-4.1 chat endpoint with real infrastructure
+> **Purpose:** Step-by-step guide to prueba the complete HU-4.1 chat endpoint with real infrastructure
 > **Last Updated:** 2026-02-14
-> **Duration:** ~15 minutes (first time), ~5 minutes (subsequent runs)
-> **Result:** Validate that your AI chat system works end-to-end with Ollama, ChromaDB, and FastAPI
+> **Duration:** ~15 minutes (first time), ~5 minutes (subsequent ejecutars)
+> **Resultado:** Validate that your AI chat system works end-to-end with Ollama, ChromaDB, and FastAPI
 
 ---
 
-## 🎯 What We're Testing
+## 🎯 What We're Pruebaing
 
 This guide will validate the **complete RAG pipeline**:
 
@@ -29,11 +29,11 @@ Template Injection → Ollama LLM → AI Response → User
 
 ### Required Software
 
-| Software | Version | Installation | Verification |
+| Software | Version | Installation | Verificación |
 |----------|---------|--------------|--------------|
 | **Docker** | ≥20.10 | [Docker Desktop](https://www.docker.com/products/docker-desktop/) | `docker --version` |
 | **Docker Compose** | ≥2.0 | Included with Docker Desktop | `docker compose version` |
-| **Ollama** | Latest | [Ollama Install](https://ollama.com/download) | `ollama --version` |
+| **Ollama** | Laprueba | [Ollama Install](https://ollama.com/download) | `ollama --version` |
 | **Python** | 3.12.3 | [Python.org](https://python.org) | `python --version` |
 | **curl** | Any | Pre-installed (Linux/Mac) | `curl --version` |
 
@@ -41,18 +41,18 @@ Template Injection → Ollama LLM → AI Response → User
 - **CPU:** AMD Ryzen 9 (8-core, 16-thread)
 - **GPU:** NVIDIA GeForce RTX 3050 4GB (available, CPU inference used by default)
 - **RAM:** 16GB DDR4
-- Tests run on CPU inference (~1.8s response). GPU acceleration (planned) would reduce to ~450ms.
+- Pruebas ejecutar on CPU inference (~1.8s response). GPU acceleration (planned) would reduce to ~450ms.
 
 ### Optional (Recommended)
 
-- **Postman** or **Thunder Client** (VS Code extension) - Better API testing UI
+- **Postman** or **Thunder Client** (VS Code extension) - Better API pruebaing UI
 - **jq** - JSON prettifier (`sudo apt install jq` or `brew install jq`)
 
 ---
 
-## 🔧 Step 0: Environment Verification
+## 🔧 Step 0: Environment Verificación
 
-Before starting, verify your project structure:
+Before starting, verify your proyecto structure:
 
 ```bash
 cd ~/Espacio-de-trabajo/Master/soft-architect-ai
@@ -67,7 +67,7 @@ ls -l infrastructure/docker-compose.yml       # Docker config ✅
 ls -l src/server/.env || cp src/server/.env.example src/server/.env
 ```
 
-**Expected Output:** All files exist ✅
+**Expected Output:** All archivos exist ✅
 
 ---
 
@@ -107,7 +107,7 @@ docker compose logs chromadb
 
 ## 🧠 Step 2: Start Ollama (Local LLM Engine)
 
-Ollama runs the AI model locally (no cloud, 100% private).
+Ollama ejecutars the AI model locally (no cloud, 100% private).
 
 ### Install Ollama (If Not Installed)
 
@@ -134,7 +134,7 @@ ollama serve
 # ✅ Leave this terminal open!
 ```
 
-**Verification:**
+**Verificación:**
 ```bash
 # In your original terminal, test Ollama:
 curl -s http://localhost:11434 | head -1
@@ -227,7 +227,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 
 **Why port 8080?** ChromaDB already uses 8000, so we use 8080 for FastAPI.
 
-**Verification:**
+**Verificación:**
 ```bash
 # In another terminal:
 curl -s http://localhost:8080/health
@@ -237,11 +237,11 @@ curl -s http://localhost:8080/health
 
 ---
 
-## 🧪 Step 4: Test the Chat Endpoint (E2E)
+## 🧪 Step 4: Prueba the Chat Endpoint (E2E)
 
-Now the magic happens! All services are running, let's test the full pipeline.
+Now the magic happens! All services are ejecutarning, let's prueba the full pipeline.
 
-### Method 1: Swagger UI (Recommended for First Test)
+### Method 1: Swagger UI (Recommended for First Prueba)
 
 1. Open your browser: **http://localhost:8080/docs**
 2. Find the endpoint: **POST /api/v1/chat/message**
@@ -256,7 +256,7 @@ Now the magic happens! All services are running, let's test the full pipeline.
 }
 ```
 
-5. Click **Execute**
+5. Click **Ejecutar**
 6. Wait ~2-3 seconds (Ollama is thinking)
 7. Check the **Response**
 
@@ -334,7 +334,7 @@ time curl -X POST http://localhost:8080/api/v1/chat/message \
 
 ## 🔬 Step 5: Validate Security Features
 
-### Test 1: XSS Prevention (HTML Escaping)
+### Prueba 1: XSS Prevention (HTML Escaping)
 
 ```bash
 # Try injecting JavaScript
@@ -354,7 +354,7 @@ curl -X POST http://localhost:8080/api/v1/chat/message \
 
 ---
 
-### Test 2: Code Preservation (Developer Tool Trap Fix)
+### Prueba 2: Code Preservation (Developer Tool Trap Fix)
 
 ```bash
 # Send code snippet with angle brackets
@@ -374,7 +374,7 @@ curl -X POST http://localhost:8080/api/v1/chat/message \
 
 ---
 
-### Test 3: Prompt Injection Detection
+### Prueba 3: Prompt Injection Detection
 
 ```bash
 # Try hijacking the system prompt
@@ -397,7 +397,7 @@ curl -X POST http://localhost:8080/api/v1/chat/message \
 
 ---
 
-### Test 4: Length Validation (DOS Prevention)
+### Prueba 4: Length Validation (DOS Prevention)
 
 ```bash
 # Try sending >2000 characters (should fail validation)
@@ -430,7 +430,7 @@ EOF
 
 ---
 
-## 🎭 Step 6: Test Error Handling
+## 🎭 Step 6: Prueba Error Handling
 
 ### Scenario 1: Ollama Offline (503 Error)
 
@@ -489,7 +489,7 @@ curl -X POST http://localhost:8080/api/v1/chat/message \
 
 ## 📊 Step 7: Performance Benchmarking
 
-### Quick Load Test (100 Requests)
+### Quick Load Prueba (100 Requests)
 
 ```bash
 # Install Apache Bench (if not installed)
@@ -508,7 +508,7 @@ ab -n 100 -c 10 \
 # Failed requests:        0 ✅
 ```
 
-### Response Time Analysis
+### Response Time Análisis
 
 ```bash
 # Run 10 sequential requests and measure time
@@ -527,14 +527,14 @@ done
 
 ---
 
-## 🏁 Step 8: Final Verification Checklist
+## 🏁 Step 8: Final Verificación Checklist
 
-Run through this checklist to confirm everything works:
+Ejecutar through this checklist to confirm everything works:
 
 - [ ] **ChromaDB Health:** `curl http://localhost:8000/api/v1/heartbeat` returns JSON ✅
-- [ ] **Ollama Running:** `curl http://localhost:11434` returns "Ollama is running" ✅
-- [ ] **FastAPI Health:** `curl http://localhost:8080/health` returns `{"status":"ok"}` ✅
-- [ ] **Chat Endpoint (200):** Swagger `/docs` → Execute → 200 OK + AI response ✅
+- [ ] **Ollama Ejecutarning:** `curl http://localhost:11434` returns "Ollama is ejecutarning" ✅
+- [ ] **FastAPI Health:** `curl http://localhost:8080/health` returns `{"estado":"ok"}` ✅
+- [ ] **Chat Endpoint (200):** Swagger `/docs` → Ejecutar → 200 OK + AI response ✅
 - [ ] **XSS Prevention:** `<script>` tags escaped to `&lt;script&gt;` ✅
 - [ ] **Code Preservation:** `List<String>` becomes `List&lt;String&gt;` (preserved) ✅
 - [ ] **Prompt Injection Detection:** Logs warning but doesn't block ✅
@@ -546,7 +546,7 @@ If ALL checks pass: **🎉 HU-4.1 is FULLY FUNCTIONAL! 🎉**
 
 ---
 
-## 🧹 Step 9: Cleanup (When Done Testing)
+## 🧹 Step 9: Cleanup (When Done Pruebaing)
 
 ```bash
 # Stop FastAPI (Ctrl+C in uvicorn terminal)
@@ -627,24 +627,24 @@ PYTHONPATH=. uvicorn app.main:app --reload --port 8080
 
 ---
 
-## 🎓 What You Just Tested
+## 🎓 What You Just Pruebaed
 
-You've validated the **complete HU-4.1 implementation**:
+You've validated the **complete HU-4.1 implementación**:
 
 1. ✅ **Input Sanitization** (XSS, code preservation)
 2. ✅ **RAG Orchestration** (ChromaDB search + template injection)
-3. ✅ **LLM Integration** (Ollama text generation)
+3. ✅ **LLM Integración** (Ollama text generation)
 4. ✅ **Error Handling** (503, 422, graceful degradation)
 5. ✅ **Security Monitoring** (prompt injection detection)
 6. ✅ **Performance** (<2s response time)
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Siguiente Steps
 
 Now that HU-4.1 works end-to-end:
 
-1. **Frontend Integration (HU-4.2):** Connect Flutter UI to this endpoint
+1. **Frontend Integración (HU-4.2):** Connect Flutter UI to this endpoint
 2. **Streaming (HU-4.3):** Implement SSE for real-time token streaming
 3. **Conversation History (HU-4.2):** Persist chat sessions to SQLite
 4. **Authentication (HU-5.2):** Add API key protection
@@ -660,8 +660,8 @@ Now that HU-4.1 works end-to-end:
 
 ---
 
-**Guide Created By:** ArchitectZero
-**Tested On:** Linux, macOS (should work on Windows with minor adjustments)
+**Guide Creard By:** ArchitectZero
+**Pruebaed On:** Linux, macOS (should work on Windows with minor adjustments)
 **Last Updated:** 2026-02-14
 
-**Happy Testing! 🚀**
+**Happy Pruebaing! 🚀**

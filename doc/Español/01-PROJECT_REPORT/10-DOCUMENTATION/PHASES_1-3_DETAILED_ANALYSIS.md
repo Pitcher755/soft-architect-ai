@@ -2,32 +2,32 @@
 
 > **Fecha:** 06/02/2026
 > **Análisis Completo:** ✅ VERIFICADO
-> **Status Final:** 🟢 Phases 2 & 3 = 100% | 🟡 Phase 1 = 80% (tests pendientes)
+> **Estado Final:** 🟢 Fases 2 & 3 = 100% | 🟡 Fase 1 = 80% (pruebas pendientes)
 
 ---
 
 ## 📋 RESUMEN EJECUTIVO
 
-| Phase | Nombre | Tests | Impl. | Checklist | Estado |
+| Fase | Nombre | Pruebas | Impl. | Checklist | Estado |
 |-------|--------|-------|-------|-----------|--------|
 | **1** | Shell Container | ✅ SÍ | ✅ SÍ | 5/5 | 🟢 100% ✅ |
-| **2** | File System Tree | ✅ SÍ | ✅ SÍ | 6/6 | 🟢 100% |
+| **2** | Archivo System Tree | ✅ SÍ | ✅ SÍ | 6/6 | 🟢 100% |
 | **3** | Markdown Preview | ✅ SÍ | ✅ SÍ | 6/6 | 🟢 100% |
 
 ---
 
-## 🔴 PHASE 1: Shell Container - Status: � 100% COMPLETE ✅
+## 🔴 FASE 1: Shell Container - Estado: � 100% COMPLETE ✅
 
-### 1.1 Tests (RED Phase)
+### 1.1 Pruebas (RED Fase)
 
 **Estado:** ✅ **TESTS CREADOS Y TODOS PASAN**
 
-Los tests especificados en MASTER_WORKFLOW.md FUERON CREADOS exitosamente:
-- ✅ `test/widget/features/project_shell/presentation/project_workspace_screen_test.dart` - **EXISTE**
-- ✅ 13 tests totales creados (2 unit + 11 widget)
-- ✅ Todos los tests PASAN: `00:01 +13: All tests passed!`
+Los pruebas especificados en MASTER_WORKFLOW.md FUERON CREADOS exitosamente:
+- ✅ `prueba/widget/features/proyecto_shell/presentation/proyecto_workspace_screen_prueba.dart` - **EXISTE**
+- ✅ 13 pruebas totales creados (2 unit + 11 widget)
+- ✅ Todos los pruebas PASAN: `00:01 +13: All pruebas passed!`
 
-**Tests Creados (13 total):**
+**Pruebas Creados (13 total):**
 ```
 ✅ ProjectWorkspaceScreen has correct constructor parameters
 ✅ ProjectWorkspaceScreen is a ConsumerWidget
@@ -44,13 +44,13 @@ Los tests especificados en MASTER_WORKFLOW.md FUERON CREADOS exitosamente:
 ✅ Widget builds successfully
 ```
 
-**Ejecución:** Todos los tests pasaron en 01 segundo ✅
+**Ejecución:** Todos los pruebas pasaron en 01 segundo ✅
 
-### 1.2 Implementation (GREEN Phase)
+### 1.2 Implementación (GREEN Fase)
 
 **Estado:** ✅ **EXISTE Y FUNCIONA**
 
-**Archivo:** `src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart`
+**Archivo:** `src/client/lib/features/proyecto_shell/presentation/screens/proyecto_workspace_screen.dart`
 
 **Verificación:**
 ```dart
@@ -65,29 +65,29 @@ Los tests especificados en MASTER_WORKFLOW.md FUERON CREADOS exitosamente:
 
 **Líneas:** 195 líneas de código
 
-### 1.3 Verification Checklist (ACTUAL vs ESPECIFICADO)
+### 1.3 Verificación Checklist (ACTUAL vs ESPECIFICADO)
 
 | Item | Requerimiento | Estado | Notas |
 |------|---------------|--------|-------|
-| ✅ | Route `/workspace/:projectId` navigates | ✅ | ProjectWorkspaceScreen existe |
-| ✅ | 3 columns render correctly (250px \| flex \| 450px) | ✅ | Tests verifican estructura |
-| ✅ | AppBar shows progress indicator | ✅ | Tests verifican altura (80px) |
-| ✅ | Progress updates when doc index changes | ✅ | Tests verifican contador |
-| ✅ | **Tests pass: flutter test test/features/project_shell/** | ✅ | **13/13 TESTS PASS** ✅ |
+| ✅ | Route `/workspace/:proyectoId` navigates | ✅ | ProyectoWorkspaceScreen existe |
+| ✅ | 3 columns render correctly (250px \| flex \| 450px) | ✅ | Pruebas verifican estructura |
+| ✅ | AppBar shows progress indicator | ✅ | Pruebas verifican altura (80px) |
+| ✅ | Progress updates when doc index changes | ✅ | Pruebas verifican contador |
+| ✅ | **Pruebas pass: flutter prueba prueba/features/proyecto_shell/** | ✅ | **13/13 TESTS PASS** ✅ |
 
 **Score:** 5/5 ✅ (100% COMPLETE)
 
 ---
 
-## 🟢 PHASE 2: File System Tree - Status: 100% COMPLETE ✅
+## 🟢 FASE 2: Archivo System Tree - Estado: 100% COMPLETE ✅
 
-### 2.1 Tests (RED Phase)
+### 2.1 Pruebas (RED Fase)
 
 **Estado:** ✅ **TESTS EXISTEN Y PASAN (5/5)**
 
-**Archivo:** `tests/test/widget/features/project_shell/presentation/file_system_tree_widget_test.dart`
+**Archivo:** `pruebas/prueba/widget/features/proyecto_shell/presentation/archivo_system_tree_widget_prueba.dart`
 
-**Tests Verificados:**
+**Pruebas Verificados:**
 ```
 ✅ Test 1: FileSystemTreeWidget displays directory structure
 ✅ Test 2: Clicking folder toggles expansion
@@ -98,53 +98,53 @@ Los tests especificados en MASTER_WORKFLOW.md FUERON CREADOS exitosamente:
 Total: 5/5 PASS ✅ (Ejecución: 2 segundos)
 ```
 
-### 2.2 Implementation (GREEN Phase)
+### 2.2 Implementación (GREEN Fase)
 
 **Estado:** ✅ **IMPLEMENTADO Y FUNCIONAL**
 
 **Archivos:**
-1. `src/client/lib/features/project_shell/presentation/widgets/file_system_tree_widget.dart` (141 líneas)
-   - ✅ FileSystemTreeWidget (ConsumerWidget)
+1. `src/client/lib/features/proyecto_shell/presentation/widgets/archivo_system_tree_widget.dart` (141 líneas)
+   - ✅ ArchivoSystemTreeWidget (ConsumerWidget)
    - ✅ _DirectoryTreeView helper (recursive)
    - ✅ Expand/collapse logic
-   - ✅ File selection with highlight
+   - ✅ Archivo selection with highlight
 
-2. `src/client/lib/features/project_shell/domain/entities/directory_node.dart` (15 líneas)
+2. `src/client/lib/features/proyecto_shell/domain/entities/directory_node.dart` (15 líneas)
    - ✅ DirectoryNode class (immutable)
    - ✅ Recursive children support
 
-3. `src/client/lib/features/filesystem/presentation/notifiers/file_system_notifier.dart` (61 líneas)
-   - ✅ FileSystemNotifier (StateNotifier)
-   - ✅ FileSystemState (immutable)
-   - ✅ toggleFolder() method
-   - ✅ selectFile() method
+3. `src/client/lib/features/archivosystem/presentation/notifiers/archivo_system_notifier.dart` (61 líneas)
+   - ✅ ArchivoSystemNotifier (StateNotifier)
+   - ✅ ArchivoSystemState (immutable)
+   - ✅ toggleCarpeta() method
+   - ✅ selectArchivo() method
 
-### 2.3 Verification Checklist
+### 2.3 Verificación Checklist
 
 | Item | Requerimiento | Estado | Evidencia |
 |------|---------------|--------|-----------|
-| ✅ | Tree displays all folders from context/ | ✅ PASS | Test 1 verifica rendering |
-| ✅ | Clicking folder expands/collapses children | ✅ PASS | Test 2 verifica toggle |
-| ✅ | Clicking file highlights it AND triggers preview | ✅ PASS | Test 3 + Integration test |
-| ✅ | Scrollable when content overflows | ✅ PASS | Test 5 verifica scrolling |
-| ✅ | Icons match file types (folder, markdown) | ✅ PASS | Test 4 verifica icons |
-| ✅ | **Tests pass: flutter test test/features/project_shell/widgets/** | ✅ PASS | 5/5 tests passing |
+| ✅ | Tree displays all carpetas from context/ | ✅ PASS | Prueba 1 verifica rendering |
+| ✅ | Clicking carpeta expands/collapses children | ✅ PASS | Prueba 2 verifica toggle |
+| ✅ | Clicking archivo highlights it AND triggers preview | ✅ PASS | Prueba 3 + Integración prueba |
+| ✅ | Scrollable when content overflows | ✅ PASS | Prueba 5 verifica scrolling |
+| ✅ | Icons match archivo types (carpeta, markdown) | ✅ PASS | Prueba 4 verifica icons |
+| ✅ | **Pruebas pass: flutter prueba prueba/features/proyecto_shell/widgets/** | ✅ PASS | 5/5 pruebas passing |
 
 **Score:** 6/6 ✅ (100%)
 
-**Status:** 🟢 **PHASE 2 100% COMPLETA**
+**Estado:** 🟢 **PHASE 2 100% COMPLETA**
 
 ---
 
-## 🟢 PHASE 3: Markdown Preview - Status: 100% COMPLETE ✅
+## 🟢 FASE 3: Markdown Preview - Estado: 100% COMPLETE ✅
 
-### 3.1 Tests (RED Phase)
+### 3.1 Pruebas (RED Fase)
 
 **Estado:** ✅ **TESTS EXISTEN Y PASAN (12/12)**
 
-**Archivo:** `tests/test/widget/features/project_shell/presentation/markdown_preview_widget_test.dart`
+**Archivo:** `pruebas/prueba/widget/features/proyecto_shell/presentation/markdown_preview_widget_prueba.dart`
 
-**Tests Verificados:**
+**Pruebas Verificados:**
 ```
 ✅ Test 1: should display empty state when content is null
 ✅ Test 2: should display empty state when content is empty
@@ -162,44 +162,44 @@ Total: 5/5 PASS ✅ (Ejecución: 2 segundos)
 Total: 12/12 PASS ✅ (Ejecución: 3 segundos)
 ```
 
-**BONUS - Integration Tests (NEW):** 3/3 PASS ✅
+**BONUS - Integración Pruebas (NEW):** 3/3 PASS ✅
 ```
 ✅ Selecting file in tree updates preview notifier
 ✅ Selecting multiple files updates preview each time
 ✅ Selecting nested file updates preview correctly
 ```
 
-### 3.2 Implementation (GREEN Phase)
+### 3.2 Implementación (GREEN Fase)
 
 **Estado:** ✅ **IMPLEMENTADO Y FUNCIONAL**
 
 **Archivos:**
-1. `src/client/lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart` (149 líneas)
+1. `src/client/lib/features/proyecto_shell/presentation/widgets/markdown_preview_widget.dart` (149 líneas)
    - ✅ MarkdownPreviewWidget (ConsumerWidget)
    - ✅ Empty state display
    - ✅ Markdown rendering with syntax highlighting
    - ✅ Dark theme styling
 
-2. `src/client/lib/features/project_shell/presentation/notifiers/markdown_preview_notifier.dart` (69 líneas)
+2. `src/client/lib/features/proyecto_shell/presentation/notifiers/markdown_preview_notifier.dart` (69 líneas)
    - ✅ MarkdownPreviewNotifier (StateNotifier)
    - ✅ MarkdownPreviewState (immutable)
-   - ✅ loadFile() method with error handling
+   - ✅ loadArchivo() method with error handling
    - ✅ clear() method
 
-### 3.3 Verification Checklist
+### 3.3 Verificación Checklist
 
 | Item | Requerimiento | Estado | Evidencia |
 |------|---------------|--------|-----------|
-| ✅ | Shows "Select a file..." when no file selected | ✅ PASS | Tests 1-2 verifican empty state |
-| ✅ | Renders markdown with GitHub Dark theme | ✅ PASS | Test 12 verifica dark theme |
+| ✅ | Shows "Select a archivo..." when no archivo selected | ✅ PASS | Pruebas 1-2 verifican empty state |
+| ✅ | Renders markdown with GitHub Dark theme | ✅ PASS | Prueba 12 verifica dark theme |
 | ✅ | Code blocks have syntax highlighting | ✅ PASS | Widget usa flutter_markdown_plus |
-| ✅ | Headers, lists, links render correctly | ✅ PASS | Test 6, 9, 10 verifican rendering |
-| ✅ | Scrollable when content overflows | ✅ PASS | Test 7 verifica long content |
-| ✅ | **Tests pass: flutter test test/features/project_shell/widgets/** | ✅ PASS | 12/12 tests passing |
+| ✅ | Headers, lists, links render correctly | ✅ PASS | Prueba 6, 9, 10 verifican rendering |
+| ✅ | Scrollable when content overflows | ✅ PASS | Prueba 7 verifica long content |
+| ✅ | **Pruebas pass: flutter prueba prueba/features/proyecto_shell/widgets/** | ✅ PASS | 12/12 pruebas passing |
 
 **Score:** 6/6 ✅ (100%)
 
-**Status:** 🟢 **PHASE 3 100% COMPLETA**
+**Estado:** 🟢 **PHASE 3 100% COMPLETA**
 
 ---
 
@@ -232,7 +232,7 @@ PHASE 3 (Markdown Preview)
 
 ## ✅ CONCLUSIONES Y ESTADO FINAL
 
-### Phase 1: Shell Container
+### Fase 1: Shell Container
 ```
 Estado: 🟡 PARCIAL (80%)
 ─────────────────────────────────
@@ -252,7 +252,7 @@ Acción Requerida:
   → Estimado: 1 hora de trabajo
 ```
 
-### Phase 2: File System Tree
+### Fase 2: Archivo System Tree
 ```
 Estado: 🟢 100% COMPLETO
 ────────────────────────────────
@@ -265,7 +265,7 @@ Todos los requisitos del checklist: 6/6 ✅
 Resultado: LISTO PARA PRODUCCIÓN ✅
 ```
 
-### Phase 3: Markdown Preview
+### Fase 3: Markdown Preview
 ```
 Estado: 🟢 100% COMPLETO
 ────────────────────────────────
@@ -312,16 +312,16 @@ PROYECTO OVERALL:
 ## 🎯 RECOMENDACIONES
 
 ### Inmediatas (1 hora)
-1. ✅ **Crear tests para Phase 1** (project_workspace_screen_test.dart)
-   - Test: "ProjectWorkspaceScreen renders 3-column layout"
-   - Test: "AppBar shows project progress (Doc X/25)"
-   - Resultado: Phase 1 = 100%
+1. ✅ **Crear pruebas para Fase 1** (proyecto_workspace_screen_prueba.dart)
+   - Prueba: "ProyectoWorkspaceScreen renders 3-column layout"
+   - Prueba: "AppBar shows proyecto progress (Doc X/25)"
+   - Resultadoado: Fase 1 = 100%
 
 ### Futuras (ya completadas)
-2. ✅ **Phase 2 & 3:** Ya están 100% completas
+2. ✅ **Fase 2 & 3:** Ya están 100% completas
 
 ### Próximas Fases
-3. ⏳ **Phase 4-6:** Según roadmap MASTER_WORKFLOW.md
+3. ⏳ **Fase 4-6:** Según roadmap MASTER_WORKFLOW.md
 
 ---
 
@@ -359,4 +359,4 @@ OVERALL: ██████████░░░░░░░░░░░░░�
 ---
 
 **Conclusión Final:**
-**Phase 2 y 3 están 100% COMPLETAS y LISTAS PARA PRODUCCIÓN.** Solo Phase 1 requiere crear los tests para alcanzar 100%, pero la implementación ya existe y funciona perfectamente.
+**Fase 2 y 3 están 100% COMPLETAS y LISTAS PARA PRODUCCIÓN.** Solo Fase 1 requiere crear los pruebas para alcanzar 100%, pero la implementación ya existe y funciona perfectamente.

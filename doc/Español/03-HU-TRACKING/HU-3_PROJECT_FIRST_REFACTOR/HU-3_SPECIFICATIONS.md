@@ -1,4 +1,4 @@
-# 📋 Especificación Detallada: Las 5 HUs del Sprint 3 (Project-First)
+# 📋 Especificación Detallada: Las 5 HUs del Sprint 3 (Proyecto-First)
 
 > **Fecha:** 02/02/2026
 > **Estado:** ✅ ESPECIFICACIÓN FINAL
@@ -11,15 +11,15 @@
 
 | ID | Nombre | Puntos | Rama | Dependencias | Criticidad |
 |----|----|---------|------|-----------|------------|
-| **HU-3.1** | Project Shell (UI & Navigation) | 13 | `feature/ui-project-shell` | ❌ Ninguna | ⭐⭐⭐ |
-| **HU-3.2** | FileSystemService (Backend Motor) | 8 | `feature/backend-filesystem-service` | HU-3.1 | ⭐⭐⭐ |
-| **HU-3.3** | Chat Sequential Document Generation | 21 | `feature/ui-chat-sequential-docs` | HU-3.1, 3.2 | ⭐⭐⭐ |
+| **HU-3.1** | Proyecto Shell (UI & Navigation) | 13 | `feature/ui-proyecto-shell` | ❌ Ninguna | ⭐⭐⭐ |
+| **HU-3.2** | ArchivoSystemService (Backend Motor) | 8 | `feature/backend-archivosystem-service` | HU-3.1 | ⭐⭐⭐ |
+| **HU-3.3** | Chat Sequential Documento Generation | 21 | `feature/ui-chat-sequential-docs` | HU-3.1, 3.2 | ⭐⭐⭐ |
 | **HU-3.4** | Error Handling & Validation Gates | 5 | `feature/backend-error-handling` | HU-3.3 | ⭐⭐ |
 | **HU-3.5** | Streaming & Performance Optimization | 8 | `feature/ui-streaming-optimization` | HU-3.3, 3.4 | ⭐⭐ |
 
 ---
 
-## 📌 HU-3.1: Project Shell (UI & Navigation) ⭐ PRIMERA
+## 📌 HU-3.1: Proyecto Shell (UI & Navigation) ⭐ PRIMERA
 
 ### Descripción
 Crear **interfaz de escritorio que permita crear proyectos y auto-generar estructura de directorios** (`context/10-20-30-35-40/`).
@@ -27,20 +27,20 @@ Crear **interfaz de escritorio que permita crear proyectos y auto-generar estruc
 ### Historia de Usuario
 > **Como** usuario
 > **Quiero** crear un nuevo proyecto con nombre y descripción
-> **Para** establecer el contexto organizacional de mi documentación
+> **Para** establecer el contexto organizacional de mi documentoación
 
 ### Responsabilidades
 1. **Frontend (Flutter)**
    - Pantalla inicial: "Nuevo Proyecto" (input: nombre, descripción)
    - Dashboard: Listar proyectos existentes
-   - Clickear proyecto → Carga vista de "Generación de Documentos"
+   - Clickear proyecto → Carga vista de "Generación de Documentoos"
    - Dark mode compatible
    - Responsive (redimensionamiento ventana)
 
 2. **Backend (FastAPI)**
-   - Endpoint `POST /api/v1/projects/create` → crea dirs automáticamente
-   - Endpoint `GET /api/v1/projects/list` → retorna lista de proyectos
-   - Endpoint `GET /api/v1/projects/{project_id}` → retorna metadatos
+   - Endpoint `POST /api/v1/proyectos/crear` → crea dirs automáticamente
+   - Endpoint `GET /api/v1/proyectos/list` → retorna lista de proyectos
+   - Endpoint `GET /api/v1/proyectos/{proyecto_id}` → retorna metadatos
 
 ### Criterios de Aceptación
 - ✅ Usuario ingresa nombre + descripción
@@ -57,7 +57,7 @@ Crear **interfaz de escritorio que permita crear proyectos y auto-generar estruc
   └── CHAT_HISTORY.db (SQLite)
   ```
 - ✅ Dashboard se actualiza con nuevo proyecto
-- ✅ Tests: Unit + Integration > 85% cobertura
+- ✅ Pruebas: Unit + Integración > 85% cobertura
 
 ### Datos de Entrada (Ejemplo)
 ```json
@@ -86,17 +86,17 @@ Crear **interfaz de escritorio que permita crear proyectos y auto-generar estruc
 **13 pts (XL)**
 - UI: 5 pts
 - Backend: 5 pts
-- Testing: 3 pts
+- Pruebaing: 3 pts
 
 ### Rama
-`feature/ui-project-shell`
+`feature/ui-proyecto-shell`
 
 ### Dependencias
 ❌ Ninguna (PRIMERA HU)
 
 ---
 
-## 📌 HU-3.2: FileSystemService (Backend Motor) ⭐ CRÍTICA
+## 📌 HU-3.2: ArchivoSystemService (Backend Motor) ⭐ CRÍTICA
 
 ### Descripción
 Implementar **servicio backend que gestione lectura/escritura segura de archivos**, control de acceso y persistencia en directorios del proyecto.
@@ -104,13 +104,13 @@ Implementar **servicio backend que gestione lectura/escritura segura de archivos
 ### Historia de Usuario
 > **Como** backend
 > **Quiero** un servicio centralizado de I/O con validaciones de seguridad
-> **Para** garantizar que los documentos se guardan correctamente y con permisos controlados
+> **Para** garantizar que los documentoos se guardan correctamente y con permisos controlados
 
 ### Responsabilidades
 1. **Crear estructura de dirs** (`context/10-20-30-35-40/`)
 2. **Validar permisos** de lectura/escritura del SO
-3. **Guardar documentos** en markdown con nombrado predecible
-4. **Leer documentos** guardados (para historial + contexto)
+3. **Guardar documentoos** en markdown con nombrado predecible
+4. **Leer documentoos** guardados (para historial + contexto)
 5. **Manejo de excepciones** (disco lleno, permisos denegados, etc.)
 
 ### Criterios de Aceptación
@@ -118,8 +118,8 @@ Implementar **servicio backend que gestione lectura/escritura segura de archivos
 - ✅ Valida permisos antes de escribir (throw si no tiene acceso)
 - ✅ Guarda archivos con nombrado: `{number}-{SECTION}.md`
 - ✅ Lee archivos existentes y retorna contenido
-- ✅ Tests (unit + integration): > 90% cobertura
-- ✅ Documentación Docstring (Python) completa
+- ✅ Pruebas (unit + integration): > 90% cobertura
+- ✅ Documentoación Docstring (Python) completa
 
 ### Estructura de Archivos (Salida Esperada)
 ```
@@ -183,44 +183,44 @@ class FileSystemService:
 **8 pts (M)**
 - Core logic: 4 pts
 - Error handling: 2 pts
-- Testing: 2 pts
+- Pruebaing: 2 pts
 
 ### Rama
-`feature/backend-filesystem-service`
+`feature/backend-archivosystem-service`
 
 ### Dependencias
 - HU-3.1 (necesita saber estructura de dirs del proyecto)
 
 ---
 
-## 📌 HU-3.3: Chat Sequential Document Generation ⭐ NÚCLEO
+## 📌 HU-3.3: Chat Sequential Documento Generation ⭐ NÚCLEO
 
 ### Descripción
-Implementar **flujo de chat que genera documentos secuencialmente usando RAG guiado por templates**, permitiendo usuario iterar antes de guardar.
+Implementar **flujo de chat que genera documentoos secuencialmente usando RAG guiado por templates**, permitiendo usuario iterar antes de guardar.
 
 ### Historia de Usuario
 > **Como** usuario
-> **Quiero** describir mi proyecto una vez y recibir 25 documentos de arquitectura generados secuencialmente
-> **Para** tener documentación completa de ingeniería sin escribir manualmente
+> **Quiero** describir mi proyecto una vez y recibir 25 documentoos de arquitectura generados secuencialmente
+> **Para** tener documentoación completa de ingeniería sin escribir manualmente
 
 ### Responsabilidades
 1. **Frontend (Flutter)**
    - Chat input area (textarea para descripción inicial)
-   - Mostrar propuesta de documento en formato markdown
+   - Mostrar propuesta de documentoo en formato markdown
    - Botones: "✅ Validar" | "🔄 Iterar"
    - Si Iterar: Chat permite refinar contexto
-   - Si Validar: Guardar + pasar a documento siguiente
+   - Si Validar: Guardar + pasar a documentoo siguiente
    - Indicador de progreso (Doc N de 25)
 
 2. **Backend (FastAPI)**
-   - Endpoint `POST /api/v1/chat/start-project` → inicia flujo
+   - Endpoint `POST /api/v1/chat/start-proyecto` → inicia flujo
    - Endpoint `POST /api/v1/chat/message` → acepta refinamientos
-   - Endpoint `POST /api/v1/chat/validate-doc` → guarda documento
+   - Endpoint `POST /api/v1/chat/validate-doc` → guarda documentoo
    - Orquestador RAG que:
-     - Carga template de documento N (ej: `01-TEMPLATES/10-CONTEXT.md`)
-     - Inyecta contexto de proyecto + documentos previos
+     - Carga template de documentoo N (ej: `01-TEMPLATES/10-CONTEXT.md`)
+     - Inyecta contexto de proyecto + documentoos previos
      - Llama a LLM (Ollama/Groq) para rellenar template
-     - Retorna propuesta de documento
+     - Retorna propuesta de documentoo
 
 ### Criterios de Aceptación
 - ✅ Chat acepta descripción inicial del proyecto
@@ -229,8 +229,8 @@ Implementar **flujo de chat que genera documentos secuencialmente usando RAG gui
 - ✅ Usuario puede "Iterar" (chat refina) o "Validar" (guardar)
 - ✅ After validar: Automáticamente genera Doc 2 propuesta
 - ✅ Flujo es **SECUENCIAL OBLIGATORIO** (nunca paralelo)
-- ✅ Después de Doc 25: Mensaje "✅ Documentación completa guardada"
-- ✅ Tests: Unit (validación) + Integration (flujo E2E): > 85% cobertura
+- ✅ Después de Doc 25: Mensaje "✅ Documentoación completa guardada"
+- ✅ Pruebas: Unit (validación) + Integración (flujo E2E): > 85% cobertura
 
 ### Flujo Secuencial (ASCII Diagram)
 ```
@@ -283,7 +283,7 @@ Implementar **flujo de chat que genera documentos secuencialmente usando RAG gui
 }
 ```
 
-### Datos de Salida (Documento 1 Propuesto - Ejemplo)
+### Datos de Salida (Documentoo 1 Propuesto - Ejemplo)
 ```markdown
 # 📋 10-CONTEXT (Generado automáticamente)
 
@@ -304,14 +304,14 @@ Un asistente de IA offline para arquitectura de software basado en RAG local...
 
 ### Puntos de Riesgo
 - RAG timeout (necesita fallback a template vacío)
-- Usuario quiere saltar documentos (rechazamos: secuencial obligatorio)
+- Usuario quiere saltar documentoos (rechazamos: secuencial obligatorio)
 - Consumo de memoria si guardar chat history completo
 
 ### Puntos de Estimación
 **21 pts (XXL)**
 - Frontend chat UI: 7 pts
 - Backend RAG orchestration: 10 pts
-- Testing (E2E workflow): 4 pts
+- Pruebaing (E2E workflow): 4 pts
 
 ### Rama
 `feature/ui-chat-sequential-docs`
@@ -352,7 +352,7 @@ Agregar **mecanismos de validación y manejo de errores** en flujo secuencial (e
 - ✅ Si RAG falla finalmente → Mostrar template vacío + "⚠️ RAG no respondió"
 - ✅ Si disco lleno → Error claro + sugerencia "libera 500MB"
 - ✅ Si permisos denegados → Error + "verifica permisos en /context"
-- ✅ Tests: Simular fallos + verificar retry logic: > 90% cobertura
+- ✅ Pruebas: Simular fallos + verificar retry logic: > 90% cobertura
 
 ### Puntos de Riesgo
 - Retry loop infinito (necesita max attempts)
@@ -362,7 +362,7 @@ Agregar **mecanismos de validación y manejo de errores** en flujo secuencial (e
 **5 pts (S)**
 - Exception handling: 2 pts
 - Retry logic: 2 pts
-- Testing: 1 pt
+- Pruebaing: 1 pt
 
 ### Rama
 `feature/backend-error-handling`
@@ -375,11 +375,11 @@ Agregar **mecanismos de validación y manejo de errores** en flujo secuencial (e
 ## 📌 HU-3.5: Streaming & Performance Optimization
 
 ### Descripción
-Optimizar **latencia del flujo RAG** (target: <2s por documento) usando streaming de respuestas LLM.
+Optimizar **latencia del flujo RAG** (target: <2s por documentoo) usando streaming de respuestas LLM.
 
 ### Historia de Usuario
 > **Como** usuario
-> **Quiero** ver el documento siendo generado en tiempo real (no esperar)
+> **Quiero** ver el documentoo siendo generado en tiempo real (no esperar)
 > **Para** saber que el sistema está trabajando y sentir responsiveness
 
 ### Responsabilidades
@@ -400,9 +400,9 @@ Optimizar **latencia del flujo RAG** (target: <2s por documento) usando streamin
 ### Criterios de Aceptación
 - ✅ Latencia UI: <500ms desde "Validar Doc N" hasta ver "Generando Doc N+1..."
 - ✅ Streaming visible: usuario ve texto aparecer línea-por-línea
-- ✅ Benchmark: Generar 25 documentos en <5 minutos
+- ✅ Benchmark: Generar 25 documentoos en <5 minutos
 - ✅ Memory usage: <500MB (no crecer indefinidamente)
-- ✅ Tests: Performance benchmarks + memory profiling
+- ✅ Pruebas: Performance benchmarks + memory profiling
 
 ### Puntos de Riesgo
 - SSE drops conexión (necesita reconnect logic)
@@ -458,8 +458,8 @@ HU-3.3 (Chat Sequential) ────────→ HU-3.4 (Error Handling)
 
 ## ✅ Próximos Pasos
 
-1. ✅ Crear rama: `feature/ui-project-shell` (base: `develop`)
-2. ✅ Mover documentos análisis a la rama
+1. ✅ Crear rama: `feature/ui-proyecto-shell` (base: `develop`)
+2. ✅ Mover documentoos análisis a la rama
 3. ✅ Crear PR draft con toda esta especificación
 4. ✅ Asignar equipo: Frontend (3.1, 3.3, 3.5) + Backend (3.2, 3.4)
 5. ✅ Dar start a HU-3.1 (foundation para resto)

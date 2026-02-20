@@ -1,4 +1,4 @@
-# 🎉 HU-3.3 Widget Integration - COMPLETADO ✅
+# 🎉 HU-3.3 Widget Integración - COMPLETADO ✅
 
 ## 📊 Resumen de Cambios
 
@@ -65,7 +65,7 @@ ProjectShellScreen
 
 ### Botón de Chat Agregado
 
-**Ubicación:** `src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart`
 
 ```dart
 IconButton(
@@ -88,9 +88,9 @@ IconButton(
 | Archivo | Cambios | Descripción |
 |---------|---------|-------------|
 | `app_router.dart` | +4 | Importó ChatScreen real |
-| `project_shell_screen.dart` | +19 | Agregó botón de navegación |
+| `proyecto_shell_screen.dart` | +19 | Agregó botón de navegación |
 
-### Documentación
+### Documentoación
 | Archivo | Líneas |
 |---------|--------|
 | `HU-3.3_WIDGET_INTEGRATION_REPORT.md` | 328 |
@@ -104,11 +104,11 @@ IconButton(
 - [x] StreamingIndicatorWidget conectado
 - [x] ProposalCardWidget listo para futura integración
 - [x] Router actualizado con nueva ruta `/chat`
-- [x] Botón de navegación agregado a ProjectShell
+- [x] Botón de navegación agregado a ProyectoShell
 - [x] Flutter analyze: ✓ Sin errores
 - [x] Pre-commit hooks: ✓ Pasando
 - [x] Git commits: ✓ 2 nuevos commits
-- [x] Documentación: ✓ Completa
+- [x] Documentoación: ✓ Completa
 
 ---
 
@@ -146,11 +146,11 @@ flutter pub upgrade
 | **Nuevos Commits** | 2 |
 | **Errores de Compilación** | 0 ✅ |
 | **Warnings** | 0 ✅ |
-| **Tests Unitarios** | 289/289 passing ✅ |
+| **Pruebas Unitarios** | 289/289 passing ✅ |
 
 ---
 
-## 🎯 Resultado Final
+## 🎯 Resultadoado Final
 
 ### ✨ Antes
 ```
@@ -189,11 +189,11 @@ e5a236b - docs(HU-3.3): Add widget integration verification report
 
 ## 🔮 Próximos Pasos (Opcional)
 
-1. **ProposalCardWidget Integration**
+1. **ProposalCardWidget Integración**
    - Conectar propuestas en ChatScreen
    - Implementar botones de acción
 
-2. **Backend Integration**
+2. **Backend Integración**
    - Conectar con Python RAG service
    - Streaming real del backend
 
@@ -205,6 +205,6 @@ e5a236b - docs(HU-3.3): Add widget integration verification report
 ---
 
 **Estado Final:** ✅ **100% COMPLETADO**
-**Lista para:** Flutter run & visual testing
+**Lista para:** Flutter ejecutar & visual pruebaing
 
 ¡Los widgets están listos para ser vistos en la app! 🎉

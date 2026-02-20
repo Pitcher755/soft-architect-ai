@@ -1,8 +1,8 @@
-## 📋 Resumen: Configuración de Dependencias Flutter
+## 📋 Resumen: Configuration de Dependencias Flutter
 
 **Fecha:** 3 de febrero de 2026
 **Commit:** `8e4e274`
-**Estado:** ✅ COMPLETADO
+**Status:** ✅ COMPLETADO
 
 ---
 
@@ -32,9 +32,9 @@ flutter pub add --dev sqflite_common_ffi
 └─────────────────────┘
 ```
 
-### 2️⃣ **Archivos Generados/Modificados**
+### 2️⃣ **Files Generados/Modificados**
 
-| Archivo | Tipo | Descripción |
+| File | Tipo | Description |
 |---------|------|-------------|
 | `lib/core/database_initializer.dart` | NEW | Platform-aware DB setup |
 | `lib/main.dart` | UPDATED | Initialize sqflite before runApp() |
@@ -67,8 +67,8 @@ flutter run -d linux
 
 #### 📁 **file_picker**
 
-- Diálogo nativo para seleccionar carpetas
-- HU-3.1 lo usa para "New Project" botón
+- Diálogo nativo para seleccionar folders
+- HU-3.1 lo usa para "New Project" button
 - Válido para Desktop + Web
 
 #### 🔤 **path**
@@ -119,16 +119,16 @@ flutter run -d linux
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
-### Fase 1: Verificación (5 minutos)
+### Phase 1: Verification (5 minutos)
 ```bash
 cd src/client
 flutter pub get  # Descargar todas las dependencias
 flutter analyze  # Ver que no hay errores
 ```
 
-### Fase 2: Ejecución Desktop (10 minutos)
+### Phase 2: Ejecución Desktop (10 minutos)
 ```bash
 # Linux
 flutter run -d linux
@@ -140,7 +140,7 @@ flutter run -d windows
 flutter run -d macos
 ```
 
-### Fase 3: Test Database (5 minutos)
+### Phase 3: Test Database (5 minutos)
 ```dart
 // En app (después de primera ejecución):
 // ✅ user_data.db creado en ~/.local/share/softarchitect_ai/
@@ -158,7 +158,7 @@ flutter run -d macos
 - ✅ Soporta todas las operaciones CRUD
 - ✅ Path handling multiplataforma
 
-**Advertencias de estilo:** 18 (no son errores, solo linting)
+**Advertencias de style:** 18 (no son errores, solo linting)
 
 ```
 ✓ No errors found
@@ -173,7 +173,7 @@ flutter run -d macos
 - ✅ No hardcoding de rutas
 - ✅ SQLite acceso local (no en red)
 - ✅ Validación de paths (path traversal prevention)
-- ✅ Backend NO accede a archivos locales
+- ✅ Backend NO accede a files locales
 - ✅ Datos del usuario siempre en máquina del usuario
 
 ---
@@ -184,14 +184,14 @@ flutter run -d macos
 
 | Cuando necesites... | Usa... |
 |-------------------|----|
-| Crear/leer proyectos | `DatabaseHelper` (lib/services/database_helper.dart) |
-| Seleccionar carpeta | `file_picker` package |
-| Leer archivos | `dart:io` (futuro: FileSystemService) |
+| Create/leer projects | `DatabaseHelper` (lib/services/database_helper.dart) |
+| Seleccionar folder | `file_picker` package |
+| Leer files | `dart:io` (futuro: FileSystemService) |
 | Backend communication | `dio` package (HTTP/SSE) |
 | Renderizar Markdown | `flutter_markdown` widget |
 
 ---
 
-**Estado:** 🟢 Ready for Phase 1 (HU-3.1 Implementation)
+**Status:** 🟢 Ready for Phase 1 (HU-3.1 Implementation)
 
-Espera tu siguiente indicación. 🎯
+Espera tu next indicación. 🎯

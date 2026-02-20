@@ -8,9 +8,9 @@
 
 ## 📋 Overview
 
-Se implementó un rediseño completo de la interfaz del **Project Shell** siguiendo el estilo y paleta de colores de **GitHub Dark Theme** con optimizaciones para desktop.
+Se implementó un rediseño completo de la interfaz del **Project Shell** siguiendo el style y paleta de colores de **GitHub Dark Theme** con optimizaciones para desktop.
 
-### Archivos Modificados
+### Files Modificados
 
 ```
 src/client/lib/features/project_shell/presentation/
@@ -29,7 +29,7 @@ src/client/lib/features/project_shell/presentation/
 
 **Cambio:** Migración de `ConsumerWidget` → `ConsumerStatefulWidget`
 
-**Razón:** Requerido para manejar estado local (selección de archivo y contenido cargado).
+**Razón:** Requerido para manejar status local (selección de file y contenido cargado).
 
 #### Layout Structure
 ```

@@ -1,6 +1,6 @@
 # 📦 Artefactos HU-3.1: Project Shell
 
-> **Archivos a generar durante el desarrollo**
+> **Files a generar durante el desarrollo**
 > **Última Actualización:** 03/02/2026
 
 ---
@@ -98,7 +98,7 @@
 
 ---
 
-## 🎨 Componentes UI a Crear
+## 🎨 Componentes UI a Create
 
 ### ProjectShellScreen (Main Container)
 - **Estructura:** Column con 3 paneles
@@ -118,8 +118,8 @@
 - **Responsive:** Mantiene proporción con window resize
 
 ### ProjectCreationDialog
-- **Validación:** Nombres únicos, caracteres válidos
-- **Campos:** Nombre proyecto, descripción, ubicación (si aplica)
+- **Validación:** Names únicos, caracteres válidos
+- **Campos:** Name project, description, ubicación (si aplica)
 - **Acciones:** Create, Cancel
 
 ---
@@ -240,5 +240,5 @@ clean_architecture/
 
 **ARTIFACTS: HU-3.1**
 **Total Líneas Esperadas:** ~2,080 líneas de código
-**Total Archivos:** 11 archivos
+**Total Files:** 11 files
 **Actualizado:** 03/02/2026

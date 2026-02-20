@@ -68,12 +68,12 @@ class _ProgressIndicatorWidgetState
   Widget build(BuildContext context) {
     final enableAnimations = ref.watch(enableAnimationsProvider);
 
-    // Si no hay projectPath, mostrar estado inicial
+    // If no projectPath, show initial state
     if (widget.projectPath == null || widget.projectPath!.isEmpty) {
       return _buildEmptyState();
     }
 
-    // Observar el provider de estado del proyecto
+    // Watch the project status provider
     final statusAsync = ref.watch(projectStatusProvider(widget.projectPath!));
 
     return statusAsync.when(
@@ -110,7 +110,7 @@ class _ProgressIndicatorWidgetState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Generando: Raíz',
+              'Generating: Root',
               style: TextStyle(
                 color: AppColors.textMain,
                 fontSize: 12,
@@ -204,7 +204,7 @@ class _ProgressIndicatorWidgetState
                       ),
                     ),
                   Text(
-                    'Generando: $currentPhase',
+                    'Generating: $currentPhase',
                     style: const TextStyle(
                       color: AppColors.textMain,
                       fontSize: 12,
@@ -226,7 +226,7 @@ class _ProgressIndicatorWidgetState
 
           const SizedBox(height: 8),
 
-          // Barra Segmentada
+          // Segmented Progress Bar
           SizedBox(
             height: 8,
             child: Row(
@@ -236,7 +236,7 @@ class _ProgressIndicatorWidgetState
 
           const SizedBox(height: 4),
 
-          // Subtítulo
+          // Document Count Subtitle
           Align(
             alignment: Alignment.centerRight,
             child: Text(

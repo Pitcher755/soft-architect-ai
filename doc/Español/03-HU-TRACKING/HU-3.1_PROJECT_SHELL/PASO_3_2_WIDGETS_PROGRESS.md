@@ -1,7 +1,7 @@
 // Paso 3.2: Crear Widgets Principales
 // PROGRESO: ✅ COMPLETADO
 // Fecha: 03/02/2026
-// Status: Widgets creados, compilación exitosa
+// Estado: Widgets creados, compilación exitosa
 
 ## 📋 Resumen Paso 3.2
 
@@ -12,10 +12,10 @@ Crear los widgets principales de la presentación siguiendo:
 - Riverpod integration ready
 - Logging con developer.log()
 
-### ✅ Completed Deliverables
+### ✅ Completado Deliverables
 
 #### 1. DirectoryTreeWidget ✅
-**Archivo:** `lib/features/project_shell/presentation/widgets/directory_tree_widget.dart`
+**Archivo:** `lib/features/proyecto_shell/presentation/widgets/directory_tree_widget.dart`
 **Líneas:** 176
 **Funcionalidades:**
 - Árbol expandible de directorios (estilo VS Code)
@@ -27,9 +27,9 @@ Crear los widgets principales de la presentación siguiendo:
 - Diseño responsive con hover effects
 
 **Métodos:**
-- `_buildTreeNode(FileNode)` - Construye recursivamente nodos
-- `_buildNodeTitle(FileNode, bool)` - Estiliza títulos de nodos
-- `_buildFileIcon(String)` - Retorna ícono según extensión
+- `_buildTreeNode(ArchivoNode)` - Construye recursivamente nodos
+- `_buildNodeTitle(ArchivoNode, bool)` - Estiliza títulos de nodos
+- `_buildArchivoIcon(String)` - Retorna ícono según extensión
 
 **Paleta de Colores:**
 - Primary: #0d0df2 (Índigo)
@@ -38,7 +38,7 @@ Crear los widgets principales de la presentación siguiendo:
 - Text Secondary: #8b949e (Gris texto)
 
 #### 2. MarkdownPreviewWidget ✅
-**Archivo:** `lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart`
+**Archivo:** `lib/features/proyecto_shell/presentation/widgets/markdown_preview_widget.dart`
 **Líneas:** 154
 **Funcionalidades:**
 - Visualización de contenido Markdown
@@ -60,8 +60,8 @@ Crear los widgets principales de la presentación siguiendo:
 - Headers y listas formateadas
 - Code blocks con styling específico
 
-#### 3. ProjectShellScreen ✅
-**Archivo:** `lib/features/project_shell/presentation/screens/project_shell_screen.dart`
+#### 3. ProyectoShellScreen ✅
+**Archivo:** `lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart`
 **Líneas:** 325
 **Funcionalidades:**
 - Pantalla principal tipo IDE
@@ -70,7 +70,7 @@ Crear los widgets principales de la presentación siguiendo:
 - Mock tree structure (reemplazable con datos reales)
 - Selección de archivos con carga de contenido
 - AppBar con información del proyecto
-- Status cuando no hay proyecto
+- Estado cuando no hay proyecto
 
 **Estructura:**
 ```
@@ -86,8 +86,8 @@ Crear los widgets principales de la presentación siguiendo:
 ```
 
 **Estados:**
-- No project selected (empty view)
-- Project selected (full IDE view)
+- No proyecto selected (empty view)
+- Proyecto selected (full IDE view)
 - Loading state (TODO: conectar con Riverpod)
 
 #### 4. AppColors - Configuración Centralizada ✅
@@ -135,21 +135,21 @@ Error:          #f85149 (Rojo)
 
 **flutter analyze:**
 - ✅ 0 errores
-- ℹ️ ~40 advertencias (style/lint, no críticas)
+- ℹ️ ~40 advertencias (estilo/lint, no críticas)
 - ⏱️ Tiempo: 2s
 
 **Advertencias comunes (esperadas):**
-- `lines_longer_than_80_chars` (style)
-- `prefer_relative_imports` (style)
-- `prefer_expression_function_bodies` (style)
-- Todas son style hints, no bloqueadoras
+- `lines_longer_than_80_chars` (estilo)
+- `prefer_relative_imports` (estilo)
+- `prefer_expression_function_bodies` (estilo)
+- Todas son estilo hints, no bloqueadoras
 
-### 🧪 Testing Status
+### 🧪 Pruebaing Estado
 
-**Requisito de tests:** Pendiente para Paso 3.3
-**Mock data:** Implementado en ProjectShellScreen._buildMockTree()
+**Requisito de pruebas:** Pendiente para Paso 3.3
+**Mock data:** Implementado en ProyectoShellScreen._buildMockTree()
 **TODO items generados:**
-- [ ] Load file content asynchronously
+- [ ] Load archivo content asynchronously
 - [ ] Implement link handling in markdown
 - [ ] Connect to real database
 - [ ] Add search functionality
@@ -158,18 +158,18 @@ Error:          #f85149 (Rojo)
 ### 🔗 Integración con Fase Anterior
 
 **Paso 3.1 (Completado):**
-- ProjectShellNotifier (state management) ✅
-- project_providers (dependency injection) ✅
+- ProyectoShellNotifier (state management) ✅
+- proyecto_providers (dependency injection) ✅
 
 **Paso 3.2 (Ahora):**
 - DirectoryTreeWidget ✅
 - MarkdownPreviewWidget ✅
-- ProjectShellScreen ✅
+- ProyectoShellScreen ✅
 - AppColors ✅
 
 **Paso 3.3 (Pendiente):**
-- Widget tests para los 3 widgets
-- Integration tests
+- Widget pruebas para los 3 widgets
+- Integración pruebas
 
 ### 📝 Cambios de Código Principales
 
@@ -184,9 +184,9 @@ Error:          #f85149 (Rojo)
    - Logging centralizado con developer.log()
 
 3. **State Management**
-   - ProjectShellScreen es ConsumerStatefulWidget
-   - Acceso a ref.watch(projectShellProvider)
-   - Local state para selectedNode y fileContent
+   - ProyectoShellScreen es ConsumerStatefulWidget
+   - Acceso a ref.watch(proyectoShellProvider)
+   - Local state para selectedNode y archivoContent
 
 ### 📊 Métricas
 
@@ -198,20 +198,20 @@ Error:          #f85149 (Rojo)
 | Métodos helper | 6 |
 | log() statements | 12 |
 | Errores flutter analyze | 0 |
-| Warnings/Info | ~40 (style) |
+| Warnings/Info | ~40 (estilo) |
 | Compilación exitosa | ✅ |
 
 ### 🚀 Próximos Pasos (Paso 3.3)
 
-1. **Widget Testing**
-   - Tests para DirectoryTreeWidget
-   - Tests para MarkdownPreviewWidget
-   - Tests para ProjectShellScreen
+1. **Widget Pruebaing**
+   - Pruebas para DirectoryTreeWidget
+   - Pruebas para MarkdownPreviewWidget
+   - Pruebas para ProyectoShellScreen
    - Mock data fixtures
 
-2. **Integration**
-   - Conectar projectRepositoryProvider con database
-   - Cargar tree real desde FileSystem
+2. **Integración**
+   - Conectar proyectoRepositoryProvider con database
+   - Cargar tree real desde ArchivoSystem
    - Cargar contenido de archivos reales
 
 3. **Refinamiento UI**
@@ -223,8 +223,8 @@ Error:          #f85149 (Rojo)
 ---
 
 **Estado General Fase 3:**
-- Paso 3.1: ✅ 100% (Riverpod Infrastructure)
+- Paso 3.1: ✅ 100% (Riverpod Infraestructura)
 - Paso 3.2: ✅ 100% (UI Widgets) **← AQUÍ**
-- Paso 3.3: 🔄 Próximo (Widget Tests)
+- Paso 3.3: 🔄 Próximo (Widget Pruebas)
 
 **Proyecyo Overall:** ~53% (Fase 2: 100%, Paso 3.1-3.2: 66%)

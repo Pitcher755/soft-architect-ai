@@ -1,7 +1,7 @@
-# 🧪 Test Suite Status Report: Integration & E2E Assessment
+# 🧪 Prueba Suite Estado Report: Integración & E2E Assessment
 
 > **Fecha:** 2026-01-31
-> **Estado:** ✅ **COMPLETO** (Unit Tests) + ⚠️ **INCOMPLETO** (Integration/E2E)
+> **Estado:** ✅ **COMPLETO** (Unit Pruebas) + ⚠️ **INCOMPLETO** (Integración/E2E)
 > **Autor:** ArchitectZero Agent
 > **Versión:** 1.0.0
 
@@ -10,9 +10,9 @@
 ## 📖 Tabla de Contenidos
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
-2. [Estado Actual de Tests](#estado-actual-de-tests)
-3. [Unit Tests: Detalle Completo](#unit-tests-detalle-completo)
-4. [Integration/E2E Tests: Estado y Problemas](#integratione2e-tests-estado-y-problemas)
+2. [Estado Actual de Pruebas](#estado-actual-de-pruebas)
+3. [Unit Pruebas: Detalle Completo](#unit-pruebas-detalle-completo)
+4. [Integración/E2E Pruebas: Estado y Problemas](#integratione2e-pruebas-estado-y-problemas)
 5. [Gaps Identificados](#gaps-identificados)
 6. [Plan de Acción](#plan-de-acción)
 7. [Instrucciones de Ejecución](#instrucciones-de-ejecución)
@@ -38,20 +38,20 @@ Coverage Total:                94.4% ✅ EXCEEDS 80% threshold
 
 ### Estado de Capas
 
-| Capa | Tests | Status | Coverage | Notas |
+| Capa | Pruebas | Estado | Coverage | Notas |
 |------|-------|--------|----------|-------|
-| **Presentation (FastAPI)** | 63 | ✅ PASSING | 100% | Completo: lifespan, CORS, exceptions |
+| **Presentación (FastAPI)** | 63 | ✅ PASSING | 100% | Completo: lifespan, CORS, exceptions |
 | **Business Logic (Services)** | 33 | ✅ PASSING | 100% | VectorStoreService cubierto |
 | **Data Layer (DB/ChromaDB)** | 16 | ✅ PASSING | 100% | Mocked, no Docker en CI |
-| **Integration (E2E API)** | 0 | ❌ NO EXISTE | 0% | **CRÍTICO GAP** |
-| **Integration (E2E RAG)** | 5 | ⚠️ SKIPPED | - | Requiere ChromaDB running |
+| **Integración (E2E API)** | 0 | ❌ NO EXISTE | 0% | **CRÍTICO GAP** |
+| **Integración (E2E RAG)** | 5 | ⚠️ SKIPPED | - | Requiere ChromaDB ejecutarning |
 | **Browser/UI E2E** | 0 | ❌ NO EXISTE | 0% | Flutter no tiene E2E yet |
 
 ---
 
-## 📊 Estado Actual de Tests
+## 📊 Estado Actual de Pruebas
 
-### ✅ **Unit Tests: COMPLETO Y EXITOSO**
+### ✅ **Unit Pruebas: COMPLETO Y EXITOSO**
 
 ```
 233 PASSED in 7.93s
@@ -64,14 +64,14 @@ Ejecución exitosa:
 ```
 
 **Desglose por módulo:**
-- `app/main.py` - 35 tests (91% coverage)
-- `app/core/security.py` - 32 tests (100% coverage)
-- `app/core/config.py` - 8 tests (100% coverage)
-- `app/api/v1/` - 22 tests (95% avg coverage)
-- `services/rag/vector_store.py` - 33 tests (100% coverage)
-- Otros módulos - 103 tests (100% coverage)
+- `app/main.py` - 35 pruebas (91% coverage)
+- `app/core/security.py` - 32 pruebas (100% coverage)
+- `app/core/config.py` - 8 pruebas (100% coverage)
+- `app/api/v1/` - 22 pruebas (95% avg coverage)
+- `services/rag/vector_store.py` - 33 pruebas (100% coverage)
+- Otros módulos - 103 pruebas (100% coverage)
 
-### ⚠️ **Integration/E2E Tests: REPARADOS PERO NO EJECUTADOS**
+### ⚠️ **Integración/E2E Pruebas: REPARADOS PERO NO EJECUTADOS**
 
 ```
 5 TESTS COLLECTED pero SKIPPED
@@ -112,7 +112,7 @@ Archivo: tests/integration/services/rag/test_vector_store_e2e.py
 
 ---
 
-## 🔍 Unit Tests: Detalle Completo
+## 🔍 Unit Pruebas: Detalle Completo
 
 ### Archivos y Coverage
 
@@ -136,7 +136,7 @@ tests/unit/services/rag/
 └─ test_vector_store_advanced.py          19 tests ✅ | Advanced mocking
 ```
 
-### Coverage Breakdown
+### Coverage Desglose
 
 ```python
 NAME                      STMTS   MISS   COVER    MISSING
@@ -159,7 +159,7 @@ TOTAL                       125      7     94%    🎯 TARGET: 80%+ ✅
 
 ### Cobertura por Componente
 
-| Componente | Tests | Coverage | Notas |
+| Componente | Pruebas | Coverage | Notas |
 |------------|-------|----------|-------|
 | Lifespan Handlers | 12 | 100% | startup_event, shutdown_event, lifespan context |
 | Exception Handlers | 8 | 100% | ValueError, Exception, HTTPException |
@@ -170,11 +170,11 @@ TOTAL                       125      7     94%    🎯 TARGET: 80%+ ✅
 | Config Management | 8 | 100% | Settings validation, env vars |
 | Database Initialization | 8 | 100% | Async context managers |
 | Dependency Injection | 6 | 100% | Async dependencies |
-| RAG Vector Store | 33 | 100% | Document ingestion, querying, mocking |
+| RAG Vector Store | 33 | 100% | Documento ingestion, querying, mocking |
 
 ---
 
-## 🐳 Integration/E2E Tests: Estado y Problemas
+## 🐳 Integración/E2E Pruebas: Estado y Problemas
 
 ### Problemas Corregidos
 
@@ -191,8 +191,8 @@ from core.exceptions import VectorStoreError
 ```
 
 **Archivos corregidos:**
-- ✅ `tests/integration/services/rag/test_vector_store_e2e.py` (línea 13-15)
-- ✅ `tests/unit/services/rag/test_vector_store.py` (línea 19)
+- ✅ `pruebas/integration/services/rag/prueba_vector_store_e2e.py` (línea 13-15)
+- ✅ `pruebas/unit/services/rag/prueba_vector_store.py` (línea 19)
 
 #### 2️⃣ **Module Resolution (FIXED)**
 
@@ -204,9 +204,9 @@ ERROR: ModuleNotFoundError: No module named 'core.errors'
 collected 238 tests in 1.45s  ✅
 ```
 
-### E2E Tests Disponibles
+### E2E Pruebas Disponibles
 
-**Archivo:** `tests/integration/services/rag/test_vector_store_e2e.py`
+**Archivo:** `pruebas/integration/services/rag/prueba_vector_store_e2e.py`
 
 ```python
 # ✅ Todos estos tests están LISTOS para ejecutar
@@ -246,30 +246,30 @@ services:
 
 | Gap | Impacto | Solución |
 |-----|---------|----------|
-| **NO hay E2E tests para API Endpoints** | No valida GET /api/v1/health, POST /api/v1/chat en ambiente real | Crear API E2E test suite |
-| **NO hay Browser E2E Tests** | Flutter UI no testeada automáticamente | Setup: Selenium/Playwright/Appium |
-| **NO hay Load Testing** | No valida performance bajo stress | Crear suite con Locust/Apache JMeter |
+| **NO hay E2E pruebas para API Endpoints** | No valida GET /api/v1/health, POST /api/v1/chat en ambiente real | Crear API E2E prueba suite |
+| **NO hay Browser E2E Pruebas** | Flutter UI no pruebaeada automáticamente | Setup: Selenium/Playwright/Appium |
+| **NO hay Load Pruebaing** | No valida performance bajo stress | Crear suite con Locust/Apache JMeter |
 
 ### **IMPORTANTE** 🟡
 
 | Gap | Impacto | Solución |
 |-----|---------|----------|
-| **E2E Tests requieren manual trigger** | No corre en CI (Docker overhead) | Separar CI (unit-only) vs Local (E2E) |
-| **NO API Contract Tests** | No valida compatibilidad cliente-servidor | OpenAPI schema validation |
-| **NO Database Persistence Tests** | No valida ChromaDB reboot recovery | E2E teardown/restart scenarios |
+| **E2E Pruebas requieren manual trigger** | No corre en CI (Docker overhead) | Separar CI (unit-only) vs Local (E2E) |
+| **NO API Contract Pruebas** | No valida compatibilidad cliente-servidor | OpenAPI schema validation |
+| **NO Database Persistence Pruebas** | No valida ChromaDB reboot recovery | E2E teardown/restart scenarios |
 
 ### **MENOR** 🟢
 
 | Gap | Impacto | Solución |
 |-----|---------|----------|
-| **NO Security Penetration Tests** | OWASP coverage parcial | Migratory: add OWASP Top 10 tests |
-| **NO Performance Regression Tests** | No tracking de degradación | Baseline: pytest-benchmark setup |
+| **NO Security Penetration Pruebas** | OWASP coverage parcial | Migratory: add OWASP Top 10 pruebas |
+| **NO Performance Regression Pruebas** | No tracking de degradación | Baseline: pyprueba-benchmark setup |
 
 ---
 
 ## 🎯 Plan de Acción
 
-### **Fase 1: Validar E2E Tests Existentes** (Inmediato)
+### **Fase 1: Validar E2E Pruebas Existentes** (Inmediato)
 
 ```bash
 # 1. Iniciar Docker Compose
@@ -286,11 +286,11 @@ pytest tests/integration/services/rag/ -v
 ```
 
 **Entrada:** Docker + CHROMA_HOST
-**Salida:** 5/5 E2E tests PASSED
+**Salida:** 5/5 E2E pruebas PASSED
 
 ---
 
-### **Fase 2: Crear API Endpoint E2E Tests** (Sprint Siguiente)
+### **Fase 2: Crear API Endpoint E2E Pruebas** (Sprint Siguiente)
 
 ```
 New file: tests/integration/api/test_api_e2e.py
@@ -329,7 +329,7 @@ Revisit browser E2E after MVP v1.0 release
 
 ## 📝 Instrucciones de Ejecución
 
-### ✅ **Ejecutar Unit Tests (sin Docker)**
+### ✅ **Ejecutar Unit Pruebas (sin Docker)**
 
 ```bash
 cd src/server
@@ -355,7 +355,7 @@ Coverage: 94.4% ✅
 
 ---
 
-### ⚠️ **Ejecutar Integration/E2E Tests (requiere Docker)**
+### ⚠️ **Ejecutar Integración/E2E Pruebas (requiere Docker)**
 
 ```bash
 # Step 1: Start Docker services
@@ -445,28 +445,28 @@ open htmlcov/index.html
 ## 🚀 Recomendaciones Finales
 
 ### **SHORT TERM (Esta semana)**
-1. ✅ Validar que E2E tests pasen con ChromaDB running
-2. ✅ Documentar Docker setup requirements
+1. ✅ Validar que E2E pruebas pasen con ChromaDB ejecutarning
+2. ✅ Documentoar Docker setup requirements
 3. ✅ Actualizar CI/CD para excluir E2E (Docker overhead)
 
 ### **MEDIUM TERM (Sprint siguiente)**
-1. 🟡 Crear API Endpoint E2E test suite (5 tests → 20+ tests)
-2. 🟡 Implementar API Contract testing (OpenAPI validation)
-3. 🟡 Setup performance baseline tests
+1. 🟡 Crear API Endpoint E2E prueba suite (5 pruebas → 20+ pruebas)
+2. 🟡 Implementar API Contract pruebaing (OpenAPI validation)
+3. 🟡 Setup performance baseline pruebas
 
 ### **LONG TERM (Q2 2025)**
-1. 🔵 Evaluar Browser E2E testing need (Flutter)
-2. 🔵 Load testing infrastructure (Locust/JMeter)
-3. 🔵 Security penetration testing (OWASP Top 10)
+1. 🔵 Evaluar Browser E2E pruebaing need (Flutter)
+2. 🔵 Load pruebaing infrastructure (Locust/JMeter)
+3. 🔵 Security penetration pruebaing (OWASP Top 10)
 
 ---
 
 ## 📎 Archivos Relacionados
 
-- 📄 [context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Estrategia de testing
+- 📄 [context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md](../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Estrategia de pruebaing
 - 📄 [infrastructure/docker-compose.yml](../../infrastructure/docker-compose.yml) - Docker setup
-- 📄 [tests/integration/services/rag/test_vector_store_e2e.py](../../src/server/tests/integration/services/rag/test_vector_store_e2e.py) - E2E tests
-- 📄 [pyproject.toml](../../src/server/pyproject.toml) - pytest configuration
+- 📄 [pruebas/integration/services/rag/prueba_vector_store_e2e.py](../../src/server/pruebas/integration/services/rag/prueba_vector_store_e2e.py) - E2E pruebas
+- 📄 [pyproyecto.toml](../../src/server/pyproyecto.toml) - pyprueba configuración
 
 ---
 

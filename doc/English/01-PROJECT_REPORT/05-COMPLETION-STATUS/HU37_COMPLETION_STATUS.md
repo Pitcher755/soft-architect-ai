@@ -2,23 +2,23 @@
 **Versión:** 2.0.0
 **Fecha Creación:** 2026-02-11
 **Última Actualización:** 2026-02-11
-**Estado General:** 🚧 EN PROGRESO (35% completado)
+**Status General:** 🚧 EN PROGRESO (35% completado)
 
 ---
 
 ## 📋 Resumen Ejecutivo
 
-| # | Nombre | RED | GREEN | REFACTOR | TESTS | ESTADO |
+| # | Name | RED | GREEN | REFACTOR | TESTS | STATUS |
 |---|--------|-----|-------|----------|-------|--------|
 | 1 | LastProjectLocalDataSource | ✅ | ✅ | ✅ | ⏳ | 🔄 Verificando
-| 2 | ProfileSection Provider | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
-| 3 | AppearanceSection + Language | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
-| 4 | AccessibilitySection | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
-| 5 | PerformanceSection | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
-| 6 | GlobalSearchDialog Nav | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
-| 7 | ProjectsSidebar LastProject | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
-| 8-10 | Fix MarkdownPreview | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
-| - | Quality & Validation | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pendiente
+| 2 | ProfileSection Provider | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
+| 3 | AppearanceSection + Language | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
+| 4 | AccessibilitySection | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
+| 5 | PerformanceSection | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
+| 6 | GlobalSearchDialog Nav | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
+| 7 | ProjectsSidebar LastProject | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
+| 8-10 | Fix MarkdownPreview | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
+| - | Quality & Validation | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ Pending
 
 ---
 

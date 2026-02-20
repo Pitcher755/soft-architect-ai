@@ -1,7 +1,7 @@
-# 🟢 FASE 5: Integration The Gate (TDD GREEN)
+# 🟢 PHASE 5: Integration The Gate (TDD GREEN)
 
-> **Fecha:** 6 de febrero de 2026
-> **Estado:** 🟢 GREEN - Implementation Complete (Mocks Ready)
+> **Date:** 6 de febrero de 2026
+> **Status:** 🟢 GREEN - Implementation Complete (Mocks Ready)
 > **Objetivo:** Conectar Frontend → Backend → FileSystem (HU-3.2)
 
 ---
@@ -9,11 +9,11 @@
 ## 📋 Tabla de Contenidos
 
 - [1. Resumen Ejecutivo](#1-resumen-ejecutivo)
-- [2. Implementación Completada](#2-implementación-completada)
+- [2. Implementation Completada](#2-implementation-completada)
 - [3. Arquitectura Integrada](#3-arquitectura-integrada)
 - [4. Mocks y Testing](#4-mocks-y-testing)
 - [5. Checklist de Validación](#5-checklist-de-validación)
-- [6. Próximos Pasos](#6-próximos-pasos)
+- [6. Next Steps](#6-próximos-pasos)
 
 ---
 
@@ -46,7 +46,7 @@ Commits: 2
 
 ---
 
-## 2. Implementación Completada
+## 2. Implementation Completada
 
 ### 🏗️ A. FileSystemService
 
@@ -82,7 +82,7 @@ abstract class FileSystemService {
 }
 ```
 
-**Implementación (FileSystemServiceImpl):**
+**Implementation (FileSystemServiceImpl):**
 - ✅ Full CRUD operations on filesystem
 - ✅ Directory creation with recursion
 - ✅ Error handling with FileSystemException
@@ -300,7 +300,7 @@ class TestMockHelper {
 
 ## 5. Checklist de Validación
 
-### ✅ Implementación
+### ✅ Implementation
 
 - [x] FileSystemService (abstract + impl)
 - [x] ChatNotifier con validación y guardar
@@ -332,11 +332,11 @@ class TestMockHelper {
   - [x] Error message display
   - [x] Retry button availability
 
-### 🔲 Próxima Fase (REFACTOR/Backend)
+### 🔲 Próxima Phase (REFACTOR/Backend)
 
 - [ ] Backend `/api/v1/chat/stream` endpoint (Python FastAPI)
 - [ ] HTTP client integration (dio or http package)
-- [ ] Navigation screen with "Nuevo Proyecto" button
+- [ ] Navigation screen with "New Project" button
 - [ ] Chat input widget
 - [ ] Toast/Snackbar component
 - [ ] Progress counter widget
@@ -344,9 +344,9 @@ class TestMockHelper {
 
 ---
 
-## 6. Próximos Pasos
+## 6. Next Steps
 
-### 🚀 FASE 6: REFACTOR & Backend Integration
+### 🚀 PHASE 6: REFACTOR & Backend Integration
 
 **Orden Crítico:**
 
@@ -362,7 +362,7 @@ class TestMockHelper {
 
 3. **Navigation & UI**
    - Create home screen
-   - Add "Nuevo Proyecto" button
+   - Add "New Project" button
    - Chat screen layout
    - Toast/Snackbar components
 
@@ -390,7 +390,7 @@ Documentation:
 
 ---
 
-## 📚 Archivos Modificados
+## 📚 Files Modificados
 
 ### Creados
 - `src/client/lib/project_shell/domain/services/file_system_service.dart` (157 lines)
@@ -403,7 +403,7 @@ Documentation:
 - `src/client/lib/features/chat/presentation/notifiers/streaming_state.dart` (+projectPath field)
 - `tests/test/integration/features/chat/chat_flow_test.dart` (+error handling)
 
-### Total: 5 archivos nuevos, 3 modificados, ~530 líneas de código
+### Total: 5 files nuevos, 3 modificados, ~530 líneas de código
 
 ---
 
@@ -416,5 +416,5 @@ Documentation:
 ---
 
 **Autor:** ArchitectZero (AI Agent)
-**Estado:** 🟢 GREEN - Ready for Backend Integration
+**Status:** 🟢 GREEN - Ready for Backend Integration
 **Próximo:** Implement Backend `/api/v1/chat/stream` endpoint (FASE 6)

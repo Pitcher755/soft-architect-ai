@@ -1,14 +1,14 @@
-# 📐 Testing Pyramid & Quality Gates - HU-3.1
+# 📐 Pruebaing Pyramid & Quality Gates - HU-3.1
 
 > **Fecha:** 4 de febrero de 2026
-> **Estado:** ✅ Documentado
-> **Objetivo:** Definir estructura correcta de tests según pirámide y AGENTS.md
+> **Estado:** ✅ Documentoado
+> **Objetivo:** Definir estructura correcta de pruebas según pirámide y AGENTS.md
 
 ---
 
 ## 📖 Tabla de Contenidos
 
-1. [Pirámide de Tests](#pirámide-de-tests)
+1. [Pirámide de Pruebas](#pirámide-de-pruebas)
 2. [Distribución de Cobertura](#distribución-de-cobertura)
 3. [Quality Gates CI/CD](#quality-gates-cicd)
 4. [Ejecución Local de Validaciones](#ejecución-local-de-validaciones)
@@ -16,9 +16,9 @@
 
 ---
 
-## 📐 Pirámide de Tests
+## 📐 Pirámide de Pruebas
 
-La **Testing Pyramid** define la distribución correcta de tests para aplicaciones robustas:
+La **Pruebaing Pyramid** define la distribución correcta de pruebas para aplicaciones robustas:
 
 ```
                           /\
@@ -52,7 +52,7 @@ TOTAL: 290+ tests | Tiempo: ~30-40 segundos | Cobertura: 80%+
 
 ## 📊 Distribución de Cobertura
 
-### Por Tipo de Test (290 tests)
+### Por Tipo de Prueba (290 pruebas)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -90,7 +90,7 @@ NOTA CRÍTICA:
 
 Todos estos gates DEBEN pasar antes de pushear a `develop`:
 
-### ✅ Gate 1: Dart Analysis (Type Safety)
+### ✅ Gate 1: Dart Análisis (Type Safety)
 
 ```bash
 dart analyze --fatal-infos --fatal-warnings
@@ -134,7 +134,7 @@ CRITICIDAD: 🔴 BLOCKING
 - Prefer const constructors
 - Always declare return types
 
-### ✅ Gate 4: Unit Tests Execution
+### ✅ Gate 4: Unit Pruebas Execution
 
 ```bash
 flutter test test/features/project_shell/domain/ \
@@ -145,11 +145,11 @@ CRITICIDAD: 🔴 BLOCKING
 ```
 
 **Debe haber:**
-- 203+ Unit Tests
-- 0 test failures
+- 203+ Unit Pruebas
+- 0 prueba failures
 - Execution time < 5 seconds
 
-### ✅ Gate 5: Test Coverage (>80% Unit Tests)
+### ✅ Gate 5: Prueba Coverage (>80% Unit Pruebas)
 
 ```bash
 flutter test test/ --coverage
@@ -160,11 +160,11 @@ CRITICIDAD: 🔴 BLOCKING (solo para Unit Tests)
 
 **Coverage por capa:**
 - Domain: 100% required
-- Infrastructure: 100% required
+- Infraestructura: 100% required
 - Data: >90% required
-- Presentation: >70% acceptable
+- Presentación: >70% acceptable
 
-### ✅ Gate 6: Integration Tests Execution
+### ✅ Gate 6: Integración Pruebas Execution
 
 ```bash
 flutter test test/features/project_shell/data/repositories/
@@ -173,7 +173,7 @@ REQUISITO: ALL TESTS PASS
 CRITICIDAD: 🟡 NON-BLOCKING (puede fallar en desarrollo)
 ```
 
-### ✅ Gate 7: Widget/E2E Tests
+### ✅ Gate 7: Widget/E2E Pruebas
 
 ```bash
 flutter test test/features/project_shell/presentation/
@@ -182,7 +182,7 @@ REQUISITO: ALL TESTS PASS
 CRITICIDAD: 🟡 NON-BLOCKING (puede fallar inicialmente)
 ```
 
-### ✅ Gate 8: Dependency Analysis
+### ✅ Gate 8: Dependency Análisis
 
 ```bash
 flutter pub outdated
@@ -275,17 +275,17 @@ git commit -m "feat: new feature"  # ← Valida antes de commitear
 
 ### Code Quality
 - [ ] `dart analyze --fatal-infos --fatal-warnings` → 0 errors
-- [ ] `dart format --set-exit-if-changed lib/ test/` → 0 files reformatted
+- [ ] `dart format --set-exit-if-changed lib/ prueba/` → 0 archivos reformatted
 - [ ] `dart analyze --no-fatal-infos` → 0 lint violations
-- [ ] `flutter test test/features/project_shell/domain/` → ALL PASS
+- [ ] `flutter prueba prueba/features/proyecto_shell/domain/` → ALL PASS
 
-### Testing
-- [ ] Unit tests coverage >= 80%
+### Pruebaing
+- [ ] Unit pruebas coverage >= 80%
   ```bash
   flutter test test/features/project_shell/domain/ --coverage
   coverage show coverage/lcov.info | grep "Whole Program"
   ```
-- [ ] All unit tests pass:
+- [ ] All unit pruebas pass:
   ```bash
   flutter test test/ -q
   ```
@@ -295,22 +295,22 @@ git commit -m "feat: new feature"  # ← Valida antes de commitear
 - [ ] No dangerous patterns (eval, shell exec, etc.)
 - [ ] All functions have return type annotations
 - [ ] All exceptions handled explicitly
-- [ ] Input validation comprehensive (tests in path_validator_test.dart)
+- [ ] Input validation comprehensive (pruebas in path_validator_prueba.dart)
 
 ### Git Hygiene
-- [ ] Commit messages follow convention: `feat:|fix:|test:|docs:`
+- [ ] Commit messages follow convention: `feat:|fix:|prueba:|docs:`
 - [ ] No trailing whitespace
-- [ ] .env files NOT committed
-- [ ] No large binary files (> 10MB)
+- [ ] .env archivos NOT committed
+- [ ] No large binary archivos (> 10MB)
 
-### Documentation
-- [ ] New features documented
+### Documentoation
+- [ ] New features documentoed
 - [ ] Breaking changes explained
 - [ ] Architecture decisions commented
 
 ---
 
-## 📊 Quality Gates Status Board
+## 📊 Quality Gates Estado Board
 
 ```
 ╔════════════════════════════════════════════════════════════╗
@@ -336,12 +336,12 @@ git commit -m "feat: new feature"  # ← Valida antes de commitear
 
 Los quality gates locales equivalen a estos GitHub Actions:
 
-| Local Gate | GitHub Actions | Status |
+| Local Gate | GitHub Actions | Estado |
 |---|---|---|
-| `dart analyze` | `.github/workflows/dart-analysis.yaml` | Sync |
+| `dart analyze` | `.github/workflows/dart-análisis.yaml` | Sync |
 | `dart format` | Auto-fixed in pre-commit | Sync |
 | `dart analyze --no-fatal-infos` | `.github/workflows/lint.yaml` | Sync |
-| `flutter test` | `.github/workflows/test.yaml` | Sync |
+| `flutter prueba` | `.github/workflows/prueba.yaml` | Sync |
 | `--coverage` | Coverage report upload | Sync |
 | Pre-commit hooks | GitHub Branch Protection | Sync |
 
@@ -366,7 +366,7 @@ Los quality gates locales equivalen a estos GitHub Actions:
    dart analyze
    ```
 
-4. **Corre tests frecuentemente:**
+4. **Corre pruebas frecuentemente:**
    ```bash
    flutter test -q
    ```
@@ -380,18 +380,18 @@ Los quality gates locales equivalen a estos GitHub Actions:
 
 ## ✅ Conclusión
 
-La **Pirámide de Tests** correctamente implementada con **Quality Gates CI/CD** garantiza:
+La **Pirámide de Pruebas** correctamente implementada con **Quality Gates CI/CD** garantiza:
 
-- ✅ **Cobertura sólida** (80%+ en unit tests)
-- ✅ **Desarrollo rápido** (<1s unit tests)
+- ✅ **Cobertura sólida** (80%+ en unit pruebas)
+- ✅ **Desarrollo rápido** (<1s unit pruebas)
 - ✅ **Confiabilidad** (integration + e2e)
 - ✅ **Zero surprises en GitHub Actions** (gates locales = CI/CD)
 - ✅ **Código mantenible** (reglas de linting estrictas)
 
-**Status Final:** 🚀 READY FOR PRODUCTION
+**Estado Final:** 🚀 READY FOR PRODUCTION
 
 ---
 
 **Prepared by:** ArchitectZero
 **Date:** 4 de febrero de 2026
-**Status:** ✅ COMPLETE
+**Estado:** ✅ COMPLETE

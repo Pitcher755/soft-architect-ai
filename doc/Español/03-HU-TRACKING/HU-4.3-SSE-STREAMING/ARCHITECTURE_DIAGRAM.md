@@ -1,13 +1,13 @@
-# Architecture Diagram: SSE Streaming (HU-4.3 Phase 2)
+# Architecture Diagram: SSE Streaming (HU-4.3 Fase 2)
 
-> **Version:** 1.0.0
-> **Status:** ✅ Phase 2 Complete
-> **Created:** 2026-02-15
+> **Versión:** 1.0.0
+> **Estado:** ✅ Fase 2 Complete
+> **Creard:** 2026-02-15
 > **Author:** ArchitectZero
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [Overview](#overview)
 - [System Architecture](#system-architecture)
@@ -21,7 +21,7 @@
 
 ## Overview
 
-This document provides architectural diagrams for the SSE streaming feature implemented in HU-4.3 Phase 2. It covers the full request-response cycle, component interactions, and error handling flows.
+This documento provides architectural diagrams for the SSE streaming feature implemented in HU-4.3 Fase 2. It covers the full request-response cycle, component interactions, and error handling flows.
 
 **Key Architectural Decisions:**
 1. **SSE Protocol:** Chosen over WebSockets for simplicity (HTTP-based, auto-reconnection)
@@ -313,7 +313,7 @@ graph TB
 
 ### Error Code Matrix
 
-| Error Condition | HTTP Status | SSE Event | Code | Retry? |
+| Error Condition | HTTP Estado | SSE Event | Code | Retry? |
 |----------------|-------------|-----------|------|--------|
 | Missing API key | 401 | N/A | N/A | No |
 | Invalid UUID | 422 | N/A | N/A | No |
@@ -333,9 +333,9 @@ graph TB
 | **API Framework** | FastAPI | 0.115.6 | Async HTTP server, SSE support |
 | **HTTP Client** | httpx | 0.28.1 | Async LLM API calls, streaming |
 | **Validation** | Pydantic | 2.10.6 | Request/response schema validation |
-| **LLM Provider** | Ollama | Latest | Local inference, NDJSON streaming |
+| **LLM Provider** | Ollama | Laprueba | Local inference, NDJSON streaming |
 | **Vector Store** | ChromaDB (stub) | Future | Semantic search for RAG context |
-| **Testing** | pytest + httpx | 8.3.4 | Integration tests with ASGITransport |
+| **Pruebaing** | pyprueba + httpx | 8.3.4 | Integración pruebas with ASGITransport |
 
 ### Frontend Components (Flutter)
 
@@ -413,11 +413,11 @@ graph LR
 
 ---
 
-## Related Documents
+## Related Documentos
 
 - [API_CONTRACT.md](./API_CONTRACT.md) - SSE endpoint specification
-- [COVERAGE_REPORT.md](./COVERAGE_REPORT.md) - Test metrics
-- [PROGRESS.md](./PROGRESS.md) - Implementation timeline
+- [COVERAGE_REPORT.md](./COVERAGE_REPORT.md) - Prueba metrics
+- [PROGRESS.md](./PROGRESS.md) - Implementación timeline
 
 ---
 
@@ -425,4 +425,4 @@ graph LR
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0.0 | 2026-02-15 | Initial architecture documentation |
+| 1.0.0 | 2026-02-15 | Initial architecture documentoation |

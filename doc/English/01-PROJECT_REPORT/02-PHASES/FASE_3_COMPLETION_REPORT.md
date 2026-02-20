@@ -1,7 +1,7 @@
-# 📋 HU-3.1: Fase 3 Completion Report
+# 📋 HU-3.1: Phase 3 Completion Report
 
 **Fecha:** 3 de febrero de 2026
-**Estado:** ✅ **COMPLETADA**
+**Status:** ✅ **COMPLETADA**
 **Versión:** 3.1.0
 **Rama:** `feature/ui-project-shell`
 
@@ -9,11 +9,11 @@
 
 ## 🎯 Resumen Ejecutivo
 
-**Fase 3** implementó exitosamente la **capa de presentación** con widgets interactivos, state management (Riverpod) y cobertura de widget tests. La aplicación ejecuta correctamente en **Linux desktop** mediante `flutter run`.
+**Phase 3** implementó exitosamente la **capa de presentación** con widgets interactivos, state management (Riverpod) y cobertura de widget tests. La aplicación ejecuta correctamente en **Linux desktop** mediante `flutter run`.
 
 ### Métricas
 
-| Métrica | Valor | Estado |
+| Métrica | Valor | Status |
 |---------|-------|--------|
 | **Compilación** | 0 ERRORS | ✅ |
 | **Lint Issues** | 54 (todos INFO) | ✅ |
@@ -31,9 +31,9 @@
 #### ProjectShellNotifier
 - **Ubicación:** `lib/features/project_shell/presentation/notifiers/project_shell_notifier.dart`
 - **Responsabilidades:**
-  - Gestionar lista de proyectos
-  - Manejar proyecto seleccionado
-  - Controlar estado de carga
+  - Gestionar lista de projects
+  - Manejar project seleccionado
+  - Controlar status de carga
   - Gestionar errores
 
 ```dart
@@ -65,11 +65,11 @@ class ProjectShellNotifier extends StateNotifier<ProjectShellState> {
 #### DirectoryTreeWidget ✅
 - **Ubicación:** `lib/features/project_shell/presentation/widgets/directory_tree_widget.dart`
 - **Características:**
-  - Árbol expandible estilo VS Code
-  - Iconos por tipo de archivo
-  - Selección de archivos
+  - Árbol expandible style VS Code
+  - Iconos por tipo de file
+  - Selección de files
   - Callback `onFileSelected`
-  - Gestión de estado de expansión con `Set<String> _expanded`
+  - Gestión de status de expansión con `Set<String> _expanded`
 
 ```dart
 class DirectoryTreeWidget extends StatefulWidget {
@@ -87,7 +87,7 @@ class DirectoryTreeWidget extends StatefulWidget {
 - **Ubicación:** `lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart`
 - **Características:**
   - Renderizado markdown con `flutter_markdown`
-  - Estado vacío (placeholder)
+  - Status vacío (placeholder)
   - Scroll automático para contenido largo
   - Tema dark integrado
 
@@ -104,7 +104,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
 #### ProjectShellScreen ✅
 - **Ubicación:** `lib/features/project_shell/presentation/screens/project_shell_screen.dart`
 - **Layout:** 3-pane IDE-style
-  - **AppBar (top):** Logo + título + proyecto actual
+  - **AppBar (top):** Logo + título + project actual
   - **Sidebar (left, 280px):** DirectoryTreeWidget
   - **Preview (right):** MarkdownPreviewWidget
 - **Integración:** ConsumerWidget + Riverpod `ref.watch()`
@@ -136,7 +136,7 @@ class ProjectShellScreen extends ConsumerWidget {
 ## 🧪 Widget Tests
 
 ### ProjectShellScreen Tests (6 tests)
-**Archivo:** `tests/widget/project_shell_screen_test.dart`
+**File:** `tests/widget/project_shell_screen_test.dart`
 
 ```dart
 ✅ renders correctly with Riverpod container
@@ -150,7 +150,7 @@ class ProjectShellScreen extends ConsumerWidget {
 **Cobertura:** Rendering, interacción, theming, responsividad
 
 ### DirectoryTreeWidget Tests (6 tests)
-**Archivo:** `tests/widget/directory_tree_widget_test.dart`
+**File:** `tests/widget/directory_tree_widget_test.dart`
 
 ```dart
 ✅ renders root directory correctly
@@ -164,7 +164,7 @@ class ProjectShellScreen extends ConsumerWidget {
 **Cobertura:** Tree rendering, expansion logic, callbacks, iconografía
 
 ### MarkdownPreviewWidget Tests (8 tests)
-**Archivo:** `tests/widget/markdown_preview_widget_test.dart`
+**File:** `tests/widget/markdown_preview_widget_test.dart`
 
 ```dart
 ✅ shows empty state when content is null
@@ -181,7 +181,7 @@ class ProjectShellScreen extends ConsumerWidget {
 
 ---
 
-## 🔍 Análisis Estático
+## 🔍 Analysis Estático
 
 **Comando:** `flutter analyze`
 
@@ -200,7 +200,7 @@ Categorías:
 - Others (~22 issues)
 ```
 
-**Estado:** ✅ **APROBADO** (0 errores = compilable)
+**Status:** ✅ **APROBADO** (0 errores = compilable)
 
 ---
 
@@ -228,13 +228,13 @@ R Hot restart.
 ...
 ```
 
-**Estado:** ✅ **RUNNING** en Linux desktop
+**Status:** ✅ **RUNNING** en Linux desktop
 
 ---
 
 ## 📝 Commits
 
-### Commit: Fase 3 - UI Layer
+### Commit: Phase 3 - UI Layer
 ```
 09a2b53 feat(hu-3.1): Phase 3 - UI layer and Riverpod state management
   - ProjectShellNotifier con state management
@@ -254,7 +254,7 @@ R Hot restart.
 
 ## ✅ Checklist de Aceptación
 
-| Item | Estado | Notas |
+| Item | Status | Notas |
 |------|--------|-------|
 | ProjectShellNotifier implementado | ✅ | Con state + métodos CRUD |
 | Project Providers creados | ✅ | Database + Repository + Notifier |
@@ -325,10 +325,10 @@ Monospace:  Courier New (for code)
 
 ---
 
-## 🔄 Próximos Pasos (Fase 4)
+## 🔄 Next Steps (Phase 4)
 
-### Fase 4: Testing, Security & Polish
-1. **Lint Fixes:** Resolver 54 warnings de estilo
+### Phase 4: Testing, Security & Polish
+1. **Lint Fixes:** Resolver 54 warnings de style
 2. **Security Audit:** OWASP top 10 checks
 3. **Performance:** Profile y optimización
 4. **Documentation:** API docs + architecture guide
@@ -340,7 +340,7 @@ Monospace:  Courier New (for code)
 
 ---
 
-## 📚 Archivos Modificados
+## 📚 Files Modificados
 
 ```
 src/client/lib/
@@ -377,7 +377,7 @@ lib/
 
 ## 🏆 Conclusión
 
-**Fase 3** completada exitosamente con:
+**Phase 3** completada exitosamente con:
 - ✅ Arquitectura clean implementada
 - ✅ State management con Riverpod
 - ✅ UI widgets funcionales (IDE-style)
@@ -386,6 +386,6 @@ lib/
 - ✅ Aplicación ejecutando en Linux
 - ✅ 0 errores de compilación
 
-**Progreso:** HU-3.1 → **50% completada (Fases 1, 2, 3 de 4)**
+**Progreso:** HU-3.1 → **50% completada (Phases 1, 2, 3 de 4)**
 
-**Siguiente:** Fase 4 - Testing, Security & Polish (ETA: 2 días)
+**Next:** Phase 4 - Testing, Security & Polish (ETA: 2 días)

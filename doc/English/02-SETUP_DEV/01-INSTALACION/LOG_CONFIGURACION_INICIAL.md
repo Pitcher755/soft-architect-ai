@@ -1,8 +1,8 @@
-# 📋 Registro de Configuración Inicial - Rama Main
+# 📋 Registro de Configuration Inicial - Rama Main
 
-> **Versión:** 1.0
-> **Fecha:** 28 de enero de 2026
-> **Estado:** ✅ COMPLETADO
+> **Version:** 1.0
+> **Date:** 28 de enero de 2026
+> **Status:** ✅ COMPLETADO
 > **Agente Responsable:** ArchitectZero
 
 ---
@@ -11,19 +11,19 @@
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
 2. [Línea de Tiempo](#línea-de-tiempo)
-3. [Fase 1: Frontend Flutter](#fase-1-frontend-flutter)
-4. [Fase 2: Backend Python FastAPI](#fase-2-backend-python-fastapi)
-5. [Fase 3: Docker Compose y Containerización](#fase-3-docker-compose-y-containerización)
-6. [Fase 4: Documentación y Validación](#fase-4-documentación-y-validación)
+3. [Phase 1: Frontend Flutter](#phase-1-frontend-flutter)
+4. [Phase 2: Backend Python FastAPI](#phase-2-backend-python-fastapi)
+5. [Phase 3: Docker Compose y Containerización](#phase-3-docker-compose-y-containerización)
+6. [Phase 4: Documentación y Validación](#phase-4-documentación-y-validación)
 7. [Tecnologías y Versiones](#tecnologías-y-versiones)
 8. [Arquitectura Implementada](#arquitectura-implementada)
-9. [Próximos Pasos](#próximos-pasos)
+9. [Next Steps](#próximos-pasos)
 
 ---
 
 ## 🎯 Resumen Ejecutivo
 
-Configuración inicial completa del proyecto **SoftArchitect AI** en la rama `main`, implementando:
+Configuration inicial completa of the project **SoftArchitect AI** en la rama `main`, implementando:
 
 - ✅ **Frontend Flutter Desktop** con Clean Architecture
 - ✅ **Backend Python FastAPI** con Modular Monolith
@@ -32,7 +32,7 @@ Configuración inicial completa del proyecto **SoftArchitect AI** en la rama `ma
 - ✅ **Validación automatizada** de setup
 - ✅ **Últimas versiones** de todas las dependencias
 
-**Resultado:** Proyecto listo para desarrollo con arquitectura robusta, segura y documentada.
+**Result:** Project listo para desarrollo con arquitectura robusta, segura y documentada.
 
 ---
 
@@ -64,21 +64,21 @@ timeline
                      : Commits: 1
 ```
 
-**Total:** 5 commits | 4 fases | 100+ archivos creados
+**Total:** 5 commits | 4 phases | 100+ files creados
 
 ---
 
-## 🎨 Fase 1: Frontend Flutter
+## 🎨 Phase 1: Frontend Flutter
 
 ### Objetivos
-- Inicializar proyecto Flutter Desktop
+- Inicializar project Flutter Desktop
 - Implementar Clean Architecture
-- Configurar gestión de estado (Riverpod)
+- Configurar gestión de status (Riverpod)
 - Establecer navegación (GoRouter)
 
 ### Acciones Realizadas
 
-#### 1.1 Scaffolding del Proyecto
+#### 1.1 Scaffolding del Project
 ```bash
 cd src/client
 flutter create . --platforms=linux,windows,macos
@@ -125,7 +125,7 @@ src/client/lib/
 | **build_runner** | 2.4.15 | Code generation |
 | **flutter_lints** | 5.0.0 | Linting |
 
-#### 1.4 Configuración Aplicada
+#### 1.4 Configuration Aplicada
 
 **pubspec.yaml:**
 - Material Design 3 habilitado
@@ -160,11 +160,11 @@ feat: initialize Flutter desktop project with Clean Architecture
 - All latest compatible dependencies
 ```
 
-**Archivos creados:** 28
+**Files creados:** 28
 
 ---
 
-## ⚙️ Fase 2: Backend Python FastAPI
+## ⚙️ Phase 2: Backend Python FastAPI
 
 ### Objetivos
 - Inicializar backend FastAPI
@@ -271,7 +271,7 @@ src/server/
 - Bearer token validation
 - Secret key verification (environment)
 
-#### 2.6 Configuración VS Code
+#### 2.6 Configuration VS Code
 
 **.vscode/settings.json:**
 ```json
@@ -335,14 +335,14 @@ Code Quality Verification:
 - GET /api/v1/health → HTTP 200 OK
 ```
 
-**Archivos creados:** 29
+**Files creados:** 29
 
 ---
 
-## 🐋 Fase 3: Docker Compose y Containerización
+## 🐋 Phase 3: Docker Compose y Containerización
 
 ### Objetivos
-- Crear Dockerfile optimizado (multi-stage)
+- Create Dockerfile optimizado (multi-stage)
 - Reescribir docker-compose.yml completamente
 - Configurar variables de ambiente
 - Implementar healthchecks y resource limits
@@ -369,7 +369,7 @@ Code Quality Verification:
 | 11 | Build syntax incorrecta | 🟡 Medio |
 | 12 | Sin subnet networking | 🟡 Medio |
 
-**Documento:** `DOCKER_COMPOSE_AUDIT.md`
+**Document:** `DOCKER_COMPOSE_AUDIT.md`
 
 #### 3.2 Dockerfile Creado
 
@@ -486,7 +486,7 @@ volumes:
   chroma_storage: {driver: local}
 ```
 
-#### 3.4 Configuración de Ambiente
+#### 3.4 Configuration de Ambiente
 
 **infrastructure/.env:**
 ```bash
@@ -581,15 +581,15 @@ Testing:
 ✓ healthchecks: All services monitored
 ```
 
-**Archivos creados/modificados:** 8
+**Files creados/modificados:** 8
 
 ---
 
-## 📚 Fase 4: Documentación y Validación
+## 📚 Phase 4: Documentación y Validación
 
 ### Objetivos
 - Documentar exhaustivamente todo el setup
-- Crear guías de troubleshooting
+- Create guías de troubleshooting
 - Generar auditorías y reportes
 - Establecer Doc as Code
 
@@ -603,7 +603,7 @@ Contenido:
 1. **Requisitos Previos** (hardware, software, GPU)
 2. **Instalación Rápida** (4 pasos)
 3. **Modos de Ejecución** (dev, background, production, rebuild)
-4. **Verificación de Servicios** (estado, logs, healthchecks)
+4. **Verification de Servicios** (status, logs, healthchecks)
 5. **Troubleshooting** (7 problemas comunes + soluciones)
 6. **Performance Tuning** (RAM eficiente, máxima velocidad)
 7. **Arquitectura Detallada** (flujo de datos, puertos, volúmenes)
@@ -634,7 +634,7 @@ Contenido:
 - Impacto cuantificable
 
 **DOCKER_VALIDATION_REPORT.md:**
-- Estado final completo
+- Status final completo
 - Comparación detallada
 - Performance metrics
 - Quick start guide
@@ -643,7 +643,7 @@ Contenido:
 
 **Actualizaciones a realizar:**
 - doc/02-SETUP_DEV/SETUP_GUIDE.es.md (incluir Docker)
-- doc/02-SETUP_DEV/SETUP_GUIDE.en.md (crear versión inglés)
+- doc/02-SETUP_DEV/SETUP_GUIDE.en.md (create versión inglés)
 - context/30-ARCHITECTURE/TECH_STACK_DETAILS actualizado
 
 ---
@@ -750,7 +750,7 @@ src/server/app/
 
 ### AGENTS.md
 
-| Requisito | Estado | Evidencia |
+| Requisito | Status | Evidencia |
 |-----------|--------|-----------|
 | Clean Architecture (Frontend) | ✅ | src/client/lib/ structure |
 | Modular Monolith (Backend) | ✅ | src/server/app/ structure |
@@ -765,7 +765,7 @@ src/server/app/
 
 ### TECH_STACK_DETAILS
 
-| Componente | Especificado | Implementado | Estado |
+| Componente | Especificado | Implementado | Status |
 |-----------|--------------|--------------|--------|
 | Flutter Desktop | ✅ | Flutter 3.38.3 | ✅ |
 | Riverpod | ✅ | 3.1.0 | ✅ |
@@ -780,7 +780,7 @@ src/server/app/
 
 ### SECURITY_AND_PRIVACY_RULES
 
-| Regla | Estado | Implementación |
+| Regla | Status | Implementation |
 |-------|--------|----------------|
 | Mode Iron (Local) | ✅ | LLM_PROVIDER=local default |
 | Mode Ether (Cloud) | ✅ | GROQ_API_KEY optional |
@@ -794,7 +794,7 @@ src/server/app/
 
 ### REQUIREMENTS_ANALYSIS
 
-| Requisito | Estado | Verificación |
+| Requisito | Status | Verification |
 |-----------|--------|--------------|
 | **RF-01** Ingesta Docs | 🟡 | Structure ready |
 | **RF-02** Recuperación Contextual | 🟡 | ChromaDB configured |
@@ -821,7 +821,7 @@ Total: 5 commits
 - Documentation: 1 commit
 ```
 
-### Archivos Creados
+### Files Creados
 ```
 Total: 100+ archivos
 - Flutter: 28 archivos
@@ -850,7 +850,7 @@ Total: 10 documentos
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
 ### Inmediato (Esta Semana)
 - [ ] Test completo: `docker compose up --build`
@@ -883,7 +883,7 @@ Total: 10 documentos
 
 ## 📚 Referencias
 
-| Documento | Ubicación | Propósito |
+| Document | Ubicación | Propósito |
 |-----------|-----------|-----------|
 | **AGENTS.md** | `/AGENTS.md` | Arquitectura y reglas del agente |
 | **Tech Stack** | `/context/30-ARCHITECTURE/TECH_STACK_DETAILS.es.md` | Stack tecnológico |
@@ -898,7 +898,7 @@ Total: 10 documentos
 
 ## ✨ Conclusión
 
-La configuración inicial de la rama `main` está **100% completa y documentada**. El proyecto tiene:
+La configuration inicial de la rama `main` está **100% completa y documentada**. El project tiene:
 
 - ✅ Arquitectura robusta (Clean Architecture + Modular Monolith)
 - ✅ Stack actualizado (últimas versiones compatibles)
@@ -907,9 +907,9 @@ La configuración inicial de la rama `main` está **100% completa y documentada*
 - ✅ Documentación exhaustiva (>2000 líneas)
 - ✅ Validación automatizada (scripts bash)
 
-**Estado:** ✅ **LISTO PARA DESARROLLO**
+**Status:** ✅ **LISTO PARA DESARROLLO**
 
-Los desarrolladores pueden ejecutar:
+Los desarrolladores pueden execute:
 ```bash
 cd infrastructure
 docker compose up --build

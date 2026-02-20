@@ -1,12 +1,12 @@
 # ⚡ Respuestas en Streaming - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Guía técnica de streaming
-> **Tiempo de lectura:** 6 minutos
+> **Date:** 19/02/2026
+> **Status:** ✅ Guía técnica de streaming
+> **Reading Time:** 6 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [¿Qué es el Streaming?](#qué-es-el-streaming)
 - [Cómo Funciona](#cómo-funciona)
@@ -102,11 +102,11 @@ data: {"done": true}
 
 | Método | Acción |
 |--------|--------|
-| **Botón UI** | Click en `[⏹️ Detener]` |
+| **Button UI** | Click en `[⏹️ Detener]` |
 | **Teclado** | Presionar `Esc` |
 | **API** | Enviar `DELETE /api/chat/stream/{session_id}` |
 
-**Resultado:**
+**Result:**
 ```
 🤖 SoftArchitect AI:
 "Para diseñar una API REST necesitas considerar..."
@@ -261,9 +261,9 @@ docker logs soft-architect-ai-backend | grep "connection closed"
 
 ---
 
-### ❌ "No aparece botón de detener"
+### ❌ "No aparece button de detener"
 
-**Causa:** Streaming deshabilitado en configuración
+**Causa:** Streaming deshabilitado en configuration
 
 **Solución:**
 ```bash
@@ -276,7 +276,7 @@ docker-compose restart backend
 
 ---
 
-## 🛠️ Configuración Avanzada
+## 🛠️ Configuration Avanzada
 
 ### Personalizar Comportamiento
 
@@ -308,7 +308,7 @@ class StreamingConfig:
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documents Relacionados
 
 - [Interfaz de Chat](05-INTERFAZ_CHAT.md) - Cómo usar el chat
 - [Solución de Problemas](08-SOLUCIÓN_DE_PROBLEMAS.md) - Troubleshooting

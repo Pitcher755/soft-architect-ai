@@ -26,7 +26,7 @@
 
 ### 🎯 Workflow Objectives
 
-**"Construir el cerebro de IA del proyecto sin comprometer un byte de seguridad, con paranoia OWASP nivel máximo"**
+**"Construir el cerebro de IA of the project sin comprometer un byte de seguridad, con paranoia OWASP nivel máximo"**
 
 Este workflow está diseñado para:
 - ✅ **TDD Estricto:** Ninguna línea de código sin test previo (Red → Green → Refactor).
@@ -2366,7 +2366,7 @@ git push origin feature/backend-chat-endpoint
 
 1. Abre Pull Request en GitHub hacia `develop`.
 2. Título: **"feat(chat): HU-4.1 Backend Chat Endpoint & RAG Orchestration"**
-3. Descripción (template):
+3. Description (template):
 
 ```markdown
 ## 🚀 HU-4.1: Backend Chat Endpoint & RAG Orchestration

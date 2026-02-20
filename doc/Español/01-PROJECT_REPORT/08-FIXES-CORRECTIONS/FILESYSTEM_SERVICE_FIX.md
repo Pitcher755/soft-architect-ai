@@ -1,20 +1,20 @@
-# ✅ Critical Fix: FileSystemService Provider Implementation
+# ✅ Critical Fix: ArchivoSystemService Provider Implementación
 
 **Date:** 06/02/2026
-**Status:** 🟢 **RESOLVED**
+**Estado:** 🟢 **RESOLVED**
 
 ---
 
-## 🐛 Problem Analysis
+## 🐛 Problem Análisis
 
 ### What Was Happening
-1. **Dashboard loads** ✅ - `ProjectSelectionScreen` displays 3 projects
-2. **Try to create project** ❌ - Crash on "Create" button
-3. **Try to open existing project** ❌ - Crash when navigating to workspace
+1. **Dashboard loads** ✅ - `ProyectoSelectionScreen` displays 3 proyectos
+2. **Try to crear proyecto** ❌ - Crash on "Crear" botón
+3. **Try to open existing proyecto** ❌ - Crash when navigating to workspace
 4. **Try to open Chat** ❌ - Crash when trying to load ChatScreen
 
 ### Root Cause
-Both `ProjectWorkspaceScreen` and `ChatScreen` depend on `chatNotifierProvider`, which depends on `fileSystemServiceProvider`. That provider was throwing `UnimplementedError` with the message:
+Both `ProyectoWorkspaceScreen` and `ChatScreen` depend on `chatNotifierProvider`, which depends on `archivoSystemServiceProvider`. That provider was throwing `UnimplementedError` with the message:
 
 ```
 FileSystemService must be provided in main.dart
@@ -27,14 +27,14 @@ final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
 });
 ```
 
-This meant that whenever any screen tried to use the chat notifier, it would immediately crash.
+This meant that whenever any screen tried to use the chat notifier, it would inmediataly crash.
 
 ---
 
 ## ✅ Solution Implemented
 
 ### The Fix
-Changed the `fileSystemServiceProvider` in `chat_notifier.dart` to provide a working implementation instead of throwing an error:
+Changed the `archivoSystemServiceProvider` in `chat_notifier.dart` to provide a working implementación instead of throwing an error:
 
 ```dart
 final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
@@ -45,23 +45,23 @@ final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
 ```
 
 ### Why This Works
-- **FileSystemServiceImpl** is a concrete implementation of `FileSystemService`
-- It has all the required methods: `saveDocument()`, `readDocument()`, `deleteDocument()`, etc.
+- **ArchivoSystemServiceImpl** is a concrete implementación of `ArchivoSystemService`
+- It has all the required methods: `saveDocumento()`, `readDocumento()`, `eliminarDocumento()`, etc.
 - The app can now initialize without crashing
 - Later, when backend integration is done, this can be overridden via `ProviderScope`
 
-### File Changed
-**File:** `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart`
+### Archivo Changed
+**Archivo:** `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart`
 
 **Lines:** 330-333
 
-**Change Type:** Functional Implementation (replaces error throw)
+**Change Type:** Functional Implementación (replaces error throw)
 
 ---
 
-## 🧪 Test Results - ALL PASSING
+## 🧪 Prueba Resultados - ALL PASSING
 
-### Test 1: Dashboard Load ✅
+### Prueba 1: Dashboard Load ✅
 ```
 ✅ App starts without crash
 ✅ Dashboard displays with 3 mock projects
@@ -69,7 +69,7 @@ final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
 ✅ Project cards clickable
 ```
 
-### Test 2: Create New Project ✅
+### Prueba 2: Crear Nuevo Proyecto ✅
 ```
 ✅ Click "+ New Project" → Dialog appears
 ✅ Enter project name → No crash
@@ -79,7 +79,7 @@ final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
 ✅ Chat interface renders
 ```
 
-### Test 3: Open Existing Project ✅
+### Prueba 3: Open Existing Proyecto ✅
 ```
 ✅ Click on proj-001 → No crash
 ✅ Navigate to /workspace/proj-001 → Success
@@ -91,7 +91,7 @@ final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
 ✅ All components functional
 ```
 
-### Test 4: Chat Screen Access ✅
+### Prueba 4: Chat Screen Access ✅
 ```
 ✅ Chat interface loads properly
 ✅ Chat notifier initializes
@@ -135,14 +135,14 @@ Dashboard (ProjectSelectionScreen)
 
 ## 🔧 Technical Details
 
-### FileSystemServiceImpl
-- **Location:** `src/client/lib/project_shell/domain/services/file_system_service.dart`
+### ArchivoSystemServiceImpl
+- **Location:** `src/client/lib/proyecto_shell/domain/services/archivo_system_service.dart`
 - **Methods:**
-  - `saveDocument()` - Saves files to disk
-  - `readDocument()` - Reads files from disk
-  - `documentExists()` - Checks file existence
-  - `deleteDocument()` - Deletes files
-  - `initializeProjectDirectories()` - Creates directory structure
+  - `saveDocumento()` - Saves archivos to disk
+  - `readDocumento()` - Reads archivos from disk
+  - `documentoExists()` - Checks archivo existence
+  - `eliminarDocumento()` - Eliminars archivos
+  - `initializeProyectoDirectories()` - Crears directory structure
 
 ### ChatNotifier Dependency Chain
 ```
@@ -156,38 +156,38 @@ ChatNotifier constructor needs:
 - WidgetRef ✅
 ```
 
-### Integration Point
-The `FileSystemServiceImpl` is a desktop implementation that works for local file operations. When backend integration is needed, it can be replaced with a version that:
+### Integración Point
+The `ArchivoSystemServiceImpl` is a desktop implementación that works for local archivo operations. When backend integration is needed, it can be replaced with a version that:
 - Communicates with REST API
-- Syncs documents to cloud storage
-- Manages remote project structures
+- Syncs documentos to cloud storage
+- Manages remote proyecto structures
 
 ---
 
 ## 📊 Application State - Production Ready
 
-| Component | Status | Details |
+| Component | Estado | Details |
 |-----------|--------|---------|
 | **App Launch** | ✅ | No crashes |
-| **Dashboard** | ✅ | All projects display |
-| **Project Creation** | ✅ | Dialog works, navigation OK |
-| **Project Navigation** | ✅ | Routes work correctly |
+| **Dashboard** | ✅ | All proyectos display |
+| **Proyecto Creation** | ✅ | Dialog works, navigation OK |
+| **Proyecto Navigation** | ✅ | Routes work correctly |
 | **Workspace Load** | ✅ | All screens render |
 | **Chat Interface** | ✅ | Functional and responsive |
-| **File Operations** | ✅ | FileSystemService available |
-| **Back Navigation** | ✅ | Back button works |
+| **Archivo Operations** | ✅ | ArchivoSystemService available |
+| **Back Navigation** | ✅ | Back botón works |
 
 ---
 
-## 🚀 Ready for Extended Testing
+## 🚀 Preparado para Extended Pruebaing
 
 The application now supports the complete user flow:
 
-1. **Dashboard** → View all projects
-2. **Create Project** → Add new project with name
-3. **Open Project** → Navigate to workspace
-4. **Workspace** → Edit files, chat, preview
-5. **Navigation** → Back to dashboard, switch projects
+1. **Dashboard** → View all proyectos
+2. **Crear Proyecto** → Add nuevo proyecto with name
+3. **Abrir Proyecto** → Navigate to workspace
+4. **Workspace** → Edit archivos, chat, preview
+5. **Navigation** → Back to dashboard, switch proyectos
 
 All without crashes or errors (except cosmetic GTK warning).
 
@@ -195,8 +195,8 @@ All without crashes or errors (except cosmetic GTK warning).
 
 ## 📝 Code Changes Summary
 
-### Change 1: FileSystemServiceProvider
-**File:** `chat_notifier.dart` lines 330-333
+### Change 1: ArchivoSystemServiceProvider
+**Archivo:** `chat_notifier.dart` lines 330-333
 
 **Before:**
 ```dart
@@ -216,37 +216,37 @@ final fileSystemServiceProvider = Provider<FileSystemService>((ref) {
 
 **Impact:**
 - App no longer crashes when initializing chat notifier
-- FileSystemService available for all operations
-- Ready for backend integration
+- ArchivoSystemService available for all operations
+- Preparado para backend integration
 
 ---
 
-## ✅ Verification Checklist
+## ✅ Verificación Checklist
 
 - [x] App launches successfully
-- [x] Dashboard displays 3 projects
-- [x] Create project dialog works
-- [x] Create project navigation succeeds
-- [x] Open project navigation succeeds
-- [x] ProjectWorkspaceScreen renders
+- [x] Dashboard displays 3 proyectos
+- [x] Crear proyecto dialog works
+- [x] Crear proyecto navigation succeeds
+- [x] Open proyecto navigation succeeds
+- [x] ProyectoWorkspaceScreen renders
 - [x] ChatScreen initializes properly
-- [x] FileSystemService available
+- [x] ArchivoSystemService available
 - [x] 3-column layout complete
-- [x] Back button functional
+- [x] Back botón functional
 - [x] No crashes or exceptions
 - [x] All navigation flows working
 
 ---
 
-## 🎉 Status: OPERATIONAL
+## 🎉 Estado: OPERATIONAL
 
 **The application is now fully functional for the HU-3.3 SUPER-WORKSPACE user flow.**
 
-All navigation, project management, and workspace features are working without crashes.
+All navigation, proyecto management, and workspace features are working without crashes.
 
 ---
 
-**Test Date:** 06/02/2026 23:40
-**Test Platform:** Linux Desktop (Flutter 3.10.8)
-**Test Duration:** Complete navigation flow
-**Result:** ✅ ALL TESTS PASSED
+**Prueba Date:** 06/02/2026 23:40
+**Prueba Platform:** Linux Desktop (Flutter 3.10.8)
+**Prueba Duration:** Complete navigation flow
+**Resultado:** ✅ ALL TESTS PASSED

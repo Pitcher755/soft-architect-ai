@@ -1,9 +1,9 @@
-# 🎯 RESUMEN FINAL - HU-3.x Project-First Refactor
+# 🎯 RESUMEN FINAL - HU-3.x Proyecto-First Refactor
 
 > **Fecha:** 02/02/2026
-> **Status:** ✅ DOCUMENTACIÓN COMPLETA | ⏳ AWAITING USER CONFIRMATION
-> **Rama:** `feature/ui-project-shell` (rebasada sobre develop)
-> **Documentos:** 10 archivos | ~40,000 palabras | ~4,500 líneas
+> **Estado:** ✅ DOCUMENTACIÓN COMPLETA | ⏳ AWAITING USER CONFIRMATION
+> **Rama:** `feature/ui-proyecto-shell` (rebasada sobre develop)
+> **Documentoos:** 10 archivos | ~40,000 palabras | ~4,500 líneas
 
 ---
 
@@ -66,7 +66,7 @@ Problemas:
 • RAG sin contexto
 ```
 
-### ✅ PROPUESTO (Project-First Sequential)
+### ✅ PROPUESTO (Proyecto-First Sequential)
 ```
 Project Created
       ↓
@@ -98,10 +98,10 @@ Ventajas:
 | **Puntos** | 50 | 70 | +20 (+40%) |
 | **Duración** | 5 sem | 8 sem | +3 sem |
 | **FTE** | 2.5 | 3.5 | +1.0 FTE |
-| **Documentos** | Análisis docs | 25 docs standardized | +22 |
+| **Documentoos** | Análisis docs | 25 docs standardized | +22 |
 | **Complejidad** | Media | Alta | +40% |
 
-### Documentación Generada
+### Documentoación Generada
 
 | Métrica | Valor |
 |---------|-------|
@@ -251,9 +251,9 @@ Después: Se asume "No proceder" (archivado)
 
 ## 📋 ARCHIVO DE REFERENCIA RÁPIDA
 
-### Links Directos a Documentos
+### Links Directos a Documentoos
 
-| Documento | Lectura | Para Quién | Link |
+| Documentoo | Lectura | Para Quién | Link |
 |-----------|---------|-----------|------|
 | **ESTO** | 2 min | Todos | ← YOU ARE HERE |
 | Ejecutivo | 10 min | Stakeholders | doc/01-PROJECT_REPORT/HU-3_EXECUTIVE_SUMMARY.es.md |
@@ -337,7 +337,7 @@ Si tienes dudas o preguntas:
 
 **Hemos preparado TODO para que tomes una decisión informada:**
 
-✅ Análisis completo (Chat-First vs. Project-First)
+✅ Análisis completo (Chat-First vs. Proyecto-First)
 ✅ Especificación técnica detallada (5 HUs, 70 pts)
 ✅ Plan maestro (8 semanas, 5 fases)
 ✅ Código de ejemplo (Dart + Python)

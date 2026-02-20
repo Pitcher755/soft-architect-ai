@@ -1,4 +1,4 @@
-# ✅ Project Shell Refactoring - Validation Checklist
+# ✅ Proyecto Shell Refactoring - Validation Checklist
 
 > **Estado:** ✅ COMPLETADO
 > **Fecha:** 8 de febrero de 2026
@@ -10,13 +10,13 @@
 
 ### ✅ 1. Widget Real para Árbol de Directorios
 
-**Requisito:** "La columna de File Explorer debe cargar un widget real como file_tree_widget"
+**Requisito:** "La columna de Archivo Explorer debe cargar un widget real como archivo_tree_widget"
 
 **Implementación:**
-- ✅ Creado: `FileTreeWidget` (160 líneas)
-- ✅ Independiente: No inline en project_shell_screen.dart
+- ✅ Creado: `ArchivoTreeWidget` (160 líneas)
+- ✅ Independiente: No inline en proyecto_shell_screen.dart
 - ✅ Reutilizable: Puede usarse en otros contextos
-- ✅ Mock data: Cargado desde MockProjectData.mockProjectRoot
+- ✅ Mock data: Cargado desde MockProyectoData.mockProyectoRoot
 
 **Validación:**
 ```
@@ -39,7 +39,7 @@ lib/features/project_shell/presentation/widgets/file_tree_widget.dart ✓
 - ✅ Widgets internos:
   - ✅ MessageBubbleWidget ×3
   - ✅ ErrorBannerWidget (si necesario)
-  - ✅ Input field + Send button
+  - ✅ Input field + Send botón
   - ✅ ProgressIndicatorWidget en header
 
 **Validación:**
@@ -63,7 +63,7 @@ ChatPanelWidget rendering:
 - ✅ Toolbar funciona (copy, download)
 - ✅ Monospace font
 - ✅ Scrolleable
-- ✅ Filename header
+- ✅ Archivoname header
 - ✅ GitHub Dark theme
 
 ---
@@ -74,7 +74,7 @@ ChatPanelWidget rendering:
 
 **Implementación:**
 - ✅ ResizableColumn widget creado
-- ✅ Files column: 200-500px (default 260px)
+- ✅ Archivos column: 200-500px (default 260px)
 - ✅ Preview column: 300-600px (default 420px)
 - ✅ Drag handle: Divider interactivo
 - ✅ Visual feedback: Color change on hover
@@ -89,8 +89,8 @@ ResizableColumn features:
 └─ Cursor feedback ✓
 ```
 
-**Test manual:**
-1. Posiciona mouse en borde derecho del Files panel
+**Prueba manual:**
+1. Posiciona mouse en borde derecho del Archivos panel
 2. Cursor cambia a ↔ (resizeColumn)
 3. Arrastra a la izquierda → se hace más pequeño
 4. Arrastra a la derecha → se hace más grande
@@ -103,7 +103,7 @@ ResizableColumn features:
 **Requisito:** "igual que pueden ser ocultables las dos de los laterales, el arbol de directorios y el markdown preview"
 
 **Implementación:**
-- ✅ Files Column toggle: 📁 FAB
+- ✅ Archivos Column toggle: 📁 FAB
 - ✅ Preview Column toggle: 👁 FAB
 - ✅ FABs en esquina inferior derecha
 - ✅ Estado persistente
@@ -127,8 +127,8 @@ Visibility toggles:
 **Implementación:**
 - ✅ Integrado en Chat Panel header
 - ✅ Progress bar animado (8/25 = 32%)
-- ✅ Phase label dinámico
-- ✅ Pause button
+- ✅ Fase label dinámico
+- ✅ Pause botón
 - ✅ Colors por fase
 
 **Validación:**
@@ -145,7 +145,7 @@ ProgressIndicatorWidget:
 
 ### ✅ 7. Árbol de Directorios Navegable
 
-**Requisito:** "el arbol de directorios y documentos mockeados deben ser navegables"
+**Requisito:** "el arbol de directorios y documentoos mockeados deben ser navegables"
 
 **Implementación:**
 - ✅ Click en ► para expandir
@@ -168,10 +168,10 @@ Navigation features:
 
 ### ✅ 8. Selección de Archivo Persiste en Árbol
 
-**Requisito:** "si pulso en un documento .md para verlo en markdown_preview no se debe cerrar el arbol de directorios solo marcar el documento seleccionado"
+**Requisito:** "si pulso en un documentoo .md para verlo en markdown_preview no se debe cerrar el arbol de directorios solo marcar el documentoo seleccionado"
 
 **Implementación:**
-- ✅ FileTreeWidget nunca se oculta automáticamente
+- ✅ ArchivoTreeWidget nunca se oculta automáticamente
 - ✅ Archivo seleccionado marcado en azul
 - ✅ Preview se actualiza sin cerrar árbol
 - ✅ Estado persiste
@@ -208,9 +208,9 @@ Analyzing client...
 
 ### ✅ Separación de Concerns
 
-- ✅ FileTreeWidget: Responsable de árbol únicamente
+- ✅ ArchivoTreeWidget: Responsable de árbol únicamente
 - ✅ ResizableColumn: Genérico para cualquier columna
-- ✅ ProjectShellScreen: Solo orquestación
+- ✅ ProyectoShellScreen: Solo orquestación
 - ✅ ChatPanelWidget: Responsable de chat
 - ✅ MarkdownPreviewWidget: Responsable de preview
 - ✅ ProgressIndicatorWidget: Responsable de progreso
@@ -239,8 +239,8 @@ ProjectShellScreen    ← Presentation (Orchestration)
 
 | Archivo | Antes | Después | Cambio |
 |---------|-------|---------|--------|
-| project_shell_screen.dart | 276 lines | ~150 lines | -46% ✓ |
-| file_tree_widget.dart | - | 160 lines | NEW ✓ |
+| proyecto_shell_screen.dart | 276 lines | ~150 lines | -46% ✓ |
+| archivo_tree_widget.dart | - | 160 lines | NEW ✓ |
 | resizable_column.dart | - | 60 lines | NEW ✓ |
 | **Total** | **276** | **370** | **+34% (but cleaner)** |
 
@@ -248,10 +248,10 @@ ProjectShellScreen    ← Presentation (Orchestration)
 
 | Métrica | Antes | Después |
 |---------|-------|---------|
-| project_shell_screen.dart | Alta | Baja |
+| proyecto_shell_screen.dart | Alta | Baja |
 | Métodos recursivos | 3 | 1 |
 | Responsabilidades | 5 | 1 |
-| Testability | Baja | Alta |
+| Pruebaability | Baja | Alta |
 
 ---
 
@@ -261,15 +261,15 @@ ProjectShellScreen    ← Presentation (Orchestration)
 
 - ✅ 4 columnas visibles
 - ✅ Sidebar 64px fijo
-- ✅ Files column resizable 260px default
+- ✅ Archivos column resizable 260px default
 - ✅ Chat column expanded
 - ✅ Preview column resizable 420px default
 - ✅ Responsive to window resize
 
 ### Interactividad
 
-- ✅ Expand/collapse folders with visual feedback
-- ✅ Select files with highlight
+- ✅ Expand/collapse carpetas with visual feedback
+- ✅ Select archivos with highlight
 - ✅ Resize columns with drag handle
 - ✅ Toggle visibility with FABs
 - ✅ All feedback instant/smooth
@@ -284,12 +284,12 @@ ProjectShellScreen    ← Presentation (Orchestration)
 
 ---
 
-## 🔗 Integration - Validación
+## 🔗 Integración - Validación
 
 ### Mock Data
 
-- ✅ Único punto de verdad: MockProjectData
-- ✅ FileNode tree completo
+- ✅ Único punto de verdad: MockProyectoData
+- ✅ ArchivoNode tree completo
 - ✅ ChatMessageUI list precargado
 - ✅ Markdown content ready
 - ✅ Progress metrics precargado
@@ -307,7 +307,7 @@ MockProjectData                API Provider
 ```
 
 **Widgets NO necesitan cambios:**
-- ✅ FileTreeWidget
+- ✅ ArchivoTreeWidget
 - ✅ ChatPanelWidget
 - ✅ MarkdownPreviewWidget
 - ✅ ProgressIndicatorWidget
@@ -343,28 +343,28 @@ MockProjectData                API Provider
 - ✅ All features implemented
 - ✅ Clean Architecture maintained
 - ✅ No hardcoded values
-- ✅ Documentation complete
+- ✅ Documentoation complete
 - ✅ User guide ready
-- ✅ Architecture documented
+- ✅ Architecture documentoed
 - ✅ Mock data scalable
-- ✅ Ready for backend integration
+- ✅ Preparado para backend integration
 
 ---
 
-## 📝 Documentation
+## 📝 Documentoation
 
-### Created Files
+### Creard Archivos
 
 - ✅ PROJECT_SHELL_ARCHITECTURE_REFACTOR_COMPLETE.md (Technical)
 - ✅ ARCHITECTURE_DIAGRAMS.md (Visual)
 - ✅ PROJECT_SHELL_USER_GUIDE.md (Usage)
-- ✅ PROJECT_SHELL_VALIDATION_CHECKLIST.md (This file)
+- ✅ PROJECT_SHELL_VALIDATION_CHECKLIST.md (This archivo)
 
-### Inline Documentation
+### Inline Documentoation
 
 - ✅ DartDoc comments on all widgets
-- ✅ Method documentation
-- ✅ Parameter documentation
+- ✅ Method documentoation
+- ✅ Parameter documentoation
 - ✅ Example usage in comments
 
 ---
@@ -373,7 +373,7 @@ MockProjectData                API Provider
 
 ### Todos los Requisitos del Usuario - ✅ COMPLETADOS
 
-1. ✅ Widget real para árbol (FileTreeWidget)
+1. ✅ Widget real para árbol (ArchivoTreeWidget)
 2. ✅ Chat panel con datos mockeados
 3. ✅ MarkdownPreviewWidget bien integrado
 4. ✅ Columnas resizables
@@ -389,9 +389,9 @@ MockProjectData                API Provider
 - ✅ Separation of Concerns
 - ✅ Scalable Mock Data
 - ✅ Responsive UI
-- ✅ Ready for Backend
+- ✅ Preparado para Backend
 
-### Documentación - ✅ COMPLETA
+### Documentoación - ✅ COMPLETA
 
 - ✅ Technical architecture
 - ✅ Visual diagrams
@@ -400,9 +400,9 @@ MockProjectData                API Provider
 
 ---
 
-**Status:** 🟢 READY FOR PRODUCTION
+**Estado:** 🟢 READY FOR PRODUCTION
 
-**Próximo paso:** Backend Integration (Notifiers + API)
+**Próximo paso:** Backend Integración (Notifiers + API)
 
 ---
 

@@ -6,7 +6,7 @@
 
 ---
 
-## 📊 Estado Actual vs Objetivo
+## 📊 Status Actual vs Objetivo
 
 ### Scoreboard: Robustness Maturity
 
@@ -74,7 +74,7 @@ async def test_database_with_concurrent_operations():
 - ❌ Graceful shutdown bajo load → ¿qué pasa?
 
 **Impacto:**
-- 🔴 **HIGH**: Aplicación puede quedar en estado corrupto
+- 🔴 **HIGH**: Aplicación puede quedar en status corrupto
 - 🔴 **HIGH**: No hay automatic recovery
 - 🔴 **HIGH**: Posible data loss
 

@@ -8,15 +8,15 @@
 
 ## 📌 Resumen Ejecutivo
 
-Se ha corregido **COMPLETAMENTE** el problema donde los proyectos creados en `CreateProjectDialog` no aparecían en `ProjectWorkspaceScreen`.
+Se ha corregido **COMPLETAMENTE** el problema donde los proyectos creados en `CrearProyectoDialog` no aparecían en `ProyectoWorkspaceScreen`.
 
 ### ✅ Lo que ahora funciona:
 
-1. **Proyectos REALES** se cargan del filesystem
+1. **Proyectos REALES** se cargan del archivosystem
 2. **Proyecto MOCK** (Guía SoftArchitect) siempre incluido
 3. Se muestran **JUNTOS** en un grid elegante
 4. **Botón "Ver todos"** aparece cuando hay >8 proyectos
-5. **ProjectListView expandible** muestra lista completa
+5. **ProyectoListView expandible** muestra lista completa
 6. **Nuevos proyectos** creados aparecen inmediatamente
 7. **Manejo robusto** de errores y loading states
 
@@ -24,8 +24,8 @@ Se ha corregido **COMPLETAMENTE** el problema donde los proyectos creados en `Cr
 
 ## 🔧 Archivos Modificados
 
-### 1. `project_workspace_screen.dart`
-**Ruta:** `src/client/lib/features/project_shell/presentation/screens/`
+### 1. `proyecto_workspace_screen.dart`
+**Ruta:** `src/client/lib/features/proyecto_shell/presentation/screens/`
 
 **Cambio Principal:**
 ```dart
@@ -59,8 +59,8 @@ Widget build(BuildContext context) {
 
 ---
 
-### 2. `mock_projects_data.dart`
-**Ruta:** `src/client/lib/features/project_shell/data/`
+### 2. `mock_proyectos_data.dart`
+**Ruta:** `src/client/lib/features/proyecto_shell/data/`
 
 **Cambio Principal:**
 ```dart
@@ -95,15 +95,15 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
 ```
 
 **Impacto:**
-- ✅ Busca proyectos en filesystem
+- ✅ Busca proyectos en archivosystem
 - ✅ Soporta múltiples rutas
 - ✅ Combina con proyecto mock
 - ✅ Manejo de errores (intenta, continúa si falla)
 
 ---
 
-### 3. `project_list_view.dart`
-**Ruta:** `src/client/lib/features/project_shell/presentation/widgets/`
+### 3. `proyecto_list_view.dart`
+**Ruta:** `src/client/lib/features/proyecto_shell/presentation/widgets/`
 
 **Cambio Principal:**
 ```dart
@@ -121,7 +121,7 @@ final List<Map<String, dynamic>> projects;
 **Impacto:**
 - ✅ Compatible con nuevo formato de datos
 - ✅ Mantiene funcionalidad (ordenamiento, display)
-- ✅ Removido método innecesario `_getPhaseColor()`
+- ✅ Removido método innecesario `_getFaseColor()`
 
 ---
 
@@ -224,7 +224,7 @@ Spinner      Show error    |
 
 ---
 
-## 🧪 Testing
+## 🧪 Pruebaing
 
 ### Validación Rápida (5 minutos)
 
@@ -243,17 +243,17 @@ flutter run -d linux
 # - Sin errores en console
 ```
 
-### Testing Completo (30 minutos)
+### Pruebaing Completo (30 minutos)
 
 Ver: [`VALIDATION_CHECKLIST.md`](VALIDATION_CHECKLIST.md)
 
-**Tests incluidos:**
-- ✅ Test 1: Visualización inicial
-- ✅ Test 2: Crear nuevo proyecto
-- ✅ Test 3: Botón "Ver todos" (>8)
-- ✅ Test 4: Lista expandida
-- ✅ Test 5: Hybrid detection (real vs mock)
-- ✅ Test 6: Persistencia
+**Pruebas incluidos:**
+- ✅ Prueba 1: Visualización inicial
+- ✅ Prueba 2: Crear nuevo proyecto
+- ✅ Prueba 3: Botón "Ver todos" (>8)
+- ✅ Prueba 4: Lista expandida
+- ✅ Prueba 5: Hybrid detection (real vs mock)
+- ✅ Prueba 6: Persistencia
 
 ---
 
@@ -267,7 +267,7 @@ Ver: [`VALIDATION_CHECKLIST.md`](VALIDATION_CHECKLIST.md)
 3. ~/Proyectos              # Home (Spanish)
 ```
 
-### Cómo crear proyectos para testing
+### Cómo crear proyectos para pruebaing
 
 **Opción A: Carpeta física**
 ```bash
@@ -276,7 +276,7 @@ mkdir -p ~/projects/Test-Project-2
 # Reiniciar app → aparecen automáticamente
 ```
 
-**Opción B: CreateProjectDialog**
+**Opción B: CrearProyectoDialog**
 ```
 1. Click [+ Nuevo Proyecto]
 2. Nombre: "Test Project"
@@ -291,12 +291,12 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 
 ---
 
-## 📚 Documentación Generada
+## 📚 Documentoación Generada
 
-| Documento | Propósito |
+| Documentoo | Propósito |
 |-----------|-----------|
 | **CORRECION_DEFINITIVA_HYBRID_SYSTEM.md** | Detalles técnicos de la corrección |
-| **TESTING_QUICK_START.md** | Guía de testing básica |
+| **TESTING_QUICK_START.md** | Guía de pruebaing básica |
 | **BEFORE_AFTER_COMPARISON.md** | Comparación visual antes/después |
 | **PROYECTO_SEARCH_PATHS.md** | Rutas de búsqueda personalizables |
 | **VALIDATION_CHECKLIST.md** | Checklist de 10 pasos para validar |
@@ -326,13 +326,13 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 
 ## 🔐 Garantías de Calidad
 
-| Aspecto | Status |
+| Aspecto | Estado |
 |---------|--------|
 | **Compilación** | ✅ 0 errores Dart |
-| **Unit Tests** | ✅ Listos para implementar |
-| **Integration Tests** | ✅ Checklist disponible |
+| **Unit Pruebas** | ✅ Listos para implementar |
+| **Integración Pruebas** | ✅ Checklist disponible |
 | **Code Review** | ✅ Clean architecture |
-| **Documentation** | ✅ 7 archivos MD generados |
+| **Documentoation** | ✅ 7 archivos MD generados |
 | **Backward Compatibility** | ✅ Sin breaking changes |
 | **Performance** | ✅ Optimizado |
 | **Accessibility** | ✅ WCAG compliant |
@@ -342,13 +342,13 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 ## 🎯 Próximos Pasos (Recomendados)
 
 1. **Hoy:**
-   - [ ] Ejecutar `flutter run` y verificar básico
+   - [ ] Ejecutar `flutter ejecutar` y verificar básico
    - [ ] Revisar `TESTING_QUICK_START.md`
 
 2. **Esta semana:**
    - [ ] Completar `VALIDATION_CHECKLIST.md`
    - [ ] Integrar CI/CD
-   - [ ] User acceptance testing
+   - [ ] User acceptance pruebaing
 
 3. **Próximo sprint:**
    - [ ] Caché de proyectos
@@ -362,39 +362,39 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 ### P: ¿Por qué cambié de Riverpod a FutureBuilder?
 **R:** `FutureBuilder` es más simple y nativo para este caso. Riverpod es overkill cuando solo necesitamos cargar datos una sola vez. El código es más legible y mantenible.
 
-### P: ¿Qué pasa si no existen carpetas en ~/projects?
+### P: ¿Qué pasa si no existen carpetas en ~/proyectos?
 **R:** El sistema intenta en múltiples rutas. Si no encuentra nada, solo muestra la Guía. Sin errores. Robusto.
 
 ### P: ¿Cómo agrego más rutas de búsqueda?
-**R:** Edita `mock_projects_data.dart`, función `_loadRealProjects()`, variable `commonPaths`. Ver `PROYECTO_SEARCH_PATHS.md`.
+**R:** Edita `mock_proyectos_data.dart`, función `_loadRealProyectos()`, variable `commonPaths`. Ver `PROYECTO_SEARCH_PATHS.md`.
 
 ### P: ¿Por qué el botón "Ver todos" a veces está oculto?
 **R:** Solo aparece si hay MÁS DE 8 proyectos. Grid muestra 8, botón expande los extras.
 
 ### P: ¿Los proyectos se guardan a base de datos?
-**R:** Por ahora se leen del filesystem. El sistema es "filesystem-first". DB es opcional para futuro.
+**R:** Por ahora se leen del archivosystem. El sistema es "archivosystem-first". DB es opcional para futuro.
 
 ---
 
 ## 🆘 Troubleshooting
 
 ### "Proyectos no aparecen"
-1. Verificar que existen carpetas en `~/projects` o `~/SoftArchitect`
-2. Crear carpeta de prueba: `mkdir ~/projects/Test`
-3. Reiniciar app: `flutter run`
+1. Verificar que existen carpetas en `~/proyectos` o `~/SoftArchitect`
+2. Crear carpeta de prueba: `mkdir ~/proyectos/Prueba`
+3. Reiniciar app: `flutter ejecutar`
 
 ### "Botón desaparecido"
 1. Necesitas 9+ proyectos (8 en grid + más)
-2. Crear más: `mkdir ~/projects/{A,B,C,D,E,F}`
+2. Crear más: `mkdir ~/proyectos/{A,B,C,D,E,F}`
 3. Revisarl código si umbral es diferente
 
 ### "Proyecto creado no aparece"
-1. Verificar que CreateProjectDialog creó la carpeta
+1. Verificar que CrearProyectoDialog creó la carpeta
 2. Revisar ruta donde se guardó
 3. Agregar esa ruta a `commonPaths`
 
 ### "Spinner no desaparece"
-1. Revisar permisos en ~/projects
+1. Revisar permisos en ~/proyectos
 2. Ver logs: buscar mensajes "❌ Error loading"
 3. Criar bug report con stack trace
 
@@ -402,15 +402,15 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 
 ## 📞 Soporte
 
-**Documentación:**
+**Documentoación:**
 - Técnica: `CORRECION_DEFINITIVA_HYBRID_SYSTEM.md`
-- Testing: `TESTING_QUICK_START.md`
+- Pruebaing: `TESTING_QUICK_START.md`
 - Comparación: `BEFORE_AFTER_COMPARISON.md`
 
 **Código:**
-- Main files: `project_workspace_screen.dart`
-- Data: `mock_projects_data.dart`
-- UI: `project_list_view.dart`
+- Main archivos: `proyecto_workspace_screen.dart`
+- Data: `mock_proyectos_data.dart`
+- UI: `proyecto_list_view.dart`
 
 ---
 
@@ -423,7 +423,7 @@ Ver: [`PROYECTO_SEARCH_PATHS.md`](PROYECTO_SEARCH_PATHS.md)
 ✅ Nuevo proyectos aparecen automáticamente
 ✅ UI escalable con botón expandible
 ✅ Código limpio y mantenible
-✅ Documentación completa
+✅ Documentoación completa
 ✅ Listo para producción
 
-**Status:** ✅ **APROBADO PARA PRODUCCIÓN**
+**Estado:** ✅ **APROBADO PARA PRODUCCIÓN**

@@ -6,13 +6,13 @@ SoftArchitect AI es una plataforma de desarrollo asistido que democratiza la ing
 ## 2. Problemática
 El desarrollo de software moderno enfrenta dos grandes retos:
 1.  **Parálisis por Análisis:** La cantidad de metodologías, patrones y herramientas abruma a los desarrolladores.
-2.  **Deuda Técnica Silenciosa:** Se saltan pasos críticos (toma de requisitos formal, tests, seguridad) por falta de tiempo o conocimiento, resultando en software frágil.
+2.  **Deuda Técnica Silenciosa:** Se saltan pasos críticos (toma de requisitos formal, pruebas, seguridad) por falta de tiempo o conocimiento, resultando en software frágil.
 
-**Solución:** Una herramienta que *impone* y *facilita* el ciclo de vida correcto, generando la documentación y el boilerplate automáticamente basándose en una base de conocimiento curada.
+**Solución:** Una herramienta que *impone* y *facilita* el ciclo de vida correcto, generando la documentoación y el boilerplate automáticamente basándose en una base de conocimiento curada.
 
 ## 3. Funcionalidades Core
 ### 🧠 Módulo RAG (Retrieval-Augmented Generation)
-* **Base de Conocimiento:** Entrenada con documentación académica y práctica (Ingeniería del Software, Arquitectura, Seguridad).
+* **Base de Conocimiento:** Entrenada con documentoación académica y práctica (Ingeniería del Software, Arquitectura, Seguridad).
 * **Contexto:** El asistente "sabe" en qué fase del proyecto estás y te da consejos específicos, no genéricos.
 
 ### 🛠️ Generadores Inteligentes (Smart Wizards)
@@ -35,7 +35,7 @@ SoftArchitect AI es una plataforma de escritorio (cross-platform) que actúa com
 
 ## 2. Problemática y Solución
 * **El Problema:** La brecha entre la teoría académica (másters, libros) y la práctica real. Los desarrolladores a menudo ignoran la toma de requisitos formal o la seguridad por "falta de tiempo" o herramientas que lo faciliten.
-* **La Solución:** Un "Copiloto de Ingeniería" que no solo genera código, sino que **estructura el pensamiento**. Impone un workflow de calidad (Requisitos -> Arquitectura -> Código -> Test) asistido por IA, funcionando totalmente offline para garantizar la privacidad del código.
+* **La Solución:** Un "Copiloto de Ingeniería" que no solo genera código, sino que **estructura el pensamiento**. Impone un workflow de calidad (Requisitos -> Arquitectura -> Código -> Prueba) asistido por IA, funcionando totalmente offline para garantizar la privacidad del código.
 
 ## 3. Arquitectura del Sistema
 El sistema sigue una arquitectura de **Microservicios Locales** orquestados por Docker, lo que permite una instalación "Zero-Config" (Clonar y Ejecutar).
@@ -50,13 +50,13 @@ El sistema sigue una arquitectura de **Microservicios Locales** orquestados por 
 * **Business Analyst Agent:** Generación automática de Historias de Usuario (Gherkin) y Matrices de Requisitos a partir de descripciones vagas.
 * **Architect Advisor:** Cuestionarios interactivos para recomendar estilos arquitectónicos (Monolito vs Microservicios) basados en criterios técnicos.
 * **Security Guardian:** Análisis preventivo de riesgos basado en OWASP Top 10 antes de escribir una sola línea de código.
-* **RAG Auto-Gestionado:** Capacidad de ingerir nueva documentación técnica simplemente soltando PDFs en una carpeta.
+* **RAG Auto-Gestionado:** Capacidad de ingerir nueva documentoación técnica simplemente soltando PDFs en una carpeta.
 
 ## 5. Stack Tecnológico Definitivo
 * **Frontend:** Flutter (Dart).
 * **Backend:** Python 3.11 + FastAPI.
 * **IA Orchestration:** LangChain.
-* **LLM Runtime:** Ollama (Docker).
+* **LLM Ejecutartime:** Ollama (Docker).
 * **Vector DB:** ChromaDB (Docker).
 * **Infraestructura:** Docker Compose.
 
@@ -75,7 +75,7 @@ Aquí tienes mi **Auditoría del Workflow** y la **Hoja de Ruta para SoftArchite
 
 * **Quality Gates:** Me encanta que definas criterios de "No Go" en cada fase (ej: Coverage > 80%).
 * **Security Shift-Left:** Integras seguridad desde el diseño (Fase 1) y no solo al final.
-* **Stack Moderno:** Next.js, Flutter, Docker, K8s... es lo que demanda el mercado.
+* **Stack Moderno:** Siguiente.js, Flutter, Docker, K8s... es lo que demanda el mercado.
 
 **🔍 Pequeños "Agujeros" a cubrir (Sugerencias):**
 
@@ -101,7 +101,7 @@ Aquí es donde definimos la "magia" de tu TFM. He clasificado las fases del Work
 * **Fase 1: Planificación**
 * **Generador de Historias de Usuario:** Input: "Funcionalidad X" -> Output: Gherkin (Given-When-Then).
 * **Arquitecto Virtual (ADRs):** Input: "Necesito escalar a 10k usuarios" -> Output: "ADR recomendando Tech Stack (ej: Microservicios vs Monolito)".
-* **Modelado de Amenazas:** Input: "Arquitectura descrita" -> Output: "STRIDE Analysis inicial".
+* **Modelado de Amenazas:** Input: "Arquitectura descrita" -> Output: "STRIDE Análisis inicial".
 
 
 * **Fase 2: Setup (Scaffolding)**
@@ -113,7 +113,7 @@ Aquí es donde definimos la "magia" de tu TFM. He clasificado las fases del Work
 
 
 
-#### ⚠️ ZONA AMARILLA: Asistencia (Copilot Style)
+#### ⚠️ ZONA AMARILLA: Asistencia (Copilot Estilo)
 
 *Tu RAG genera la "receta", pero tú cocinas.*
 
@@ -121,12 +121,12 @@ Aquí es donde definimos la "magia" de tu TFM. He clasificado las fases del Work
 * **Prompt Library:** Tu app no escribe el código en el IDE, pero te da el **Prompt Perfecto** para que lo pegues en GitHub Copilot (ej: "Genera este endpoint con Zod validation").
 
 
-* **Fase 4: Testing**
+* **Fase 4: Pruebaing**
 * **Generador de Casos de Prueba:** Input: "Historia de Usuario" -> Output: "Lista de casos de prueba (Happy path, Edge cases)".
 
 
 * **Fase 6: Infraestructura**
-* **Generador de Manifests:** Tu RAG te da el código para el `deployment.yaml` de Kubernetes o el `Dockerfile`, tú lo guardas en el repo.
+* **Generador de Manifests:** Tu RAG te da el código para el `deployment.yaml` de Kubernetes o el `Dockerarchivo`, tú lo guardas en el repo.
 
 
 
@@ -159,7 +159,7 @@ Vamos a hacer lo que pediste: **Dogfooding**. Vamos a usar la lógica que tendr�
 > **INCLUIR (Must Have):**
 > 1. **Configuración Local:** Docker Compose con Ollama + ChromaDB (Zero-setup).
 > 2. **Módulo de Requisitos:** Wizard para generar User Stories desde texto libre.
-> 3. **Chat RAG Contextual:** Chatbot que responde dudas basándose *solo* en la documentación del Máster.
+> 3. **Chat RAG Contextual:** Chatbot que responde dudas basándose *solo* en la documentoación del Máster.
 > 4. **Generador de Archivos:** Exportar las respuestas a Markdown/PDF.
 >
 >
@@ -186,7 +186,7 @@ Vamos a hacer lo que pediste: **Dogfooding**. Vamos a usar la lógica que tendr�
 ---
 
 **¿Cómo lo ves?**
-Si estás de acuerdo con este alcance y la simulación, podemos dar por validada la **Fase 0** y pasar a documentar la **Fase 1 (Arquitectura)** usando tu propio framework.
+Si estás de acuerdo con este alcance y la simulación, podemos dar por validada la **Fase 0** y pasar a documentoar la **Fase 1 (Arquitectura)** usando tu propio framework.
 
 ¿Te lanzo el prompt simulado para la Fase 1? 🏗️
 
@@ -309,15 +309,15 @@ Para hacer la "Prueba de Fuego", no necesitas irte a otro sitio. Yo puedo simula
 
 ### 5.1. Validación "Mago de Oz"
 Se ha realizado una simulación completa de las Fases 0, 1, 2, 5 y 6 utilizando un modelo LLM avanzado (Gemini) actuando como el sistema final.
-**Resultados:**
+**Resultadoados:**
 * Se confirma la viabilidad del MVP "Local-First".
 * Se valida la arquitectura híbrida: Flutter (UI) + Python (Lógica RAG) + Ollama (Inferencia).
-* Se detecta la necesidad crítica de estructurar el conocimiento en "Paquetes Técnicos" en lugar de documentos sueltos.
+* Se detecta la necesidad crítica de estructurar el conocimiento en "Paquetes Técnicos" en lugar de documentoos sueltos.
 
 ### 5.2. Estrategia de Modelos LLM (Dual Strategy)
 Para equilibrar rendimiento y capacidad técnica en hardware doméstico (HomeLab), se define una estrategia de dos niveles:
 
-1.  **Modelo de Testing/Rapid Response:** **Phi-3.5 Mini (3.8B)**.
+1.  **Modelo de Pruebaing/Rapid Response:** **Phi-3.5 Mini (3.8B)**.
     * *Uso:* Validación de infraestructura, respuestas rápidas de chat general y entornos con <8GB RAM.
     * *Ventaja:* Despliegue inmediato y bajísima latencia.
 
@@ -357,5 +357,5 @@ Tras pruebas de rendimiento en hardware de gama media (NVIDIA RTX 3050 - 4GB VRA
 
 ### 6.2. Dualidad de Infraestructura (Local vs Cloud)
 El sistema ahora soporta dos modos de operación transparentes al usuario, definidos por el entorno de despliegue:
-1.  **Modo "Iron" (Local):** Ejecución 100% privada usando Ollama + GPU NVIDIA (Docker Runtime). Ideal para equipos con gráfica dedicada.
+1.  **Modo "Iron" (Local):** Ejecución 100% privada usando Ollama + GPU NVIDIA (Docker Ejecutartime). Ideal para equipos con gráfica dedicada.
 2.  **Modo "Ether" (Híbrido/Cloud):** Ejecución en HomeLabs antiguos (CPU Only) delegando la inferencia a **Groq Cloud** (Llama 3.3 70B) mediante API, manteniendo la base vectorial en local.

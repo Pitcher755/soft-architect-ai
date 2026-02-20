@@ -1,7 +1,7 @@
 # 📈 Test Coverage Dashboard - February 2026
 
 > **Última Actualización:** 4 de febrero de 2026
-> **Estado:** ✅ En Mejora Continua
+> **Status:** ✅ En Mejora Continua
 > **Responsable:** ArchitectZero Agent
 
 ---
@@ -153,7 +153,7 @@ DirectoryTreeWidget:
 
 ---
 
-## 📊 Análisis de Tendencia
+## 📊 Analysis de Tendencia
 
 ### Progresión Histórica (Últimas 4 Semanas)
 ```
@@ -280,7 +280,7 @@ Build Success        100%  → 100%  → 100% → 100%
 
 ## 📌 Hitos Alcanzados
 
-### ✅ Completados
+### ✅ Completeds
 - [x] Unit tests > 95%
 - [x] Widget tests > 70%
 - [x] Integration tests > 50%
@@ -294,7 +294,7 @@ Build Success        100%  → 100%  → 100% → 100%
 - [ ] Overall coverage > 98%
 - [ ] E2E coverage > 70%
 
-### ⏳ Pendientes
+### ⏳ Pendings
 - [ ] Overall coverage 99%+
 - [ ] Integration tests 100%
 - [ ] Performance benchmarks
@@ -304,7 +304,7 @@ Build Success        100%  → 100%  → 100% → 100%
 
 ## 📞 Consultas Frecuentes
 
-### ¿Cuál es el siguiente test que debo arreglar?
+### ¿Cuál es el next test que debo arreglar?
 ```
 1️⃣ ProjectShellScreen state injection (7 tests) - MÁXIMA PRIORIDAD
    └─ Resolviendo esto sube coverage a 92%+
@@ -333,7 +333,7 @@ Estimado: 11-12 de Febrero (~1 semana)
 
 ## 🎓 Documentación Relacionada
 
-- [COVERAGE_ANALYSIS_LATEST.md](./COVERAGE_ANALYSIS_LATEST.md) - Análisis detallado
+- [COVERAGE_ANALYSIS_LATEST.md](./COVERAGE_ANALYSIS_LATEST.md) - Analysis detallado
 - [TEST_COVERAGE_FINAL_REPORT.md](./TEST_COVERAGE_FINAL_REPORT.es.md) - Historial completo
 - [TESTING_PYRAMID_AND_QUALITY_GATES.md](./TESTING_PYRAMID_AND_QUALITY_GATES.es.md) - Estrategia
 

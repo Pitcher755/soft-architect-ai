@@ -213,7 +213,7 @@ FREQUENCY_PENALTY=0.5
 **Síntomas:**
 - UI tarda en responder
 - Chat lag
-- Documentos tardan en cargar
+- Documentoos tardan en cargar
 
 **Causa Posible 1: RAM insuficiente**
 **Solución:**
@@ -337,7 +337,7 @@ app.add_middleware(
 
 **Síntomas:**
 - Lista de proyectos vacía
-- "No projects found"
+- "No proyectos found"
 
 **Causa:** Datos no persistidos o carpeta movida
 
@@ -359,7 +359,7 @@ cp -r ./data/backup/* ./data/projects/
 
 ---
 
-### ❌ "Error al guardar documentos"
+### ❌ "Error al guardar documentoos"
 
 **Síntomas:**
 ```
@@ -445,14 +445,14 @@ SSL_VERIFY=false
 | **GitHub Issues** | Bugs, features | 24-48h |
 | **Discord** (próximamente) | Ayuda rápida | Comunidad |
 | **Email** | Soporte técnico | 2-3 días |
-| **Documentación** | Troubleshooting | Instantáneo |
+| **Documentoación** | Troubleshooting | Instantáneo |
 
 **GitHub Issues:** https://github.com/Pitcher755/soft-architect-ai/issues
 **Email:** soporte@softarchitectai.com
 
 ---
 
-### 📚 Documentos Relacionados
+### 📚 Documentoos Relacionados
 
 - [Instalación Completa](02-INSTALLATION.md) - Para problemas de setup
 - [Quick Start](01-QUICK_START.md) - Comenzar desde cero
@@ -470,7 +470,7 @@ Antes de reportar un problema, verifica:
 - [ ] ¿Comprobaste que Docker está corriendo? (si aplica)
 - [ ] ¿Revisaste que el puerto no está ocupado?
 - [ ] ¿Actualizaste a la última versión?
-- [ ] ¿Consultaste la documentación?
+- [ ] ¿Consultaste la documentoación?
 - [ ] ¿Buscaste el error en GitHub Issues?
 
 ---

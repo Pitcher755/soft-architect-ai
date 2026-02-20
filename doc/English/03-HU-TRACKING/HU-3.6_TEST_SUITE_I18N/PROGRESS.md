@@ -83,9 +83,9 @@
 - contentCopied, saveError (with {error} placeholder)
 
 **app_es.arb (Spanish translations):**
-- SoftArchitect AI, Configuración, Crear Proyecto, Nuevo Proyecto
+- SoftArchitect AI, Configuration, Create Project, Nuevo Project
 - Examinar..., Validar y Guardar, Refinar, Rechazar
-- Archivo guardado en, Contenido copiado al portapapeles
+- File guardado en, Contenido copiado al portapapeles
 - Error al guardar
 
 #### ✅ 2.4.2 Localization Code Generation
@@ -293,7 +293,7 @@
    - Est: 20 min
 
 3. **Replace hardcoded strings (7 files, PRIORITY)**
-   - create_project_dialog.dart: Crear Proyecto, Nuevo Proyecto
+   - create_project_dialog.dart: Create Project, Nuevo Project
    - proposal_card_widget.dart: Validar y Guardar, Refinar, Rechazar
    - etc.
    - Est: 90 min
@@ -583,13 +583,13 @@ src/client/lib/l10n/
 - **Total hardcoded Spanish strings:** 9 unique strings identified
 - **Location:** Flutter UI widgets (Text, button labels)
 - **Strings Found:**
-  1. `'Crear Proyecto'` → `createProject`
-  2. `'Nuevo Proyecto'` → `newProject`
+  1. `'Create Project'` → `createProject`
+  2. `'Nuevo Project'` → `newProject`
   3. `'Examinar...'` → `browse`
   4. `'Validar y Guardar'` → `validateAndSave`
   5. `'Refinar'` → `refine`
   6. `'Rechazar'` → `reject`
-  7. `'Archivo guardado en: $outputFile'` → `fileSaved` (parameterized)
+  7. `'File guardado en: $outputFile'` → `fileSaved` (parameterized)
   8. `'Contenido copiado al portapapeles'` → `contentCopied`
   9. `'Error al guardar: $e'` → `saveError` (parameterized)
 

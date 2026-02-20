@@ -1,9 +1,9 @@
 # 🎯 Executive Summary: Propuesta HU-3.x Project-First Refactor
 
-> **Fecha:** 02/02/2026
+> **Date:** 02/02/2026
 > **Para:** Architecture Review Board + Stakeholders
-> **Estado:** ✅ ANÁLISIS COMPLETO - AGUARDANDO DECISIÓN
-> **Documentos de Soporte:** HU-3_REFACTOR_ANALYSIS.es.md + HU-3_IMPROVEMENT_PROPOSALS.es.md
+> **Status:** ✅ ANÁLISIS COMPLETO - AGUARDANDO DECISIÓN
+> **Documents de Soporte:** HU-3_REFACTOR_ANALYSIS.es.md + HU-3_IMPROVEMENT_PROPOSALS.es.md
 
 ---
 
@@ -185,7 +185,7 @@ Risk: Underestimation → Mid-sprint crisis
 
 ---
 
-## 💰 Análisis Costo-Beneficio
+## 💰 Analysis Costo-Beneficio
 
 ### Opción B (5 HUs) - RECOMENDADA
 
@@ -211,7 +211,7 @@ Risk: Underestimation → Mid-sprint crisis
 - Unit tests antes de integración
 - Soporte para Windows/Linux/macOS
 
-### Riesgo 2: Permisos del Sistema de Archivos
+### Riesgo 2: Permisos del Sistema de Files
 
 **Severidad:** MEDIUM
 **Probabilidad:** MEDIUM
@@ -231,14 +231,14 @@ Risk: Underestimation → Mid-sprint crisis
 
 ---
 
-## 🚀 Próximos Pasos (Decisión Requerida)
+## 🚀 Next Steps (Decisión Requerida)
 
-### ✅ Si apruebas Opción B:
+### ✅ Si atests Opción B:
 
 1. **Confirmar decisión** (esta conversación)
-2. **Crear rama:** `feature/hu-3-project-first-refactor` (develop → new branch)
+2. **Create rama:** `feature/hu-3-project-first-refactor` (develop → new branch)
 3. **Actualizar JSON:** Reemplazar HU-3.1, HU-3.2, HU-3.3 + agregar HU-3.4, HU-3.5
-4. **Crear PR** con descripción bilingual
+4. **Create PR** con description bilingual
 5. **Mergear a develop** (no a main)
 6. **Iniciar Sprint 3** con nueva estimación
 
@@ -270,7 +270,7 @@ Antes de proceder, confirma:
 Lectura completa (recomendada):
 
 1. [HU-3_REFACTOR_ANALYSIS.es.md](./HU-3_REFACTOR_ANALYSIS.es.md)
-   - Análisis comparativo detallado
+   - Analysis comparativo detallado
    - Propuestas de 5 HUs con spec completa
    - Impacto en sprints posteriores
 
@@ -291,16 +291,16 @@ Lectura completa (recomendada):
 ### ✅ **PROCEDER CON OPCIÓN B (5 HUs - Project-First Paradigm)**
 
 **Justificación:**
-1. ✅ Alineado con visión "Local-First" del proyecto
+1. ✅ Alineado con visión "Local-First" of the project
 2. ✅ Mejor UX (control explícito del usuario)
 3. ✅ Más seguro (validación en cada paso)
 4. ✅ Más mantenible (responsabilidades claras)
 5. ✅ ROI positivo (complejidad justificada por beneficio)
 
-**Próximo paso:** Comunicar esta decisión al equipo + crear rama de trabajo.
+**Próximo paso:** Comunicar esta decisión al equipo + create rama de trabajo.
 
 ---
 
-**Documento firmado por:** ArchitectZero (AI Lead)
+**Document firmado por:** ArchitectZero (AI Lead)
 **Fecha:** 02/02/2026
-**Estado:** ✅ ANÁLISIS COMPLETO - AGUARDANDO CONFIRMACIÓN USUARIO
+**Status:** ✅ ANÁLISIS COMPLETO - AGUARDANDO CONFIRMACIÓN USUARIO

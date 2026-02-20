@@ -1,22 +1,22 @@
 # HU-3.8 STATUS ANALYSIS - 12/02/2026
 
 > **Analista:** Copilot ArchitectZero
-> **Fecha Análisis:** 12/02/2026  21:30
-> **Estado Global:** ⚠️ MVP TÉCNICO COMPLETADO | CALIDAD PENDIENTE
+> **Fecha Analysis:** 12/02/2026  21:30
+> **Status Global:** ⚠️ MVP TÉCNICO COMPLETADO | CALIDAD PENDIENTE
 
 ---
 
 ## 📊 RESUMEN EJECUTIVO
 
-### Estado Actual
-| Item | Estado | Priority | Nota |
+### Status Actual
+| Item | Status | Priority | Nota |
 |------|--------|----------|------|
-| Implementación técnica | ✅ 95% | - | MVP funcional en feature branch |
+| Implementation técnica | ✅ 95% | - | MVP funcional en feature branch |
 | Documentación base | ✅ 100% | - | README, PROGRESS, ARTIFACTS, WORKFLOW |
 | Tests unitarios | ❌ FAILING | CRÍTICO | Python pytest en rojo |
 | Cobertura >90% módulo | ❌ PENDING | CRÍTICO | No reportado formalmente |
 | Criterios de aceptación | ⚠️ 75% | HIGH | 6/8 validados; 2 requieren reporte |
-| Descripción de PR | ❌ TODO | MEDIUM | Falta redacción final |
+| Description de PR | ❌ TODO | MEDIUM | Falta redacción final |
 
 ---
 
@@ -40,12 +40,12 @@
 
 ### PHASE 7: CODE COVERAGE
 **Status:** ❌ Coverage < 80% global
-**Objetivo HU:** >90% para módulos de fase
+**Objetivo HU:** >90% para módulos de phase
 **Acción:** Medir cobertura específica de módulo HU-3.8
 
 ---
 
-## ✅ CRITERIOS DE ACEPTACIÓN - Estado
+## ✅ CRITERIOS DE ACEPTACIÓN - Status
 
 ### AC-1: Phase model equals template folder sequence
 **Status:** ✅ VALIDADO
@@ -74,17 +74,17 @@
 
 ### AC-6: Phase transition is idempotent and resumable
 **Status:** ⚠️ PARCIAL
-**Validar:** Re-scan no duplica estado
+**Validar:** Re-scan no duplica status
 **Test pendiente:** `test_idempotent_phase_transition`
 
 ### AC-7: Errors are explicit and user-friendly
 **Status:** ✅ IMPLEMENTADO
 **Mapeo:** error codes registrados en `core/exceptions/`
-**UI:** Snackbars sin stacktraces en proyecto shell
+**UI:** Snackbars sin stacktraces en project shell
 
 ### AC-8: Tests cover phase rules and progress computation (≥90% HU module)
 **Status:** ❌ PENDIENTE
-**Target:** ≥90% cobertura específica en módulo fase
+**Target:** ≥90% cobertura específica en módulo phase
 **Bloqueador:** Tests fallando impiden medir cobertura real
 
 ---
@@ -97,7 +97,7 @@
   - **Tareas:**
     - Verificar conftest.py fixtures
     - Revisar SQLite test database setup
-    - Ejecutar pytest -vv para ver errores reales
+    - Execute pytest -vv para ver errores reales
     - Posible: actualizar dependencias en pyproject.toml
   - **Dependencies:** Ambiente Python sincronizado
   - **Responsable:** Backend engineer
@@ -108,7 +108,7 @@
     - Revisar `test_sqlite_persistence.py` - database locks
     - Revisar `test_streaming_flow.py` - conexión mock
     - Revisar `test_error_handling_flow.py` - fixtures async
-    - Ejecutar localmente: `pytest tests/server/integration/ -v`
+    - Execute localmente: `pytest tests/server/integration/ -v`
   - **Dependencies:** OBJ-1 completado
   - **Estimación:** 2-3h
 
@@ -124,15 +124,15 @@
 
 - [ ] **OBJ-4** - Validar todos AC-1 a AC-8 con evidencia
   - **Tareas:**
-    - Crear matriz de validación en `ACCEPTANCE_CRITERIA_VERIFICATION.md`
+    - Create matriz de validación en `ACCEPTANCE_CRITERIA_VERIFICATION.md`
     - Para cada AC: Test unit + evidencia visual
     - AC-8 especialmente: incluir reporte de cobertura
   - **Dependencies:** OBJ-1, OBJ-2, OBJ-3
   - **Estimación:** 1h
 
-- [ ] **OBJ-5** - Redactar descripción de PR HU-3.8
+- [ ] **OBJ-5** - Redactar description de PR HU-3.8
   - **Tareas:**
-    - Template: título, descripción, checklist
+    - Template: título, description, checklist
     - Incluir: objetivo, cambios principales, testing, breaking changes
     - Enlazar: issue #HU-3.8 en ROADMAP
     - Incluir screenshots: dashboard con progreso real
@@ -146,18 +146,18 @@
     - Resumen: qué se logró, qué se omitió por falta de scope
     - Cobertura final
     - Deuda técnica documentada (si aplica)
-    - Recomendaciones H.U siguientes
+    - Recomendaciones H.U nexts
   - **Estimación:** 30min
 
 - [ ] **OBJ-7** - Validar integración en Project Shell en vivo
   - **Tareas:**
     - `flutter run` en escritorio
     - Verificar dashboard muestra `Doc N/25` real
-    - Verificar fase avanza cuando docs nuevos aparecen
-    - Test manual: crear proyecto, escanear, validar estado
+    - Verificar phase avanza cuando docs nuevos aparecen
+    - Test manual: create project, escanear, validar status
   - **Estimación:** 45min
 
-- [ ] **OBJ-8** - Ejecutar PRE_PUSH_VALIDATION_MASTER.sh final
+- [ ] **OBJ-8** - Execute PRE_PUSH_VALIDATION_MASTER.sh final
   - **Tareas:**
     - Todos los checks deben pasar (salvo si intencionales)
     - Reporte: 16/16 checks ✅
@@ -185,15 +185,15 @@ tests/client/widget/
 
 ---
 
-## 📝 RESUMEN POR FASE TDD
+## 📝 TDD PHASE SUMMARY
 
-| Fase | Tareas | Estado |
+| Phase | Tareas | Status |
 |------|--------|--------|
 | **ROJO** | Escribir tests que fallan | ⚠️ Parcial |
 | **VERDE** | Implementar lógica mínima | ✅ Completo |
 | **REFACTOR** | Limpiar, consolidar | ✅ Completo |
 | **INTEGRACIÓN** | Conectar con UI | ✅ Completo |
-| **SEGURIDAD** | Quality gates | ⚠️ En progreso |
+| **SEGURIDAD** | Quality gates | ⚠️ In progress |
 | **CIERRE** | Documentación + PR | ❌ Iniciando |
 
 ---
@@ -212,7 +212,7 @@ tests/client/widget/
 **Probabilidad:** MEDIA
 **Impacto:** ALTO
 **Mitigación:**
-- [ ] Ejecutar full test suite Flutter antes de merge
+- [ ] Execute full test suite Flutter antes de merge
 - [ ] Validar Dashboard sigue mostrando progreso
 - [ ] Test de rollback si regresa a develop
 
@@ -221,13 +221,13 @@ tests/client/widget/
 **Impacto:** MEDIO
 **Mitigación:**
 - [ ] Congelar "contrato de conteo" en tests de dominio
-- [ ] Auditoria: comparar templates vs implementación
+- [ ] Auditoria: comparar templates vs implementation
 
 ---
 
 ## 📌 PRÓXIMOS PASOS INMEDIATOS
 
-### 1️⃣ AHORA (siguientes 30min)
+### 1️⃣ AHORA (nexts 30min)
 ```bash
 # Intentar ejecutar PRE_PUSH_VALIDATION de nuevo
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
@@ -249,7 +249,7 @@ python -m pytest unit/domain/test_project_phase_service.py --setup-show
 ### 3️⃣ SI NO SE RESUELVE RÁPIDO
 - Considerar: ¿Es problema de ambiente o de código?
 - Rollback a último commit estable en `develop`
-- Crear issue HU-3.8.1 "Test flakiness" para siguiente sprint
+- Create issue HU-3.8.1 "Test flakiness" para next sprint
 
 ---
 
@@ -257,7 +257,7 @@ python -m pytest unit/domain/test_project_phase_service.py --setup-show
 
 | Aspecto | Calificación | Acción |
 |---------|-----------|--------|
-| **Implementación lógica** | A+ | Completada y bien diseñada |
+| **Implementation lógica** | A+ | Completada y bien diseñada |
 | **Documentación** | A+ | Comprensiva y clara |
 | **Testing** | D | 🔴 BLOQUEADOR - fijar URGENTE |
 | **Integración UI** | B+ | Funcional, pulir visual |
@@ -271,7 +271,7 @@ python -m pytest unit/domain/test_project_phase_service.py --setup-show
 **HU-3.8 estará 100% DONE cuando:**
 
 1. ✅ Todos los tests codebase pasen
-2. ✅ Cobertura módulo fase ≥90%
+2. ✅ Cobertura módulo phase ≥90%
 3. ✅ Criterios AC-1 a AC-8 validados con evidencia
 4. ✅ PR creada y revisada
 5. ✅ PRE_PUSH_VALIDATION_MASTER.sh retorna exit code 0

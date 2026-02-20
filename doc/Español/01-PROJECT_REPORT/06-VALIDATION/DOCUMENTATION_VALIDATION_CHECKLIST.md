@@ -1,14 +1,14 @@
-# 📋 Guía de Validación: Estructura de Documentación
+# 📋 Guía de Validación: Estructura de Documentoación
 
-> **Propósito:** Verificación rápida de que la documentación cumple con AGENTS.md §8
+> **Propósito:** Verificación rápida de que la documentoación cumple con AGENTS.md §8
 > **Fecha:** 29 de enero de 2026
-> **Aplicable a:** Toda nueva documentación
+> **Aplicable a:** Toda nueva documentoación
 
 ---
 
 ## ✅ Checklist Rápido
 
-Antes de agregar documentación nueva, verifica:
+Antes de agregar documentoación nueva, verifica:
 
 ### 1. **¿Dónde va el archivo?**
 
@@ -89,7 +89,7 @@ Contenido...
 - ⚠️ **Solo un idioma:**
   - Reportes técnicos (01-PROJECT_REPORT)
   - Logs de sesión (01-PROJECT_REPORT)
-  - Documentación interna (private/)
+  - Documentoación interna (private/)
 
 ### 5. **¿Está en la categoría correcta?**
 
@@ -221,7 +221,7 @@ Solución: Crear dos archivos:
 
 ---
 
-## 🚀 Workflow: Crear Nuevo Documento
+## 🚀 Workflow: Crear Nuevo Documentoo
 
 ### PASO 1: Decidir Categoría
 ```
@@ -280,7 +280,7 @@ git commit -m "📚 Agregar NUEVO_ARCHIVO en CATEGORIA"
 
 | Referencia | Link |
 |---|---|
-| **AGENTS.md §8** | [../../AGENTS.md#-8-estándar-de-documentación-doc-as-code](../../AGENTS.md#-8-estándar-de-documentación-doc-as-code) |
+| **AGENTS.md §8** | [../../AGENTS.md#-8-estándar-de-documentoación-doc-as-code](../../AGENTS.md#-8-estándar-de-documentoación-doc-as-código) |
 | **Índice Principal** | [../INDEX.md](../INDEX.md) |
 | **HU Tracking** | [../03-HU-TRACKING/README.md](../03-HU-TRACKING/README.md) |
 | **Reorganización** | [../03-HU-TRACKING/DOCUMENTATION_REORGANIZATION_LOG.md](../03-HU-TRACKING/DOCUMENTATION_REORGANIZATION_LOG.md) |

@@ -1,15 +1,15 @@
 # 🧪 Guía de Ejecución de Tests
 
-> **Versión:** v0.1.0 | **Estado:** ✅ Actualizado | **Fecha:** 31/01/2026
+> **Version:** v0.1.0 | **Status:** ✅ Actualizado | **Fecha:** 31/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Requisitos Previos](#requisitos-previos)
 2. [Setup Inicial](#setup-inicial)
-3. [Ejecutar Tests](#ejecutar-tests)
-4. [Ver Resultados](#ver-resultados)
+3. [Execute Tests](#execute-tests)
+4. [Ver Results](#ver-resultados)
 5. [Debugging](#debugging)
 6. [Troubleshooting](#troubleshooting)
 
@@ -40,7 +40,7 @@ docker-compose --version
 # Esperado: Docker Compose 1.29+
 ```
 
-### Dependencias del Proyecto
+### Dependencias del Project
 ```bash
 # Todas las dependencias se instalan con:
 pip install -r requirements.txt
@@ -54,13 +54,13 @@ pip list | grep -i chromadb
 
 ## 🚀 Setup Inicial
 
-### 1. Clonar/Navegar al Proyecto
+### 1. Clonar/Navegar al Project
 
 ```bash
 cd /path/to/soft-architect-ai
 ```
 
-### 2. Crear Virtual Environment (si no existe)
+### 2. Create Virtual Environment (si no existe)
 
 ```bash
 python -m venv venv
@@ -105,7 +105,7 @@ curl http://localhost:8001/health
 
 ---
 
-## 🧪 Ejecutar Tests
+## 🧪 Execute Tests
 
 ### Opción 1: Todos los Tests (Recomendado)
 
@@ -178,7 +178,7 @@ python -m pytest src/server/tests/ -v -s --log-cli-level=DEBUG
 
 ---
 
-## 📊 Ver Resultados
+## 📊 Ver Results
 
 ### Coverage HTML Report
 
@@ -230,7 +230,7 @@ python -m pytest src/server/tests/ \
 
 ## 🐛 Debugging
 
-### Ejecutar Test con Breakpoint
+### Execute Test con Breakpoint
 
 ```bash
 # Usar pdb para debugging interactivo
@@ -247,7 +247,7 @@ python -m pytest \
 # q = quit
 ```
 
-### Ejecutar Test con Traceback Completo
+### Execute Test con Traceback Completo
 
 ```bash
 python -m pytest \
@@ -427,7 +427,7 @@ pytest src/server/tests/ --cov=src/server --cov-report=term-missing
 
 ## 📋 Checklist de Validación
 
-Antes de hacer commit, ejecutar:
+Antes de hacer commit, execute:
 
 ```bash
 # 1. Todos los tests pasan
@@ -460,8 +460,8 @@ Antes de hacer commit, ejecutar:
 
 ### Para Development
 
-1. Ejecutar suite cada 30 minutos
-2. Ejecutar test específico antes de commit
+1. Execute suite cada 30 minutos
+2. Execute test específico antes de commit
 3. Mantener coverage >80% en código nuevo
 4. Revisar failing tests inmediatamente
 5. Documentar test cases complejos

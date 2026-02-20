@@ -24,9 +24,9 @@
 
 ### 1.1 Métricas Generales
 
-| Métrica | Valor | Target | Status |
+| Métrica | Valor | Target | Estado |
 |---------|-------|--------|--------|
-| **Tests Pasando** | 312/335 (93.1%) | >90% | ✅ |
+| **Pruebas Pasando** | 312/335 (93.1%) | >90% | ✅ |
 | **Cobertura Código** | 82-85% | >80% | ✅ |
 | **Warnings Críticos** | 0 | 0 | ✅ |
 | **Type Safety** | 0 errors | 0 | ✅ |
@@ -34,10 +34,10 @@
 
 ### 1.2 Funcionalidades Implementadas
 
-| Feature | Status | Cobertura | Archivos |
+| Feature | Estado | Cobertura | Archivos |
 |---------|--------|-----------|----------|
-| **Project Shell UI** | ✅ Completo | 95% | 25+ |
-| **FileSystem Service** | ✅ Completo | 90% | 15+ |
+| **Proyecto Shell UI** | ✅ Completo | 95% | 25+ |
+| **ArchivoSystem Service** | ✅ Completo | 90% | 15+ |
 | **Chat UI Components** | ✅ Completo | 100% | 8+ |
 | **Chat Sequential Logic** | ✅ Completo | 100% | 5+ |
 | **Settings UI** | ⚠️ Parcial | 85% | 8+ |
@@ -50,25 +50,25 @@
 
 ### Sprint 1: Infraestructura ✅
 
-| HU | Nombre | Status | Evidencia |
+| HU | Nombre | Estado | Evidencia |
 |----|--------|--------|-----------|
 | **HU-1.1** | Docker Setup | ✅ COMPLETO | docker-compose.yml, scripts/start_stack.sh |
 | **HU-1.2** | Backend Skeleton | ✅ COMPLETO | src/server/, FastAPI estructura |
 
 ### Sprint 2: RAG Brain ✅
 
-| HU | Nombre | Status | Evidencia |
+| HU | Nombre | Estado | Evidencia |
 |----|--------|--------|-----------|
-| **HU-2.0** | Knowledge Base Population | ✅ COMPLETO | packages/knowledge_base/ (29 files, 934 lines) |
-| **HU-2.1** | RAG Ingestion Loader | ✅ COMPLETO | services/rag/, tests passing 100% |
+| **HU-2.0** | Knowledge Base Population | ✅ COMPLETO | packages/knowledge_base/ (29 archivos, 934 lines) |
+| **HU-2.1** | RAG Ingestion Loader | ✅ COMPLETO | services/rag/, pruebas passing 100% |
 | **HU-2.2** | RAG Vectorization | ✅ COMPLETO | ChromaDB integration, vector store |
 
-### Sprint 3: Project-First (Parcialmente Completo) ⚠️
+### Sprint 3: Proyecto-First (Parcialmente Completo) ⚠️
 
-| HU | Nombre | Status | Cobertura | Branch |
+| HU | Nombre | Estado | Cobertura | Branch |
 |----|--------|--------|-----------|--------|
-| **HU-3.1** | Project Shell UI | ✅ COMPLETO | 95% | feature/ui-project-shell (merged) |
-| **HU-3.2** | FileSystem Service | ✅ COMPLETO | 90% | feature/client-filesystem-service (merged) |
+| **HU-3.1** | Proyecto Shell UI | ✅ COMPLETO | 95% | feature/ui-proyecto-shell (merged) |
+| **HU-3.2** | ArchivoSystem Service | ✅ COMPLETO | 90% | feature/client-archivosystem-service (merged) |
 | **HU-3.3** | Chat Sequential Docs | ✅ COMPLETO | 100% | feature/chat-sequential-docs (current) |
 | **HU-3.4** | Error Handling Gates | ❌ PENDIENTE | 0% | N/A |
 | **HU-3.5** | Streaming Optimization | ❌ PENDIENTE | 0% | N/A |
@@ -79,14 +79,14 @@
 
 ### Sprint 3 - Restantes
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Nombre | Puntos | Estado | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-3.4** | Error Handling & Validation Gates | 5 | ⏳ TODO | Ninguno |
 | **HU-3.5** | Streaming & Performance Optimization | 8 | ⏳ TODO | HU-3.4 (opcional) |
 
-### Sprint 4: Backend Chat & RAG Integration
+### Sprint 4: Backend Chat & RAG Integración
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Nombre | Puntos | Estado | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-4.1** | Backend Chat Endpoint | 8 | ⏳ TODO | HU-2.2 ✅ |
 | **HU-4.2** | Conversation History | 5 | ⏳ TODO | HU-4.1 |
@@ -94,27 +94,27 @@
 
 ### Sprint 5: Cleanup & Polish
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Nombre | Puntos | Estado | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-5.1** | Remove Temporary Endpoints | 2 | ⏳ TODO | HU-4.1 |
-| **HU-5.2** | Security Hardening | 8 | ⏳ TODO | All previous |
+| **HU-5.2** | Security Hardening | 8 | ⏳ TODO | All anterior |
 | **HU-5.3** | Performance Profiling | 5 | ⏳ TODO | HU-3.5 |
 
 ### Sprint 6: Packaging & Distribution
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Nombre | Puntos | Estado | Bloqueantes |
 |----|--------|--------|--------|-------------|
-| **HU-6.1** | Linux Installer (.deb) | 8 | ⏳ TODO | All previous |
+| **HU-6.1** | Linux Installer (.deb) | 8 | ⏳ TODO | All anterior |
 | **HU-6.2** | User Onboarding Flow | 5 | ⏳ TODO | HU-6.1 |
-| **HU-6.3** | Documentation Portal | 3 | ⏳ TODO | None |
+| **HU-6.3** | Documentoation Portal | 3 | ⏳ TODO | None |
 
 ### Sprint 7: CI/CD & Release Management
 
-| HU | Nombre | Puntos | Status | Bloqueantes |
+| HU | Nombre | Puntos | Estado | Bloqueantes |
 |----|--------|--------|--------|-------------|
 | **HU-7.1** | GitHub Actions Workflows | 5 | ⏳ TODO | None |
-| **HU-7.2** | Automated Testing Pipeline | 3 | ⏳ TODO | HU-7.1 |
-| **HU-7.3** | Release v0.1.0 | 2 | ⏳ TODO | All previous |
+| **HU-7.2** | Automated Pruebaing Pipeline | 3 | ⏳ TODO | HU-7.1 |
+| **HU-7.3** | Release v0.1.0 | 2 | ⏳ TODO | All anterior |
 
 ---
 
@@ -124,20 +124,20 @@
 
 | ID | Archivo | Línea | Descripción | Prioridad | Sprint |
 |----|---------|-------|-------------|-----------|--------|
-| **TODO-1** | project_shell_notifier.dart | 70 | Update last opened timestamp | 🔴 HIGH | S3.6 |
-| **TODO-2** | storage_section.dart | 68 | Implement file_picker | 🟡 MEDIUM | S3.7 |
-| **TODO-3** | project_phase_service.dart | 19 | Implement real phase logic | 🟡 MEDIUM | S3.8 |
+| **TODO-1** | proyecto_shell_notifier.dart | 70 | Update last opened timestamp | 🔴 HIGH | S3.6 |
+| **TODO-2** | storage_section.dart | 68 | Implement archivo_picker | 🟡 MEDIUM | S3.7 |
+| **TODO-3** | proyecto_fase_service.dart | 19 | Implement real fase logic | 🟡 MEDIUM | S3.8 |
 
-### 4.2 TODOs de Tests (6 items)
+### 4.2 TODOs de Pruebas (6 items)
 
 | ID | Tipo | Descripción | Prioridad | Sprint |
 |----|------|-------------|-----------|--------|
-| **T-1** | Fix | Fix 6 failing SQLite persistence tests | 🔴 HIGH | S3.6 |
-| **T-2** | Fix | Fix 10 failing MarkdownPreview tests | 🔴 HIGH | S3.7 |
-| **T-3** | Create | Create 7 Settings UI widget tests | 🟡 MEDIUM | S3.8 |
-| **T-4** | Create | Create GlobalSearchDialog widget test | 🟡 MEDIUM | S3.8 |
-| **T-5** | Rewrite | Rewrite 3 .skip integration tests | 🟢 LOW | S4.x |
-| **T-6** | Cleanup | Remove 5 deprecated widget tests (.skip) | 🟢 LOW | S5.x |
+| **T-1** | Fix | Fix 6 failing SQLite persistence pruebas | 🔴 HIGH | S3.6 |
+| **T-2** | Fix | Fix 10 failing MarkdownPreview pruebas | 🔴 HIGH | S3.7 |
+| **T-3** | Crear | Crear 7 Settings UI widget pruebas | 🟡 MEDIUM | S3.8 |
+| **T-4** | Crear | Crear GlobalSearchDialog widget prueba | 🟡 MEDIUM | S3.8 |
+| **T-5** | Rewrite | Rewrite 3 .skip integration pruebas | 🟢 LOW | S4.x |
+| **T-6** | Cleanup | Remove 5 deprecated widget pruebas (.skip) | 🟢 LOW | S5.x |
 
 ### 4.3 TODOs de Infraestructura (4 items)
 
@@ -145,26 +145,26 @@
 |----|-------------|-----------|--------|
 | **I-1** | Setup CI/CD GitHub Actions pipeline | 🔴 HIGH | S7.1 |
 | **I-2** | Generate coverage reports in CI | 🟡 MEDIUM | S7.2 |
-| **I-3** | Setup database migrations for tests | 🟡 MEDIUM | S3.6 |
-| **I-4** | Document test execution & coverage | 🟢 LOW | S6.3 |
+| **I-3** | Setup database migrations for pruebas | 🟡 MEDIUM | S3.6 |
+| **I-4** | Documento prueba execution & coverage | 🟢 LOW | S6.3 |
 
 ---
 
 ## 5. Gaps de Cobertura
 
-### 5.1 Cobertura por Módulo (Amber Status)
+### 5.1 Cobertura por Módulo (Amber Estado)
 
 | Módulo | Actual | Target | Gap | Acción |
 |--------|--------|--------|-----|--------|
-| **Settings** | 85% | >90% | -5% | T-3: Create 7 widget tests |
-| **Project Shell** | 70% | >85% | -15% | T-1: Fix SQLite tests + T-5: Integration tests |
-| **Infrastructure** | 70% | >80% | -10% | I-3: Database migrations |
+| **Settings** | 85% | >90% | -5% | T-3: Crear 7 widget pruebas |
+| **Proyecto Shell** | 70% | >85% | -15% | T-1: Fix SQLite pruebas + T-5: Integración pruebas |
+| **Infraestructura** | 70% | >80% | -10% | I-3: Database migrations |
 
 ### 5.2 Gaps Funcionales
 
 | Feature | Implementado | Faltante | HU Requerida |
 |---------|--------------|----------|--------------|
-| **Backend Chat Integration** | 0% | POST /chat/message | HU-4.1 ✨ |
+| **Backend Chat Integración** | 0% | POST /chat/message | HU-4.1 ✨ |
 | **RAG Orchestration** | 0% | Template selection + context injection | HU-4.1 ✨ |
 | **Streaming SSE** | 0% | Token-by-token streaming | HU-4.3 ✨ |
 | **Error Handling** | 30% | Retry logic, fallbacks, validation gates | HU-3.4 ✨ |
@@ -176,31 +176,31 @@
 
 ### 6.1 Sprint 3 Extended - Completar Funcionalidades Base
 
-#### HU-3.6: Test Suite Completion & SQLite Persistence Fix 🔴 HIGH
+#### HU-3.6: Prueba Suite Completion & SQLite Persistence Fix 🔴 HIGH
 
-**Objetivo:** Elevar cobertura de tests a >90% y resolver 6 tests fallando en SQLite.
+**Objetivo:** Elevar cobertura de pruebas a >90% y resolver 6 pruebas fallando en SQLite.
 
 | Campo | Valor |
 |-------|-------|
 | **Prioridad** | Critical |
 | **Estimación** | M (5 pts) |
-| **Branch** | `fix/test-suite-completion` |
-| **Dependencias** | HU-3.1 (ProjectShell) |
+| **Branch** | `fix/prueba-suite-completion` |
+| **Dependencias** | HU-3.1 (ProyectoShell) |
 
 **TODOs Incluidos:**
-- T-1: Fix 6 failing SQLite persistence tests
+- T-1: Fix 6 failing SQLite persistence pruebas
 - TODO-1: Update last opened timestamp
-- I-3: Setup database migrations for tests
+- I-3: Setup database migrations for pruebas
 
 **Criterios de Aceptación:**
-- ✅ 6 SQLite tests passing (ProjectShell persistence)
-- ✅ Timestamp auto-update en projectshell_notifier.dart implementado
-- ✅ Database migrations setup para tests
-- ✅ Cobertura ProjectShell >85%
+- ✅ 6 SQLite pruebas passing (ProyectoShell persistence)
+- ✅ Timestamp auto-update en proyectoshell_notifier.dart implementado
+- ✅ Database migrations setup para pruebas
+- ✅ Cobertura ProyectoShell >85%
 
 ---
 
-#### HU-3.7: Settings UI Completion & Widget Tests 🟡 MEDIUM
+#### HU-3.7: Settings UI Completion & Widget Pruebas 🟡 MEDIUM
 
 **Objetivo:** Completar UI de Settings y elevar cobertura a >90%.
 
@@ -212,21 +212,21 @@
 | **Dependencias** | Ninguna |
 
 **TODOs Incluidos:**
-- T-2: Fix 10 failing MarkdownPreview widget/integration tests
-- T-3: Create 7 Settings UI widget tests
-- T-4: Create GlobalSearchDialog widget test
-- TODO-2: Implement file_picker in storage_section.dart
+- T-2: Fix 10 failing MarkdownPreview widget/integration pruebas
+- T-3: Crear 7 Settings UI widget pruebas
+- T-4: Crear GlobalSearchDialog widget prueba
+- TODO-2: Implement archivo_picker in storage_section.dart
 
 **Criterios de Aceptación:**
-- ✅ file_picker package integrado (selector de carpetas nativo)
-- ✅ 10 MarkdownPreview tests refactorizados y passing
-- ✅ 7 Settings UI widget tests creados (appearance, storage, about)
-- ✅ GlobalSearchDialog widget test creado
+- ✅ archivo_picker package integrado (selector de carpetas nativo)
+- ✅ 10 MarkdownPreview pruebas refactorizados y passing
+- ✅ 7 Settings UI widget pruebas creados (appearance, storage, about)
+- ✅ GlobalSearchDialog widget prueba creado
 - ✅ Cobertura Settings >90%
 
 ---
 
-#### HU-3.8: Project Phase Logic & Progress Tracking 🟡 MEDIUM
+#### HU-3.8: Proyecto Fase Logic & Progress Tracking 🟡 MEDIUM
 
 **Objetivo:** Implementar lógica real de fases de proyecto (Doc N/25 progress).
 
@@ -234,21 +234,21 @@
 |-------|-------|
 | **Prioridad** | Medium |
 | **Estimación** | S (3 pts) |
-| **Branch** | `feature/project-phase-logic` |
+| **Branch** | `feature/proyecto-fase-logic` |
 | **Dependencias** | HU-3.1, HU-3.2 |
 
 **TODOs Incluidos:**
-- TODO-3: Implement real phase logic in project_phase_service.dart
+- TODO-3: Implement real fase logic in proyecto_fase_service.dart
 
 **Criterios de Aceptación:**
-- ✅ ProjectPhaseService detecta fase actual (0-6) basado en archivos context/
+- ✅ ProyectoFaseService detecta fase actual (0-6) basado en archivos context/
 - ✅ Progress bar (Doc N/25) actualiza dinámicamente
-- ✅ Tests unitarios para phase detection (>90%)
-- ✅ Integración con ProjectShell dashboard
+- ✅ Pruebas unitarios para fase detection (>90%)
+- ✅ Integración con ProyectoShell dashboard
 
 ---
 
-### 6.2 Sprint 4 - Backend Integration & RAG Orchestration
+### 6.2 Sprint 4 - Backend Integración & RAG Orchestration
 
 #### HU-4.1: Backend Chat Endpoint & RAG Orchestration 🔴 CRITICAL
 
@@ -262,7 +262,7 @@
 | **Dependencias** | HU-2.2 (RAG Vectorization) ✅ |
 
 **Funcionalidades:**
-- Endpoint POST /chat/message acepta {conversation_id, message, project_id}
+- Endpoint POST /chat/message acepta {conversation_id, message, proyecto_id}
 - RAG Orchestrator selecciona templates basado en fase actual
 - Context injection: template + user input + RAG knowledge
 - LLM call (Ollama local / Groq cloud)
@@ -271,9 +271,9 @@
 **Criterios de Aceptación:**
 - ✅ POST /chat/message responde <500ms (sin streaming)
 - ✅ RAG busca en ChromaDB knowledge base relevante
-- ✅ Template selection automático basado en project phase
-- ✅ Tests unitarios: RAG orchestrator, template loader (>85%)
-- ✅ Tests integración: Endpoint E2E (>80%)
+- ✅ Template selection automático basado en proyecto fase
+- ✅ Pruebas unitarios: RAG orchestrator, template loader (>85%)
+- ✅ Pruebas integración: Endpoint E2E (>80%)
 
 ---
 
@@ -295,10 +295,10 @@
 - Auto-cleanup de conversaciones >30 días
 
 **Criterios de Aceptación:**
-- ✅ SQLite schema: conversations (id, project_id, messages[])
+- ✅ SQLite schema: conversations (id, proyecto_id, messages[])
 - ✅ GET /conversations/{id} devuelve historial paginado
 - ✅ Context window: últimos 10 mensajes para LLM
-- ✅ Tests: persistence, retrieval, cleanup (>85%)
+- ✅ Pruebas: persistence, retrieval, cleanup (>85%)
 
 ---
 
@@ -324,7 +324,7 @@
 - ✅ Tokens enviados en batches de 50ms
 - ✅ Flutter EventSource listener implementado
 - ✅ Manejo de conexión perdida (auto-retry)
-- ✅ Tests: streaming, timeout, reconnect (>80%)
+- ✅ Pruebas: streaming, timeout, reconnect (>80%)
 
 ---
 
@@ -352,7 +352,7 @@
 - ✅ Errores mapeados a mensajes en español (NO stack traces)
 - ✅ Snackbar crítico: sin autohide, botón 'Cerrar' manual
 - ✅ Fallback: template placeholder si RAG falla
-- ✅ Tests: timeout simulation, retry logic, error mapping (>90%)
+- ✅ Pruebas: timeout simulation, retry logic, error mapping (>90%)
 
 ---
 
@@ -378,32 +378,32 @@
 - ✅ Cache hit rate >70% (embeddings frecuentes)
 - ✅ Gzip compression activo en FastAPI
 - ✅ UI no se congela durante generación (async rendering)
-- ✅ Tests: cache logic, compression, latency benchmarks (>80%)
+- ✅ Pruebas: cache logic, compression, latency benchmarks (>80%)
 
 ---
 
-### 6.4 Sprint 5 - Integration Tests & Cleanup
+### 6.4 Sprint 5 - Integración Pruebas & Cleanup
 
-#### HU-5.1: Integration Tests Suite Rewrite 🟡 MEDIUM
+#### HU-5.1: Integración Pruebas Suite Rewrite 🟡 MEDIUM
 
-**Objetivo:** Reescribir integration tests obsoletos y eliminar .skip files.
+**Objetivo:** Reescribir integration pruebas obsoletos y eliminar .skip archivos.
 
 | Campo | Valor |
 |-------|-------|
 | **Prioridad** | Medium |
 | **Estimación** | M (5 pts) |
-| **Branch** | `chore/integration-tests-rewrite` |
+| **Branch** | `chore/integration-pruebas-rewrite` |
 | **Dependencias** | HU-3.8, HU-4.1 |
 
 **TODOs Incluidos:**
-- T-5: Rewrite 3 .skip integration tests
-- T-6: Remove 5 deprecated widget tests (.skip)
+- T-5: Rewrite 3 .skip integration pruebas
+- T-6: Remove 5 deprecated widget pruebas (.skip)
 
 **Criterios de Aceptación:**
-- ✅ 3 integration tests reescritos (ProjectShell flow, Chat E2E, Settings)
-- ✅ 5 deprecated widget tests eliminados
-- ✅ Integration tests >85% passing
-- ✅ No .skip files en test/
+- ✅ 3 integration pruebas reescritos (ProyectoShell flow, Chat E2E, Settings)
+- ✅ 5 deprecated widget pruebas eliminados
+- ✅ Integración pruebas >85% passing
+- ✅ No .skip archivos en prueba/
 
 ---
 
@@ -430,7 +430,7 @@
 - ✅ API rate limiting: 100 req/min per IP
 - ✅ Input sanitization: prompts max 5000 chars
 - ✅ Security headers configurados
-- ✅ Tests: injection attacks, rate limit, sanitization (>85%)
+- ✅ Pruebas: injection attacks, rate limit, sanitization (>85%)
 
 ---
 
@@ -456,13 +456,13 @@
 - ✅ Queries SQLite <50ms (indexes añadidos)
 - ✅ Widget rebuilds reducidos >30% (profiling)
 - ✅ Memory leaks identificados y corregidos
-- ✅ Tests: performance benchmarks (baseline vs optimized)
+- ✅ Pruebas: performance benchmarks (baseline vs optimized)
 
 ---
 
 ### 6.5 Sprint 6 - Packaging & Distribution
 
-#### HU-6.1: Linux Installer (.deb) & Desktop Integration 🔴 HIGH
+#### HU-6.1: Linux Installer (.deb) & Desktop Integración 🔴 HIGH
 
 **Objetivo:** Empaquetado .deb para distribución en Ubuntu/Debian.
 
@@ -471,11 +471,11 @@
 | **Prioridad** | High |
 | **Estimación** | L (8 pts) |
 | **Branch** | `release/linux-installer` |
-| **Dependencias** | All previous (MVP complete) |
+| **Dependencias** | All anterior (MVP complete) |
 
 **Funcionalidades:**
-- .deb package con dependencias (Flutter runtime, Python deps)
-- Desktop entry (.desktop file) para menú de aplicaciones
+- .deb package con dependencias (Flutter ejecutartime, Python deps)
+- Desktop entry (.desktop archivo) para menú de aplicaciones
 - Icon integration (XDG standards)
 - Auto-start service (systemd optional)
 
@@ -484,13 +484,13 @@
 - ✅ App aparece en menú de aplicaciones
 - ✅ Icono visible en launcher
 - ✅ Uninstall limpia: `sudo apt remove soft-architect-ai`
-- ✅ Tests: instalación, ejecución, desinstalación
+- ✅ Pruebas: instalación, ejecución, desinstalación
 
 ---
 
-#### HU-6.2: User Onboarding Flow & First-Run Experience 🟡 MEDIUM
+#### HU-6.2: User Onboarding Flow & First-Ejecutar Experience 🟡 MEDIUM
 
-**Objetivo:** Wizard de configuración inicial (Ollama/Groq, project paths).
+**Objetivo:** Wizard de configuración inicial (Ollama/Groq, proyecto paths).
 
 | Campo | Valor |
 |-------|-------|
@@ -502,7 +502,7 @@
 **Funcionalidades:**
 - Welcome screen (paso 1/4)
 - LLM provider selection (Ollama local / Groq cloud) (paso 2/4)
-- Project default path selector (paso 3/4)
+- Proyecto default path selector (paso 3/4)
 - Confirmation & health check (paso 4/4)
 
 **Criterios de Aceptación:**
@@ -510,13 +510,13 @@
 - ✅ Configuración guardada en sqflite (settings table)
 - ✅ Health check: Ollama/Groq API reachable
 - ✅ Skip wizard disponible (use defaults)
-- ✅ Tests: wizard flow, settings persistence (>85%)
+- ✅ Pruebas: wizard flow, settings persistence (>85%)
 
 ---
 
-#### HU-6.3: Documentation Portal & User Guide 🟡 MEDIUM
+#### HU-6.3: Documentoation Portal & User Guide 🟡 MEDIUM
 
-**Objetivo:** Documentación interactiva para usuarios finales.
+**Objetivo:** Documentoación interactiva para usuarios finales.
 
 | Campo | Valor |
 |-------|-------|
@@ -526,27 +526,27 @@
 | **Dependencias** | None |
 
 **TODOs Incluidos:**
-- I-4: Document test execution & coverage
+- I-4: Documento prueba execution & coverage
 
 **Funcionalidades:**
 - User Guide (Markdown → HTML) en doc/USER_GUIDE/
-- In-app help button → opens browser with docs
+- In-app help botón → opens browser with docs
 - Troubleshooting section (common errors + solutions)
 - Video tutorials (opcional: YouTube links)
 
 **Criterios de Aceptación:**
-- ✅ User Guide cubre: Installation, First Project, Chat Usage, Settings
-- ✅ Troubleshooting: 10+ common errors documentados
-- ✅ In-app help button funcional
+- ✅ User Guide cubre: Installation, First Proyecto, Chat Usage, Settings
+- ✅ Troubleshooting: 10+ common errors documentoados
+- ✅ In-app help botón funcional
 - ✅ Docs servidas en localhost:8000/docs/guide (FastAPI)
 
 ---
 
 ### 6.6 Sprint 7 - CI/CD & Release Management
 
-#### HU-7.1: GitHub Actions Workflows & Automated Testing 🔴 CRITICAL
+#### HU-7.1: GitHub Actions Workflows & Automated Pruebaing 🔴 CRITICAL
 
-**Objetivo:** Pipeline CI/CD completo con tests automáticos.
+**Objetivo:** Pipeline CI/CD completo con pruebas automáticos.
 
 | Campo | Valor |
 |-------|-------|
@@ -560,8 +560,8 @@
 - I-2: Generate coverage reports in CI
 
 **Funcionalidades:**
-- Workflow: Backend CI (Pyright, Black, Ruff, pytest)
-- Workflow: Frontend CI (flutter analyze, flutter test)
+- Workflow: Backend CI (Pyright, Black, Ruff, pyprueba)
+- Workflow: Frontend CI (flutter analyze, flutter prueba)
 - Coverage reports (Codecov integration)
 - Pre-commit hooks validation
 
@@ -570,7 +570,7 @@
 - ✅ GitHub Actions: Frontend CI (<10 min)
 - ✅ Coverage reports auto-generated (>80% gate)
 - ✅ Pre-commit hooks enforced (Black, Ruff)
-- ✅ Tests: workflow validation (act tool)
+- ✅ Pruebas: workflow validation (act tool)
 
 ---
 
@@ -608,7 +608,7 @@
 | **Prioridad** | Critical |
 | **Estimación** | XS (2 pts) |
 | **Branch** | `release/v0.1.0` |
-| **Dependencias** | All previous |
+| **Dependencias** | All anterior |
 
 **Funcionalidades:**
 - Merge develop → main
@@ -617,7 +617,7 @@
 - Marketing materials (screenshots, demo video)
 
 **Criterios de Aceptación:**
-- ✅ Main branch stable (all tests passing)
+- ✅ Main branch stable (all pruebas passing)
 - ✅ Release notes completas (features, known issues)
 - ✅ README.md actualizado (badges, screenshots)
 - ✅ Demo video publicado (YouTube)
@@ -677,9 +677,9 @@ TOTAL ESTIMACIÓN: 85 Story Points (~8-10 semanas)
 
 | Sprint | Prioridad | HUs | Puntos | Objetivo |
 |--------|-----------|-----|--------|----------|
-| **S3.6-S3.8** | 🔴 CRITICAL | 3 | 13 | Completar funcionalidades base + tests >90% |
+| **S3.6-S3.8** | 🔴 CRITICAL | 3 | 13 | Completar funcionalidades base + pruebas >90% |
 | **S4.1-S4.3** | 🔴 CRITICAL | 3 | 18 | Backend Chat & RAG integration funcional |
-| **S4.4-S5.1** | 🟡 HIGH | 3 | 15 | Error handling, optimization, integration tests |
+| **S4.4-S5.1** | 🟡 HIGH | 3 | 15 | Error handling, optimization, integration pruebas |
 | **S5.2-S6.1** | 🔴 CRITICAL | 3 | 21 | Security, performance, packaging |
 | **S6.2-S7.3** | 🟡 MEDIUM | 5 | 18 | Polish, CI/CD, release |
 
@@ -689,10 +689,10 @@ TOTAL ESTIMACIÓN: 85 Story Points (~8-10 semanas)
 
 ### 8.1 Funcionalidades Mínimas
 
-| Feature | Status | HU Requerida |
+| Feature | Estado | HU Requerida |
 |---------|--------|--------------|
-| **Project Management** | ✅ DONE | HU-3.1 |
-| **File System I/O** | ✅ DONE | HU-3.2 |
+| **Proyecto Management** | ✅ DONE | HU-3.1 |
+| **Archivo System I/O** | ✅ DONE | HU-3.2 |
 | **Chat UI** | ✅ DONE | HU-3.3 |
 | **Backend Chat + RAG** | ⏳ TODO | HU-4.1 |
 | **SSE Streaming** | ⏳ TODO | HU-4.3 |
@@ -704,27 +704,27 @@ TOTAL ESTIMACIÓN: 85 Story Points (~8-10 semanas)
 
 ### 8.2 Quality Gates
 
-| Gate | Requirement | Status |
+| Gate | Requirement | Estado |
 |------|-------------|--------|
-| **Test Coverage** | >80% | ✅ 82-85% |
-| **Tests Passing** | >95% | ✅ 93.1% (→ target: >95%) |
+| **Prueba Coverage** | >80% | ✅ 82-85% |
+| **Pruebas Passing** | >95% | ✅ 93.1% (→ target: >95%) |
 | **Type Safety** | 0 errors | ✅ 0 |
-| **Security Scan** | 0 critical | ⏳ Pending HU-5.2 |
-| **Performance** | <200ms P95 | ⏳ Pending HU-4.5 |
-| **Documentation** | 100% complete | ⏳ Pending HU-6.3 |
+| **Security Scan** | 0 critical | ⏳ Pendiente HU-5.2 |
+| **Performance** | <200ms P95 | ⏳ Pendiente HU-4.5 |
+| **Documentoation** | 100% complete | ⏳ Pendiente HU-6.3 |
 
 ### 8.3 Release Checklist
 
 - [ ] All HU 3.6-7.3 completed (85 pts)
-- [ ] Tests >95% passing
+- [ ] Pruebas >95% passing
 - [ ] Coverage >85%
 - [ ] Security audit passed (OWASP Top 10)
 - [ ] Performance benchmarks met (<200ms P95)
-- [ ] Linux .deb installer tested
+- [ ] Linux .deb installer pruebaed
 - [ ] User Guide completed
 - [ ] CI/CD pipeline green
 - [ ] Changelog generated
-- [ ] GitHub Release created
+- [ ] GitHub Release creard
 - [ ] Demo video published
 
 ---
@@ -734,12 +734,12 @@ TOTAL ESTIMACIÓN: 85 Story Points (~8-10 semanas)
 ### Estado Actual
 - **Completado:** 60% del MVP (HU 1.1-3.3)
 - **Pendiente:** 40% del MVP (HU 3.6-7.3)
-- **Calidad:** Tests 93.1%, Cobertura 82-85% ✅
+- **Calidad:** Pruebas 93.1%, Cobertura 82-85% ✅
 
 ### Próximos Pasos
-1. **Semana 1-2:** Completar Sprint 3 (HU 3.6-3.8) - Test suite + Settings UI
+1. **Semana 1-2:** Completar Sprint 3 (HU 3.6-3.8) - Prueba suite + Settings UI
 2. **Semana 3-4:** Sprint 4 Backend (HU 4.1-4.3) - Chat API + RAG + Streaming
-3. **Semana 5-6:** Sprint 4-5 Polish (HU 4.4-5.1) - Error handling + Tests
+3. **Semana 5-6:** Sprint 4-5 Polish (HU 4.4-5.1) - Error handling + Pruebas
 4. **Semana 7-8:** Sprint 5-6 Security (HU 5.2-6.1) - Hardening + Installer
 5. **Semana 9-10:** Sprint 6-7 Release (HU 6.2-7.3) - CI/CD + MVP Launch
 

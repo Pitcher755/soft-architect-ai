@@ -14,7 +14,7 @@ I assume your HomeLab runs Linux (Ubuntu/Debian/Zorin).
 
 * Make sure you have SSH access from your laptop.
 * Install **Docker** and **Git** on the HomeLab.
-* Create the project folder: `mkdir ~/proyectos/softarchitect`.
+* Create the project folder: `mkdir ~/projects/softarchitect`.
 
 #### 2. Prepare Your Laptop (The Client)
 

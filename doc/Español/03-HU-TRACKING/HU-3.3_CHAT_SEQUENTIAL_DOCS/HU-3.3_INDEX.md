@@ -1,8 +1,8 @@
 # 🧭 HU-3.3 MASTER INDEX - Complete Navigation Guide
 
-> **Status:** 🟢 **PREPARATION COMPLETE**
+> **Estado:** 🟢 **PREPARATION COMPLETE**
 > **Last Updated:** 2026-02-05
-> **Quick Start:** ⏱️ 5 minutes to first test
+> **Quick Start:** ⏱️ 5 minutes to first prueba
 
 ---
 
@@ -12,7 +12,7 @@
 👉 Read [HU-3.3_QUICK_START.md](HU-3.3_QUICK_START.md)
 - 3-step quick start
 - Essential commands
-- First test template
+- First prueba template
 
 ### Option 2: "I have 15 minutes" ⏰
 👉 Read [HU-3.3_DASHBOARD.md](HU-3.3_DASHBOARD.md)
@@ -22,20 +22,20 @@
 
 ### Option 3: "I have 1 hour" 📚
 👉 Read [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md)
-- Complete implementation guide
-- 6 TDD phases in detail
-- All test specifications
+- Complete implementación guide
+- 6 TDD fases in detail
+- All prueba specifications
 - Architecture patterns
 
 ### Option 4: "I want everything" 🎓
 👉 Follow this index (you are here)
-- All documentation organized
+- All documentoation organized
 - Cross-references
 - Technical deep-dives
 
 ---
 
-## 📚 Documentation Hierarchy
+## 📚 Documentoation Hierarchy
 
 ### Tier 1: Quick Reference (START HERE)
 ```
@@ -46,14 +46,14 @@
 ```
 **When to use:** First time reading, getting oriented, daily reference
 
-### Tier 2: Implementation Guides
+### Tier 2: Implementación Guides
 ```
 ├── doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/
 │   └── HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md  ← The Bible 📖
 ├── tests/python/README_MIGRATION.md
 └── doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md
 ```
-**When to use:** Deep-dive into implementation, understanding architecture, writing code
+**When to use:** Deep-dive into implementación, understanding architecture, writing code
 
 ### Tier 3: Technical References
 ```
@@ -64,91 +64,91 @@
 ```
 **When to use:** Design decisions, security review, setup issues, best practices
 
-### Tier 4: Project Context
+### Tier 4: Proyecto Context
 ```
 ├── AGENTS.md
 ├── context/10-BUSINESS_AND_SCOPE/
 └── context/20-REQUIREMENTS_AND_SPEC/
 ```
-**When to use:** Understanding project vision, user stories, business requirements
+**When to use:** Understanding proyecto vision, user stories, business requirements
 
 ---
 
-## 🗺️ Complete Documentation Map
+## 🗺️ Complete Documentoation Map
 
 ### 📖 START HERE (Choose One)
-| Document | Duration | Best For |
+| Documento | Duration | Best For |
 |----------|----------|----------|
 | [HU-3.3_QUICK_START.md](HU-3.3_QUICK_START.md) | 5 min | First-time developers |
-| [HU-3.3_DASHBOARD.md](HU-3.3_DASHBOARD.md) | 10 min | Status/metrics check |
+| [HU-3.3_DASHBOARD.md](HU-3.3_DASHBOARD.md) | 10 min | Estado/metrics check |
 | [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md) | 45 min | Complete understanding |
 
 ### ✅ BEFORE IMPLEMENTATION
-| Task | Document | Action |
+| Task | Documento | Action |
 |------|----------|--------|
 | Validate environment | [HU-3.3_READY.md](HU-3.3_READY.md) | ✓ Follow checklist |
 | Understand workflow | [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md) | ✓ Read section 4 |
-| Set up tests | [tests/python/README_MIGRATION.md](tests/python/README_MIGRATION.md) | ✓ Review structure |
+| Set up pruebas | [pruebas/python/README_MIGRATION.md](pruebas/python/README_MIGRATION.md) | ✓ Review structure |
 | Check quality gates | [HU-3.3_DASHBOARD.md](HU-3.3_DASHBOARD.md) | ✓ Understand requirements |
 
 ### 🧪 DURING IMPLEMENTATION
-| Phase | Key Section | Tests Location |
+| Fase | Key Section | Pruebas Location |
 |-------|------------|-----------------|
-| Phase 1 (RED) | Workflow Master §4.2 | tests/python/unit/services/rag/test_orchestrator.py |
-| Phase 2 (GREEN) | Workflow Master §4.3 | Same test file + new implementation |
-| Phase 3 (REFACTOR) | Workflow Master §4.4 | Run full test suite |
-| Phase 4 (INTEGRATION) | Workflow Master §5 | tests/python/integration/ |
+| Fase 1 (RED) | Workflow Master §4.2 | pruebas/python/unit/services/rag/prueba_orchestrator.py |
+| Fase 2 (GREEN) | Workflow Master §4.3 | Same prueba archivo + new implementación |
+| Fase 3 (REFACTOR) | Workflow Master §4.4 | Ejecutar full prueba suite |
+| Fase 4 (INTEGRATION) | Workflow Master §5 | pruebas/python/integration/ |
 
 ### 🏁 AFTER COMPLETION
-| Deliverable | Documentation | Location |
+| Deliverable | Documentoation | Location |
 |-------------|-------------|----------|
-| Implementation code | Implementation Workflow | src/server/services/rag/ |
-| Test coverage | Test docs | tests/python/ |
-| Final checklist | Phase 6 docs | Workflow Master §4.6 |
+| Implementación code | Implementación Workflow | src/server/services/rag/ |
+| Prueba coverage | Prueba docs | pruebas/python/ |
+| Final checklist | Fase 6 docs | Workflow Master §4.6 |
 
 ---
 
-## 🎯 Key Files by Purpose
+## 🎯 Key Archivos by Purpose
 
 ### "I need to understand X"
 
-**Q: What is HU-3.3?**
+**Q: Qué es HU-3.3?**
 - A: [HU-3.3_DASHBOARD.md](HU-3.3_DASHBOARD.md) § Architecture Overview
 
 **Q: How do I implement it?**
 - A: [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md) § Sections 4-5
 
-**Q: Where are the test specifications?**
+**Q: Where are the prueba specifications?**
 - A: [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md) § Section 4.2 (RED)
 
-**Q: What test cases do I need to write?**
+**Q: What prueba cases do I need to write?**
 - A: [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md) § Sections 4.2.2, 4.2.3, etc.
 
-**Q: How do I run tests?**
-- A: [HU-3.3_QUICK_START.md](HU-3.3_QUICK_START.md) § Running Tests
+**Q: How do I ejecutar pruebas?**
+- A: [HU-3.3_QUICK_START.md](HU-3.3_QUICK_START.md) § Ejecutarning Pruebas
 
-**Q: What's the project architecture?**
+**Q: What's the proyecto architecture?**
 - A: [context/30-ARCHITECTURE/](context/30-ARCHITECTURE/) + [HU-3.3_DASHBOARD.md](HU-3.3_DASHBOARD.md) § Architecture Overview
 
 **Q: What security requirements apply?**
 - A: [context/SECURITY_HARDENING_POLICY.en.md](context/SECURITY_HARDENING_POLICY.en.md) + Workflow Master § Security Requirements
 
-**Q: How are tests organized?**
-- A: [tests/python/README_MIGRATION.md](tests/python/README_MIGRATION.md)
+**Q: How are pruebas organized?**
+- A: [pruebas/python/README_MIGRATION.md](pruebas/python/README_MIGRATION.md)
 
 **Q: What's the commit history?**
 - A: [doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md](doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md)
 
 ---
 
-## 📊 Document Statistics
+## 📊 Documento Statistics
 
 | Category | Count | Total Lines |
 |----------|-------|-------------|
 | Guides (Quick Start, etc.) | 4 | ~1,500 |
 | Workflow & Specifications | 1 | 4,000+ |
 | Technical Reports | 2 | ~800 |
-| Configuration & Setup | 6+ | ~2,000 |
+| Configuración & Setup | 6+ | ~2,000 |
 | **TOTAL** | **13+** | **~8,300+** |
 
 **Reading Time:**
@@ -166,8 +166,8 @@
 | HU-3.3_QUICK_START.md | HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md |
 | HU-3.3_DASHBOARD.md | HU-3.3_READY.md |
 | Workflow Master | context/SECURITY_HARDENING_POLICY.en.md |
-| tests/python/README_MIGRATION.md | doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md |
-| Any implementation doc | HU-3.3_QUICK_START.md § Quality Gates |
+| pruebas/python/README_MIGRATION.md | doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md |
+| Any implementación doc | HU-3.3_QUICK_START.md § Quality Gates |
 
 ---
 
@@ -196,7 +196,7 @@ git push origin feature/hu-3.3-phase-1
 
 ---
 
-## 🚀 Implementation Phases Timeline
+## 🚀 Implementación Fases Timeline
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -233,20 +233,20 @@ git push origin feature/hu-3.3-phase-1
 
 ## ✨ Quality Assurance Checklist
 
-### Pre-Implementation
+### Pre-Implementación
 - [ ] Read HU-3.3_QUICK_START.md
 - [ ] Read HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md
-- [ ] Run `scripts/validate_tests_migration.sh` → 5/5 ✅
-- [ ] Run existing tests: `pytest ../../tests/python/ -v`
-- [ ] Feature branch created
+- [ ] Ejecutar `scripts/validate_pruebas_migration.sh` → 5/5 ✅
+- [ ] Ejecutar existing pruebas: `pyprueba ../../pruebas/python/ -v`
+- [ ] Feature branch creard
 
-### During Implementation (Each Phase)
-- [ ] Write tests FIRST (RED phase)
-- [ ] Run `pytest` after each change
+### During Implementación (Each Fase)
+- [ ] Write pruebas FIRST (RED fase)
+- [ ] Ejecutar `pyprueba` after each change
 - [ ] Type check: `pyright services/`
 - [ ] Format: `black services/`
 - [ ] Lint: `ruff check services/`
-- [ ] Coverage ≥80%: `pytest --cov=services --cov-fail-under=80`
+- [ ] Coverage ≥80%: `pyprueba --cov=services --cov-fail-under=80`
 
 ### Before Every Commit
 - [ ] `scripts/validate-quality-gates.sh` passes
@@ -254,10 +254,10 @@ git push origin feature/hu-3.3-phase-1
 - [ ] Commit message follows pattern: `feat(rag): [desc] [HU-3.3]`
 
 ### Before Push to GitHub
-- [ ] All local tests pass
+- [ ] All local pruebas pass
 - [ ] All quality gates pass
 - [ ] Commit message is clear and detailed
-- [ ] No hardcoded secrets or file paths
+- [ ] No hardcoded secrets or archivo paths
 
 ---
 
@@ -276,23 +276,23 @@ git push origin feature/hu-3.3-phase-1
 
 ## 🆘 Troubleshooting
 
-**"Tests won't run"**
-1. Check: `scripts/validate_tests_migration.sh`
-2. Verify: `tests/python/conftest.py` exists
-3. Read: [tests/python/README_MIGRATION.md](tests/python/README_MIGRATION.md)
+**"Pruebas won't ejecutar"**
+1. Check: `scripts/validate_pruebas_migration.sh`
+2. Verify: `pruebas/python/confprueba.py` exists
+3. Read: [pruebas/python/README_MIGRATION.md](pruebas/python/README_MIGRATION.md)
 
 **"Import errors"**
-1. Check PYTHONPATH: `tests/python/conftest.py`
-2. Verify path: `cd src/server && pytest ../../tests/python/`
+1. Check PYTHONPATH: `pruebas/python/confprueba.py`
+2. Verify path: `cd src/server && pyprueba ../../pruebas/python/`
 3. Read: [HU-3.3_QUICK_START.md](HU-3.3_QUICK_START.md) § Help & Reference
 
 **"Pre-commit hooks failing"**
-1. Run: `ruff check --fix src/server/`
-2. Run: `black src/server/`
+1. Ejecutar: `ruff check --fix src/server/`
+2. Ejecutar: `black src/server/`
 3. Read: AGENTS.md § 8.G Pre-Commit Hooks
 
 **"Type checking errors"**
-1. Run: `pyright src/server/services`
+1. Ejecutar: `pyright src/server/services`
 2. Fix: Add return type annotations
 3. Read: AGENTS.md § 8.A Type Safety
 
@@ -300,10 +300,10 @@ git push origin feature/hu-3.3-phase-1
 
 ## 📞 Contact & Support
 
-**Documentation questions:**
+**Documentoation questions:**
 - Quick answers → [HU-3.3_QUICK_START.md](HU-3.3_QUICK_START.md) § Help & Reference
 - Detailed answers → [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md)
-- Project context → [AGENTS.md](AGENTS.md)
+- Proyecto context → [AGENTS.md](AGENTS.md)
 
 **Technical issues:**
 - Setup problems → [doc/02-SETUP_DEV/SETUP_GUIDE.en.md](doc/02-SETUP_DEV/SETUP_GUIDE.en.md)
@@ -315,19 +315,19 @@ git push origin feature/hu-3.3-phase-1
 ## 🎯 Success Criteria
 
 **You've successfully prepared when:**
-✅ All 4 quick-start documents read
-✅ `validate_tests_migration.sh` returns 5/5 ✅
-✅ Existing tests pass: `pytest ../../tests/python/ -v`
-✅ Feature branch created: `feature/hu-3.3-phase-1`
+✅ All 4 quick-start documentos read
+✅ `validate_pruebas_migration.sh` returns 5/5 ✅
+✅ Existing pruebas pass: `pyprueba ../../pruebas/python/ -v`
+✅ Feature branch creard: `feature/hu-3.3-fase-1`
 ✅ Section 4.2 of Workflow Master understood
-✅ First test written and failing
+✅ First prueba written and failing
 
 **You've successfully implemented when:**
-✅ All 6 phases completed
-✅ All test cases passing
+✅ All 6 fases completed
+✅ All prueba cases passing
 ✅ Coverage ≥80%
 ✅ All quality gates passed
-✅ Documentation complete
+✅ Documentoation complete
 ✅ Pull request merged to develop
 
 ---
@@ -337,6 +337,6 @@ git push origin feature/hu-3.3-phase-1
 > **5 min?** → [HU-3.3_QUICK_START.md](HU-3.3_QUICK_START.md)
 > **10 min?** → [HU-3.3_DASHBOARD.md](HU-3.3_DASHBOARD.md)
 > **45 min?** → [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md)
-> **Complete?** → This index + all related documents
+> **Complete?** → This index + all related documentos
 >
-> **Status:** 🟢 **READY FOR IMPLEMENTATION**
+> **Estado:** 🟢 **READY FOR IMPLEMENTATION**

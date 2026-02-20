@@ -1,28 +1,28 @@
-# ✅ Refactoring Completado: Migración de Tests a Estructura Centralizada
+# ✅ Refactoring Completado: Migración de Pruebas a Estructura Centralizada
 
 ## 📊 Resumen Ejecutivo
 
-Se ha completado exitosamente la migración de todos los tests de Python del servidor a una estructura centralizada en `tests/python/` siguiendo las reglas del monorepo. Esto mejora la organización y facilita el mantenimiento futuro.
+Se ha completado exitosamente la migración de todos los pruebas de Python del servidor a una estructura centralizada en `pruebas/python/` siguiendo las reglas del monorepo. Esto mejora la organización y facilita el mantenimiento futuro.
 
 ---
 
 ## 🎯 Objetivos Logrados
 
 ### 1. ✅ Estructura Centralizada
-- Tests migrados de `src/server/tests/` → `tests/python/`
+- Pruebas migrados de `src/server/pruebas/` → `pruebas/python/`
 - Ahora sigue la estructura estándar del monorepo
-- Todos los tests (Frontend + Backend) en el mismo árbol raíz
+- Todos los pruebas (Frontend + Backend) en el mismo árbol raíz
 
 ### 2. ✅ Configuración Actualizada
-- **conftest.py:** Actualizado para ruta centralizada
-- **pyproject.toml:** `testpaths` apunta a `../../tests/python`
-- **pyrightconfig.json:** Incluye `tests/python` para análisis de tipo
-- **backend-ci.yaml:** Tests ejecutados desde nueva ubicación
+- **confprueba.py:** Actualizado para ruta centralizada
+- **pyproyecto.toml:** `pruebapaths` apunta a `../../pruebas/python`
+- **pyrightconfig.json:** Incluye `pruebas/python` para análisis de tipo
+- **backend-ci.yaml:** Pruebas ejecutados desde nueva ubicación
 
 ### 3. ✅ Validación Automática
-- Script `scripts/validate_tests_migration.sh` creado
+- Script `scripts/validate_pruebas_migration.sh` creado
 - 5 validaciones automáticas ejecutadas exitosamente
-- 22 test files migrados y verificados
+- 22 prueba archivos migrados y verificados
 
 ---
 
@@ -77,7 +77,7 @@ tests/python/                      # ← Root centralizado (Monorepo)
 
 | Métrica | Cantidad |
 |---------|----------|
-| **Test files migrados** | 22 |
+| **Prueba archivos migrados** | 22 |
 | **Líneas de código** | ~3,500 |
 | **Configuraciones actualizadas** | 4 |
 | **Carpetas creadas** | 7 |
@@ -87,7 +87,7 @@ tests/python/                      # ← Root centralizado (Monorepo)
 
 ## 🔧 Cambios Configuracionales
 
-### pyproject.toml
+### pyproyecto.toml
 
 ```diff
 [tool.pytest.ini_options]
@@ -97,7 +97,7 @@ tests/python/                      # ← Root centralizado (Monorepo)
 
 **Razón:** Apuntar a la nueva ubicación centralizada desde src/server/
 
-### conftest.py
+### confprueba.py
 
 ```python
 # ANTES: Apuntaba a src/server
@@ -144,13 +144,13 @@ server_root = project_root / "src" / "server"
 ✓ tests/python/conftest.py existe y actualizado
 ```
 
-### 3. Cantidad de Tests
+### 3. Cantidad de Pruebas
 ```
 ✓ Tests en src/server/tests/: 17 (legacy)
 ✓ Tests en tests/python/: 22 (activos)
 ```
 
-### 4. Configuración pytest
+### 4. Configuración pyprueba
 ```
 ✓ pyproject.toml actualizado
 ✓ testpaths apunta a tests/python
@@ -164,16 +164,16 @@ server_root = project_root / "src" / "server"
 
 ---
 
-## 🚀 Cómo Usar los Tests Migrados
+## 🚀 Cómo Usar los Pruebas Migrados
 
-### Ejecutar Todos los Tests
+### Ejecutar Todos los Pruebas
 
 ```bash
 cd src/server
 pytest ../../tests/python/ -v
 ```
 
-### Ejecutar Tests Específicos
+### Ejecutar Pruebas Específicos
 
 ```bash
 # Unit tests de app
@@ -194,7 +194,7 @@ pytest ../../tests/python/ --cov=app --cov=services --cov=core --cov-report=html
 open htmlcov/index.html
 ```
 
-### Con pytest configurado
+### Con pyprueba configurado
 
 ```bash
 cd src/server
@@ -238,9 +238,9 @@ git push origin feature/chat-sequential-docs
 ```
 
 ### 2. Verificar CI/CD
-- [ ] Backend CI pipeline ejecuta tests desde `tests/python/`
+- [ ] Backend CI pipeline ejecuta pruebas desde `pruebas/python/`
 - [ ] Coverage reports se generan correctamente
-- [ ] Todos los tests pasan
+- [ ] Todos los pruebas pasan
 
 ### 3. Limpiar (Opcional - después de validar CI/CD)
 ```bash
@@ -252,18 +252,18 @@ git commit -m "chore: remove legacy tests directory after migration"
 
 ---
 
-## 📚 Documentación Relacionada
+## 📚 Documentoación Relacionada
 
-- **Migration Guide:** [tests/python/README_MIGRATION.md](../tests/python/README_MIGRATION.md)
-- **Validation Script:** [scripts/validate_tests_migration.sh](../scripts/validate_tests_migration.sh)
-- **AGENTS.md - Sección 8:** Estándar de Documentación
+- **Migration Guide:** [pruebas/python/README_MIGRATION.md](../pruebas/python/README_MIGRATION.md)
+- **Validation Script:** [scripts/validate_pruebas_migration.sh](../scripts/validate_pruebas_migration.sh)
+- **AGENTS.md - Sección 8:** Estándar de Documentoación
 - **HU-3.3 Workflow:** Preparación para Chat Secuencial
 
 ---
 
 ## 🎉 Conclusión
 
-La migración ha sido completada exitosamente. Todos los tests de Python están ahora centralizados en `tests/python/` siguiendo las mejores prácticas del monorepo. La estructura es clara, mantenible y lista para la siguiente fase de desarrollo (HU-3.3 Chat Secuencial).
+La migración ha sido completada exitosamente. Todos los pruebas de Python están ahora centralizados en `pruebas/python/` siguiendo las mejores prácticas del monorepo. La estructura es clara, mantenible y lista para la siguiente fase de desarrollo (HU-3.3 Chat Secuencial).
 
 **Estado:** ✅ LISTO PARA INICIAR HU-3.3
 

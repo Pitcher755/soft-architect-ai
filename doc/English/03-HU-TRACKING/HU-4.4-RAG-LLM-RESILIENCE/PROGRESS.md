@@ -51,7 +51,7 @@
 
 **Objetivo:** Establecer contratos de error y estructura de trabajo antes de implementar.
 
-**Status:** 🟡 **IN PROGRESS** (2/4 archivos creados)
+**Status:** 🟡 **IN PROGRESS** (2/4 files creados)
 
 ### Checklist
 
@@ -66,7 +66,7 @@
 
 #### 0.2 Error Code Contracts 🔜
 
-**Archivo:** `src/server/app/core/exceptions.py` (agregar 2 códigos)
+**File:** `src/server/app/core/exceptions.py` (agregar 2 códigos)
 
 - [ ] Define `ChromaDBConnectionError` class
   - code: `DB_ERR_001`
@@ -105,7 +105,7 @@
 
 ### 1.1 TDD RED: Escribir 7 Tests que Fallan 🔴
 
-**Archivo nuevo:** `tests/server/unit/services/rag/test_orchestrator_degradation.py`
+**File nuevo:** `tests/server/unit/services/rag/test_orchestrator_degradation.py`
 
 #### Tests a escribir:
 
@@ -168,7 +168,7 @@ async def test_orchestrator_stream_degrades_when_chromadb_fails():
     pass
 ```
 
-#### Ejecutar tests (deben fallar):
+#### Execute tests (deben fallar):
 
 ```bash
 cd src/server
@@ -185,7 +185,7 @@ pytest ../../tests/server/unit/services/rag/test_orchestrator_degradation.py -v
 
 ### 1.2 TDD GREEN: Implementar Graceful Degradation 🟢
 
-**Archivo a modificar:** `src/server/app/services/rag/orchestrator.py`
+**File a modificar:** `src/server/app/services/rag/orchestrator.py`
 
 #### Cambios en `process_message()` (líneas 30-60):
 
@@ -271,7 +271,7 @@ from collections.abc import AsyncGenerator
 # ...
 ```
 
-#### Ejecutar tests (deben pasar):
+#### Execute tests (deben pasar):
 
 ```bash
 pytest tests/server/unit/services/rag/test_orchestrator_degradation.py -v
@@ -350,7 +350,7 @@ Closes GAP 1 (Critical): System now works offline when ChromaDB fails"
 
 ### 2.1 TDD RED: Escribir 8 Tests que Fallan 🔴
 
-**Archivo nuevo:** `tests/server/unit/infrastructure/llm/test_ollama_retry.py`
+**File nuevo:** `tests/server/unit/infrastructure/llm/test_ollama_retry.py`
 
 #### Tests a escribir:
 
@@ -424,7 +424,7 @@ async def test_ollama_stream_generate_also_retries():
     pass
 ```
 
-#### Ejecutar tests (deben fallar):
+#### Execute tests (deben fallar):
 
 ```bash
 pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py -v
@@ -440,7 +440,7 @@ pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py -v
 
 ### 2.2 TDD GREEN: Aplicar `@with_retry` Decorator 🟢
 
-**Archivo a modificar:** `src/server/app/infrastructure/llm/ollama_client.py`
+**File a modificar:** `src/server/app/infrastructure/llm/ollama_client.py`
 
 #### Importar decorator (línea 19):
 
@@ -497,7 +497,7 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
     ...
 ```
 
-#### Ejecutar tests (deben pasar):
+#### Execute tests (deben pasar):
 
 ```bash
 pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py -v
@@ -576,7 +576,7 @@ Closes GAP 2 (High): Transient network failures now auto-recover"
 
 ### 3.1 TDD RED: Escribir 1 Test que Falla 🔴
 
-**Archivo existente:** `tests/client/unit/core/error_handling/error_mapper_test.dart`
+**File existente:** `tests/client/unit/core/error_handling/error_mapper_test.dart`
 
 #### Test a agregar:
 
@@ -608,7 +608,7 @@ void test_error_mapper_maps_chromadb_and_rag_errors() {
 }
 ```
 
-#### Ejecutar tests (deben fallar):
+#### Execute tests (deben fallar):
 
 ```bash
 cd tests
@@ -625,7 +625,7 @@ flutter test client/unit/core/error_handling/error_mapper_test.dart
 
 ### 3.2 TDD GREEN: Agregar Mensajes 🟢
 
-**Archivo a modificar:** `src/client/lib/core/error_handling/error_mapper.dart`
+**File a modificar:** `src/client/lib/core/error_handling/error_mapper.dart`
 
 #### Agregar en `_messages` (línea ~25):
 
@@ -681,7 +681,7 @@ static bool isRetryable(String errorCode) => [
 ].contains(errorCode);
 ```
 
-#### Ejecutar tests (deben pasar):
+#### Execute tests (deben pasar):
 
 ```bash
 flutter test client/unit/core/error_handling/error_mapper_test.dart
@@ -802,7 +802,7 @@ Closes GAP 4 (Low): Error catalog complete"
 #### 4.4 Documentation Review
 
 - [ ] README.md completo y bilingüe
-- [ ] PROGRESS.md actualizado (este archivo)
+- [ ] PROGRESS.md actualizado (este file)
 - [ ] Código comentado en inglés (docstrings)
 - [ ] Commits siguen conventional commits format
 
@@ -810,7 +810,7 @@ Closes GAP 4 (Low): Error catalog complete"
 
 ## 🚀 Phase 5: Validation & PR
 
-**Objetivo:** Ejecutar suite completa de tests y crear PR para merge.
+**Objetivo:** Execute suite completa de tests y create PR para merge.
 
 **Status:** 🔜 **PENDING**
 
@@ -820,7 +820,7 @@ Closes GAP 4 (Low): Error catalog complete"
 
 #### 5.1 PRE_PUSH_VALIDATION_MASTER.sh
 
-Ejecutar script maestro de validación:
+Execute script maestro de validación:
 
 ```bash
 ./scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh
@@ -1010,7 +1010,7 @@ wait
 
 ### 6.1 Overview
 
-**Descripción:** Permitir que el backend acepte un campo opcional `history` en `ChatRequest` para proporcionar contexto conversacional al LLM.
+**Description:** Permitir que el backend acepte un campo opcional `history` en `ChatRequest` para proporcionar contexto conversacional al LLM.
 
 **Motivación:** Las conversaciones actuales son stateless, el LLM no recuerda interacciones previas, limitando capacidad para preguntas de seguimiento.
 
@@ -1073,13 +1073,13 @@ pytest tests/server/integration/api/v1/test_chat_history_integration.py -v
 # Result: 5/5 passing ✅
 ```
 
-#### 6.2.2 GREEN Phase - Implementación
+#### 6.2.2 GREEN Phase - Implementation
 
 **Files Modified:**
 
 ##### 1. Schema Definition (`chat.py`)
 
-**Archivo:** `src/server/app/domain/schemas/chat.py`
+**File:** `src/server/app/domain/schemas/chat.py`
 
 **Cambio Principal:**
 ```python
@@ -1154,7 +1154,7 @@ class ChatRequest(BaseModel):
 
 ##### 2. Template Builder (`dependencies.py`)
 
-**Archivo:** `src/server/app/api/dependencies.py`
+**File:** `src/server/app/api/dependencies.py`
 
 **Cambio Principal:**
 ```python
@@ -1206,7 +1206,7 @@ class MVPTemplateBuilder:
 
 ##### 3. Orchestrator Integration (`orchestrator.py`)
 
-**Archivo:** `src/server/app/services/rag/orchestrator.py`
+**File:** `src/server/app/services/rag/orchestrator.py`
 
 **Cambio Principal:**
 ```python
@@ -1350,10 +1350,10 @@ Refs: HU-4.4 Phase 6
 
 ### 7.1 Overview
 
-**Descripción:** Hacer límites de chat configurables sin recompilación y completar integración frontend.
+**Description:** Hacer límites de chat configurables sin recompilación y completar integración frontend.
 
 **Motivación:**
-- Proyectos grandes (25+ docs) necesitan >20 mensajes de historial
+- Projects grandes (25+ docs) necesitan >20 mensajes de historial
 - Modelo soporta 32K tokens pero solo usando 5K (15% utilización)
 - Frontend no enviaba historial pese a backend listo
 - Tuning sin conocimiento de programación
@@ -1362,7 +1362,7 @@ Refs: HU-4.4 Phase 6
 - ✅ Environment variables: `CHAT_MAX_HISTORY_MESSAGES`, `CHAT_MAX_MESSAGE_LENGTH`
 - ✅ Validación dinámica en backend (lee de `settings`)
 - ✅ Frontend carga y envía últimos 100 mensajes
-- ✅ Configuración via `.env` / Docker Compose
+- ✅ Configuration via `.env` / Docker Compose
 - ✅ Tests actualizados (17/17 passing)
 - ✅ Graceful degradation frontend (continúa si SQLite falla)
 
@@ -1372,7 +1372,7 @@ Refs: HU-4.4 Phase 6
 
 **File 1: Settings Class (`config.py`)**
 
-**Archivo:** `src/server/app/core/config.py`
+**File:** `src/server/app/core/config.py`
 
 **Cambio:**
 ```python
@@ -1407,7 +1407,7 @@ class Settings(BaseSettings):
 
 **File 2: Dynamic Validation (`chat.py`)**
 
-**Archivo:** `src/server/app/domain/schemas/chat.py`
+**File:** `src/server/app/domain/schemas/chat.py`
 
 **Cambio:**
 ```python
@@ -1468,7 +1468,7 @@ class ChatRequest(BaseModel):
 
 **File 3: History Loading (`chat_repository_impl.dart`)**
 
-**Archivo:** `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
+**File:** `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
 
 **Cambio Principal:**
 ```dart
@@ -1534,7 +1534,7 @@ Stream<ChatStreamEvent> sendMessageStream(
 
 **File 4: Environment Variables (`.env.example`)**
 
-**Archivo:** `src/server/.env.example`
+**File:** `src/server/.env.example`
 
 **Cambio:**
 ```bash
@@ -1557,7 +1557,7 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **File 5: Docker Compose (`docker-compose.yml`)**
 
-**Archivo:** `infrastructure/docker-compose.yml`
+**File:** `infrastructure/docker-compose.yml`
 
 **Cambio:**
 ```yaml
@@ -1578,7 +1578,7 @@ services:
 
 **File 6: Unit Tests (`test_chat_history.py`)**
 
-**Archivo:** `tests/server/unit/domain/schemas/test_chat_history.py`
+**File:** `tests/server/unit/domain/schemas/test_chat_history.py`
 
 **Cambios:**
 ```python
@@ -1616,7 +1616,7 @@ def test_chat_request_rejects_oversized_message_in_history():
 
 **File 7: Integration Tests (`test_chat_history_integration.py`)**
 
-**Archivo:** `tests/server/integration/api/v1/test_chat_history_integration.py`
+**File:** `tests/server/integration/api/v1/test_chat_history_integration.py`
 
 **Cambios:**
 ```python
@@ -1709,7 +1709,7 @@ pytest tests/server/ --cov=app.core.config --cov=app.domain.schemas \
 - 🚀 **100% cobertura de casos de uso grandes**
 
 **Qualitative:**
-- ✅ Proyectos grandes viables (25+ docs)
+- ✅ Projects grandes viables (25+ docs)
 - ✅ Tuning sin conocimiento de código
 - ✅ Frontend integrado completamente
 - ✅ Mensajes de error informativos
@@ -1825,7 +1825,7 @@ Refs: HU-4.4 Phase 7
 
 ## 🏁 Acceptance Criteria Status
 
-| # | Criterio | Estado |
+| # | Criterio | Status |
 |---|----------|--------|
 | 1 | Si ChromaDB falla, chat continúa sin contexto RAG | 🔜 Pending |
 | 2 | LLM calls se reintentan 3x antes de fallar | 🔜 Pending |

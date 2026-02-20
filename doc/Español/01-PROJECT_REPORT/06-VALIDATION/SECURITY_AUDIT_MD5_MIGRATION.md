@@ -23,14 +23,14 @@
 
 ## 🎯 Resumen Ejecutivo
 
-Durante una auditoría de seguridad del VectorStoreService (HU-2.2), identificamos el uso de **hashing MD5** para la generación de ID de documentos. Aunque este caso de uso específico presenta **riesgo operacional mínimo** (hashing de documentos de base de conocimiento no sensible para generación determinística de IDs), **MD5 está criptográficamente roto** y representa un **olor de seguridad significativo** en aplicaciones modernas.
+Durante una auditoría de seguridad del VectorStoreService (HU-2.2), identificamos el uso de **hashing MD5** para la generación de ID de documentoos. Aunque este caso de uso específico presenta **riesgo operacional mínimo** (hashing de documentoos de base de conocimiento no sensible para generación determinística de IDs), **MD5 está criptográficamente roto** y representa un **olor de seguridad significativo** en aplicaciones modernas.
 
 ### Decisión: ✅ MIGRAR A SHA-256
 
 - **Fecha de Implementación:** 02/02/2026
 - **Alcance:** Un solo archivo (`src/server/services/rag/vector_store.py`)
-- **Cambio Incompatible:** Sí (IDs de documentos existentes cambiarán)
-- **Cobertura de Tests:** 15 tests actualizados, todos pasando ✅
+- **Cambio Incompatible:** Sí (IDs de documentoos existentes cambiarán)
+- **Cobertura de Pruebas:** 15 pruebas actualizados, todos pasando ✅
 - **Sin Pérdida de Datos:** La base de conocimiento permanece accesible vía limpieza + reingestión
 
 ---
@@ -52,7 +52,7 @@ Durante una auditoría de seguridad del VectorStoreService (HU-2.2), identificam
 
 **Archivo:** `src/server/services/rag/vector_store.py`
 **Método:** `_generate_id(content: str, source: str) -> str`
-**Propósito:** Generar ID determinístico para documentos asegurando idempotencia
+**Propósito:** Generar ID determinístico para documentoos asegurando idempotencia
 
 ```python
 # ANTES (MD5)
@@ -60,7 +60,7 @@ raw_id = f"{content.strip()}::{source.strip()}"
 return hashlib.md5(raw_id.encode("utf-8")).hexdigest()
 ```
 
-### Resultados de Búsqueda: Una Sola Coincidencia ✅
+### Resultadoados de Búsqueda: Una Sola Coincidencia ✅
 
 ```
 Total de coincidencias grep para 'md5|hashlib|MD5': 20 coincidencias
@@ -163,7 +163,7 @@ def _generate_id(self, content: str, source: str) -> str:
 - **Líneas Cambiadas:** 8
 - **Archivos Modificados:** 2
   - `src/server/services/rag/vector_store.py` (implementación)
-  - `src/server/tests/unit/services/rag/test_vector_store.py` (aserción de test)
+  - `src/server/pruebas/unit/services/rag/prueba_vector_store.py` (aserción de prueba)
 - **Cambio Incompatible:** Sí (formato de ID cambia de 32 a 64 caracteres hex)
 - **Compatibilidad Hacia Atrás:** Ninguna necesaria (IDs son internos de ChromaDB)
 
@@ -171,9 +171,9 @@ def _generate_id(self, content: str, source: str) -> str:
 
 ## 📊 Detalles de la Migración
 
-### Actualizaciones de Tests
+### Actualizaciones de Pruebas
 
-**Archivo:** `tests/unit/services/rag/test_vector_store.py`
+**Archivo:** `pruebas/unit/services/rag/prueba_vector_store.py`
 
 ```python
 # ANTES
@@ -183,7 +183,7 @@ assert len(doc_id) == 32  # Longitud de hash MD5
 assert len(doc_id) == 64  # Longitud de hash SHA-256
 ```
 
-### Resultados de Tests: Todos Pasando ✅
+### Resultadoados de Pruebas: Todos Pasando ✅
 
 ```bash
 $ pytest tests/unit/services/rag/test_vector_store.py -v
@@ -198,7 +198,7 @@ TestIDGeneration::test_generate_id_whitespace_normalization .. PASS ✅
 15 passed in 2.34s ✅
 ```
 
-### Tests de Integración
+### Pruebas de Integración
 
 ```bash
 $ pytest tests/integration/services/rag/test_vector_store_e2e.py -v
@@ -264,15 +264,15 @@ vector_store.ingest(documents)
 ### Para Este Codebase
 
 1. ✅ **Completado:** SHA-256 implementado en VectorStoreService
-2. ✅ **Completado:** Todos los tests unitarios actualizados y pasando
+2. ✅ **Completado:** Todos los pruebas unitarios actualizados y pasando
 3. 📋 **Pendiente:** Desplegar a producción (aviso de compatibilidad hacia atrás)
-4. 📋 **Pendiente:** Agregar guía de migración a runbooks
+4. 📋 **Pendiente:** Agregar guía de migración a ejecutarbooks
 
 ### Para Desarrollo Futuro
 
 1. **Lista de Verificación de Auditoría:** Agregar "revisión de algoritmos criptográficos" a Definition of Ready (context/20-REQUIREMENTS_AND_SPEC/)
 2. **Gestión de Secretos:** Nunca hashear claves API (usar `secrets.compare_digest()` en su lugar)
-3. **Uso de Hash:** Documentar el propósito de cada función hash
+3. **Uso de Hash:** Documentoar el propósito de cada función hash
    - ID Determinístico: SHA-256 ✅
    - Hashing de Contraseña: Argon2 (no hashlib) ⚠️
    - Integridad de Archivo: SHA-256 ✅
@@ -290,7 +290,7 @@ Fase 4 (Q4 2026): Habilitar modo de cumplimiento FIPS (si es necesario)
 
 ## 📚 Referencias
 
-### Estándares y Documentos
+### Estándares y Documentoos
 
 - **NIST SP 800-175B:** Recomendación para Aplicaciones Usando Criptografía Validada
   - MD5: ❌ Deprecado (ataques de colisión probados)
@@ -306,7 +306,7 @@ Fase 4 (Q4 2026): Habilitar modo de cumplimiento FIPS (si es necesario)
 
 - [Política de Endurecimiento de Seguridad](../SECURITY_HARDENING_POLICY.es.md)
 - [Contrato de Interfaz API](../../context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.es.md)
-- [Tests de VectorStoreService](../../src/server/tests/unit/services/rag/test_vector_store.py)
+- [Pruebas de VectorStoreService](../../src/server/pruebas/unit/services/rag/prueba_vector_store.py)
 - [Implementación de VectorStoreService](../../src/server/services/rag/vector_store.py)
 
 ### Artículos de Base de Conocimiento
@@ -321,7 +321,7 @@ Fase 4 (Q4 2026): Habilitar modo de cumplimiento FIPS (si es necesario)
 - **Implementado Por:** ArchitectZero (Asistente AI)
 - **Fecha de Revisión:** 02/02/2026
 - **Estado:** ✅ COMPLETO - Listo para Desplegar
-- **Tests:** 15/15 PASANDO ✅
+- **Pruebas:** 15/15 PASANDO ✅
 - **Hallazgo de Auditoría:** ✅ RESUELTO
 
 ---

@@ -1,11 +1,11 @@
 # ✅ HU-3.5 Tests - Final Results
 
 **Fecha:** 10 de febrero de 2026
-**Estado:** ✅ TODOS LOS TESTS PASAN
+**Status:** ✅ TODOS LOS TESTS PASAN
 
 ---
 
-## 📊 Resumen Ejecutivo
+## 📊 Executive Summary
 
 | Categoría | Total | Pasadas | Fallidas | Cobertura |
 |-----------|-------|---------|----------|-----------|
@@ -19,9 +19,9 @@
 ## 🧪 Tests de Flutter
 
 ### 1. StreamingProvider Tests (4 tests)
-**Archivo:** `tests/test/unit/features/chat/presentation/providers/streaming_provider_test.dart`
+**File:** `tests/test/unit/features/chat/presentation/providers/streaming_provider_test.dart`
 
-| Test | Status | Descripción |
+| Test | Status | Description |
 |------|--------|-------------|
 | `initializes WebSocket connection successfully` | ✅ | Verifica que WebSocket se conecta en initialize() |
 | `accumulates streamed tokens into message text` | ✅ | Verifica que los tokens se acumulan correctamente |
@@ -35,9 +35,9 @@
 - Aumentar delay en tearDown a 500ms para permitir async cleanup
 
 ### 2. AutoScrollController Tests (4 tests)
-**Archivo:** `tests/test/unit/features/chat/auto_scroll_controller_test.dart`
+**File:** `tests/test/unit/features/chat/auto_scroll_controller_test.dart`
 
-| Test | Status | Descripción |
+| Test | Status | Description |
 |------|--------|-------------|
 | `scrolls to bottom when new message arrives` | ✅ | Verifica auto-scroll |
 | `pauses auto-scroll when user scrolls manually` | ✅ | Verifica pausa manual |
@@ -47,16 +47,16 @@
 **Cambios realizados:**
 - Remover acceso a `tester.binding.currentFrameTimeStamp` (no disponible fuera de frame context)
 - Verificar simplemente que el scroll llega al final (maxScrollExtent)
-- Mantener test structure pero eliminar medición de frame duration
+- Mantener test structure pero delete medición de frame duration
 
 ---
 
 ## 🐍 Tests de Python
 
 ### 1. Streaming Handler Tests (6 tests)
-**Archivo:** `tests/python/unit/api/websocket/test_streaming_handler.py`
+**File:** `tests/python/unit/api/websocket/test_streaming_handler.py`
 
-| Test | Status | Descripción |
+| Test | Status | Description |
 |------|--------|-------------|
 | `test_connect_accepts_websocket_connection` | ✅ | Verifica aceptación de conexión |
 | `test_stream_tokens_sends_tokens_incrementally` | ✅ | Verifica envío <100ms por token |
@@ -66,14 +66,14 @@
 | `test_error_handling_graceful_close` | ✅ | Verifica manejo de errores |
 
 ### 2. Token Buffer Tests (Implícito en handler tests)
-**Archivo:** `tests/python/unit/services/streaming/test_token_buffer.py`
+**File:** `tests/python/unit/services/streaming/test_token_buffer.py`
 
 Cubiertos en tests de StreamingHandler
 
 ### 3. Streaming Flow Integration Tests (5 tests)
-**Archivo:** `tests/python/integration/test_streaming_flow.py`
+**File:** `tests/python/integration/test_streaming_flow.py`
 
-| Test | Status | Descripción |
+| Test | Status | Description |
 |------|--------|-------------|
 | `test_websocket_ttfb_under_200ms` | ✅ | TTFB <200ms |
 | `test_token_rate_exceeds_10_per_second` | ✅ | Throughput ≥10 tokens/sec |
@@ -162,4 +162,4 @@ python -m pytest tests/python/integration/test_streaming_flow.py -v
 - ✅ Mock/stub problems eliminados
 - ✅ Async lifecycle manejado correctamente
 
-**Resultado:** HU-3.5 completa y lista para producción ✅
+**Result:** HU-3.5 completa y lista para producción ✅

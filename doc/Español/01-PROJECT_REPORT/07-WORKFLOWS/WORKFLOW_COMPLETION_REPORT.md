@@ -11,7 +11,7 @@
 **Estado:** ✅ COMPLETADA
 
 - [x] Auditoría de infraestructura actual realizada
-- [x] PERFORMANCE_METRICS.md creado y documentado
+- [x] PERFORMANCE_METRICS.md creado y documentoado
 - [x] Herramientas de profiling configuradas (Chrome + Dart DevTools)
 - [x] Baseline metrics capturadas
 
@@ -27,17 +27,17 @@
 ### FASE 1: TDD - ROJO ✅
 **Estado:** ✅ COMPLETADA
 
-**Tests Escritos:**
-- [x] 6 tests WebSocket Handler (test_streaming_handler.py)
-- [x] 6 tests Token Buffer (test_token_buffer.py)
-- [x] 5 tests Streaming Flow E2E (test_streaming_flow.py)
-- [x] 4 tests StreamingProvider (streaming_provider_test.dart)
-- [x] 6 tests CircularBuffer (circular_buffer_test.dart)
-- [x] 4 tests AutoScrollController (auto_scroll_controller_test.dart)
+**Pruebas Escritos:**
+- [x] 6 pruebas WebSocket Handler (prueba_streaming_handler.py)
+- [x] 6 pruebas Token Buffer (prueba_token_buffer.py)
+- [x] 5 pruebas Streaming Flow E2E (prueba_streaming_flow.py)
+- [x] 4 pruebas StreamingProvider (streaming_provider_prueba.dart)
+- [x] 6 pruebas CircularBuffer (circular_buffer_prueba.dart)
+- [x] 4 pruebas AutoScrollController (auto_scroll_controller_prueba.dart)
 
-**Total:** 31+ tests escritos
+**Total:** 31+ pruebas escritos
 
-**Resultado Ejecución:**
+**Resultadoado Ejecución:**
 ```
 ✅ Todos los tests ROJOS inicialmente (sin implementación)
 ✅ Objetivos de cobertura: >85% (ALCANZADO)
@@ -94,7 +94,7 @@
 - [x] `src/client/lib/features/chat/presentation/widgets/streaming_message_widget.dart` (50 líneas)
   - ✅ Optimized widget con RepaintBoundary
 
-**Resultado Ejecución:**
+**Resultadoado Ejecución:**
 ```
 ✅ 8/8 Flutter tests VERDES (100%)
 ✅ 11/11 Python tests VERDES (100%)
@@ -124,24 +124,24 @@
 
 ---
 
-### FASE 4: Testing de Integración E2E ✅
+### FASE 4: Pruebaing de Integración E2E ✅
 **Estado:** ✅ COMPLETADA
 
-**Tests E2E Implementados:**
+**Pruebas E2E Implementados:**
 
-#### Backend Integration Tests
-- [x] `test_websocket_ttfb_under_200ms()` ✅
-- [x] `test_token_rate_exceeds_10_per_second()` ✅
-- [x] `test_connection_survives_500_plus_tokens()` ✅
-- [x] `test_heartbeat_keeps_connection_alive()` ✅
-- [x] `test_reconnection_completes_under_2_seconds()` ✅
+#### Backend Integración Pruebas
+- [x] `prueba_websocket_ttfb_under_200ms()` ✅
+- [x] `prueba_token_rate_exceeds_10_per_second()` ✅
+- [x] `prueba_connection_survives_500_plus_tokens()` ✅
+- [x] `prueba_heartbeat_keeps_connection_alive()` ✅
+- [x] `prueba_reconnection_completes_under_2_seconds()` ✅
 
-#### Frontend Integration Tests
+#### Frontend Integración Pruebas
 - [x] `renderizar tokens incrementalmente sin jank()` ✅
 - [x] `auto-scroll sin pausas perceptibles()` ✅
 - [x] `memory con buffer circular (1000 msgs)()` ✅
 
-**Resultado Ejecución:**
+**Resultadoado Ejecución:**
 ```
 ✅ 5/5 Backend E2E tests PASAN
 ✅ 3/3 Frontend E2E tests PASAN
@@ -150,10 +150,10 @@
 
 ---
 
-### FASE 5: Documentación y Validación ✅
+### FASE 5: Documentoación y Validación ✅
 **Estado:** ✅ COMPLETADA
 
-**Documentos Creados:**
+**Documentoos Creados:**
 
 - [x] `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md`
   - ✅ Tabla de latencia targets validada
@@ -164,7 +164,7 @@
   - ✅ Evidence: Dart DevTools timeline
 
 - [x] `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md` (actualizado)
-  - ✅ WebSocket endpoint documentado
+  - ✅ WebSocket endpoint documentoado
   - ✅ Message format JSON especificado
   - ✅ Error handling definido
   - ✅ Performance guarantees listados
@@ -207,22 +207,22 @@
   - ✅ black: formatted ✓
   - ✅ ruff: clean ✓
 
-- [x] Frontend Tests
-  - ✅ flutter test: 8/8 PASAN
+- [x] Frontend Pruebas
+  - ✅ flutter prueba: 8/8 PASAN
   - ✅ Cobertura: >85%
 
-- [x] Backend Tests
-  - ✅ pytest: 11/11 PASAN
+- [x] Backend Pruebas
+  - ✅ pyprueba: 11/11 PASAN
   - ✅ Cobertura: >85%
 
-- [x] Performance Tests
+- [x] Performance Pruebas
   - ✅ TTFB: 185ms ✅
   - ✅ Token Rate: 12/sec ✅
   - ✅ FPS: 60 ✅
 
 - [x] GitHub Actions Workflow
-  - ✅ `.github/workflows/performance-tests.yml` creado
-  - ✅ Pipeline configuration completado
+  - ✅ `.github/workflows/performance-pruebas.yml` creado
+  - ✅ Pipeline configuración completado
 
 **Checklist CI/CD:**
 ```
@@ -244,8 +244,8 @@
 - ✅ **Network Stability:** +500 tokens → Validado ✅
 - ✅ **Memory Management:** Buffer circular 100 msgs → Implementado ✅
 - ✅ **Auto-Reconnection:** <2 segundos → Medido: 1.8s ✅
-- ✅ **Cobertura de Tests:** >85% → Alcanzado ✅
-- ✅ **Profiling:** Métricas documentadas → Completado ✅
+- ✅ **Cobertura de Pruebas:** >85% → Alcanzado ✅
+- ✅ **Profiling:** Métricas documentoadas → Completado ✅
 
 ### NEGATIVOS (No Debe) ✅
 - ✅ Sin latencia perceptible (≤200ms)
@@ -278,14 +278,14 @@
 ✅ src/client/lib/core/models/stream_event.dart
 ```
 
-### Tests Backend ✅
+### Pruebas Backend ✅
 ```
 ✅ tests/python/unit/api/websocket/test_streaming_handler.py (6 tests)
 ✅ tests/python/unit/services/streaming/test_token_buffer.py (6 tests)
 ✅ tests/python/integration/test_streaming_flow.py (5 tests E2E)
 ```
 
-### Tests Frontend ✅
+### Pruebas Frontend ✅
 ```
 ✅ tests/test/unit/features/chat/presentation/providers/streaming_provider_test.dart (4 tests)
 ✅ tests/test/unit/core/buffer/circular_buffer_test.dart (6 tests)
@@ -293,7 +293,7 @@
 ✅ tests/test/integration/features/chat/streaming_flow_test.dart (3 tests E2E)
 ```
 
-### Documentación ✅
+### Documentoación ✅
 ```
 ✅ context/30-ARCHITECTURE/PERFORMANCE_TARGETS.md
 ✅ context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md
@@ -324,10 +324,10 @@
 | **Memory Growth** | <5MB | 4.2MB | ✅ PASS |
 | **Reconnection** | <2s | 1.8s | ✅ PASS |
 | **Connection Stability** | +500 tokens | 600 tokens | ✅ PASS |
-| **Test Coverage** | >85% | 85%+ | ✅ PASS |
+| **Prueba Coverage** | >85% | 85%+ | ✅ PASS |
 | **Flutter Analyze** | 0 issues | 0 issues | ✅ PASS |
-| **Backend Tests** | 11 passing | 11/11 | ✅ PASS |
-| **Frontend Tests** | 8 passing | 8/8 | ✅ PASS |
+| **Backend Pruebas** | 11 passing | 11/11 | ✅ PASS |
+| **Frontend Pruebas** | 8 passing | 8/8 | ✅ PASS |
 
 ---
 
@@ -335,37 +335,37 @@
 
 ### Fases Completadas: 6/6 ✅
 - [x] Fase 0: Preparación del Terreno
-- [x] Fase 1: TDD - ROJO (Tests que Fallan)
+- [x] Fase 1: TDD - ROJO (Pruebas que Fallan)
 - [x] Fase 2: TDD - VERDE (Implementación)
 - [x] Fase 3: TDD - REFACTOR (Optimización)
-- [x] Fase 4: Testing de Integración E2E
-- [x] Fase 5: Documentación y Validación
+- [x] Fase 4: Pruebaing de Integración E2E
+- [x] Fase 5: Documentoación y Validación
 - [x] Fase 6: CI/CD y Pipeline
 
 ### Criterios de Éxito: 12/12 ✅
-- [x] Todos los tests unitarios pasan
-- [x] Todos los tests E2E pasan
+- [x] Todos los pruebas unitarios pasan
+- [x] Todos los pruebas E2E pasan
 - [x] TTFB p95 <200ms validado
 - [x] Token rate ≥10 tokens/sec validado
 - [x] UI mantiene 60 FPS validado
 - [x] WebSocket estable +500 tokens validado
 - [x] Buffer circular implementado
 - [x] Auto-reconexión funcional <2s
-- [x] Cobertura de tests >85%
+- [x] Cobertura de pruebas >85%
 - [x] Pipeline CI/CD verde
-- [x] Documentación completa y revisada
+- [x] Documentoación completa y revisada
 - [x] flutter analyze sin issues
 
 ### Líneas de Código Entregadas: 1200+ ✅
 - Backend: 450+ líneas
 - Frontend: 500+ líneas
-- Tests: 250+ líneas
+- Pruebas: 250+ líneas
 
 ### Archivos Creados: 20+ ✅
 - Backend: 6 archivos
 - Frontend: 6 archivos
-- Tests: 7 archivos
-- Documentación: 8 archivos
+- Pruebas: 7 archivos
+- Documentoación: 8 archivos
 
 ---
 
@@ -377,9 +377,9 @@
 ✅ Todos los criterios de aceptación validados
 ✅ Todos los entregables completados
 ✅ Pipeline CI/CD verde
-✅ Documentación bilingüe lista para producción
-✅ Métricas de performance documentadas
+✅ Documentoación bilingüe lista para producción
+✅ Métricas de performance documentoadas
 
-**Status:** 🟢 **LISTO PARA MERGE A DEVELOP**
+**Estado:** 🟢 **LISTO PARA MERGE A DEVELOP**
 
 **Próximo Paso:** Merge a rama `develop` y despliegue en staging para validación final.

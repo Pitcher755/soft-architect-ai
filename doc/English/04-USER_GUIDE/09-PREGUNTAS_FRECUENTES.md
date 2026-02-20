@@ -1,15 +1,15 @@
 # ❓ Preguntas Frecuentes (FAQ) - SoftArchitect AI
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ Preguntas frecuentes
-> **Tiempo de lectura:** 8 minutos
+> **Date:** 19/02/2026
+> **Status:** ✅ Preguntas frecuentes
+> **Reading Time:** 8 minutos
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [General](#general)
-- [Instalación y Configuración](#instalación-y-configuración)
+- [Instalación y Configuration](#instalación-y-configuration)
 - [Uso y Funcionalidades](#uso-y-funcionalidades)
 - [Seguridad y Privacidad](#seguridad-y-privacidad)
 - [Rendimiento](#rendimiento)
@@ -22,9 +22,9 @@
 ### ❓ ¿Qué es SoftArchitect AI?
 
 **Respuesta:**
-SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los desarrolladores a través del ciclo completo de diseño de software (0-100), desde la conceptualización hasta la implementación, utilizando IA generativa privada.
+SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los desarrolladores a través del ciclo completo de diseño de software (0-100), desde la conceptualización hasta la implementation, utilizando IA generativa privada.
 
-**Documento relacionado:** [Inicio Rápido](01-QUICK_START.md)
+**Document relacionado:** [Inicio Rápido](01-QUICK_START.md)
 
 ---
 
@@ -35,7 +35,7 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 
 **SÍ**, solo si eliges usar **Groq Cloud** (opcional, para equipos con hardware limitado).
 
-**Documento relacionado:** [Instalación](02-INSTALLATION.md#opcion-a-docker-recommended)
+**Document relacionado:** [Instalación](02-INSTALLATION.md#opcion-a-docker-recommended)
 
 ---
 
@@ -52,16 +52,16 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 
 ---
 
-### ❓ ¿Puedo usarlo para proyectos comerciales?
+### ❓ ¿Puedo usarlo para projects comerciales?
 
 **Respuesta:**
-**Sí**, absolutamente. La licencia del proyecto permite uso comercial siempre que respetes los términos de la licencia (MIT).
+**Sí**, absolutamente. La licencia of the project permite uso comercial siempre que respetes los términos de la licencia (MIT).
 
-**Documento relacionado:** [LICENSE](../../../LICENSE)
+**Document relacionado:** [LICENSE](../../../LICENSE)
 
 ---
 
-## 🛠️ Instalación y Configuración
+## 🛠️ Instalación y Configuration
 
 ### ❓ ¿Qué requisitos de hardware necesito?
 
@@ -86,7 +86,7 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 - GPU: No necesaria
 - **Requiere:** API key de Groq (gratis)
 
-**Documento relacionado:** [Instalación](02-INSTALLATION.md)
+**Document relacionado:** [Instalación](02-INSTALLATION.md)
 
 ---
 
@@ -100,7 +100,7 @@ SoftArchitect AI es un asistente de ingeniería **local-first** que guía a los 
 - ✅ macOS 11+ (Intel y Apple Silicon)
 - ✅ Linux (Ubuntu 20.04+, Debian, Arch, Fedora)
 
-**Documento relacionado:** [Instalación](02-INSTALLATION.md#instalación-por-sistema-operativo)
+**Document relacionado:** [Instalación](02-INSTALLATION.md#instalación-por-sistema-operativo)
 
 ---
 
@@ -140,28 +140,28 @@ cd src/client && flutter pub upgrade
 ### ❓ ¿Qué es el "Master Workflow 0-100"?
 
 **Respuesta:**
-Es una metodología estructurada en 4 fases para diseñar software:
+Es una metodología estructurada en 4 phases para diseñar software:
 
-1. **Fase 0 (Governance):** Definir problema, requisitos, stakeholders
-2. **Fase 1 (Architecture):** Decisiones técnicas (stack, patrones)
-3. **Fase 2 (Implementation):** Historias de usuario, tareas
-4. **Fase 3 (Tracking):** Sprints, validación, iteración
+1. **Phase 0 (Governance):** Definir problema, requisitos, stakeholders
+2. **Phase 1 (Architecture):** Decisiones técnicas (stack, patrones)
+3. **Phase 2 (Implementation):** Historias de usuario, tareas
+4. **Phase 3 (Tracking):** Sprints, validación, iteración
 
-**Documento relacionado:** [Master Workflow](04-MASTER_WORKFLOW.md)
+**Document relacionado:** [Master Workflow](04-MASTER_WORKFLOW.md)
 
 ---
 
 ### ❓ ¿Puedo usar mis propias plantillas o Tech Packs?
 
 **Respuesta:**
-**Sí**. Los Tech Packs son archivos Markdown en `packages/knowledge_base/02-TECH-PACKS/`.
+**Sí**. Los Tech Packs son files Markdown en `packages/knowledge_base/02-TECH-PACKS/`.
 
 **Para añadir uno nuevo:**
-1. Crear `packages/knowledge_base/02-TECH-PACKS/MY_STACK.md`
+1. Create `packages/knowledge_base/02-TECH-PACKS/MY_STACK.md`
 2. Seguir formato de Tech Packs existentes
 3. Reiniciar backend para reindexar
 
-**Documento relacionado:** [Documentación de Tech Packs](../../02-SETUP_DEV/KNOWLEDGE_BASE_STRUCTURE.md)
+**Document relacionado:** [Documentación de Tech Packs](../../02-SETUP_DEV/KNOWLEDGE_BASE_STRUCTURE.md)
 
 ---
 
@@ -179,7 +179,7 @@ Todos los resultados se guardan automáticamente en:
 
 **Exportación adicional:**
 - **PDF:** Click en "Exportar a PDF" (próximamente)
-- **Markdown:** Ya disponible (copy-paste desde carpeta)
+- **Markdown:** Ya disponible (copy-paste desde folder)
 - **JSON:** API REST `/api/export/{project_id}`
 
 ---
@@ -210,11 +210,11 @@ rm -rf ./data/chat_history/*
 
 **Garantía:** Zero telemetry, zero analytics, zero tracking.
 
-**Documento relacionado:** [Política de Privacidad](../private/PRIVACY_POLICY.md)
+**Document relacionado:** [Política de Privacidad](../private/PRIVACY_POLICY.md)
 
 ---
 
-### ❓ ¿Es seguro usarlo en proyectos confidenciales?
+### ❓ ¿Es seguro usarlo en projects confidenciales?
 
 **Respuesta:**
 **Sí**, si usas **Ollama Local**. La IA nunca sale de tu computadora.
@@ -224,11 +224,11 @@ rm -rf ./data/chat_history/*
 - ✅ Data Sovereignty (legislación EU)
 - ✅ GDPR-friendly (no hay datos en la nube)
 
-**Documento relacionado:** [Auditoría de Seguridad](../../01-PROJECT_REPORT/SECURITY_AUDIT_REPORT.md)
+**Document relacionado:** [Auditoría de Seguridad](../../01-PROJECT_REPORT/SECURITY_AUDIT_REPORT.md)
 
 ---
 
-### ❓ ¿Pueden otros ver mis proyectos?
+### ❓ ¿Pueden otros ver mis projects?
 
 **Respuesta:**
 **NO**. Todo está en tu máquina local.
@@ -301,19 +301,19 @@ MODEL_NAME=phi
 
 ---
 
-### ❓ ¿Puedo contribuir al proyecto?
+### ❓ ¿Puedo contribuir to the project?
 
 **Respuesta:**
-**¡Sí, por favor!** El proyecto es open source.
+**¡Sí, por favor!** El project es open source.
 
 **Cómo contribuir:**
 1. Fork del repositorio: https://github.com/Pitcher755/soft-architect-ai
-2. Crear feature branch: `git checkout -b feature/nueva-funcionalidad`
+2. Create feature branch: `git checkout -b feature/nueva-funcionalidad`
 3. Commit cambios: `git commit -m "feat: nueva funcionalidad"`
 4. Push: `git push origin feature/nueva-funcionalidad`
 5. Abrir Pull Request
 
-**Documento relacionado:** [CONTRIBUTING.md](../../../CONTRIBUTING.md)
+**Document relacionado:** [CONTRIBUTING.md](../../../CONTRIBUTING.md)
 
 ---
 
@@ -348,7 +348,7 @@ MODEL_NAME=phi
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documents Relacionados
 
 - [Inicio Rápido](01-QUICK_START.md) - Empezar en 15 minutos
 - [Instalación Completa](02-INSTALLATION.md) - Setup detallado

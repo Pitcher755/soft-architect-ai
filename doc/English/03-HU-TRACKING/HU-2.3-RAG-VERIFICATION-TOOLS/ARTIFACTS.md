@@ -1,38 +1,38 @@
 # 📦 ARTIFACTS - HU-2.3: Generated & Modified Files Manifest
 
-> **Versión:** 1.0
-> **Fecha:** 01/02/2026
-> **Estado:** ARTIFACT MANIFEST
+> **Version:** 1.0
+> **Date:** 01/02/2026
+> **Status:** ARTIFACT MANIFEST
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
-2. [Archivos Nuevos](#archivos-nuevos)
-3. [Archivos Modificados](#archivos-modificados)
-4. [Arquivos de Documentación](#archivos-de-documentación)
+2. [Files Nuevos](#files-nuevos)
+3. [Files Modificados](#files-modificados)
+4. [Arquivos de Documentación](#files-de-documentación)
 5. [Estadísticas Detalladas](#estadísticas-detalladas)
 6. [Dependencias Agregadas](#dependencias-agregadas)
 7. [Directrices de Limpieza](#directrices-de-limpieza)
 
 ---
 
-## 📊 Resumen Ejecutivo
+## 📊 Executive Summary
 
 | Métrica | Cantidad |
 |---------|----------|
-| **Archivos Nuevos (Python)** | 2 |
-| **Archivos de Testing** | 4 |
-| **Archivos de Documentación** | 5 |
-| **Archivos Modificados** | 3 |
+| **Files Nuevos (Python)** | 2 |
+| **Files de Testing** | 4 |
+| **Files de Documentación** | 5 |
+| **Files Modificados** | 3 |
 | **Total Líneas de Código (LOC)** | 600+ |
-| **Total de Cambios** | 14 archivos |
+| **Total de Cambios** | 14 files |
 | **Directorio Nuevo** | infrastructure/chroma_data/ (gitignored) |
 
 ---
 
-## ✨ Archivos Nuevos
+## ✨ Files Nuevos
 
 ### 1. src/server/scripts/inspect_db.py
 
@@ -96,7 +96,7 @@ poetry run python scripts/inspect_db.py query "Docker" --json-output
 
 ### 2. src/server/app/api/v1/endpoints/rag_test.py
 
-**Propósito:** Endpoint temporal de prueba para RAG (⚠️ TEMPORARY)
+**Propósito:** Endpoint temporal de test para RAG (⚠️ TEMPORARY)
 **Tipo:** Production Code (Temporary)
 **Tamaño:** 156 líneas
 **Dependencias:** fastapi, pydantic, services.rag.vector_store
@@ -172,11 +172,11 @@ curl http://localhost:8000/api/v1/rag/test/health
 
 ---
 
-## 🧪 Archivos de Testing (4 archivos)
+## 🧪 Files de Testing (4 files)
 
 ### 3. tests/integration/services/rag/test_chroma_mount.py
 
-**Propósito:** Verificar configuración de bind mount
+**Propósito:** Verificar configuration de bind mount
 **Tipo:** Integration Test
 **Tamaño:** 12 líneas
 **Dependencias:** pytest, pathlib
@@ -297,7 +297,7 @@ def test_rag_retrieval_invalid_query(mock_store, client):
 
 ---
 
-## 📝 Archivos de Documentación (5 archivos)
+## 📝 Files de Documentación (5 files)
 
 Todos en `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/`:
 
@@ -354,7 +354,7 @@ Todos en `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/`:
 
 ---
 
-## ✏️ Archivos Modificados (3 archivos)
+## ✏️ Files Modificados (3 files)
 
 ### 1. infrastructure/docker-compose.yml
 
@@ -468,7 +468,7 @@ infrastructure/chroma_data/  # ✨ NEW - persistent data, not tracked
 
 ### Breakdown de Líneas de Código
 
-| Categoría | Archivos | LOC | Promedio |
+| Categoría | Files | LOC | Promedio |
 |-----------|----------|-----|----------|
 | **Python Code** | 2 | 342 | 171/file |
 | **Unit Tests** | 3 | 78 | 26/file |
@@ -540,7 +540,7 @@ Bilingual Support: Full EN + ES
 
 ## 🧹 Directrices de Limpieza
 
-### Archivos Temporales (a remover después)
+### Files Temporales (a remover después)
 
 **Endpoint Temporal:** `src/server/app/api/v1/endpoints/rag_test.py`
 
@@ -636,4 +636,4 @@ Respaldo: No necesario (puede regenerarse)
 
 **Artifact Manifest - Versión:** 1.0
 **Última actualización:** 01/02/2026
-**Estado:** COMPLETE ✅
+**Status:** COMPLETE ✅

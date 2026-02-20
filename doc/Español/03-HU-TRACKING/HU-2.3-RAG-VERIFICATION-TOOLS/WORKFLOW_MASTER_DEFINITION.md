@@ -2,7 +2,7 @@
 
 > **Fecha:** 01/02/2026
 > **Estado:** ✅ READY FOR EXECUTION
-> **Rama:** chore/rag-verification-tools
+> **Rama:** chore/rag-verificación-tools
 > **Issue Linear:** PIT-65
 
 ---
@@ -17,7 +17,7 @@
 6. [FASE 2: Ingesta y Persistencia Verificada](#fase-2-ingesta-y-persistencia-verificada)
 7. [FASE 3: Inspección Visual CLI](#fase-3-inspección-visual-cli)
 8. [FASE 4: Endpoint de Prueba (Integración Backend)](#fase-4-endpoint-de-prueba-integración-backend)
-9. [FASE 5: Validación Final y Documentación](#fase-5-validación-final-y-documentación)
+9. [FASE 5: Validación Final y Documentoación](#fase-5-validación-final-y-documentoación)
 10. [Limpieza y Finalización](#limpieza-y-finalización)
 11. [Troubleshooting](#troubleshooting)
 
@@ -25,16 +25,16 @@
 
 ## 🎯 Introducción
 
-Este workflow es el "test de humo" definitivo para garantizar que:
+Este workflow es el "prueba de humo" definitivo para garantizar que:
 - ✅ Los datos persisten en el host (no en la "caja negra" de Docker)
 - ✅ El CLI inspector devuelve fragmentos reales y legibles
 - ✅ El endpoint RAG devuelve JSON con contexto recuperado
-- ✅ Todo está documentado, testeado y listo para Frontend
+- ✅ Todo está documentoado, pruebaeado y listo para Frontend
 
 **Principios Arquitectónicos Aplicados:**
-- **Clean Architecture:** Separación de concerns en capas (Domain, Data, Presentation)
-- **Doc as Code:** Toda decisión técnica documentada y versionada en Git
-- **Testing Strategy:** TDD con cobertura >80% para lógica crítica
+- **Clean Architecture:** Separación de concerns en capas (Domain, Data, Presentación)
+- **Doc as Code:** Toda decisión técnica documentoada y versionada en Git
+- **Pruebaing Strategy:** TDD con cobertura >80% para lógica crítica
 - **Security (OWASP):** Validación de inputs, sanitización de outputs, sin hardcoding
 - **Type Safety:** Type hints completos en Python (Pyright/Pylance clean)
 - **Conventional Commits:** Cada cambio commiteable y revertible
@@ -62,19 +62,19 @@ poetry --version          # 1.8.3+
 
 ## 🔗 Mapeo de Criterios
 
-| Criterio de Aceptación | Fase | Validación | Status |
+| Criterio de Aceptación | Fase | Validación | Estado |
 |---|---|---|---|
 | ✅ `infrastructure/chroma_data` visible en host | 1 | `ls -la infrastructure/chroma_data/` | ⏳ |
 | ✅ Archivos `.bin` tras ingesta (>1MB) | 2 | `du -sh infrastructure/chroma_data/` | ⏳ |
-| ✅ `inspect_db.py` devuelve texto legible | 3 | `poetry run python scripts/inspect_db.py` | ⏳ |
-| ✅ Endpoint `/api/v1/rag/test-retrieval` retorna JSON | 4 | `curl -X POST http://localhost:8000/...` | ⏳ |
+| ✅ `inspect_db.py` devuelve texto legible | 3 | `poetry ejecutar python scripts/inspect_db.py` | ⏳ |
+| ✅ Endpoint `/api/v1/rag/prueba-retrieval` retorna JSON | 4 | `curl -X POST http://localhost:8000/...` | ⏳ |
 | ✅ Persistencia tras `docker compose down/up` | 5 | Reiniciar stack y verificar datos | ⏳ |
 
 ---
 
 ## 🏁 FASE 0: Inicio Limpio y Contexto
 
-**Objetivo:** Preparar el ambiente y documentar el punto de partida.
+**Objetivo:** Preparar el ambiente y documentoar el punto de partida.
 
 ### 0.1: Verificar Estado Git
 
@@ -95,12 +95,12 @@ git log --oneline -5
 # Debe mostrar: 1fa15c1 (HEAD -> chore/rag-verification-tools, origin/develop)
 ```
 
-### 0.3: Crear Documentación de Tracking
+### 0.3: Crear Documentoación de Tracking
 
 ✅ **ARTIFACTS a generar:**
 1. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/README.md` (bilingual)
 2. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/PROGRESS.md` (checklist de 6 fases)
-3. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/ARTIFACTS.md` (manifest de files)
+3. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/ARTIFACTS.md` (manifest de archivos)
 
 ```bash
 # Crear carpeta
@@ -206,7 +206,7 @@ python3 -c "import chromadb; client = chromadb.HttpClient(host='localhost', port
 
 ### 1.5: Verificación en Código
 
-Crear un test simple en `src/server/tests/integration/services/rag/test_chroma_mount.py`:
+Crear un prueba simple en `src/server/pruebas/integration/services/rag/prueba_chroma_mount.py`:
 
 ```python
 """Test to verify ChromaDB bind mount is working correctly."""
@@ -261,7 +261,7 @@ Verificar que existe y tiene:
 - ✅ Type hints completos
 - ✅ Error handling robusto
 - ✅ Logging estructurado
-- ✅ Documentación (docstring)
+- ✅ Documentoación (docstring)
 
 ```bash
 cat src/server/scripts/ingest.py | head -50
@@ -347,9 +347,9 @@ stat chroma_data/ | grep "Access:"
 # Expected: Access: (0755/-rwxr-xr-x) Uid: (1000/user)  Gid: (1000/user)
 ```
 
-### 2.4: Tests de Persistencia
+### 2.4: Pruebas de Persistencia
 
-Crear `src/server/tests/integration/services/rag/test_persistence.py`:
+Crear `src/server/pruebas/integration/services/rag/prueba_persistence.py`:
 
 ```python
 """Tests for ChromaDB data persistence."""
@@ -576,9 +576,9 @@ poetry run python scripts/inspect_db.py stats
 poetry run python scripts/inspect_db.py query "Docker" --limit 2 --json-output
 ```
 
-### 3.4: Tests para inspect_db.py
+### 3.4: Pruebas para inspect_db.py
 
-Crear `src/server/tests/unit/scripts/test_inspect_db.py`:
+Crear `src/server/pruebas/unit/scripts/prueba_inspect_db.py`:
 
 ```python
 """Tests for inspect_db CLI tool."""
@@ -631,9 +631,9 @@ git commit -m "feat(cli): add ChromaDB inspection tool with health/query/stats
 
 **Objetivo:** Exponer un endpoint temporal que demuestre la integración completa LangChain + ChromaDB + FastAPI.
 
-### 4.1: Crear rag_test.py Router Mejorado
+### 4.1: Crear rag_prueba.py Router Mejorado
 
-Crear `src/server/app/api/v1/endpoints/rag_test.py`:
+Crear `src/server/app/api/v1/endpoints/rag_prueba.py`:
 
 ```python
 """
@@ -817,9 +817,9 @@ router = APIRouter()
 router.include_router(rag_test.router)
 ```
 
-### 4.3: Tests para el Endpoint
+### 4.3: Pruebas para el Endpoint
 
-Crear `src/server/tests/unit/app/api/test_rag_endpoint.py`:
+Crear `src/server/pruebas/unit/app/api/prueba_rag_endpoint.py`:
 
 ```python
 """Tests for RAG test endpoint."""
@@ -882,7 +882,7 @@ def test_rag_retrieval_invalid_query(mock_store, client):
     assert response.status_code == 422  # Validation error
 ```
 
-### 4.4: Ejecutar Tests del Endpoint
+### 4.4: Ejecutar Pruebas del Endpoint
 
 ```bash
 cd src/server
@@ -909,9 +909,9 @@ git commit -m "feat(api): add temporary RAG retrieval test endpoint
 
 ---
 
-## ✅ FASE 5: Validación Final y Documentación
+## ✅ FASE 5: Validación Final y Documentoación
 
-**Objetivo:** Ejecutar smoke test completo, documentar hallazgos, y limpiar recursos temporales.
+**Objetivo:** Ejecutar smoke prueba completo, documentoar hallazgos, y limpiar recursos temporales.
 
 ### 5.1: Ejecutar Stack Completo
 
@@ -928,7 +928,7 @@ sleep 10
 docker compose ps
 ```
 
-### 5.2: Smoke Test Completo
+### 5.2: Smoke Prueba Completo
 
 ```bash
 # Test 1: CLI Inspection
@@ -994,7 +994,7 @@ Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/VALIDATION_CHECKLIST.md`
 - [ ] No Pylance warnings in VSCode
 ```
 
-### 5.4: Documentación de Tracking (Generar)
+### 5.4: Documentoación de Tracking (Generar)
 
 Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/README.md`:
 
@@ -1171,7 +1171,7 @@ Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/ARTIFACTS.md`:
 | Type Coverage | 100% |
 ```
 
-### 5.5: Final Smoke Test
+### 5.5: Final Smoke Prueba
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
@@ -1187,7 +1187,7 @@ poetry run black --check src/server/
 poetry run pytest tests/ --cov=src/server --cov-fail-under=80
 ```
 
-### 5.6: Commit FASE 5 (Documentation & Validation)
+### 5.6: Commit FASE 5 (Documentoation & Validation)
 
 ```bash
 git add doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/
@@ -1210,7 +1210,7 @@ git commit -m "docs(hu-2.3): complete tracking documentation and validation
 
 Antes de merge, debemos marcar claramente que el endpoint es temporal:
 
-En `src/server/app/api/v1/endpoints/rag_test.py`, el header ya dice:
+En `src/server/app/api/v1/endpoints/rag_prueba.py`, el header ya dice:
 
 ```python
 """
@@ -1322,7 +1322,7 @@ du -sh infrastructure/chroma_data/
 ## 📞 References
 
 - **Architecture:** See [AGENTS.md](../../../AGENTS.md) for Clean Architecture principles
-- **Testing Strategy:** See `context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.{en,md}`
+- **Pruebaing Strategy:** See `context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.{en,md}`
 - **API Contract:** See `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.{en,md}`
 - **ChromaDB Guide:** See `packages/knowledge_base/02-TECH-PACKS/AI_ENGINEERING/vector-chromadb/KNOWLEDGE_BASE/COLLECTION_DESIGN.md`
 - **Docker Guide:** See `doc/02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.{en,md}`
@@ -1331,4 +1331,4 @@ du -sh infrastructure/chroma_data/
 
 **WORKFLOW_MASTER_DEFINITION.md - COMPLETED**
 
-This document provides the complete, perfected workflow for HU-2.3 implementation.
+This documento provides the complete, perfected workflow for HU-2.3 implementación.

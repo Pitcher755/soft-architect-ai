@@ -42,7 +42,7 @@ return projectsAsyncValue.when(
 
 ## ✅ Soluciones Implementadas
 
-### 1️⃣ **projects_provider.dart** - Agregados 2 providers
+### 1️⃣ **proyectos_provider.dart** - Agregados 2 providers
 
 ```dart
 // Provider A: Obtiene proyectos reales del repositorio
@@ -58,7 +58,7 @@ final hybridProjectsProvider = FutureProvider<List<Project>>((ref) async {
 });
 ```
 
-### 2️⃣ **project_workspace_screen.dart** - Refactorizado
+### 2️⃣ **proyecto_workspace_screen.dart** - Refactorizado
 
 ```dart
 // Ahora usa provider híbrido
@@ -134,24 +134,24 @@ projectsAsyncValue.when(
 
 ## 📝 Archivos Modificados
 
-### 1. `projects_provider.dart`
+### 1. `proyectos_provider.dart`
 - ✅ Agregados imports Riverpod
-- ✅ Agregado `allProjectsProvider`
-- ✅ Agregado `hybridProjectsProvider`
-- ✅ Mantiene `buildHybridProjectsList()`
+- ✅ Agregado `allProyectosProvider`
+- ✅ Agregado `hybridProyectosProvider`
+- ✅ Mantiene `buildHybridProyectosList()`
 
-### 2. `project_workspace_screen.dart`
-- ✅ Agregado import de `Project` entity
+### 2. `proyecto_workspace_screen.dart`
+- ✅ Agregado import de `Proyecto` entity
 - ✅ Refactorizado `build()` con FutureProvider
 - ✅ Agregado `_buildLoadingState()`
 - ✅ Agregado `_buildErrorState()`
-- ✅ Extraído `_buildProjectsUI()`
+- ✅ Extraído `_buildProyectosUI()`
 - ✅ Mantiene botón de expandir
 - ✅ Mantiene lista completa
 
 ---
 
-## 🎯 Resultado Final
+## 🎯 Resultadoado Final
 
 ### Dashboard Ahora Muestra
 

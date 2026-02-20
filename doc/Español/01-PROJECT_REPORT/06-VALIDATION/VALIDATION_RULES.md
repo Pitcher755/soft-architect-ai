@@ -1,28 +1,28 @@
 # 📋 Validation Rules Specification
 
-> **Date:** 09/02/2026
+> **Fecha:** 09/02/2026
 > **HU:** HU-3.4 - Error Handling & Validation Gates
-> **Status:** ✅ ACTIVE
+> **Estado:** ✅ ACTIVE
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
-1. [Document Content Validation](#document-content-validation)
+1. [Documento Content Validation](#documento-content-validation)
 2. [Retry Rules](#retry-rules)
 3. [Error Code Mapping](#error-code-mapping)
-4. [Implementation References](#implementation-references)
+4. [Implementación References](#implementación-references)
 
 ---
 
-## 🔍 Document Content Validation
+## 🔍 Documento Content Validation
 
 ### VAL_001: Minimum Length
-- **Rule:** Document content must be at least 50 characters
+- **Rule:** Documento content must be at least 50 characters
 - **Rationale:** Prevent incomplete/corrupted generation
-- **Error Message (ES):** "El documento debe tener al menos 50 caracteres"
-- **User Action:** Regenerate document
-- **Implementation:** `DocumentValidator.validate_content()`
+- **Error Message (ES):** "El documentoo debe tener al menos 50 caracteres"
+- **User Action:** Regenerate documento
+- **Implementación:** `DocumentoValidator.validate_content()`
 
 ### VAL_002: Valid Markdown Structure
 - **Rule:** Markdown syntax must be well-formed
@@ -30,16 +30,16 @@
   - Brackets balanced: `[` count == `]` count
   - Parentheses balanced: `(` count == `)` count
   - No unclosed code blocks (```)
-- **Error Message (ES):** "El documento contiene Markdown mal formado"
+- **Error Message (ES):** "El documentoo contiene Markdown mal formado"
 - **User Action:** Review structure, regenerate
-- **Implementation:** `DocumentValidator.validate_markdown()`
+- **Implementación:** `DocumentoValidator.validate_markdown()`
 
 ### VAL_003: UTF-8 Encoding
 - **Rule:** Content must be valid UTF-8
 - **Rationale:** Prevent encoding corruption in ChromaDB
-- **Error Message (ES):** "El documento no está codificado en UTF-8"
+- **Error Message (ES):** "El documentoo no está codificado en UTF-8"
 - **User Action:** Internal fix, report if persistent
-- **Implementation:** `DocumentValidator.validate_encoding()`
+- **Implementación:** `DocumentoValidator.validate_encoding()`
 
 ### VAL_004: No Malicious Code (XSS Prevention)
 - **Rule:** Content must not contain XSS patterns
@@ -48,22 +48,22 @@
   - `javascript:` (javascript protocol)
   - `onerror\s*=` (onerror handlers)
   - `onload\s*=` (onload handlers)
-- **Error Message (ES):** "El documento contiene código potencialmente malicioso"
+- **Error Message (ES):** "El documentoo contiene código potencialmente malicioso"
 - **User Action:** Contact support
-- **Implementation:** `DocumentValidator.validate_safety()`
+- **Implementación:** `DocumentoValidator.validate_safety()`
 
 ### VAL_005: Maximum Size
-- **Rule:** Document must be < 5MB
+- **Rule:** Documento must be < 5MB
 - **Rationale:** Prevent memory issues, ChromaDB limits
-- **Error Message (ES):** "El documento excede el tamaño máximo de 5MB"
-- **User Action:** Reduce document size
-- **Implementation:** `DocumentValidator.validate_size()`
+- **Error Message (ES):** "El documentoo excede el tamaño máximo de 5MB"
+- **User Action:** Reduce documento size
+- **Implementación:** `DocumentoValidator.validate_size()`
 
 ---
 
 ## 🔄 Retry Rules
 
-### Configuration
+### Configuración
 ```python
 MAX_RETRIES = 3
 BASE_DELAY = 1.0  # seconds
@@ -74,7 +74,7 @@ MAX_DELAY = 8.0  # seconds
 ### Retry Schedule
 | Attempt | Delay Before Retry | Cumulative Time |
 |---------|-------------------|-----------------|
-| 1       | 0s (immediate)    | 0s              |
+| 1       | 0s (inmediata)    | 0s              |
 | 2       | 1.0s              | 1.0s            |
 | 3       | 2.0s              | 3.0s            |
 | FAIL    | -                 | 3.0s total      |
@@ -88,10 +88,10 @@ MAX_DELAY = 8.0  # seconds
 ### Non-Retryable Exceptions
 - `ValidationError` (data quality issues)
 - `AuthenticationError` (invalid API keys)
-- `PermissionError` (file system access)
+- `PermissionError` (archivo system access)
 - `ValueError` (invalid arguments)
 
-### Implementation
+### Implementación
 ```python
 from app.core.retry import with_retry
 
@@ -130,29 +130,29 @@ def critical_operation():
 
 | Code | Technical Cause | Spanish Message | Retryable |
 |------|----------------|-----------------|-----------|
-| **VAL_001** | Length < 50 chars | 📝 El documento generado es inválido (muy corto) | ✅ Yes (regenerate) |
-| **VAL_002** | Malformed Markdown | 📝 El documento tiene formato Markdown incorrecto | ✅ Yes (regenerate) |
-| **VAL_003** | Invalid UTF-8 | 📝 El documento tiene problemas de codificación | ❌ No (bug) |
-| **VAL_004** | XSS Pattern Detected | ⚠️ El documento contiene contenido sospechoso | ❌ No (security) |
-| **VAL_005** | Size > 5MB | 📦 El documento es demasiado grande | ❌ No |
+| **VAL_001** | Length < 50 chars | 📝 El documentoo generado es inválido (muy corto) | ✅ Yes (regenerate) |
+| **VAL_002** | Malformed Markdown | 📝 El documentoo tiene formato Markdown incorrecto | ✅ Yes (regenerate) |
+| **VAL_003** | Invalid UTF-8 | 📝 El documentoo tiene problemas de codificación | ❌ No (bug) |
+| **VAL_004** | XSS Pattern Detected | ⚠️ El documentoo contiene contenido sospechoso | ❌ No (security) |
+| **VAL_005** | Size > 5MB | 📦 El documentoo es demasiado grande | ❌ No |
 
 ---
 
-## 📚 Implementation References
+## 📚 Implementación References
 
-### Backend Files
-- `src/server/app/services/validators/document_validator.py` - Validation gates implementation
+### Backend Archivos
+- `src/server/app/services/validators/documento_validator.py` - Validation gates implementación
 - `src/server/app/core/retry.py` - Retry decorator with exponential backoff
 - `src/server/app/core/exceptions.py` - Custom exception classes
 
-### Frontend Files
+### Frontend Archivos
 - `src/client/lib/core/error_handling/error_mapper.dart` - Error code to Spanish mapping
 - `src/client/lib/core/error_handling/snackbar_service.dart` - UX notification service
 
-### Tests
-- `tests/python/unit/services/validators/test_document_validator.py` - Validation tests
-- `tests/python/unit/core/test_retry.py` - Retry logic tests
-- `tests/test/unit/core/error_handling/error_mapper_test.dart` - Frontend mapping tests
+### Pruebas
+- `pruebas/python/unit/services/validators/prueba_documento_validator.py` - Validation pruebas
+- `pruebas/python/unit/core/prueba_retry.py` - Retry logic pruebas
+- `pruebas/prueba/unit/core/error_handling/error_mapper_prueba.dart` - Frontend mapping pruebas
 
 ---
 

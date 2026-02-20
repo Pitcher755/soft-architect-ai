@@ -1,12 +1,12 @@
 # 🎮 Project Shell Screen - User Guide
 
-> **Estado:** ✅ Completado y Validado
+> **Status:** ✅ Completed y Validado
 > **Compilación:** 0 errors
 > **Última Actualización:** 8 de febrero de 2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 - [Características Principales](#características-principales)
 - [Cómo Usar](#cómo-usar)
@@ -20,10 +20,10 @@
 ### 1️⃣ Árbol de Directorios (Files Column)
 
 **Funcionalidades:**
-- ✅ Expandir/Contraer carpetas
-- ✅ Seleccionar archivos
+- ✅ Expandir/Contraer folders
+- ✅ Seleccionar files
 - ✅ Visual feedback de selección
-- ✅ Icono diferenciador (carpeta vs archivo)
+- ✅ Icono diferenciador (folder vs file)
 - ✅ Profundidad de indentación automática
 
 **Cómo usar:**
@@ -65,8 +65,8 @@ PROJECT-ALPHA/
 **Características:**
 - Progress bar animado
 - Label dinámico con contador
-- Botón Pause (placeholder)
-- Colores por fase (ROOT, CONTEXT, REQUIREMENTS, etc.)
+- Button Pause (placeholder)
+- Colores por phase (ROOT, CONTEXT, REQUIREMENTS, etc.)
 
 #### Mensajes de Chat
 ```
@@ -80,7 +80,7 @@ PROJECT-ALPHA/
 - Mensajes del asistente alineados a la izquierda (gris)
 - Timestamps en cada mensaje
 - Input field para escribir nuevos mensajes
-- Botón Send
+- Button Send
 
 ---
 
@@ -109,7 +109,7 @@ This document outlines the high-level architecture...
 
 **Características:**
 - Toolbar con Copy & Download buttons
-- Header con nombre del archivo
+- Header con nombre del file
 - Contenido scrolleable
 - Monospace font para código
 - Links seleccionables
@@ -152,13 +152,13 @@ This document outlines the high-level architecture...
 
 1. Haz clic en **📁 folder icon** para mostrar/ocultar el explorador
 2. Haz clic en **👁 visibility icon** para mostrar/ocultar el preview
-3. El estado persiste al toggle
+3. El status persiste al toggle
 
 ---
 
 ## 🎯 Cómo Usar - Flujo Completo
 
-### Escenario: Revisar Documentos del Proyecto
+### Escenario: Revisar Documents del Project
 
 ```
 1. Abre el app → Project Shell Screen
@@ -273,7 +273,7 @@ class MockProjectData {
 
 ## 🔄 Integración con Backend
 
-### Paso 1: Crear Notifiers
+### Paso 1: Create Notifiers
 
 Reemplaza MockProjectData con notifiers reales:
 
@@ -285,7 +285,7 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 final contentAsync = ref.watch(fileContentNotifier(_selectedNode.path));
 ```
 
-### Paso 2: Notifier de Árbol de Archivos
+### Paso 2: Notifier de Árbol de Files
 
 ```dart
 final fileTreeNotifier = StateNotifierProvider<FileTreeNotifier, FileNode>((ref) {
@@ -339,10 +339,10 @@ fileTree.when(
 ## 🐛 Troubleshooting
 
 ### "El árbol no se expande"
-**Solución:** Haz clic en el ► (flecha derecha), no en el nombre del archivo
+**Solución:** Haz clic en el ► (flecha derecha), no en el nombre del file
 
 ### "El preview no se actualiza"
-**Solución:** Asegúrate de que seleccionaste un archivo (.md), no una carpeta
+**Solución:** Asegúrate de que seleccionaste un file (.md), no una folder
 
 ### "Las columnas no se redimensionan"
 **Solución:** El cursor debe cambiar a ↔. Posiciona el mouse en el borde exacto

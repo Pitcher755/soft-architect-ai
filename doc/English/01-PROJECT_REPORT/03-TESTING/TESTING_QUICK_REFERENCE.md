@@ -12,7 +12,7 @@
 **Respuesta:** [TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md) - Línea 1
 - Cobertura actual: **98.13%** (20/20 tests PASS)
 - Target: ≥80% ✅ EXCEEDS
-- Desglose por módulo
+- Breakdown por módulo
 
 ### ❓ "¿Qué tests faltan?"
 **Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "Testing Pyramid"
@@ -79,14 +79,14 @@ PYTHONPATH=. poetry run pytest app/tests/ --cov --cov-report=html
   - Security: 70% ⚠️
 
 ### ❓ "¿Qué tests críticos faltan?"
-**Respuesta:** [TEST_EXECUTION_LOG.md](TEST_EXECUTION_LOG.md) - Sección "Análisis & Recomendaciones"
+**Respuesta:** [TEST_EXECUTION_LOG.md](TEST_EXECUTION_LOG.md) - Sección "Analysis & Recomendaciones"
 1. Database interaction con BD real
 2. End-to-end API workflows
 3. Error recovery flows
 4. Concurrency & race conditions
 5. Load/stress testing
 
-### ❓ "¿Cuál es la siguiente tarea?"
+### ❓ "¿Cuál es la next tarea?"
 **Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "PHASE 6"
 1. Setup integration test infrastructure (Week 1)
 2. Write integration tests (Week 2)
@@ -95,11 +95,11 @@ PYTHONPATH=. poetry run pytest app/tests/ --cov --cov-report=html
 
 ---
 
-## 📚 Documentos por Propósito
+## 📚 Documents por Propósito
 
 ### Para Entendimiento General
 1. **[TEST_ASSESSMENT_VISUAL.md](TEST_ASSESSMENT_VISUAL.md)** (5 min)
-   - Visión general del estado actual vs target
+   - Visión general del status actual vs target
    - Gráficos ASCII claros
    - Risk assessment matrix
 
@@ -111,7 +111,7 @@ PYTHONPATH=. poetry run pytest app/tests/ --cov --cov-report=html
 ### Para Planificación
 1. **[TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md)** (30 min)
    - Plan de 8 semanas
-   - Detalles por fase
+   - Detalles por phase
    - Quality gates
 
 2. **[TEST_EXECUTION_LOG.md](TEST_EXECUTION_LOG.md)** (15 min)
@@ -120,7 +120,7 @@ PYTHONPATH=. poetry run pytest app/tests/ --cov --cov-report=html
    - Checklist de refuerzo
 
 ### Para Referencia
-1. **[TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md#🔧-configuración-de-herramientas)** - Tools
+1. **[TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md#🔧-configuration-de-herramientas)** - Tools
 2. **[TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md#-testing-technologies-needed)** - Tools list
 
 ---
@@ -180,7 +180,7 @@ Tiempo total: 60 minutos
 - Sección "Quality Gates": Criterios de éxito
 
 ### Inside TEST_ASSESSMENT_VISUAL.md
-- Dashboard visual: Estado actual
+- Dashboard visual: Status actual
 - Risk Matrix: Priorización de riesgos
 - Strengths: Lo que está bien
 - Action Plan: Timeline de tareas
@@ -208,7 +208,7 @@ Opcional (referencias):
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
 1. **Hoy:** Leer TEST_ASSESSMENT_VISUAL.md (5 min)
 2. **Mañana:** Estudiar TEST_STRATEGY_AND_ROADMAP.md (30 min)
@@ -219,7 +219,7 @@ Opcional (referencias):
 
 ## 📞 Preguntas Frecuentes
 
-**P: ¿Dónde veo el estado actual?**
+**P: ¿Dónde veo el status actual?**
 A: [TEST_ASSESSMENT_VISUAL.md](TEST_ASSESSMENT_VISUAL.md) - Dashboard visual
 
 **P: ¿Qué debería hacer primero?**

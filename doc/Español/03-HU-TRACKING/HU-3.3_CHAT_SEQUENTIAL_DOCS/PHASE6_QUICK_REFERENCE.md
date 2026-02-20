@@ -1,6 +1,6 @@
 # ⚡ FASE 6 Quick Reference
 
-> **Este documento es un resumen ejecutivo de FASE 6**
+> **Este documentoo es un resumen ejecutivo de FASE 6**
 > **Para detalles completos, ver: [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md)**
 
 ---
@@ -27,7 +27,7 @@ cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
 bash scripts/validate_hu_3_3.sh
 ```
 
-### 3. Manual Testing (8 Flujos)
+### 3. Manual Pruebaing (8 Flujos)
 
 Seguir checklist en [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md#manual-e2e-validation-checklist)
 
@@ -38,15 +38,15 @@ Seguir checklist en [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md#manual-e
 | # | Flujo | Archivos a Verificar | Tiempo |
 |---|-------|----------------------|--------|
 | 1 | Crear Proyecto | Carpetas + `10-CONTEXT/` | 5 min |
-| 2 | Chat Input | Button state, input field | 5 min |
+| 2 | Chat Input | Botón state, input field | 5 min |
 | 3 | Streaming | TTFT <200ms, animaciones | 10 min |
-| 4 | ProposalCard | Markdown, syntax highlighting, copy button | 10 min |
-| 5 | Persistencia | File exists on disk, contenido match | 10 min |
+| 4 | ProposalCard | Markdown, syntax highlighting, copy botón | 10 min |
+| 5 | Persistencia | Archivo exists on disk, contenido match | 10 min |
 | 6 | Regeneración | Contenido diferente, historial OK | 10 min |
 | 7 | Rechazo | NO persiste archivo, progreso OK | 10 min |
 | 8 | Errores | Error handling elegante, retry logic | 10 min |
 
-**Total: ~70 minutos manual testing**
+**Total: ~70 minutos manual pruebaing**
 
 ---
 
@@ -56,14 +56,14 @@ Seguir checklist en [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md#manual-e
 - [ ] Doc 1 genera correctamente
 - [ ] Propuesta NO persiste sin "Validar"
 - [ ] Botón enviar deshabilitado si input vacío
-- [ ] Copy button en bloques de código
-- [ ] FileSystemService guarda archivo
+- [ ] Copy botón en bloques de código
+- [ ] ArchivoSystemService guarda archivo
 - [ ] Streaming <200ms TTFT
 - [ ] Progreso actualiza (Doc N/25)
 - [ ] Flujo 100% secuencial
 
 ### ❌ Negativos (MUST NOT HAVE)
-- [ ] Documentos NO se guardan sin "Validar"
+- [ ] Documentoos NO se guardan sin "Validar"
 - [ ] NO hay stack traces en UI
 - [ ] App NO se cuelga con errores de red
 
@@ -86,7 +86,7 @@ cd tests && flutter test --coverage && genhtml coverage/lcov.info -o coverage/ht
 | Problema | Solución Rápida |
 |----------|-----------------|
 | Streaming lento | `python scripts/warm_cache.py` |
-| Tests fallan | `flutter clean && flutter pub get` |
+| Pruebas fallan | `flutter clean && flutter pub get` |
 | Markdown no renderiza | Reinstalar: `flutter pub add flutter_markdown` |
 | App cuelgada | Limitar: `const MAX_PROPOSAL_SIZE = 50000` |
 
@@ -117,18 +117,18 @@ top -p $(pgrep -f "flutter|uvicorn")
 | Archivo | Propósito |
 |---------|-----------|
 | `scripts/validate_hu_3_3.sh` | Script de validación automático |
-| `doc/.../PHASE6_E2E_VALIDATION.md` | Documentación completa |
+| `doc/.../PHASE6_E2E_VALIDATION.md` | Documentoación completa |
 | `src/server/app/api/v1/chat.py` | SSE endpoint |
 | `src/client/lib/features/chat/...` | UI + Chat notifier |
-| `tests/test/integration/chat_flow_test.dart` | Integration tests |
+| `pruebas/prueba/integration/chat_flow_prueba.dart` | Integración pruebas |
 
 ---
 
 ## 🎊 Definition of Done Resumido
 
 ### Código ✅
-- Backend tests >85%, Frontend >80%
-- Integration tests E2E pasan
+- Backend pruebas >85%, Frontend >80%
+- Integración pruebas E2E pasan
 - No hay stack traces en errores
 
 ### Visual ✅
@@ -158,5 +158,5 @@ Después de FASE 6:
 ---
 
 **Última actualización:** 6 febrero 2026
-**Documentación Completa:** [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md)
+**Documentoación Completa:** [PHASE6_E2E_VALIDATION.md](PHASE6_E2E_VALIDATION.md)
 **Script:** `bash scripts/validate_hu_3_3.sh`

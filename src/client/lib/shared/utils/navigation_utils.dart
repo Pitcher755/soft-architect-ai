@@ -19,7 +19,7 @@ void showError(BuildContext context, String message) {
   );
 }
 
-/// Muestra un mensaje de éxito usando SnackBar
+/// Shows a success message using SnackBar
 void showSuccess(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(content: Text(message), backgroundColor: AppColors.success),
@@ -34,7 +34,7 @@ Future<void> navigateToProjectShell(
   WidgetRef ref,
   String projectPath,
 ) async {
-  // Guardar como último proyecto abierto
+  // Save as last opened project
   try {
     await ref.read(lastProjectProvider.notifier).updateLastProject(projectPath);
   } on Exception catch (e) {
@@ -42,7 +42,7 @@ Future<void> navigateToProjectShell(
     // Continue navigation even if save fails
   }
 
-  // Navegar al proyecto
+  // Navigate to project
   if (context.mounted) {
     context.go(
       Uri(

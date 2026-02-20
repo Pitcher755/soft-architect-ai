@@ -1,4 +1,4 @@
-# 📊 Progreso HU-3.1: Project Shell
+# 📊 Progreso HU-3.1: Proyecto Shell
 
 > **Última Actualización:** 19/02/2025 - 20:15
 > **Estado Actual:** ✅ FASE 2 GREEN + REFACTOR COMPLETADAS - 17/17 TESTS PASSING
@@ -7,19 +7,19 @@
 
 ## 🎯 Resumen Ejecutivo
 
-**Fase 2: Logic Layer Implementation - COMPLETA** ✅ (RED → GREEN → REFACTOR)
+**Fase 2: Logic Layer Implementación - COMPLETA** ✅ (RED → GREEN → REFACTOR)
 
-- ✅ Fase RED: 15 tests creados en `/tests/test/`
-- ✅ Fase GREEN: 9 clases implementadas, **17/17 tests passing** ✅
+- ✅ Fase RED: 15 pruebas creados en `/pruebas/prueba/`
+- ✅ Fase GREEN: 9 clases implementadas, **17/17 pruebas passing** ✅
 - ✅ Fase REFACTOR: Mejoras de calidad (logging, seguridad, utilidades)
   - Added: 8 nuevos métodos/getters
   - Improved: Manejo de errores, logging, ID generation
   - Enhanced: Búsqueda recursiva, validación de seguridad
-- ✅ Tests ejecutando: `flutter test` all pass ✅
-- ✅ Code quality: 25 style warnings (0 errors)
+- ✅ Pruebas ejecutando: `flutter prueba` all pass ✅
+- ✅ Code quality: 25 estilo warnings (0 errors)
 - ✅ Git commits:
-  - `feat(phase-2-green): Complete TDD GREEN phase with 17 passing tests`
-  - `refactor(phase-2): Enhance code quality with logging, security, and utility methods`
+  - `feat(fase-2-green): Complete TDD GREEN fase with 17 passing pruebas`
+  - `refactor(fase-2): Enhance code quality with logging, security, and utility methods`
 
 ---
 
@@ -37,7 +37,7 @@
 
 ---
 
-### Fase 1: Infraestructura y Test Setup (100% COMPLETO) ✅
+### Fase 1: Infraestructura y Prueba Setup (100% COMPLETO) ✅
 
 **Completado:**
 - [x] Instalación de dependencias via `flutter pub add`
@@ -46,84 +46,84 @@
   - 50+ transitive dependencies resueltas
 
 - [x] Estructura de carpetas creada (27 directorios)
-  - 18 directorios: lib/features/project_shell/{core,data,domain,presentation}
-  - 9 directorios: tests/{unit,widget,integration}/{domain,data,presentation}
+  - 18 directorios: lib/features/proyecto_shell/{core,data,domain,presentation}
+  - 9 directorios: pruebas/{unit,widget,integration}/{domain,data,presentation}
 
-- [x] Test infrastructure completada (CENTRALIZADO en monorepo)
-  - tests/test/helpers/test_helper.dart: SQLite in-memory helper
-  - tests/test/helpers/project_fixtures.dart: 4 test fixtures creados
+- [x] Prueba infrastructure completada (CENTRALIZADO en monorepo)
+  - pruebas/prueba/helpers/prueba_helper.dart: SQLite in-memory helper
+  - pruebas/prueba/helpers/proyecto_fixtures.dart: 4 prueba fixtures creados
 
-- [x] RED Phase Tests (6 suites, 25 test cases)
-  - tests/test/unit/features/project_shell/domain/use_cases/project_validation_use_case_test.dart (32 líneas)
-  - tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart (63 líneas)
-  - tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart (87 líneas)
-  - tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart (72 líneas)
-  - tests/unit/flutter/features/project_shell/data/project_repository_impl_test.dart (72 líneas)
-  - tests/unit/flutter/features/project_shell/presentation/project_shell_notifier_test.dart (72 líneas)
+- [x] RED Fase Pruebas (6 suites, 25 prueba cases)
+  - pruebas/prueba/unit/features/proyecto_shell/domain/use_cases/proyecto_validation_use_case_prueba.dart (32 líneas)
+  - pruebas/unit/flutter/features/proyecto_shell/domain/directory_tree_use_case_prueba.dart (63 líneas)
+  - pruebas/unit/flutter/features/proyecto_shell/domain/use_cases/archivo_search_use_case_prueba.dart (87 líneas)
+  - pruebas/unit/flutter/features/proyecto_shell/data/sqlite_data_source_prueba.dart (72 líneas)
+  - pruebas/unit/flutter/features/proyecto_shell/data/proyecto_repository_impl_prueba.dart (72 líneas)
+  - pruebas/unit/flutter/features/proyecto_shell/presentation/proyecto_shell_notifier_prueba.dart (72 líneas)
 
-- [x] Test Status: 🔴 FAILING (esperado - RED phase)
+- [x] Prueba Estado: 🔴 FAILING (esperado - RED fase)
   - Lint errors: Esperados (clases no existen aún)
-  - Total test cases: 25 casos listos para implementation
+  - Total prueba cases: 25 casos listos para implementación
 
 - [x] Code Quality
-  - analysis_options.yaml: Strict linting enabled
+  - análisis_options.yaml: Strict linting enabled
   - flutter analyze: ✅ No issues found
   - Pre-commit hooks: Validando cada commit
 
 **Progreso:** 100% (6 de 6 items)
 **Commits:**
-- `feat(hu-3.1): Phase 1 - Infrastructure & Test Setup Complete` (f2602cf)
-- `refactor(hu-3.1): Update 6 RED phase tests to copy-paste ready` (anterior)
-- `feat(hu-3.1): Phase 1 Complete - Setup Infrastructure ✅` (d9e6d98)
+- `feat(hu-3.1): Fase 1 - Infraestructura & Prueba Setup Complete` (f2602cf)
+- `refactor(hu-3.1): Update 6 RED fase pruebas to copy-paste ready` (anterior)
+- `feat(hu-3.1): Fase 1 Complete - Setup Infraestructura ✅` (d9e6d98)
 
 ---
 
-### Fase 2: Implementación Logic Layer (100% RED PHASE COMPLETADA) 🔴✅
+### Fase 2: Implementación Logic Layer (100% FASE ROJA COMPLETADA) 🔴✅
 
-**Fase RED (Test Driven Development):** ✅ **COMPLETA**
+**Fase RED (Prueba Driven Development):** ✅ **COMPLETA**
 
 #### Logros de Fase 2:
 
-**A. Test Infrastructure Centralizada en `/tests/`:**
-- [x] Estructura reorganizada: `tests/test/unit/features/project_shell/domain/` y `tests/test/unit/features/project_shell/data/` (CENTRALIZADO en monorepo)
-- [x] `tests/pubspec.yaml` creado (BREAKTHROUGH!)
-  - Declara: flutter, flutter_test, sqflite, mockito, test
+**A. Prueba Infraestructura Centralizada en `/pruebas/`:**
+- [x] Estructura reorganizada: `pruebas/prueba/unit/features/proyecto_shell/domain/` y `pruebas/prueba/unit/features/proyecto_shell/data/` (CENTRALIZADO en monorepo)
+- [x] `pruebas/pubspec.yaml` creado (BREAKTHROUGH!)
+  - Declara: flutter, flutter_prueba, sqflite, mockito, prueba
   - **KEY:** `dependency_overrides: softarchitect_ai: path: ../src/client`
-  - Result: `flutter pub get` resolvió 122 dependencias ✅
+  - Resultado: `flutter pub get` resolvió 122 dependencias ✅
 
-- [x] `tests/test/helpers/test_helper.dart` actualizado con imports correctos
-  - Import: `package:softarchitect_ai/features/project_shell/data/data_sources/sqlite_data_source.dart`
-  - Proporciona: `initTestDatabase()`, `closeTestDatabase()`
+- [x] `pruebas/prueba/helpers/prueba_helper.dart` actualizado con imports correctos
+  - Import: `package:softarchitect_ai/features/proyecto_shell/data/data_sources/sqlite_data_source.dart`
+  - Proporciona: `initPruebaDatabase()`, `closePruebaDatabase()`
 
-- [x] `tests/test/helpers/project_fixtures.dart` actualizado
-  - Imports: `package:softarchitect_ai/features/project_shell/domain/entities/...`
-  - Fixtures: testProject, testFileNode, testDirectoryNode, testRootNode
+- [x] `pruebas/prueba/helpers/proyecto_fixtures.dart` actualizado
+  - Imports: `package:softarchitect_ai/features/proyecto_shell/domain/entities/...`
+  - Fixtures: pruebaProyecto, pruebaArchivoNode, pruebaDirectoryNode, pruebaRootNode
 
-**B. 15 RED Phase Tests Creados con Imports Correctos:**
+**B. 15 RED Fase Pruebas Creados con Imports Correctos:**
 
-**Domain Layer (10 tests - 3 files):**
-- [x] `tests/unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart`
-  - Imports: `package:softarchitect_ai/features/project_shell/domain/use_cases/project_validation_use_case.dart`
-  - 4 tests: validate, empty, invalid, duplicate cases
+**Domain Layer (10 pruebas - 3 archivos):**
+- [x] `pruebas/unit/flutter/features/proyecto_shell/domain/use_cases/proyecto_validation_use_case_prueba.dart`
+  - Imports: `package:softarchitect_ai/features/proyecto_shell/domain/use_cases/proyecto_validation_use_case.dart`
+  - 4 pruebas: validate, empty, invalid, duplicate cases
 
-- [x] `tests/unit/flutter/features/project_shell/domain/directory_tree_use_case_test.dart`
-  - Imports: `package:softarchitect_ai/features/project_shell/domain/use_cases/directory_tree_use_case.dart`
-  - 3 tests: build, sort, cache cases
+- [x] `pruebas/unit/flutter/features/proyecto_shell/domain/directory_tree_use_case_prueba.dart`
+  - Imports: `package:softarchitect_ai/features/proyecto_shell/domain/use_cases/directory_tree_use_case.dart`
+  - 3 pruebas: build, sort, cache cases
 
-- [x] `tests/unit/flutter/features/project_shell/domain/use_cases/file_search_use_case_test.dart`
-  - Imports: `package:softarchitect_ai/features/project_shell/domain/entities/file_node.dart`
-  - 3 tests: search, filter, performance cases
+- [x] `pruebas/unit/flutter/features/proyecto_shell/domain/use_cases/archivo_search_use_case_prueba.dart`
+  - Imports: `package:softarchitect_ai/features/proyecto_shell/domain/entities/archivo_node.dart`
+  - 3 pruebas: search, filter, performance cases
 
-**Data Layer (5 tests - 2 files):**
-- [x] `tests/unit/flutter/features/project_shell/data/sqlite_data_source_test.dart`
+**Data Layer (5 pruebas - 2 archivos):**
+- [x] `pruebas/unit/flutter/features/proyecto_shell/data/sqlite_data_source_prueba.dart`
   - Imports: 3x `package:softarchitect_ai/...`
-  - 3 tests: save, get, duplicate cases (3 SETUP FAILURES - esperado)
+  - 3 pruebas: save, get, duplicate cases (3 SETUP FAILURES - esperado)
 
-- [x] `tests/unit/flutter/features/project_shell/data/project_repository_impl_test.dart`
-  - Imports: `package:softarchitect_ai/features/project_shell/core/exceptions/...`
-  - 2 tests: success, failure cases
+- [x] `pruebas/unit/flutter/features/proyecto_shell/data/proyecto_repository_impl_prueba.dart`
+  - Imports: `package:softarchitect_ai/features/proyecto_shell/core/exceptions/...`
+  - 2 pruebas: success, failure cases
 
-**C. Test Execution Results:**
+**C. Prueba Execution Resultados:**
 ```
 📊 Test Results Summary:
 ├─ Total Tests: 15
@@ -142,7 +142,7 @@ Total: +12 -3 ✅
 
 **D. Import Strategy - CORRECTED:**
 
-**Previous (WRONG):**
+**Anterior (WRONG):**
 ```dart
 import '../../../../src/client/lib/features/project_shell/domain/...';  // ❌ Relative
 ```
@@ -153,95 +153,95 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 ```
 
 **Why This Works:**
-- `/tests/` ahora es un Dart package (tiene `pubspec.yaml`)
+- `/pruebas/` ahora es un Dart package (tiene `pubspec.yaml`)
 - `dependency_overrides` hace que `package:softarchitect_ai` resuelva a `../src/client`
 - Analyzer puede navegar correctamente entre packages
 - Sigue mejores prácticas de Dart
 
 **E. Code Quality:**
-- [x] analysis_options.yaml: Strict linting applied
-- [x] No import errors: All 15 tests compile
+- [x] análisis_options.yaml: Strict linting applied
+- [x] No import errors: All 15 pruebas compile
 - [x] Package resolution: 122 dependencies installed
 - [x] Pre-commit hooks: Validating all commits
 
-**Progreso Fase 2 RED:** 100% (15 de 15 tests listos)
+**Progreso Fase 2 RED:** 100% (15 de 15 pruebas listos)
 **Commits:**
-- `feat(hu-3.1): Phase 2 RED - Create tests/pubspec.yaml (breakthrough!)`
-- `refactor(hu-3.1): Move tests to tests/test/ (monorepo structure)`
-- `feat(hu-3.1): Update imports to package: style (15 test files)`
-- `feat(hu-3.1): Phase 2 RED Complete - flutter test executing ✅`
+- `feat(hu-3.1): Fase 2 RED - Crear pruebas/pubspec.yaml (breakthrough!)`
+- `refactor(hu-3.1): Move pruebas to pruebas/prueba/ (monorepo structure)`
+- `feat(hu-3.1): Update imports to package: estilo (15 prueba archivos)`
+- `feat(hu-3.1): Fase 2 RED Complete - flutter prueba executing ✅`
 
 ---
 
-### Fase 3: GREEN Phase - Implement Classes (100% COMPLETADA) ✅
+### Fase 3: GREEN Fase - Implement Classes (100% COMPLETADA) ✅
 
-**Fase GREEN (Implementation):** ✅ **COMPLETA**
+**Fase GREEN (Implementación):** ✅ **COMPLETA**
 
 #### 9 Clases Implementadas:
 
 **Domain Layer Entities (2 clases):**
-- [x] `Project.dart` - Entity con propiedades computed
-  - Properties: id, name, path, createdAt, lastOpened
+- [x] `Proyecto.dart` - Entity con propiedades computed
+  - Properties: id, name, path, creardAt, lastOpened
   - Computed: `displayName`, `isRecentlyAccessed`
-  - Enhanced toString() con status
+  - Enhanced toString() con estado
 
-- [x] `FileNode.dart` - Árbol de directorios recursivo
+- [x] `ArchivoNode.dart` - Árbol de directorios recursivo
   - Properties: id, name, path, isDirectory, children
   - Getters: `extension`, `parentPath`, `isHidden`
   - Enhanced toString() con profundidad
 
 **Domain Layer Exceptions (1 archivo, 5 tipos):**
-- [x] `project_shell_exceptions.dart`
-  - InvalidProjectNameException
-  - DuplicateProjectNameException
+- [x] `proyecto_shell_exceptions.dart`
+  - InvalidProyectoNameException
+  - DuplicateProyectoNameException
   - PathTraversalException (NEW - security)
   - DatabaseException
-  - FileSystemException
+  - ArchivoSystemException
   - Features: stackTrace capture, toUserMessage() (Spanish), developer.log()
 
 **Domain Layer Use Cases (3 clases):**
-- [x] `ProjectValidationUseCase` - Validación de nombres y rutas
+- [x] `ProyectoValidationUseCase` - Validación de nombres y rutas
   - Methods: isValidName(), isValidPath()
-  - Tests: 4 passing
+  - Pruebas: 4 passing
 
 - [x] `DirectoryTreeUseCase` - Gestión de árbol expandible
   - Methods: buildTree(), toggleNodeExpanded()
   - NEW: expandNodeRecursively(), collapseNode(), countVisibleNodes()
-  - Tests: 3 passing
+  - Pruebas: 3 passing
 
-- [x] `FileSearchUseCase` - Búsqueda en árbol de archivos
+- [x] `ArchivoSearchUseCase` - Búsqueda en árbol de archivos
   - Methods: search() - NOW RECURSIVE! (was flat)
   - NEW: searchByExtension(), searchDirectories()
-  - Features: maxResults limit (100), performance optimized
-  - Tests: 3 passing
+  - Features: maxResultados limit (100), performance optimized
+  - Pruebas: 3 passing
 
 **Data Layer Model (1 clase):**
-- [x] `ProjectModel` - DTO mapping
-  - Extends Project entity
+- [x] `ProyectoModel` - DTO mapping
+  - Extends Proyecto entity
   - fromJson(), toJson() for SQLite
 
 **Data Layer Data Source (1 clase):**
 - [x] `SQLiteDataSource` - Database operations
-  - Methods: saveProject(), getProject(), updateLastOpened(), deleteProject(), createTables()
+  - Methods: saveProyecto(), getProyecto(), updateLastOpened(), eliminarProyecto(), crearTables()
   - NEW: Logging para todas operaciones (developer.log)
   - NEW: stackTrace capture en error handling
-  - Tests: 3 passing
+  - Pruebas: 3 passing
 
 **Data Layer Repository (1 clase):**
-- [x] `ProjectRepositoryImpl` - Repository pattern implementation
-  - Implements ProjectRepository interface
-  - Method: createProject()
+- [x] `ProyectoRepositoryImpl` - Repository pattern implementación
+  - Implements ProyectoRepository interface
+  - Method: crearProyecto()
   - NEW: Deterministic SHA-256 ID generation (was time-based)
   - NEW: Path security validation (detects `..` and `~`)
   - NEW: Logging via developer.log()
-  - Tests: 3 passing
+  - Pruebas: 3 passing
 
-**Presentation Layer Notifier (1 clase - placeholder):**
-- [x] `ProjectShellNotifier` - Riverpod state management
-  - Basic structure (tests placeholder for now)
-  - Tests: 2 passing (placeholder)
+**Presentación Layer Notifier (1 clase - placeholder):**
+- [x] `ProyectoShellNotifier` - Riverpod state management
+  - Basic structure (pruebas placeholder for now)
+  - Pruebas: 2 passing (placeholder)
 
-#### Test Results:
+#### Prueba Resultados:
 ```
 ✅ 17/17 tests PASSING
 ├─ ProjectValidationUseCase: 4 ✅
@@ -254,47 +254,47 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 
 **Progreso Fase 2 GREEN:** 100% (9 de 9 clases implementadas) ✅
 **Git Commit:**
-- `feat(phase-2-green): Complete TDD GREEN phase with 17 passing tests`
+- `feat(fase-2-green): Complete TDD GREEN fase with 17 passing pruebas`
 
 ---
 
-### Fase 4: REFACTOR Phase - Code Quality (100% COMPLETADA) ✅
+### Fase 4: REFACTOR Fase - Code Quality (100% COMPLETADA) ✅
 
 **Fase REFACTOR (Optimization & Enhancement):** ✅ **COMPLETA**
 
 #### Mejoras Aplicadas:
 
-**Project.dart - Added Computed Properties:**
+**Proyecto.dart - Added Computed Properties:**
 - [x] `displayName` - Get directory name for UI display
 - [x] `isRecentlyAccessed` - Check if accessed in last 30 days
-- [x] Enhanced toString() to include recent access status
+- [x] Enhanced toString() to include recent access estado
 
-**FileNode.dart - Added Utility Getters:**
-- [x] `extension` - File extension (empty for directories)
+**ArchivoNode.dart - Added Utility Getters:**
+- [x] `extension` - Archivo extension (empty for directories)
 - [x] `parentPath` - Get parent directory path
-- [x] `isHidden` - Check if file/directory starts with dot
+- [x] `isHidden` - Check if archivo/directory starts with dot
 - [x] Improved toString() with depth information
 
-**project_shell_exceptions.dart - MAJOR IMPROVEMENTS:**
+**proyecto_shell_exceptions.dart - MAJOR IMPROVEMENTS:**
 - [x] Added `stackTrace` parameter to all 5 exception types
 - [x] Added `toUserMessage()` method with Spanish user-friendly messages:
-  - InvalidProjectNameException: "El nombre del proyecto debe tener 3-50 caracteres..."
-  - DuplicateProjectNameException: "Ya existe un proyecto con ese nombre."
+  - InvalidProyectoNameException: "El nombre del proyecto debe tener 3-50 caracteres..."
+  - DuplicateProyectoNameException: "Ya existe un proyecto con ese nombre."
   - PathTraversalException: "La ruta especificada no es válida por razones de seguridad."
   - DatabaseException: "Error de base de datos. Por favor, intente de nuevo."
-  - FileSystemException: "Error al acceder al archivo. Verifique los permisos."
+  - ArchivoSystemException: "Error al acceder al archivo. Verifique los permisos."
 - [x] Added logging via `developer.log()` with stack traces for debugging
 - [x] Better error context propagation
 
 **SQLiteDataSource - Enhanced Observability:**
-- [x] Added logging for all operations: saveProject, getProject, updateLastOpened, deleteProject, createTables
+- [x] Added logging for all operations: saveProyecto, getProyecto, updateLastOpened, eliminarProyecto, crearTables
 - [x] Improved error handling with `stackTrace` capture (catch e, st)
 - [x] Better database operation visibility for debugging
 
-**ProjectRepositoryImpl - MAJOR SECURITY & PERFORMANCE IMPROVEMENTS:**
+**ProyectoRepositoryImpl - MAJOR SECURITY & PERFORMANCE IMPROVEMENTS:**
 - [x] **ID Generation:** Replaced time-based ID with deterministic SHA-256 hash
   - Formula: `'proj_${sha256(name:path:year).substring(0, 16)}'`
-  - Prevents collision issues if 2 projects created in same millisecond
+  - Prevents collision issues if 2 proyectos creard in same millisecond
   - Reproducible across sessions
   - Uses crypto built-in package (already in Flutter)
 - [x] **Path Validation:** Added security check for `..` and `~` patterns
@@ -303,17 +303,17 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 - [x] **Error Handling:** Improved with better error context
 
 **DirectoryTreeUseCase - Added Performance & UX Methods:**
-- [x] `expandNodeRecursively(Set<String>, FileNode)` - Expand node and all children
+- [x] `expandNodeRecursively(Set<String>, ArchivoNode)` - Expand node and all children
 - [x] `collapseNode(Set<String>, String)` - Collapse single node
-- [x] `countVisibleNodes(FileNode, Set<String>)` - Count visible nodes for performance tracking
+- [x] `countVisibleNodes(ArchivoNode, Set<String>)` - Count visible nodes for performance tracking
 - [x] Optimized `toggleNodeExpanded()` with ternary operator
-- [x] Better depth-first traversal documentation
+- [x] Better depth-first traversal documentoation
 
-**FileSearchUseCase - MAJOR SEARCH IMPROVEMENTS:**
+**ArchivoSearchUseCase - MAJOR SEARCH IMPROVEMENTS:**
 - [x] Made search **recursive** (now traverses entire tree instead of flat search)
-- [x] Added `searchByExtension(List<FileNode>, String)` - Filter by file extension
-- [x] Added `searchDirectories(List<FileNode>, String)` - Search only directories
-- [x] Added performance limits: `maxResults = 100` constant
+- [x] Added `searchByExtension(List<ArchivoNode>, String)` - Filter by archivo extension
+- [x] Added `searchDirectories(List<ArchivoNode>, String)` - Search only directories
+- [x] Added performance limits: `maxResultados = 100` constant
 - [x] Search returns early at max results
 - [x] Better helper methods for recursive traversal
 
@@ -323,17 +323,17 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 - ✅ Better security: Path traversal validation
 - ✅ Better performance: Recursive search, ID collision prevention
 - ✅ Better maintainability: 8 new methods, clearer intent
-- ✅ Zero breaking changes: All 17 tests still passing ✅
+- ✅ Zero breaking changes: All 17 pruebas still passing ✅
 
 #### Code Quality Metrics (After Refactor):
-- **flutter analyze:** 25 warnings (all style-only, NO errors) ✅
-- **Test Coverage:** All domain logic tested (100% of use cases)
+- **flutter analyze:** 25 warnings (all estilo-only, NO errors) ✅
+- **Prueba Coverage:** All domain logic pruebaed (100% of use cases)
 - **Type Safety:** Full typing, no dynamic types ✅
-- **Documentation:** DartDoc comments added to new methods
+- **Documentoation:** DartDoc comments added to new methods
 
 **Progreso Fase 2 REFACTOR:** 100% (7 de 7 clases refactored) ✅
 **Git Commit:**
-- `refactor(phase-2): Enhance code quality with logging, security, and utility methods`
+- `refactor(fase-2): Enhance code quality with logging, security, and utility methods`
 
 ---
 
@@ -341,10 +341,10 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 
 **Sprint 3 Week 2-3:**
 
-- [ ] Tarea 1: `ProjectShell` widget (2 pts)
+- [ ] Tarea 1: `ProyectoShell` widget (2 pts)
 - [ ] Tarea 2: `DirectoryTreeView` widget (2 pts)
-- [ ] Tarea 3: `DocumentPreviewPanel` widget (2 pts)
-- [ ] Tarea 4: `ProjectCreationDialog` dialog (1 pt)
+- [ ] Tarea 3: `DocumentoPreviewPanel` widget (2 pts)
+- [ ] Tarea 4: `ProyectoCreationDialog` dialog (1 pt)
 - [ ] Tarea 5: Gestión estado Riverpod (2 pts)
 - [ ] Tarea 6: Tema e integración de paquetes (1 pt)
 
@@ -352,12 +352,12 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 
 ---
 
-### Fase 4: Widget Testing (0% - A INICIAR)
+### Fase 4: Widget Pruebaing (0% - A INICIAR)
 
-- [ ] Widget tests para DirectoryTreeView
-- [ ] Widget tests para DocumentPreviewPanel
-- [ ] Widget tests para ProjectCreationDialog
-- [ ] Integration tests con estado
+- [ ] Widget pruebas para DirectoryTreeView
+- [ ] Widget pruebas para DocumentoPreviewPanel
+- [ ] Widget pruebas para ProyectoCreationDialog
+- [ ] Integración pruebas con estado
 
 **Progreso:** 0%
 
@@ -365,9 +365,9 @@ import 'package:softarchitect_ai/features/project_shell/domain/...';  // ✅ Pac
 
 ### Fase 5: Integración (0% - A INICIAR)
 
-- [ ] Integración con HU-3.2 (FileSystemService)
+- [ ] Integración con HU-3.2 (ArchivoSystemService)
 - [ ] Integración con HU-3.3 (Chat Sequential)
-- [ ] Testing E2E
+- [ ] Pruebaing E2E
 - [ ] Code review
 
 **Progreso:** 0%
@@ -403,13 +403,13 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 | Hito | Fecha Estimada | Descripción | Estado |
 |------|----------------|-------------|--------|
 | 📌 Planificación | 03-06/02 | Sprint planning, desglose de tareas | ✅ DONE |
-| 📌 Infraestructura | 03/02 | Deps, carpetas, test fixtures | ✅ DONE |
-| 📌 Logic Layer RED | 04-05/02 | 15 tests RED creados | ✅ DONE |
-| 📌 Logic Layer GREEN | 06-07/02 | 9 clases implementadas, todos tests GREEN | ✅ DONE |
+| 📌 Infraestructura | 03/02 | Deps, carpetas, prueba fixtures | ✅ DONE |
+| 📌 Logic Layer RED | 04-05/02 | 15 pruebas RED creados | ✅ DONE |
+| 📌 Logic Layer GREEN | 06-07/02 | 9 clases implementadas, todos pruebas GREEN | ✅ DONE |
 | 📌 Logic Layer REFACTOR | 19/02 | Code quality improvements, refactors | ✅ DONE |
 | 📌 Presentación | 20-23/02 | UI widgets con Riverpod | ⏳ PENDING |
-| 📌 Widget Tests | 24-25/02 | Widget tests verdes | ⏳ PENDING |
-| 📌 Integration | 26-27/02 | Integración con HU-3.2, HU-3.3 | ⏳ PENDING |
+| 📌 Widget Pruebas | 24-25/02 | Widget pruebas verdes | ⏳ PENDING |
+| 📌 Integración | 26-27/02 | Integración con HU-3.2, HU-3.3 | ⏳ PENDING |
 | 📌 Release Ready | 28/02 | Lista para merge a develop | ⏳ PENDING |
 
 ---
@@ -419,22 +419,22 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 ### Fase 1: Infraestructura ✅
 - [x] flutter pub add para todas las dependencias
 - [x] Estructura de carpetas (27 directories)
-- [x] test_helper.dart con mocks y SQLite setup
-- [x] project_fixtures.dart con 4 fixtures
-- [x] 6 test suites creados (25 test cases)
-- [x] Lint errors esperados en RED phase
+- [x] prueba_helper.dart con mocks y SQLite setup
+- [x] proyecto_fixtures.dart con 4 fixtures
+- [x] 6 prueba suites creados (25 prueba cases)
+- [x] Lint errors esperados en RED fase
 - [x] Git commit: f2602cf
 
 ### Fase 2: Logic Layer (COMPLETA) ✅
-- [x] Domain entities (Project, FileNode)
+- [x] Domain entities (Proyecto, ArchivoNode)
 - [x] Domain use cases (validation, tree, search)
 - [x] Domain exceptions (5 types con logging + user messages)
-- [x] Data models (ProjectModel DTO)
+- [x] Data models (ProyectoModel DTO)
 - [x] Data sources (SQLiteDataSource)
-- [x] Repository implementation (ProjectRepositoryImpl)
-- [x] Todos los 17 tests GREEN ✅
+- [x] Repository implementación (ProyectoRepositoryImpl)
+- [x] Todos los 17 pruebas GREEN ✅
 - [x] Code refactored con logging, seguridad, utilidades
-- [x] Code quality: 0 errors, 25 style warnings (minor)
+- [x] Code quality: 0 errors, 25 estilo warnings (minor)
 
 ### Fase 3: Presentación
 - [ ] Riverpod providers
@@ -443,15 +443,15 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 - [ ] Theme integration
 - [ ] Responsive layout
 
-### Fase 4+: Testing & Integration
-- [ ] Widget tests (unit tests)
-- [ ] Integration tests
-- [ ] E2E tests
+### Fase 4+: Pruebaing & Integración
+- [ ] Widget pruebas (unit pruebas)
+- [ ] Integración pruebas
+- [ ] E2E pruebas
 - [ ] Merge a develop
 
 | 📌 Feature Complete | 20/02 | Todas las features implementadas |
-| 📌 Testing Done | 23/02 | Tests verdes, cobertura >85% |
-| 📌 Integration | 24-27/02 | Integración con otras HUs |
+| 📌 Pruebaing Done | 23/02 | Pruebas verdes, cobertura >85% |
+| 📌 Integración | 24-27/02 | Integración con otras HUs |
 | 📌 Release Ready | 28/02 | Lista para merge a develop |
 
 ---
@@ -491,10 +491,10 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 ```
 
 ### Estadísticas
-- **Total test files created:** 6
-- **Total test cases:** ~24 (copy-paste ready)
-- **Total lines of test code:** ~216 líneas
-- **Lint status:** ✅ No issues (flutter analyze clean)
+- **Total prueba archivos creard:** 6
+- **Total prueba cases:** ~24 (copy-paste ready)
+- **Total lines of prueba code:** ~216 líneas
+- **Lint estado:** ✅ No issues (flutter analyze clean)
 - **Pre-commit hooks:** ✅ All passing
 
 ---
@@ -504,22 +504,22 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 ### Orden de Implementación (Recomendado)
 
 1. **Domain Layer** (Entities + Use Cases)
-   - Implementar `Project` entity
-   - Implementar `FileNode` entity
+   - Implementar `Proyecto` entity
+   - Implementar `ArchivoNode` entity
    - Implementar use cases (validation, tree, search)
-   - ✅ Tests: 10 casos
+   - ✅ Pruebas: 10 casos
 
 2. **Data Layer** (Models + Data Sources)
-   - Implementar `ProjectModel` (mapper)
+   - Implementar `ProyectoModel` (mapper)
    - Implementar `SQLiteDataSource`
-   - Implementar `ProjectRepositoryImpl`
-   - ✅ Tests: 5 casos
+   - Implementar `ProyectoRepositoryImpl`
+   - ✅ Pruebas: 5 casos
 
-3. **Presentation Layer** (Notifiers + UI)
-   - Implementar `ProjectShellNotifier`
-   - Implementar `ProjectShellState`
+3. **Presentación Layer** (Notifiers + UI)
+   - Implementar `ProyectoShellNotifier`
+   - Implementar `ProyectoShellState`
    - Implementar UI widgets (shell, tree, preview, dialog)
-   - ✅ Tests: 1 caso (expandible)
+   - ✅ Pruebas: 1 caso (expandible)
 
 ### Estimación
 - **Dominio:** 2-3 horas (TDD estricto)
@@ -531,13 +531,13 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 
 ## 🔍 Métricas
 
-| Métrica | Target | Actual | Status |
+| Métrica | Target | Actual | Estado |
 |---------|--------|--------|--------|
-| Test Coverage | >85% | 0% (RED phase) | 🔄 |
-| Test Cases | 20+ | 24 | ✅ |
+| Prueba Coverage | >85% | 0% (RED fase) | 🔄 |
+| Prueba Cases | 20+ | 24 | ✅ |
 | Lint Errors | 0 | 0 | ✅ |
-| Code Review | 2+ approvals | Pending | ⏳ |
-| Documentation | 100% | 40% | 🟡 |
+| Code Review | 2+ approvals | Pendiente | ⏳ |
+| Documentoation | 100% | 40% | 🟡 |
 
 ---
 
@@ -547,9 +547,9 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 - ✅ 9 clases implementadas completamente
 - ✅ Domain layer: 2 entities, 5 exceptions, 3 use cases
 - ✅ Data layer: 1 model, 1 data source, 1 repository
-- ✅ 17/17 tests PASSING - TDD cycle GREEN complete
+- ✅ 17/17 pruebas PASSING - TDD cycle GREEN complete
 - ✅ Type safe: All functions annotated, no dynamic types
-- ✅ Code review ready for presentation layer
+- ✅ Code review preparado para presentation layer
 
 **Sesión Fase 2 REFACTOR (19/02/2025):**
 - ✅ Comprehensive code quality improvements applied
@@ -558,12 +558,12 @@ Fase 5: Integración ............. [░░░░░░░░░░░░░░�
 - ✅ Security hardening: Path traversal validation
 - ✅ Performance: Recursive search, deterministic IDs
 - ✅ UX: Spanish error messages in exceptions
-- ✅ All 17 tests still passing after refactors ✅
-- ✅ flutter analyze: 0 errors (25 style warnings only)
+- ✅ All 17 pruebas still passing after refactors ✅
+- ✅ flutter analyze: 0 errors (25 estilo warnings only)
 
 ---
 
 **PROGRESS: HU-3.1**
 **Actualizado:** 19/02/2025 - 20:15 ✅
-**Estado:** Fase 2 COMPLETADA (RED→GREEN→REFACTOR) | Tests: 17/17 PASSING
+**Estado:** Fase 2 COMPLETADA (RED→GREEN→REFACTOR) | Pruebas: 17/17 PASSING
 **Responsable:** [Frontend Lead]

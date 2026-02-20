@@ -2,7 +2,7 @@
 
 > **Historia de Usuario:** Backend Skeleton (FastAPI + Clean Architecture)
 > **Fecha de creación:** 29/01/2026
-> **Estado:** ✅ COMPLETADA (Fase 5 + Reportes)
+> **Status:** ✅ COMPLETADA (Phase 5 + Reportes)
 
 ---
 
@@ -10,7 +10,7 @@
 
 1. [Código Fuente](#código-fuente)
 2. [Tests](#tests)
-3. [Configuración](#configuración)
+3. [Configuration](#configuration)
 4. [Documentación](#documentación)
 5. [Validación](#validación)
 
@@ -20,50 +20,50 @@
 
 ### Core Layer
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/core/config.py` | Pydantic Settings para configuración tipada | ~120 | ⏸ Pendiente |
-| `src/server/core/errors.py` | Sistema de errores custom (ERROR_HANDLING_STANDARD) | ~100 | ⏸ Pendiente |
-| `src/server/core/__init__.py` | Package init | ~10 | ⏸ Pendiente |
+| `src/server/core/config.py` | Pydantic Settings para configuration tipada | ~120 | ⏸ Pending |
+| `src/server/core/errors.py` | Sistema de errores custom (ERROR_HANDLING_STANDARD) | ~100 | ⏸ Pending |
+| `src/server/core/__init__.py` | Package init | ~10 | ⏸ Pending |
 
 ### Domain Layer
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/domain/schemas/health.py` | DTOs para health check responses | ~30 | ⏸ Pendiente |
-| `src/server/domain/schemas/__init__.py` | Package init | ~5 | ⏸ Pendiente |
-| `src/server/domain/models/__init__.py` | Package init (vacío por ahora) | ~5 | ⏸ Pendiente |
-| `src/server/domain/__init__.py` | Package init | ~5 | ⏸ Pendiente |
+| `src/server/domain/schemas/health.py` | DTOs para health check responses | ~30 | ⏸ Pending |
+| `src/server/domain/schemas/__init__.py` | Package init | ~5 | ⏸ Pending |
+| `src/server/domain/models/__init__.py` | Package init (vacío por ahora) | ~5 | ⏸ Pending |
+| `src/server/domain/__init__.py` | Package init | ~5 | ⏸ Pending |
 
 ### API Layer
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/api/v1/endpoints/system.py` | Endpoints de health check | ~80 | ⏸ Pendiente |
-| `src/server/api/v1/endpoints/__init__.py` | Package init | ~5 | ⏸ Pendiente |
-| `src/server/api/v1/router.py` | API router aggregator | ~20 | ⏸ Pendiente |
-| `src/server/api/v1/__init__.py` | Package init | ~5 | ⏸ Pendiente |
-| `src/server/api/__init__.py` | Package init | ~5 | ⏸ Pendiente |
+| `src/server/api/v1/endpoints/system.py` | Endpoints de health check | ~80 | ⏸ Pending |
+| `src/server/api/v1/endpoints/__init__.py` | Package init | ~5 | ⏸ Pending |
+| `src/server/api/v1/router.py` | API router aggregator | ~20 | ⏸ Pending |
+| `src/server/api/v1/__init__.py` | Package init | ~5 | ⏸ Pending |
+| `src/server/api/__init__.py` | Package init | ~5 | ⏸ Pending |
 
 ### Services Layer
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/services/rag/__init__.py` | Package init (vacío para HU-2.1) | ~5 | ⏸ Pendiente |
-| `src/server/services/vectors/__init__.py` | Package init (vacío para HU-2.2) | ~5 | ⏸ Pendiente |
-| `src/server/services/__init__.py` | Package init | ~5 | ⏸ Pendiente |
+| `src/server/services/rag/__init__.py` | Package init (vacío para HU-2.1) | ~5 | ⏸ Pending |
+| `src/server/services/vectors/__init__.py` | Package init (vacío para HU-2.2) | ~5 | ⏸ Pending |
+| `src/server/services/__init__.py` | Package init | ~5 | ⏸ Pending |
 
 ### Utils Layer
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/utils/__init__.py` | Package init (helpers generales) | ~5 | ⏸ Pendiente |
+| `src/server/utils/__init__.py` | Package init (helpers generales) | ~5 | ⏸ Pending |
 
 ### Main Application
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/main.py` | FastAPI app entrypoint con CORS | ~80 | ⏸ Pendiente |
+| `src/server/main.py` | FastAPI app entrypoint con CORS | ~80 | ⏸ Pending |
 
 ---
 
@@ -71,49 +71,49 @@
 
 ### Architecture Tests
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/tests/test_architecture.py` | Validación de estructura de carpetas | ~60 | ⏸ Pendiente |
+| `src/server/tests/test_architecture.py` | Validación de estructura de folders | ~60 | ⏸ Pending |
 
 ### Unit Tests
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/tests/test_config.py` | Tests de Pydantic Settings | ~40 | ⏸ Pendiente |
-| `src/server/tests/test_errors.py` | Tests del sistema de errores | ~50 | ⏸ Pendiente |
+| `src/server/tests/test_config.py` | Tests de Pydantic Settings | ~40 | ⏸ Pending |
+| `src/server/tests/test_errors.py` | Tests del sistema de errores | ~50 | ⏸ Pending |
 
 ### Integration Tests
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/tests/test_api.py` | Tests de endpoints (TestClient) | ~100 | ⏸ Pendiente |
+| `src/server/tests/test_api.py` | Tests de endpoints (TestClient) | ~100 | ⏸ Pending |
 
 ### Test Utilities
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/tests/__init__.py` | Package init | ~5 | ⏸ Pendiente |
+| `src/server/tests/__init__.py` | Package init | ~5 | ⏸ Pending |
 
 ---
 
-## ⚙️ Configuración
+## ⚙️ Configuration
 
 ### Poetry Configuration
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/pyproject.toml` | Poetry config + Ruff + Pytest settings | ~100 | ⏸ Pendiente |
-| `src/server/poetry.lock` | Lockfile de dependencias | Auto-generado | ⏸ Pendiente |
+| `src/server/pyproject.toml` | Poetry config + Ruff + Pytest settings | ~100 | ⏸ Pending |
+| `src/server/poetry.lock` | Lockfile de dependencias | Auto-generado | ⏸ Pending |
 
 ### Docker Requirements
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/requirements.txt` | Exportado desde Poetry para Docker | ~30 | ⏸ Pendiente |
+| `src/server/requirements.txt` | Exportado desde Poetry para Docker | ~30 | ⏸ Pending |
 
 ### Pre-commit (Opcional)
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
 | `src/server/.pre-commit-config.yaml` | Hooks de pre-commit (Ruff, etc.) | ~30 | ⏸ Opcional |
 
@@ -123,25 +123,25 @@
 
 ### Technical Docs
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
-| `src/server/README.md` | Guía técnica EN (setup, testing, structure) | ~250 | ⏸ Pendiente |
-| `src/server/README.es.md` | Guía técnica ES (traducción completa) | ~250 | ⏸ Pendiente |
+| `src/server/README.md` | Guía técnica EN (setup, testing, structure) | ~250 | ⏸ Pending |
+| `src/server/README.es.md` | Guía técnica ES (traducción completa) | ~250 | ⏸ Pending |
 
 ### Project Tracking
 
-| Archivo | Descripción | Líneas (estimado) | Estado |
+| File | Description | Líneas (estimado) | Status |
 |---------|-------------|-------------------|--------|
 | `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/README.md` | Overview de la HU | ~200 | ✅ Creado |
-| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/WORKFLOW.md` | Workflow detallado (6 fases) | ~1200 | ✅ Creado |
+| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/WORKFLOW.md` | Workflow detallado (6 phases) | ~1200 | ✅ Creado |
 | `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/PROGRESS.md` | Tracking de tareas | ~300 | ✅ Creado |
-| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/PHASE_5_SECURITY_VALIDATION_REPORT.md` | Security audit report (NEW - Fase 5) | ~450 | ✅ Creado |
-| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/COMPLETION_SUMMARY.md` | Completion summary (NEW - Fase 6) | ~500 | ✅ Creado |
-| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/ARTIFACTS.md` | Este archivo | ~200 | ✅ Creado |
+| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/PHASE_5_SECURITY_VALIDATION_REPORT.md` | Security audit report (NEW - Phase 5) | ~450 | ✅ Creado |
+| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/COMPLETION_SUMMARY.md` | Completion summary (NEW - Phase 6) | ~500 | ✅ Creado |
+| `doc/03-HU-TRACKING/HU-1.2-BACKEND-SKELETON/ARTIFACTS.md` | Este file | ~200 | ✅ Creado |
 
 ### Index Updates
 
-| Archivo | Descripción | Estado |
+| File | Description | Status |
 ```markdown
 # HU-1.2: Artifacts Manifest
 

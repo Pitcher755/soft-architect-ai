@@ -1,4 +1,4 @@
-# 🎮 Project Shell Screen - User Guide
+# 🎮 Proyecto Shell Screen - User Guide
 
 > **Estado:** ✅ Completado y Validado
 > **Compilación:** 0 errors
@@ -17,7 +17,7 @@
 
 ## ✨ Características Principales
 
-### 1️⃣ Árbol de Directorios (Files Column)
+### 1️⃣ Árbol de Directorios (Archivos Column)
 
 **Funcionalidades:**
 - ✅ Expandir/Contraer carpetas
@@ -108,7 +108,7 @@ This document outlines the high-level architecture...
 ```
 
 **Características:**
-- Toolbar con Copy & Download buttons
+- Toolbar con Copy & Download botóns
 - Header con nombre del archivo
 - Contenido scrolleable
 - Monospace font para código
@@ -130,7 +130,7 @@ This document outlines the high-level architecture...
    - El cambio es inmediato y suave
 
 **Limites:**
-- Files Column: 200px (mín) - 500px (máx)
+- Archivos Column: 200px (mín) - 500px (máx)
 - Preview Column: 300px (mín) - 600px (máx)
 
 ---
@@ -150,7 +150,7 @@ This document outlines the high-level architecture...
 
 **Cómo Usar:**
 
-1. Haz clic en **📁 folder icon** para mostrar/ocultar el explorador
+1. Haz clic en **📁 carpeta icon** para mostrar/ocultar el explorador
 2. Haz clic en **👁 visibility icon** para mostrar/ocultar el preview
 3. El estado persiste al toggle
 
@@ -158,7 +158,7 @@ This document outlines the high-level architecture...
 
 ## 🎯 Cómo Usar - Flujo Completo
 
-### Escenario: Revisar Documentos del Proyecto
+### Escenario: Revisar Documentoos del Proyecto
 
 ```
 1. Abre el app → Project Shell Screen
@@ -196,7 +196,7 @@ This document outlines the high-level architecture...
 
 ## 📊 Estructura de Datos
 
-### FileNode (Árbol de Directorios)
+### ArchivoNode (Árbol de Directorios)
 
 ```dart
 class FileNode {
@@ -249,7 +249,7 @@ ChatMessageUI(
 )
 ```
 
-### MockProjectData (Fuente Única de Verdad)
+### MockProyectoData (Fuente Única de Verdad)
 
 ```dart
 class MockProjectData {
@@ -275,7 +275,7 @@ class MockProjectData {
 
 ### Paso 1: Crear Notifiers
 
-Reemplaza MockProjectData con notifiers reales:
+Reemplaza MockProyectoData con notifiers reales:
 
 ```dart
 // ANTES: Mock
@@ -319,7 +319,7 @@ class ChatNotifier extends StateNotifier<List<ChatMessageUI>> {
 }
 ```
 
-### Paso 4: Reemplazar en project_shell_screen.dart
+### Paso 4: Reemplazar en proyecto_shell_screen.dart
 
 ```dart
 // OLD: Mock data
@@ -359,11 +359,11 @@ fileTree.when(
 
 - **Compilación:** 0 errors, 25 info warnings (linting only)
 - **Performance:** Optimizado para Desktop (Flutter desktop target)
-- **Memoria:** Mock data es const (sin overhead en runtime)
+- **Memoria:** Mock data es const (sin overhead en ejecutartime)
 - **Responsive:** Funciona en cualquier tamaño de ventana
 
 ---
 
 **Última revisión:** 8 de febrero de 2026
 **Versión:** 2.0 (Architecture Complete)
-**Próxima:** 3.0 (Backend Integration)
+**Próxima:** 3.0 (Backend Integración)

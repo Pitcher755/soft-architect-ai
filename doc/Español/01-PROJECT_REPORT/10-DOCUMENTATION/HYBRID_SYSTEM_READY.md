@@ -18,22 +18,22 @@ Se ha construido un **sistema híbrido que integra proyectos reales (disco) y pr
 ## 🔧 Cambios Técnicos
 
 ### Archivos Creados (2)
-- `projects_provider.dart` - Helper para combinar proyectos
-- `doc/HYBRID_SYSTEM_IMPLEMENTATION.md` - Documentación
+- `proyectos_provider.dart` - Helper para combinar proyectos
+- `doc/HYBRID_SYSTEM_IMPLEMENTATION.md` - Documentoación
 
 ### Archivos Modificados (8)
-- `project.dart` - Agregado getter `phase`
-- `mock_projects_data.dart` - Simplificado a función `getMockProjectsData()`
-- `mock_data.dart` - Agregados `guideRootNode` y `guideFileContents`
-- `file_tree_widget.dart` - Detección de rutas `mock://`
-- `project_shell_screen.dart` - Lectura híbrida de archivos
-- `project_workspace_screen.dart` - Usa `buildHybridProjectsList()` + objetos `Project`
-- `project_list_view.dart` - Acepta `List<Project>` (no Maps)
-- `project_model.dart` + `web_mock_project_repository.dart` - Actualizados a nueva estructura
+- `proyecto.dart` - Agregado getter `fase`
+- `mock_proyectos_data.dart` - Simplificado a función `getMockProyectosData()`
+- `mock_data.dart` - Agregados `guideRootNode` y `guideArchivoContents`
+- `archivo_tree_widget.dart` - Detección de rutas `mock://`
+- `proyecto_shell_screen.dart` - Lectura híbrida de archivos
+- `proyecto_workspace_screen.dart` - Usa `buildHybridProyectosList()` + objetos `Proyecto`
+- `proyecto_list_view.dart` - Acepta `List<Proyecto>` (no Maps)
+- `proyecto_model.dart` + `web_mock_proyecto_repository.dart` - Actualizados a nueva estructura
 
 ### Protocolo Virtual
 - Rutas mock usan `mock://softarchitect-guide`
-- Rutas reales usan `/home/user/Projects/...`
+- Rutas reales usan `/home/user/Proyectos/...`
 - Detección automática en 3 puntos clave
 
 ### Datos en Memoria
@@ -68,7 +68,7 @@ Se ha construido un **sistema híbrido que integra proyectos reales (disco) y pr
 
 ---
 
-## 📖 Documentación
+## 📖 Documentoación
 
 1. **[HYBRID_SYSTEM_IMPLEMENTATION.md](doc/HYBRID_SYSTEM_IMPLEMENTATION.md)**
    - Guía detallada de arquitectura
@@ -78,7 +78,7 @@ Se ha construido un **sistema híbrido que integra proyectos reales (disco) y pr
 2. **[HYBRID_SYSTEM_SUMMARY.md](doc/HYBRID_SYSTEM_SUMMARY.md)**
    - Resumen ejecutivo
    - Componentes clave
-   - Testing
+   - Pruebaing
 
 3. **[HYBRID_SYSTEM_VERIFICATION_GUIDE.md](HYBRID_SYSTEM_VERIFICATION_GUIDE.md)**
    - Guía de validación
@@ -103,8 +103,8 @@ Se ha construido un **sistema híbrido que integra proyectos reales (disco) y pr
 
 ### Para Desarrolladores
 1. Editar `mock_data.dart` para agregar contenido a la guía
-2. Agregar FileNode al `guideRootNode`
-3. Agregar contenido markdown a `guideFileContents`
+2. Agregar ArchivoNode al `guideRootNode`
+3. Agregar contenido markdown a `guideArchivoContents`
 4. Hot reload → Cambios visibles inmediatamente
 
 ### Para DevOps
@@ -130,7 +130,7 @@ Se ha construido un **sistema híbrido que integra proyectos reales (disco) y pr
 - ✅ No acceso a datos reales en guía
 - ✅ No I/O innecesario
 - ✅ Rutas sanitizadas (sin traversal)
-- ✅ Type-safe (sin runtime errors)
+- ✅ Type-safe (sin ejecutartime errors)
 
 ---
 
@@ -138,7 +138,7 @@ Se ha construido un **sistema híbrido que integra proyectos reales (disco) y pr
 
 ### Corto Plazo (Antes de release)
 - [ ] QA completo
-- [ ] Testing en múltiples dispositivos
+- [ ] Pruebaing en múltiples dispositivos
 - [ ] Performance profiling
 
 ### Mediano Plazo (v1.1)
@@ -155,8 +155,8 @@ Se ha construido un **sistema híbrido que integra proyectos reales (disco) y pr
 
 ## 📞 Contacto
 
-- **Documentación:** Ver archivos en `doc/` y raíz
-- **Código:** Ver `src/client/lib/features/project_shell/`
+- **Documentoación:** Ver archivos en `doc/` y raíz
+- **Código:** Ver `src/client/lib/features/proyecto_shell/`
 - **Issues:** Usar GitHub Issues con label `hybrid-system`
 
 ---
@@ -171,9 +171,9 @@ Los usuarios ahora pueden gestionar proyectos reales y aprender con la guía int
 
 ---
 
-**Documentación Completa:**
+**Documentoación Completa:**
 - ✅ Código fuente comentado
-- ✅ 4 archivos de documentación
+- ✅ 4 archivos de documentoación
 - ✅ Ejemplos de uso
 - ✅ Guía de verificación
 - ✅ Changelog detallado

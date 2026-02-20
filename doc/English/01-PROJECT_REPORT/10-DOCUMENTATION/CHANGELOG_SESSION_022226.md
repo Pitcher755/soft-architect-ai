@@ -9,20 +9,20 @@
 
 ## 📋 Resumen Ejecutivo
 
-Esta sesión completó la implementación de mejoras significativas en la interfaz del dashboard, incluyendo:
+Esta sesión completó la implementation de mejoras significativas en la interfaz del dashboard, incluyendo:
 
-1. **Navegación Mejorada** en la sidebar (Proyectos, Búsqueda, Configuración)
+1. **Navegación Mejorada** en la sidebar (Projects, Búsqueda, Configuration)
 2. **Búsqueda Global** interactiva con diálogo modal y entrada de texto
-3. **ProjectListView** widget completo para ver todos los proyectos
+3. **ProjectListView** widget completo para ver todos los projects
 4. **Responsive Design** con tres breakpoints (mobile/tablet/desktop)
-5. **Gestión de Estado** con LayoutBuilder para scroll vertical/horizontal automático
+5. **Gestión de Status** con LayoutBuilder para scroll vertical/horizontal automático
 
 ---
 
 ## 🎯 Cambios Principales
 
 ### 1. **ProjectWorkspaceScreen** (379 líneas modificadas)
-**Archivo:** `src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart`
+**File:** `src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart`
 
 #### Cambios de Estructura:
 - Convertido de `StatelessWidget` → `StatefulWidget` para manejar visibilidad de ProjectListView
@@ -38,7 +38,7 @@ Esta sesión completó la implementación de mejoras significativas en la interf
 #### Cambios de Layout:
 - Grid dinámico usando `minCardWidth = 280` (sustituye breakpoints fijos)
 - `effectiveColumns = floor(maxWidth/minCardWidth).clamp(1,4)` para cálculo responsivo
-- **Botón "Ver todos" centrado**: Ahora wrapped en `Center` + `Container(maxWidth: 50%)`
+- **Button "Ver todos" centrado**: Ahora wrapped en `Center` + `Container(maxWidth: 50%)`
   - Alineado al `Alignment.centerLeft` para coincidir con borde izquierdo de ProjectListView
 - Agregado `ProjectListView` condicional cuando `showAllProjects == true`
 
@@ -58,7 +58,7 @@ LayoutBuilder(
 ---
 
 ### 2. **ProjectCard** (311 líneas modificadas)
-**Archivo:** `src/client/lib/features/project_shell/presentation/widgets/project_card.dart`
+**File:** `src/client/lib/features/project_shell/presentation/widgets/project_card.dart`
 
 #### Mejoras de Responsividad:
 - Tres breakpoints de responsive sizing:
@@ -97,7 +97,7 @@ String _getShortPath(String fullPath) {
 ---
 
 ### 3. **ProjectsSidebar** (149 líneas modificadas)
-**Archivo:** `src/client/lib/features/project_shell/presentation/widgets/projects_sidebar.dart`
+**File:** `src/client/lib/features/project_shell/presentation/widgets/projects_sidebar.dart`
 
 #### Cambio de Estructura:
 - Convertido de `StatelessWidget` → `StatefulWidget`
@@ -148,8 +148,8 @@ void _showSearchDialog(BuildContext context) {
 #### Características de Búsqueda:
 - ✅ Campo de entrada con tema oscuro
 - ✅ Búsqueda por **Enter key** (onSubmitted)
-- ✅ Búsqueda por **botón "Buscar"**
-- ✅ Botón "Cancelar"
+- ✅ Búsqueda por **button "Buscar"**
+- ✅ Button "Cancelar"
 - ✅ Focus border en color primario (#58A6FF)
 - ⚠️ TODO: Implementar lógica de búsqueda real
 
@@ -170,28 +170,28 @@ TextField(
 ---
 
 ### 4. **ProjectListView** (190 líneas - NUEVO)
-**Archivo:** `src/client/lib/features/project_shell/presentation/widgets/project_list_view.dart`
+**File:** `src/client/lib/features/project_shell/presentation/widgets/project_list_view.dart`
 
 #### Propósito:
-Widget modal overlay que muestra TODOS los proyectos en formato lista (vs. grid)
+Widget modal overlay que muestra TODOS los projects en formato lista (vs. grid)
 
 #### Características:
 - **Centro de pantalla** con 50% ancho
 - **Máx altura 50%** del viewport
 - **Blue accent border** (#58A6FF, width 1.5)
 - **Close button** en top-right
-- **Scrollable lista** de proyectos ordenados alfabéticamente
+- **Scrollable lista** de projects ordenados alfabéticamente
 
 #### Diseño de Mini Cards:
 ```
 [Icon Container] [Name Expanded] [Path Expanded] [Arrow]
 ```
 
-- **Icon**: 32x32 container con color del proyecto (alpha 0.1 background)
+- **Icon**: 32x32 container con color of the project (alpha 0.1 background)
 - **Name**: Expanded text alineado left
 - **Path**: Expanded text alineado right (via textAlign.right)
-- **Arrow**: Forward icon con color de fase (alpha 0.6)
-- **Border**: Color de fase con alpha 0.4
+- **Arrow**: Forward icon con color de phase (alpha 0.6)
+- **Border**: Color de phase con alpha 0.4
 
 #### Espaciado:
 - Card margin: 12px bottom (entre items)
@@ -215,21 +215,21 @@ Row(
 ---
 
 ### 5. **mock_projects_data.dart** (107 líneas - NUEVO)
-**Archivo:** `src/client/lib/features/project_shell/presentation/data/mock_projects_data.dart`
+**File:** `src/client/lib/features/project_shell/presentation/data/mock_projects_data.dart`
 
 #### Contenido:
-- **10 proyectos de muestra** con datos realistas
-- Cada proyecto contiene:
+- **10 projects de muestra** con datos realistas
+- Cada project contiene:
   - `id`: Identificador único
-  - `name`: Nombre del proyecto
+  - `name`: Name of the project
   - `icon`: IconData (Flutter Icons)
   - `iconColor`: Color del ícono
-  - `phase`: Fase del proyecto (Fase 1-3)
-  - `phaseColor`: Color de la badge de fase
-  - `path`: Ruta del proyecto
+  - `phase`: Phase of the project (Phase 1-3)
+  - `phaseColor`: Color de la badge de phase
+  - `path`: Ruta of the project
   - `modified`: Fecha de última modificación
 
-#### Proyectos Incluidos:
+#### Projects Incluidos:
 1. E-Commerce Platform
 2. Uber for Dogs
 3. FinTech Core API
@@ -292,7 +292,7 @@ Row(
 - ✅ Grid dinámico con 3+ breakpoints
 - ✅ Scroll vertical automático (<500px height)
 - ✅ Scroll horizontal automático (<500px width)
-- ✅ Proyectos muestrales renderizados correctamente
+- ✅ Projects muestrales renderizados correctamente
 
 ### Componentes:
 - ✅ ProjectCard responsive y con path abbreviation
@@ -321,7 +321,7 @@ if (value.isNotEmpty) {
 
 ## 🔗 Referencias de Código
 
-| Archivo | Líneas | Función |
+| File | Líneas | Función |
 |---------|--------|---------|
 | project_workspace_screen.dart | 167-209 | Button centrado + ProjectListView |
 | project_card.dart | 44-69 | Responsive sizing logic |
@@ -331,13 +331,13 @@ if (value.isNotEmpty) {
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
 1. **Implementar búsqueda**: Conectar search dialog con lógica de filtrado
-2. **Navegación ProjectListView**: Implementar `onTap` para ir a proyecto
+2. **Navegación ProjectListView**: Implementar `onTap` para ir a project
 3. **Testing visual**: Validar en múltiples resoluciones de pantalla
 4. **Integración Backend**: Reemplazar mock_projects_data con API real
-5. **Animaciones**: Agregar transiciones suaves entre estados
+5. **Animaciones**: Agregar transiciones suaves entre statuss
 
 ---
 
@@ -351,6 +351,6 @@ if (value.isNotEmpty) {
 
 ---
 
-**Estado:** ✅ COMPLETADO Y COMMITEADO
+**Status:** ✅ COMPLETADO Y COMMITEADO
 **Autor:** GitHub Copilot (ArchitectZero Agent)
 **Revisado por:** User approval

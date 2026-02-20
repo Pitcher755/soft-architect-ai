@@ -1,7 +1,7 @@
 # 🏗️ WORKFLOW: HU-1.2 - Backend Skeleton (FastAPI + Clean Architecture)
 
 > **Fecha de Creación:** 29/01/2026
-> **Estado:** 📋 DRAFT
+> **Status:** 📋 DRAFT
 > **Autor:** ArchitectZero
 > **Epic:** E1 - Orquestación y Entorno
 > **Sprint:** S1 - Infraestructura y Scaffolding (The Bedrock)
@@ -12,13 +12,13 @@
 
 1. [User Story y Contexto](#user-story-y-contexto)
 2. [Objetivos Finales (Definition of Done)](#objetivos-finales-definition-of-done)
-3. [Fase 0: Preparación y Análisis](#fase-0-preparación-y-análisis)
-4. [Fase 1: Calidad y Reglas](#fase-1-calidad-y-reglas)
-5. [Fase 2: Scaffolding e Implementación](#fase-2-scaffolding-e-implementación)
-6. [Fase 3: Testing y Validación](#fase-3-testing-y-validación)
-7. [Fase 4: Documentación Bilingüe](#fase-4-documentación-bilingüe)
-8. [Fase 5: Validación de Seguridad](#fase-5-validación-de-seguridad)
-9. [Fase 6: Git & Code Review](#fase-6-git--code-review)
+3. [Phase 0: Preparación y Analysis](#phase-0-preparación-y-analysis)
+4. [Phase 1: Calidad y Reglas](#phase-1-calidad-y-reglas)
+5. [Phase 2: Scaffolding e Implementation](#phase-2-scaffolding-e-implementation)
+6. [Phase 3: Testing y Validación](#phase-3-testing-y-validación)
+7. [Phase 4: Documentación Bilingüe](#phase-4-documentación-bilingüe)
+8. [Phase 5: Validación de Seguridad](#phase-5-validación-de-seguridad)
+9. [Phase 6: Git & Code Review](#phase-6-git--code-review)
 10. [Checklist de Cierre](#checklist-de-cierre)
 
 ---
@@ -65,7 +65,7 @@
 
 - [ ] ✅ **Entorno Reproducible:** `poetry install` configura todo sin errores
 - [ ] ✅ **Arquitectura Limpia:** Estructura `src/server/` coincide exactamente con `PROJECT_STRUCTURE_MAP.md`
-- [ ] ✅ **Configuración Tipada:** Variables de entorno leídas mediante Pydantic Settings (NO `os.getenv()`)
+- [ ] ✅ **Configuration Tipada:** Variables de entorno leídas mediante Pydantic Settings (NO `os.getenv()`)
 - [ ] ✅ **Calidad de Código:** Ruff configurado y bloquea código sucio (0 warnings)
 - [ ] ✅ **API Saludable:** Endpoint `GET /api/v1/health` devuelve 200 OK con metadatos
 - [ ] ✅ **Seguridad Base:** CORS configurado explícitamente (lista blanca de orígenes)
@@ -75,12 +75,12 @@
 
 ---
 
-## 📋 FASE 0: PREPARACIÓN Y ANÁLISIS
+## 📋 PHASE 0: PREPARACIÓN Y ANÁLISIS
 
 **Tiempo estimado:** 30 minutos
 **Objetivo:** Validar requisitos y preparar el entorno de desarrollo
 
-### ✅ 0.1 - Verificación de Prerequisites
+### ✅ 0.1 - Verification de Prerequisites
 
 **Validar que HU-1.1 está completada:**
 
@@ -99,7 +99,7 @@ test -f infrastructure/.env.example && echo "✅ .env.example OK" || echo "❌ F
 docker images | grep -E "(sa_api|sa_chromadb|sa_ollama)" && echo "✅ Imágenes Docker OK"
 ```
 
-**Resultado esperado:** Todos los checks pasan ✅
+**Result esperado:** Todos los checks pasan ✅
 
 ### ✅ 0.2 - Branching Strategy (Gitflow)
 
@@ -112,7 +112,7 @@ git branch --show-current
 # Debe mostrar: feature/backend-skeleton
 ```
 
-### ✅ 0.3 - Análisis de Contexto (Lectura Obligatoria)
+### ✅ 0.3 - Analysis de Contexto (Lectura Obligatoria)
 
 **ANTES de escribir código, leer y entender:**
 
@@ -156,7 +156,7 @@ poetry init \
 poetry add fastapi==0.115.6 uvicorn[standard]==0.34.0 python-multipart==0.0.20
 ```
 
-**Configuración & Validación:**
+**Configuration & Validación:**
 
 ```bash
 poetry add pydantic==2.10.5 pydantic-settings==2.7.1
@@ -168,7 +168,7 @@ poetry add pydantic==2.10.5 pydantic-settings==2.7.1
 poetry add --group dev ruff==0.8.6 pytest==8.3.4 pytest-cov==6.0.0 httpx==0.28.1
 ```
 
-**Verificación:**
+**Verification:**
 
 ```bash
 # Verificar que se crearon los archivos
@@ -179,18 +179,18 @@ test -f poetry.lock && echo "✅ poetry.lock OK"
 poetry show --tree
 ```
 
-**Resultado esperado:**
+**Result esperado:**
 - `pyproject.toml` creado con todas las dependencias
 - `poetry.lock` generado (lockfile de versiones exactas)
 
 ---
 
-## 🔴 FASE 1: CALIDAD Y REGLAS (The Sheriff)
+## 🔴 PHASE 1: CALIDAD Y REGLAS (The Sheriff)
 
 **Tiempo estimado:** 45 minutos
 **Objetivo:** Configurar reglas de calidad ANTES de escribir código
 
-### ✅ 1.1 - Configuración de Ruff (Linter ultrarrápido)
+### ✅ 1.1 - Configuration de Ruff (Linter ultrarrápido)
 
 **Añadir al final de `src/server/pyproject.toml`:**
 
@@ -235,14 +235,14 @@ line-ending = "auto"
 max-complexity = 10  # Complejidad ciclomática máxima
 ```
 
-**Verificación:**
+**Verification:**
 
 ```bash
 # Test de linting (debería pasar sin errores)
 poetry run ruff check .
 ```
 
-### ✅ 1.2 - Configuración de Pytest + Coverage
+### ✅ 1.2 - Configuration de Pytest + Coverage
 
 **Añadir al `pyproject.toml`:**
 
@@ -273,7 +273,7 @@ python_functions = ["test_*"]
 poetry add --group dev pre-commit==4.0.1
 ```
 
-**Crear `.pre-commit-config.yaml` en `src/server/`:**
+**Create `.pre-commit-config.yaml` en `src/server/`:**
 
 ```yaml
 repos:
@@ -304,14 +304,14 @@ poetry run pre-commit install
 
 ### ✅ 1.4 - Test de Arquitectura (TDD - RED Phase)
 
-**Crear estructura de tests:**
+**Create estructura de tests:**
 
 ```bash
 mkdir -p tests
 touch tests/__init__.py
 ```
 
-**Crear `tests/test_architecture.py`:**
+**Create `tests/test_architecture.py`:**
 
 ```python
 """
@@ -393,22 +393,22 @@ def test_init_files_exist():
     )
 ```
 
-**Ejecutar test (DEBE FALLAR - RED Phase 🔴):**
+**Execute test (DEBE FALLAR - RED Phase 🔴):**
 
 ```bash
 poetry run pytest tests/test_architecture.py -v
 ```
 
-**Resultado esperado:** Test falla porque las carpetas no existen aún.
+**Result esperado:** Test falla porque las folders no existen aún.
 
 ---
 
-## 🟢 FASE 2: SCAFFOLDING E IMPLEMENTACIÓN (GREEN Phase)
+## 🟢 PHASE 2: SCAFFOLDING E IMPLEMENTACIÓN (GREEN Phase)
 
 **Tiempo estimado:** 2 horas
-**Objetivo:** Crear la estructura de código y hacer pasar los tests
+**Objetivo:** Create la estructura de código y hacer pasar los tests
 
-### ✅ 2.1 - Crear el Árbol de Directorios
+### ✅ 2.1 - Create el Árbol de Directorios
 
 ```bash
 # Crear estructura completa de carpetas
@@ -423,17 +423,17 @@ mkdir -p tests
 find . -type d -not -path "*/.*" -not -path "*/__pycache__*" -exec touch {}/__init__.py \;
 ```
 
-**Verificación (Test debe pasar ahora - GREEN Phase 🟢):**
+**Verification (Test debe pasar ahora - GREEN Phase 🟢):**
 
 ```bash
 poetry run pytest tests/test_architecture.py -v
 ```
 
-**Resultado esperado:** ✅ Todos los tests de arquitectura pasan.
+**Result esperado:** ✅ Todos los tests de arquitectura pasan.
 
 ### ✅ 2.2 - Sistema de Manejo de Errores (ERROR_HANDLING_STANDARD)
 
-**Crear `core/errors.py`:**
+**Create `core/errors.py`:**
 
 ```python
 """
@@ -543,9 +543,9 @@ DB_001_CHROMADB_UNAVAILABLE = DatabaseError(
 )
 ```
 
-### ✅ 2.3 - Configuración Tipada con Pydantic Settings
+### ✅ 2.3 - Configuration Tipada con Pydantic Settings
 
-**Crear `core/config.py`:**
+**Create `core/config.py`:**
 
 ```python
 """
@@ -650,7 +650,7 @@ settings = get_settings()
 
 ### ✅ 2.4 - Schemas (Pydantic DTOs)
 
-**Crear `domain/schemas/health.py`:**
+**Create `domain/schemas/health.py`:**
 
 ```python
 """
@@ -682,7 +682,7 @@ class DetailedHealthResponse(HealthResponse):
 
 ### ✅ 2.5 - Endpoint de Health
 
-**Crear `api/v1/endpoints/system.py`:**
+**Create `api/v1/endpoints/system.py`:**
 
 ```python
 """
@@ -754,7 +754,7 @@ def detailed_health_check() -> DetailedHealthResponse:
 
 ### ✅ 2.6 - Router Principal
 
-**Crear `api/v1/router.py`:**
+**Create `api/v1/router.py`:**
 
 ```python
 """
@@ -783,7 +783,7 @@ api_router.include_router(
 
 ### ✅ 2.7 - Main App (FastAPI Application)
 
-**Crear `main.py`:**
+**Create `main.py`:**
 
 ```python
 """
@@ -850,24 +850,24 @@ def ping() -> dict[str, str]:
 
 ### ✅ 2.8 - Exportar requirements.txt para Docker
 
-**Generar archivo de requisitos para Docker:**
+**Generar file de requisitos para Docker:**
 
 ```bash
 poetry export -f requirements.txt --output requirements.txt --without-hashes
 ```
 
-**IMPORTANTE:** Este archivo debe regenerarse cada vez que se añaden/actualizan dependencias.
+**IMPORTANTE:** Este file debe regenerarse cada vez que se añaden/actualizan dependencias.
 
 ---
 
-## 🔵 FASE 3: TESTING Y VALIDACIÓN
+## 🔵 PHASE 3: TESTING Y VALIDACIÓN
 
 **Tiempo estimado:** 1 hora
 **Objetivo:** Validar que todo funciona correctamente con tests automatizados
 
-### ✅ 3.1 - Test del Sistema de Configuración
+### ✅ 3.1 - Test del Sistema de Configuration
 
-**Crear `tests/test_config.py`:**
+**Create `tests/test_config.py`:**
 
 ```python
 """
@@ -907,7 +907,7 @@ def test_cors_origins_parsing():
 
 ### ✅ 3.2 - Test del Sistema de Errores
 
-**Crear `tests/test_errors.py`:**
+**Create `tests/test_errors.py`:**
 
 ```python
 """
@@ -953,7 +953,7 @@ def test_predefined_errors():
 
 ### ✅ 3.3 - Test de Endpoints (Funcional)
 
-**Crear `tests/test_api.py`:**
+**Create `tests/test_api.py`:**
 
 ```python
 """
@@ -1027,7 +1027,7 @@ def test_cors_headers():
     assert "access-control-allow-origin" in response.headers
 ```
 
-### ✅ 3.4 - Ejecutar Suite Completa de Tests
+### ✅ 3.4 - Execute Suite Completa de Tests
 
 ```bash
 # Ejecutar todos los tests con coverage
@@ -1055,9 +1055,9 @@ poetry run ruff check --fix .
 poetry run ruff format .
 ```
 
-**Resultado esperado:** 0 errores, 0 warnings.
+**Result esperado:** 0 errores, 0 warnings.
 
-### ✅ 3.6 - Prueba de Integración con Docker
+### ✅ 3.6 - Test de Integración con Docker
 
 **Reconstruir el contenedor con el nuevo código:**
 
@@ -1081,9 +1081,9 @@ docker compose -f infrastructure/docker-compose.yml up -d
 docker logs sa_api --tail 50
 ```
 
-**Resultado esperado:** Backend arranca sin errores de importación.
+**Result esperado:** Backend arranca sin errores de importación.
 
-**Prueba manual con curl:**
+**Test manual con curl:**
 
 ```bash
 # Test health endpoint
@@ -1092,24 +1092,24 @@ curl http://localhost:8000/api/v1/system/health
 # Resultado esperado: JSON con status="ok"
 ```
 
-**Prueba desde navegador:**
+**Test desde navegador:**
 
 ```
 http://localhost:8000/docs
 ```
 
-**Resultado esperado:** Swagger UI carga correctamente.
+**Result esperado:** Swagger UI carga correctamente.
 
 ---
 
-## 📝 FASE 4: DOCUMENTACIÓN BILINGÜE
+## 📝 PHASE 4: DOCUMENTACIÓN BILINGÜE
 
 **Tiempo estimado:** 45 minutos
-**Objetivo:** Documentar el código y crear guías de uso (ES + EN)
+**Objetivo:** Documentar el código y create guías de uso (ES + EN)
 
 ### ✅ 4.1 - README Técnico (Inglés)
 
-**Crear `src/server/README.md`:**
+**Create `src/server/README.md`:**
 
 
 # 🐍 SoftArchitect AI - Backend
@@ -1304,7 +1304,7 @@ src/server/
 
 ### ✅ 4.2 - README Técnico (Español)
 
-**Crear `src/server/README.es.md`:**
+**Create `src/server/README.es.md`:**
 
 
 # 🐍 SoftArchitect AI - Backend
@@ -1313,21 +1313,21 @@ src/server/
 
 ## 📋 Tabla de Contenidos
 
-- [Descripción](#descripción)
+- [Description](#description)
 - [Arquitectura](#arquitectura)
 - [Stack Tecnológico](#stack-tecnológico)
 - [Instalación Local](#instalación-local)
 - [Testing](#testing)
-- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Estructura del Project](#estructura-del-project)
 - [Documentación de la API](#documentación-de-la-api)
 
-## 🎯 Descripción
+## 🎯 Description
 
 Servicio backend para SoftArchitect AI, un asistente de arquitectura de software impulsado por IA.
 
 **Características Clave:**
 - Clean Architecture (Domain-Driven Design)
-- Configuración type-safe (Pydantic Settings)
+- Configuration type-safe (Pydantic Settings)
 - Motor RAG (Retrieval-Augmented Generation)
 - IA local-first con integración Ollama
 - ChromaDB como vector store para base de conocimiento
@@ -1379,7 +1379,7 @@ cp ../../infrastructure/.env.example .env
 # Editar .env con tu configuración
 ```
 
-3. **Ejecutar servidor de desarrollo:**
+3. **Execute servidor de desarrollo:**
 
 ```bash
 poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000
@@ -1393,13 +1393,13 @@ poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 ## 🧪 Testing
 
-### Ejecutar todos los tests
+### Execute todos los tests
 
 ```bash
 poetry run pytest
 ```
 
-### Ejecutar con cobertura
+### Execute con cobertura
 
 ```bash
 poetry run pytest --cov=. --cov-report=html
@@ -1407,7 +1407,7 @@ poetry run pytest --cov=. --cov-report=html
 
 Ver reporte de cobertura: `open htmlcov/index.html`
 
-### Ejecutar linter
+### Execute linter
 
 ```bash
 # Solo verificar
@@ -1420,7 +1420,7 @@ poetry run ruff check --fix .
 poetry run ruff format .
 ```
 
-## 📂 Estructura del Proyecto
+## 📂 Estructura del Project
 
 ```
 src/server/
@@ -1490,7 +1490,7 @@ src/server/
 
 ## 🔗 Referencias
 
-- [Mapa de Estructura del Proyecto](../../context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md)
+- [Mapa de Estructura del Project](../../context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md)
 - [Detalles del Stack Técnico](../../context/30-ARCHITECTURE/TECH_STACK_DETAILS.en.md)
 - [Estándar de Manejo de Errores](../../context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.en.md)
 - [Reglas de Seguridad](../../context/20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.en.md)
@@ -1499,7 +1499,7 @@ src/server/
 
 ### ✅ 4.3 - Actualizar INDEX.md Principal
 
-**Añadir entrada al archivo `doc/INDEX.md`:**
+**Añadir entrada al file `doc/INDEX.md`:**
 
 
 ### 03-HU-TRACKING/
@@ -1510,7 +1510,7 @@ src/server/
 
 ---
 
-## 🔒 FASE 5: VALIDACIÓN DE SEGURIDAD
+## 🔒 PHASE 5: VALIDACIÓN DE SEGURIDAD
 
 **Tiempo estimado:** 30 minutos
 **Objetivo:** Asegurar que el código cumple las políticas de seguridad
@@ -1523,33 +1523,33 @@ src/server/
 poetry add --group dev bandit==1.8.0
 ```
 
-**Ejecutar análisis de seguridad:**
+**Execute analysis de seguridad:**
 
 ```bash
 poetry run bandit -r . -x tests,htmlcov
 ```
 
-**Resultado esperado:** 0 vulnerabilidades críticas.
+**Result esperado:** 0 vulnerabilidades críticas.
 
 **Problemas comunes a revisar:**
 - ❌ `B104`: Hardcoded bind all interfaces (0.0.0.0) → OK si está en settings
 - ❌ `B105`: Hardcoded password → Verificar que no hay secrets en código
 - ❌ `B201`: Flask debug mode → No aplica (usamos FastAPI)
 
-### ✅ 5.2 - Verificación de Secrets
+### ✅ 5.2 - Verification de Secrets
 
-**Ejecutar script de detección:**
+**Execute script de detección:**
 
 ```bash
 # Desde la raíz del proyecto
 bash infrastructure/security-validation.sh
 ```
 
-**Resultado esperado:** 0 secrets detectados en archivos .py
+**Result esperado:** 0 secrets detectados en files .py
 
 ### ✅ 5.3 - Validación de CORS
 
-**Verificar configuración en `core/config.py`:**
+**Verificar configuration en `core/config.py`:**
 
 ```python
 # ✅ CORRECTO: Lista blanca explícita
@@ -1584,27 +1584,27 @@ test -f infrastructure/.env.example && echo "✅ .env.example OK"
 
 ---
 
-## 🚀 FASE 6: GIT & CODE REVIEW
+## 🚀 PHASE 6: GIT & CODE REVIEW
 
 **Tiempo estimado:** 45 minutos
 **Objetivo:** Preparar el código para merge a `develop`
 
 ### ✅ 6.1 - Preparar Commit Final
 
-**Verificar estado del repositorio:**
+**Verificar status del repositorio:**
 
 ```bash
 git status
 ```
 
-**Añadir todos los archivos nuevos:**
+**Añadir todos los files nuevos:**
 
 ```bash
 git add -A
 git status --short
 ```
 
-**Resultado esperado:** Lista de archivos modificados/creados.
+**Result esperado:** Lista de files modificados/creados.
 
 ### ✅ 6.2 - Commit con Mensaje Estructurado
 
@@ -1683,7 +1683,7 @@ Based on:
 - Total lines: ~850 lines of production code + tests"
 
 
-### ✅ 6.3 - Push y Crear PR
+### ✅ 6.3 - Push y Create PR
 
 **Push de la rama:**
 
@@ -1698,7 +1698,7 @@ git push origin feature/backend-skeleton
 feat(backend): Complete HU-1.2 FastAPI Skeleton with Clean Architecture
 ```
 
-**Descripción:**
+**Description:**
 
 
 ## 🎯 Objetivo
@@ -1711,7 +1711,7 @@ Implementar la estructura base de FastAPI siguiendo los principios de Clean Arch
 
 - [x] **Entorno Reproducible:** `poetry install` funciona sin errores
 - [x] **Arquitectura Limpia:** Estructura sigue `PROJECT_STRUCTURE_MAP.md` exactamente
-- [x] **Configuración Tipada:** Pydantic Settings (NO `os.getenv()`)
+- [x] **Configuration Tipada:** Pydantic Settings (NO `os.getenv()`)
 - [x] **Calidad de Código:** Ruff configurado (0 errores)
 - [x] **API Saludable:** `GET /api/v1/health` devuelve 200 OK
 - [x] **Seguridad Base:** CORS con lista blanca configurada
@@ -1757,7 +1757,7 @@ Implementar la estructura base de FastAPI siguiendo los principios de Clean Arch
 
 ---
 
-## 📁 Archivos Creados (15)
+## 📁 Files Creados (15)
 
 **Código fuente:**
 - `src/server/main.py` (FastAPI app entrypoint)
@@ -1773,7 +1773,7 @@ Implementar la estructura base de FastAPI siguiendo los principios de Clean Arch
 - `tests/test_errors.py` (Error handling tests)
 - `tests/test_api.py` (API endpoint tests)
 
-**Configuración:**
+**Configuration:**
 - `pyproject.toml` (Poetry + Ruff + Pytest config)
 - `requirements.txt` (Docker requirements)
 - `.pre-commit-config.yaml` (Pre-commit hooks)
@@ -1808,7 +1808,7 @@ Fixes #HU-1.2
 
 ---
 
-## 🔜 Próximos Pasos (Post-Merge)
+## 🔜 Next Steps (Post-Merge)
 
 1. **HU-2.1:** Implementar loader de Knowledge Base (Markdown → Chunks)
 2. **HU-2.2:** Integrar ChromaDB y vectorización
@@ -1837,7 +1837,7 @@ Fixes #HU-1.2
 ### Funcional
 
 - [ ] ✅ `poetry install` funciona en limpio
-- [ ] ✅ Estructura de carpetas validada por `test_architecture.py`
+- [ ] ✅ Estructura de folders validada por `test_architecture.py`
 - [ ] ✅ Ruff configurado en `pyproject.toml` (0 errores)
 - [ ] ✅ Endpoint `/api/v1/system/health` devuelve 200 OK
 - [ ] ✅ Endpoint `/api/v1/system/health/detailed` incluye services
@@ -1880,7 +1880,7 @@ Fixes #HU-1.2
 
 - [ ] ✅ Commit con mensaje estructurado
 - [ ] ✅ Push a `origin/feature/backend-skeleton`
-- [ ] ✅ PR creada con descripción completa
+- [ ] ✅ PR creada con description completa
 - [ ] ⏸ PR aprobada (esperando code review)
 - [ ] ⏸ Merged a `develop`
 
@@ -1891,7 +1891,7 @@ Fixes #HU-1.2
 ### Métricas
 
 - **Tiempo total estimado:** 5.5 horas (1-2 días)
-- **Archivos creados:** 15
+- **Files creados:** 15
 - **Líneas de código:** ~850 (producción + tests)
 - **Cobertura de tests:** 87%
 - **Commits:** 1 (atomic commit)
@@ -1907,7 +1907,7 @@ Fixes #HU-1.2
 - ✅ Bandit 1.8.0 (security)
 - ✅ Pre-commit 4.0.1 (opcional)
 
-### Siguientes HUs
+### Nexts HUs
 
 1. **HU-2.1:** RAG Ingestion Loader (Markdown → Chunks)
 2. **HU-2.2:** Vectorization & ChromaDB Integration
@@ -1917,7 +1917,7 @@ Fixes #HU-1.2
 
 ## 🔗 Referencias y Contexto
 
-### Documentos de Contexto (MUST READ)
+### Documents de Contexto (MUST READ)
 
 - [`AGENTS.md`](../../../AGENTS.md) → Reglas del agente y estándares
 - [`context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md`](../../../context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md) → Arquitectura DDD
@@ -1934,5 +1934,5 @@ Fixes #HU-1.2
 ---
 
 **Fecha de última actualización:** 29/01/2026
-**Versión del workflow:** 2.0 (mejorado con 6 fases estándar)
+**Versión del workflow:** 2.0 (mejorado con 6 phases estándar)
 **Autor:** ArchitectZero

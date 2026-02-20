@@ -38,7 +38,7 @@ API / Repository
 
 ## 🔄 Patrón de Migración
 
-### Paso 0: Estado Actual (Mock)
+### Paso 0: Status Actual (Mock)
 
 ```dart
 // En project_shell_screen.dart
@@ -46,7 +46,7 @@ _selectedNode = MockProjectData.mockProjectRoot;
 ChatPanelWidget(messages: MockProjectData.mockChatMessages)
 ```
 
-### Paso 1: Crear Notifier (Riverpod)
+### Paso 1: Create Notifier (Riverpod)
 
 ```dart
 // lib/features/project_shell/application/notifiers/project_notifier.dart
@@ -238,14 +238,14 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
 
 ---
 
-## 🔄 Pasos de Migración (Fase a Fase)
+## 🔄 Pasos de Migración (Phase a Phase)
 
-### ✅ Fase 1: ACTUAL (Mock - 0% Backend)
+### ✅ Phase 1: ACTUAL (Mock - 0% Backend)
 ```
 Widgets ← Notifier ← Mock Data ✓
 ```
 
-### Fase 2: GRADUAL (50% Backend)
+### Phase 2: GRADUAL (50% Backend)
 ```
 Widgets ← Notifier ← Repository {
   ├─ Mock Data (para features no implementadas)
@@ -253,7 +253,7 @@ Widgets ← Notifier ← Repository {
 }
 ```
 
-### Fase 3: FINAL (100% Backend)
+### Phase 3: FINAL (100% Backend)
 ```
 Widgets ← Notifier ← Repository ← Backend API
 ```
@@ -262,11 +262,11 @@ Widgets ← Notifier ← Repository ← Backend API
 
 ---
 
-## 📝 Guía de Implementación
+## 📝 Guía de Implementation
 
 ### Para agregar un nuevo dato real:
 
-1. **Crear Repository Interface** (Domain)
+1. **Create Repository Interface** (Domain)
 ```dart
 abstract class ProjectRepository {
   Future<FileNode> getFileTree(String path);
@@ -275,7 +275,7 @@ abstract class ProjectRepository {
 }
 ```
 
-2. **Implementación Mock** (Data)
+2. **Implementation Mock** (Data)
 ```dart
 class MockProjectRepository implements ProjectRepository {
   @override
@@ -286,7 +286,7 @@ class MockProjectRepository implements ProjectRepository {
 }
 ```
 
-3. **Implementación Backend** (Data)
+3. **Implementation Backend** (Data)
 ```dart
 class HttpProjectRepository implements ProjectRepository {
   @override

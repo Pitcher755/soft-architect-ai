@@ -12,7 +12,7 @@
 
 | Task | Status | Commit | Details |
 |------|--------|--------|---------|
-| **Create HU-3.3 Workflow Master** | ✅ | Initial | 4,000+ líneas, 6 fases TDD |
+| **Create HU-3.3 Workflow Master** | ✅ | Initial | 4,000+ líneas, 6 phases TDD |
 | **Migrate Tests to tests/python/** | ✅ | 4efe4c2 | 22 files migrados, 5/5 ✅ |
 | **Update Configuration** | ✅ | 4efe4c2 | pytest, pyright, CI/CD |
 | **Create Validation Script** | ✅ | 4efe4c2 | 5 checks de validación |
@@ -153,7 +153,7 @@ Before starting Phase 1 (RED), ensure:
 - [ ] Verify Git status → `git status`
 - [ ] Create feature branch → `git checkout -b feature/hu-3.3-phase-1`
 - [ ] Set up IDE (VS Code + Pylance) with correct Python path
-- [ ] Review section 4.2 (Fase 1 - RED) in Workflow Master
+- [ ] Review section 4.2 (Phase 1 - RED) in Workflow Master
 
 ---
 

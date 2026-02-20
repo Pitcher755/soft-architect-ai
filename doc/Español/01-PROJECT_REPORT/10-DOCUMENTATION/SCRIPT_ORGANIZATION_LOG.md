@@ -11,10 +11,10 @@ Se consolidó la organización por categoría dentro de `scripts/` y se actualiz
 
 | Categoría | Ubicación | Scripts principales |
 |-----------|-----------|---------------------|
-| Testing | `scripts/testing/` | `PRE_PUSH_VALIDATION_MASTER.sh`, `run_tests.sh`, `RUN_COMPLETE_TEST_SUITE.sh`, `generate_coverage_html.sh` |
+| Pruebaing | `scripts/pruebaing/` | `PRE_PUSH_VALIDATION_MASTER.sh`, `ejecutar_pruebas.sh`, `RUN_COMPLETE_TEST_SUITE.sh`, `generate_coverage_html.sh` |
 | Quality | `scripts/quality/` | `validate-quality-gates.sh`, `VALIDATE_PHASE6_CI_CD_GATES.sh` |
 | DevOps | `scripts/devops/` | `start_stack.sh`, `stop_stack.sh`, `LAUNCH_FLUTTER_APP_DEV.sh` |
-| Workflows | `scripts/workflows/` | `validate-workflows.sh`, `test-workflows-locally.sh` |
+| Workflows | `scripts/workflows/` | `validate-workflows.sh`, `prueba-workflows-locally.sh` |
 | Maintenance | `scripts/maintenance/` | `STATUS_DASHBOARD.sh`, `organize_docs.sh` |
 
 ### 🧭 Comandos canónicos
@@ -48,7 +48,7 @@ Se ha completado la **reorganización de scripts ejecutables** moviendo todos lo
 #### Scripts Movidos a `scripts/`
 | Script | Propósito | Permisos |
 |--------|-----------|----------|
-| `run_tests.sh` | Ejecutor centralizado de tests | ✅ rwxrwxr-x |
+| `ejecutar_pruebas.sh` | Ejecutor centralizado de pruebas | ✅ rwxrwxr-x |
 | `generate_coverage_html.sh` | Generador de reportes HTML | ✅ rwxrwxr-x |
 | `start_stack.sh` | Inicia servicios Docker | ✅ rwxrwxr-x |
 | `stop_stack.sh` | Detiene servicios Docker | ✅ rwxrwxr-x |
@@ -58,17 +58,17 @@ Se ha completado la **reorganización de scripts ejecutables** moviendo todos lo
 | Script | Ubicación |
 |--------|-----------|
 | `audit-english-compliance.sh` | `scripts/` |
-| `test-workflows-locally.sh` | `scripts/` |
+| `prueba-workflows-locally.sh` | `scripts/` |
 | `validate-quality-gates.sh` | `scripts/` |
 | `validate-workflows.sh` | `scripts/` |
-| `verify-tests.sh` | `scripts/` |
+| `verify-pruebas.sh` | `scripts/` |
 | `WORKFLOWS_LOCAL_TESTING.md` | `scripts/` |
 
-#### Documentación Actualizada
+#### Documentoación Actualizada
 - **README.md** - Rutas de scripts actualizadas (`./start_stack.sh` → `scripts/start_stack.sh`)
-- **tests/README.md** - Referencias de tests actualizadas
-- **scripts/run_tests.sh** - Ajustado path de navegación (`cd "$SCRIPT_DIR/.."`)
-- **scripts/generate_coverage_html.sh** - Rutas de tests actualizadas
+- **pruebas/README.md** - Referencias de pruebas actualizadas
+- **scripts/ejecutar_pruebas.sh** - Ajustado path de navegación (`cd "$SCRIPT_DIR/.."`)
+- **scripts/generate_coverage_html.sh** - Rutas de pruebas actualizadas
 
 ### 📊 Estadísticas
 
@@ -122,7 +122,7 @@ soft-architect-ai/
 
 ### 🧪 Verificación
 
-✅ **run_tests.sh** - Funciona desde cualquier directorio
+✅ **ejecutar_pruebas.sh** - Funciona desde cualquier directorio
 ```bash
 cd /tmp && bash /home/.../scripts/run_tests.sh all
 # Resultado: ✅ Ejecuta correctamente
@@ -142,23 +142,23 @@ ls -lh scripts/*.sh | grep rwxrwxr-x
 
 ### 📝 Notas de Desarrollo
 
-1. **Git reconoce moves, no deletes** - El sistema detectó cambios como `rename`, no como `delete + add`
+1. **Git reconoce moves, no eliminars** - El sistema detectó cambios como `rename`, no como `eliminar + add`
 2. **Compatibilidad mantenida** - Los scripts funcionan desde cualquier directorio gracias a `$SCRIPT_DIR`
-3. **Paths actualizados** - Todas las referencias documentadas han sido actualizadas
+3. **Paths actualizados** - Todas las referencias documentoadas han sido actualizadas
 4. **Pre-commit hooks** - Pasaron correctamente el check de trailing whitespace
 
 ### 🎯 Próximos Pasos (Recomendados)
 
-1. **Arreglar tests fallidos** (8/185 failing) - Problemas con fixtures y DateTim
+1. **Arreglar pruebas fallidos** (8/185 failing) - Problemas con fixtures y DateTim
 e const
 2. **Actualizar CI/CD** - Si existen workflows en GitHub Actions, actualizar referencias
-3. **Documentación distribuida** - Revisar si hay referencias a scripts en otros archivos
+3. **Documentoación distribuida** - Revisar si hay referencias a scripts en otros archivos
 
 ### 🔗 Archivos Relacionados
 
-- [run_tests.sh](../scripts/run_tests.sh)
+- [ejecutar_pruebas.sh](../scripts/ejecutar_pruebas.sh)
 - [README.md](../README.md)
-- [tests/README.md](../tests/README.md)
+- [pruebas/README.md](../pruebas/README.md)
 - [AGENTS.md](../AGENTS.md)
 
 ---

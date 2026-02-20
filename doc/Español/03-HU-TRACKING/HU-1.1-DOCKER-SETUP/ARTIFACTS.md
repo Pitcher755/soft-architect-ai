@@ -1,14 +1,14 @@
 # 📦 HU-1.1: Artifacts (Archivos a Generar)
 
-> **Documentación:** Archivos que se crearán durante la ejecución de esta HU
+> **Documentoación:** Archivos que se crearán durante la ejecución de esta HU
 
 ---
 
 ## 📋 LISTA DE ARTIFACTS
 
-### 🐳 Infrastructure (docker-compose.yml)
+### 🐳 Infraestructura (docker-compose.yml)
 
-| Archivo | Ubicación | Descripción | Status |
+| Archivo | Ubicación | Descripción | Estado |
 |---------|-----------|-------------|--------|
 | `docker-compose.yml` | `infrastructure/` | Orquestación de 3 servicios (API, ChromaDB, Ollama) | ⏳ Pendiente |
 | `pre_check.py` | `infrastructure/` | Script para validar pre-requisitos (Docker, puertos) | ⏳ Pendiente |
@@ -17,27 +17,27 @@
 
 ### 🔧 Backend (src/server)
 
-| Archivo | Ubicación | Descripción | Status |
+| Archivo | Ubicación | Descripción | Estado |
 |---------|-----------|-------------|--------|
-| `Dockerfile` | `src/server/` | Multi-stage build, non-root user, healthchecks | ⏳ Revisar/Mejorar |
+| `Dockerarchivo` | `src/server/` | Multi-stage build, non-root user, healthchecks | ⏳ Revisar/Mejorar |
 | `.dockerignore` | `src/server/` | Previene leaks de secretos y basura | ⏳ Pendiente |
 
 ### 🚀 Scripts de Orquestación (raíz)
 
-| Archivo | Ubicación | Descripción | Status |
+| Archivo | Ubicación | Descripción | Estado |
 |---------|-----------|-------------|--------|
 | `start_stack.sh` | raíz | Script para arrancar todo el stack | ⏳ Pendiente |
 | `stop_stack.sh` | raíz | Script para detener stack limpiamente | ⏳ Pendiente |
 
 ### ⚙️ Configuración (.env)
 
-| Archivo | Ubicación | Descripción | Status |
+| Archivo | Ubicación | Descripción | Estado |
 |---------|-----------|-------------|--------|
 | `.env.example` | raíz | Template de variables de entorno | ⏳ Mejorar |
 
-### 📚 Documentación
+### 📚 Documentoación
 
-| Archivo | Ubicación | Descripción | Status |
+| Archivo | Ubicación | Descripción | Estado |
 |---------|-----------|-------------|--------|
 | `SETUP_GUIDE.es.md` | `doc/02-SETUP_DEV/` | Instrucciones de instalación (actualizar) | ⏳ Actualizar |
 | `DOCKER_COMPOSE_GUIDE.es.md` | `doc/02-SETUP_DEV/` | Guía detallada de Docker (referencia) | ✅ Existe |
@@ -46,13 +46,13 @@
 
 ### 📊 Directorios Creados
 
-| Directorio | Propósito | Status |
+| Directorio | Propósito | Estado |
 |-----------|----------|--------|
 | `infrastructure/data/chromadb/` | Persistencia de ChromaDB | ✅ Creado |
 | `infrastructure/data/ollama/` | Persistencia de Ollama models | ✅ Creado |
-| `tests/integration/` | Tests de integración | ✅ Creado |
+| `pruebas/integration/` | Pruebas de integración | ✅ Creado |
 | `src/server/docker/` | Configuración Docker adicional | ✅ Creado |
-| `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/` | Documentación de esta HU | ✅ Creado |
+| `doc/03-HU-TRACKING/HU-1.1-DOCKER-SETUP/` | Documentoación de esta HU | ✅ Creado |
 
 ---
 
@@ -99,7 +99,7 @@ volumes:
 ✅ check_env_file()              # ¿.env existe?
 ```
 
-**Resultado:**
+**Resultadoado:**
 - 🔴 FALLA AHORA (antes de implementar)
 - 🟢 PASA después de setup correcto
 
@@ -115,7 +115,7 @@ volumes:
 ✅ check_service_port(11434)     # ¿Ollama responde?
 ```
 
-**Resultado:**
+**Resultadoado:**
 - 🔴 FALLA AHORA (servicios no están levantados)
 - 🟢 PASA después de `docker compose up`
 
@@ -152,7 +152,7 @@ volumes:
 
 ---
 
-### Dockerfile (mejorado)
+### Dockerarchivo (mejorado)
 
 **Características:**
 - ✅ Multi-stage build (builder + final)
@@ -189,14 +189,14 @@ IRON_MODE=true
 
 ### Pre-Deployment
 - [ ] `docker-compose.yml` YAML válido
-- [ ] `pre_check.py` ejecutable y documentado
-- [ ] `start_stack.sh` ejecutable y documentado
+- [ ] `pre_check.py` ejecutable y documentoado
+- [ ] `start_stack.sh` ejecutable y documentoado
 - [ ] `.env.example` contiene todas las variables
 
 ### Post-Deployment
-- [ ] `verify_setup.py` ejecutable y documentado
+- [ ] `verify_setup.py` ejecutable y documentoado
 - [ ] `stop_stack.sh` ejecutable
-- [ ] Documentación (README, SETUP_GUIDE) actualizada
+- [ ] Documentoación (README, SETUP_GUIDE) actualizada
 - [ ] DOCKER_SETUP_LOG.md creado
 
 ### Code Quality
@@ -209,16 +209,16 @@ IRON_MODE=true
 
 ## 📊 MATRIZ DE RESPONSABILIDAD
 
-| Artifact | Owner | Revisor | Status |
+| Artifact | Owner | Revisor | Estado |
 |----------|-------|---------|--------|
 | docker-compose.yml | DevOps | Backend Lead | ⏳ |
 | pre_check.py | DevOps | QA | ⏳ |
 | verify_setup.py | DevOps | QA | ⏳ |
-| Dockerfile | Backend + DevOps | Arch | ⏳ |
+| Dockerarchivo | Backend + DevOps | Arch | ⏳ |
 | start_stack.sh | DevOps | Infra | ⏳ |
-| Documentación | Technical Writer | PM | ⏳ |
+| Documentoación | Technical Writer | PM | ⏳ |
 
 ---
 
 **Última Actualización:** 29 de Enero de 2026
-**Status:** 📋 Pendiente de generación
+**Estado:** 📋 Pendiente de generación

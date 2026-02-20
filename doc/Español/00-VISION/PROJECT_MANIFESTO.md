@@ -28,7 +28,7 @@ Reducir el tiempo de arranque de un proyecto profesional de **2-3 días** a **me
 
 ### 🎯 Objetivo 2: Calidad Enterprise por Defecto
 Democratizar el acceso a la arquitectura de software de alto nivel.
-* Que un desarrollador Junior o un Solopreneur tenga, desde el día 1, una estructura de **Clean Architecture**, tests configurados y documentación de seguridad (OWASP) que normalmente solo tienen las grandes corporaciones.
+* Que un desarrollador Junior o un Solopreneur tenga, desde el día 1, una estructura de **Clean Architecture**, pruebas configurados y documentoación de seguridad (OWASP) que normalmente solo tienen las grandes corporaciones.
 
 ### 🎯 Objetivo 3: Soberanía del Conocimiento (Local-First)
 Romper la dependencia de la nube para la inteligencia.
@@ -42,7 +42,7 @@ Para cumplir estas promesas, construimos **SoftArchitect AI** basándonos en tre
 
 ### A. Ingesta de Conocimiento Estructurado (Tech Packs)
 No usamos un LLM genérico que "alucina" arquitecturas. Alimentamos nuestro RAG con **"Tech Packs"** curados (guías de estilo estrictas de Flutter, Python, etc.).
-* *Resultado:* La IA no inventa; aplica patrones validados.
+* *Resultadoado:* La IA no inventa; aplica patrones validados.
 
 ### B. El Master Workflow 0-100
 La herramienta no permite saltar pasos. Fuerza un flujo de ingeniería:
@@ -50,8 +50,8 @@ La herramienta no permite saltar pasos. Fuerza un flujo de ingeniería:
 2.  **Arquitectura:** Define cómo lo harás (`STACK`, `API CONTRACT`).
 3.  **Código:** Solo entonces, genera el software.
 
-### C. Documentación como Código (Docs-as-Code)
-Tratamos la documentación (`context/`) con la misma importancia que el código fuente. Si la documentación no existe, la feature no existe. Esto garantiza que el proyecto sea mantenible a largo plazo, incluso si el creador original se marcha.
+### C. Documentoación como Código (Docs-as-Code)
+Tratamos la documentoación (`context/`) con la misma importancia que el código fuente. Si la documentoación no existe, la feature no existe. Esto garantiza que el proyecto sea mantenible a largo plazo, incluso si el creador original se marcha.
 
 ---
 

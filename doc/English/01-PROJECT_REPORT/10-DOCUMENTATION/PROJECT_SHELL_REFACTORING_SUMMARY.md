@@ -1,8 +1,8 @@
 # 🎉 Refactoring Project Shell - COMPLETADO ✅
 
 > **Resumen Ejecutivo**
-> **Fecha:** 8 de febrero de 2026
-> **Estado:** ✅ LISTO PARA PRODUCCIÓN
+> **Date:** 8 de febrero de 2026
+> **Status:** ✅ LISTO PARA PRODUCCIÓN
 > **Compilación:** 0 ERRORES
 
 ---
@@ -67,7 +67,7 @@ FileTreeWidget(onFileSelected: _onFileSelected)
 
 ### 3. **Integración de Componentes** 🔗
 
-| Componente | Estado | Características |
+| Componente | Status | Características |
 |-----------|--------|-----------------|
 | **FileTreeWidget** | ✅ | Árbol navegable, expand/collapse |
 | **ChatPanelWidget** | ✅ | 3 mensajes mock, input field |
@@ -80,10 +80,10 @@ FileTreeWidget(onFileSelected: _onFileSelected)
 ### 4. **Características Funcionales** 🎮
 
 #### Árbol de Directorios
-- ✅ Expandir/contraer carpetas con `► / ▼`
-- ✅ Seleccionar archivos (azul highlight)
+- ✅ Expandir/contraer folders con `► / ▼`
+- ✅ Seleccionar files (azul highlight)
 - ✅ Indentación automática por profundidad
-- ✅ Iconos diferenciadores (carpeta/archivo)
+- ✅ Iconos diferenciadores (folder/file)
 
 #### Columnas Resizables
 - ✅ Files column: 200-500px (default 260px)
@@ -94,18 +94,18 @@ FileTreeWidget(onFileSelected: _onFileSelected)
 #### Columnas Ocultables
 - ✅ FAB 1 (📁): Toggle Files Explorer
 - ✅ FAB 2 (👁): Toggle Markdown Preview
-- ✅ Estado independiente
+- ✅ Status independiente
 - ✅ Ubicados en esquina inferior derecha
 
 #### Progress Indicator
 - ✅ Integrado en Chat header
-- ✅ Progress bar: 8/25 documentos (32%)
-- ✅ Label dinámico: "Generando Documento 8 de 25"
-- ✅ Botón Pause
+- ✅ Progress bar: 8/25 documents (32%)
+- ✅ Label dinámico: "Generando Document 8 de 25"
+- ✅ Button Pause
 
 ---
 
-## 📊 Resultados de Validación
+## 📊 Results de Validación
 
 ### ✅ Compilación
 ```
@@ -135,7 +135,7 @@ Mock Data → Backend (sin cambios en widgets)
 
 ---
 
-## 📁 Archivos Modificados/Creados
+## 📁 Files Modificados/Creados
 
 ### Creados (NEW) 🆕
 ```
@@ -158,7 +158,7 @@ Mock Data → Backend (sin cambios en widgets)
 
 ---
 
-## 🎯 Requisitos del Usuario - Completados
+## 🎯 Requisitos del Usuario - Completeds
 
 | # | Requisito | Status |
 |---|-----------|--------|
@@ -169,9 +169,9 @@ Mock Data → Backend (sin cambios en widgets)
 | 5 | Columnas ocultables (Files + Preview) | ✅ |
 | 6 | ProgressIndicatorWidget en header | ✅ |
 | 7 | Árbol navegable | ✅ |
-| 8 | Selección de archivo persiste en árbol | ✅ |
+| 8 | Selección de file persiste en árbol | ✅ |
 
-**Resultado:** 8/8 ✅ COMPLETADOS
+**Result:** 8/8 ✅ COMPLETADOS
 
 ---
 
@@ -188,7 +188,7 @@ Mock Data → Backend (sin cambios en widgets)
 
 ---
 
-## 🚀 Estado de Deployment
+## 🚀 Status de Deployment
 
 ### Pre-Release Checklist
 - ✅ Code compiles without errors
@@ -199,7 +199,7 @@ Mock Data → Backend (sin cambios en widgets)
 - ✅ Validation checklist passed
 - ✅ Ready for backend integration
 
-### Próximas Fases (Out of Scope)
+### Próximas Phases (Out of Scope)
 - ⏳ Backend integration (Notifiers + API)
 - ⏳ Real file system integration
 - ⏳ Real markdown rendering library
@@ -241,7 +241,7 @@ ResizableColumn(
 
 ## 📝 Documentación Entregada
 
-| Documento | Propósito | Estado |
+| Document | Propósito | Status |
 |-----------|-----------|--------|
 | PROJECT_SHELL_ARCHITECTURE_REFACTOR_COMPLETE.md | Technical overview | ✅ |
 | ARCHITECTURE_DIAGRAMS.md | Visual architecture | ✅ |
@@ -326,10 +326,10 @@ El refactoring de `project_shell_screen.dart` se ha completado exitosamente. El 
 - **Limpio:** Separated concerns, single responsibility
 - **Modular:** Widgets independientes y reutilizables
 - **Escalable:** Mock data → backend sin cambios en UI
-- **Documentado:** 4 documentos comprensivos
+- **Documentado:** 4 documents comprensivos
 - **Validado:** 0 errores, arquitectura confirmada
 
-**Estado:** 🟢 **LISTO PARA PRODUCCIÓN**
+**Status:** 🟢 **LISTO PARA PRODUCCIÓN**
 
 ---
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 
-/// Campo de texto etiquetado reutilizable
-/// Incluye label, hint, help text y validación básica
+/// Reusable labeled text field widget
+/// Includes label, hint, help text, and basic validation
 class LabeledTextField extends StatelessWidget {
   const LabeledTextField({
     required this.label,

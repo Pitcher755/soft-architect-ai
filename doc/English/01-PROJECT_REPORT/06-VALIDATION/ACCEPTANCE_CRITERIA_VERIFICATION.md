@@ -1,7 +1,7 @@
 # HU-3.8: ACCEPTANCE CRITERIA VERIFICATION
 
-> **Fecha:** 12/02/2026 23:06
-> **Estado:** ✅ COMPLETADO - Todos los AC validados
+> **Date:** 12/02/2026 23:06
+> **Status:** ✅ COMPLETADO - Todos los AC validados
 > **PRE_PUSH_VALIDATION:** ✅ 16/16 CHECKS PASSED
 
 ---
@@ -10,7 +10,7 @@
 
 | AC ID | Criterio | Status | Evidence |
 |-------|----------|--------|----------|
-| **AC-1** | Phase model equals template folder sequence | ✅ PASA | 7 fases ordenadas ROOT→99-META |
+| **AC-1** | Phase model equals template folder sequence | ✅ PASA | 7 phases ordenadas ROOT→99-META |
 | **AC-2** | Mandatory artifacts are validated per phase | ✅ PASA | Validación bloquea transición si falta doc |
 | **AC-3** | Doc N/25 computed from real artifacts | ✅ PASA | Fórmula (generated_docs / 25) correcta |
 | **AC-4** | ROOT logic enforces required root docs | ✅ PASA | AGENTS.md + README.md obligatorios |
@@ -23,7 +23,7 @@
 
 ## 📊 RESUMEN EJECUTIVO
 
-**Resultado:** ✅ **8/8 AC VALIDADOS (100%)**
+**Result:** ✅ **8/8 AC VALIDADOS (100%)**
 
 **Evidence Global:**
 - ✅ PRE_PUSH_VALIDATION: 16/16 checks PASSED

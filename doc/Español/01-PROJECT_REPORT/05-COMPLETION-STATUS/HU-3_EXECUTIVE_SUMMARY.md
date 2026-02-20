@@ -1,9 +1,9 @@
-# 🎯 Executive Summary: Propuesta HU-3.x Project-First Refactor
+# 🎯 Executive Summary: Propuesta HU-3.x Proyecto-First Refactor
 
 > **Fecha:** 02/02/2026
 > **Para:** Architecture Review Board + Stakeholders
 > **Estado:** ✅ ANÁLISIS COMPLETO - AGUARDANDO DECISIÓN
-> **Documentos de Soporte:** HU-3_REFACTOR_ANALYSIS.es.md + HU-3_IMPROVEMENT_PROPOSALS.es.md
+> **Documentoos de Soporte:** HU-3_REFACTOR_ANALYSIS.es.md + HU-3_IMPROVEMENT_PROPOSALS.es.md
 
 ---
 
@@ -34,7 +34,7 @@ Recibe respuesta streaming          Recibe PROPUESTAS de docs
 | **HUs en Sprint 3** | 3 | 5 | +2 |
 | **Estimación Total** | ~50 pts | ~70 pts | +40% |
 | **Complejidad** | Baja-Media | Media-Alta | +1 nivel |
-| **Testing Coverage** | Modesto | Exhaustivo | ↑↑↑ |
+| **Pruebaing Coverage** | Modesto | Exhaustivo | ↑↑↑ |
 | **User Control** | Pasivo | Activo | ↑↑ |
 | **Persistencia** | Manual | Automática | ↑↑ |
 
@@ -193,7 +193,7 @@ Risk: Underestimation → Mid-sprint crisis
 |---------|-------|----------|
 | **Tiempo** | +2 semanas | ✅ Mejor UX, control usuario |
 | **Complejidad** | +40% estimación | ✅ Más realista, menos sorpresas |
-| **Testing** | +8 horas | ✅ Seguridad filesystem crítica |
+| **Pruebaing** | +8 horas | ✅ Seguridad archivosystem crítica |
 | **Mantenibilidad** | -20% (mejor docs) | ✅ HUs claras, responsabilidades definidas |
 
 **ROI:** ✅ POSITIVO - Vale la pena
@@ -202,13 +202,13 @@ Risk: Underestimation → Mid-sprint crisis
 
 ## ⚠️ Riesgos Identificados
 
-### Riesgo 1: Complejidad del FileSystemService
+### Riesgo 1: Complejidad del ArchivoSystemService
 
 **Severidad:** MEDIUM
 **Probabilidad:** HIGH
 **Mitigación:**
-- Usar `pytest.tmp_path` para tests aislados
-- Unit tests antes de integración
+- Usar `pyprueba.tmp_path` para pruebas aislados
+- Unit pruebas antes de integración
 - Soporte para Windows/Linux/macOS
 
 ### Riesgo 2: Permisos del Sistema de Archivos
@@ -226,7 +226,7 @@ Risk: Underestimation → Mid-sprint crisis
 **Probabilidad:** MEDIUM
 **Mitigación:**
 - Estimación realista (70 pts vs. 50)
-- Spike en Week 1 para FileSystemService
+- Spike en Week 1 para ArchivoSystemService
 - Paralelización HU-3.1 + HU-3.2
 
 ---
@@ -236,7 +236,7 @@ Risk: Underestimation → Mid-sprint crisis
 ### ✅ Si apruebas Opción B:
 
 1. **Confirmar decisión** (esta conversación)
-2. **Crear rama:** `feature/hu-3-project-first-refactor` (develop → new branch)
+2. **Crear rama:** `feature/hu-3-proyecto-first-refactor` (develop → new branch)
 3. **Actualizar JSON:** Reemplazar HU-3.1, HU-3.2, HU-3.3 + agregar HU-3.4, HU-3.5
 4. **Crear PR** con descripción bilingual
 5. **Mergear a develop** (no a main)
@@ -265,7 +265,7 @@ Antes de proceder, confirma:
 
 ---
 
-## 📚 Documentación de Soporte
+## 📚 Documentoación de Soporte
 
 Lectura completa (recomendada):
 
@@ -277,7 +277,7 @@ Lectura completa (recomendada):
 2. [HU-3_IMPROVEMENT_PROPOSALS.es.md](./HU-3_IMPROVEMENT_PROPOSALS.es.md)
    - Mejoras en UI/UX
    - Arquitectura detallada de backend
-   - Estrategia de testing
+   - Estrategia de pruebaing
    - Trade-offs y alternativas
 
 3. [AGENTS.md - Section 5](../../AGENTS.md#-4-arquitectura-y-estructura)
@@ -288,7 +288,7 @@ Lectura completa (recomendada):
 
 ## 🎯 Recomendación Final
 
-### ✅ **PROCEDER CON OPCIÓN B (5 HUs - Project-First Paradigm)**
+### ✅ **PROCEDER CON OPCIÓN B (5 HUs - Proyecto-First Paradigm)**
 
 **Justificación:**
 1. ✅ Alineado con visión "Local-First" del proyecto
@@ -301,6 +301,6 @@ Lectura completa (recomendada):
 
 ---
 
-**Documento firmado por:** ArchitectZero (AI Lead)
+**Documentoo firmado por:** ArchitectZero (AI Lead)
 **Fecha:** 02/02/2026
 **Estado:** ✅ ANÁLISIS COMPLETO - AGUARDANDO CONFIRMACIÓN USUARIO

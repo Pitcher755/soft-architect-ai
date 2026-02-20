@@ -1,40 +1,40 @@
-# HU-3.7: Complete Execution Phase - FASE FINAL
+# HU-3.7: Complete Execution Fase - FASE FINAL
 
-> **Version:** 3.0.0 (COMPLETE EXECUTION WITH CODE + COMMITS)
-> **Date:** 2026-02-11
-> **Status:** 🚀 READY FOR EXECUTION
+> **Versión:** 3.0.0 (COMPLETE EXECUTION WITH CODE + COMMITS)
+> **Fecha:** 2026-02-11
+> **Estado:** 🚀 READY FOR EXECUTION
 > **Methodology:** TDD 100% + Clean Architecture
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
-1. [FEATURE 1-3: Quick Wins (Ready to Execute)](#-feature-1-3-quick-wins)
+1. [FEATURE 1-3: Quick Wins (Ready to Ejecutar)](#-feature-1-3-quick-wins)
 2. [FEATURE 4: AccessibilitySection (Complete Specification)](#-feature-4-accessibilitysection)
 3. [FEATURE 5: PerformanceSection (Complete Specification)](#-feature-5-performancesection)
 4. [FEATURE 6: GlobalSearchDialog Navigation](#-feature-6-globalsearchdialog-navigation)
-5. [FEATURE 7: ProjectsSidebar Last Project](#-feature-7-projectssidebar-last-project)
-6. [FEATURES 8-10: Fix MarkdownPreview Tests](#-features-8-10-fix-markdownpreview-tests)
+5. [FEATURE 7: ProyectosSidebar Last Proyecto](#-feature-7-proyectossidebar-last-proyecto)
+6. [FEATURES 8-10: Fix MarkdownPreview Pruebas](#-features-8-10-fix-markdownpreview-pruebas)
 7. [Final Quality Gate](#-final-quality-gate)
 
 ---
 
 ## 🟢 FEATURE 1-3: Quick Wins
 
-### Status: ✅ Code EXISTS, Tests EXIST, Ready to Execute
+### Estado: ✅ Code EXISTS, Pruebas EXIST, Ready to Ejecutar
 
-**Files Already Present:**
-- ✅ `src/client/lib/features/settings/data/datasources/last_project_local_datasource.dart` (Feature 1)
-- ✅ `tests/test/features/settings/data/datasources/last_project_local_datasource_test.dart` (Feature 1)
-- ✅ `src/client/lib/features/settings/presentation/widgets/profile_section.dart` (Feature 2)
-- ✅ `tests/test/features/settings/presentation/widgets/profile_section_test.dart` (Feature 2)
+**Archivos Already Present:**
+- ✅ `src/client/lib/features/settings/data/datasources/last_proyecto_local_datasource.dart` (Feature 1)
+- ✅ `pruebas/prueba/features/settings/data/datasources/last_proyecto_local_datasource_prueba.dart` (Feature 1)
+- ✅ `src/client/lib/features/settings/presentation/widgets/proarchivo_section.dart` (Feature 2)
+- ✅ `pruebas/prueba/features/settings/presentation/widgets/proarchivo_section_prueba.dart` (Feature 2)
 - ✅ `src/client/lib/features/settings/presentation/widgets/appearance_section.dart` (Feature 3)
 - ✅ `src/client/lib/features/settings/presentation/widgets/language_selector_widget.dart` (Feature 3)
-- ✅ `tests/test/features/settings/presentation/widgets/appearance_section_test.dart` (Feature 3)
+- ✅ `pruebas/prueba/features/settings/presentation/widgets/appearance_section_prueba.dart` (Feature 3)
 
 ### Execution Steps:
 
-**Step 1: Run Feature 1 Tests**
+**Step 1: Ejecutar Feature 1 Pruebas**
 ```bash
 cd src/client
 flutter test ../../tests/test/features/settings/data/datasources/last_project_local_datasource_test.dart -v
@@ -49,7 +49,7 @@ flutter test ../../tests/test/features/settings/data/datasources/last_project_lo
 3 tests passed
 ```
 
-**Step 2: Run Feature 2 Tests**
+**Step 2: Ejecutar Feature 2 Pruebas**
 ```bash
 flutter test ../../tests/test/features/settings/presentation/widgets/profile_section_test.dart -v
 ```
@@ -62,7 +62,7 @@ flutter test ../../tests/test/features/settings/presentation/widgets/profile_sec
 2 tests passed
 ```
 
-**Step 3: Run Feature 3 Tests**
+**Step 3: Ejecutar Feature 3 Pruebas**
 ```bash
 flutter test ../../tests/test/features/settings/presentation/widgets/appearance_section_test.dart -v
 ```
@@ -101,11 +101,11 @@ git commit -m "feat(HU-3.7): FIX-Complete Features 1-3 (TDD RED→GREEN→REFACT
 
 ## 🟡 FEATURE 4: AccessibilitySection
 
-### Status: ⏳ NEEDS DETAILED SPECIFICATION
+### Estado: ⏳ NEEDS DETAILED SPECIFICATION
 
-### 🔴 RED (5 min) - Failing Tests
+### 🔴 RED (5 min) - Failing Pruebas
 
-**File:** `tests/test/features/settings/presentation/widgets/accessibility_section_test.dart`
+**Archivo:** `pruebas/prueba/features/settings/presentation/widgets/accessibility_section_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -175,15 +175,15 @@ void main() {
 }
 ```
 
-**Run to Verify Failure:**
+**Ejecutar to Verify Failure:**
 ```bash
 flutter test ../../tests/test/features/settings/presentation/widgets/accessibility_section_test.dart -v
 # Expected: 2 tests FAIL (widget not connected to provider)
 ```
 
-### 🟢 GREEN (10 min) - Minimal Implementation
+### 🟢 GREEN (10 min) - Minimal Implementación
 
-**File:** `src/client/lib/features/settings/presentation/widgets/accessibility_section.dart`
+**Archivo:** `src/client/lib/features/settings/presentation/widgets/accessibility_section.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -253,7 +253,7 @@ class AccessibilitySection extends ConsumerWidget {
 }
 ```
 
-**Run to Verify:**
+**Ejecutar to Verify:**
 ```bash
 flutter test ../../tests/test/features/settings/presentation/widgets/accessibility_section_test.dart -v
 # Expected: 2 tests PASS ✅
@@ -290,17 +290,17 @@ git commit -m "feat(HU-3.7): implement AccessibilitySection (RED→GREEN→REFAC
 - ✅ All 2 tests passing, 0 analyze warnings"
 ```
 
-**Feature 4 Status:** ✅ COMPLETE
+**Feature 4 Estado:** ✅ COMPLETE
 
 ---
 
 ## 🟡 FEATURE 5: PerformanceSection
 
-### Status: ⏳ NEEDS DETAILED SPECIFICATION
+### Estado: ⏳ NEEDS DETAILED SPECIFICATION
 
-### 🔴 RED (5 min) - Failing Tests
+### 🔴 RED (5 min) - Failing Pruebas
 
-**File:** `tests/test/features/settings/presentation/widgets/performance_section_test.dart`
+**Archivo:** `pruebas/prueba/features/settings/presentation/widgets/performance_section_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -368,9 +368,9 @@ void main() {
 }
 ```
 
-### 🟢 GREEN (10 min) - Implementation
+### 🟢 GREEN (10 min) - Implementación
 
-**File:** `src/client/lib/features/settings/presentation/widgets/performance_section.dart`
+**Archivo:** `src/client/lib/features/settings/presentation/widgets/performance_section.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -465,15 +465,15 @@ git commit -m "feat(HU-3.7): implement PerformanceSection (RED→GREEN→REFACTO
 
 ## 🟡 FEATURE 6: GlobalSearchDialog Navigation
 
-### Status: ⏳ NEEDS DETAILED SPECIFICATION (Navigation Logic)
+### Estado: ⏳ NEEDS DETAILED SPECIFICATION (Navigation Logic)
 
-### Implementation Notes
+### Implementación Notes
 
-**File:** `src/client/lib/features/project_shell/presentation/widgets/global_search_dialog.dart`
+**Archivo:** `src/client/lib/features/proyecto_shell/presentation/widgets/global_search_dialog.dart`
 
 **Changes Required:**
 
-In the `ProjectCard` onTap callback, add navigation and persistence logic:
+In the `ProyectoCard` onTap callback, add navigation and persistence logic:
 
 ```dart
 // BEFORE (incomplete):
@@ -496,9 +496,9 @@ onTap: () async {
 },
 ```
 
-### Test File
+### Prueba Archivo
 
-**File:** `tests/test/features/project_shell/presentation/widgets/global_search_dialog_test.dart`
+**Archivo:** `pruebas/prueba/features/proyecto_shell/presentation/widgets/global_search_dialog_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -552,13 +552,13 @@ void main() {
 
 ---
 
-## 🟡 FEATURE 7: ProjectsSidebar Last Project
+## 🟡 FEATURE 7: ProyectosSidebar Last Proyecto
 
-### Status: ⏳ NEEDS DETAILED SPECIFICATION
+### Estado: ⏳ NEEDS DETAILED SPECIFICATION
 
-### Implementation
+### Implementación
 
-**File:** `src/client/lib/features/project_shell/presentation/widgets/projects_sidebar.dart`
+**Archivo:** `src/client/lib/features/proyecto_shell/presentation/widgets/proyectos_sidebar.dart`
 
 **Add This Section:**
 
@@ -599,9 +599,9 @@ Column(
 ),
 ```
 
-### Test File
+### Prueba Archivo
 
-**File:** `tests/test/features/project_shell/presentation/widgets/projects_sidebar_test.dart`
+**Archivo:** `pruebas/prueba/features/proyecto_shell/presentation/widgets/proyectos_sidebar_prueba.dart`
 
 ```dart
 testWidgets('should display last project button when available',
@@ -638,9 +638,9 @@ testWidgets('should navigate to last project when button tapped',
 
 ---
 
-## 🟡 FEATURES 8-10: Fix MarkdownPreview Tests
+## 🟡 FEATURES 8-10: Fix MarkdownPreview Pruebas
 
-### Status: ⏳ REQUIRES DIAGNOSTIC RUNS
+### Estado: ⏳ REQUIRES DIAGNOSTIC RUNS
 
 ### Root Causes of Failures
 
@@ -648,11 +648,11 @@ testWidgets('should navigate to last project when button tapped',
 
 1. **Async Rendering:** `pumpAndSettle()` not called after building widget
 2. **Mock Setup:** MarkdownData mocks not properly initialized
-3. **Finder Mismatch:** Tests looking for widgets that have different keys/types
+3. **Finder Mismatch:** Pruebas looking for widgets that have different keys/types
 
 ### Fix Strategy (3 Cycles)
 
-### CYCLE 1: Async Rendering Fixes (3-4 tests)
+### CYCLE 1: Async Rendering Fixes (3-4 pruebas)
 
 **Pattern:**
 ```dart
@@ -666,7 +666,7 @@ await tester.pumpAndSettle();  // <-- Add this
 expect(find.byType(MarkdownBody), findsOneWidget);
 ```
 
-### CYCLE 2: Mock Setup Fixes (3-4 tests)
+### CYCLE 2: Mock Setup Fixes (3-4 pruebas)
 
 **Pattern:**
 ```dart
@@ -681,7 +681,7 @@ final mockData = MarkdownData(
 );
 ```
 
-### CYCLE 3: Finder Fixes (2-3 tests)
+### CYCLE 3: Finder Fixes (2-3 pruebas)
 
 **Update finders to match actual widget tree:**
 ```dart
@@ -717,7 +717,7 @@ cat flutter_analyze.txt
 dart doc .
 ```
 
-### Expected Results:
+### Expected Resultados:
 
 ```
 ✅ Tests: 138 total, 0 failures
@@ -757,15 +757,15 @@ Quality Metrics:
 
 ## 📊 Summary Table
 
-| Feature | RED | GREEN | REFACTOR | Tests | Status |
+| Feature | RED | GREEN | REFACTOR | Pruebas | Estado |
 |---------|-----|-------|----------|-------|--------|
-| 1. LastProjectLocalDataSource | 5m | 10m | 5m | 3 | ✅ READY |
-| 2. ProfileSection | 5m | 10m | 5m | 2 | ✅ READY |
+| 1. LastProyectoLocalDataSource | 5m | 10m | 5m | 3 | ✅ READY |
+| 2. ProarchivoSection | 5m | 10m | 5m | 2 | ✅ READY |
 | 3. AppearanceSection + Language | 5m | 12m | 5m | 3 | ✅ READY |
 | 4. AccessibilitySection | 5m | 10m | 5m | 2 | ⏳ THIS DOC |
 | 5. PerformanceSection | 5m | 10m | 5m | 2 | ⏳ THIS DOC |
 | 6. GlobalSearchDialog | 5m | 10m | 5m | 2 | ⏳ PARTIAL |
-| 7. ProjectsSidebar | 5m | 10m | 5m | 2 | ⏳ PARTIAL |
+| 7. ProyectosSidebar | 5m | 10m | 5m | 2 | ⏳ PARTIAL |
 | 8-10. MarkdownPreview | 10m | 15m | 5m | 10 | ⏳ DIAGNOSTIC |
 | Quality Gate | - | - | - | - | ⏳ FINAL |
 
@@ -774,6 +774,6 @@ Quality Metrics:
 ---
 
 **Version:** 3.0.0 (Complete with Code + Commits)
-**Next Action:** Execute Features 1-3 immediately, complete 4-10 in sequence
+**Siguiente Action:** Ejecutar Features 1-3 inmediataly, complete 4-10 in sequence
 **Branch:** feature/settings-ui-completion
 **Ready:** 🚀 YES

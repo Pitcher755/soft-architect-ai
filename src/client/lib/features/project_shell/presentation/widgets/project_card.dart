@@ -24,7 +24,7 @@ class ProjectCard extends ConsumerWidget {
     required this.onTap,
     required this.projectId,
     required this.isMissing,
-    // Deprecated: estos parámetros se calculan del provider
+    // Deprecated: these parameters are calculated from the provider
     this.iconColor,
     this.phase,
     this.phaseColor,
@@ -48,20 +48,20 @@ class ProjectCard extends ConsumerWidget {
   final String projectId;
   final bool isMissing;
 
-  /// Acorta la ruta mostrando solo el nombre de la carpeta o últimos segmentos
+  /// Shortens the path showing only the folder name or last segments
   String _getShortPath(String fullPath) {
     if (fullPath.isEmpty) {
       return '';
     }
 
-    // Si contiene /, toma el último segmento (nombre de carpeta)
+    // If it contains /, take the last segment (folder name)
     final segments = fullPath.split('/');
     final lastSegment = segments.lastWhere(
       (s) => s.isNotEmpty,
       orElse: () => fullPath,
     );
 
-    // Si el último segmento es muy largo, abrevia
+    // If the last segment is too long, abbreviate
     if (lastSegment.length > 20) {
       return '${lastSegment.substring(0, 17)}...';
     }
@@ -69,33 +69,33 @@ class ProjectCard extends ConsumerWidget {
     return lastSegment;
   }
 
-  /// Obtiene el ProjectPhase basándose en el nombre de la fase
-  /// Retorna ProjectPhase.root por defecto si no se encuentra
+  /// Gets the ProjectPhase based on the phase name
+  /// Returns ProjectPhase.root by default if not found
   ProjectPhase _getPhaseByName(String phaseName) {
-    // Buscar en todas las fases
+    // Search in all phases
     for (final phase in ProjectPhase.all) {
       if (phase.name.toLowerCase() == phaseName.toLowerCase()) {
         return phase;
       }
     }
 
-    // Para "Proyecto Completado" o fases no encontradas
+    // For "Proyecto Completado" or phases not found
     if (phaseName.toLowerCase().contains('completado')) {
-      // Retornar la última fase con color apropiado
+      // Return the last phase with appropriate color
       return ProjectPhase.all.last;
     }
 
-    // Por defecto retornar la fase raíz
+    // By default return the root phase
     return ProjectPhase.root;
   }
 
-  /// Muestra un menú contextual con opciones del proyecto
+  /// Shows a context menu with project options
   Future<void> _showContextMenu(
     BuildContext context,
     WidgetRef ref,
     Offset position,
   ) async {
-    // Proteger proyectos guía (mock://)
+    // Protect guide projects (mock://)
     final isGuideProject = path.startsWith('mock://');
     final overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox?;
@@ -111,7 +111,7 @@ class ProjectCard extends ConsumerWidget {
         Offset.zero & overlay.size,
       ),
       items: [
-        // Opción Renombrar (deshabilitada para proyectos guía)
+        // Rename option (disabled for guide projects)
         PopupMenuItem<String>(
           value: 'rename',
           enabled: !isGuideProject,
@@ -136,7 +136,7 @@ class ProjectCard extends ConsumerWidget {
             ],
           ),
         ),
-        // Opción Eliminar (deshabilitada para proyectos guía)
+        // Delete option (disabled for guide projects)
         PopupMenuItem<String>(
           value: 'delete',
           enabled: !isGuideProject,
@@ -171,7 +171,7 @@ class ProjectCard extends ConsumerWidget {
     }
   }
 
-  /// Muestra un diálogo para renombrar el proyecto
+  /// Shows a dialog to rename the project
   Future<void> _showRenameDialog(BuildContext context, WidgetRef ref) async {
     final controller = TextEditingController(text: name);
     final formKey = GlobalKey<FormState>();
@@ -233,7 +233,7 @@ class ProjectCard extends ConsumerWidget {
 
     if (newName != null && newName != name && context.mounted) {
       try {
-        // Renombrar en el repositorio
+        // Rename in the repository
         await ref
             .read(projectsProvider.notifier)
             .renameProject(projectId, newName);
@@ -260,7 +260,7 @@ class ProjectCard extends ConsumerWidget {
     }
   }
 
-  /// Muestra un diálogo de confirmación para eliminar el proyecto
+  /// Shows a confirmation dialog to delete the project
   Future<void> _showDeleteConfirmationDialog(
     BuildContext context,
     WidgetRef ref,
@@ -353,7 +353,7 @@ class ProjectCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Observar el provider de estado del proyecto
+    // Watch the project status provider
     final statusAsync = ref.watch(projectStatusProvider(path));
 
     // Responsive sizing based on screen width

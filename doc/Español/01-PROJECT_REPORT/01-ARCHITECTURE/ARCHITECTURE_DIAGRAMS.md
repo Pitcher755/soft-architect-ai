@@ -1,4 +1,4 @@
-# 🏗️ Architecture Diagram - Project Shell Screen
+# 🏗️ Architecture Diagram - Proyecto Shell Screen
 
 ## Overall Layout (Desktop)
 
@@ -212,7 +212,7 @@ ResizableColumn Widget
 
 ---
 
-## File Selection & Preview Update Sequence
+## Archivo Selection & Preview Update Sequence
 
 ```
 1. User clicks file in FileTreeWidget
@@ -269,9 +269,9 @@ Primary Blue:       #0D0DF2  ← Selection highlights
 
 ## Performance Considerations
 
-| Component | Optimization | Status |
+| Component | Optimization | Estado |
 |-----------|--------------|--------|
-| FileTreeWidget | SingleChildScrollView | ✓ Lazy loads children |
+| ArchivoTreeWidget | SingleChildScrollView | ✓ Lazy loads children |
 | ChatPanelWidget | ListView.builder | ✓ Virtual scrolling |
 | MarkdownPreviewWidget | SingleChildScrollView | ✓ Lazy loads markdown |
 | ResizableColumn | Debouncing drag | ⏳ Future (if needed) |

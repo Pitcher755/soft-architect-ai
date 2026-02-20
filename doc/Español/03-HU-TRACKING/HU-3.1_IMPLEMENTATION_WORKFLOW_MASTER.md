@@ -1,4 +1,4 @@
-# 🚀 HU-3.1: Master Implementation Workflow (Complete Step-by-Step)
+# 🚀 HU-3.1: Master Implementación Workflow (Complete Step-by-Step)
 
 > **Estado:** 🔄 LISTO PARA EJECUTAR
 > **Fecha:** 03/02/2026
@@ -12,8 +12,8 @@
 0. [Análisis de Requisitos & Arquitectura](#análisis-de-requisitos--arquitectura)
 1. [Fase 1: Infraestructura & Dependencias](#fase-1-infraestructura--dependencias)
 2. [Fase 2: Capa de Lógica & Estado (TDD RED → GREEN)](#fase-2-capa-de-lógica--estado-tdd-red--green)
-3. [Fase 3: Componentes UI (TDD GREEN & Widget Tests)](#fase-3-componentes-ui-tdd-green--widget-tests)
-4. [Fase 4: Testing, Security & Polish (TDD REFACTOR)](#fase-4-testing-security--polish-tdd-refactor)
+3. [Fase 3: Componentes UI (TDD GREEN & Widget Pruebas)](#fase-3-componentes-ui-tdd-green--widget-pruebas)
+4. [Fase 4: Pruebaing, Security & Polish (TDD REFACTOR)](#fase-4-pruebaing-security--polish-tdd-refactor)
 5. [Checklist de Aceptación](#checklist-de-aceptación-técnicos)
 6. [Comandos de Referencia Rápida](#comandos-de-referencia-rápida)
 
@@ -25,25 +25,25 @@
 
 | ID | Requisito | Prioridad |
 |----|-----------|-----------|
-| RF-1 | Árbol de directorios con expand/collapse (VS Code style) | 🔴 CRÍTICA |
+| RF-1 | Árbol de directorios con expand/collapse (VS Code estilo) | 🔴 CRÍTICA |
 | RF-2 | Preview Markdown en tiempo real con renderizado | 🔴 CRÍTICA |
 | RF-3 | Crear proyectos con validación de nombres | 🔴 CRÍTICA |
 | RF-4 | Búsqueda de archivos en tiempo real (filtro) | 🟡 ALTA |
 | RF-5 | Persistencia de estado (última carpeta abierta) en SQLite | 🟡 ALTA |
 | RF-6 | Renderizado sin lag con 100+ archivos | 🟡 ALTA |
-| RF-7 | Integración con FileSystemService backend | 🔴 CRÍTICA |
+| RF-7 | Integración con ArchivoSystemService backend | 🔴 CRÍTICA |
 | RF-8 | Tooltips descriptivos en botones | 🟢 MEDIA |
 
 ## 0.2: Requisitos No Funcionales (RNF)
 
 | ID | RNF | Target |
 |----|-----|--------|
-| RNF-1 | Coverage de tests unitarios | ≥80% |
+| RNF-1 | Coverage de pruebas unitarios | ≥80% |
 | RNF-2 | Latencia de apertura de proyecto | <500ms |
-| RNF-3 | Rendimiento con árbol profundo | <100ms render para 100+ files |
+| RNF-3 | Rendimiento con árbol profundo | <100ms render para 100+ archivos |
 | RNF-4 | Type Safety (Dart analyzer) | 0 errors |
 | RNF-5 | Seguridad: validación de rutas (path traversal) | 100% |
-| RNF-6 | Documentación de state management | 100% comentada |
+| RNF-6 | Documentoación de state management | 100% comentada |
 
 ## 0.3: Clean Architecture - 4 Capas
 
@@ -91,7 +91,7 @@
 
 **Duración:** 2 días
 **Sprint:** 1.1
-**Objetivo:** Herramientas listas, dependencias actualizadas, tests RED creados
+**Objetivo:** Herramientas listas, dependencias actualizadas, pruebas RED creados
 **Propósito:** Que no haya sorpresas al escribir código
 
 ---
@@ -213,9 +213,9 @@ src/client/lib/features/project_shell/
 
 ---
 
-## 1.3: Crear test_helper.dart y Fixtures
+## 1.3: Crear prueba_helper.dart y Fixtures
 
-### Paso 1.3.1: Crear tests/test/helpers/test_helper.dart
+### Paso 1.3.1: Crear pruebas/prueba/helpers/prueba_helper.dart
 
 ```bash
 cat > tests/test/helpers/test_helper.dart << 'EOF'
@@ -243,13 +243,13 @@ Future<void> closeTestDatabase(sqflite.Database db) async {
 EOF
 ```
 
-✅ **Validación:** Archivo creado en `tests/test/helpers/test_helper.dart`.
+✅ **Validación:** Archivo creado en `pruebas/prueba/helpers/prueba_helper.dart`.
 
 ---
 
 ## 1.4: Crear Fixtures de Datos
 
-### Paso 1.4.1: tests/test/helpers/project_fixtures.dart
+### Paso 1.4.1: pruebas/prueba/helpers/proyecto_fixtures.dart
 
 ```bash
 cat > tests/test/helpers/project_fixtures.dart << 'EOF'
@@ -287,9 +287,9 @@ EOF
 
 ---
 
-## 1.5: Crear 6 Tests RED (TDD Phase 1)
+## 1.5: Crear 6 Pruebas RED (TDD Fase 1)
 
-### Paso 1.5.1: Test 1 - ProjectValidation
+### Paso 1.5.1: Prueba 1 - ProyectoValidation
 
 ```bash
 cat > tests/flutter/test/unit/features/project_shell/domain/use_cases/project_validation_use_case_test.dart << 'EOF'
@@ -325,7 +325,7 @@ void main() {
 EOF
 ```
 
-### Paso 1.5.2: Test 2 - DirectoryTree Logic
+### Paso 1.5.2: Prueba 2 - DirectoryTree Logic
 
 ```bash
 cat > tests/flutter/test/unit/features/project_shell/domain/directory_tree_use_case_test.dart << 'EOF'
@@ -362,7 +362,7 @@ void main() {
 EOF
 ```
 
-### Paso 1.5.3: Test 3 - FileSearch
+### Paso 1.5.3: Prueba 3 - ArchivoSearch
 
 ```bash
 cat > tests/flutter/test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart << 'EOF'
@@ -389,7 +389,7 @@ void main() {
 EOF
 ```
 
-### Paso 1.5.4: Test 4 - SQLite
+### Paso 1.5.4: Prueba 4 - SQLite
 
 ```bash
 cat > tests/flutter/test/unit/features/project_shell/data/sqlite_data_source_test.dart << 'EOF'
@@ -424,7 +424,7 @@ void main() {
 EOF
 ```
 
-### Paso 1.5.5: Test 5 - ProjectRepository
+### Paso 1.5.5: Prueba 5 - ProyectoRepository
 
 ```bash
 cat > tests/flutter/test/unit/features/project_shell/data/project_repository_impl_test.dart << 'EOF'
@@ -449,7 +449,7 @@ void main() {
 EOF
 ```
 
-### Paso 1.5.6: Test 6 - Riverpod Notifier
+### Paso 1.5.6: Prueba 6 - Riverpod Notifier
 
 ```bash
 cat > tests/flutter/test/unit/features/project_shell/presentation/project_shell_notifier_test.dart << 'EOF'
@@ -470,22 +470,22 @@ void main() {
 EOF
 ```
 
-### Paso 1.5.7: Ejecutar tests (RED phase)
+### Paso 1.5.7: Ejecutar pruebas (RED fase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests/flutter
 flutter test test/unit/features/project_shell/ --verbose
 ```
 
-**Expected result:** 🔴 **6 tests FAIL** (porque las clases no existen aún)
+**Expected result:** 🔴 **6 pruebas FAIL** (porque las clases no existen aún)
 
-✅ **Validación:** Todos los tests fallan. Esto es correcto en RED phase.
+✅ **Validación:** Todos los pruebas fallan. Esto es correcto en RED fase.
 
 ---
 
-## 1.5.1: REFERENCIA - 6 Tests RED Completos (Copy-Paste Ready)
+## 1.5.1: REFERENCIA - 6 Pruebas RED Completos (Copy-Paste Ready)
 
-### Test 1: Project Creation & Validation
+### Prueba 1: Proyecto Creation & Validation
 
 ```dart
 // tests/flutter/test/unit/features/project_shell/domain/use_cases/project_validation_use_case_test.dart
@@ -519,7 +519,7 @@ void main() {
 }
 ```
 
-### Test 2: Directory Tree Expansion Logic
+### Prueba 2: Directory Tree Expansion Logic
 
 ```dart
 // tests/flutter/test/unit/features/project_shell/domain/directory_tree_use_case_test.dart
@@ -546,7 +546,7 @@ void main() {
 }
 ```
 
-### Test 3: File Search Filtering
+### Prueba 3: Archivo Search Filtering
 
 ```dart
 // tests/flutter/test/unit/features/project_shell/domain/use_cases/file_search_use_case_test.dart
@@ -577,7 +577,7 @@ void main() {
 }
 ```
 
-### Test 4: SQLite Persistence
+### Prueba 4: SQLite Persistence
 
 ```dart
 // tests/flutter/test/unit/features/project_shell/data/sqlite_data_source_test.dart
@@ -642,7 +642,7 @@ void main() {
 }
 ```
 
-### Test 5: ProjectRepository
+### Prueba 5: ProyectoRepository
 
 ```dart
 // tests/flutter/test/unit/features/project_shell/data/project_repository_impl_test.dart
@@ -672,7 +672,7 @@ void main() {
 }
 ```
 
-### Test 6: Riverpod Notifier
+### Prueba 6: Riverpod Notifier
 
 ```dart
 // tests/flutter/test/unit/features/project_shell/presentation/project_shell_notifier_test.dart
@@ -705,7 +705,7 @@ void main() {
 
 ---
 
-## 1.6: Configurar analysis_options.yaml
+## 1.6: Configurar análisis_options.yaml
 
 ### Paso 1.6.1: Crear análisis strict
 
@@ -764,7 +764,7 @@ Branch: feature/ui-project-shell
 Sprint: 1.1"
 ```
 
-✅ **Validación Fase 1:** Todas las herramientas están en la caja. Tests fallan esperando implementación.
+✅ **Validación Fase 1:** Todas las herramientas están en la caja. Pruebas fallan esperando implementación.
 
 ---
 
@@ -772,14 +772,14 @@ Sprint: 1.1"
 
 **Duración:** 2 días
 **Sprint:** 1.2 + 2.1 + 2.2
-**Objetivo:** Entities, Use Cases, Repositories y Data Sources (Tests GREEN)
+**Objetivo:** Entities, Use Cases, Repositories y Data Sources (Pruebas GREEN)
 **Propósito:** Lógica de negocio antes de UI
 
 ---
 
 ## 2.1: Crear Entities (Domain Layer)
 
-### Paso 2.1.1: Project Entity
+### Paso 2.1.1: Proyecto Entity
 
 ```bash
 cat > src/client/lib/features/project_shell/domain/entities/project.dart << 'EOF'
@@ -836,7 +836,7 @@ class Project {
 EOF
 ```
 
-### Paso 2.1.2: FileNode Entity
+### Paso 2.1.2: ArchivoNode Entity
 
 ```bash
 cat > src/client/lib/features/project_shell/domain/entities/file_node.dart << 'EOF'
@@ -882,7 +882,7 @@ EOF
 
 ## 2.2: Crear Exceptions (Core Layer)
 
-### Paso 2.2.1: Project Shell Exceptions
+### Paso 2.2.1: Proyecto Shell Exceptions
 
 ```bash
 cat > src/client/lib/features/project_shell/core/exceptions/project_shell_exceptions.dart << 'EOF'
@@ -957,7 +957,7 @@ EOF
 
 ## 2.3: Crear Use Cases (Domain Layer)
 
-### Paso 2.3.1: ProjectValidationUseCase
+### Paso 2.3.1: ProyectoValidationUseCase
 
 ```bash
 cat > src/client/lib/features/project_shell/domain/use_cases/project_validation_use_case.dart << 'EOF'
@@ -1032,7 +1032,7 @@ class DirectoryTreeUseCase {
 EOF
 ```
 
-### Paso 2.3.3: FileSearchUseCase
+### Paso 2.3.3: ArchivoSearchUseCase
 
 ```bash
 cat > src/client/lib/features/project_shell/domain/use_cases/file_search_use_case.dart << 'EOF'
@@ -1063,7 +1063,7 @@ EOF
 
 ## 2.4: Crear Data Models
 
-### Paso 2.4.1: ProjectModel
+### Paso 2.4.1: ProyectoModel
 
 ```bash
 cat > src/client/lib/features/project_shell/data/models/project_model.dart << 'EOF'
@@ -1211,9 +1211,9 @@ EOF
 
 ---
 
-## 2.6: Crear Repository Interface & Implementation
+## 2.6: Crear Repository Interface & Implementación
 
-### Paso 2.6.1: ProjectRepository Interface
+### Paso 2.6.1: ProyectoRepository Interface
 
 ```bash
 cat > src/client/lib/features/project_shell/domain/repositories/project_repository.dart << 'EOF'
@@ -1243,7 +1243,7 @@ abstract class ProjectRepository {
 EOF
 ```
 
-### Paso 2.6.2: ProjectRepositoryImpl
+### Paso 2.6.2: ProyectoRepositoryImpl
 
 ```bash
 cat > src/client/lib/features/project_shell/data/repositories/project_repository_impl.dart << 'EOF'
@@ -1317,16 +1317,16 @@ EOF
 
 ---
 
-## 2.7: Ejecutar Tests (TDD GREEN Phase)
+## 2.7: Ejecutar Pruebas (TDD GREEN Fase)
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test unit/flutter/features/project_shell/domain/ unit/flutter/features/project_shell/data/ --verbose
 ```
 
-**Expected result:** 🟢 **Majority of tests PASS**
+**Expected result:** 🟢 **Majority of pruebas PASS**
 
-### Paso 2.7.1: Si tests fallan
+### Paso 2.7.1: Si pruebas fallan
 
 Revisar errores:
 
@@ -1335,9 +1335,9 @@ cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test unit/flutter/features/project_shell/domain/use_cases/project_validation_use_case_test.dart --verbose
 ```
 
-Ajustar implementation según errores.
+Ajustar implementación según errores.
 
-✅ **Validación Fase 2:** Entities, Use Cases, Repositories, Data Sources completados. Tests verde.
+✅ **Validación Fase 2:** Entities, Use Cases, Repositories, Data Sources completados. Pruebas verde.
 
 ---
 
@@ -1362,7 +1362,7 @@ Sprint: 1.2 + 2.1 + 2.2"
 
 ---
 
-# 🔵 FASE 3: Componentes UI (TDD GREEN & Widget Tests)
+# 🔵 FASE 3: Componentes UI (TDD GREEN & Widget Pruebas)
 
 **Duración:** 3 días
 **Sprint:** 3.1 + 3.2 + 3.3
@@ -1373,7 +1373,7 @@ Sprint: 1.2 + 2.1 + 2.2"
 
 ## 3.1: Crear Riverpod Providers & Notifiers
 
-### Paso 3.1.1: ProjectShellNotifier
+### Paso 3.1.1: ProyectoShellNotifier
 
 ```bash
 cat > src/client/lib/features/project_shell/presentation/notifiers/project_shell_notifier.dart << 'EOF'
@@ -1616,7 +1616,7 @@ class MarkdownPreviewWidget extends StatelessWidget {
 EOF
 ```
 
-### Paso 3.2.3: ProjectShellScreen
+### Paso 3.2.3: ProyectoShellScreen
 
 ```bash
 cat > src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart << 'EOF'
@@ -1711,7 +1711,7 @@ EOF
 
 ---
 
-## 3.3: Crear Widget Tests
+## 3.3: Crear Widget Pruebas
 
 ```bash
 cat > tests/widget/project_shell_screen_test.dart << 'EOF'
@@ -1742,14 +1742,14 @@ EOF
 
 ---
 
-## 3.4: Ejecutar Tests
+## 3.4: Ejecutar Pruebas
 
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/tests
 flutter test unit/flutter/features/project_shell/ widget/flutter/features/project_shell/ --verbose
 ```
 
-✅ **Validación Fase 3:** UI widgets creados, tests de widgets placer.
+✅ **Validación Fase 3:** UI widgets creados, pruebas de widgets placer.
 
 ---
 
@@ -1776,7 +1776,7 @@ Sprint: 3.1 + 3.2 + 3.3"
 
 ---
 
-# 🔴 FASE 4: Integración, Testing & Polish (Complete)
+# 🔴 FASE 4: Integración, Pruebaing & Polish (Complete)
 
 **Duración:** 2 días
 **Sprint:** 4.1 + 4.2
@@ -1785,7 +1785,7 @@ Sprint: 3.1 + 3.2 + 3.3"
 
 ---
 
-## 4.1: Completar Tests para Coverage ≥80%
+## 4.1: Completar Pruebas para Coverage ≥80%
 
 ```bash
 # Run coverage
@@ -1865,7 +1865,7 @@ String validateFilePathInProject(String projectPath, String filePath) {
 - [ ] TODAS las rutas construidas con `p.join() + p.normalize()`
 - [ ] TODOS los nombres validados con regex
 - [ ] SQLite UNIQUE constraint en nombres
-- [ ] Test: intento `../../../etc/passwd` → excepción
+- [ ] Prueba: intento `../../../etc/passwd` → excepción
 
 ### 🔐 B. Logging Security (Sin Exponer Rutas)
 
@@ -1927,7 +1927,7 @@ class DatabaseException extends ProjectShellException {
 **Checklist:**
 - [ ] NUNCA expongas stack traces al usuario
 - [ ] NUNCA hagas rethrow sin wrappear
-- [ ] Error codes documentados (PROJ_001, SEC_001, DB_ERR_001)
+- [ ] Error codes documentoados (PROJ_001, SEC_001, DB_ERR_001)
 - [ ] Mensajes amigables al usuario
 
 ### 🔐 D. Type Safety (0 Errors)
@@ -2126,7 +2126,7 @@ git push origin feature/ui-project-shell
 # Go to GitHub → feature/ui-project-shell → Create Pull Request
 ```
 
-## Testing
+## Pruebaing
 
 ```bash
 # Run all tests
@@ -2170,7 +2170,7 @@ await SQLiteDataSource.createTables(database);
 await database.delete('projects');
 ```
 
-## Run App
+## Ejecutar App
 
 ```bash
 # Debug mode

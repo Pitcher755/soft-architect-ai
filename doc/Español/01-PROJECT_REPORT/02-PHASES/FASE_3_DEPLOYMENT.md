@@ -23,14 +23,14 @@
 
 **FASE 3** establece las **Leyes Universales** que rigen TODO desarrollo futuro en SoftArchitect.
 
-> "Estos documentos no son sugerencias; son **La Ley Absoluta**."
+> "Estos documentoos no son sugerencias; son **La Ley Absoluta**."
 > El RAG rechazará PRs que las violen. Los desarrolladores deben jurar cumplirlas.
 
 ### Objetivos Alcanzados
 
 ✅ **Seguridad Universal:** OWASP Top 10 traducido a soluciones por stack (Backend/Frontend/DevOps)
 ✅ **Colaboración Estricta:** GitFlow + Conventional Commits como estándar immutable
-✅ **Testing First:** TDD Red-Green-Refactor es el único método permitido
+✅ **Pruebaing First:** TDD Red-Green-Refactor es el único método permitido
 ✅ **Web Standards:** HTML5 semántico + CSS Mobile-First para toda web
 ✅ **Enforcement:** RAG puede validar automáticamente cada commit contra estas leyes
 
@@ -97,7 +97,7 @@ main (prod) ← develop (CI) ← feature/xyz, fix/xyz, hotfix/xyz (ephemeral)
 
 #### Conventional Commits
 
-**Formato:** `<type>(<scope>): <description>`
+**Formato:** `<type>(<scope>): <descripción>`
 
 ```bash
 # ✅ GOOD
@@ -114,10 +114,10 @@ git commit -m "aqwerty"
 **Tipos Permitidos:**
 - `feat` - Nueva funcionalidad
 - `fix` - Bug fix
-- `docs` - Documentación
-- `style` - Formato (sin cambio de lógica)
+- `docs` - Documentoación
+- `estilo` - Formato (sin cambio de lógica)
 - `refactor` - Reorganización de código
-- `test` - Agregación/modificación de tests
+- `prueba` - Agregación/modificación de pruebas
 - `chore` - Tareas de build/deps
 - `ci` - Cambios en CI/CD
 - `perf` - Mejoras de performance
@@ -140,7 +140,7 @@ git commit -m "aqwerty"
 
 ### Archivo 3: TDD_METHODOLOGY.md (732 líneas)
 
-**Propósito:** Enforce Test-Driven Development como el único método aceptado.
+**Propósito:** Enforce Prueba-Driven Development como el único método aceptado.
 
 #### Red-Green-Refactor Cycle
 
@@ -180,7 +180,7 @@ def test_user_creation_valid():
     assert repo.save_called_once()
 ```
 
-#### Testing Pyramid
+#### Pruebaing Pyramid
 
 ```
         △ E2E Tests (10%)
@@ -209,9 +209,9 @@ def test_user_creation_valid():
 
 #### Anti-Patterns (Prohibido)
 
-❌ Escribir test DESPUÉS de código (Post-Hoc Testing)
-❌ Tests que pasan pero no validan nada (`assert True`)
-❌ Ignorar tests fallidos en CI/CD
+❌ Escribir prueba DESPUÉS de código (Post-Hoc Pruebaing)
+❌ Pruebas que pasan pero no validan nada (`assert True`)
+❌ Ignorar pruebas fallidos en CI/CD
 ❌ Burlarse de todo sin criterio (over-mocking)
 
 ---
@@ -236,7 +236,7 @@ def test_user_creation_valid():
 
 | Componente | ❌ MALO | ✅ BUENO | Razón |
 |:---|:---|:---|:---|
-| Botón | `<div onclick>` | `<button>` | Foco, SR, estilos nativos |
+| Botón | `<div onclick>` | `<botón>` | Foco, SR, estilos nativos |
 | Enlace | `<div class="link" onclick>` | `<a href>` | Navegación, SEO |
 | Navegación | `<div class="nav">` | `<nav>` | Landmark para SR |
 | Artículo | `<div class="post">` | `<article>` | Contenido independiente |
@@ -245,7 +245,7 @@ def test_user_creation_valid():
 | Pie | `<div class="footer">` | `<footer>` | Información de cierre |
 | Título | `<div class="title">` | `<h1>`, `<h2>`, `<h3>` | Jerarquía, outline |
 
-#### Estructura Correcta de Documento
+#### Estructura Correcta de Documentoo
 
 ```html
 <!DOCTYPE html>
@@ -294,7 +294,7 @@ def test_user_creation_valid():
 
 1. Preferir HTML5 nativo antes de ARIA
 2. ARIA solo para componentes complejos (tabs, modales)
-3. No redefinir semántica: `role="button"` en `<button>` es prohibido
+3. No redefinir semántica: `role="botón"` en `<botón>` es prohibido
 
 #### Validación Accesible
 
@@ -454,16 +454,16 @@ h1 { font-size: 40px; }        /* No escalable */
 |:---|:---|:---|
 | **Desarrollador** | Debe seguir OWASP, Git Conventions, TDD, HTML5/CSS | Leer todos 5 archivos, acatar las leyes |
 | **Architect** | Valida que designs cumplan estándares web | Revisar HTML5_SEMANTICS + CSS_ARCHITECTURE |
-| **QA/Testing** | TDD es obligatorio, testing pyramid es métrica | Enforcecer ≥80% coverage en PRs |
-| **DevOps** | OWASP A05 (Security Misconfiguration) es crítica | Hardening Docker, RBAC, secrets management |
+| **QA/Pruebaing** | TDD es obligatorio, pruebaing pyramid es métrica | Enforcecer ≥80% coverage en PRs |
+| **DevOps** | OWASP A05 (Security Misconfiguración) es crítica | Hardening Docker, RBAC, secrets management |
 | **RAG Agent** | Valida cada commit/PR contra estas leyes | Rechaza violaciones de OWASP, Git Conventions, TDD |
 
 ### Por Contexto
 
 | Contexto | Archivo Relevante | Regla Clave |
 |:---|:---|:---|
-| **Backend Feature** | OWASP_TOP_10 + TDD_METHODOLOGY | Depends() injection mandatory, ≥80% test coverage |
-| **Frontend Widget** | HTML5_SEMANTICS + CSS_ARCHITECTURE + TDD | Semantic HTML5, mobile-first CSS, tested |
+| **Backend Feature** | OWASP_TOP_10 + TDD_METHODOLOGY | Depends() injection mandatory, ≥80% prueba coverage |
+| **Frontend Widget** | HTML5_SEMANTICS + CSS_ARCHITECTURE + TDD | Semantic HTML5, mobile-first CSS, pruebaed |
 | **PR Review** | GIT_CONVENTIONS + OWASP_TOP_10 | Conventional commit, no OWASP violations, LGTM |
 | **Deployment** | OWASP_TOP_10 (DevOps section) | Non-root container, TLS 1.3, CORS restrictive |
 | **Web Component** | HTML5_SEMANTICS + CSS_ARCHITECTURE | Semantic, accessible, responsive |
@@ -475,7 +475,7 @@ h1 { font-size: 40px; }        /* No escalable */
 ### Cómo el RAG Usa Estas Leyes
 
 1. **Pre-Development Interview:**
-   > "¿Estás planeando crear un endpoint de autenticación? Recuerda: OWASP A07 (Authentication Failures). Usa Depends(get_current_user). Escribe tests primero (TDD)."
+   > "¿Estás planeando crear un endpoint de autenticación? Recuerda: OWASP A07 (Authentication Failures). Usa Depends(get_current_user). Escribe pruebas primero (TDD)."
 
 2. **Code Review Validation:**
    ```
@@ -553,9 +553,9 @@ auto_reject_on: ["owasp_validation", "tdd_validation", "git_conventions"]
 
 | Fase | Tramas | Archivos | Líneas | Estado |
 |:---|---:|---:|---:|:---|
-| Phase 1 (Foundation) | 1 | 4 | ~1,500 | ✅ |
-| Phase 2 (Core Stack) | 3 | 12 | ~8,321 | ✅ |
-| Phase 3 (Transversal Rules) | 2 | 5 | 3,742 | ✅ |
+| Fase 1 (Fundación) | 1 | 4 | ~1,500 | ✅ |
+| Fase 2 (Core Stack) | 3 | 12 | ~8,321 | ✅ |
+| Fase 3 (Transversal Rules) | 2 | 5 | 3,742 | ✅ |
 | **TOTAL** | **6** | **21** | **~13,563** | ✅ |
 
 ---
@@ -565,7 +565,7 @@ auto_reject_on: ["owasp_validation", "tdd_validation", "git_conventions"]
 ### Corto Plazo (Semana 1)
 
 1. ✅ Dogfooding validation: Validar `src/server/` y `src/client/` contra estas leyes
-2. ⏳ RAG Integration: Cargar 5 archivos en ChromaDB para queries
+2. ⏳ RAG Integración: Cargar 5 archivos en ChromaDB para queries
 3. ⏳ CI/CD Automation: Implementar pre-merge checks en GitHub Actions
 
 ### Mediano Plazo (FASE 4)
@@ -577,7 +577,7 @@ auto_reject_on: ["owasp_validation", "tdd_validation", "git_conventions"]
 
 ### Largo Plazo (FASE 5-6)
 
-- FASE 5: IA Engineering Standards (LLM Integration, RAG Patterns)
+- FASE 5: IA Engineering Standards (LLM Integración, RAG Patterns)
 - FASE 6: Production Governance (Incident Response, Monitoring, SLA)
 
 ---
@@ -598,6 +598,6 @@ Con OWASP, Git Conventions, TDD, HTML5/CSS como ley constitucional:
 ---
 
 **Fecha:** 30 de Enero de 2026
-**Status:** ✅ FASE 3 COMPLETADA
+**Estado:** ✅ FASE 3 COMPLETADA
 **Commits:** `5bca7ee` + `1fe12ea`
 **Responsable:** ArchitectZero AI Agent

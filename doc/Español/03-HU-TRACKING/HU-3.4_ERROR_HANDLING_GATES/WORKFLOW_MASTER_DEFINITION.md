@@ -15,11 +15,11 @@
 2. [Criterios de Aceptación (Definition of Done)](#criterios-de-aceptación-definition-of-done)
 3. [Arquitectura y Dependencias](#arquitectura-y-dependencias)
 4. [Fase 0: Preparación del Terreno](#fase-0-preparación-del-terreno)
-5. [Fase 1: TDD - ROJO (Tests que Fallan)](#fase-1-tdd---rojo-tests-que-fallan)
+5. [Fase 1: TDD - ROJO (Pruebas que Fallan)](#fase-1-tdd---rojo-pruebas-que-fallan)
 6. [Fase 2: TDD - VERDE (Implementación)](#fase-2-tdd---verde-implementación)
 7. [Fase 3: TDD - REFACTOR (Mejoras y Robustez)](#fase-3-tdd---refactor-mejoras-y-robustez)
-8. [Fase 4: Testing de Integración (E2E)](#fase-4-testing-de-integración-e2e)
-9. [Fase 5: Documentación y Validación](#fase-5-documentación-y-validación)
+8. [Fase 4: Pruebaing de Integración (E2E)](#fase-4-pruebaing-de-integración-e2e)
+9. [Fase 5: Documentoación y Validación](#fase-5-documentoación-y-validación)
 10. [Fase 6: CI/CD y Pipeline](#fase-6-cicd-y-pipeline)
 11. [Entregables Finales](#entregables-finales)
 
@@ -28,8 +28,8 @@
 ## 🎯 Objetivos Estratégicos
 
 ### 1. **Gates de Validación (Aseguramiento de Calidad de Datos)**
-- Implementar validadores para **contenido de documentos** (longitud mínima, estructura, codificación).
-- Rechazar documentos inválidos **antes** del almacenamiento con códigos de error específicos (`VAL_001`, `VAL_002`, `VAL_003`).
+- Implementar validadores para **contenido de documentoos** (longitud mínima, estructura, codificación).
+- Rechazar documentoos inválidos **antes** del almacenamiento con códigos de error específicos (`VAL_001`, `VAL_002`, `VAL_003`).
 - Prevenir que datos corruptos entren a ChromaDB o SQLite.
 - **Cumple:** Integridad de datos, aseguramiento de calidad.
 
@@ -40,9 +40,9 @@
 - **Cumple:** Resiliencia, recuperación de fallos transitorios.
 
 ### 3. **Lógica de Fallback y Rollback**
-- Si la generación de documentos falla después de 3 reintentos → rollback al último estado válido.
+- Si la generación de documentoos falla después de 3 reintentos → rollback al último estado válido.
 - Proporcionar al usuario opción de **"Restaurar Versión Anterior"**.
-- Almacenar historial de documentos (máx 5 versiones) en SQLite para capacidad de rollback.
+- Almacenar historial de documentoos (máx 5 versiones) en SQLite para capacidad de rollback.
 - **Cumple:** Seguridad del usuario, recuperación de datos.
 
 ### 4. **Notificaciones Optimizadas para UX**
@@ -61,7 +61,7 @@
 ### 6. **Mapeo de Códigos de Error (User-Friendly)**
 - Mapear errores técnicos a mensajes en español:
   - `SYS_001` → "No hay conexión con el servidor local"
-  - `VAL_001` → "El documento generado es inválido"
+  - `VAL_001` → "El documentoo generado es inválido"
   - `RAG_001` → "La base de conocimiento está vacía"
 - **Sin stack traces** visibles a usuarios (solo en logs).
 - **Cumple:** Experiencia de usuario, privacidad.
@@ -71,13 +71,13 @@
 ## ✅ Criterios de Aceptación (Definition of Done)
 
 ### Criterios POSITIVOS (Debe Tener)
-- ✅ **Gates de Validación:** Documentos validados por longitud (>50 chars), estructura (Markdown válido), codificación (UTF-8).
+- ✅ **Gates de Validación:** Documentoos validados por longitud (>50 chars), estructura (Markdown válido), codificación (UTF-8).
 - ✅ **Lógica de Reintento:** Operaciones fallidas reintentan automáticamente (máx 3x con backoff exponencial).
-- ✅ **Fallback:** Si la generación falla, el usuario puede restaurar la versión anterior del documento.
+- ✅ **Fallback:** Si la generación falla, el usuario puede restaurar la versión anterior del documentoo.
 - ✅ **UX Snackbar:** Éxito/info auto-ocultar en 5s, errores requieren cierre manual.
 - ✅ **Logging de Errores:** Todos los errores registrados con contexto (sin datos sensibles expuestos).
 - ✅ **Errores Localizados:** Todos los mensajes de error en español, sin jerga técnica.
-- ✅ **Cobertura de Tests:** >90% en gates de validación y lógica de reintentos.
+- ✅ **Cobertura de Pruebas:** >90% en gates de validación y lógica de reintentos.
 - ✅ **Integración:** Funciona perfectamente con HU-3.3 (Chat Sequential Docs).
 
 ### Criterios NEGATIVOS (No Debe)
@@ -131,9 +131,9 @@
 
 ## 🔧 Fase 0: Preparación del Terreno
 
-**Objetivo:** Analizar manejo de errores existente, definir reglas de validación y preparar infraestructura de tests.
+**Objetivo:** Analizar manejo de errores existente, definir reglas de validación y preparar infraestructura de pruebas.
 
-### 0.1 Auditoría de Documentación
+### 0.1 Auditoría de Documentoación
 ```bash
 # Leer docs de manejo de errores existentes
 cat context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.en.md
@@ -147,7 +147,7 @@ rg "Exception" src/client/lib/ -A 2
 **Entregable:** Inventario de errores existentes y gaps.
 
 ### 0.2 Definir Reglas de Validación
-Crear documento de especificación de validación:
+Crear documentoo de especificación de validación:
 
 **Archivo:** `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/VALIDATION_RULES.md`
 
@@ -168,7 +168,7 @@ Crear documento de especificación de validación:
 4. Delay máximo: 8.0s
 ```
 
-### 0.3 Configurar Infraestructura de Tests
+### 0.3 Configurar Infraestructura de Pruebas
 ```bash
 # Crear directorios de tests
 mkdir -p tests/python/unit/services/validators
@@ -182,18 +182,18 @@ touch tests/python/fixtures/valid_documents.json
 **Checklist Fase 0:**
 - [ ] ERROR_HANDLING_STANDARD.md revisado
 - [ ] VALIDATION_RULES.md creado
-- [ ] Directorios de tests creados
+- [ ] Directorios de pruebas creados
 - [ ] Fixtures preparados
 
 ---
 
-## 🔴 Fase 1: TDD - ROJO (Tests que Fallan)
+## 🔴 Fase 1: TDD - ROJO (Pruebas que Fallan)
 
-**Objetivo:** Escribir tests comprehensivos que FALLEN (sin implementación todavía).
+**Objetivo:** Escribir pruebas comprehensivos que FALLEN (sin implementación todavía).
 
-### 1.1 Backend: Tests de Gates de Validación
+### 1.1 Backend: Pruebas de Gates de Validación
 
-**Archivo:** `tests/python/unit/services/validators/test_document_validator.py`
+**Archivo:** `pruebas/python/unit/services/validators/prueba_documento_validator.py`
 
 ```python
 import pytest
@@ -266,11 +266,11 @@ class TestDocumentValidator:
         assert result is True
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (clases/métodos no existen todavía).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (clases/métodos no existen todavía).
 
-### 1.2 Backend: Tests de Lógica de Reintento
+### 1.2 Backend: Pruebas de Lógica de Reintento
 
-**Archivo:** `tests/python/unit/core/test_retry.py`
+**Archivo:** `pruebas/python/unit/core/prueba_retry.py`
 
 ```python
 import pytest
@@ -337,11 +337,11 @@ class TestRetryDecorator:
         assert "Reintento 1/3 para operacion_test" in caplog.text
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (`with_retry` no existe todavía).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (`with_retry` no existe todavía).
 
-### 1.3 Frontend: Tests de Error Mapper
+### 1.3 Frontend: Pruebas de Error Mapper
 
-**Archivo:** `tests/test/unit/core/error_handling/error_mapper_test.dart`
+**Archivo:** `pruebas/prueba/unit/core/error_handling/error_mapper_prueba.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -405,9 +405,9 @@ void main() {
 }
 ```
 
-**Resultado Esperado:** ❌ Todos los tests FALLAN (clase ErrorMapper no existe).
+**Resultadoado Esperado:** ❌ Todos los pruebas FALLAN (clase ErrorMapper no existe).
 
-### 1.4 Ejecutar Todos los Tests ROJOS
+### 1.4 Ejecutar Todos los Pruebas ROJOS
 
 ```bash
 # Tests backend (Python)
@@ -420,22 +420,22 @@ cd tests && flutter test test/unit/core/error_handling/
 ```
 
 **Checklist Fase 1:**
-- [ ] 5+ tests de validación backend escritos (todos fallando)
-- [ ] 4+ tests de reintento backend escritos (todos fallando)
-- [ ] 3+ tests de error mapper frontend escritos (todos fallando)
-- [ ] 3+ tests de snackbar frontend escritos (todos fallando)
-- [ ] Todos los tests documentados con docstrings
-- [ ] Objetivo de cobertura de tests: >90%
+- [ ] 5+ pruebas de validación backend escritos (todos fallando)
+- [ ] 4+ pruebas de reintento backend escritos (todos fallando)
+- [ ] 3+ pruebas de error mapper frontend escritos (todos fallando)
+- [ ] 3+ pruebas de snackbar frontend escritos (todos fallando)
+- [ ] Todos los pruebas documentoados con docstrings
+- [ ] Objetivo de cobertura de pruebas: >90%
 
 ---
 
 ## 🟢 Fase 2: TDD - VERDE (Implementación)
 
-**Objetivo:** Implementar código MÍNIMO para hacer pasar los tests (sin optimización todavía).
+**Objetivo:** Implementar código MÍNIMO para hacer pasar los pruebas (sin optimización todavía).
 
 ### 2.1 Backend: Implementación de Gates de Validación
 
-**Archivo:** `src/server/app/services/validators/document_validator.py`
+**Archivo:** `src/server/app/services/validators/documento_validator.py`
 
 ```python
 """Gates de validación de documentos para aseguramiento de calidad de contenido."""
@@ -528,7 +528,7 @@ class DocumentValidator:
         return True
 ```
 
-### 2.2 Ejecutar Tests VERDES
+### 2.2 Ejecutar Pruebas VERDES
 
 ```bash
 # Tests backend
@@ -541,12 +541,12 @@ cd tests && flutter test test/unit/core/error_handling/
 ```
 
 **Checklist Fase 2:**
-- [ ] DocumentValidator implementado con 5 gates de validación
+- [ ] DocumentoValidator implementado con 5 gates de validación
 - [ ] Decorador @with_retry implementado con backoff exponencial
 - [ ] Excepciones personalizadas agregadas (ValidationError, RetryExhaustedError)
 - [ ] ErrorMapper implementado con 10+ códigos de error
 - [ ] SnackbarService implementado con 4 tipos de notificación
-- [ ] Todos los tests ROJOS ahora VERDES
+- [ ] Todos los pruebas ROJOS ahora VERDES
 - [ ] Sin duplicación de código (principio DRY)
 
 ---
@@ -609,13 +609,13 @@ def setup_logging() -> None:
 
 ---
 
-## 🧪 Fase 4: Testing de Integración (E2E)
+## 🧪 Fase 4: Pruebaing de Integración (E2E)
 
-**Objetivo:** Testear flujo completo de manejo de errores end-to-end.
+**Objetivo:** Pruebaear flujo completo de manejo de errores end-to-end.
 
-### 4.1 Test de Integración Backend
+### 4.1 Prueba de Integración Backend
 
-**Archivo:** `tests/python/integration/test_error_handling_flow.py`
+**Archivo:** `pruebas/python/integration/prueba_error_handling_flow.py`
 
 ```python
 import pytest
@@ -661,19 +661,19 @@ class TestErrorHandlingFlow:
 ```
 
 **Checklist Fase 4:**
-- [ ] Tests E2E backend pasan (2+ escenarios)
-- [ ] Tests E2E frontend pasan (2+ escenarios)
+- [ ] Pruebas E2E backend pasan (2+ escenarios)
+- [ ] Pruebas E2E frontend pasan (2+ escenarios)
 - [ ] Flujo de error validado end-to-end
 - [ ] Lógica de reintento verificada con mocks
 - [ ] Comportamiento de snackbar validado
 
 ---
 
-## 📚 Fase 5: Documentación y Validación
+## 📚 Fase 5: Documentoación y Validación
 
 ### 5.1 Actualizar ERROR_HANDLING_STANDARD.md
 
-Agregar códigos de error de validación y documentación de lógica de reintentos.
+Agregar códigos de error de validación y documentoación de lógica de reintentos.
 
 ### 5.2 Crear Guía de Manejo de Errores
 
@@ -700,7 +700,7 @@ Agregar códigos de error de validación y documentación de lógica de reintent
 **Checklist Fase 5:**
 - [ ] ERROR_HANDLING_STANDARD.md actualizado
 - [ ] ERROR_HANDLING_GUIDE.md creado
-- [ ] Todos los códigos de error documentados
+- [ ] Todos los códigos de error documentoados
 - [ ] Lógica de reintentos explicada
 - [ ] Ejemplos proporcionados
 
@@ -730,7 +730,7 @@ flutter test --coverage
 **Checklist Fase 6:**
 - [ ] Todo el linting pasa
 - [ ] Todos los type checks pasan
-- [ ] Cobertura de tests >90%
+- [ ] Cobertura de pruebas >90%
 - [ ] GitHub Actions actualizado
 - [ ] Pipeline CI verde
 
@@ -739,7 +739,7 @@ flutter test --coverage
 ## 📦 Entregables Finales
 
 ### Artefactos de Código
-- ✅ `src/server/app/services/validators/document_validator.py`
+- ✅ `src/server/app/services/validators/documento_validator.py`
 - ✅ `src/server/app/core/retry.py`
 - ✅ `src/server/app/core/exceptions.py` (actualizado)
 - ✅ `src/server/app/core/logging_config.py`
@@ -747,22 +747,22 @@ flutter test --coverage
 - ✅ `src/client/lib/core/error_handling/snackbar_service.dart`
 - ✅ `src/client/lib/core/error_handling/error_context.dart`
 
-### Artefactos de Tests
-- ✅ `tests/python/unit/services/validators/test_document_validator.py` (5+ tests)
-- ✅ `tests/python/unit/core/test_retry.py` (4+ tests)
-- ✅ `tests/python/integration/test_error_handling_flow.py` (2+ tests)
-- ✅ `tests/test/unit/core/error_handling/error_mapper_test.dart` (3+ tests)
-- ✅ `tests/test/unit/core/error_handling/snackbar_service_test.dart` (3+ tests)
-- ✅ `tests/test/integration/features/chat/error_handling_flow_test.dart` (2+ tests)
+### Artefactos de Pruebas
+- ✅ `pruebas/python/unit/services/validators/prueba_documento_validator.py` (5+ pruebas)
+- ✅ `pruebas/python/unit/core/prueba_retry.py` (4+ pruebas)
+- ✅ `pruebas/python/integration/prueba_error_handling_flow.py` (2+ pruebas)
+- ✅ `pruebas/prueba/unit/core/error_handling/error_mapper_prueba.dart` (3+ pruebas)
+- ✅ `pruebas/prueba/unit/core/error_handling/snackbar_service_prueba.dart` (3+ pruebas)
+- ✅ `pruebas/prueba/integration/features/chat/error_handling_flow_prueba.dart` (2+ pruebas)
 
-### Artefactos de Documentación
+### Artefactos de Documentoación
 - ✅ `context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md` (actualizado)
 - ✅ `doc/02-SETUP_DEV/ERROR_HANDLING_GUIDE.md`
 - ✅ `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/VALIDATION_RULES.md`
 - ✅ `doc/03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/COMPLETION_SUMMARY.md`
 
 ### Métricas
-- **Cobertura de Tests:** >90% (objetivo alcanzado)
+- **Cobertura de Pruebas:** >90% (objetivo alcanzado)
 - **Códigos de Error Mapeados:** 11+ códigos
 - **Gates de Validación:** 5 gates implementados
 - **Lógica de Reintento:** Backoff exponencial (1s, 2s, 4s)
@@ -773,13 +773,13 @@ flutter test --coverage
 ## 🎉 Criterios de Éxito
 
 **HU-3.4 se considera COMPLETA cuando:**
-- [ ] Todos los gates de validación implementados y testeados
+- [ ] Todos los gates de validación implementados y pruebaeados
 - [ ] Lógica de reintento con backoff exponencial funcional
 - [ ] UX de Snackbar cumple requisitos (5s auto-ocultar para éxito, manual para errores)
 - [ ] Todos los códigos de error mapeados a mensajes en español
-- [ ] Cobertura de tests >90%
+- [ ] Cobertura de pruebas >90%
 - [ ] Pipeline CI/CD verde
-- [ ] Documentación completa y revisada
+- [ ] Documentoación completa y revisada
 - [ ] Mergeado a rama `develop`
 
 **Timeline Estimado:** 3-4 días

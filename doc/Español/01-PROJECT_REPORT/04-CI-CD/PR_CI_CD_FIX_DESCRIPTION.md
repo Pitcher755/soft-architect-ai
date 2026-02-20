@@ -2,7 +2,7 @@
 
 ## 📝 Descripción
 
-Este PR incluye las correcciones necesarias para resolver todos los fallos en los workflows de GitHub Actions que impedían el paso de los tests en el entorno CI/CD.
+Este PR incluye las correcciones necesarias para resolver todos los fallos en los workflows de GitHub Actions que impedían el paso de los pruebas en el entorno CI/CD.
 
 **Estado**: 🟢 **ACTUALIZADO - Listo para merge a develop**
 
@@ -24,13 +24,13 @@ RuntimeError: The starlette.testclient module requires the httpx package to be i
 
 **Solución**:
 - Agregado `httpx==0.28.0` al archivo `requirements.txt`
-- Requerido por `FastAPI.TestClient` que depende de `Starlette.TestClient`
-- Resuelve el error de colección de tests en CI
+- Requerido por `FastAPI.PruebaClient` que depende de `Starlette.PruebaClient`
+- Resuelve el error de colección de pruebas en CI
 
 ---
 
-### 2. **Errores de Pylance en Websocket Tests** ✅
-**Archivo**: `tests/python/integration/test_streaming_flow.py` (línea 62+)
+### 2. **Errores de Pylance en Websocket Pruebas** ✅
+**Archivo**: `pruebas/python/integration/prueba_streaming_flow.py` (línea 62+)
 
 **Problemas**:
 ```
@@ -62,8 +62,8 @@ for _ in range(max_attempts):
 
 ---
 
-### 3. **Test Flaky de 500+ Tokens** ✅
-**Archivo**: `tests/python/integration/test_streaming_flow.py::test_connection_survives_500_plus_tokens`
+### 3. **Prueba Flaky de 500+ Tokens** ✅
+**Archivo**: `pruebas/python/integration/prueba_streaming_flow.py::prueba_connection_survives_500_plus_tokens`
 
 **Problema**:
 ```
@@ -124,7 +124,7 @@ on:
     pip install -r requirements.txt ruff black mypy pytest pytest-cov pytest-asyncio bandit httpx  # ← NUEVO
 ```
 
-#### d) Separación de tests por suite (mejor debugging)
+#### d) Separación de pruebas por suite (mejor debugging)
 ```yaml
 - name: Run pytest (Unit Tests)
   run: pytest tests/python/unit/ -v --tb=short --timeout=10
@@ -133,14 +133,14 @@ on:
   run: pytest tests/python/integration/ -v --tb=short --timeout=15
 ```
 
-#### e) pytest-timeout agregado a dependencias
+#### e) pyprueba-timeout agregado a dependencias
 ```diff
 + pytest-timeout==2.1.0
 ```
 
 ---
 
-## 📊 Impacto en Resultados
+## 📊 Impacto en Resultadoados
 
 ### Antes (CI/CD Fallando)
 ```
@@ -186,12 +186,12 @@ ruff check .
 
 ## 🚀 Verificación pre-merge
 
-- [x] Todos los tests pasan localmente (28/28)
+- [x] Todos los pruebas pasan localmente (28/28)
 - [x] Pre-commit hooks ejecutaron exitosamente
 - [x] Code quality checks: ✅ Verde
 - [x] Pylance type checking: ✅ Verde (0 errors)
 - [x] Flutter analyze: ✅ Verde (0 issues)
-- [x] CI/CD Pipeline: ✅ Verde (ready to run)
+- [x] CI/CD Pipeline: ✅ Verde (ready to ejecutar)
 - [x] No breaking changes
 - [x] Backwards compatible
 
@@ -200,13 +200,13 @@ ruff check .
 ## 📋 Checklist de Merge
 
 - [x] Todos los cambios de HU-3.5 implementados
-- [x] Cobertura de tests >85%
+- [x] Cobertura de pruebas >85%
 - [x] Performance targets validados:
   - [x] TTFB <200ms (185ms)
   - [x] Token rate 10+ tokens/sec (12/sec)
   - [x] 60 FPS UI
   - [x] Auto-reconnection <2s (1.8s)
-- [x] Documentación completa (ES/EN)
+- [x] Documentoación completa (ES/EN)
 - [x] CI/CD pipeline corregido y verde
 - [x] No conflictos con `develop`
 - [x] Listo para producción

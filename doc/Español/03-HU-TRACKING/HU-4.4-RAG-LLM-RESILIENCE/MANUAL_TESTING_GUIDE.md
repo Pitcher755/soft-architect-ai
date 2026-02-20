@@ -1,8 +1,8 @@
-# 🧪 HU-4.4: Manual Testing Guide - RAG/LLM Resilience Extensions
+# 🧪 HU-4.4: Manual Pruebaing Guide - RAG/LLM Resiliencia Extensions
 
 > **Fecha:** 16/02/2026
 > **Branch:** `feature/rag-llm-resilience`
-> **Estado:** ✅ Ready for Execution
+> **Estado:** ✅ Preparado para Execution
 > **Infraestructura:** Docker (sa_api, sa_chromadb, sa_ollama)
 
 ---
@@ -15,7 +15,7 @@
 4. [Escenario 2: Ollama con Problemas (Retry Logic)](#-escenario-2-ollama-con-problemas-retry-logic)
 5. [Escenario 3: ChromaDB Timeout](#-escenario-3-chromadb-timeout-opcional)
 6. [Limpieza y Reset](#-limpieza-y-reset)
-7. [Interpretación de Resultados](#-interpretación-de-resultados)
+7. [Interpretación de Resultadoados](#-interpretación-de-resultados)
 
 ---
 
@@ -45,7 +45,7 @@
 
 ## ✅ Verificación de Infraestructura
 
-**Ejecutar ANTES de empezar los tests:**
+**Ejecutar ANTES de empezar los pruebas:**
 
 ### 1.1 Levantar Stack Completo
 
@@ -103,7 +103,7 @@ curl -s http://localhost:11434 | head -5
 
 **Salida esperada:**
 
-**Test 1 (API):**
+**Prueba 1 (API):**
 ```json
 {
   "status": "ok",
@@ -112,12 +112,12 @@ curl -s http://localhost:11434 | head -5
 }
 ```
 
-**Test 2 (ChromaDB):**
+**Prueba 2 (ChromaDB):**
 ```json
 {"nanosecond heartbeat": 1708115838000000000}
 ```
 
-**Test 3 (Ollama):**
+**Prueba 3 (Ollama):**
 ```
 Ollama is running
 ```
@@ -204,7 +204,7 @@ curl -X POST http://localhost:8000/api/v1/chat/message \
   -s | jq . > /tmp/scenario1_body.json
 ```
 
-**Salida esperada (HTTP Status):**
+**Salida esperada (HTTP Estado):**
 ```
 < HTTP/1.1 200 OK
 < content-type: application/json
@@ -241,7 +241,7 @@ cat /tmp/scenario1_body.json
 - [ ] `metadata.template_used` = `"FALLBACK"` (no "CONTEXT_DRIVEN")
 - [ ] `metadata.sources` = `[]` (array vacío)
 - [ ] `message` contiene texto de respuesta (no está vacío)
-- [ ] HTTP Status Code = 200
+- [ ] HTTP Estado Code = 200
 
 ---
 
@@ -291,7 +291,7 @@ sa_chromadb   Up 3 seconds (healthy)
 
 ---
 
-### 1.6 Regression Test: Chat Funciona con ChromaDB Activo
+### 1.6 Regression Prueba: Chat Funciona con ChromaDB Activo
 
 ```bash
 # Enviar mensaje nuevamente (ahora con ChromaDB activo)
@@ -378,7 +378,7 @@ chmod +x /tmp/test_ollama_retry.sh
 docker restart sa_ollama
 ```
 
-**Timing crítico:** Ejecutar `docker restart sa_ollama` **mientras** el script de testing está corriendo.
+**Timing crítico:** Ejecutar `docker restart sa_ollama` **mientras** el script de pruebaing está corriendo.
 
 ---
 
@@ -420,7 +420,7 @@ docker logs sa_api --tail 50 | grep -E "Retry|retry|attempt"
 
 ---
 
-### 2.4 Validación: Verificar HTTP Status Codes
+### 2.4 Validación: Verificar HTTP Estado Codes
 
 ```bash
 # Ver resultados de las 3 requests
@@ -437,7 +437,7 @@ done
 
 ---
 
-### 2.5 Regression Test: Ollama Funciona Correctamente
+### 2.5 Regression Prueba: Ollama Funciona Correctamente
 
 ```bash
 # Verificar que Ollama está activo y respondiendo
@@ -465,7 +465,7 @@ Ollama is running
 
 Validar que RAG operations tienen **timeout de 30s** y NO esperan indefinidamente.
 
-**⚠️ NOTA:** Este escenario está **completamente cubierto** por unit tests (`test_orchestrator_applies_30s_timeout_to_rag_search`). Ejecución manual es **OPCIONAL**.
+**⚠️ NOTA:** Este escenario está **completamente cubierto** por unit pruebas (`prueba_orchestrator_applies_30s_timeout_to_rag_search`). Ejecución manual es **OPCIONAL**.
 
 ---
 
@@ -488,10 +488,10 @@ tests/server/unit/services/rag/test_orchestrator_degradation.py::test_orchestrat
 ```
 
 **✅ CRITERIO DE ACEPTACIÓN:**
-- [ ] Test pasa (PASSED)
+- [ ] Prueba pasa (PASSED)
 - [ ] Coverage confirma timeout está implementado
 
-**👉 SI EL TEST PASA:** Escenario 3 está validado. **NO es necesario testing manual**.
+**👉 SI EL TEST PASA:** Escenario 3 está validado. **NO es necesario pruebaing manual**.
 
 ---
 
@@ -515,7 +515,7 @@ docker ps --filter "name=sa_"
 
 ---
 
-## 📊 Interpretación de Resultados
+## 📊 Interpretación de Resultadoados
 
 ### ✅ Criterios de Aceptación Finales
 
@@ -529,15 +529,15 @@ docker ps --filter "name=sa_"
 | **2.1** | Ollama Retry | Requests completan exitosamente (HTTP 200) | ☐ |
 | **2.2** | Ollama Retry | Log muestra retries (si hubo fallos) | ☐ |
 | **2.3** | Ollama Retry | Regression: Ollama funciona correctamente | ☐ |
-| **3.1** | Timeout | Unit test pasa (PASSED) | ☐ |
+| **3.1** | Timeout | Unit prueba pasa (PASSED) | ☐ |
 
 **🎉 HU-4.4 VALIDACIÓN COMPLETA:** Si todos los criterios están marcados ✅, la feature está lista para merge.
 
 ---
 
-## 📝 Notas para el Tester
+## 📝 Notas para el Pruebaer
 
-### Logging de Resultados
+### Logging de Resultadoados
 
 **Guardar evidencias en cada escenario:**
 
@@ -577,14 +577,14 @@ tar -czf ~/hu-4.4-manual-test-results.tar.gz /tmp/hu-4.4-test-evidence/
 ## 🔗 Referencias
 
 - **PROGRESS.md:** Estado completo de HU-4.4
-- **README.md:** Contexto y GAP analysis de la feature
+- **README.md:** Contexto y GAP análisis de la feature
 - **Docker Compose:** `infrastructure/docker-compose.yml`
 - **API Endpoints:** `src/server/app/api/v1/chat.py`
-- **Unit Tests:** `tests/server/unit/services/rag/test_orchestrator_degradation.py`
+- **Unit Pruebas:** `pruebas/server/unit/services/rag/prueba_orchestrator_degradation.py`
 
 ---
 
-**👤 Ejecutado por:** [Nombre del Tester]
+**👤 Ejecutado por:** [Nombre del Pruebaer]
 **📅 Fecha de ejecución:** [DD/MM/YYYY]
 **⏱️ Duración total:** [X minutos]
-**✅ Resultado final:** [PASS / FAIL]
+**✅ Resultadoado final:** [PASS / FAIL]

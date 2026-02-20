@@ -26,7 +26,7 @@
 
 ### 🎯 Workflow Objectives
 
-**"Construir el sistema de memoria persistente del proyecto con paranoia sobre SQL injection y consistencia de datos"**
+**"Construir el sistema de memoria persistente of the project con paranoia sobre SQL injection y consistencia de datos"**
 
 Este workflow está diseñado para:
 - ✅ **TDD Estricto:** Ninguna línea de código sin test previo (Red → Green → Refactor).

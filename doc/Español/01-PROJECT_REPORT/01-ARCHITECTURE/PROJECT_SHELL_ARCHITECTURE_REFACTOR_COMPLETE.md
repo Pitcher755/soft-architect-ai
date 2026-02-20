@@ -1,4 +1,4 @@
-# 🎯 Project Shell Refactoring - Phase 2 Complete
+# 🎯 Proyecto Shell Refactoring - Fase 2 Complete
 
 > **Fecha:** 8 de febrero de 2026
 > **Estado:** ✅ COMPLETADO
@@ -20,20 +20,20 @@
 
 ### Objetivo Alcanzado ✅
 
-Transformar `project_shell_screen.dart` de código espagueti a arquitectura limpia y modular:
+Transformar `proyecto_shell_screen.dart` de código espagueti a arquitectura limpia y modular:
 
-1. **Extraer lógica del árbol de directorios** → Nuevo widget `FileTreeWidget`
+1. **Extraer lógica del árbol de directorios** → Nuevo widget `ArchivoTreeWidget`
 2. **Crear columnas resizables** → Nuevo widget `ResizableColumn`
 3. **Integrar ProgressIndicatorWidget real** → En el header del chat
-4. **Columnas ocultables** → Toggle buttons en FAB (Floating Action Buttons)
+4. **Columnas ocultables** → Toggle botóns en FAB (Floating Action Botóns)
 5. **Navegación persistente** → Seleccionar archivo mantiene el árbol visible
 
 ---
 
 ## 🆕 Nuevos Widgets Creados
 
-### 1. `FileTreeWidget`
-**Ubicación:** `lib/features/project_shell/presentation/widgets/file_tree_widget.dart`
+### 1. `ArchivoTreeWidget`
+**Ubicación:** `lib/features/proyecto_shell/presentation/widgets/archivo_tree_widget.dart`
 
 ```dart
 class FileTreeWidget extends StatefulWidget {
@@ -44,7 +44,7 @@ class FileTreeWidget extends StatefulWidget {
 
 **Características:**
 - Árbol de directorios completamente independiente
-- Cargado desde `MockProjectData.mockProjectRoot`
+- Cargado desde `MockProyectoData.mockProyectoRoot`
 - Expand/collapse de carpetas con iconos interactivos
 - Selección visual de archivos/carpetas
 - Callbacks cuando se selecciona un nodo
@@ -66,7 +66,7 @@ PROJECT-ALPHA/
 ---
 
 ### 2. `ResizableColumn`
-**Ubicación:** `lib/features/project_shell/presentation/widgets/resizable_column.dart`
+**Ubicación:** `lib/features/proyecto_shell/presentation/widgets/resizable_column.dart`
 
 ```dart
 class ResizableColumn extends StatefulWidget {
@@ -100,7 +100,7 @@ ResizableColumn(
 
 ## 🔄 Archivos Refactorizados
 
-### `project_shell_screen.dart`
+### `proyecto_shell_screen.dart`
 
 **Antes (espagueti):**
 - 276 líneas
@@ -112,7 +112,7 @@ ResizableColumn(
 **Después (limpio):**
 - ~150 líneas (50% reducción)
 - 2 métodos build simples
-- Métodos: `_onFileSelected()`, `_buildFAB()`
+- Métodos: `_onArchivoSelected()`, `_buildFAB()`
 - Columnas resizables con estado
 - Estado claro y separado
 
@@ -175,24 +175,24 @@ Expanded(
 
 - **Expand/Collapse:** Carpetas expandibles con control visual
 - **Selección:** Marca el archivo/carpeta seleccionado con color
-- **Mock Data:** Precargado desde `MockProjectData.mockProjectRoot`
+- **Mock Data:** Precargado desde `MockProyectoData.mockProyectoRoot`
 - **Iconos:** Carpeta (azul), archivo (gris)
 - **Persistencia:** El árbol NO se cierra al seleccionar archivo
 
 ### 2. Columnas Redimensionables ✅
 
-- **Files Column:** 200-500px (default 260px)
+- **Archivos Column:** 200-500px (default 260px)
 - **Preview Column:** 300-600px (default 420px)
 - **Drag Handle:** Divider gris en los bordes
 - **Feedback Visual:** Color azul en hover
 
 ### 3. Columnas Ocultables ✅
 
-- **Toggle Buttons:** 2 FABs en esquina inferior derecha
-- **Files Toggle:** Mostrar/ocultar explorador
+- **Toggle Botóns:** 2 FABs en esquina inferior derecha
+- **Archivos Toggle:** Mostrar/ocultar explorador
 - **Preview Toggle:** Mostrar/ocultar preview markdown
 - **Persistencia:** Estado se mantiene al toggle
-- **Icons:** 📁 folder / 👁 visibility
+- **Icons:** 📁 carpeta / 👁 visibility
 
 ### 4. Progress Indicator Integrado ✅
 
@@ -207,7 +207,7 @@ ProgressIndicatorWidget(
 - Progress bar visual (32% = 8/25)
 - Label dinámico
 - Botón Pause
-- Phase colors por estado
+- Fase colors por estado
 
 ### 5. Chat Panel con Datos Mock ✅
 
@@ -237,7 +237,7 @@ MarkdownPreviewWidget(
 ```
 
 **Características:**
-- Toolbar con copy/download buttons
+- Toolbar con copy/download botóns
 - Contenido scrolleable
 - Monospace font (JetBrains Mono)
 - Theme GitHub Dark
@@ -274,10 +274,10 @@ lib/features/project_shell/
 
 | Widget | Estado | Datos Mock | Navegable |
 |--------|--------|-----------|-----------|
-| FileTreeWidget | ✅ | MockProjectData.mockProjectRoot | ✅ |
-| ChatPanelWidget | ✅ | MockProjectData.mockChatMessages | ✅ |
-| MarkdownPreviewWidget | ✅ | MockProjectData.mockMarkdownContent | ✅ |
-| ProgressIndicatorWidget | ✅ | MockProjectData metrics | N/A |
+| ArchivoTreeWidget | ✅ | MockProyectoData.mockProyectoRoot | ✅ |
+| ChatPanelWidget | ✅ | MockProyectoData.mockChatMessages | ✅ |
+| MarkdownPreviewWidget | ✅ | MockProyectoData.mockMarkdownContent | ✅ |
+| ProgressIndicatorWidget | ✅ | MockProyectoData metrics | N/A |
 
 ---
 
@@ -285,11 +285,11 @@ lib/features/project_shell/
 
 ✅ **Código Limpio:**
 - Separación clara de concerns (widgets independientes)
-- project_shell_screen.dart solo orquesta
+- proyecto_shell_screen.dart solo orquesta
 - Sin lógica espagueti
 
 ✅ **Componentes Reutilizables:**
-- FileTreeWidget: puede usarse en otros contextos
+- ArchivoTreeWidget: puede usarse en otros contextos
 - ResizableColumn: genérico para cualquier columna
 - Todos los widgets con datos inyectables
 
@@ -300,30 +300,30 @@ lib/features/project_shell/
 - Responsive
 
 ✅ **Datos Mock Escalables:**
-- Todo desde MockProjectData (una sola fuente)
+- Todo desde MockProyectoData (una sola fuente)
 - Fácil cambiar a notifiers reales sin tocar widgets
 - Estructura preparada para backend
 
 ✅ **Zero Compilation Errors:**
 - flutter analyze: 0 errors
-- Solo info warnings (linting style)
+- Solo info warnings (linting estilo)
 
 ---
 
 ## 🔮 Próximos Pasos (No Implementados Aún)
 
-### 1. Backend Integration
-- Crear `FileSystemNotifier` (reemplazo de mock)
+### 1. Backend Integración
+- Crear `ArchivoSystemNotifier` (reemplazo de mock)
 - Crear `ChatNotifier` (reemplazo de mock)
 - Repository pattern para datos
 
-### 2. Real File System
+### 2. Real Archivo System
 - Cargar archivos reales del proyecto
 - Parsear markdown para rendering
 - Cachear contenido en memoria
 
 ### 3. Enhanced Features
-- Expandir/colapsar todos (buttons en header)
+- Expandir/colapsar todos (botóns en header)
 - Buscar en árbol (search input)
 - Drag&drop entre carpetas (future)
 - Real-time edits en preview
@@ -338,9 +338,9 @@ lib/features/project_shell/
 ## 📝 Resumen Técnico
 
 **Líneas de código:**
-- FileTreeWidget: 160 líneas
+- ArchivoTreeWidget: 160 líneas
 - ResizableColumn: 60 líneas
-- project_shell_screen.dart: ~150 líneas (reducción del 50%)
+- proyecto_shell_screen.dart: ~150 líneas (reducción del 50%)
 
 **Complejidad ciclomática:**
 - Antes: Alta (múltiples métodos recursivos)
@@ -349,7 +349,7 @@ lib/features/project_shell/
 **Mantenibilidad:**
 - ✅ Clean Architecture (widgets independientes)
 - ✅ Single Responsibility (cada widget una cosa)
-- ✅ Testeable (cada widget aislado)
+- ✅ Pruebaeable (cada widget aislado)
 - ✅ Escalable (mock ↔ real sin cambios en UI)
 
 ---
@@ -358,12 +358,12 @@ lib/features/project_shell/
 
 1. **Extract Widget Pattern:** Cuando una función build() crece, extraer a widget
 2. **Composition over Inheritance:** ResizableColumn puede envolver cualquier widget
-3. **Callback Chains:** onFileSelected → setState → widget rebuild
+3. **Callback Chains:** onArchivoSelected → setState → widget rebuild
 4. **Local State Management:** Perfecto para UI-only state (widths, visibility)
-5. **Mock Data Scalability:** Una fuente de verdad (MockProjectData) para fácil transición
+5. **Mock Data Scalability:** Una fuente de verdad (MockProyectoData) para fácil transición
 
 ---
 
 **Validado por:** `flutter analyze --no-pub`
 **Versión:** v0.2.0 (IDE Layout Complete)
-**Próxima:** v0.3.0 (Backend Integration)
+**Próxima:** v0.3.0 (Backend Integración)

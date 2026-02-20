@@ -2,7 +2,7 @@
 
 * **Tu Portátil:** Solo tiene VS Code instalado. No tiene código, ni Docker, ni Python, ni Ollama.
 * **Tu HomeLab:** Tiene el repositorio clonado, Docker corriendo, los modelos de IA descargados y el entorno de desarrollo.
-* **El Túnel:** VS Code se conecta por SSH y te muestra los archivos del servidor como si estuvieran en tu disco duro.
+* **El Túnel:** VS Code se conecta por SSH y te muestra los files del servidor como si estuvieran en tu disco duro.
 
 ---
 
@@ -14,7 +14,7 @@ Asumo que tu HomeLab corre Linux (Ubuntu/Debian/Zorin).
 
 * Asegúrate de tener acceso SSH desde tu portátil.
 * Instala **Docker** y **Git** en el HomeLab.
-* Crea la carpeta del proyecto: `mkdir ~/proyectos/softarchitect`.
+* Crea la folder of the project: `mkdir ~/projects/softarchitect`.
 
 #### 2. Prepara tu Portátil (El Cliente)
 
@@ -28,8 +28,8 @@ Asumo que tu HomeLab corre Linux (Ubuntu/Debian/Zorin).
 
 Una vez conectado, verás que en la esquina inferior izquierda de VS Code pone verde: `SSH: ip-de-tu-homelab`.
 
-1. En VS Code, dale a "Abrir Carpeta".
-2. ¡Sorpresa! No estás navegando por tu portátil, estás navegando por los archivos del HomeLab.
+1. En VS Code, dale a "Abrir Folder".
+2. ¡Sorpresa! No estás navegando por tu portátil, estás navegando por los files del HomeLab.
 3. Abre la terminal integrada en VS Code (`Ctrl + ñ`). **Esa terminal es la terminal de tu HomeLab**.
 
 Ahora, ejecuta en esa terminal integrada:
@@ -40,7 +40,7 @@ docker compose up -d
 
 ```
 
-**Resultado:** Todo (Ollama, ChromaDB, Backend) se está ejecutando en el servidor. Tu portátil no está consumiendo RAM ni guardando archivos.
+**Result:** Todo (Ollama, ChromaDB, Backend) se está ejecutando en el servidor. Tu portátil no está consumiendo RAM ni guardando files.
 
 ---
 
@@ -93,7 +93,7 @@ Para que la experiencia sea fluida como la seda, ejecuta estos ajustes una sola 
 
 #### 1. Docker sin `sudo` (Vital para VS Code)
 
-VS Code intenta ejecutar comandos de Docker con tu usuario. Si necesita `sudo` cada vez, fallará silenciosamente.
+VS Code intenta execute comandos de Docker con tu usuario. Si necesita `sudo` cada vez, fallará silenciosamente.
 
 ```bash
 # Aplica los cambios sin reiniciar
@@ -105,7 +105,7 @@ docker run hello-world
 
 #### 2. Extensiones de VS Code en el Remoto
 
-Cuando te conectas por SSH, verás que tus extensiones locales aparecen en gris o con un botón "Install in SSH: HomeLab".
+Cuando te conectas por SSH, verás que tus extensiones locales aparecen en gris o con un button "Install in SSH: HomeLab".
 **Debes instalar en el remoto:**
 
 * **Flutter** (Dart-Code.flutter)
@@ -136,9 +136,9 @@ git config --global credential.helper store
 
 
 
-#### 4. Aumentar los "Vigilantes" de Archivos (File Watchers)
+#### 4. Aumentar los "Vigilantes" de Files (File Watchers)
 
-Flutter y VS Code observan miles de archivos. El límite por defecto de Linux es bajo y puede causar errores extraños.
+Flutter y VS Code observan miles de files. El límite por defecto de Linux es bajo y puede causar errores extraños.
 
 ```bash
 echo "fs.inotify.max_user_watches=524288" | sudo tee -a /etc/sysctl.conf
@@ -150,15 +150,15 @@ sudo sysctl -p
 
 ### 📝 Notas sobre Tailscale (Acceso desde fuera de casa)
 
-* **IPs Mágicas:** Tailscale asigna una IP fija (ej: `100.x.y.z`) a tu HomeLab. Usa SIEMPRE esta IP en VS Code Remote-SSH, incluso cuando estés en casa. Así no tienes que cambiar la configuración si te vas a una cafetería.
+* **IPs Mágicas:** Tailscale asigna una IP fija (ej: `100.x.y.z`) a tu HomeLab. Usa SIEMPRE esta IP en VS Code Remote-SSH, incluso cuando estés en casa. Así no tienes que cambiar la configuration si te vas a una cafetería.
 * **MagicDNS:** Si activas MagicDNS en el panel de Tailscale, puedes conectar usando el nombre de la máquina: `ssh usuario@homelab` en lugar de la IP. Mucho más fácil de recordar.
 
 ---
 
 ## 7. Despliegue del Motor de IA (Ollama)
 
-### 7.1. Configuración de Docker Compose
-Configuración mínima para validar el hardware en el HomeLab. Este servicio expone la API de Ollama en el puerto 11434.
+### 7.1. Configuration de Docker Compose
+Configuration mínima para validar el hardware en el HomeLab. Este servicio expone la API de Ollama en el puerto 11434.
 
 ```yaml
 version: '3.8'
@@ -197,7 +197,7 @@ docker compose up -d
 ```
 
 
-2. **Descargar el modelo de prueba (Phi-3.5 Mini):**
+2. **Descargar el modelo de test (Phi-3.5 Mini):**
 Elegido por su bajo peso (~2.4GB) y velocidad, ideal para verificar la tubería sin esperas largas.
 ```bash
 docker exec -it sa_ollama ollama pull phi3.5
@@ -205,8 +205,8 @@ docker exec -it sa_ollama ollama pull phi3.5
 ```
 
 
-3. **Prueba de Inferencia (Smoke Test):**
-Ejecutar un prompt simple para verificar latencia y funcionamiento.
+3. **Test de Inferencia (Smoke Test):**
+Execute un prompt simple para verificar latencia y funcionamiento.
 ```bash
 docker exec -it sa_ollama ollama run phi3.5 "Hola, preséntate brevemente."
 
@@ -221,9 +221,9 @@ docker exec -it sa_ollama ollama pull qwen2.5-coder:7b
 ```
 ---
 
-## 8. Configuración del Motor de Inteligencia (Selector de Proveedor)
+## 8. Configuration del Motor de Inteligencia (Selector de Proveedor)
 
-SoftArchitect AI puede funcionar en dos modos. Elige el que se adapte a tu hardware editando el archivo `.env`.
+SoftArchitect AI puede funcionar en dos modos. Elige el que se adapte a tu hardware editando el file `.env`.
 
 ### Opción A: Modo Local (Privacidad Total) 🔒
 *Recomendado para:* Portátiles modernos (M1/M2/M3, Ryzen 5000+, Intel 11th+) o PCs con GPU NVIDIA.
@@ -260,7 +260,7 @@ El proyecto incluye un script automatizado (`start_stack.sh`) que valida el ento
 **Ejecución:**
 
 ```bash
-# Desde la raíz del proyecto
+# Desde la raíz of the project
 chmod +x start_stack.sh
 ./start_stack.sh
 ```
@@ -301,7 +301,7 @@ docker compose --version  # Debe ser >= 2.0
 # Copiar template si no existe
 [ ! -f .env ] && cp .env.example .env
 
-# Revisar configuración (editarlo según tus necesidades)
+# Revisar configuration (editarlo según tus necesidades)
 cat .env
 ```
 
@@ -398,7 +398,7 @@ kill -9 <PID>
 sudo chmod -R 755 infrastructure/data/chromadb
 sudo chmod -R 755 infrastructure/data/ollama
 
-# Eliminar volúmenes corruptos (⚠️ destruye datos)
+# Delete volúmenes corruptos (⚠️ destruye datos)
 docker compose down -v
 docker compose up -d
 ```

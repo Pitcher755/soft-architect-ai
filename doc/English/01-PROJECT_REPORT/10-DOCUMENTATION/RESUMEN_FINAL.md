@@ -2,7 +2,7 @@
 
 **Fecha:** 9 de febrero de 2026
 **Versión:** 1.0 - FUNCIONAL
-**Estado:** ✅ LISTO PARA TESTING Y PRODUCCIÓN
+**Status:** ✅ LISTO PARA TESTING Y PRODUCCIÓN
 
 ---
 
@@ -11,28 +11,28 @@
 ### ✅ Problema Identificado y Resuelto
 
 **Problema User-Reported:**
-> "Los proyectos creados desde CreateProjectDialog no aparecen en ProjectWorkspaceScreen.
-> El botón para mostrar/ocultar la lista tampoco es visible."
+> "Los projects creados desde CreateProjectDialog no aparecen en ProjectWorkspaceScreen.
+> El button para mostrar/ocultar la lista tampoco es visible."
 
 **Raíz del Problema:**
-- `getMockProjectsData()` era síncrona → no cargaba proyectos reales
+- `getMockProjectsData()` era síncrona → no cargaba projects reales
 - `buildHybridProjectsList([])` recibía lista VACÍA → no mostraba nada
 - ConsumerStatefulWidget con Riverpod → complejidad innecesaria
-- Sin FutureBuilder → sin manejo de estados async
+- Sin FutureBuilder → sin manejo de statuss async
 
 **Solución Implementada:**
 - ✅ Revertida a `StatefulWidget` simple
 - ✅ `getMockProjectsData()` ahora `async Future`
-- ✅ Carga proyectos reales del filesystem
-- ✅ FutureBuilder maneja 3 estados (loading, error, data)
-- ✅ Botón "Ver todos" aparece cuando > 8 proyectos
-- ✅ Proyectos creados aparecen inmediatamente
+- ✅ Carga projects reales del filesystem
+- ✅ FutureBuilder maneja 3 statuss (loading, error, data)
+- ✅ Button "Ver todos" aparece cuando > 8 projects
+- ✅ Projects creados aparecen inmediatamente
 
 ---
 
 ## 📊 Cambios Realizados
 
-### 3 Archivos Modificados
+### 3 Files Modificados
 
 #### 1. `project_workspace_screen.dart`
 - **De:** ConsumerStatefulWidget → `ref.watch()` (Riverpod)
@@ -42,7 +42,7 @@
 #### 2. `mock_projects_data.dart`
 - **De:** Función síncrona que retorna solo mock
 - **A:** Función async que carga real + mock
-- **Efecto:** Busca en ~/projects, ~/SoftArchitect, ~/Proyectos
+- **Efecto:** Busca en ~/projects, ~/SoftArchitect, ~/Projects
 
 #### 3. `project_list_view.dart`
 - **De:** Espera `List<Project>` entity
@@ -84,7 +84,7 @@ Dashboard carga → Spinner (2-3s) → Muestra proyectos
 └─ Botón "Ver todos" (si > 8)
 ```
 
-### Escenario 2: Crear Proyecto
+### Escenario 2: Create Project
 ```
 Click "Nuevo" → Diálogo → Crear → Navega a proyecto
 └─ Vuelvo a dashboard → PROYECTO APARECE ✅
@@ -105,9 +105,9 @@ Click "Ver todos (N)" → ProjectListView abre
 | Métrica | Antes | Después |
 |---------|-------|---------|
 | Errores compilación | 7+ | 0 ✅ |
-| Proyectos mostrados | 1 | N+ ✅ |
-| Botón visible | No | Sí (>8) ✅ |
-| Nuevos proyectos aparecen | No | Sí inmediato ✅ |
+| Projects mostrados | 1 | N+ ✅ |
+| Button visible | No | Sí (>8) ✅ |
+| Nuevos projects aparecen | No | Sí inmediato ✅ |
 | Manejo de errores | Ninguno | FutureBuilder ✅ |
 | Loading state | Congelado | Spinner ✅ |
 
@@ -115,9 +115,9 @@ Click "Ver todos (N)" → ProjectListView abre
 
 ## 📁 Documentación Generada
 
-### Archivos de Referencia
+### Files de Referencia
 
-| Archivo | Propósito |
+| File | Propósito |
 |---------|-----------|
 | `CORRECION_DEFINITIVA_HYBRID_SYSTEM.md` | Detalles técnicos completos |
 | `TESTING_QUICK_START.md` | Guía de testing (6 tests) |
@@ -126,11 +126,11 @@ Click "Ver todos (N)" → ProjectListView abre
 
 ---
 
-## 🎮 Próximos Pasos
+## 🎮 Next Steps
 
 ### Inmediatos (Hoy)
 1. ✅ Verificar compilación: `flutter clean && flutter pub get`
-2. ✅ Ejecutar app: `flutter run -d linux`
+2. ✅ Execute app: `flutter run -d linux`
 3. ✅ Testing manual (6 tests en TESTING_QUICK_START.md)
 
 ### Corto Plazo (Esta semana)
@@ -139,16 +139,16 @@ Click "Ver todos (N)" → ProjectListView abre
 - [ ] Documentación para usuarios finales
 
 ### Mediano Plazo
-- [ ] Búsqueda de proyectos mejorada
+- [ ] Búsqueda de projects mejorada
 - [ ] Sincronización con base de datos
-- [ ] Caché de proyectos
+- [ ] Caché de projects
 
 ---
 
 ## 🔐 Garantías
 
 ✅ **Funcional:** Sistema híbrido (real + mock) operativo
-✅ **Escalable:** Soporta N proyectos sin degradación
+✅ **Escalable:** Soporta N projects sin degradación
 ✅ **Robusta:** Manejo de errores, loading states, persistencia
 ✅ **Mantenible:** Código limpio, sin Riverpod innecesario
 ✅ **Testeable:** Tests manuales documentados
@@ -160,18 +160,18 @@ Click "Ver todos (N)" → ProjectListView abre
 
 ### Si algo no funciona:
 
-1. **Proyectos no aparecen:**
+1. **Projects no aparecen:**
    - Ver `PROYECTO_SEARCH_PATHS.md`
-   - Crear carpeta en `./projects/`
+   - Create folder en `./projects/`
    - Reiniciar app
 
-2. **Botón "Ver todos" oculto:**
-   - Necesitas 9+ proyectos (8 en grid + > threshold)
-   - Crear más proyectos con CreateProjectDialog
+2. **Button "Ver todos" oculto:**
+   - Necesitas 9+ projects (8 en grid + > threshold)
+   - Create más projects con CreateProjectDialog
 
 3. **Error en logs:**
    - Revisar FutureBuilder error state
-   - Verificar permisos de carpetas
+   - Verificar permisos de folders
 
 ---
 
@@ -180,11 +180,11 @@ Click "Ver todos (N)" → ProjectListView abre
 **SISTEMA HÍBRIDO DE PROYECTOS: 100% FUNCIONAL**
 
 El dashboard ahora:
-- ✅ Muestra proyectos REALES (filesystem)
-- ✅ Incluye proyecto MOCK (Guía SoftArchitect)
-- ✅ Permite crear nuevos proyectos
-- ✅ Botón expandir cuando > 8 proyectos
-- ✅ Manejo robusto de estados y errores
+- ✅ Muestra projects REALES (filesystem)
+- ✅ Incluye project MOCK (Guía SoftArchitect)
+- ✅ Permite create nuevos projects
+- ✅ Button expandir cuando > 8 projects
+- ✅ Manejo robusto de statuss y errores
 - ✅ Sin errores de compilación
 
 **Status:** LISTO PARA PRODUCCIÓN ✅

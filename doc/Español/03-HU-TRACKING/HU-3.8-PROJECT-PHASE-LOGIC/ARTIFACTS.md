@@ -5,9 +5,9 @@
 
 ## 📖 Tabla de Contenidos
 - [Objetivo](#objetivo)
-- [Artefactos de Documentación](#artefactos-de-documentación)
+- [Artefactos de Documentoación](#artefactos-de-documentoación)
 - [Artefactos de Código Esperados](#artefactos-de-código-esperados)
-- [Artefactos de Testing Esperados](#artefactos-de-testing-esperados)
+- [Artefactos de Pruebaing Esperados](#artefactos-de-pruebaing-esperados)
 - [Evidencias de Validación](#evidencias-de-validación)
 
 ---
@@ -18,7 +18,7 @@ Inventariar los artefactos necesarios para implementar HU-3.8 con lógica de fas
 
 ---
 
-## 📚 Artefactos de Documentación
+## 📚 Artefactos de Documentoación
 
 ### Obligatorios (creados en esta fase)
 - `README.md`
@@ -35,34 +35,34 @@ Inventariar los artefactos necesarios para implementar HU-3.8 con lógica de fas
 ## 🧩 Artefactos de Código Implementados
 
 ### Dominio (client)
-- `src/client/lib/features/project_shell/core/constants/project_structure_constants.dart`
-- `src/client/lib/features/project_shell/domain/models/project_phase.dart`
-- `src/client/lib/features/project_shell/domain/services/project_phase_service.dart`
+- `src/client/lib/features/proyecto_shell/core/constants/proyecto_structure_constants.dart`
+- `src/client/lib/features/proyecto_shell/domain/models/proyecto_fase.dart`
+- `src/client/lib/features/proyecto_shell/domain/services/proyecto_fase_service.dart`
 
 ### Estado / Providers
-- `src/client/lib/features/project_shell/presentation/providers/project_providers.dart`
+- `src/client/lib/features/proyecto_shell/presentation/providers/proyecto_providers.dart`
 
 ### Presentación
-- `src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart`
-- `src/client/lib/features/project_shell/presentation/widgets/projects_grid.dart`
-- `src/client/lib/features/project_shell/presentation/widgets/project_card.dart`
+- `src/client/lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart`
+- `src/client/lib/features/proyecto_shell/presentation/widgets/proyectos_grid.dart`
+- `src/client/lib/features/proyecto_shell/presentation/widgets/proyecto_card.dart`
 
 ---
 
-## 🧪 Artefactos de Testing Implementados
+## 🧪 Artefactos de Pruebaing Implementados
 
-### Unit tests
-- `tests/client/unit/features/project_shell/domain/services/project_phase_service_test.dart`
-- `tests/client/unit/features/project_shell/presentation/notifiers/project_progress_notifier_test.dart`
+### Unit pruebas
+- `pruebas/client/unit/features/proyecto_shell/domain/services/proyecto_fase_service_prueba.dart`
+- `pruebas/client/unit/features/proyecto_shell/presentation/notifiers/proyecto_progress_notifier_prueba.dart`
 
-### Widget tests relacionados
-- `tests/client/widget/features/project_shell/presentation/project_card_test.dart`
+### Widget pruebas relacionados
+- `pruebas/client/widget/features/proyecto_shell/presentation/proyecto_card_prueba.dart`
 
 ---
 
 ## ✅ Evidencias de Validación
 
-- Salida de `flutter test` para suites HU-3.8 (dominio + notifier).
-- Salida de `flutter analyze` limpia en `src/client/lib/features/project_shell`.
-- Salida de `flutter analyze` limpia en `tests/`.
-- Evidencia de cálculo determinista `Doc N/25` y transición por fases en tests.
+- Salida de `flutter prueba` para suites HU-3.8 (dominio + notifier).
+- Salida de `flutter analyze` limpia en `src/client/lib/features/proyecto_shell`.
+- Salida de `flutter analyze` limpia en `pruebas/`.
+- Evidencia de cálculo determinista `Doc N/25` y transición por fases en pruebas.

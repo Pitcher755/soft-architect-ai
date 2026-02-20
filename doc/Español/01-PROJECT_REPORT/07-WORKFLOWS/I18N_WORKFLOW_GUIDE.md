@@ -109,7 +109,7 @@ flutter test
 1. **Exportar claves:** `flutter pub global activate intl_utils`
 2. **Enviar al traductor:** Exportar CSV desde app.arb
 3. **Recibir traducciones:** Importar CSV de vuelta
-4. **Validar:** Correr tests y QA
+4. **Validar:** Correr pruebas y QA
 
 ### Herramientas Usadas:
 
@@ -125,7 +125,7 @@ flutter test
 - [ ] Sintaxis JSON válida
 - [ ] Sin cadenas hardcodeadas en código (usar `AppLocalizations.of(context)!.key`)
 - [ ] Caracteres especiales escapados correctamente
-- [ ] Tests pasando
+- [ ] Pruebas pasando
 - [ ] UI probada en dispositivo/emulador
 - [ ] Mensaje commit: `feat(i18n): Add French language support`
 

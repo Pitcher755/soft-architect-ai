@@ -1,7 +1,7 @@
-# 🚀 HU-3.3: Master Implementation Workflow
-## Sequential Chat & Document Generation Engine
+# 🚀 HU-3.3: Master Implementación Workflow
+## Sequential Chat & Documento Generation Engine
 
-> **Historia de Usuario:** Como Usuario, quiero un chat que me guíe secuencialmente para generar documentos (Doc 1→25) usando templates RAG e iteración conversacional.
+> **Historia de Usuario:** Como Usuario, quiero un chat que me guíe secuencialmente para generar documentoos (Doc 1→25) usando templates RAG e iteración conversacional.
 >
 > **Rama:** `feature/chat-sequential-docs`
 > **Estimación:** XXL (21 puntos)
@@ -19,7 +19,7 @@
 5. [Fase 2: Backend SSE Streaming (TDD GREEN)](#fase-2-backend-sse-streaming-tdd-green)
 6. [Fase 3: Frontend State Machine (TDD RED)](#fase-3-frontend-state-machine-tdd-red)
 7. [Fase 4: UI Components Golden Kit (TDD GREEN)](#fase-4-ui-components-golden-kit-tdd-green)
-8. [Fase 5: Integration The Gate (TDD RED)](#fase-5-integration-the-gate-tdd-red)
+8. [Fase 5: Integración The Gate (TDD RED)](#fase-5-integration-the-gate-tdd-red)
 9. [Fase 6: End-to-End Validation (TDD GREEN)](#fase-6-end-to-end-validation-tdd-green)
 10. [Checklist de Validación](#checklist-de-validación)
 11. [Referencias y Comandos](#referencias-y-comandos)
@@ -44,9 +44,9 @@ Estimated Duration: 3-4 days
 ### 1.2 Objetivos Clave
 
 1. **Orquestación Secuencial:** Máquina de estados que avanza Doc 1→25
-2. **RAG Integration:** Templates inteligentes con contexto del knowledge base
+2. **RAG Integración:** Templates inteligentes con contexto del knowledge base
 3. **Streaming Real-Time:** SSE con latencia <200ms (Time To First Token)
-4. **Validación Controlada:** Documentos NO persisten hasta que usuario confirma
+4. **Validación Controlada:** Documentoos NO persisten hasta que usuario confirma
 5. **UX Golden Kit:** Interfaz de alta fidelidad con feedback inmediato
 
 ### 1.3 Criterios de Aceptación (del Roadmap)
@@ -57,14 +57,14 @@ Estimated Duration: 3-4 days
 - [ ] Propuesta es JSON/Markdown temporal (NO persiste hasta 'Validar')
 - [ ] Control UX: Botón enviar (➤) deshabilitado si campo vacío o solo espacios
 - [ ] Herramientas Código: Bloques código con botón 'Copiar' en cabecera → portapapeles
-- [ ] Botón 'Validar y Guardar' llama a FileSystemService (HU-3.2) para persistencia en disco
+- [ ] Botón 'Validar y Guardar' llama a ArchivoSystemService (HU-3.2) para persistencia en disco
 - [ ] Streaming token-a-token usando SSE (<200ms TTF - Time To First Token)
 - [ ] Barra de progreso: Doc N/25 actualiza tras validar
 - [ ] Flujo 100% secuencial (nunca 2 docs en paralelo)
 
 #### ❌ Criterios Negativos
 
-- [ ] Documentos NO se guardan si usuario no hace clic 'Validar'
+- [ ] Documentoos NO se guardan si usuario no hace clic 'Validar'
 
 ---
 
@@ -74,8 +74,8 @@ Estimated Duration: 3-4 days
 
 | HU | Estado | Componente Necesario | Impacto |
 |----|--------|---------------------|---------|
-| **HU-3.1** | ✅ DONE | ProjectShell + SQLite | Estado del proyecto, progreso Doc N/25 |
-| **HU-3.2** | ✅ DONE | FileSystemService | Persistencia de documentos validados |
+| **HU-3.1** | ✅ DONE | ProyectoShell + SQLite | Estado del proyecto, progreso Doc N/25 |
+| **HU-3.2** | ✅ DONE | ArchivoSystemService | Persistencia de documentoos validados |
 | **HU-2.2** | ✅ DONE | ChromaDB + RAG | Templates y contexto vectorizado |
 
 ### 2.2 Dependencias OPCIONALES (NICE-TO-HAVE)
@@ -162,7 +162,7 @@ packages/knowledge_base/
 
 ### 3.3 Arquitectura de Componentes
 
-> **📚 IMPORTANT:** All test files MUST be located in centralized monorepo structure.
+> **📚 IMPORTANT:** All prueba archivos MUST be located in centralized monorepo structure.
 > See [MONOREPO_TEST_STRUCTURE.md](../../01-PROJECT_REPORT/MONOREPO_TEST_STRUCTURE.md) for official reference.
 
 #### Backend Structure
@@ -182,7 +182,7 @@ src/server/
 │           └── prompt_builder.py            # ⭐ NEW: Construye prompts dinámicos
 ```
 
-#### Backend Tests (Centralized in Monorepo Root)
+#### Backend Pruebas (Centralized in Monorepo Root)
 
 ```
 tests/python/
@@ -232,7 +232,7 @@ src/client/
 │           └── stream_decoder.dart          # ⭐ NEW: Parsing SSE
 ```
 
-#### Frontend Tests (Centralized in Monorepo Root)
+#### Frontend Pruebas (Centralized in Monorepo Root)
 
 ```
 tests/test/
@@ -273,11 +273,11 @@ tests/test/
 **Request:**
 ```json
 {
-  "message": "Genera el Project Manifesto para un sistema de gestión de inventarios",
+  "message": "Genera el Proyecto Manifesto para un sistema de gestión de inventarios",
   "doc_type": "PROJECT_MANIFESTO",
-  "project_context": {
+  "proyecto_context": {
     "name": "InventoryPro",
-    "description": "Sistema de gestión de inventarios para retail",
+    "descripción": "Sistema de gestión de inventarios para retail",
     "tech_stack": ["Flutter", "Python", "PostgreSQL"]
   },
   "chat_history": [
@@ -294,7 +294,7 @@ event: token
 data: {"token": "# ", "index": 0}
 
 event: token
-data: {"token": "Project", "index": 1}
+data: {"token": "Proyecto", "index": 1}
 
 event: done
 data: {"total_tokens": 450, "duration_ms": 3200}
@@ -306,11 +306,11 @@ data: {"total_tokens": 450, "duration_ms": 3200}
 - `STREAM_001`: Error en conexión SSE
 ```
 
-### 4.2 Tests Backend (TDD RED Phase)
+### 4.2 Pruebas Backend (TDD RED Fase)
 
-#### Test 1: Orchestrator Basic Flow
+#### Prueba 1: Orchestrator Basic Flow
 
-**Archivo:** `tests/python/unit/services/rag/test_orchestrator.py`
+**Archivo:** `pruebas/python/unit/services/rag/prueba_orchestrator.py`
 
 ```python
 import pytest
@@ -424,9 +424,9 @@ class TestSequentialOrchestrator:
             yield item
 ```
 
-#### Test 2: Template Loader
+#### Prueba 2: Template Loader
 
-**Archivo:** `tests/python/unit/services/rag/test_template_loader.py`
+**Archivo:** `pruebas/python/unit/services/rag/prueba_template_loader.py`
 
 ```python
 import pytest
@@ -499,9 +499,9 @@ class TestTemplateLoader:
         assert len(variables) == 2
 ```
 
-#### Test 3: SSE Streaming
+#### Prueba 3: SSE Streaming
 
-**Archivo:** `tests/python/unit/api/v1/test_chat_endpoints.py`
+**Archivo:** `pruebas/python/unit/api/v1/prueba_chat_endpoints.py`
 
 ```python
 import pytest
@@ -587,7 +587,7 @@ class TestChatEndpoints:
             yield item
 ```
 
-### 4.3 Implementación Backend (GREEN Phase - Placeholder)
+### 4.3 Implementación Backend (GREEN Fase - Placeholder)
 
 **Archivo:** `src/server/app/services/rag/sequential_orchestrator.py`
 
@@ -677,7 +677,7 @@ class SequentialOrchestrator:
         raise NotImplementedError("TDD RED: Test first!")
 ```
 
-**🔴 CHECKPOINT:** Todos los tests deben FALLAR en este punto. Ejecutar:
+**🔴 CHECKPOINT:** Todos los pruebas deben FALLAR en este punto. Ejecutar:
 
 ```bash
 cd src/server && pytest tests/unit/services/rag/ -v
@@ -845,7 +845,7 @@ def _build_prompt(
     return prompt
 ```
 
-**🟢 CHECKPOINT:** Ejecutar tests backend:
+**🟢 CHECKPOINT:** Ejecutar pruebas backend:
 
 ```bash
 cd src/server && pytest tests/unit/ -v --cov=app
@@ -858,11 +858,11 @@ cd src/server && pytest tests/unit/ -v --cov=app
 
 **Objetivo:** Crear la máquina de estados que orquesta el flujo secuencial.
 
-### 6.1 Tests Domain Layer (TDD RED)
+### 6.1 Pruebas Domain Layer (TDD RED)
 
-#### Test 1: ChatMessage Entity
+#### Prueba 1: ChatMessage Entity
 
-**Archivo:** `tests/test/unit/features/chat/domain/entities/chat_message_test.dart`
+**Archivo:** `pruebas/prueba/unit/features/chat/domain/entities/chat_message_prueba.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -945,9 +945,9 @@ void main() {
 }
 ```
 
-#### Test 2: DocumentProposal Entity
+#### Prueba 2: DocumentoProposal Entity
 
-**Archivo:** `tests/test/unit/features/chat/domain/entities/document_proposal_test.dart`
+**Archivo:** `pruebas/prueba/unit/features/chat/domain/entities/documento_proposal_prueba.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -1023,9 +1023,9 @@ Goals content
 }
 ```
 
-#### Test 3: ChatNotifier State Machine
+#### Prueba 3: ChatNotifier State Machine
 
-**Archivo:** `tests/test/unit/features/chat/presentation/notifiers/chat_notifier_test.dart`
+**Archivo:** `pruebas/prueba/unit/features/chat/presentation/notifiers/chat_notifier_prueba.dart`
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -1152,7 +1152,7 @@ void main() {
 }
 ```
 
-### 6.2 Implementación Domain Layer (GREEN Phase - Placeholder)
+### 6.2 Implementación Domain Layer (GREEN Fase - Placeholder)
 
 **Archivo:** `src/client/lib/features/chat/domain/entities/chat_message.dart`
 
@@ -1213,7 +1213,7 @@ class ChatMessage {
 enum MessageRole { user, assistant, system }
 ```
 
-**Archivo:** `src/client/lib/features/chat/domain/entities/document_proposal.dart`
+**Archivo:** `src/client/lib/features/chat/domain/entities/documento_proposal.dart`
 
 ```dart
 /// Represents a generated document proposal awaiting validation.
@@ -1267,7 +1267,7 @@ class DocumentProposal {
 enum ValidationState { pending, validated, rejected }
 ```
 
-**🔴 CHECKPOINT:** Tests deben fallar (state management no implementado):
+**🔴 CHECKPOINT:** Pruebas deben fallar (state management no implementado):
 
 ```bash
 cd tests && flutter test test/unit/features/chat/ --coverage
@@ -1280,11 +1280,11 @@ cd tests && flutter test test/unit/features/chat/ --coverage
 
 **Objetivo:** Crear widgets de alta fidelidad basados en el diseño aprobado.
 
-### 7.1 Widget Tests (TDD RED)
+### 7.1 Widget Pruebas (TDD RED)
 
-#### Test 1: ProposalCardWidget
+#### Prueba 1: ProposalCardWidget
 
-**Archivo:** `tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart`
+**Archivo:** `pruebas/prueba/widget/features/chat/presentation/widgets/proposal_card_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1421,7 +1421,7 @@ void main() {
 }
 ```
 
-### 7.2 Implementación Widgets (GREEN Phase)
+### 7.2 Implementación Widgets (GREEN Fase)
 
 **Archivo:** `src/client/lib/features/chat/presentation/widgets/proposal_card_widget.dart`
 
@@ -1607,7 +1607,7 @@ class ProposalCardWidget extends StatelessWidget {
 }
 ```
 
-**🟢 CHECKPOINT:** Widget tests deben pasar:
+**🟢 CHECKPOINT:** Widget pruebas deben pasar:
 
 ```bash
 cd tests && flutter test test/widget/features/chat/presentation/widgets/ --coverage
@@ -1616,13 +1616,13 @@ cd tests && flutter test test/widget/features/chat/presentation/widgets/ --cover
 
 ---
 
-## 8. FASE 5: Integration The Gate (TDD RED)
+## 8. FASE 5: Integración The Gate (TDD RED)
 
-**Objetivo:** Conectar Frontend → Backend → FileSystem (HU-3.2).
+**Objetivo:** Conectar Frontend → Backend → ArchivoSystem (HU-3.2).
 
-### 8.1 Integration Test (TDD RED)
+### 8.1 Integración Prueba (TDD RED)
 
-**Archivo:** `tests/test/integration/features/chat/chat_flow_test.dart`
+**Archivo:** `pruebas/prueba/integration/features/chat/chat_flow_prueba.dart`
 
 ```dart
 import 'package:flutter/material.dart';
@@ -1693,7 +1693,7 @@ void main() {
 }
 ```
 
-### 8.2 Implementar ChatNotifier (GREEN Phase)
+### 8.2 Implementar ChatNotifier (GREEN Fase)
 
 **Archivo:** `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart`
 
@@ -1960,7 +1960,7 @@ final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>((ref
 });
 ```
 
-**🟢 CHECKPOINT:** Integration tests deben pasar:
+**🟢 CHECKPOINT:** Integración pruebas deben pasar:
 
 ```bash
 cd tests && flutter test integration_test/ --coverage
@@ -2119,16 +2119,16 @@ echo -e "${GREEN}✅ All automated tests passed!${NC}"
 - [ ] **P2:** Propuesta es temporal (NO persiste hasta 'Validar')
 - [ ] **P3:** Botón enviar deshabilitado si campo vacío/espacios
 - [ ] **P4:** Bloques código con botón 'Copiar' funcional
-- [ ] **P5:** Botón 'Validar y Guardar' llama FileSystemService (HU-3.2)
+- [ ] **P5:** Botón 'Validar y Guardar' llama ArchivoSystemService (HU-3.2)
 - [ ] **P6:** Streaming SSE con <200ms TTF
 - [ ] **P7:** Barra de progreso actualiza (Doc N/25) tras validar
 - [ ] **P8:** Flujo 100% secuencial (nunca 2 docs paralelos)
 
 #### ❌ Negativos
 
-- [ ] **N1:** Documentos NO se guardan sin clic en 'Validar'
+- [ ] **N1:** Documentoos NO se guardan sin clic en 'Validar'
 
-### 10.2 Tests Coverage
+### 10.2 Pruebas Coverage
 
 ```bash
 # Backend Coverage (Target: >85%)
@@ -2144,9 +2144,9 @@ genhtml coverage/lcov.info -o coverage/html
 ### 10.3 Definition of Done
 
 - [ ] **Código:**
-  - [ ] Backend: SequentialOrchestrator implementado con tests >85%
-  - [ ] Frontend: ChatNotifier + Widgets con tests >80%
-  - [ ] Integration tests E2E pasan
+  - [ ] Backend: SequentialOrchestrator implementado con pruebas >85%
+  - [ ] Frontend: ChatNotifier + Widgets con pruebas >80%
+  - [ ] Integración pruebas E2E pasan
 
 
 - [ ] **Visual (Golden Kit):**
@@ -2157,13 +2157,13 @@ genhtml coverage/lcov.info -o coverage/html
 
 - [ ] **Funcional:**
   - [ ] Streaming funciona (<200ms TTFT medido con chrono)
-  - [ ] Validación persiste correctamente (verificado con file explorer)
+  - [ ] Validación persiste correctamente (verificado con archivo explorer)
   - [ ] Manejo de errores elegante (no crashes, mensajes amigables)
 
 
-- [ ] **Documentación:**
+- [ ] **Documentoación:**
   - [ ] README actualizado con instrucciones de uso del chat
-  - [ ] API docs: Swagger endpoint `/chat/generate` documentado
+  - [ ] API docs: Swagger endpoint `/chat/generate` documentoado
   - [ ] ADR (Architecture Decision Record) creado para SSE vs WebSocket
 
 
@@ -2243,7 +2243,7 @@ py-spy top --pid $(pgrep -f uvicorn)
 cd src/server && python scripts/warm_cache.py
 ```
 
-**Problema:** Tests de integración fallan
+**Problema:** Pruebas de integración fallan
 ```bash
 # Verificar dependencias
 cd tests && flutter pub get
@@ -2304,16 +2304,16 @@ Esta HU es el **corazón de la aplicación** y requiere coordinación perfecta e
 
 1. **Backend:** RAG + LLM + Streaming SSE
 2. **Frontend:** State Machine + Golden Kit UI
-3. **Integration:** FileSystem (HU-3.2) + SQLite (HU-3.1)
+3. **Integración:** ArchivoSystem (HU-3.2) + SQLite (HU-3.1)
 
 ### Puntos Críticos de Riesgo
 
 | Riesgo | Mitigación | Prioridad |
 |--------|-----------|-----------|
 | Latencia >200ms TTFT | Profiling + Cache ChromaDB + CDN Ollama | ALTA |
-| Propuestas mal formateadas | Tests exhaustivos de templates + Fallback | ALTA |
+| Propuestas mal formateadas | Pruebas exhaustivos de templates + Fallback | ALTA |
 | Crashes en streaming | Error boundaries + Retry logic | MEDIA |
-| UX no intuitiva | User testing temprano + Iteración | MEDIA |
+| UX no intuitiva | User pruebaing temprano + Iteración | MEDIA |
 
 ### Próximos Pasos (Post-HU-3.3)
 

@@ -1,4 +1,4 @@
-# 📊 Test Coverage & Quality Dashboard
+# 📊 Prueba Coverage & Quality Dashboard
 
 > **Última Actualización:** 29/01/2026
 > **Estado:** ✅ Active Monitoring
@@ -8,9 +8,9 @@
 
 ## 🎯 Métricas Actuales
 
-| Métrica | Valor | Target | Status |
+| Métrica | Valor | Target | Estado |
 |---------|-------|--------|--------|
-| **Tests Totales** | 20 | N/A | ✅ PASS |
+| **Pruebas Totales** | 20 | N/A | ✅ PASS |
 | **Coverage General** | 98.13% | ≥80% | ✅ EXCEEDS |
 | **Linting Errors** | 0 | 0 | ✅ PASS |
 | **Security Issues (HIGH)** | 0 | 0 | ✅ PASS |
@@ -22,7 +22,7 @@
 
 ### Fase 5 - Backend Skeleton (29/01/2026)
 
-**Ejecución:** Comprehensive Test Suite v1.0
+**Ejecución:** Comprehensive Prueba Suite v1.0
 
 ```
 Estadísticas Finales:
@@ -34,17 +34,17 @@ Estadísticas Finales:
 
 **Desglose por Módulo:**
 
-| Módulo | Coverage | Status | Archivos |
+| Módulo | Coverage | Estado | Archivos |
 |--------|----------|--------|----------|
 | `app/__init__.py` | 100% | ✅ | 1/1 |
 | `app/api/` | 100% | ✅ | 3/3 |
 | `app/api/v1/` | 100% | ✅ | 3/3 |
 | `app/core/` | 100% | ✅ | 3/3 |
-| `app/tests/` | 100% | ✅ | 7/7 |
+| `app/pruebas/` | 100% | ✅ | 7/7 |
 | `app/main.py` | 92% | ⚠️ | Lines: 183, 202-204 |
-| `app/tests/conftest.py` | 71% | ⚠️ | Lines: 16-17 |
+| `app/pruebas/confprueba.py` | 71% | ⚠️ | Lines: 16-17 |
 
-**Tests por Categoría:**
+**Pruebas por Categoría:**
 
 ```
 ✅ Configuration Tests ...................... 3/3 PASS
@@ -99,7 +99,7 @@ Estadísticas Finales:
 # Impacto: Bajo (cleanup logic, tested en runtime)
 ```
 
-#### `app/tests/conftest.py` - 71% Coverage
+#### `app/pruebas/confprueba.py` - 71% Coverage
 ```python
 # Líneas 16-17: Fixtures conditionales
 # Razón: Fixtures opcionales para scenarios específicos
@@ -163,20 +163,20 @@ if __name__ == "__main__":
     # Recomendación: Testeable mediante integration tests o E2E
 ```
 
-**Recomendación:** Crear integration test que levante el servidor y verifique startup
+**Recomendación:** Crear integration prueba que levante el servidor y verifique startup
 
 ---
 
-### 2️⃣ Tests Faltantes por Categoría
+### 2️⃣ Pruebas Faltantes por Categoría
 
-| Tipo de Test | Cantidad | Status | Prioridad | Roadmap |
+| Tipo de Prueba | Cantidad | Estado | Prioridad | Roadmap |
 |--------------|----------|--------|-----------|---------|
-| **Unit Tests** | 20 | ✅ Complete | - | Phase 5 ✅ |
-| **Integration Tests** | 0 | ❌ Missing | 🔴 **HIGH** | Phase 6 |
-| **API/E2E Tests** | 0 | ❌ Missing | 🔴 **HIGH** | Phase 6 |
-| **Load Tests** | 0 | ❌ Missing | 🟡 **MEDIUM** | Phase 7 |
-| **Security Tests** | 2 (partial) | ⚠️ Partial | 🟡 **MEDIUM** | Phase 6 |
-| **Contract Tests** | 0 | ❌ Missing | 🟢 **LOW** | Phase 7 |
+| **Unit Pruebas** | 20 | ✅ Complete | - | Fase 5 ✅ |
+| **Integración Pruebas** | 0 | ❌ Missing | 🔴 **HIGH** | Fase 6 |
+| **API/E2E Pruebas** | 0 | ❌ Missing | 🔴 **HIGH** | Fase 6 |
+| **Load Pruebas** | 0 | ❌ Missing | 🟡 **MEDIUM** | Fase 7 |
+| **Security Pruebas** | 2 (partial) | ⚠️ Partial | 🟡 **MEDIUM** | Fase 6 |
+| **Contract Pruebas** | 0 | ❌ Missing | 🟢 **LOW** | Fase 7 |
 
 ---
 
@@ -236,11 +236,11 @@ if __name__ == "__main__":
 
 ---
 
-### 4️⃣ Tipos de Tests Faltantes (Roadmap)
+### 4️⃣ Tipos de Pruebas Faltantes (Roadmap)
 
-#### 📌 PHASE 6 - Integration & E2E Testing (PRÓXIMO)
+#### 📌 PHASE 6 - Integración & E2E Pruebaing (PRÓXIMO)
 
-**Integration Tests**
+**Integración Pruebas**
 ```python
 # Ejemplo de lo que se necesita:
 @pytest.mark.integration
@@ -255,7 +255,7 @@ async def test_full_workflow_with_real_db():
         # Validar que todos los handlers se ejecutaron
 ```
 
-**E2E API Tests**
+**E2E API Pruebas**
 ```python
 @pytest.mark.e2e
 async def test_knowledge_endpoint_full_flow():
@@ -270,14 +270,14 @@ async def test_knowledge_endpoint_full_flow():
 
 #### 📌 PHASE 7 - Performance & Reliability
 
-**Load Tests**
+**Load Pruebas**
 ```bash
 # Usando Apache Bench o Locust
 locust -f load_tests.py --users=100 --spawn-rate=10
 # Medir: Response time, throughput, error rate
 ```
 
-**Stress Tests**
+**Stress Pruebas**
 ```python
 @pytest.mark.stress
 async def test_concurrent_requests():
@@ -299,7 +299,7 @@ async def test_graceful_degradation_on_db_failure():
     """
 ```
 
-**Security Tests - OWASP**
+**Security Pruebas - OWASP**
 ```python
 @pytest.mark.security
 async def test_sql_injection_protection():
@@ -323,33 +323,33 @@ async def test_rate_limiting():
 - [x] Type Safety (Pydantic)
 - [x] Input Validation
 - [x] Error Handling (Exception handlers)
-- [x] Configuration Management
+- [x] Configuración Management
 - [x] Security (Token validation, CORS)
 - [x] Dependency Injection
 - [x] Code Quality (Ruff, Bandit)
 
 #### ❌ Necesario Agregar
 
-**CRÍTICO (Phase 6):**
-- [ ] Integration Tests (Real DB)
-- [ ] E2E API Tests (Full workflow)
-- [ ] Graceful Shutdown Testing
-- [ ] Connection Pool Testing
+**CRÍTICO (Fase 6):**
+- [ ] Integración Pruebas (Real DB)
+- [ ] E2E API Pruebas (Full workflow)
+- [ ] Graceful Shutdown Pruebaing
+- [ ] Connection Pool Pruebaing
 - [ ] Error Recovery Flows
 
-**IMPORTANTE (Phase 7):**
-- [ ] Load Testing (100+ concurrent users)
+**IMPORTANTE (Fase 7):**
+- [ ] Load Pruebaing (100+ concurrent users)
 - [ ] Performance Baselines (<200ms p99)
 - [ ] Memory Leak Detection
 - [ ] Connection Leak Detection
-- [ ] Stress Testing (Sudden spikes)
+- [ ] Stress Pruebaing (Sudden spikes)
 
-**RECOMENDADO (Phase 8):**
+**RECOMENDADO (Fase 8):**
 - [ ] Chaos Engineering
-- [ ] OWASP Top 10 Testing
-- [ ] Rate Limiting Tests
+- [ ] OWASP Top 10 Pruebaing
+- [ ] Rate Limiting Pruebas
 - [ ] Security Scanning (SAST/DAST)
-- [ ] Penetration Testing
+- [ ] Penetration Pruebaing
 
 ---
 
@@ -375,9 +375,9 @@ TARGET (Phase 6):
 └─ Robustness Score: 85/100 🎯
 ```
 
-#### 📋 Tareas de Phase 6
+#### 📋 Tareas de Fase 6
 
-**Semana 1: Infrastructure**
+**Semana 1: Infraestructura**
 ```
 - [ ] Setup pytest fixtures para BD real
 - [ ] Setup test database (ChromaDB test instance)
@@ -385,7 +385,7 @@ TARGET (Phase 6):
 - [ ] Create conftest.py con fixtures globales
 ```
 
-**Semana 2: Integration Tests**
+**Semana 2: Integración Pruebas**
 ```
 - [ ] Test config + startup + shutdown flow
 - [ ] Test health endpoint con DB
@@ -393,7 +393,7 @@ TARGET (Phase 6):
 - [ ] Test dependency injection com requests reales
 ```
 
-**Semana 3: E2E Tests**
+**Semana 3: E2E Pruebas**
 ```
 - [ ] Test full API workflow
 - [ ] Test error handling en endpoints
@@ -415,17 +415,17 @@ TARGET (Phase 6):
 
 | Herramienta | Propósito | Instalación | Fase |
 |-------------|----------|-------------|------|
-| **httpx** | Async HTTP client para tests | Ya instalado ✅ | Phase 6 |
-| **locust** | Load testing | `pip install locust` | Phase 7 |
-| **pytest-asyncio** | Async test support | Ya instalado ✅ | Phase 6 |
-| **pytest-xdist** | Parallel test execution | `pip install pytest-xdist` | Phase 7 |
-| **testcontainers** | Docker containers para tests | `pip install testcontainers` | Phase 6 |
-| **faker** | Generate test data | `pip install faker` | Phase 6 |
-| **hypothesis** | Property-based testing | `pip install hypothesis` | Phase 8 |
+| **httpx** | Async HTTP client para pruebas | Ya instalado ✅ | Fase 6 |
+| **locust** | Load pruebaing | `pip install locust` | Fase 7 |
+| **pyprueba-asyncio** | Async prueba support | Ya instalado ✅ | Fase 6 |
+| **pyprueba-xdist** | Parallel prueba execution | `pip install pyprueba-xdist` | Fase 7 |
+| **pruebacontainers** | Docker containers para pruebas | `pip install pruebacontainers` | Fase 6 |
+| **faker** | Generate prueba data | `pip install faker` | Fase 6 |
+| **hypothesis** | Property-based pruebaing | `pip install hypothesis` | Fase 8 |
 
 ---
 
-## �📋 Test Inventory
+## �📋 Prueba Inventory
 
 ### Configuración de Herramientas
 
@@ -440,7 +440,7 @@ bandit            1.8.1     Security analysis
 black             23.x      Code formatter
 ```
 
-### Configuración PyTest
+### Configuración PyPrueba
 
 ```toml
 [tool.pytest.ini_options]
@@ -471,7 +471,7 @@ exclude_lines = [
 
 ## 🚀 Comandos Reproducibles
 
-### Ejecutar Todos los Tests
+### Ejecutar Todos los Pruebas
 
 ```bash
 cd src/server
@@ -535,15 +535,15 @@ Roadmap:
 
 | Métrica | SLA | Frecuencia |
 |---------|-----|-----------|
-| Test Execution | <1s | Por commit |
+| Prueba Execution | <1s | Por commit |
 | Coverage Reports | Diario | 00:00 UTC |
 | Security Scan | Por PR | On-demand |
 | Linting Check | Por commit | Pre-commit |
-| Documentation | Semanal | Cada viernes |
+| Documentoation | Semanal | Cada viernes |
 
 ---
 
-## 📝 Cómo Agregar Nuevos Tests
+## 📝 Cómo Agregar Nuevos Pruebas
 
 ### Estructura Recomendada
 
@@ -580,32 +580,32 @@ class TestNewFeature:
 
 ### Checklist para Nuevas Pruebas
 
-- [ ] Función testeable (independiente)
+- [ ] Función pruebaeable (independiente)
 - [ ] Cobertura clara (qué se está probando)
 - [ ] Nombre descriptivo
 - [ ] Docstring explicativo
 - [ ] Manejo de excepciones
-- [ ] Tests positivos Y negativos
+- [ ] Pruebas positivos Y negativos
 - [ ] Coverage ≥ 80%
 - [ ] Pre-commit hooks PASS
-- [ ] Documentación actualizada
+- [ ] Documentoación actualizada
 
 ---
 
 ## 📖 Referencias
 
 - [COMPREHENSIVE_TEST_RESULTS.md](../COMPREHENSIVE_TEST_RESULTS.md) - Reporte ejecutivo detallado
-- [TESTING_STRATEGY.en.md](../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Estrategia de testing
+- [TESTING_STRATEGY.en.md](../context/20-REQUIREMENTS_AND_SPEC/TESTING_STRATEGY.en.md) - Estrategia de pruebaing
 - [DEFINITION_OF_READY.en.md](../context/20-REQUIREMENTS_AND_SPEC/DEFINITION_OF_READY.en.md) - DoR criterios
-- [pytest docs](https://docs.pytest.org/) - Documentación oficial
+- [pyprueba docs](https://docs.pyprueba.org/) - Documentoación oficial
 - [Coverage.py docs](https://coverage.readthedocs.io/) - Coverage reporting
 
 ---
 
 ## 📌 Próximos Pasos
 
-1. **Seguimiento:** Ejecutar test suite antes de cada merge
-2. **Documentación:** Actualizar este dashboard después de cambios significativos
+1. **Seguimiento:** Ejecutar prueba suite antes de cada merge
+2. **Documentoación:** Actualizar este dashboard después de cambios significativos
 3. **Automatización:** Configurar GitHub Actions para CI/CD
 4. **Alertas:** Notificaciones si coverage cae bajo 90%
 5. **Análisis:** Revisar trends trimestralmente

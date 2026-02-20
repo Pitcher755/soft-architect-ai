@@ -1,15 +1,15 @@
 # 💾 Data Persistence - SoftArchitect AI
 
-> **Date:** 02/19/2026
-> **Status:** ✅ Data storage guide
-> **Reading time:** 10 minutes
+> **Fecha:** 02/19/2026
+> **Estado:** ✅ Data storage guide
+> **Tiempo de lectura:** 10 minutes
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [Where Your Data is Stored](#where-your-data-is-stored)
-- [File Structure](#file-structure)
+- [Archivo Structure](#archivo-structure)
 - [Backup and Restore](#backup-and-restore)
 - [Privacy and Security](#privacy-and-security)
 - [Data Migration](#data-migration)
@@ -51,11 +51,11 @@ soft-architect-ai/
 
 ---
 
-## 🏗️ File Structure
+## 🏗️ Archivo Structure
 
-### 1. Projects (`data/projects/`)
+### 1. Proyectos (`data/proyectos/`)
 
-Each project has this structure:
+Each proyecto has this structure:
 
 ```
 data/projects/<project-name>/
@@ -134,7 +134,7 @@ Conversations are saved as JSON by date.
 
 ---
 
-### 3. User Configuration (`data/user_config/`)
+### 3. User Configuración (`data/user_config/`)
 
 #### `preferences.json`
 
@@ -177,7 +177,7 @@ Conversations are saved as JSON by date.
 
 **Typical size:** 500MB - 2GB (depends on installed Tech Packs)
 
-**Backup:** Copy entire `chroma_data/` folder
+**Backup:** Copy entire `chroma_data/` carpeta
 
 ---
 
@@ -203,7 +203,7 @@ tar -czvf ~/backups/soft-architect-ai_$(date +%Y%m%d).tar.gz \
 
 ### Option B: Automated Backup (Script)
 
-**Create script:** `scripts/backup.sh`
+**Crear script:** `scripts/backup.sh`
 
 ```bash
 #!/bin/bash
@@ -227,7 +227,7 @@ tar -czvf "$BACKUP_DIR/backup_$DATE.tar.gz" \
 echo "✅ Backup complete: $BACKUP_DIR/backup_$DATE.tar.gz"
 ```
 
-**Execute:**
+**Ejecutar:**
 ```bash
 chmod +x scripts/backup.sh
 ./scripts/backup.sh
@@ -267,7 +267,7 @@ docker-compose up -d
 
 ### Sensitive Data
 
-**❌ NEVER commit these files:**
+**❌ NEVER commit these archivos:**
 ```
 .env                    ← API keys, secrets
 data/                   ← Your private projects
@@ -289,7 +289,7 @@ infrastructure/chroma_data/
 
 ### Encryption (Optional)
 
-**For ultra-confidential projects:**
+**For ultra-confidential proyectos:**
 
 ```bash
 # Encrypt data folder with GPG
@@ -301,7 +301,7 @@ gpg --decrypt data_encrypted.tar.gz.gpg | tar -xzf -
 
 ---
 
-### File Permissions
+### Archivo Permissions
 
 **Linux/Mac:**
 ```bash
@@ -327,9 +327,9 @@ icacls "data" /inheritance:r /grant:r "%USERNAME%:(OI)(CI)F"
 
 **Process:**
 
-1. **Backup old data** (see previous section)
+1. **Backup old data** (see anterior section)
 
-2. **Run migration script:**
+2. **Ejecutar migration script:**
    ```bash
    python scripts/migrate_data.py --from 0.1.0 --to 0.2.0
    ```
@@ -365,7 +365,7 @@ python scripts/export_to_confluence.py \
 
 #### To PDF
 
-**Export complete documentation:**
+**Export complete documentoation:**
 ```bash
 # Requires Pandoc
 pandoc data/projects/academic-blog/**/*.md \
@@ -406,7 +406,7 @@ python scripts/reindex_chroma.py --optimize
 
 ## 🛠️ Troubleshooting
 
-### ❌ "Can't save files (Permission denied)"
+### ❌ "Can't save archivos (Permission denied)"
 
 **Solution:**
 ```bash
@@ -420,9 +420,9 @@ icacls "data" /reset /t
 
 ---
 
-### ❌ "My projects disappeared"
+### ❌ "My proyectos disappeared"
 
-**Common cause:** `data/` folder moved or accidentally deleted
+**Common cause:** `data/` carpeta moved or accidentally eliminard
 
 **Solution:**
 1. Check backup (see Backup section)
@@ -435,7 +435,7 @@ icacls "data" /reset /t
 
 ---
 
-## 📚 Related Documents
+## 📚 Related Documentos
 
 - [Installation](02-INSTALLATION.md) - Initial setup
 - [Troubleshooting](08-TROUBLESHOOTING.md) - Common errors

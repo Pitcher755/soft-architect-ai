@@ -1,14 +1,14 @@
 # 🚀 Preparación Lista para HU-3.3: Chat Secuencial
 
-> **Estado:** ✅ LISTO PARA INICIAR
+> **Status:** ✅ LISTO PARA INICIAR
 > **Rama:** `feature/chat-sequential-docs`
-> **Fecha:** 2026-02-05
+> **Date:** 2026-02-05
 
 ---
 
 ## 📋 Checklist Pre-HU-3.3
 
-### ✅ Completado
+### ✅ Completed
 
 - [x] **Tests de Python Centralizados**
   - Migrados de `src/server/tests/` → `tests/python/`
@@ -17,8 +17,8 @@
   - Configuraciones actualizadas (pytest, pyright, CI/CD)
 
 - [x] **Workflow Maestro HU-3.3 Creado**
-  - Documento completo: `doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md`
-  - 6 Fases TDD definidas
+  - Document completo: `doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md`
+  - 6 Phases TDD definidas
   - Todos los tests planificados
   - Casos de uso y validación especificada
 
@@ -37,11 +37,11 @@
 - [ ] Leer el Workflow Maestro HU-3.3 completo
 - [ ] Entender los 6 phases (RED → GREEN pattern)
 - [ ] Preparar el ambiente para TDD
-- [ ] Crear branch para HU-3.3 (ya existente)
+- [ ] Create branch para HU-3.3 (ya existente)
 
 ---
 
-## 📁 Estructura del Proyecto (Post-Migración)
+## 📁 Estructura del Project (Post-Migración)
 
 ```
 soft-architect-ai/
@@ -120,35 +120,35 @@ e iteración conversacional."
 
 ---
 
-## 📖 Workflow Maestro: 6 Fases
+## 📖 Workflow Maestro: 6 Phases
 
-### Fase 1: Backend RAG Orchestration (TDD RED)
+### Phase 1: Backend RAG Orchestration (TDD RED)
 - Tests de orchestrator
 - Tests de template loader
 - Tests de streaming SSE
 
-### Fase 2: Backend SSE Streaming (TDD GREEN)
+### Phase 2: Backend SSE Streaming (TDD GREEN)
 - Implementar endpoint FastAPI
 - Completar SequentialOrchestrator
 - Conexión con LLM
 
-### Fase 3: Frontend State Machine (TDD RED)
+### Phase 3: Frontend State Machine (TDD RED)
 - Tests de Domain Layer (ChatMessage, DocumentProposal)
-- Tests de ChatNotifier (máquina de estados)
+- Tests de ChatNotifier (máquina de statuss)
 - Validación de flujo secuencial
 
-### Fase 4: UI Components Golden Kit (TDD GREEN)
+### Phase 4: UI Components Golden Kit (TDD GREEN)
 - ProposalCardWidget
 - Mensaje bubbles
 - Streaming indicator
 - Progress bar (Doc N/25)
 
-### Fase 5: Integration The Gate (TDD RED)
+### Phase 5: Integration The Gate (TDD RED)
 - Tests E2E
 - Conexión Frontend → Backend → FileSystem (HU-3.2)
 - Validación y persistencia
 
-### Fase 6: End-to-End Validation (TDD GREEN)
+### Phase 6: End-to-End Validation (TDD GREEN)
 - Script de validación completa
 - Manual E2E checklist
 - Performance benchmarks
@@ -182,7 +182,7 @@ cat tests/python/conftest.py
 code doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md
 ```
 
-### 4. Comenzar Fase 1 (TDD RED)
+### 4. Comenzar Phase 1 (TDD RED)
 ```bash
 # Crear archivo de test
 mkdir -p tests/python/unit/services/rag
@@ -196,7 +196,7 @@ touch tests/python/unit/services/rag/test_orchestrator.py
 
 ## 🚦 Estatus de Dependencias
 
-| HU | Nombre | Estado | Impacto en HU-3.3 |
+| HU | Name | Status | Impacto en HU-3.3 |
 |----|--------|--------|-------------------|
 | **HU-3.1** | ProjectShell + SQLite | ✅ DONE | Progreso Doc N/25 |
 | **HU-3.2** | FileSystemService | ✅ DONE | Persistencia |
@@ -209,17 +209,17 @@ touch tests/python/unit/services/rag/test_orchestrator.py
 ## 📊 Criterios de Aceptación (del Roadmap)
 
 ### ✅ Positivos (8)
-- [ ] Chat inicial pregunta descripción y genera 'Propuesta Doc 1'
+- [ ] Chat inicial pregunta description y genera 'Propuesta Doc 1'
 - [ ] Propuesta es temporal (NO persiste hasta 'Validar')
-- [ ] Botón enviar deshabilitado si campo vacío/espacios
-- [ ] Bloques código con botón 'Copiar' funcional
-- [ ] Botón 'Validar y Guardar' llama FileSystemService (HU-3.2)
+- [ ] Button enviar deshabilitado si campo vacío/espacios
+- [ ] Bloques código con button 'Copiar' funcional
+- [ ] Button 'Validar y Guardar' llama FileSystemService (HU-3.2)
 - [ ] Streaming SSE con <200ms TTF
 - [ ] Barra de progreso actualiza (Doc N/25) tras validar
 - [ ] Flujo 100% secuencial (nunca 2 docs paralelos)
 
 ### ❌ Negativos (1)
-- [ ] Documentos NO se guardan sin clic en 'Validar'
+- [ ] Documents NO se guardan sin clic en 'Validar'
 
 ---
 
@@ -236,7 +236,7 @@ pytest ../../tests/python/ -v --cov=app --cov-fail-under=80
 
 ---
 
-## 📚 Documentos de Referencia
+## 📚 Documents de Referencia
 
 1. **Workflow Maestro:**
    - [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md)
@@ -245,7 +245,7 @@ pytest ../../tests/python/ -v --cov=app --cov-fail-under=80
    - [TESTS_MIGRATION_REPORT.md](doc/01-PROJECT_REPORT/TESTS_MIGRATION_REPORT.md)
    - [tests/python/README_MIGRATION.md](tests/python/README_MIGRATION.md)
 
-3. **Reglas del Proyecto:**
+3. **Reglas del Project:**
    - [AGENTS.md](AGENTS.md) - Sección 8 (Estándar de Documentación)
 
 4. **Roadmap Completo:**
@@ -282,7 +282,7 @@ pytest ../../tests/python/unit/services/rag/test_orchestrator.py -v
 ## ✨ Lo Que Está Listo
 
 - ✅ Tests centralizados y validados
-- ✅ Workflow maestro documentado (6 fases TDD)
+- ✅ Workflow maestro documentado (6 phases TDD)
 - ✅ CI/CD actualizado
 - ✅ Dependencias resueltas (HU-3.1, HU-3.2, HU-2.2)
 - ✅ Rama creada y limpia
@@ -296,12 +296,12 @@ pytest ../../tests/python/unit/services/rag/test_orchestrator.py -v
 
 **Tiempo estimado:** 30-45 minutos
 
-**Objetivo:** Entender los 6 phases y estar listo para comenzar TDD RED de Fase 1
+**Objetivo:** Entender los 6 phases y estar listo para comenzar TDD RED de Phase 1
 
 ---
 
-**🚀 ¡Estamos listos para construir el corazón de SoftArchitect AI!**
+**🚀 ¡Estamos ready for construir el corazón de SoftArchitect AI!**
 
 *Fecha: 2026-02-05*
 *Rama: feature/chat-sequential-docs*
-*Estado: READY FOR HU-3.3*
+*Status: READY FOR HU-3.3*

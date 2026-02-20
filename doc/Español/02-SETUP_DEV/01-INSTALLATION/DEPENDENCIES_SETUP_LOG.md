@@ -37,7 +37,7 @@ flutter pub add --dev sqflite_common_ffi
 | Archivo | Tipo | Descripción |
 |---------|------|-------------|
 | `lib/core/database_initializer.dart` | NEW | Platform-aware DB setup |
-| `lib/main.dart` | UPDATED | Initialize sqflite before runApp() |
+| `lib/main.dart` | UPDATED | Initialize sqflite before ejecutarApp() |
 | `pubspec.yaml` | UPDATED | Added sqflite + dependencies |
 | `lib/services/database_helper.dart` | EXISTING | Production-ready (no changes needed) |
 | `doc/02-SETUP_DEV/FLUTTER_DEPENDENCIES_GUIDE.md` | NEW | Referencia completa + troubleshooting |
@@ -65,10 +65,10 @@ flutter run -d linux
 // Database initialized for Linux (sqflite_common_ffi) ✓
 ```
 
-#### 📁 **file_picker**
+#### 📁 **archivo_picker**
 
 - Diálogo nativo para seleccionar carpetas
-- HU-3.1 lo usa para "New Project" botón
+- HU-3.1 lo usa para "Nuevo Proyecto" botón
 - Válido para Desktop + Web
 
 #### 🔤 **path**
@@ -140,7 +140,7 @@ flutter run -d windows
 flutter run -d macos
 ```
 
-### Fase 3: Test Database (5 minutos)
+### Fase 3: Prueba Database (5 minutos)
 ```dart
 // En app (después de primera ejecución):
 // ✅ user_data.db creado en ~/.local/share/softarchitect_ai/
@@ -185,13 +185,13 @@ flutter run -d macos
 | Cuando necesites... | Usa... |
 |-------------------|----|
 | Crear/leer proyectos | `DatabaseHelper` (lib/services/database_helper.dart) |
-| Seleccionar carpeta | `file_picker` package |
-| Leer archivos | `dart:io` (futuro: FileSystemService) |
+| Seleccionar carpeta | `archivo_picker` package |
+| Leer archivos | `dart:io` (futuro: ArchivoSystemService) |
 | Backend communication | `dio` package (HTTP/SSE) |
 | Renderizar Markdown | `flutter_markdown` widget |
 
 ---
 
-**Estado:** 🟢 Ready for Phase 1 (HU-3.1 Implementation)
+**Estado:** 🟢 Preparado para Fase 1 (HU-3.1 Implementación)
 
 Espera tu siguiente indicación. 🎯

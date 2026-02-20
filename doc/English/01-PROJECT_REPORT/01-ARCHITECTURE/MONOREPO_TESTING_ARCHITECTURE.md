@@ -1,10 +1,10 @@
 # 🧪 Monorepo Testing Architecture
 
-> **Fecha:** 2026-02-03
-> **Estado:** ✅ Implementado
-> **Versión:** 1.0
+> **Date:** 2026-02-03
+> **Status:** ✅ Implementado
+> **Version:** 1.0
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Problema Identificado](#problema-identificado)
 2. [Solución: Patrón Centralizado](#solución-patrón-centralizado)
@@ -21,12 +21,12 @@
 
 1. **Explicación Teórica:** "Los tests del monorepo DEBEN estar centralizados en `/tests` para tener un punto único de verdad, fixtures compartidas y coverage unificado"
 
-2. **Implementación Actual (INCORRECTA):**
+2. **Implementation Actual (INCORRECTA):**
    - Tests de Flutter en `src/client/test/` (decentralizado)
    - Tests de Python en `src/server/tests/` (decentralizado)
    - Violation de lo que acababa de explicar
 
-3. **Contradicción Identificada:** El usuario correctamente señaló: "Los tests de la app cliente (flutter) estaban situados en ese directorio pero ahora los has cambiado al directorio /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client/test, del cliente, todo lo contrario a lo que me indicabas anteriormente"
+3. **Contradicción Identificada:** El usuario correctamente señaló: "Los tests de la app cliente (flutter) estaban situados en ese directorio pero ahora los has cambiado al directorio /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai/src/client/test, del cliente, todo lo contrario a lo que me indicabas previousmente"
 
 ### Causa Raíz
 
@@ -42,7 +42,7 @@ Para un monorepo con múltiples lenguajes, **Patrón B es correcto**.
 
 ### Principios Fundamentales
 
-| Principio | Implementación |
+| Principio | Implementation |
 |-----------|----------------|
 | **Single Source of Truth** | `/tests/` = punto único de tests en el repo |
 | **DRY (Don't Repeat Yourself)** | Fixtures y mocks compartidos en `/tests/fixtures` y `/tests/mocks` |
@@ -114,7 +114,7 @@ soft-architect-ai/
 └── ...
 ```
 
-### Archivos Clave
+### Files Clave
 
 #### `/tests/test_helper.dart`
 Utilidades compartidas para tests de Dart:
@@ -211,7 +211,7 @@ jobs:
 
 ### Imports (SIN CAMBIOS - Seguimiento Automático)
 
-Los imports en los tests usan `package:softarchitect_ai/...` que Flutter resuelve **automáticamente** desde `pubspec.yaml` sin importar dónde esté el archivo de test:
+Los imports en los tests usan `package:softarchitect_ai/...` que Flutter resuelve **automáticamente** desde `pubspec.yaml` sin importar dónde esté el file de test:
 
 ```dart
 // Tests en /tests/unit/flutter/domain/project_validation_use_case_test.dart
@@ -265,7 +265,7 @@ import 'package:softarchitect_ai/features/project_shell/domain/use_cases/project
 
 ---
 
-## 🔧 Configuración Requerida
+## 🔧 Configuration Requerida
 
 ### 1. `.fluttertest` (Nueva)
 ```json
@@ -287,13 +287,13 @@ src/server/lib64/
 ✅ **CORREGIDO** - No bloquea `src/client/lib/`
 
 ### 3. `run_tests.sh` (Nueva)
-✅ **CREADO** - Script maestro para ejecutar tests desde cualquier ubicación
+✅ **CREADO** - Script maestro para execute tests desde cualquier ubicación
 
 ---
 
-## ✅ Estado Actual
+## ✅ Status Actual
 
-| Aspecto | Estado |
+| Aspecto | Status |
 |--------|--------|
 | Tests centralizados en `/tests` | ✅ DONE |
 | Flutter tests movidos | ✅ DONE |
@@ -301,13 +301,13 @@ src/server/lib64/
 | Script de ejecución | ✅ DONE |
 | .fluttertest configuration | ✅ DONE |
 | .gitignore corregido | ✅ DONE |
-| 15 tests listos para ejecutar | ✅ READY |
+| 15 tests ready for execute | ✅ READY |
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
-1. **Ejecutar tests centralizados:**
+1. **Execute tests centralizados:**
    ```bash
    ./run_tests.sh flutter
    ```

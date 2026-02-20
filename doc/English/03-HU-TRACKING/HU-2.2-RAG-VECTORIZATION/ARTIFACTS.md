@@ -1,10 +1,10 @@
 # HU-2.2 Artifacts Manifest
 
-**Estado:** 🔄 EN PROGRESO
-**Archivos Completados:** 4/11
+**Status:** 🔄 EN PROGRESO
+**Files Completeds:** 4/11
 **Última Actualización:** 31/01/2026
 
-## Archivos a Generar
+## Files a Generar
 
 ### Código Fuente
 - ✅ `src/server/core/exceptions/base.py` - Base exception system (BaseAppError, VectorStoreError)
@@ -16,7 +16,7 @@
 - ✅ `src/server/tests/unit/services/rag/test_vector_store.py` - Unit tests for VectorStoreService (FASE RED completa)
 - ❌ `tests/test_ingest_script.py` - Integration tests for ingestion
 
-### Configuración
+### Configuration
 - ❌ `core/config.py` - ChromaDB configuration updates
 - ❌ `infrastructure/docker-compose.yml` - Volume mounts for ChromaDB data
 

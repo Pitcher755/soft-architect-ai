@@ -39,8 +39,8 @@
 |---|-----------|----------|--------|
 | 1 | **POST /chat/message responde en <500ms** | E2E tests show `1.8s` (CPU inference). Target will be met with GPU optimization (HU-4.4). Functional correctness verified. | ⚠️ Accepted* |
 | 2 | **El sistema recupera fragmentos relevantes de ChromaDB** | Integration tests confirm RAG retrieval working. `test_chat_endpoint_success` validates vector search integration. | ✅ Pass |
-| 3 | **Se inyecta el template correcto según la fase del proyecto** | Template loader tests confirm dynamic phase detection. `test_orchestrator_loads_template_by_phase` validates logic. | ✅ Pass |
-| 4 | **Soporta modo 'ollama' (local) y preparado para 'groq' (nube)** | Strategy pattern implemented. `OllamaClient` functional, `GroqClient` stub ready for future integration. | ✅ Pass |
+| 3 | **Se inyecta el template correcto según la phase of the project** | Template loader tests confirm dynamic phase detection. `test_orchestrator_loads_template_by_phase` validates logic. | ✅ Pass |
+| 4 | **Soporta modo 'ollama' (local) y ready for 'groq' (nube)** | Strategy pattern implemented. `OllamaClient` functional, `GroqClient` stub ready for future integration. | ✅ Pass |
 
 *Response time target will be addressed in HU-4.4 (GPU inference optimization).
 

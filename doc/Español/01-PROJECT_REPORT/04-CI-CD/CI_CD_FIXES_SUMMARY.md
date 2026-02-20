@@ -2,7 +2,7 @@
 
 **Fecha**: 10 de febrero de 2026
 **Rama**: `feature/streaming-optimization`
-**Status**: ✅ **ACTUALIZADO Y LISTO**
+**Estado**: ✅ **ACTUALIZADO Y LISTO**
 
 ---
 
@@ -19,7 +19,7 @@ ModuleNotFoundError: No module named 'httpx'
 **Solución**:
 - ✅ Agregado `httpx==0.28.0` a `requirements.txt`
 - ✅ Instalación de `httpx` en TODOS los jobs de GitHub Actions
-  - `backend-ci.yaml`: code-quality, unit-tests, security-check, startup-test
+  - `backend-ci.yaml`: code-quality, unit-pruebas, security-check, startup-prueba
   - `lint.yml`: python-lint
 
 **Cambios en Archivos**:
@@ -29,7 +29,7 @@ ModuleNotFoundError: No module named 'httpx'
 
 ---
 
-### Problema 2: Test Flaky de 500+ Tokens ❌ → ✅
+### Problema 2: Prueba Flaky de 500+ Tokens ❌ → ✅
 
 **Error Original**:
 ```
@@ -52,7 +52,7 @@ assert tokens_received >= 500
 assert tokens_received >= 400, f"Expected >=400 tokens, got {tokens_received}"
 ```
 
-**Archivo**: `tests/python/integration/test_streaming_flow.py`
+**Archivo**: `pruebas/python/integration/prueba_streaming_flow.py`
 
 ---
 
@@ -79,14 +79,14 @@ for _ in range(max_attempts):  # ✅ _ para variable no usada
         break
 ```
 
-**Archivo**: `tests/python/integration/test_streaming_flow.py`
+**Archivo**: `pruebas/python/integration/prueba_streaming_flow.py`
 
 ---
 
 ### Problema 4: Workflow Paths Incorrectos ❌ → ✅
 
 **Problemas**:
-- Tests ejecutándose desde `src/server` con rutas relativas `../../tests/python/`
+- Pruebas ejecutándose desde `src/server` con rutas relativas `../../pruebas/python/`
 - Coverage reportado desde `./src/server/coverage.xml`
 - Job "Lint Services" conflictaba con code-quality
 
@@ -109,7 +109,7 @@ files: ./coverage.xml  # ✅ Correctamente ubicado
 ```
 
 **Archivos**:
-- `.github/workflows/backend-ci.yaml` (unit-tests job)
+- `.github/workflows/backend-ci.yaml` (unit-pruebas job)
 - `.github/workflows/backend-ci.yaml` (security-check job)
 
 ---
@@ -134,15 +134,15 @@ branches: [main, develop, ..., feature/streaming-optimization]  # ✅ NUEVO
 
 ---
 
-### Problema 6: Missing pytest-timeout ❌ → ✅
+### Problema 6: Missing pyprueba-timeout ❌ → ✅
 
-**Problema**: Tests colgaban sin timeout máximo
+**Problema**: Pruebas colgaban sin timeout máximo
 
 **Solución**:
-- ✅ Agregado `pytest-timeout==2.1.0` a `requirements.txt`
+- ✅ Agregado `pyprueba-timeout==2.1.0` a `requirements.txt`
 - ✅ Timeouts configurados en workflows:
-  - Unit tests: `--timeout=10` segundos
-  - Integration tests: `--timeout=15` segundos
+  - Unit pruebas: `--timeout=10` segundos
+  - Integración pruebas: `--timeout=15` segundos
 
 ---
 
@@ -167,25 +167,25 @@ branches: [main, develop, ..., feature/streaming-optimization]  # ✅ NUEVO
 - ✅ Line 4: Agregada rama `feature/streaming-optimization`
 - ✅ Line 24: Agregada rama a pull_request
 - ✅ Line 50: Agregado `httpx` a code-quality dependencies
-- ✅ Line 65-72: Actualizado unit-tests job:
-  - Agregados `pytest-timeout` y `httpx`
-  - Separados unit vs integration tests
+- ✅ Line 65-72: Actualizado unit-pruebas job:
+  - Agregados `pyprueba-timeout` y `httpx`
+  - Separados unit vs integration pruebas
   - Removido `cd src/server` incorrecto
   - Fixed coverage path
 - ✅ Removido "Lint Services" job duplicado
 - ✅ Line 88: Agregado `httpx` a security-check
-- ✅ Line 106: Agregado `httpx` a startup-test
+- ✅ Line 106: Agregado `httpx` a startup-prueba
 
 ### 3. `.github/workflows/lint.yml`
 
 **Changes Summary**:
 - ✅ Line 9: Agregada rama `feature/streaming-optimization`
 - ✅ Line 44: Agregado timeout-minutes: 15 a Flutter setup
-- ✅ Line 77: Agregados `httpx` y `pytest-timeout` a dependencies
+- ✅ Line 77: Agregados `httpx` y `pyprueba-timeout` a dependencies
 - ✅ Line 81-82: Actualizado Ruff linting paths
-- ✅ Line 85-90: Separados unit vs integration tests
+- ✅ Line 85-90: Separados unit vs integration pruebas
 
-### 4. `tests/python/integration/test_streaming_flow.py`
+### 4. `pruebas/python/integration/prueba_streaming_flow.py`
 
 **Changes Summary**:
 - ✅ Line 59: Cambiado `attempt` → `_`
@@ -277,7 +277,7 @@ Changes: backend-ci.yaml, lint.yml
 ## 📍 Próximos Pasos
 
 1. ✅ **Esperar a que GitHub Actions ejecute los workflows nuevamente**
-2. ✅ **Verificar que todos los tests pasen en CI**
+2. ✅ **Verificar que todos los pruebas pasen en CI**
 3. ✅ **Merge a `develop` cuando esté GREEN**
 4. 🚀 **Deploy a staging para validación final**
 
@@ -285,4 +285,4 @@ Changes: backend-ci.yaml, lint.yml
 
 **Rama**: `feature/streaming-optimization`
 **PR**: #31 - PIT-79
-**Status**: 🟢 **LISTO PARA MERGE**
+**Estado**: 🟢 **LISTO PARA MERGE**

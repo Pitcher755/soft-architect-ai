@@ -1,7 +1,7 @@
-# 🔴 FASE 5: Integration The Gate (TDD RED)
+# 🔴 PHASE 5: Integration The Gate (TDD RED)
 
-> **Fecha:** 6 de febrero de 2026
-> **Estado:** 🔴 RED - Test Failing (13 errores identificados)
+> **Date:** 6 de febrero de 2026
+> **Status:** 🔴 RED - Test Failing (13 errores identificados)
 > **Objetivo:** Conectar Frontend → Backend → FileSystem (HU-3.2)
 
 ---
@@ -11,8 +11,8 @@
 - [1. Resumen Ejecutivo](#1-resumen-ejecutivo)
 - [2. Test de Integración Creado](#2-test-de-integración-creado)
 - [3. Errores RED Identificados](#3-errores-red-identificados)
-- [4. Análisis de Gaps](#4-análisis-de-gaps)
-- [5. Checklist de Implementación (GREEN)](#5-checklist-de-implementación-green)
+- [4. Analysis de Gaps](#4-analysis-de-gaps)
+- [5. Checklist de Implementation (GREEN)](#5-checklist-de-implementation-green)
 
 ---
 
@@ -57,17 +57,17 @@ UI Update (Success Toast + Progress)
 
 ## 2. Test de Integración Creado
 
-### 📝 Archivo
+### 📝 File
 
 **Ubicación:** `tests/test/integration/features/chat/chat_flow_test.dart`
 
-### 🧪 Casos de Prueba
+### 🧪 Casos de Test
 
 #### Test 1: `should complete full document generation cycle`
 
 **Escenario:**
 1. Launch app
-2. Navigate to "Nuevo Proyecto" (chat screen)
+2. Navigate to "New Project" (chat screen)
 3. Enter prompt: "Genera el Project Manifesto"
 4. Wait for streaming (5 segundos)
 5. Validate proposal widget appears
@@ -88,7 +88,7 @@ UI Update (Success Toast + Progress)
 
 ## 3. Errores RED Identificados
 
-### 🔴 Error #1: Widget "Nuevo Proyecto" Not Found
+### 🔴 Error #1: Widget "New Project" Not Found
 
 **Error:**
 ```
@@ -96,14 +96,14 @@ The finder "Found 0 widgets with text "Nuevo Proyecto": []"
 could not find any matching widgets.
 ```
 
-**Causa:** El widget SoftArchitectApp no renderiza un botón con ese texto en la pantalla principal.
+**Causa:** El widget SoftArchitectApp no renderiza un button con ese texto en la pantalla principal.
 
 **Ubicación:** `src/client/lib/main.dart` → `SoftArchitectApp` (Presentation Layer)
 
 **Qué Falta:**
-- [ ] Main navigation screen con botón "Nuevo Proyecto"
+- [ ] Main navigation screen con button "New Project"
 - [ ] Router configuration para navegar a chat screen
-- [ ] La pantalla inicial no existe o no tiene este botón
+- [ ] La pantalla inicial no existe o no tiene este button
 
 ---
 
@@ -114,12 +114,12 @@ could not find any matching widgets.
 LateInitializationError: Field 'isWeb' has already been initialized.
 ```
 
-**Causa:** Al ejecutar dos tests seguidos, `initializeSqfliteForDesktop()` intenta inicializar `isWeb` dos veces.
+**Causa:** Al execute dos tests seguidos, `initializeSqfliteForDesktop()` intenta inicializar `isWeb` dos veces.
 
 **Ubicación:** `src/client/lib/core/database_initializer.dart` (Late field)
 
 **Qué Falta:**
-- [ ] Setup/Teardown logic para tests que resetee el estado de late fields
+- [ ] Setup/Teardown logic para tests que resetee el status de late fields
 - [ ] Singleton pattern para evitar reinicialización
 - [ ] Test harness que isole cada test
 
@@ -154,18 +154,18 @@ LateInitializationError: Field 'isWeb' has already been initialized.
 **Problema:** El widget no aparece después del streaming completado.
 
 **Qué Falta:**
-- [ ] ChatNotifier debe emitir estado con `currentProposal` no null
+- [ ] ChatNotifier debe emitir status con `currentProposal` no null
 - [ ] Presentation layer debe renderizar ProposalCardWidget cuando `state.currentProposal != null`
-- [ ] Streaming debe parsear respuesta y crear DocumentProposal entity
+- [ ] Streaming debe parsear respuesta y create DocumentProposal entity
 
 ---
 
 ### 🔴 Error #11: Missing "Validar y Guardar" Button
 
-**Problema:** El botón para validar y guardar proposal no existe.
+**Problema:** El button para validar y guardar proposal no existe.
 
 **Qué Falta:**
-- [ ] ProposalCardWidget debe tener botón "Validar y Guardar"
+- [ ] ProposalCardWidget debe tener button "Validar y Guardar"
 - [ ] Handler onPressed que llame a `validateAndSaveProposal()` en ChatNotifier
 
 ---
@@ -181,7 +181,7 @@ expect(find.text('✅ Documento guardado'), findsOneWidget);
 
 **Qué Falta:**
 - [ ] Toast/Snackbar component (UI)
-- [ ] Handler que dispare toast cuando documento se guarda exitosamente
+- [ ] Handler que dispare toast cuando document se guarda exitosamente
 - [ ] Integration con FileSystem
 
 ---
@@ -193,7 +193,7 @@ expect(find.text('✅ Documento guardado'), findsOneWidget);
 expect(find.text('Doc 2/25'), findsOneWidget);
 ```
 
-**Problema:** No existe contador de documentos generados.
+**Problema:** No existe contador de documents generados.
 
 **Qué Falta:**
 - [ ] Progress widget en chat screen que muestre "Doc X/25"
@@ -202,7 +202,7 @@ expect(find.text('Doc 2/25'), findsOneWidget);
 
 ---
 
-## 4. Análisis de Gaps
+## 4. Analysis de Gaps
 
 ### 🏗️ Arquitectura Faltante
 
@@ -247,7 +247,7 @@ INTEGRATION POINTS
    - `validateAndSaveProposal()` method
 
 4. **Navigation Structure**
-   - Main screen con botón "Nuevo Proyecto"
+   - Main screen con button "New Project"
    - Navigate to chat screen
 
 5. **Chat Input Widget**
@@ -261,7 +261,7 @@ INTEGRATION POINTS
 
 ---
 
-## 5. Checklist de Implementación (GREEN)
+## 5. Checklist de Implementation (GREEN)
 
 ### ✅ Backend Layer (Python FastAPI)
 
@@ -325,7 +325,7 @@ INTEGRATION POINTS
   - [ ] Navigation handlers
 
 - [ ] Create home screen
-  - [ ] "Nuevo Proyecto" button
+  - [ ] "New Project" button
   - [ ] Navigate to chat on tap
 
 ### ✅ Configuration
@@ -381,5 +381,5 @@ Full E2E Flow Working:
 ---
 
 **Autor:** ArchitectZero (AI Agent)
-**Estado:** 🔴 RED - Ready for GREEN phase
+**Status:** 🔴 RED - Ready for GREEN phase
 **Próximo:** Implement Backend `/api/v1/chat/stream` endpoint

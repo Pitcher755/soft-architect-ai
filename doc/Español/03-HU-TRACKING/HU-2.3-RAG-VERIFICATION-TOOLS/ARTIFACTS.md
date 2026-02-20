@@ -1,4 +1,4 @@
-# 📦 ARTIFACTS - HU-2.3: Generated & Modified Files Manifest
+# 📦 ARTIFACTS - HU-2.3: Generated & Modified Archivos Manifest
 
 > **Versión:** 1.0
 > **Fecha:** 01/02/2026
@@ -11,7 +11,7 @@
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
 2. [Archivos Nuevos](#archivos-nuevos)
 3. [Archivos Modificados](#archivos-modificados)
-4. [Arquivos de Documentación](#archivos-de-documentación)
+4. [Arquivos de Documentoación](#archivos-de-documentoación)
 5. [Estadísticas Detalladas](#estadísticas-detalladas)
 6. [Dependencias Agregadas](#dependencias-agregadas)
 7. [Directrices de Limpieza](#directrices-de-limpieza)
@@ -23,8 +23,8 @@
 | Métrica | Cantidad |
 |---------|----------|
 | **Archivos Nuevos (Python)** | 2 |
-| **Archivos de Testing** | 4 |
-| **Archivos de Documentación** | 5 |
+| **Archivos de Pruebaing** | 4 |
+| **Archivos de Documentoación** | 5 |
 | **Archivos Modificados** | 3 |
 | **Total Líneas de Código (LOC)** | 600+ |
 | **Total de Cambios** | 14 archivos |
@@ -94,7 +94,7 @@ poetry run python scripts/inspect_db.py query "Docker" --json-output
 
 ---
 
-### 2. src/server/app/api/v1/endpoints/rag_test.py
+### 2. src/server/app/api/v1/endpoints/rag_prueba.py
 
 **Propósito:** Endpoint temporal de prueba para RAG (⚠️ TEMPORARY)
 **Tipo:** Production Code (Temporary)
@@ -172,14 +172,14 @@ curl http://localhost:8000/api/v1/rag/test/health
 
 ---
 
-## 🧪 Archivos de Testing (4 archivos)
+## 🧪 Archivos de Pruebaing (4 archivos)
 
-### 3. tests/integration/services/rag/test_chroma_mount.py
+### 3. pruebas/integration/services/rag/prueba_chroma_mount.py
 
 **Propósito:** Verificar configuración de bind mount
-**Tipo:** Integration Test
+**Tipo:** Integración Prueba
 **Tamaño:** 12 líneas
-**Dependencias:** pytest, pathlib
+**Dependencias:** pyprueba, pathlib
 
 ```python
 """Test to verify ChromaDB bind mount is working correctly."""
@@ -199,12 +199,12 @@ def test_chroma_is_writable():
 
 ---
 
-### 4. tests/integration/services/rag/test_persistence.py
+### 4. pruebas/integration/services/rag/prueba_persistence.py
 
 **Propósito:** Verificar persistencia de datos tras ingesta
-**Tipo:** Integration Test
+**Tipo:** Integración Prueba
 **Tamaño:** 30 líneas
-**Dependencias:** pytest, pathlib, services.rag.vector_store
+**Dependencias:** pyprueba, pathlib, services.rag.vector_store
 
 ```python
 """Tests for ChromaDB data persistence."""
@@ -228,18 +228,18 @@ async def test_vector_store_retrieval():
 ```
 
 **Validación:**
-- ✓ Files exist in chroma_data
+- ✓ Archivos exist in chroma_data
 - ✓ Total size > 1MB
 - ✓ VectorStoreService can query
 
 ---
 
-### 5. tests/unit/scripts/test_inspect_db.py
+### 5. pruebas/unit/scripts/prueba_inspect_db.py
 
-**Propósito:** Testing para CLI tool inspect_db.py
-**Tipo:** Unit Test
+**Propósito:** Pruebaing para CLI tool inspect_db.py
+**Tipo:** Unit Prueba
 **Tamaño:** 18 líneas
-**Dependencias:** pytest, click.testing
+**Dependencias:** pyprueba, click.pruebaing
 
 ```python
 """Tests for inspect_db CLI tool."""
@@ -256,17 +256,17 @@ def test_cli_query_command():
 ```
 
 **Validación:**
-- ✓ Health command executes
-- ✓ Query command executes
+- ✓ Health command ejecutars
+- ✓ Query command ejecutars
 
 ---
 
-### 6. tests/unit/app/api/test_rag_endpoint.py
+### 6. pruebas/unit/app/api/prueba_rag_endpoint.py
 
-**Propósito:** Testing para API endpoints rag_test
-**Tipo:** Unit Test (con mocks)
+**Propósito:** Pruebaing para API endpoints rag_prueba
+**Tipo:** Unit Prueba (con mocks)
 **Tamaño:** 60 líneas
-**Dependencias:** pytest, unittest.mock, fastapi.testclient
+**Dependencias:** pyprueba, unitprueba.mock, fastapi.pruebaclient
 
 ```python
 """Tests for RAG test endpoint."""
@@ -291,13 +291,13 @@ def test_rag_retrieval_invalid_query(mock_store, client):
 ```
 
 **Validación:**
-- ✓ Health endpoint returns proper status
+- ✓ Health endpoint returns proper estado
 - ✓ Retrieval endpoint returns JSON
 - ✓ Validation errors handled
 
 ---
 
-## 📝 Archivos de Documentación (5 archivos)
+## 📝 Archivos de Documentoación (5 archivos)
 
 Todos en `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/`:
 
@@ -308,16 +308,16 @@ Todos en `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/`:
 - English & Spanish sections
 - User story and context
 - Acceptance criteria (12 items)
-- Implementation details
+- Implementación details
 - Execution summary
 
 ### 8. WORKFLOW_MASTER_DEFINITION.md
 
 **Tamaño:** 600+ líneas
 **Contenido:**
-- Complete 6-phase workflow
-- Detailed instructions for each phase
-- Validation criteria for each phase
+- Complete 6-fase workflow
+- Detailed instructions for each fase
+- Validation criteria for each fase
 - Troubleshooting section
 - References and architecture
 
@@ -326,16 +326,16 @@ Todos en `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/`:
 **Tamaño:** 300+ líneas
 **Contenido:**
 - Executive summary with metrics
-- 6-phase tracker with subtasks
-- Validation criteria per phase
+- 6-fase tracker with subtasks
+- Validation criteria per fase
 - Summary statistics
 - Rollback strategy
 
-### 10. ARTIFACTS.md (this file)
+### 10. ARTIFACTS.md (this archivo)
 
 **Tamaño:** 200+ líneas
 **Contenido:**
-- File manifest with descriptions
+- Archivo manifest with descripcións
 - Statistics and metrics
 - Dependencies added
 - Cleanup directives
@@ -345,12 +345,12 @@ Todos en `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/`:
 **Tamaño:** 100+ líneas
 **Contenido:**
 - Acceptance criteria checklist
-- Infrastructure verification
-- Ingestion verification
-- CLI verification
-- API verification
-- Persistence verification
-- Quality verification
+- Infraestructura verificación
+- Ingestion verificación
+- CLI verificación
+- API verificación
+- Persistence verificación
+- Quality verificación
 
 ---
 
@@ -385,7 +385,7 @@ services:
 
 ---
 
-### 2. src/server/pyproject.toml
+### 2. src/server/pyproyecto.toml
 
 **Cambio:** Agregar dependencia Click
 
@@ -417,7 +417,7 @@ dependencies = [
 
 ### 3. src/server/app/api/v1/router.py
 
-**Cambio:** Registrar rag_test router
+**Cambio:** Registrar rag_prueba router
 
 ```python
 # BEFORE:
@@ -433,7 +433,7 @@ router.include_router(rag_test.router)  # ✨ NEW (temporary)
 ```
 
 **Impacto:**
-- ✅ RAG test endpoints available at /api/v1/rag/test/*
+- ✅ RAG prueba endpoints available at /api/v1/rag/prueba/*
 - ✅ Marked as temporary for cleanup
 
 **Líneas Modificadas:** 2-3
@@ -466,15 +466,15 @@ infrastructure/chroma_data/  # ✨ NEW - persistent data, not tracked
 
 ## 📊 Estadísticas Detalladas
 
-### Breakdown de Líneas de Código
+### Desglose de Líneas de Código
 
 | Categoría | Archivos | LOC | Promedio |
 |-----------|----------|-----|----------|
-| **Python Code** | 2 | 342 | 171/file |
-| **Unit Tests** | 3 | 78 | 26/file |
-| **Integration Tests** | 1 | 30 | 30/file |
-| **Documentation** | 5 | 1,400+ | 280/file |
-| **Modifications** | 4 | ~10 | 2.5/file |
+| **Python Code** | 2 | 342 | 171/archivo |
+| **Unit Pruebas** | 3 | 78 | 26/archivo |
+| **Integración Pruebas** | 1 | 30 | 30/archivo |
+| **Documentoation** | 5 | 1,400+ | 280/archivo |
+| **Modifications** | 4 | ~10 | 2.5/archivo |
 | **TOTAL** | **15** | **1,860+** | - |
 
 ### Type Coverage
@@ -487,7 +487,7 @@ infrastructure/chroma_data/  # ✨ NEW - persistent data, not tracked
 ✓ Type Safety: Excellent
 ```
 
-### Test Coverage Target
+### Prueba Coverage Target
 
 ```
 ✓ test_chroma_mount.py: 2 tests
@@ -500,7 +500,7 @@ infrastructure/chroma_data/  # ✨ NEW - persistent data, not tracked
 ✓ Expected Coverage: 85-90%
 ```
 
-### Documentation Metrics
+### Documentoation Metrics
 
 ```
 Total Documentation: 1,400+ lines
@@ -519,7 +519,7 @@ Bilingual Support: Full EN + ES
 
 ## 📦 Dependencias Agregadas
 
-### Nuevas Dependencias (pyproject.toml)
+### Nuevas Dependencias (pyproyecto.toml)
 
 | Librería | Versión | Razón |
 |----------|---------|-------|
@@ -542,7 +542,7 @@ Bilingual Support: Full EN + ES
 
 ### Archivos Temporales (a remover después)
 
-**Endpoint Temporal:** `src/server/app/api/v1/endpoints/rag_test.py`
+**Endpoint Temporal:** `src/server/app/api/v1/endpoints/rag_prueba.py`
 
 ```markdown
 ⚠️ NOTE: Este endpoint debe removerse antes de ir a producción.

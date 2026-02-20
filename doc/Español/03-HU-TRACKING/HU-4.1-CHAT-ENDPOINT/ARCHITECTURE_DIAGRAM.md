@@ -1,14 +1,14 @@
-# 🏗️ HU-4.1: Architecture & Design Documentation
+# 🏗️ HU-4.1: Architecture & Design Documentoation
 
 > **Generated:** 2026-02-14
-> **Status:** ✅ Implementation Complete
+> **Estado:** ✅ Implementación Complete
 > **Architecture Pattern:** Clean Architecture + Hexagonal (Ports & Adapters)
 > **Design Principles:** SOLID, Dependency Inversion, Strategy Pattern
-> **Test Environment:** AMD Ryzen 9, 16GB RAM, NVIDIA RTX 3050 4GB
+> **Prueba Environment:** AMD Ryzen 9, 16GB RAM, NVIDIA RTX 3050 4GB
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [High-Level Architecture](#1-high-level-architecture)
 2. [RAG Flow Diagram](#2-rag-flow-diagram)
@@ -108,7 +108,7 @@ sequenceDiagram
 
 </details>
 
-**Processing Time Breakdown:**
+**Processing Time Desglose:**
 1. Input Sanitization: ~0.3ms
 2. Vector Search: ~47ms
 3. Template Selection: ~1ms
@@ -203,7 +203,7 @@ DEPENDENCY RULE: Arrows point INWARD (outer depends on inner, never reverse)
 **Key Principles:**
 - ✅ **Domain layer has ZERO external dependencies** (pure Python)
 - ✅ **Service layer depends only on Domain abstractions**
-- ✅ **Infrastructure implements Domain interfaces** (Dependency Inversion)
+- ✅ **Infraestructura implements Domain interfaces** (Dependency Inversion)
 - ✅ **API layer orchestrates, never contains business logic**
 
 ---
@@ -251,7 +251,7 @@ classDiagram
 
 </details>
 
-**Runtime Configuration:**
+**Ejecutartime Configuración:**
 ```bash
 # .env file determines which implementation
 LLM_PROVIDER=ollama  # Uses OllamaClient
@@ -302,13 +302,13 @@ BaseAppError (status: 500)
 
 ### Error Code Matrix
 
-| Code | Name | HTTP Status | User Message | Retry? | Mitigation |
+| Code | Name | HTTP Estado | User Message | Retry? | Mitigation |
 |------|------|-------------|--------------|--------|------------|
-| **LLM_001** | LLM Connection Error | 503 | "AI Engine is currently unreachable. Please try again later." | ✅ Yes | Check Ollama running (`ollama serve`) |
+| **LLM_001** | LLM Connection Error | 503 | "AI Engine is currently unreachable. Please try again later." | ✅ Yes | Check Ollama ejecutarning (`ollama serve`) |
 | **LLM_002** | LLM Timeout | 504 | "AI Engine request timed out. Consider using a smaller model." | ✅ Yes | Increase timeout or switch to GPU |
 | **RAG_001** | RAG Retrieval Error | 500 | "Knowledge base search failed. Using fallback response." | ⚠️ Partial | Check ChromaDB health, rebuild index |
 | **SEC_001** | Prompt Injection Detected | 400 | "Input contains suspicious patterns. Request logged." | ❌ No | User education, review logs |
-| **TPL_001** | Template Missing | 500 | "Internal configuration error. Please contact support." | ❌ No | Verify templates loaded at startup |
+| **TPL_001** | Template Missing | 500 | "Internal configuración error. Please contact support." | ❌ No | Verify templates loaded at startup |
 | **VAL_001** | Validation Error | 422 | "Invalid input: {specific_error}" | ❌ No | Fix request format |
 
 ---
@@ -522,7 +522,7 @@ if injection_detected:
 class ChatRequest(BaseModel):
     conversation_id: UUID  # Auto-validates UUID format
     message: str = Field(..., max_length=2000)  # DOS prevention
-    project_id: UUID
+    proyecto_id: UUID
 
     @field_validator("message")
     @classmethod

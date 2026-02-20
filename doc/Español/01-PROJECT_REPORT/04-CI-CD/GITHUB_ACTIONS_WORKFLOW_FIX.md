@@ -141,7 +141,7 @@ backend-ci:
 
 ## 🎯 Comportamiento Final
 
-### Push a feature branch (ej: chore/rag-verification-tools)
+### Push a feature branch (ej: chore/rag-verificación-tools)
 
 ```
 CI NO EJECUTA (como debe ser)
@@ -228,7 +228,7 @@ on:
 
 ## �📚 Referencias
 
-- [GitHub Actions - Reusable Workflows Documentation](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
+- [GitHub Actions - Reusable Workflows Documentoation](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
 - [GitHub Actions Context - github.ref](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
 - [YAML in GitHub Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
 

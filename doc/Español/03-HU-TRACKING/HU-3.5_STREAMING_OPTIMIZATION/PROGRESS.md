@@ -5,9 +5,9 @@
 ## Fases
 
 - [x] Especificación completada
-- [x] WebSocket implementation
+- [x] WebSocket implementación
 - [x] Cache optimization
 - [x] Performance tuning
-- [x] Testing
+- [x] Pruebaing
 
 **Progreso:** 100% (8 pts de 8)

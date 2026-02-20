@@ -336,7 +336,7 @@ python main.py
 # Debería permitir crear y nombrar un proyecto
 ```
 
-### Resultado Esperado
+### Resultadoado Esperado
 
 ✅ **Pasos 1-3 completos**: Backend funcionando
 ✅ **Pasos 4-5 completos**: Frontend funcional
@@ -382,7 +382,7 @@ taskkill /PID <PID> /F
 
 ---
 
-### Problema 3: "Error: ENOENT: no such file or directory '.env'"
+### Problema 3: "Error: ENOENT: no such archivo or directory '.env'"
 
 **Causa:** Archivo .env no existe
 **Solución:**

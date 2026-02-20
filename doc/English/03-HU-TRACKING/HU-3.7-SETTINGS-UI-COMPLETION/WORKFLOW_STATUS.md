@@ -1,6 +1,6 @@
-# HU-3.7: Estado del Workflow - Resumen Ejecutivo
+# HU-3.7: Status del Workflow - Resumen Ejecutivo
 
-> **Fecha:** 11/02/2026
+> **Date:** 11/02/2026
 > **Commit:** e08a70d
 > **Progreso Global:** 60% completado
 > **Branch:** `feature/settings-ui-completion`
@@ -9,17 +9,17 @@
 
 ## 📋 Documentación del Workflow
 
-**✅ WORKFLOW_MASTER_DEFINITION.md creado** - Documento completo con:
-- 6 fases TDD (RED → GREEN → REFACTOR → OPTIMIZE → DOCUMENT → VALIDATE)
+**✅ WORKFLOW_MASTER_DEFINITION.md creado** - Document completo con:
+- 6 phases TDD (RED → GREEN → REFACTOR → OPTIMIZE → DOCUMENT → VALIDATE)
 - Comandos bash específicos para cada tarea
-- Deliverables esperados por fase
-- Checklists detallados (26 tests, 45 archivos)
+- Deliverables esperados por phase
+- Checklists detallados (26 tests, 45 files)
 - Quality gates y acceptance criteria
 - Métricas y status tracking
 
 ---
 
-## ✅ Trabajo Completado (Phases 1-3 + Partial 4)
+## ✅ Trabajo Completed (Phases 1-3 + Partial 4)
 
 ### Phase 1: Setup & Analysis ✅ COMPLETE
 - ✅ Documentación HU creada (README, PROGRESS, ARTIFACTS, WORKFLOW_MASTER_DEFINITION)
@@ -28,16 +28,16 @@
 - ✅ Arquitectura Clean Architecture diseñada
 
 ### Phase 2: Domain Layer ✅ COMPLETE
-**Archivos Creados: 11**
+**Files Creados: 11**
 
-**Entities (5 archivos):**
+**Entities (5 files):**
 - `settings_entity.dart` - Entidad principal agregadora
 - `language_preference.dart` - Enum con 🇬🇧 / 🇪🇸
 - `theme_preference.dart` - Enum dark/light/system
 - `accessibility_settings.dart` - Value object (font size, contrast, etc.)
 - `performance_settings.dart` - Value object (cache, memory, etc.)
 
-**Use Cases (6 archivos):**
+**Use Cases (6 files):**
 - `load_settings_usecase.dart`
 - `save_settings_usecase.dart`
 - `update_language_usecase.dart`
@@ -45,7 +45,7 @@
 - `load_last_project_usecase.dart`
 - `save_last_project_usecase.dart`
 
-**Repository Interfaces (2 archivos):**
+**Repository Interfaces (2 files):**
 - `i_settings_repository.dart`
 - `i_last_project_repository.dart`
 
@@ -58,14 +58,14 @@
 ---
 
 ### Phase 3: Data Layer ✅ COMPLETE
-**Archivos Creados: 5**
+**Files Creados: 5**
 
-**Data Sources (3 archivos):**
+**Data Sources (3 files):**
 - `settings_local_datasource.dart` - SharedPreferences con JSON (dart:convert)
 - `file_picker_datasource.dart` - Wrapper para file_picker package
-- `last_project_local_datasource.dart` - Persistencia último proyecto
+- `last_project_local_datasource.dart` - Persistencia último project
 
-**Repository Implementations (2 archivos):**
+**Repository Implementations (2 files):**
 - `settings_repository_impl .dart` - Implementa ISettingsRepository
 - `last_project_repository_impl.dart` - Implementa ILastProjectRepository
 
@@ -78,21 +78,21 @@
 ---
 
 ### Phase 4: Presentation Layer ⚠️ PARTIAL (60%)
-**Archivos Creados/Modificados: 3**
+**Files Creados/Modificados: 3**
 
-**✅ Completado:**
+**✅ Completed:**
 - `settings_notifier.dart` - StateNotifier con todos los métodos de actualización
 - `settings_providers.dart` - Riverpod providers completos (data sources → repositories → use cases → notifiers)
 - `storage_section.dart` - ✅ **TODO-2 COMPLETED**: file_picker nativo implementado
 
-**⏳ Pendiente:**
+**⏳ Pending:**
 - Modificar `profile_section.dart` para conectar a providers
 - Modificar `appearance_section.dart` para añadir language_selector y conectar providers
 - Modificar `accessibility_section.dart` para conectar providers
 - Modificar `performance_section.dart` para conectar providers
 - Modificar `language_selector_widget.dart` (ya existe, revisar si necesita ajustes)
-- Modificar `global_search_dialog.dart` para navegación al proyecto
-- Modificar `projects_sidebar.dart` para mostrar último proyecto
+- Modificar `global_search_dialog.dart` para navegación to the project
+- Modificar `projects_sidebar.dart` para mostrar último project
 
 ---
 
@@ -104,7 +104,7 @@
 1. **profile_section.dart**
    - Conectar a `settingsProvider`
    - Campos userName, email
-   - Botón guardar → `updateUserProfile()`
+   - Button guardar → `updateUserProfile()`
 
 2. **appearance_section.dart**
    - Conectar a `settingsProvider`
@@ -127,7 +127,7 @@
    - Toggle caching
    - Toggle preloading
    - Slider max concurrent requests (1-16)
-   - Botón "Clear Cache"
+   - Button "Clear Cache"
    - Auto-persistencia
 
 5. **language_selector_widget.dart**
@@ -145,8 +145,8 @@
 
 7. **projects_sidebar.dart**
    - Conectar a `lastProjectProvider`
-   - Leer último proyecto: `ref.watch(lastProjectProvider)`
-   - Botón "Proyecto Activo" navega a última ruta
+   - Leer último project: `ref.watch(lastProjectProvider)`
+   - Button "Project Activo" navega a última ruta
    - Si null, mostrar disabled o default
 
 ---
@@ -193,7 +193,7 @@
 - `last_project_navigation_test.dart` (open project → sidebar updates → navigate)
 
 #### 5.7 Coverage Verification
-- Ejecutar `flutter test --coverage`
+- Execute `flutter test --coverage`
 - Generar reporte: `genhtml coverage/lcov.info -o coverage/html`
 - Verificar >90% en Settings feature
 - Identificar líneas sin cubrir y añadir tests
@@ -216,12 +216,12 @@
 
 3. **Documentation Updates**
    - Actualizar PROGRESS.md (marcar todo ✅)
-   - Verificar ARTIFACTS.md matches archivos reales
+   - Verificar ARTIFACTS.md matches files reales
    - Actualizar doc/INDEX.md con referencia a HU-3.7
-   - Crear PR description
+   - Create PR description
 
 4. **Pre-Push Validation**
-   - Ejecutar `./scripts/PRE_PUSH_VALIDATION_MASTER.sh`
+   - Execute `./scripts/PRE_PUSH_VALIDATION_MASTER.sh`
    - Fix any failures
 
 5. **Git & PR**
@@ -233,22 +233,22 @@
 
 ## 📊 Métricas Actuales
 
-| Métrica | Estado Actual | Objetivo Final |
+| Métrica | Status Actual | Objetivo Final |
 |---------|---------------|----------------|
-| **Archivos Creados** | 19 nuevos | ~45 (con tests) |
-| **Archivos Modificados** | 1 | ~8-10 |
+| **Files Creados** | 19 nuevos | ~45 (con tests) |
+| **Files Modificados** | 1 | ~8-10 |
 | **Líneas de Código** | +3107 | +5000-6000 |
 | **Tests Creados** | 0 | +18 tests |
 | **Tests Fixed** | 0/10 | 10/10 (MarkdownPreview) |
 | **Cobertura** | N/A | >90% (Settings) |
 | **DartDoc** | Domain+Data ✅ | 100% (all layers) |
-| **TODOs Completados** | 1/4 (TODO-2) | 4/4 |
+| **TODOs Completeds** | 1/4 (TODO-2) | 4/4 |
 
 ---
 
 ## 🎯 TODOs Tracker
 
-| TODO | Status | Descripción |
+| TODO | Status | Description |
 |------|--------|-------------|
 | **T-2** | ⏳ 0/10 | Fix 10 failing MarkdownPreview tests |
 | **T-3** | ⏳ 0/7 | Create 7 Settings UI widget tests |
@@ -257,19 +257,19 @@
 
 ---
 
-## 🚀 Próximos Pasos Inmediatos
+## 🚀 Next Steps Inmediatos
 
-1. ✅ Commit progreso actual y crear WORKFLOW_MASTER_DEFINITION.md (DONE - e08a70d + workflow)
+1. ✅ Commit progreso actual y create WORKFLOW_MASTER_DEFINITION.md (DONE - e08a70d + workflow)
 2. ⏳ Modificar widgets de Settings (profile, appearance, accessibility, performance)
 3. ⏳ Añadir language_selector a appearance_section
 4. ⏳ Implementar navegación en global_search_dialog
-5. ⏳ Implementar último proyecto en projects_sidebar
-6. ⏳ Ejecutar `flutter analyze` y verificar 0 warnings
-7. ⏳ Crear suite completa de tests (Phase 5)
+5. ⏳ Implementar último project en projects_sidebar
+6. ⏳ Execute `flutter analyze` y verificar 0 warnings
+7. ⏳ Create suite completa de tests (Phase 5)
 8. ⏳ Fix 10 MarkdownPreview tests
 9. ⏳ Verificar cobertura >90%
-10. ⏳ Ejecutar PRE_PUSH_VALIDATION_MASTER.sh
-11. ⏳ Push y crear PR
+10. ⏳ Execute PRE_PUSH_VALIDATION_MASTER.sh
+11. ⏳ Push y create PR
 
 ---
 
@@ -307,15 +307,15 @@ lastProject.path -> String path del último proyecto
 
 ## 📚 Referencias
 
-- [README.md](./README.md) - Descripción completa HU-3.7
-- [PROGRESS.md](./PROGRESS.md) - Checklist detallado 6 fases
-- [ARTIFACTS.md](./ARTIFACTS.md) - Manifest de archivos
-- [WORKFLOW_MASTER_DEFINITION.md](./WORKFLOW_MASTER_DEFINITION.md) - Workflow TDD completo (6 fases, bash commands, deliverables)
-- [AGENTS.md](../../../AGENTS.md) - Estándares del proyecto
+- [README.md](./README.md) - Description completa HU-3.7
+- [PROGRESS.md](./PROGRESS.md) - Checklist detallado 6 phases
+- [ARTIFACTS.md](./ARTIFACTS.md) - Manifest de files
+- [WORKFLOW_MASTER_DEFINITION.md](./WORKFLOW_MASTER_DEFINITION.md) - Workflow TDD completo (6 phases, bash commands, deliverables)
+- [AGENTS.md](../../../AGENTS.md) - Estándares of the project
 - [context/](../../../context/) - Requisitos y especificaciones
 
 ---
 
 **Última Actualización:** 11/02/2026 - Commit e08a70d
 **Responsable:** ArchitectZero
-**Estado:** 🚧 Phase 4 en progreso (60% completado)
+**Status:** 🚧 Phase 4 en progreso (60% completado)

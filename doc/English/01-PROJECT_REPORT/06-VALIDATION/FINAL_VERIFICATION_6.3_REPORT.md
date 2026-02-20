@@ -1,11 +1,11 @@
-# 📊 Verificación Final 6.3: Integration Checklist
+# 📊 Verification Final 6.3: Integration Checklist
 **Fecha:** 06/02/2026
-**Estado:** 🔄 In Progress (2/6 criterios completados, 4 en desarrollo)
+**Status:** 🔄 In Progress (2/6 criterios completados, 4 en desarrollo)
 **Rama:** `feature/chat-sequential-docs`
 
 ---
 
-## 📋 6 Criterios de Verificación Final
+## 📋 6 Criterios de Verification Final
 
 ### 1️⃣ [ ✅ ] Validate button saves file to disk
 
@@ -58,8 +58,8 @@ Future<void> validateProposal() async {
 **Funcionalidad verificada:**
 - ✅ ProposalCardWidget.onValidate → ChatNotifier.validateProposal()
 - ✅ saveDocument() guarda contenido en disk
-- ✅ Archivo se crea en ruta correcta: `{section}/{docType}.md`
-- ✅ Error handling integrado con estado (hasError, errorMessage)
+- ✅ File se crea en ruta correcta: `{section}/{docType}.md`
+- ✅ Error handling integrado con status (hasError, errorMessage)
 
 **Test Coverage:** No hay test explícito, pero la lógica está implementada.
 
@@ -71,7 +71,7 @@ Future<void> validateProposal() async {
 
 **Problema Identificado:**
 - `ChatNotifier.validateProposal()` llama `_fileSystemService.saveDocument()`
-- El archivo se guarda en disco **PERO** FileSystemTreeWidget no se notifica automáticamente
+- El file se guarda en disco **PERO** FileSystemTreeWidget no se notifica automáticamente
 - Falta: Reactive listener en FileSystemTreeWidget cuando cambia el filesystem
 
 **Evidencia:**
@@ -85,7 +85,7 @@ Future<void> validateProposal() async {
 // 3. Trigger re-fetch de file tree structure
 ```
 
-**Solución Pendiente:**
+**Solución Pending:**
 Implementar streaming de cambios o usar `invalidateCache()` pattern en Riverpod.
 
 ---
@@ -95,11 +95,11 @@ Implementar streaming de cambios o usar `invalidateCache()` pattern en Riverpod.
 **Status:** ⚠️ **INCOMPLETO** (Depende de 2️⃣)
 
 **Problema Identificado:**
-- `MarkdownPreviewWidget` muestra archivo cuando se selecciona en FileSystemTreeWidget
-- Pero NO se refresca automáticamente cuando archivo es guardado desde chat
+- `MarkdownPreviewWidget` muestra file cuando se selecciona en FileSystemTreeWidget
+- Pero NO se refresca automáticamente cuando file es guardado desde chat
 - Requiere: FileSystemTreeWidget se actualice primero → entonces usuario selecciona → Preview carga
 
-**Solución Pendiente:**
+**Solución Pending:**
 Same como 2️⃣ - Necesita listener reactivo en filesystem.
 
 ---
@@ -126,7 +126,7 @@ if (state.currentDocIndex <= state.totalDocs) {
 **Funcionalidad verificada:**
 - ✅ currentDocIndex incrementa correctamente
 - ✅ currentProposal se limpia (clearProposal: true)
-- ✅ Si hay más documentos, triggerNextQuestion() se ejecuta automáticamente
+- ✅ Si hay más documents, triggerNextQuestion() se ejecuta automáticamente
 - ✅ App bar muestra "Doc X/25" reactivamente via ProjectWorkspaceScreen.watch(chatNotifierProvider)
 
 ---
@@ -135,7 +135,7 @@ if (state.currentDocIndex <= state.totalDocs) {
 
 **Status:** ✅ **COMPLETO**
 
-**Implementación Realizada:**
+**Implementation Realizada:**
 
 1. **ErrorBannerWidget creado** (✅ Commit 6bfd1b8)
    - Location: `src/client/lib/features/chat/presentation/widgets/error_banner_widget.dart`
@@ -172,7 +172,7 @@ if (state.currentDocIndex <= state.totalDocs) {
 1. Excepción en validateProposal() → línea 164: `state.copyWith(hasError: true, errorMessage: '...')`
 2. Chat screen detecta `chatState.hasError` → renderiza ErrorBannerWidget
 3. Usuario hace click en X → `onDismiss()` llama `chatNotifier.clearError()`
-4. Estado limpia error → ErrorBannerWidget desaparece
+4. Status limpia error → ErrorBannerWidget desaparece
 
 **Testing:**
 - Unit tests de ChatNotifier cubren error path (línea 119, 164 error handling)
@@ -193,7 +193,7 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
   Error: Not found: 'package:flutter_riverpod/flutter_riverpod.dart'
 ```
 
-**Cambios Pendientes:**
+**Cambios Pendings:**
 
 1. **Reescribir filesystem_integration_test.dart**
    - Usar imports correctos
@@ -213,7 +213,7 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
 ## 🔧 Cambios a Realizar (Orden de Prioridad)
 
 ### ✅ COMPLETADOS (Commit 6bfd1b8)
-- [x] Crear ErrorBannerWidget
+- [x] Create ErrorBannerWidget
 - [x] Agregar import a chat_screen.dart
 - [x] Integrar en Column layout con conditional rendering
 - [x] Agregar clearError() method a ChatNotifier
@@ -228,15 +228,15 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
 
 #### PRIORIDAD 2: Fix Integration Tests (6️⃣)
 - [ ] Reescribir filesystem_integration_test.dart
-- [ ] Crear chat_integration_test.dart
-- [ ] Crear validation_integration_test.dart
+- [ ] Create chat_integration_test.dart
+- [ ] Create validation_integration_test.dart
 - [ ] All tests passing
 
 ---
 
-## 📊 Resumen de Estado
+## 📊 Resumen de Status
 
-| Criterio | Estado | Commit | Detalles |
+| Criterio | Status | Commit | Detalles |
 |----------|--------|--------|----------|
 | 1️⃣ Validate saves to disk | ✅ 100% | N/A | validateProposal() → _fileSystemService.saveDocument() |
 | 2️⃣ File tree auto-update | ⚠️ 20% | PHASE 6 | Requiere listener reactivo en FileSystemService |
@@ -249,9 +249,9 @@ tests/test/integration/features/filesystem/filesystem_integration_test.dart:5:8:
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
-1. ✅ **Ahora:** Crear ErrorBannerWidget
+1. ✅ **Ahora:** Create ErrorBannerWidget
 2. ✅ **Ahora:** Integrar en chat_screen.dart
 3. ⏳ **Después:** Implementar filesystem listeners
 4. ⏳ **Final:** Reescribir integration tests

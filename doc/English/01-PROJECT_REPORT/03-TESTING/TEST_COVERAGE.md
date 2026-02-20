@@ -1,7 +1,7 @@
 # HU-2.2 Test Coverage Report
 
 **Generado:** 31/01/2026
-**Estado:** ✅ FINAL (All tests passing)
+**Status:** ✅ FINAL (All tests passing)
 
 ---
 

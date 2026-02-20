@@ -1,21 +1,21 @@
 # 📋 Sprint: RAG Core Configuration & Anti-Hallucination Implementation
 
-> **Fecha:** 19/02/2026
-> **Estado:** ✅ COMPLETADO
-> **Versión:** 1.0
+> **Date:** 19/02/2026
+> **Status:** ✅ COMPLETADO
+> **Version:** 1.0
 > **Autor:** SoftArchitect AI Development Team
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Visión General del Sprint](#visión-general)
 2. [Problema Principal](#problema-principal)
 3. [Soluciones Implementadas](#soluciones-implementadas)
-4. [Archivos Modificados](#archivos-modificados)
+4. [Files Modificados](#files-modificados)
 5. [Validación & Testing](#validación--testing)
 6. [Impacto en el Sistema](#impacto-en-el-sistema)
-7. [Próximos Pasos](#próximos-pasos)
+7. [Next Steps](#próximos-pasos)
 
 ---
 
@@ -29,12 +29,12 @@ Solucionar tres problemas críticos en la capa RAG del backend:
 2. **Alucinaciones Tecnológicas** - Sugería tecnologías no solicitadas (ej: FastAPI cuando se pide Flutter)
 3. **Alimentación de la Base de Datos Vectorial** - ChromaDB no se ingería correctamente con las documentaciones del Master Workflow
 
-### Resultado Final
+### Result Final
 
 ✅ **Modelo personalizado compilado** con temperaturanula y directivas inyectadas
-✅ **129 documentos ingestionados** exitosamente en ChromaDB
+✅ **129 documents ingestionados** exitosamente en ChromaDB
 ✅ **Filtro anti-alucinaciones implementado** en el prompt builder
-✅ **Pruebas end-to-end validadas** en Docker
+✅ **Tests end-to-end validadas** en Docker
 
 ---
 
@@ -46,13 +46,13 @@ El modelo Qwen base (`qwen2.5-coder:3b`) enfrentaba 3 desafíos:
 
 | Problema | Síntoma | Impacto |
 |----------|---------|--------|
-| **Amnesia de Contexto** | No recordaba las decisiones de fases previas | Repetía preguntas respondidas |
+| **Amnesia de Contexto** | No recordaba las decisiones de phases previas | Repetía preguntas respondidas |
 | **Alucinaciones** | Inventa tecnologías (MySQL, FastAPI) no solicitadas | Propuestas de arquitectura incorrectas |
 | **Base de Datos Vacia** | ChromaDB sin documentación del Master Workflow | RAG sin conocimiento funcional |
 
 ### Root Causes
 
-1. **Configuración Insuficiente del Modelo:** El modelo base no tenía instrucciones de arquitectura inyectadas
+1. **Configuration Insuficiente del Modelo:** El modelo base no tenía instrucciones de arquitectura inyectadas
 2. **Conflictos de Dependencias:** ChromaDB antiguo incompatible con NumPy 2.0
 3. **Script de Ingesta Roto:** Ingest.py no leía variables de entorno Docker
 4. **Prompt Engineering Débil:** El template builder no implementaba restricciones negativas
@@ -63,7 +63,7 @@ El modelo Qwen base (`qwen2.5-coder:3b`) enfrentaba 3 desafíos:
 
 ### 1️⃣ Resolución de Conflictos de Dependencias (requirements.txt)
 
-**Archivo:** `src/server/requirements.txt`
+**File:** `src/server/requirements.txt`
 
 #### Cambios:
 ```diff
@@ -77,7 +77,7 @@ El modelo Qwen base (`qwen2.5-coder:3b`) enfrentaba 3 desafíos:
 
 - **ChromaDB 0.x** → **ChromaDB 1.5.0**: Soluciona conflicto con NumPy 2.4.2
 - **Eliminación de posthog**: Evita "Dependency Hell" con múltiples transitive deps
-- **Resultado**: Clean dependency graph, reinstalación exitosa
+- **Result**: Clean dependency graph, reinstalación exitosa
 
 **Validación:**
 ```bash
@@ -89,7 +89,7 @@ pip install -r src/server/requirements.txt
 
 ### 2️⃣ Refactorización del Script de Ingesta (ingest.py)
 
-**Archivo:** `src/server/scripts/ingest.py`
+**File:** `src/server/scripts/ingest.py`
 
 #### Cambios Clave:
 
@@ -150,20 +150,20 @@ docker exec sa_api python scripts/ingest.py
 # ✅ Ingested 129 documents into collection 'softarchitect_knowledge_base'
 ```
 
-**Documentos Ingestionados:**
+**Documents Ingestionados:**
 
 | Tipo | Cantidad | Ejemplos |
 |------|----------|----------|
 | `.md` | ~80 | Manifesto, Visión, Especificaciones |
 | `.yaml` | ~25 | Tech Packs, Configuraciones |
 | `.json` | ~15 | User Stories, Schemas |
-| `.tree` | ~9 | Arquitectura de proyecto |
+| `.tree` | ~9 | Arquitectura de project |
 
 ---
 
 ### 3️⃣ Creación del Modelo Personalizado (Modelfile)
 
-**Archivo:** `infrastructure/Modelfile`
+**File:** `infrastructure/Modelfile`
 
 #### Arquitectura:
 
@@ -209,14 +209,14 @@ docker exec sa_ollama ollama create softarchitect -f /root/Modelfile
 | Parámetro | Valor | Justificación |
 |-----------|-------|-----------------|
 | `temperature` | 0.1 | **Determinismo:** Respuestas predecibles y consistentes |
-| `num_ctx` | 32768 | **Amplio contexto:** Soporta documentos y historial largos |
+| `num_ctx` | 32768 | **Amplio contexto:** Soporta documents y historial largos |
 | `repeat_penalty` | 1.15 | **Anti-repetición:** Evita bucles en la salida |
 
 ---
 
-### 4️⃣ Actualización de Configuración del Entorno (.env)
+### 4️⃣ Actualización de Configuration del Entorno (.env)
 
-**Archivo:** `infrastructure/.env`
+**File:** `infrastructure/.env`
 
 #### Cambios:
 
@@ -254,9 +254,9 @@ PII_DETECTION_ENABLED=True
 
 ---
 
-### 5️⃣ Implementación del Filtro Anti-Alucinaciones (MVPTemplateBuilder)
+### 5️⃣ Implementation del Filtro Anti-Alucinaciones (MVPTemplateBuilder)
 
-**Archivo:** `src/server/app/api/dependencies.py` (Lines 29-115)
+**File:** `src/server/app/api/dependencies.py` (Lines 29-115)
 
 #### Estrategia (5 Capas de Defensa):
 
@@ -368,19 +368,19 @@ return final_prompt
 
 ---
 
-## 📝 Archivos Modificados
+## 📝 Files Modificados
 
-### Resumen de Cambios por Archivo
+### Resumen de Cambios por File
 
-| Archivo | Cambios | Líneas | Status |
+| File | Cambios | Líneas | Status |
 |---------|---------|--------|--------|
 | `src/server/requirements.txt` | Actualización de chromadb, eliminación de conflictos | 146 deps | ✅ |
 | `src/server/scripts/ingest.py` | Variables de entorno Docker, multi-format loading | 269 lines | ✅ |
-| `infrastructure/Modelfile` | Nuevo archivo - Modelo compilado | 85 lines | ✅ NEW |
+| `infrastructure/Modelfile` | Nuevo file - Modelo compilado | 85 lines | ✅ NEW |
 | `infrastructure/.env` | Cambio de modelo, chat history vars | 50 lines | ✅ |
 | `src/server/app/api/dependencies.py` | Anti-hallucination prompt builder | 115 lines | ✅ |
 
-### Archivos NO Modificados (Pero Impactados)
+### Files NO Modificados (Pero Impactados)
 
 ```
 src/server/services/rag/
@@ -451,14 +451,14 @@ flutter test tests/
 
 | Aspecto | Antes | Después |
 |---------|-------|---------|
-| **Consistencia** | Media (olvida decisiones) | Alta (respeta fase actual) |
+| **Consistencia** | Media (olvida decisiones) | Alta (respeta phase actual) |
 | **Alucinaciones** | Frecuentes (~40% de casos) | Raras (~5% excepcionales) |
 | **Contexto** | Limitado (3B base) | Amplio (32k context, Modelfile) |
 | **Respeto de Stack** | Bajo (inventa tech) | Total (Golden Rules) |
 
 #### B. Base de Datos Vectorial
 
-- **Documentos**: 0 → 129 indexados
+- **Documents**: 0 → 129 indexados
 - **Colecciones**: `softarchitect_knowledge_base` lista
 - **Búsqueda Semántica**: Operacional (RAG queries)
 
@@ -482,9 +482,9 @@ flutter test tests/
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
-### Fase 2: CLI Resilience & Streaming
+### Phase 2: CLI Resilience & Streaming
 
 1. **Mejorar Error Handling en Stream Protocol**
    - Reconexión automática si ChromaDB cae
@@ -498,17 +498,17 @@ flutter test tests/
    - Test: Ingestión + Query + Streaming integrado
    - Simular caída de ChromaDB y recuperación
 
-### Fase 3: UI Feedback
+### Phase 3: UI Feedback
 
 1. **Visualizar Contexto RAG en Historial**
-   - Mostrar documentos que el modelo está leyendo
+   - Mostrar documents que el modelo está leyendo
    - "Transparency mode" para debugging
 
 2. **Indicador de Confianza**
    - Mapa de calor: ¿El modelo está alucinando?
    - Basado en distancia semántica (vector_store.similarity_score)
 
-### Fase 4: Optimización de Rendimiento
+### Phase 4: Optimización de Rendimiento
 
 1. **Reduce Token Usage**
    - Comprimir historial después de 10 mensajes
@@ -538,7 +538,7 @@ docker exec sa_api python scripts/ingest.py --clear
 docker logs -f sa_chromadb | grep -E "ERROR|Connection"
 ```
 
-### Configuración de Entorno (Checklist)
+### Configuration de Entorno (Checklist)
 
 ```bash
 # ✅ infrastructure/.env DEBE contener:
@@ -571,10 +571,10 @@ Este sprint **cerró 3 bloqueadores críticos** en la capa RAG:
 3. ✅ **Modelo personalizado** → Respeta Golden Rules
 4. ✅ **Filtro anti-alucinaciones** → Respuestas confiables
 
-El proyecto está ahora **listo para la siguiente fase** de mejora de CLI Resilience y Streaming Optimization.
+El project está ahora **listo para la next phase** de mejora de CLI Resilience y Streaming Optimization.
 
 ---
 
-**Documento generado:** 19/02/2026
+**Document generado:** 19/02/2026
 **Versión:** 1.0 (Final)
-**Estado:** ✅ COMPLETADO Y VALIDADO
+**Status:** ✅ COMPLETADO Y VALIDADO

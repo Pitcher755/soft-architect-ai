@@ -2,21 +2,21 @@
 
 > **Target Audience:** Developers working on `soft-architect-ai`
 > **Last Updated:** 2025-01-XX
-> **Version:** 1.0.0
-> **Status:** ✅ Production-Ready
+> **Versión:** 1.0.0
+> **Estado:** ✅ Production-Ready
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Quick Reference](#-quick-reference)
 2. [Error Codes Catalog](#-error-codes-catalog)
 3. [Validation Gates](#-validation-gates)
-4. [Retry Configuration](#-retry-configuration)
+4. [Retry Configuración](#-retry-configuración)
 5. [Structured Logging](#-structured-logging)
-6. [Frontend Integration](#-frontend-integration)
+6. [Frontend Integración](#-frontend-integration)
 7. [Code Examples](#-code-examples)
-8. [Testing Strategy](#-testing-strategy)
+8. [Pruebaing Strategy](#-pruebaing-strategy)
 9. [Troubleshooting](#-troubleshooting)
 
 ---
@@ -70,7 +70,7 @@ try {
 
 ### System Errors (SYS_XXX)
 
-| Error Code | Meaning | Spanish Message | User Action | Retryable | Status Code |
+| Error Code | Meaning | Spanish Message | User Action | Retryable | Estado Code |
 |------------|---------|-----------------|-------------|-----------|-------------|
 | **SYS_001** | Server unreachable | 🔌 No hay conexión con el servidor local | Verifica que Docker esté ejecutándose | ✅ Yes | 503 |
 | **SYS_002** | Out of GPU memory | 💾 La memoria de tu tarjeta gráfica está llena | Cierra otros programas o cambia a modo Cloud | ✅ Yes | 507 |
@@ -78,38 +78,38 @@ try {
 
 ### Authentication Errors (AUTH_XXX)
 
-| Error Code | Meaning | Spanish Message | User Action | Retryable | Status Code |
+| Error Code | Meaning | Spanish Message | User Action | Retryable | Estado Code |
 |------------|---------|-----------------|-------------|-----------|-------------|
 | **AUTH_001** | Missing API key | 🔑 Falta la clave de API de Groq Cloud | Ve a Configuración y agrega tu clave de API | ❌ No | 401 |
 
 ### RAG Errors (RAG_XXX)
 
-| Error Code | Meaning | Spanish Message | User Action | Retryable | Status Code |
+| Error Code | Meaning | Spanish Message | User Action | Retryable | Estado Code |
 |------------|---------|-----------------|-------------|-----------|-------------|
 | **RAG_001** | Empty knowledge base | 📚 La base de conocimiento está vacía | Ejecuta "Cargar Base de Conocimiento" | ✅ Yes | 404 |
 | **RAG_002** | Context too long | 💬 La conversación es demasiado larga | Inicia una nueva conversación | ❌ No | 413 |
 
 ### Validation Errors (VAL_XXX)
 
-| Error Code | Gate | Spanish Message | User Action | Retryable | Status Code |
+| Error Code | Gate | Spanish Message | User Action | Retryable | Estado Code |
 |------------|------|-----------------|-------------|-----------|-------------|
-| **VAL_001** | Content Length | 📝 El documento generado es inválido (muy corto) | Intenta generar el documento nuevamente | ✅ Yes | 400 |
-| **VAL_002** | Markdown Format | 📝 El documento tiene formato Markdown incorrecto | Revisa la estructura del documento | ✅ Yes | 400 |
-| **VAL_003** | UTF-8 Encoding | 📝 El documento tiene problemas de codificación | Asegúrate de usar texto en UTF-8 | ❌ No | 400 |
-| **VAL_004** | XSS Security | ⚠️ El documento contiene contenido sospechoso | Contacta al soporte si el problema persiste | ❌ No | 400 |
-| **VAL_005** | File Size | 📦 El documento es demasiado grande | Reduce el tamaño del documento | ❌ No | 400 |
+| **VAL_001** | Content Length | 📝 El documentoo generado es inválido (muy corto) | Intenta generar el documentoo nuevamente | ✅ Yes | 400 |
+| **VAL_002** | Markdown Format | 📝 El documentoo tiene formato Markdown incorrecto | Revisa la estructura del documentoo | ✅ Yes | 400 |
+| **VAL_003** | UTF-8 Encoding | 📝 El documentoo tiene problemas de codificación | Asegúrate de usar texto en UTF-8 | ❌ No | 400 |
+| **VAL_004** | XSS Security | ⚠️ El documentoo contiene contenido sospechoso | Contacta al soporte si el problema persiste | ❌ No | 400 |
+| **VAL_005** | Archivo Size | 📦 El documentoo es demasiado grande | Reduce el tamaño del documentoo | ❌ No | 400 |
 
 ---
 
 ## 🔒 Validation Gates
 
-All documents **MUST** pass these 5 validation gates before being stored:
+All documentos **MUST** pass these 5 validation gates before being stored:
 
 ### 1. VAL_001: Content Length Validation
 
 **Rule:** Content must be at least 50 characters
 **Why:** Prevents empty or meaningless responses from being stored
-**Exception:** User-created placeholder documents (skip validation)
+**Exception:** User-creard placeholder documentos (skip validation)
 
 ```python
 MIN_CONTENT_LENGTH: Final[int] = 50
@@ -127,7 +127,7 @@ def validate_content(self, content: str) -> bool:
 ### 2. VAL_002: Markdown Format Validation
 
 **Rule:** Valid Markdown structure (headings, links, lists)
-**Why:** Ensures documents render correctly in UI
+**Why:** Ensures documentos render correctly in UI
 **Check:** Detects common errors (unmatched brackets, malformed links)
 
 ```python
@@ -158,7 +158,7 @@ def validate_encoding(self, content: str | bytes) -> bool:
 ### 4. VAL_004: XSS Security Validation
 
 **Rule:** No malicious patterns (scripts, iframes, `javascript:`)
-**Why:** Protects users from XSS attacks in documents
+**Why:** Protects users from XSS attacks in documentos
 **Patterns:** `<script>`, `<iframe>`, `javascript:`, `onerror=`, `onload=`
 
 ```python
@@ -175,7 +175,7 @@ def validate_safety(self, content: str) -> bool:
             raise ValidationError(code="VAL_004", ...)
 ```
 
-### 5. VAL_005: File Size Validation
+### 5. VAL_005: Archivo Size Validation
 
 **Rule:** Content size must be < 5MB
 **Why:** Prevents database bloat and performance degradation
@@ -192,9 +192,9 @@ def validate_size(self, content: str) -> bool:
 
 ---
 
-## 🔄 Retry Configuration
+## 🔄 Retry Configuración
 
-### Default Configuration
+### Default Configuración
 
 ```python
 max_retries = 3
@@ -234,7 +234,7 @@ The decorator automatically retries on these exceptions:
 
 ## 📊 Structured Logging
 
-### Configuration
+### Configuración
 
 ```python
 from app.core.logging_config import setup_logging
@@ -259,12 +259,12 @@ setup_logging(level=logging.INFO)
 
 ### Context Fields
 
-| Field | Type | Description | Example |
+| Field | Type | Descripción | Example |
 |-------|------|-------------|---------|
 | `operation` | `str` | Function being retried | `"query_rag"` |
 | `attempt` | `int` | Retry attempt number | `2` |
 | `max_retries` | `int` | Maximum retries allowed | `3` |
-| `delay_seconds` | `float` | Wait time before next retry | `2.0` |
+| `delay_seconds` | `float` | Wait time before siguiente retry | `2.0` |
 | `error` | `str` | Exception message | `"Connection refused"` |
 | `error_code` | `str` | Custom error code | `"VAL_001"` |
 | `user_id` | `str` (optional) | User identifier | `"user_12345"` |
@@ -289,7 +289,7 @@ logger.warning(f"Retry {attempt+1} failed for {func_name} with error {e}")
 
 ---
 
-## 🎨 Frontend Integration
+## 🎨 Frontend Integración
 
 ### Error Mapper Usage
 
@@ -358,7 +358,7 @@ final jsonData = errorContext.toJson();
 
 ## 💻 Code Examples
 
-### Example 1: Validate Document Before Storage
+### Example 1: Validate Documento Before Storage
 
 ```python
 from app.services.validators.document_validator import DocumentValidator
@@ -438,9 +438,9 @@ Future<void> generateDocument(BuildContext context) async {
 
 ---
 
-## 🧪 Testing Strategy
+## 🧪 Pruebaing Strategy
 
-### Backend Tests
+### Backend Pruebas
 
 ```bash
 # Run all validation tests
@@ -453,7 +453,7 @@ pytest tests/python/unit/core/test_retry.py -v
 pytest tests/python/integration/test_error_handling_flow.py -v
 ```
 
-### Frontend Tests
+### Frontend Pruebas
 
 ```bash
 # Run error mapper tests
@@ -470,8 +470,8 @@ flutter test tests/test/integration/features/chat/error_handling_flow_test.dart
 
 - **Domain Logic:** >90% coverage (validation, retry)
 - **Data Layer:** >80% coverage (repositories)
-- **Presentation Layer:** >70% coverage (UI)
-- **Integration Tests:** At least 5 E2E scenarios
+- **Presentación Layer:** >70% coverage (UI)
+- **Integración Pruebas:** At least 5 E2E scenarios
 
 ---
 
@@ -492,10 +492,10 @@ async def validation_exception_handler(request, exc: ValidationError):
     )
 ```
 
-### Issue: Snackbar not appearing in tests
+### Issue: Snackbar not appearing in pruebas
 
 **Symptom:** `expect(find.text(...), findsNothing)`
-**Cause:** `showSnackBar()` called during build phase
+**Cause:** `showSnackBar()` called during build fase
 **Fix:** Use `WidgetsBinding.addPostFrameCallback()`:
 
 ```dart
@@ -519,7 +519,7 @@ logger.warning("Retry failed", extra={
 
 ---
 
-## 📚 Related Documentation
+## 📚 Related Documentoation
 
 - [ERROR_HANDLING_STANDARD.md](../../context/30-ARCHITECTURE/ERROR_HANDLING_STANDARD.md) - Complete error handling architecture
 - [VALIDATION_RULES.md](../03-HU-TRACKING/HU-3.4_ERROR_HANDLING_GATES/VALIDATION_RULES.md) - Detailed validation specifications
@@ -531,7 +531,7 @@ logger.warning("Retry failed", extra={
 
 1. **Always log error codes** → Makes debugging easier
 2. **Use retry sparingly** → Only for transient failures
-3. **Test error flows** → Don't just test happy paths
+3. **Prueba error flows** → Don't just prueba happy paths
 4. **Keep messages user-friendly** → Avoid technical jargon
 5. **Never expose stack traces** → Users don't need to see Python internals
 

@@ -1,13 +1,13 @@
 # 🎨 Propuestas de Mejora: HU-3.x Project-First Paradigm
 
-> **Fecha:** 02/02/2026
-> **Estado:** 💡 PROPUESTAS EN REVISIÓN
+> **Date:** 02/02/2026
+> **Status:** 💡 PROPUESTAS EN REVISIÓN
 > **Tipo:** Technical Deep Dive + UX Enhancements
 > **Audiencia:** Architecture Review Board
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Mejoras en Diseño de UI](#-mejoras-en-diseño-de-ui)
 2. [Mejoras en Arquitectura de Backend](#-mejoras-en-arquitectura-de-backend)
@@ -20,14 +20,14 @@
 
 ## 🎨 Mejoras en Diseño de UI
 
-### 1. Proyecto-Centric Navigation (Propuesta)
+### 1. Project-Centric Navigation (Propuesta)
 
 **Mejora sobre lo propuesto:**
 
 Agregar un "Quick Access" panel que muestre:
-- Documentos completados vs. pendientes (progress bar)
+- Documents completados vs. pendientes (progress bar)
 - Últimas interacciones (avatar + timestamp)
-- Botón rápido "Generate Next Missing Doc"
+- Button rápido "Generate Next Missing Doc"
 
 **Código Concepto (Dart):**
 
@@ -63,7 +63,7 @@ class ProjectDashboard extends ConsumerWidget {
 ```
 
 **Beneficios:**
-- Usuario ve en tiempo real qué documentos faltan
+- Usuario ve en tiempo real qué documents faltan
 - "Generate Next" no requiere pregunta (IA lo sugiere automáticamente)
 - Validación visual: progreso tangible
 
@@ -202,7 +202,7 @@ class _DocumentProposalWidgetState extends State<DocumentProposalWidget> {
 
 **Mejora Propuesta:**
 
-Agrupar proyectos por estado:
+Agrupar projects por status:
 
 ```
 Proyectos Activos (2)
@@ -576,7 +576,7 @@ Step 4: "Configuración de IA"
 └─ Cloud (Groq): Más rápido
 ```
 
-Resultado: proyecto pre-poblado con ciertos documentos sugeridos.
+Result: project pre-poblado con ciertos documents sugeridos.
 
 ---
 
@@ -608,7 +608,7 @@ Fase 3: Implementación
 ```
 
 **Beneficios:**
-- Usuario ve dependencias entre documentos
+- Usuario ve dependencias entre documents
 - Puede generar en orden recomendado
 - Motivación (progreso visible)
 
@@ -920,15 +920,15 @@ async def test_full_project_workflow(
 ### Trade-off 2: FileSystemService vs. DatabaseCentric
 
 **Opción A (Propuesta):** File system como source of truth
-- ✅ Usuario ve archivos en su carpeta (tangible)
+- ✅ Usuario ve files en su folder (tangible)
 - ✅ Compatible con Git (fácil versionado)
-- ✅ Portable (mover carpeta = mover proyecto)
+- ✅ Portable (mover folder = mover project)
 - ❌ Más complejo de manejar permisos
 
 **Opción B (Alternativa):** SQLite como source of truth
 - ✅ Más simple de gestionar
 - ✅ Queries más rápidas
-- ❌ Usuario nunca ve los "documentos reales"
+- ❌ Usuario nunca ve los "documents reales"
 - ❌ Acoplamiento a BD
 
 **Recomendación:** Opción A (File system) alineado con visión "local-first".
@@ -969,10 +969,10 @@ async def test_full_project_workflow(
 
 1. **Implementar Opción B (5 HUs)** con estimación 70 pts
 2. **Agregar Edit Mode** a HU-3.3 (impacto alto, no mucho overhead)
-3. **Crear DocumentProposalService** como arquitectura limpia (Use Case)
+3. **Create DocumentProposalService** como arquitectura limpia (Use Case)
 4. **Inversión en Tests** desde day 1 (especialmente FileSystemService)
 5. **Path Validation** es crítica (seguridad del usuario)
 
 ---
 
-**Documento preparado para integración en decisiones arquitectónicas.**
+**Document ready for integración en decisiones arquitectónicas.**

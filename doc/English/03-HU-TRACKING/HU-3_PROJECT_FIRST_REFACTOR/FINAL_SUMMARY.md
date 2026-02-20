@@ -1,15 +1,15 @@
 # 🎯 RESUMEN FINAL - HU-3.x Project-First Refactor
 
-> **Fecha:** 02/02/2026
+> **Date:** 02/02/2026
 > **Status:** ✅ DOCUMENTACIÓN COMPLETA | ⏳ AWAITING USER CONFIRMATION
 > **Rama:** `feature/ui-project-shell` (rebasada sobre develop)
-> **Documentos:** 10 archivos | ~40,000 palabras | ~4,500 líneas
+> **Documents:** 10 files | ~40,000 palabras | ~4,500 líneas
 
 ---
 
 ## 📊 LO QUE SE HA GENERADO (RESUMEN EJECUTIVO)
 
-### ✅ DOCUMENTOS COMPLETADOS (10 archivos)
+### ✅ DOCUMENTOS COMPLETADOS (10 files)
 
 ```
 doc/01-PROJECT_REPORT/
@@ -98,20 +98,20 @@ Ventajas:
 | **Puntos** | 50 | 70 | +20 (+40%) |
 | **Duración** | 5 sem | 8 sem | +3 sem |
 | **FTE** | 2.5 | 3.5 | +1.0 FTE |
-| **Documentos** | Análisis docs | 25 docs standardized | +22 |
+| **Documents** | Analysis docs | 25 docs standardized | +22 |
 | **Complejidad** | Media | Alta | +40% |
 
 ### Documentación Generada
 
 | Métrica | Valor |
 |---------|-------|
-| Archivos | 10 |
+| Files | 10 |
 | Palabras | ~40,000 |
 | Líneas | ~4,500 |
 | Secciones | ~100+ |
 | Diagramas ASCII | 5+ |
 | Ejemplos de código | 20+ |
-| Horas de análisis | 8+ |
+| Horas de analysis | 8+ |
 
 ### Timeline 8 Semanas
 
@@ -251,16 +251,16 @@ Después: Se asume "No proceder" (archivado)
 
 ## 📋 ARCHIVO DE REFERENCIA RÁPIDA
 
-### Links Directos a Documentos
+### Links Directos a Documents
 
-| Documento | Lectura | Para Quién | Link |
+| Document | Lectura | Para Quién | Link |
 |-----------|---------|-----------|------|
 | **ESTO** | 2 min | Todos | ← YOU ARE HERE |
 | Ejecutivo | 10 min | Stakeholders | doc/01-PROJECT_REPORT/HU-3_EXECUTIVE_SUMMARY.es.md |
 | Índice | 5 min | Todos | doc/01-PROJECT_REPORT/INDEX_HU-3_ANALYSIS.es.md |
 | Specs | 20 min | Developers | doc/01-PROJECT_REPORT/HU-3_SPECIFICATIONS.es.md |
 | Plan Maestro | 45 min | Tech Lead | doc/01-PROJECT_REPORT/MASTER_IMPLEMENTATION_PLAN.es.md |
-| Fase 0 | 20 min | Tech Lead | doc/01-PROJECT_REPORT/PHASE-0_INITIATION.es.md |
+| Phase 0 | 20 min | Tech Lead | doc/01-PROJECT_REPORT/PHASE-0_INITIATION.es.md |
 
 ### Comandos Git (cuando esté ready)
 
@@ -284,7 +284,7 @@ git push origin feature/ui-project-shell
 
 ---
 
-## 🎯 ESTADO ACTUAL
+## 🎯 STATUS ACTUAL
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -337,13 +337,13 @@ Si tienes dudas o preguntas:
 
 **Hemos preparado TODO para que tomes una decisión informada:**
 
-✅ Análisis completo (Chat-First vs. Project-First)
+✅ Analysis completo (Chat-First vs. Project-First)
 ✅ Especificación técnica detallada (5 HUs, 70 pts)
-✅ Plan maestro (8 semanas, 5 fases)
+✅ Plan maestro (8 semanas, 5 phases)
 ✅ Código de ejemplo (Dart + Python)
 ✅ Riesgos identificados + mitigaciones
 ✅ Métricas de éxito definidas
-✅ Fase 0 guide (paso-a-paso)
+✅ Phase 0 guide (paso-a-paso)
 
 **Ahora es tu turno:**
 
@@ -355,11 +355,11 @@ Comenta en la conversación:
 🤔 MODIFICAR - [cambios]
 ```
 
-**Cuando confirmes → Fase 0 comienza inmediatamente**
+**Cuando confirmes → Phase 0 comienza inmediatamente**
 
 ---
 
 **RESUMEN FINAL - HU-3.x PROJECT-FIRST REFACTOR**
 **Creado:** 02/02/2026
-**Estado:** ✅ READY FOR DECISION
+**Status:** ✅ READY FOR DECISION
 **Tamaño Total:** 10 docs | 40,000 palabras | 4,500 líneas

@@ -1,37 +1,37 @@
 # 🔄 System End-to-End Workflow
 
-> **Fecha:** 30 de Enero de 2026
-> **Estado:** ✅ Workflow Diagram Complete
-> **Versión:** 1.0
+> **Date:** 30 de Enero de 2026
+> **Status:** ✅ Workflow Diagram Complete
+> **Version:** 1.0
 > **Audiencia:** Arquitectos, Diseñadores, Desarrolladores
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-- [Descripción General](#descripción-general)
+- [Description General](#description-general)
 - [Diagrama Completo](#diagrama-completo)
-- [Desglose por Fase](#desglose-por-fase)
-  - [Fase 0: Entrada del Usuario](#fase-0-entrada-del-usuario)
-  - [Fase 1: Gobernanza e Identidad](#fase-1-gobernanza-e-identidad)
-  - [Fase 2: Requisitos y Seguridad](#fase-2-requisitos-y-seguridad)
-  - [Fase 3: Arquitectura Técnica](#fase-3-arquitectura-técnica)
-  - [Fases 4-5: UX y Planificación](#fases-4-5-ux-y-planificación)
+- [Breakdown por Phase](#breakdown-por-phase)
+  - [Phase 0: Entrada del Usuario](#phase-0-entrada-del-usuario)
+  - [Phase 1: Gobernanza e Identidad](#phase-1-gobernanza-e-identidad)
+  - [Phase 2: Requisitos y Seguridad](#phase-2-requisitos-y-seguridad)
+  - [Phase 3: Arquitectura Técnica](#phase-3-arquitectura-técnica)
+  - [Phases 4-5: UX y Planificación](#phases-4-5-ux-y-planificación)
 - [Flujo de Interacción](#flujo-de-interacción)
-- [Documentos Generados](#documentos-generados)
+- [Documents Generados](#documents-generados)
 - [Gates de Validación](#gates-de-validación)
 
 ---
 
-## 🎯 Descripción General
+## 🎯 Description General
 
 Este diagrama ilustra el **flujo end-to-end completo** de SoftArchitect AI, desde que un usuario ingresa al sistema hasta que la documentación técnica está lista para iniciar el desarrollo de código.
 
-**Ejemplo de Caso de Uso:** Un emprendedor entra al chat y describe una idea: *"Aplicación estilo Tinder para adoptar mascotas, hecha en Flutter, sin fines de lucro"*.
+**Ejemplo de Caso de Uso:** Un emprendedor entra al chat y describe una idea: *"Aplicación style Tinder para adoptar mascotas, hecha en Flutter, sin fines de lucro"*.
 
-El sistema RAG utiliza el Knowledge Base (Fases 0-6) para:
+El sistema RAG utiliza el Knowledge Base (Phases 0-6) para:
 1. **Analizar** la entrada del usuario (constraints, patrones, tecnologías)
-2. **Generar** documentos técnicos usando templates de `01-TEMPLATES/`
+2. **Generar** documents técnicos usando templates de `01-TEMPLATES/`
 3. **Presentar** borradores para validación interactiva
 4. **Refinar** basado en feedback del usuario
 5. **Guardar** en `context/` para posterior generación de código
@@ -128,36 +128,36 @@ graph TD
 
 ---
 
-## 📋 Desglose por Fase
+## 📋 Breakdown por Phase
 
-### **FASE 0: Entrada del Usuario**
+### **PHASE 0: Entrada del Usuario**
 
-| Componente | Descripción |
+| Componente | Description |
 |------------|-------------|
-| **Trigger** | Usuario hace clic en "Crear Nuevo Proyecto" |
-| **Input RAG** | Descripción natural de la idea en lenguaje libre |
-| **Análisis** | Extrae constraints (Tech, Cost, Domain), patrones (UX), scope |
-| **Ejemplo** | "App estilo Tinder para adoptar mascotas, Flutter, sin fines de lucro" |
-| **Salida** | Parsed request lista para siguiente fase |
+| **Trigger** | Usuario hace clic en "Create Nuevo Project" |
+| **Input RAG** | Description natural de la idea en lenguaje libre |
+| **Analysis** | Extrae constraints (Tech, Cost, Domain), patrones (UX), scope |
+| **Ejemplo** | "App style Tinder para adoptar mascotas, Flutter, sin fines de lucro" |
+| **Salida** | Parsed request lista para next phase |
 
 ---
 
-### **FASE 1: Gobernanza e Identidad**
+### **PHASE 1: Gobernanza e Identidad**
 
-| Documento | Template | Propósito |
+| Document | Template | Propósito |
 |-----------|----------|----------|
-| `PROJECT_MANIFESTO.md` | `PROJECT_MANIFESTO.template.md` | Define visión, valores, compromisos del proyecto |
+| `PROJECT_MANIFESTO.md` | `PROJECT_MANIFESTO.template.md` | Define visión, valores, compromisos of the project |
 | `AGENTS.md` | `AGENTS.template.md` | Define roles (Product Owner, Architect, Dev, QA) |
 | `RULES.md` | `RULES.template.md` | Establece convenciones y reglas de ingeniería |
 | `DOMAIN_LANGUAGE.md` | `DOMAIN_LANGUAGE.template.md` | Glosario DDD (Ubiquitous Language) |
 
-**Gate de Validación:** ¿Usuario aprueba la visión y scope del MVP?
+**Gate de Validación:** ¿Usuario atest la visión y scope del MVP?
 
 ---
 
-### **FASE 2: Requisitos y Seguridad**
+### **PHASE 2: Requisitos y Seguridad**
 
-| Documento | Template | Propósito |
+| Document | Template | Propósito |
 |-----------|----------|----------|
 | `REQUIREMENTS_MASTER.md` | `REQUIREMENTS_MASTER.template.md` | RF + RNF + Constraints |
 | `USER_STORIES.json` | `USER_STORIES_MASTER.template.json` | Historias de usuario estructuradas |
@@ -168,9 +168,9 @@ graph TD
 
 ---
 
-### **FASE 3: Arquitectura Técnica**
+### **PHASE 3: Arquitectura Técnica**
 
-| Documento | Template | Propósito |
+| Document | Template | Propósito |
 |-----------|----------|----------|
 | `TECH_STACK_DECISION.md` | `TECH_STACK_DECISION.template.md` | Justificación de tecnologías elegidas |
 | `PROJECT_STRUCTURE_MAP.md` | `PROJECT_STRUCTURE_MAP.template.md` | Mapa ASCII de directorios (THE LAW) |
@@ -185,17 +185,17 @@ graph TD
 
 ### **FASES 4-5: UX y Planificación**
 
-#### **Fase 4: Experiencia y Frontera**
+#### **Phase 4: Experiencia y Frontera**
 
-| Documento | Template | Propósito |
+| Document | Template | Propósito |
 |-----------|----------|----------|
 | `DESIGN_SYSTEM.md` | `DESIGN_SYSTEM.template.md` | Tokens de color, tipografía, componentes |
 | `UI_WIREFRAMES_FLOW.md` | `UI_WIREFRAMES_FLOW.template.md` | Wireframes con Mermaid, flujos de pantalla |
 | `ACCESSIBILITY_GUIDE.md` | `ACCESSIBILITY_GUIDE.template.md` | WCAG 2.1 AA compliance |
 
-#### **Fase 5: Operaciones y Calidad**
+#### **Phase 5: Operaciones y Calidad**
 
-| Documento | Template | Propósito |
+| Document | Template | Propósito |
 |-----------|----------|----------|
 | `ROADMAP_PHASES.md` | `ROADMAP_PHASES.template.md` | MVP, V1, V2 con timeline |
 | `TESTING_STRATEGY.md` | `TESTING_STRATEGY.template.md` | Test pyramid, cobertura, métricas |
@@ -221,15 +221,15 @@ El sistema implementa un **ciclo iterativo interactivo**:
 
 **Ventajas:**
 - No es "one-shot generation" (generación única)
-- Usuario iteractúa en cada fase crítica
+- Usuario iteractúa en cada phase crítica
 - Control total sobre el resultado final
 - Aprendizaje colaborativo: usuario + IA
 
 ---
 
-## 📄 Documentos Generados
+## 📄 Documents Generados
 
-Al completar todo el workflow, se habrán generado **~40 documentos** repartidos en:
+Al completar todo el workflow, se habrán generado **~40 documents** repartidos en:
 
 ```
 context/
@@ -242,7 +242,7 @@ context/
                           Total: 24 docs
 ```
 
-Cada documento es:
+Cada document es:
 - **Reusable:** Template con {{PLACEHOLDERS}}
 - **Verificable:** Puede ser revisado y validado
 - **Versionable:** Almacenado en Git
@@ -254,11 +254,11 @@ Cada documento es:
 
 El workflow incluye **5 gates críticos** donde el usuario debe aprobar antes de continuar:
 
-| Gate # | Fase | Pregunta | Si NO | Si SÍ |
+| Gate # | Phase | Pregunta | Si NO | Si SÍ |
 |--------|------|----------|-------|-------|
-| 1 | 1 | ¿Visión y scope OK? | Refine | Continúa → Fase 2 |
-| 2 | 2 | ¿Requisitos completos? | Añade detalles | Continúa → Fase 3 |
-| 3 | 3 | ¿Stack técnico correcto? | Cambia stack | Continúa → Fase 4 |
+| 1 | 1 | ¿Visión y scope OK? | Refine | Continúa → Phase 2 |
+| 2 | 2 | ¿Requisitos completos? | Añade detalles | Continúa → Phase 3 |
+| 3 | 3 | ¿Stack técnico correcto? | Cambia stack | Continúa → Phase 4 |
 | 4 | 4-5 | ¿UX y timeline OK? | Ajusta roadmap | Continúa → Codegen |
 | ✅ | FIN | ¿Listo para coding? | Revisa docs | **START DEVELOPMENT** |
 
@@ -292,7 +292,7 @@ Este workflow **consume y produce** contenido del Knowledge Base:
 - `packages/knowledge_base/02-TECH-PACKS/` - Decisiones técnicas predefinidas
 
 **Produce (Output):**
-- Documentos guardados en `context/` para cada proyecto
+- Documents guardados en `context/` para cada project
 - Historial de decisiones (audit trail)
 - Nuevos patrones observados → retroalimentan Tech Packs
 
@@ -300,4 +300,4 @@ Este workflow **consume y produce** contenido del Knowledge Base:
 
 **Última Actualización:** 30 de Enero de 2026
 **Responsable:** ArchitectZero AI
-**Estado:** ✅ DOCUMENTACIÓN COMPLETA
+**Status:** ✅ DOCUMENTACIÓN COMPLETA

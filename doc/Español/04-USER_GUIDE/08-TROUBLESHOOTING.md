@@ -1,12 +1,12 @@
 # 🚨 Troubleshooting - SoftArchitect AI
 
-> **Date:** 02/19/2026
-> **Status:** ✅ Troubleshooting guide
-> **Reading time:** 10 minutes
+> **Fecha:** 02/19/2026
+> **Estado:** ✅ Troubleshooting guide
+> **Tiempo de lectura:** 10 minutes
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [Installation Problems](#installation-problems)
 - [AI Issues](#ai-issues)
@@ -80,7 +80,7 @@ taskkill /PID <PID> /F
 docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock
 ```
 
-**Cause:** Docker Desktop not running
+**Cause:** Docker Desktop not ejecutarning
 
 **Solution:**
 ```bash
@@ -132,7 +132,7 @@ sudo systemctl restart docker
 docker logs soft-architect-ai-backend
 ```
 
-**Possible Cause 2: Ollama not running**
+**Possible Cause 2: Ollama not ejecutarning**
 **Solution:**
 ```bash
 # Verify Ollama
@@ -166,7 +166,7 @@ USE_GROQ=true
 - Mentions technologies you didn't ask for
 - Excessive "creative mode"
 
-**Cause:** Incorrect model configuration
+**Cause:** Incorrect model configuración
 
 **Solution:**
 ```bash
@@ -213,7 +213,7 @@ FREQUENCY_PENALTY=0.5
 **Symptoms:**
 - UI slow to respond
 - Chat lag
-- Documents take forever to load
+- Documentos take forever to load
 
 **Possible Cause 1: Insufficient RAM**
 **Solution:**
@@ -285,7 +285,7 @@ MODEL_NAME=phi
 ERR_CONNECTION_REFUSED
 ```
 
-**Cause:** Backend not running
+**Cause:** Backend not ejecutarning
 
 **Solution:**
 ```bash
@@ -333,13 +333,13 @@ app.add_middleware(
 
 ## 💾 Data Problems
 
-### ❌ "My projects disappeared"
+### ❌ "My proyectos disappeared"
 
 **Symptoms:**
-- Empty project list
-- "No projects found"
+- Empty proyecto list
+- "No proyectos found"
 
-**Cause:** Data not persisted or folder moved
+**Cause:** Data not persisted or carpeta moved
 
 **Solution:**
 ```bash
@@ -359,7 +359,7 @@ cp -r ./data/backup/* ./data/projects/
 
 ---
 
-### ❌ "Error saving documents"
+### ❌ "Error saving documentos"
 
 **Symptoms:**
 ```
@@ -445,14 +445,14 @@ SSL_VERIFY=false
 | **GitHub Issues** | Bugs, features | 24-48h |
 | **Discord** (coming soon) | Quick help | Community |
 | **Email** | Technical support | 2-3 days |
-| **Documentation** | Troubleshooting | Instant |
+| **Documentoation** | Troubleshooting | Instant |
 
 **GitHub Issues:** https://github.com/Pitcher755/soft-architect-ai/issues
 **Email:** support@softarchitectai.com
 
 ---
 
-### 📚 Related Documents
+### 📚 Related Documentos
 
 - [Complete Installation](02-INSTALLATION.md) - For setup problems
 - [Quick Start](01-QUICK_START.md) - Start from scratch
@@ -467,10 +467,10 @@ Before reporting a problem, verify:
 
 - [ ] Did you restart the application?
 - [ ] Did you check server logs?
-- [ ] Did you verify Docker is running? (if applicable)
+- [ ] Did you verify Docker is ejecutarning? (if applicable)
 - [ ] Did you check the port isn't occupied?
-- [ ] Did you update to the latest version?
-- [ ] Did you consult the documentation?
+- [ ] Did you update to the laprueba version?
+- [ ] Did you consult the documentoation?
 - [ ] Did you search for the error in GitHub Issues?
 
 ---

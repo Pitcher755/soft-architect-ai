@@ -1,29 +1,29 @@
-# 📊 Test Coverage Report - HU-3.1 (Enhanced)
+# 📊 Prueba Coverage Report - HU-3.1 (Enhanced)
 
 > **Fecha:** 03/02/2026
-> **Estado:** ✅ Tests Implementados (Cobertura Estimada: 90%+)
-> **Branch:** `feature/ui-project-shell`
+> **Estado:** ✅ Pruebas Implementados (Cobertura Estimada: 90%+)
+> **Branch:** `feature/ui-proyecto-shell`
 
 ---
 
 ## 📈 Resumen de Cobertura
 
-| Layer | Files | Tests | Coverage |
+| Layer | Archivos | Pruebas | Coverage |
 |-------|-------|-------|----------|
 | **Domain (Entities)** | 2 | 60+ | 92% |
 | **Domain (Use Cases)** | 3 | 70+ | 95% |
-| **Infrastructure (Validation)** | 3 | 85+ | 94% |
-| **Presentation (Widgets)** | 3 | 40+ | 88% |
+| **Infraestructura (Validation)** | 3 | 85+ | 94% |
+| **Presentación (Widgets)** | 3 | 40+ | 88% |
 | **Data (Repository/DataSources)** | 2 | 35+ | 87% |
 | **TOTAL** | 13+ | 290+ | **91%** |
 
 ---
 
-## 🧪 Tests Implementados
+## 🧪 Pruebas Implementados
 
 ### Domain Layer (Entities)
 
-#### ProjectEntity Tests (45 tests)
+#### ProyectoEntity Pruebas (45 pruebas)
 ```dart
 ✅ test_construction_with_all_fields
 ✅ test_construction_with_last_opened
@@ -44,7 +44,7 @@
 ✅ test_path_preservation
 ```
 
-#### FileNodeEntity Tests (58 tests)
+#### ArchivoNodeEntity Pruebas (58 pruebas)
 ```dart
 ✅ test_construction_as_file
 ✅ test_construction_as_directory
@@ -73,7 +73,7 @@
 
 ### Domain Layer (Use Cases)
 
-#### ProjectValidationUseCase Tests (48 tests)
+#### ProyectoValidationUseCase Pruebas (48 pruebas)
 ```dart
 ✅ test_valid_project_name
 ✅ test_name_with_underscores_dashes
@@ -102,7 +102,7 @@
 ✅ test_dots_rejected
 ```
 
-#### FileSearchUseCase Tests (52 tests)
+#### ArchivoSearchUseCase Pruebas (52 pruebas)
 ```dart
 ✅ test_search_exact_filename
 ✅ test_search_partial_filename
@@ -132,9 +132,9 @@
 ✅ test_path_search_case_insensitive
 ```
 
-### Infrastructure Layer (Validation)
+### Infraestructura Layer (Validation)
 
-#### ValidationConstants Tests (42 tests)
+#### ValidationConstants Pruebas (42 pruebas)
 ```dart
 ✅ test_project_name_regex_not_empty
 ✅ test_regex_matches_valid_names
@@ -151,7 +151,7 @@
 ✅ test_no_overlapping_extensions
 ```
 
-#### PathValidator Tests (78 tests)
+#### PathValidator Pruebas (78 pruebas)
 ```dart
 ✅ test_valid_relative_path
 ✅ test_multiple_subdirectories
@@ -189,9 +189,9 @@
 ✅ test_multiple_consecutive_slashes
 ```
 
-### Presentation Layer (Widgets)
+### Presentación Layer (Widgets)
 
-#### ProjectShellScreen Widget Tests (20 tests)
+#### ProyectoShellScreen Widget Pruebas (20 pruebas)
 ```dart
 ✅ test_creates_with_no_initial_projects
 ✅ test_fab_opens_project_creation_dialog
@@ -205,7 +205,7 @@
 ✅ test_search_debounces_input
 ```
 
-#### DirectoryTreeWidget Tests (15 tests)
+#### DirectoryTreeWidget Pruebas (15 pruebas)
 ```dart
 ✅ test_renders_directory_structure
 ✅ test_expand_collapse_works
@@ -217,7 +217,7 @@
 ✅ test_can_navigate_tree
 ```
 
-#### MarkdownPreviewWidget Tests (16 tests)
+#### MarkdownPreviewWidget Pruebas (16 pruebas)
 ```dart
 ✅ test_renders_markdown_content
 ✅ test_applies_github_dark_theme
@@ -231,7 +231,7 @@
 
 ### Data Layer (Repository & DataSources)
 
-#### ProjectRepository Tests (25 tests)
+#### ProyectoRepository Pruebas (25 pruebas)
 ```dart
 ✅ test_save_projects_to_database
 ✅ test_retrieve_project_by_id
@@ -242,7 +242,7 @@
 ✅ test_error_handling_graceful
 ```
 
-#### SQLiteDataSource Tests (18 tests)
+#### SQLiteDataSource Pruebas (18 pruebas)
 ```dart
 ✅ test_database_connection
 ✅ test_create_table_schema
@@ -298,14 +298,14 @@ TOTAL COVERAGE: 91% (1,245 / 1,368 lines)
 
 ---
 
-## 🎯 Cobertura por Tipo de Test
+## 🎯 Cobertura por Tipo de Prueba
 
 | Tipo | Cantidad | Cobertura |
 |------|----------|-----------|
-| **Unit Tests (Domain)** | 180+ | 95% |
-| **Unit Tests (Data)** | 43+ | 87% |
-| **Widget Tests** | 51+ | 88% |
-| **Integration Tests** | 16+ | 85% |
+| **Unit Pruebas (Domain)** | 180+ | 95% |
+| **Unit Pruebas (Data)** | 43+ | 87% |
+| **Widget Pruebas** | 51+ | 88% |
+| **Integración Pruebas** | 16+ | 85% |
 | **TOTAL** | **290+** | **91%** |
 
 ---
@@ -314,15 +314,15 @@ TOTAL COVERAGE: 91% (1,245 / 1,368 lines)
 
 - ✅ **Domain Layer:** 95% (Business logic completamente cubierto)
 - ✅ **Data Layer:** 87% (Persistencia y datasources cubiertos)
-- ✅ **Presentation Layer:** 88% (UI y widgets cubiertos)
-- ✅ **Infrastructure Layer:** 94% (Validación y seguridad cubiertos)
+- ✅ **Presentación Layer:** 88% (UI y widgets cubiertos)
+- ✅ **Infraestructura Layer:** 94% (Validación y seguridad cubiertos)
 - ✅ **Overall Target:** 91% (Supera meta de 90%)
 
 ---
 
 ## 🔒 Casos de Seguridad Cubiertos
 
-### Path Traversal Prevention (35 tests)
+### Path Traversal Prevention (35 pruebas)
 - ✅ Rechazo de `../` sequences
 - ✅ Rechazo de absolute paths
 - ✅ Rechazo de home directory `~`
@@ -330,15 +330,15 @@ TOTAL COVERAGE: 91% (1,245 / 1,368 lines)
 - ✅ Rechazo de unicode tricks
 - ✅ Rechazo de encoded traversal
 
-### Input Validation (25 tests)
+### Input Validation (25 pruebas)
 - ✅ Regex pattern validation
 - ✅ Length constraints
 - ✅ Character whitelist
-- ✅ File extension whitelist
+- ✅ Archivo extension whitelist
 - ✅ Disallowed components
 - ✅ Safe name detection
 
-### Exception Handling (15 tests)
+### Exception Handling (15 pruebas)
 - ✅ Custom exception types
 - ✅ Error codes
 - ✅ User-friendly messages
@@ -347,31 +347,31 @@ TOTAL COVERAGE: 91% (1,245 / 1,368 lines)
 
 ---
 
-## 📚 Tests Creados
+## 📚 Pruebas Creados
 
-**Archivos de Test Nuevos (8):**
-1. `test/features/project_shell/domain/entities/project_entity_test.dart` (45 tests)
-2. `test/features/project_shell/domain/entities/file_node_entity_test.dart` (58 tests)
-3. `test/features/project_shell/domain/use_cases/project_validation_use_case_test.dart` (48 tests)
-4. `test/features/project_shell/domain/use_cases/file_search_use_case_test.dart` (52 tests)
-5. `test/features/project_shell/infrastructure/validation/validation_constants_test.dart` (42 tests)
-6. `test/features/project_shell/infrastructure/validation/path_validator_test.dart` (78 tests)
-7. `test/helpers/test_helpers.dart` (Utilidades compartidas)
-8. Total: **290+ tests nuevos**
+**Archivos de Prueba Nuevos (8):**
+1. `prueba/features/proyecto_shell/domain/entities/proyecto_entity_prueba.dart` (45 pruebas)
+2. `prueba/features/proyecto_shell/domain/entities/archivo_node_entity_prueba.dart` (58 pruebas)
+3. `prueba/features/proyecto_shell/domain/use_cases/proyecto_validation_use_case_prueba.dart` (48 pruebas)
+4. `prueba/features/proyecto_shell/domain/use_cases/archivo_search_use_case_prueba.dart` (52 pruebas)
+5. `prueba/features/proyecto_shell/infrastructure/validation/validation_constants_prueba.dart` (42 pruebas)
+6. `prueba/features/proyecto_shell/infrastructure/validation/path_validator_prueba.dart` (78 pruebas)
+7. `prueba/helpers/prueba_helpers.dart` (Utilidades compartidas)
+8. Total: **290+ pruebas nuevos**
 
 ---
 
 ## 🚀 Conclusión
 
-✅ **Cobertura de tests mejorada a 91%** (Supera objetivo de 90%)
+✅ **Cobertura de pruebas mejorada a 91%** (Supera objetivo de 90%)
 
-- ✅ Todas las capas (Domain, Data, Presentation, Infrastructure) cubiertas
+- ✅ Todas las capas (Domain, Data, Presentación, Infraestructura) cubiertas
 - ✅ Seguridad (path traversal, input validation) 100% cubierta
 - ✅ Casos edge completamente probados
-- ✅ 290+ tests nuevos creados
+- ✅ 290+ pruebas nuevos creados
 - ✅ Listo para producción
 
 ---
 
 **Report Generated:** 2026-02-03
-**Status:** ✅ READY FOR PRODUCTION
+**Estado:** ✅ READY FOR PRODUCTION

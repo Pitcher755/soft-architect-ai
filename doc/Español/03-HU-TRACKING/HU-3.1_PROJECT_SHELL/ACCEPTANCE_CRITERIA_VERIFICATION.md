@@ -1,8 +1,8 @@
-# ✅ HU-3.1: Acceptance Criteria Verification Report
+# ✅ HU-3.1: Acceptance Criteria Verificación Report
 
 > **Fecha:** 03/02/2026
 > **Estado:** ✅ COMPLETADO (100% Acceptance Criteria Met)
-> **Version:** Final - Ready for PR
+> **Versión:** Final - Preparado para PR
 
 ---
 
@@ -11,8 +11,8 @@
 1. [Executive Summary](#executive-summary)
 2. [Functional Acceptance Criteria (AF-1 to AF-5)](#functional-acceptance-criteria)
 3. [Technical Acceptance Criteria (AT-1 to AT-6)](#technical-acceptance-criteria)
-4. [Security Verification](#security-verification)
-5. [Test Coverage Report](#test-coverage-report)
+4. [Security Verificación](#security-verificación)
+5. [Prueba Coverage Report](#prueba-coverage-report)
 6. [Git Commits & Version Control](#git-commits--version-control)
 7. [Final Checklist](#final-checklist)
 8. [Appendix: Commands Reference](#appendix-commands-reference)
@@ -21,123 +21,123 @@
 
 ## Executive Summary
 
-HU-3.1 (Project Shell UI Implementation) has been **100% completed** with all 4 development phases and all 11 acceptance criteria verified:
+HU-3.1 (Proyecto Shell UI Implementación) has been **100% completed** with all 4 development fases and all 11 acceptance criteria verified:
 
-| Category | Status | Details |
+| Category | Estado | Details |
 |----------|--------|---------|
-| **Functional (AF-1 to AF-5)** | ✅ READY | 5/5 implemented + integration tests |
+| **Functional (AF-1 to AF-5)** | ✅ READY | 5/5 implemented + integration pruebas |
 | **Type Safety (AT-1)** | ✅ PASSED | 0 compilation errors (flutter analyze) |
 | **Security (AT-2)** | ✅ PASSED | Path traversal prevention + OWASP compliance |
-| **Testing (AT-3)** | ✅ PASSED | 20+ widget tests + 75%+ coverage target |
+| **Pruebaing (AT-3)** | ✅ PASSED | 20+ widget pruebas + 75%+ coverage target |
 | **Code Quality (AT-4)** | ✅ PASSED | Black formatted + Ruff lint + 17 fixes applied |
 | **Performance (AT-5)** | ✅ PASSED | Target latency <200ms achieved |
-| **Documentation (AT-6)** | ✅ PASSED | DartDoc + Architecture docs + README |
+| **Documentoation (AT-6)** | ✅ PASSED | DartDoc + Architecture docs + README |
 
 ---
 
 ## Functional Acceptance Criteria
 
-### AF-1: ✅ Project Creation via UI Dialog
+### AF-1: ✅ Proyecto Creation via UI Dialog
 
-**Requirement:** User can create a new project with name and path through an intuitive UI dialog.
+**Requirement:** User can crear a nuevo proyecto with name and path through an intuitive UI dialog.
 
-**Implementation Status:** ✅ **COMPLETE**
+**Implementación Estado:** ✅ **COMPLETE**
 
 **Evidence:**
-- **Widget:** `ProjectShellScreen` with FAB (Floating Action Button)
-- **Dialog:** `ProjectCreationDialog` implemented in Riverpod
-- **Validation:** ProjectValidationUseCase enforces:
+- **Widget:** `ProyectoShellScreen` with FAB (Floating Action Botón)
+- **Dialog:** `ProyectoCreationDialog` implemented in Riverpod
+- **Validation:** ProyectoValidationUseCase enforces:
   - Name regex: `^[a-zA-Z0-9_-]{3,50}$`
   - Path traversal protection (PathValidator)
-  - Duplicate project name prevention
-- **State Management:** Riverpod `projectNotifier` handles creation
-- **Test Coverage:** Widget test `test_project_shell_screen_create_button_opens_dialog()`
+  - Duplicate proyecto name prevention
+- **State Management:** Riverpod `proyectoNotifier` handles creation
+- **Prueba Coverage:** Widget prueba `prueba_proyecto_shell_screen_crear_botón_opens_dialog()`
 
-**Test Result:**
+**Prueba Resultado:**
 ```
 ✅ test_project_shell_screen_create_button_opens_dialog
 ✅ test_project_creation_dialog_validates_input
 ✅ test_project_creation_dialog_calls_use_case_on_submit
 ```
 
-**File References:**
-- [ProjectShellScreen](../lib/features/project_shell/presentation/screens/project_shell_screen.dart)
-- [ProjectValidationUseCase](../lib/features/project_shell/domain/use_cases/project_validation_use_case.dart)
-- [project_shell_test.dart](../tests/widget/project_shell_test.dart)
+**Archivo References:**
+- [ProyectoShellScreen](../lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart)
+- [ProyectoValidationUseCase](../lib/features/proyecto_shell/domain/use_cases/proyecto_validation_use_case.dart)
+- [proyecto_shell_prueba.dart](../pruebas/widget/proyecto_shell_prueba.dart)
 
 ---
 
-### AF-2: ✅ Project Persistence (SQLite)
+### AF-2: ✅ Proyecto Persistence (SQLite)
 
-**Requirement:** Created projects are saved to local database and survive app restart.
+**Requirement:** Creard proyectos are saved to local database and survive app restart.
 
-**Implementation Status:** ✅ **COMPLETE**
+**Implementación Estado:** ✅ **COMPLETE**
 
 **Evidence:**
 - **Database:** SQLite via sqflite (desktop) + MockRepository (web)
-- **Persistence Layer:** `ProjectRepository` with:
-  - `createProject()` - Saves to DB
-  - `getProject(id)` - Retrieves from DB
-  - `listProjects()` - Returns all projects
-  - `updateProject()` - Modifies existing
-  - `deleteProject()` - Removes from DB
-- **Entity:** Project class with `fromJson()` / `toJson()`
+- **Persistence Layer:** `ProyectoRepository` with:
+  - `crearProyecto()` - Saves to DB
+  - `getProyecto(id)` - Retrieves from DB
+  - `listProyectos()` - Returns all proyectos
+  - `updateProyecto()` - Modifies existing
+  - `eliminarProyecto()` - Removes from DB
+- **Entity:** Proyecto class with `fromJson()` / `toJson()`
 - **Validation:** Database constraints via schema
-- **Test Coverage:** Integration test `test_project_creation_persists_to_database()`
+- **Prueba Coverage:** Integración prueba `prueba_proyecto_creation_persists_to_database()`
 
-**Test Result:**
+**Prueba Resultado:**
 ```
 ✅ test_project_creation_persists_to_database
 ✅ test_project_retrieval_from_persistence
 ✅ test_list_projects_returns_all_saved_projects
 ```
 
-**File References:**
-- [ProjectRepository](../lib/features/project_shell/data/repositories/project_repository.dart)
-- [ProjectLocalDataSource](../lib/features/project_shell/data/datasources/project_local_data_source.dart)
-- [project_creation_integration_test.dart](../tests/integration/project_creation_integration_test.dart)
+**Archivo References:**
+- [ProyectoRepository](../lib/features/proyecto_shell/data/repositories/proyecto_repository.dart)
+- [ProyectoLocalDataSource](../lib/features/proyecto_shell/data/datasources/proyecto_local_data_source.dart)
+- [proyecto_creation_integration_prueba.dart](../pruebas/integration/proyecto_creation_integration_prueba.dart)
 
 ---
 
 ### AF-3: ✅ Directory Tree Visualization
 
-**Requirement:** Display project file structure as interactive tree with expand/collapse.
+**Requirement:** Display proyecto archivo structure as interactive tree with expand/collapse.
 
-**Implementation Status:** ✅ **COMPLETE**
+**Implementación Estado:** ✅ **COMPLETE**
 
 **Evidence:**
 - **Widget:** `DirectoryTreeWidget` with:
   - Recursive tree rendering
   - Expand/collapse functionality
-  - File/folder icons
-  - Syntax highlighting for code files
-- **Data Model:** `FileNode` entity with:
+  - Archivo/carpeta icons
+  - Syntax highlighting for code archivos
+- **Data Model:** `ArchivoNode` entity with:
   - `path: String`
   - `isDirectory: bool`
-  - `children: List<FileNode>`
-  - `metadata: FileMetadata`
+  - `children: List<ArchivoNode>`
+  - `metadata: ArchivoMetadata`
 - **Performance:** Lazy loading (expanding nodes on demand)
-- **Test Coverage:** Widget test `test_directory_tree_widget_renders_correctly()`
+- **Prueba Coverage:** Widget prueba `prueba_directory_tree_widget_renders_correctly()`
 
-**Test Result:**
+**Prueba Resultado:**
 ```
 ✅ test_directory_tree_widget_renders_correctly
 ✅ test_directory_tree_widget_expand_collapse_works
 ✅ test_directory_tree_widget_shows_icons_correctly
 ```
 
-**File References:**
-- [DirectoryTreeWidget](../lib/features/project_shell/presentation/widgets/directory_tree_widget.dart)
-- [FileNode entity](../lib/features/project_shell/domain/entities/file_node.dart)
-- [directory_tree_test.dart](../tests/widget/directory_tree_test.dart)
+**Archivo References:**
+- [DirectoryTreeWidget](../lib/features/proyecto_shell/presentation/widgets/directory_tree_widget.dart)
+- [ArchivoNode entity](../lib/features/proyecto_shell/domain/entities/archivo_node.dart)
+- [directory_tree_prueba.dart](../pruebas/widget/directory_tree_prueba.dart)
 
 ---
 
 ### AF-4: ✅ Markdown Preview Pane
 
-**Requirement:** Display README and markdown files with proper rendering and styling.
+**Requirement:** Display README and markdown archivos with proper rendering and styling.
 
-**Implementation Status:** ✅ **COMPLETE**
+**Implementación Estado:** ✅ **COMPLETE**
 
 **Evidence:**
 - **Widget:** `MarkdownPreviewWidget` with:
@@ -149,52 +149,52 @@ HU-3.1 (Project Shell UI Implementation) has been **100% completed** with all 4 
   - Responsive layout (adjusts to pane width)
   - Scroll synchronization
   - Line number display for code blocks
-- **Test Coverage:** Widget test `test_markdown_preview_widget_renders_markdown()`
+- **Prueba Coverage:** Widget prueba `prueba_markdown_preview_widget_renders_markdown()`
 
-**Test Result:**
+**Prueba Resultado:**
 ```
 ✅ test_markdown_preview_widget_renders_markdown
 ✅ test_markdown_preview_widget_applies_theme
 ✅ test_markdown_preview_widget_handles_code_blocks
 ```
 
-**File References:**
-- [MarkdownPreviewWidget](../lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart)
-- [markdown_preview_test.dart](../tests/widget/markdown_preview_test.dart)
+**Archivo References:**
+- [MarkdownPreviewWidget](../lib/features/proyecto_shell/presentation/widgets/markdown_preview_widget.dart)
+- [markdown_preview_prueba.dart](../pruebas/widget/markdown_preview_prueba.dart)
 
 ---
 
 ### AF-5: ✅ Search & Filter Functionality
 
-**Requirement:** Users can search files by name and filter by file type.
+**Requirement:** Users can search archivos by name and filter by archivo type.
 
-**Implementation Status:** ✅ **COMPLETE**
+**Implementación Estado:** ✅ **COMPLETE**
 
 **Evidence:**
-- **Feature:** SearchBar in ProjectShellScreen
+- **Feature:** SearchBar in ProyectoShellScreen
 - **Functionality:**
   - Real-time search (debounced 300ms)
   - Case-insensitive matching
-  - File type filtering (*.py, *.dart, *.md, etc.)
-  - Results highlighting
-- **Use Case:** `SearchProjectFilesUseCase` with:
+  - Archivo type filtering (*.py, *.dart, *.md, etc.)
+  - Resultados highlighting
+- **Use Case:** `SearchProyectoArchivosUseCase` with:
   - Pattern matching
   - Extension filtering
-  - Result ranking (exact matches first)
-- **State Management:** Riverpod `searchResultsNotifier`
-- **Test Coverage:** `test_search_functionality_returns_matching_files()`
+  - Resultado ranking (exact matches first)
+- **State Management:** Riverpod `searchResultadosNotifier`
+- **Prueba Coverage:** `prueba_search_functionality_returns_matching_archivos()`
 
-**Test Result:**
+**Prueba Resultado:**
 ```
 ✅ test_search_functionality_returns_matching_files
 ✅ test_search_functionality_filters_by_extension
 ✅ test_search_functionality_case_insensitive
 ```
 
-**File References:**
-- [ProjectShellScreen search bar](../lib/features/project_shell/presentation/screens/project_shell_screen.dart#L150)
-- [SearchProjectFilesUseCase](../lib/features/project_shell/domain/use_cases/search_project_files_use_case.dart)
-- [search_test.dart](../tests/widget/search_test.dart)
+**Archivo References:**
+- [ProyectoShellScreen search bar](../lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart#L150)
+- [SearchProyectoArchivosUseCase](../lib/features/proyecto_shell/domain/use_cases/search_proyecto_archivos_use_case.dart)
+- [search_prueba.dart](../pruebas/widget/search_prueba.dart)
 
 ---
 
@@ -204,12 +204,12 @@ HU-3.1 (Project Shell UI Implementation) has been **100% completed** with all 4 
 
 **Requirement:** Code compiles without errors; all functions have return type annotations.
 
-**Verification Command:**
+**Verificación Command:**
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai && flutter analyze
 ```
 
-**Result:**
+**Resultado:**
 ```
 ✅ 43 issues (0 ERRORS) - Improved from 54 issues in Phase 3
   └─ All errors eliminated
@@ -244,23 +244,23 @@ final result = project!.name;
 
 **Requirement:** No path traversal attacks possible; all inputs validated per OWASP.
 
-**Implementation:**
+**Implementación:**
 - **SecurityClass:** `PathValidator` with:
-  - `validateFilePathInProject(path)` - Main validation
-  - `validateProjectPath(path)` - Project root check
-  - `isFileExtensionAllowed(filename)` - Extension whitelist
+  - `validateArchivoPathInProyecto(path)` - Main validation
+  - `validateProyectoPath(path)` - Proyecto root check
+  - `isArchivoExtensionAllowed(archivoname)` - Extension whitelist
 - **Prevention Mechanisms:**
   - ❌ Rejects `../` sequences
   - ❌ Rejects absolute paths (`/`, `C:\`)
   - ❌ Rejects disallowed components (`.`, `~`, `$`)
   - ✅ Allows only: `[a-zA-Z0-9._-/]`
 - **Constants:** Centralized in `ValidationConstants`:
-  - Project name regex: `^[a-zA-Z0-9_-]{3,50}$`
+  - Proyecto name regex: `^[a-zA-Z0-9_-]{3,50}$`
   - Max path depth: 10 levels
-  - Max filename: 255 chars
+  - Max archivoname: 255 chars
   - Disallowed extensions: `.exe`, `.sh`, `.bat`, etc.
 
-**Security Test:**
+**Security Prueba:**
 ```dart
 // ✅ Rejects path traversal
 expect(
@@ -284,38 +284,38 @@ expect(
 
 ---
 
-### AT-3: ✅ Testing (75%+ Coverage Target)
+### AT-3: ✅ Pruebaing (75%+ Coverage Target)
 
-**Requirement:** Unit and widget tests with 75%+ code coverage.
+**Requirement:** Unit and widget pruebas with 75%+ code coverage.
 
-**Test Inventory:**
+**Prueba Inventory:**
 
-| Category | Files | Tests | Status |
+| Category | Archivos | Pruebas | Estado |
 |----------|-------|-------|--------|
-| **Widget Tests** | 3 | 20+ | ✅ COMPLETE |
-| **Unit Tests** | 5 | 15+ | ✅ COMPLETE |
-| **Integration Tests** | 1 | 3+ | ✅ CREATED |
+| **Widget Pruebas** | 3 | 20+ | ✅ COMPLETE |
+| **Unit Pruebas** | 5 | 15+ | ✅ COMPLETE |
+| **Integración Pruebas** | 1 | 3+ | ✅ CREATED |
 | **Total** | 9 | 38+ | ✅ PASS |
 
-**Widget Test Files:**
-1. `project_shell_test.dart` - ProjectShellScreen (8 tests)
-2. `directory_tree_test.dart` - DirectoryTreeWidget (6 tests)
-3. `markdown_preview_test.dart` - MarkdownPreviewWidget (6 tests)
+**Widget Prueba Archivos:**
+1. `proyecto_shell_prueba.dart` - ProyectoShellScreen (8 pruebas)
+2. `directory_tree_prueba.dart` - DirectoryTreeWidget (6 pruebas)
+3. `markdown_preview_prueba.dart` - MarkdownPreviewWidget (6 pruebas)
 
-**Unit Test Files:**
-1. `project_validation_use_case_test.dart` - Validation logic
-2. `project_repository_test.dart` - Data persistence
-3. `path_validator_test.dart` - Security validation
-4. `file_node_entity_test.dart` - Entity logic
-5. `search_files_use_case_test.dart` - Search logic
+**Unit Prueba Archivos:**
+1. `proyecto_validation_use_case_prueba.dart` - Validation logic
+2. `proyecto_repository_prueba.dart` - Data persistence
+3. `path_validator_prueba.dart` - Security validation
+4. `archivo_node_entity_prueba.dart` - Entity logic
+5. `search_archivos_use_case_prueba.dart` - Search logic
 
-**Test Coverage Metrics:**
-- Presentation Layer: 75%+ (UI widgets)
+**Prueba Coverage Metrics:**
+- Presentación Layer: 75%+ (UI widgets)
 - Domain Layer: 85%+ (business logic)
 - Data Layer: 80%+ (repository & datasources)
 - **Overall Target:** 80% 🎯
 
-**Running Tests:**
+**Ejecutarning Pruebas:**
 ```bash
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
 flutter test tests/ --coverage --coverage-path=coverage/lcov.info
@@ -329,7 +329,7 @@ flutter test tests/ --coverage --coverage-path=coverage/lcov.info
 
 **Requirement:** Code formatted with Black/Dartfmt and passes Ruff/Flutter linting.
 
-**Verification Commands:**
+**Verificación Commands:**
 ```bash
 # Format check
 dart format lib/ tests/ --line-length 100 --set-exit-if-changed
@@ -338,20 +338,20 @@ dart format lib/ tests/ --line-length 100 --set-exit-if-changed
 flutter analyze
 ```
 
-**Results:**
-- ✅ **dart format:** 27 files formatted
+**Resultados:**
+- ✅ **dart format:** 27 archivos formatted
 - ✅ **flutter analyze:** 0 ERRORS (43 issues)
 - ✅ **dart fix --apply:** 17 automated fixes:
-  - sort_constructors_first (4 files)
-  - use_raw_strings (3 files)
-  - prefer_expression_function_bodies (2 files)
-  - avoid_void_async (2 files)
-  - Other fixes (6 files)
+  - sort_constructors_first (4 archivos)
+  - use_raw_strings (3 archivos)
+  - prefer_expression_function_bodies (2 archivos)
+  - avoid_void_async (2 archivos)
+  - Other fixes (6 archivos)
 
 **Quality Improvements:**
 - Code consistency: 100% (formatting enforced)
 - Auto-fixable issues: 100% resolved (17/17)
-- Manual reviews: Completed (43 remaining issues are style-only)
+- Manual reviews: Completado (43 remaining issues are estilo-only)
 
 **Pass Criteria:** ✅ **0 errors, formatting complete**
 
@@ -359,25 +359,25 @@ flutter analyze
 
 ### AT-5: ✅ Performance (<200ms Latency)
 
-**Requirement:** UI responsive; project operations complete in <200ms.
+**Requirement:** UI responsive; proyecto operations complete in <200ms.
 
 **Performance Benchmarks:**
 
-| Operation | Target | Result | Status |
+| Operation | Target | Resultado | Estado |
 |-----------|--------|--------|--------|
 | **App startup** | <500ms | ~450ms | ✅ PASS |
-| **Project creation dialog** | <100ms | ~80ms | ✅ PASS |
-| **Directory tree render (100 files)** | <100ms | ~95ms | ✅ PASS |
+| **Proyecto creation dialog** | <100ms | ~80ms | ✅ PASS |
+| **Directory tree render (100 archivos)** | <100ms | ~95ms | ✅ PASS |
 | **Markdown preview render** | <150ms | ~120ms | ✅ PASS |
-| **Search (100 files)** | <50ms | ~45ms | ✅ PASS |
+| **Search (100 archivos)** | <50ms | ~45ms | ✅ PASS |
 | **UI responsiveness** | No freezing | No freezing | ✅ PASS |
 
 **Profiling Evidence:**
-- Platform: Linux Desktop (Flutter Desktop Runner)
+- Platform: Linux Desktop (Flutter Desktop Ejecutarner)
 - Device: Standard development machine
-- Metric: Flutter DevTools Profiler timestamps
+- Metric: Flutter DevTools Proarchivor timestamps
 
-**Performance Test Code:**
+**Performance Prueba Code:**
 ```dart
 test('project_creation_completes_in_under_100ms', () async {
   final stopwatch = Stopwatch()..start();
@@ -392,28 +392,28 @@ test('project_creation_completes_in_under_100ms', () async {
 
 ---
 
-### AT-6: ✅ Documentation (DartDoc + Architecture)
+### AT-6: ✅ Documentoation (DartDoc + Architecture)
 
-**Requirement:** All public APIs documented; architecture decisions recorded.
+**Requirement:** All public APIs documentoed; architecture decisions recorded.
 
-**Documentation Inventory:**
+**Documentoation Inventory:**
 
-| Component | Documentation | Status |
+| Component | Documentoation | Estado |
 |-----------|---|--------|
 | **DartDoc (Public APIs)** | Complete | ✅ DONE |
-| **Architecture Decisions** | ADR files | ✅ DONE |
+| **Architecture Decisions** | ADR archivos | ✅ DONE |
 | **README.md** | Updated | ✅ DONE |
 | **API Comments** | Added | ✅ DONE |
-| **Test Documentation** | Test names | ✅ DONE |
+| **Prueba Documentoation** | Prueba names | ✅ DONE |
 
 **DartDoc Coverage:**
-- `Project` entity: Full documentation ✅
-- `FileNode` entity: Full documentation ✅
-- `ProjectRepository`: Full documentation ✅
-- `PathValidator`: Full documentation ✅
-- `ValidationConstants`: Full documentation ✅
-- All Use Cases: Full documentation ✅
-- All Exception classes: Full documentation ✅
+- `Proyecto` entity: Full documentoation ✅
+- `ArchivoNode` entity: Full documentoation ✅
+- `ProyectoRepository`: Full documentoation ✅
+- `PathValidator`: Full documentoation ✅
+- `ValidationConstants`: Full documentoation ✅
+- All Use Cases: Full documentoation ✅
+- All Exception classes: Full documentoation ✅
 
 **Example DartDoc:**
 ```dart
@@ -442,21 +442,21 @@ class Project {
 }
 ```
 
-**Architecture Documentation:**
+**Architecture Documentoation:**
 - Decision Record: `doc/03-HU-TRACKING/HU-3.1-*/PHASE_*.md`
 - Security Report: `FASE_4_SECURITY_REPORT.md`
-- Test Report: `doc/01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md`
+- Prueba Report: `doc/01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md`
 - Setup Guide: `doc/02-SETUP_DEV/QUICK_START_GUIDE.en.md`
 
-**Pass Criteria:** ✅ **All APIs documented with examples**
+**Pass Criteria:** ✅ **All APIs documentoed with examples**
 
 ---
 
-## Security Verification
+## Security Verificación
 
 ### OWASP Top 10 Coverage
 
-| Vulnerability | Prevention | Status |
+| Vulnerability | Prevention | Estado |
 |---|---|---|
 | **A03:2021 - Injection** | Input validation (regex) | ✅ |
 | **A01:2021 - Broken Access Control** | Path boundary validation | ✅ |
@@ -469,7 +469,7 @@ class Project {
 
 - ✅ No hardcoded secrets or credentials
 - ✅ No sensitive data in logs
-- ✅ All file operations use PathValidator
+- ✅ All archivo operations use PathValidator
 - ✅ All user input validated before use
 - ✅ Exception messages don't expose internals
 - ✅ Database queries parameterized (sqflite)
@@ -478,9 +478,9 @@ class Project {
 
 ---
 
-## Test Coverage Report
+## Prueba Coverage Report
 
-### Widget Test Suite
+### Widget Prueba Suite
 ```
 ✅ ProjectShellScreen
   ├─ Creates with no initial projects
@@ -504,7 +504,7 @@ class Project {
   └─ Responsive to content changes
 ```
 
-### Unit Test Suite
+### Unit Prueba Suite
 ```
 ✅ ProjectValidationUseCase
   ├─ Validates project names (regex)
@@ -532,7 +532,7 @@ class Project {
   └─ Returns ranked results
 ```
 
-### Integration Test Suite
+### Integración Prueba Suite
 ```
 ✅ Project Creation Flow
   ├─ AF-1: Dialog opens and accepts input
@@ -551,7 +551,7 @@ class Project {
 
 ### HU-3.1 Commit History
 
-**Commit 1: Phase 1-2 Infrastructure**
+**Commit 1: Fase 1-2 Infraestructura**
 ```
 feat(hu-3.1): Phases 1-2 - Infrastructure & Domain Layer
 
@@ -563,7 +563,7 @@ feat(hu-3.1): Phases 1-2 - Infrastructure & Domain Layer
 - Setup Riverpod state management foundation
 ```
 
-**Commit 2: Phase 3 UI & State**
+**Commit 2: Fase 3 UI & State**
 ```
 feat(hu-3.1): Phase 3 - UI Layer & Riverpod State Management
 
@@ -575,7 +575,7 @@ feat(hu-3.1): Phase 3 - UI Layer & Riverpod State Management
 - Add SearchBar component
 ```
 
-**Commit 3: Phase 4 Security & Quality**
+**Commit 3: Fase 4 Security & Quality**
 ```
 feat(hu-3.1): Phase 4 - Security & Code Quality FINAL
 
@@ -588,7 +588,7 @@ feat(hu-3.1): Phase 4 - Security & Code Quality FINAL
 - Add comprehensive FASE_4_SECURITY_REPORT.md
 ```
 
-**Commit 4: Final - Acceptance Criteria Verification**
+**Commit 4: Final - Acceptance Criteria Verificación**
 ```
 feat(hu-3.1): FINAL - Complete Acceptance Criteria Verification
 
@@ -601,9 +601,9 @@ feat(hu-3.1): FINAL - Complete Acceptance Criteria Verification
 ```
 
 ### Branch Management
-- **Feature Branch:** `feature/ui-project-shell`
+- **Feature Branch:** `feature/ui-proyecto-shell`
 - **Target:** `develop`
-- **Status:** Ready for PR (no blocking issues)
+- **Estado:** Preparado para PR (no blocking issues)
 
 ---
 
@@ -663,7 +663,7 @@ flutter build linux --release
 flutter build web --release
 ```
 
-### Testing
+### Pruebaing
 ```bash
 # Run all tests with coverage
 flutter test --coverage --coverage-path=coverage/lcov.info
@@ -721,23 +721,23 @@ flutter run -d linux --profile
 
 ## Summary
 
-✅ **HU-3.1 is 100% complete and ready for production deployment.**
+✅ **HU-3.1 is 100% complete and preparado para production deployment.**
 
 - All 5 functional requirements implemented
 - All 6 technical requirements verified
 - All acceptance criteria met
 - Zero critical issues remaining
-- Documentation complete
-- Ready for PR to `develop` branch
+- Documentoation complete
+- Preparado para PR to `develop` branch
 
-**Next Steps:**
-1. ✅ This verification complete
-2. ➡️ Create PR to `develop` branch
+**Siguiente Steps:**
+1. ✅ This verificación complete
+2. ➡️ Crear PR to `develop` branch
 3. ➡️ Code review & merge
 4. ➡️ Deploy to staging
-5. ➡️ User acceptance testing (UAT)
+5. ➡️ User acceptance pruebaing (UAT)
 
 ---
 
 **Report Generated:** 2026-02-03
-**Status:** ✅ **FINAL - READY FOR PR**
+**Estado:** ✅ **FINAL - READY FOR PR**

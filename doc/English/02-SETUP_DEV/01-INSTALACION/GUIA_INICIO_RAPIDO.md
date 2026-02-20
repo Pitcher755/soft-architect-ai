@@ -1,14 +1,14 @@
 # 🚀 Guía Rápida - SoftArchitect AI Funcional
 
-> **Estado:** ✅ **LISTO PARA DESARROLLO**
-> **Fecha:** 28 de Enero de 2026
-> **Resultado:** 18/18 pruebas pasadas (100%)
+> **Status:** ✅ **LISTO PARA DESARROLLO**
+> **Date:** 28 de Enero de 2026
+> **Result:** 18/18 tests pasadas (100%)
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-1. [Iniciar el Proyecto](#iniciar-el-proyecto)
+1. [Iniciar el Project](#iniciar-el-project)
 2. [Verificar Servicios](#verificar-servicios)
 3. [URLs de Acceso](#urls-de-acceso)
 4. [Solución de Problemas](#solución-de-problemas)
@@ -16,7 +16,7 @@
 
 ---
 
-## 🚀 Iniciar el Proyecto
+## 🚀 Iniciar el Project
 
 ### Opción 1: Build Completo (Recomendado primera vez)
 
@@ -45,7 +45,7 @@ docker compose up -d
 
 ## ✅ Verificar Servicios
 
-### Estado General
+### Status General
 
 ```bash
 docker ps --filter "name=sa_"
@@ -95,16 +95,16 @@ curl http://localhost:8000/api/v1/health | jq .
 
 ### Backend API
 
-| Servicio | URL | Descripción |
+| Servicio | URL | Description |
 |----------|-----|-------------|
 | **API** | http://localhost:8000 | Raíz de la API |
-| **Health** | http://localhost:8000/api/v1/health | Estado del backend |
+| **Health** | http://localhost:8000/api/v1/health | Status del backend |
 | **Swagger** | http://localhost:8000/docs | Documentación interactiva |
 | **ReDoc** | http://localhost:8000/redoc | Documentación alternativa |
 
 ### Servicios Internos
 
-| Servicio | Host Interno | Puerto | Descripción |
+| Servicio | Host Interno | Puerto | Description |
 |----------|---|---|---|
 | **Ollama** | ollama (red sa_network) | 11434 | Motor LLM local |
 | **ChromaDB** | chromadb (red sa_network) | 8000 | Base de datos vectorial |
@@ -212,14 +212,14 @@ docker compose up -d
 ## 📊 Reportes Disponibles
 
 ### 1. [FUNCTIONAL_TEST_REPORT.md](../01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md)
-- ✅ Resultados completos de pruebas (18 tests)
+- ✅ Results completos de tests (18 tests)
 - ✅ Métricas de rendimiento
 - ✅ Validación de cumplimiento
 - ✅ 1000+ líneas de detalle
 
 ### 2. [INITIAL_SETUP_LOG.es.md](../01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md)
 - ✅ Documentación en español
-- ✅ 4 fases de configuración
+- ✅ 4 phases de configuration
 - ✅ Timeline y diagrama Mermaid
 - ✅ 400+ líneas
 
@@ -240,7 +240,7 @@ docker compose up -d
 
 ### 6. [DOCKER_VALIDATION_REPORT.md](../../DOCKER_VALIDATION_REPORT.md)
 - ✅ Informe final de validación
-- ✅ Comparación de estado
+- ✅ Comparación de status
 - ✅ Métricas de impacto
 
 ---
@@ -256,7 +256,7 @@ flutter analyze
 flutter run -d linux
 ```
 
-### Ejecutar Tests Backend
+### Execute Tests Backend
 
 ```bash
 cd src/server
@@ -391,13 +391,13 @@ infrastructure/
 
 ---
 
-## 🎯 Próximos Pasos
+## 🎯 Next Steps
 
 ### Para Desarrolladores
 
 1. **Leer documentación:**
    - [AGENTS.md](../../AGENTS.md) - Visión y reglas
-   - [FUNCTIONAL_TEST_REPORT.md](../01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Resultados de pruebas
+   - [FUNCTIONAL_TEST_REPORT.md](../01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Results de tests
    - [INITIAL_SETUP_LOG.es.md](../01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md) - Setup completo
 
 2. **Iniciar desarrollo:**
@@ -415,7 +415,7 @@ infrastructure/
 ### Para DevOps
 
 1. **CI/CD Setup:**
-   - Crear `.github/workflows/` para GitHub Actions
+   - Create `.github/workflows/` para GitHub Actions
    - Implementar Docker registry
 
 2. **Monitoring:**
@@ -433,7 +433,7 @@ infrastructure/
 
 ### Contacto
 
-- **Documentación:** Leer `AGENTS.md` y archivos en `doc/` y `context/`
+- **Documentación:** Leer `AGENTS.md` y files en `doc/` y `context/`
 - **Issues:** Ver `FUNCTIONAL_TEST_REPORT.md` para troubleshooting
 - **Logs:** `docker compose logs -f`
 
@@ -459,12 +459,12 @@ docker exec sa_api curl http://ollama:11434/
 
 - ✅ **Modo Iron (Local):** Por defecto, todos los datos se procesan localmente
 - ✅ **Privacidad:** No se envían datos a la nube sin explícito consentimiento
-- ✅ **Offline:** El proyecto funciona completamente sin internet (excepto descarga inicial de modelos)
+- ✅ **Offline:** El project funciona completamente sin internet (excepto descarga inicial de modelos)
 - ✅ **Recursos:** Memoria limitada a 3.0 GB total (configurable)
-- ✅ **Port 8000:** Reservado para API, no cambiar sin editar configuración
+- ✅ **Port 8000:** Reservado para API, no cambiar sin editar configuration
 
 ---
 
 **Última actualización:** 28 de enero de 2026
 **Versión:** 1.0
-**Estado:** ✅ PRODUCCIÓN LISTA
+**Status:** ✅ PRODUCCIÓN LISTA

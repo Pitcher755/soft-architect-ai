@@ -9,13 +9,13 @@
 ## 📋 Problemas Identificados
 
 ### 1. ❌ Proyectos Reales No Se Mostraban
-**Problema:** `buildHybridProjectsList([])` recibía lista VACÍA
-- Resultado: Solo mostraba proyectos mock, nunca los reales creados
+**Problema:** `buildHybridProyectosList([])` recibía lista VACÍA
+- Resultadoado: Solo mostraba proyectos mock, nunca los reales creados
 
 **Solución:** ✅
 - Agregar providers Riverpod para obtener proyectos del repositorio
-- Usar `allProjectsProvider` para obtener proyectos reales
-- Usar `hybridProjectsProvider` para combinar real + mock
+- Usar `allProyectosProvider` para obtener proyectos reales
+- Usar `hybridProyectosProvider` para combinar real + mock
 
 ### 2. ❌ Falta de Botón de Expandir
 **Problema:** Usuario reportó que botón desapareció
@@ -29,7 +29,7 @@
 
 ## 🔧 Cambios Realizados
 
-### 1. **projects_provider.dart** - Actualizado
+### 1. **proyectos_provider.dart** - Actualizado
 
 #### ✅ Agregados imports
 ```dart
@@ -55,9 +55,9 @@ final hybridProjectsProvider = FutureProvider<List<Project>>((ref) async {
 ```
 **Responsabilidad:** Combinar proyectos reales con mock, ordenar
 
-### 2. **project_workspace_screen.dart** - Actualizado
+### 2. **proyecto_workspace_screen.dart** - Actualizado
 
-#### ✅ Agregado import de Project
+#### ✅ Agregado import de Proyecto
 ```dart
 import '../../domain/entities/project.dart';
 ```
@@ -79,12 +79,12 @@ Widget build(BuildContext context) {
 #### ✅ Agregados tres métodos helper
 - `_buildLoadingState()` - Spinner de carga
 - `_buildErrorState()` - UI de error
-- `_buildProjectsUI()` - UI con proyectos
+- `_buildProyectosUI()` - UI con proyectos
 
 #### ✅ Mantiene funcionalidad existente
 - Botón "Ver todos los proyectos" sigue ahí
 - GridView con primeros 8 proyectos
-- `ProjectListView` con lista completa al expandir
+- `ProyectoListView` con lista completa al expandir
 
 ---
 
@@ -155,7 +155,7 @@ final projectsAsyncValue = ref.watch(hybridProjectsProvider);
 
 ---
 
-## 📊 Resultados
+## 📊 Resultadoados
 
 | Aspecto | Antes | Después |
 |--------|-------|---------|
@@ -170,10 +170,10 @@ final projectsAsyncValue = ref.watch(hybridProjectsProvider);
 
 ## 🚀 Próximos Pasos
 
-### Inmediato (Testing)
+### Inmediato (Pruebaing)
 - [ ] Crear nuevo proyecto real desde UI
 - [ ] Verificar que aparece en dashboard
-- [ ] Click en proyecto → navega a project-shell
+- [ ] Click en proyecto → navega a proyecto-shell
 - [ ] Verificar guía sigue mostrándose
 - [ ] Expandir lista → ver todos (real + mock)
 
@@ -187,7 +187,7 @@ final projectsAsyncValue = ref.watch(hybridProjectsProvider);
 
 ## 📝 Código Actualizado
 
-### projects_provider.dart
+### proyectos_provider.dart
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -230,7 +230,7 @@ final hybridProjectsProvider = FutureProvider<List<Project>>((ref) async {
 });
 ```
 
-### project_workspace_screen.dart (build method)
+### proyecto_workspace_screen.dart (build method)
 ```dart
 @override
 Widget build(BuildContext context) {

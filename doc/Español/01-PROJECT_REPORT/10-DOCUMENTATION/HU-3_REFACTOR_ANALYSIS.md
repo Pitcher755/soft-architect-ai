@@ -1,4 +1,4 @@
-# 📊 Análisis Estratégico: Refactor de HU-3.x (Project-First Paradigm)
+# 📊 Análisis Estratégico: Refactor de HU-3.x (Proyecto-First Paradigm)
 
 > **Fecha:** 02/02/2026
 > **Estado:** 🔍 ANÁLISIS EN PROGRESO (Sin Modificaciones en Rama Actual)
@@ -39,9 +39,9 @@ Widget Markdown (Display)
 - **HU-3.2:** Streaming SSE para no bloquear UI
 - **HU-3.3:** Manejo amigable de errores
 
-### Visión Propuesta (Project-First Paradigm)
+### Visión Propuesta (Proyecto-First Paradigm)
 
-**Modelo:** Sequential Document Generation + Guided RAG + Iterative Validation
+**Modelo:** Sequential Documento Generation + Guided RAG + Iterative Validation
 
 ```
 Usuario Crea Proyecto
@@ -67,11 +67,11 @@ Usuario escribe idea en chat (ej: "App adopción mascotas estilo Tinder")
 
 **Características Clave:**
 - ✅ Flujo **100% secuencial** (nunca paralelo)
-- ✅ Cada documento debe validarse antes de pasar al siguiente
+- ✅ Cada documentoo debe validarse antes de pasar al siguiente
 - ✅ RAG **100% guiado por templates** (no generación libre)
-- ✅ Chat histórico en BD + Documentos validados en disco
+- ✅ Chat histórico en BD + Documentoos validados en disco
 - ✅ Iteración conversacional (usuario refina en chat antes de guardar)
-- ✅ Resultado: 25 documentos de arquitecto/ingeniero senior en MINUTOS
+- ✅ Resultadoado: 25 documentoos de arquitecto/ingeniero senior en MINUTOS
 
 ---
 
@@ -79,23 +79,23 @@ Usuario escribe idea en chat (ej: "App adopción mascotas estilo Tinder")
 
 ### Tabla Comparativa
 
-| Aspecto | HU-3.x Actual | Propuesta Project-First |
+| Aspecto | HU-3.x Actual | Propuesta Proyecto-First |
 |---------|--------------|------------------------|
-| **Modelo Mental** | Chatbot efímero | Gestor de documentación secuencial (guiado) |
+| **Modelo Mental** | Chatbot efímero | Gestor de documentoación secuencial (guiado) |
 | **Punto de Entrada** | Abre app → chat | Crea proyecto → auto-crear dirs context/10-20-30-35-40 |
-| **Concepto de "Sesión"** | Conversación temporal | Mix: Chat histórico en BD + Documentos validados en disco |
+| **Concepto de "Sesión"** | Conversación temporal | Mix: Chat histórico en BD + Documentoos validados en disco |
 | **Persistencia de Datos** | Ninguna (histórico en BD) | Chat en BD + Docs en context/{10-20-30-35-40}/ por validación |
-| **UI Principal** | ChatScreen | ProjectDashboard (Chat + Progress Bar "Doc 1/25") |
+| **UI Principal** | ChatScreen | ProyectoDashboard (Chat + Progress Bar "Doc 1/25") |
 | **Flujo de Generación** | Propuesta única | **Secuencial obligatorio:** Doc 1 → Validar → Guardar → Doc 2 → ... → Doc 25 |
 | **Validación del Usuario** | Aprobar/rechazar | **Aprobar O Interactuar en chat para mejorar** → Regenerar → Validar |
 | **Integración RAG** | "Transparente" | **100% guiada por templates** (01-TEMPLATES/) adaptados al proyecto |
-| **Caso de Uso Primario** | Consultas adhoc | Generar 25 documentos de arquitecto senior en minutos |
+| **Caso de Uso Primario** | Consultas adhoc | Generar 25 documentoos de arquitecto senior en minutos |
 | **Persistencia Automática** | No | Sí (tras validación) |
-| **Documentos Finales** | Variable | 25 documentos (estándar del proyecto) |
+| **Documentoos Finales** | Variable | 25 documentoos (estándar del proyecto) |
 
 ---
 
-## 🔀 Diagrama Secuencial: Flujo de Generación de Documentos
+## 🔀 Diagrama Secuencial: Flujo de Generación de Documentoos
 
 ```
 PROYECTO CREADO
@@ -119,27 +119,27 @@ PROYECTO CREADO
 ```
 
 **Garantías:**
-- ✅ **Secuencial:** Nunca 2 documentos en paralelo
+- ✅ **Secuencial:** Nunca 2 documentoos en paralelo
 - ✅ **RAG 100% Guiado:** Templates de 01-TEMPLATES/ + adaptación
 - ✅ **Iterativo:** Usuario refina en chat antes de guardar
-- ✅ **Persistente:** Solo documentos validados en disco
+- ✅ **Persistente:** Solo documentoos validados en disco
 - ✅ **Auditable:** Chat histórico en BD
 
 ---
 
 ### Análisis Profundo
 
-#### ✅ Ventajas de Project-First + Sequential Workflow
+#### ✅ Ventajas de Proyecto-First + Sequential Workflow
 
 1. **Ownership y Gobernanza:**
-   - Usuario tiene control explícito sobre cada documento
+   - Usuario tiene control explícito sobre cada documentoo
    - Iteración conversacional: refina antes de guardar
    - Trace audit completo: chat en BD + docs en disco
 
 2. **Generación Predecible y de Calidad:**
    - RAG 100% guiado por templates (no generación libre)
-   - Secuencial: cada documento mejora en base a anteriores
-   - Resultado: 25 documentos = arquitecto/ingeniero senior en MINUTOS
+   - Secuencial: cada documentoo mejora en base a anteriores
+   - Resultadoado: 25 documentoos = arquitecto/ingeniero senior en MINUTOS
    - Estandarización: todos los proyectos siguen la misma estructura
 
 3. **Iteración Conversacional:**
@@ -149,25 +149,25 @@ PROYECTO CREADO
 
 4. **Persistencia Segura:**
    - Directorios creados automáticamente al inicio
-   - Solo documentos validados llegan a disco
+   - Solo documentoos validados llegan a disco
    - Histórico conversacional en BD (recuperable)
    - Backup implícito: versión previa siempre disponible
 
-#### ❌ Riesgos de Project-First + Sequential Workflow
+#### ❌ Riesgos de Proyecto-First + Sequential Workflow
 
 1. **Complejidad del Orquestador RAG:**
-   - Necesita rastrear estado de "qué documento sigue"
-   - Necesita inyectar contexto de documentos previos
+   - Necesita rastrear estado de "qué documentoo sigue"
+   - Necesita inyectar contexto de documentoos previos
    - Manejo de conversación multi-turno para refinar
 
 2. **Experiencia de Onboarding:**
-   - Usuario debe entender concepto de "25 documentos secuenciales"
+   - Usuario debe entender concepto de "25 documentoos secuenciales"
    - La barrera de entrada es mayor (no es "chat simple")
    - Educación requerida
 
 3. **Gestión de Estado Conversacional:**
-   - El chat histórico debe recuperar contexto entre documentos
-   - Si usuario vuelve a un documento anterior, ¿qué sucede?
+   - El chat histórico debe recuperar contexto entre documentoos
+   - Si usuario vuelve a un documentoo anterior, ¿qué sucede?
    - Necesidad de "cancelar" flujo y reiniciar
 
 ---
@@ -188,7 +188,7 @@ class Message {
 }
 ```
 
-**Propuesto (Project-First):**
+**Propuesto (Proyecto-First):**
 ```dart
 // Modelo de Proyecto
 class Project {
@@ -220,7 +220,7 @@ class ProjectInteraction {
 
 ### 2. Cambio en Arquitectura de Servicios
 
-**Agregar nuevo servicio:** `FileSystemService`
+**Agregar nuevo servicio:** `ArchivoSystemService`
 
 ```python
 # src/server/services/filesystem/file_system_service.py
@@ -318,7 +318,7 @@ MainScreen (IDE-like)
 
 ### Opción A: Refactor Mínimo (Mantener 3 HUs)
 
-**Riesgo:** Lose the "Project" concept in individual HUs
+**Riesgo:** Lose the "Proyecto" concept in individual HUs
 
 **NO RECOMENDADO** ❌
 
@@ -326,7 +326,7 @@ MainScreen (IDE-like)
 
 ### Opción B: Descomposición en 5 HUs (RECOMENDADO) ✅
 
-#### **HU-3.1: Project Shell (UI & Navigation)**
+#### **HU-3.1: Proyecto Shell (UI & Navigation)**
 
 ```json
 {
@@ -367,7 +367,7 @@ MainScreen (IDE-like)
 }
 ```
 
-#### **HU-3.2: File System Logic (I/O Motor)**
+#### **HU-3.2: Archivo System Logic (I/O Motor)**
 
 ```json
 {
@@ -408,7 +408,7 @@ MainScreen (IDE-like)
 }
 ```
 
-#### **HU-3.3: Chat with Document Proposals (UI + Interaction)**
+#### **HU-3.3: Chat with Documento Proposals (UI + Interaction)**
 
 ```json
 {
@@ -453,7 +453,7 @@ MainScreen (IDE-like)
 }
 ```
 
-#### **HU-3.4: Error Handling & Resilience**
+#### **HU-3.4: Error Handling & Resiliencia**
 
 ```json
 {
@@ -532,7 +532,7 @@ MainScreen (IDE-like)
 | Aspecto | Opción A (3 HUs) | Opción B (5 HUs) |
 |--------|------------------|------------------|
 | **Claridad** | Ambigua | Clara |
-| **Testabilidad** | Difícil | Fácil (cada HU isolada) |
+| **Pruebaabilidad** | Difícil | Fácil (cada HU isolada) |
 | **Paralelización** | Bloqueada | Posible (HU-3.3,3.4,3.5 después de 3.1+3.2) |
 | **Complejidad** | Subestimada | Más realista |
 | **Estimación Total** | ~50 pts | ~60-70 pts (pero más defendible) |
@@ -541,7 +541,7 @@ MainScreen (IDE-like)
 
 ## 🔗 Impacto en Sprints Posteriores
 
-### Sprint 4 (HU-4: Backend Chat & RAG Integration)
+### Sprint 4 (HU-4: Backend Chat & RAG Integración)
 
 #### Cambios Requeridos en HU-4.1:
 
@@ -565,7 +565,7 @@ POST /api/v1/projects/{project_id}/document/validate
 
 **Impacto en Estimación:** HU-4.1 +L (de L a XL)
 
-#### Nueva HU-4.4 (File Persistence Backend):
+#### Nueva HU-4.4 (Archivo Persistence Backend):
 
 ```json
 {
@@ -581,13 +581,13 @@ POST /api/v1/projects/{project_id}/document/validate
 ### Sprint 5 (HU-5: Cleanup)
 
 **Sin cambios significativos**, pero:
-- Remover endpoints temporales de `/api/v1/chat/*` que no usen `project_id`
-- Actualizar CLI tools para aceptar `--project-path`
+- Remover endpoints temporales de `/api/v1/chat/*` que no usen `proyecto_id`
+- Actualizar CLI tools para aceptar `--proyecto-path`
 
 ### Sprint 6 (HU-6: Packaging)
 
 **Agregado:**
-- En primer inicio, crear "Default Project" (~/SoftArchitect-AI/)
+- En primer inicio, crear "Default Proyecto" (~/SoftArchitect-AI/)
 - Onboarding debe explicar concepto de Proyecto
 
 ### Sprint 7 (HU-7: CI/CD)
@@ -600,12 +600,12 @@ POST /api/v1/projects/{project_id}/document/validate
 
 ### Recomendación General
 
-**✅ PROCEDER CON OPCIÓN B (5 HUs) - Project-First Paradigm**
+**✅ PROCEDER CON OPCIÓN B (5 HUs) - Proyecto-First Paradigm**
 
 **Rationale:**
 1. **Alineación:** Es un cambio arquitectónico fundamental, no un refinamiento
 2. **Claridad:** Cada HU tiene responsabilidad clara
-3. **Testabilidad:** Mucho más fácil escribir tests para HUs separadas
+3. **Pruebaabilidad:** Mucho más fácil escribir pruebas para HUs separadas
 4. **Mantenibilidad:** Futuro developer entenderá por qué existe cada HU
 5. **Realismo:** Estimaciones más precisas
 
@@ -698,13 +698,13 @@ Ver propuestas arriba.
 
 | Elemento | Cambio | Impacto | Urgencia |
 |----------|--------|--------|----------|
-| **HU-3.1** | UI: Chat → ProjectShell (IDE-like) | ALTO | CRITICAL |
-| **HU-3.2** | NEW: FileSystemService backend | ALTO | CRITICAL |
+| **HU-3.1** | UI: Chat → ProyectoShell (IDE-like) | ALTO | CRITICAL |
+| **HU-3.2** | NEW: ArchivoSystemService backend | ALTO | CRITICAL |
 | **HU-3.3** | Chat mejorado con validación | ALTO | CRITICAL |
 | **HU-3.4** | NEW: Error handling resilient | MEDIO | HIGH |
 | **HU-3.5** | NEW: Streaming optimizado | MEDIO | HIGH |
-| **HU-4.1** | Agregar `project_id` parámetro | ALTO | CRITICAL |
-| **HU-4.4** | NEW: Document persistence backend | ALTO | HIGH |
+| **HU-4.1** | Agregar `proyecto_id` parámetro | ALTO | CRITICAL |
+| **HU-4.4** | NEW: Documento persistence backend | ALTO | HIGH |
 | **HU-6.2** | Onboarding debe mencionar Proyectos | BAJO | MEDIUM |
 | **Estimación Total S3** | 50 pts → 70 pts | ALTO | - |
 
@@ -712,7 +712,7 @@ Ver propuestas arriba.
 
 ## ✅ Decisiones Requeridas (Pre-Rama Nueva)
 
-**ANTES de crear la rama `feature/hu-3-project-first-refactor`, confirmamos:**
+**ANTES de crear la rama `feature/hu-3-proyecto-first-refactor`, confirmamos:**
 
 1. ✅ ¿Proceder con Opción B (5 HUs)?
 2. ✅ ¿Aceptar aumento de estimación (50→70 pts)?
@@ -730,5 +730,5 @@ Ver propuestas arriba.
 
 ---
 
-**Documento preparado para revisión y validación.**
+**Documentoo preparado para revisión y validación.**
 **Próximo paso:** Confirmar decisiones + crear rama de trabajo.

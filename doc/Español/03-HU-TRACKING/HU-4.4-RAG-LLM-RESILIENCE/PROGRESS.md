@@ -1,8 +1,8 @@
-# 📊 HU-4.4: RAG/LLM Resilience Extensions - PROGRESS TRACKING
+# 📊 HU-4.4: RAG/LLM Resiliencia Extensions - PROGRESS TRACKING
 
-> **User Story:** HU-4.4 - RAG/LLM Resilience Extensions (Completa HU-3.4)
+> **User Story:** HU-4.4 - RAG/LLM Resiliencia Extensions (Completa HU-3.4)
 > **Branch:** `feature/rag-llm-resilience`
-> **Status:** ✅ **COMPLETE** (19/19 validation gates passed)
+> **Estado:** ✅ **COMPLETE** (19/19 validation gates passed)
 > **Methodology:** TDD (RED → GREEN → REFACTOR)
 > **Estimation:** S (~4.5 horas) | **Actual:** 4.5h ✅
 
@@ -11,58 +11,58 @@
 ## 📋 Tabla de Contenidos
 
 1. [Progress Overview](#-progress-overview)
-2. [Phase 0: Setup & Contracts](#-phase-0-setup--contracts)
-3. [Phase 1: Backend Graceful Degradation (GAP 1)](#-phase-1-backend-graceful-degradation-gap-1)
-4. [Phase 2: Backend Retry LLM Calls (GAP 2)](#-phase-2-backend-retry-llm-calls-gap-2)
-5. [Phase 3: Frontend Error Messages (GAP 4)](#-phase-3-frontend-error-messages-gap-4)
-6. [Phase 4: Quality & Security Hardening](#-phase-4-quality--security-hardening)
-7. [Phase 5: Validation & PR](#-phase-5-validation--pr)
-8. [Phase 6: Backend Chat History Support](#-phase-6-backend-chat-history-support)
-9. [Phase 7: Configurable Chat Limits](#-phase-7-configurable-chat-limits)
+2. [Fase 0: Setup & Contracts](#-fase-0-setup--contracts)
+3. [Fase 1: Backend Graceful Degradation (GAP 1)](#-fase-1-backend-graceful-degradation-gap-1)
+4. [Fase 2: Backend Retry LLM Calls (GAP 2)](#-fase-2-backend-retry-llm-calls-gap-2)
+5. [Fase 3: Frontend Error Messages (GAP 4)](#-fase-3-frontend-error-messages-gap-4)
+6. [Fase 4: Quality & Security Hardening](#-fase-4-quality--security-hardening)
+7. [Fase 5: Validation & PR](#-fase-5-validation--pr)
+8. [Fase 6: Backend Chat History Support](#-fase-6-backend-chat-history-support)
+9. [Fase 7: Configurable Chat Limits](#-fase-7-configurable-chat-limits)
 10. [Summary Statistics](#-summary-statistics)
 
 ---
 
 ## 📊 Progress Overview
 
-| Phase | Description | Status | Progress | Tests | Duration |
+| Fase | Descripción | Estado | Progress | Pruebas | Duration |
 |-------|-------------|--------|----------|-------|----------|
-| **0** | Setup & Error Code Contracts | ✅ **COMPLETE** | 4/4 files | N/A | 0.5h ✅ |
-| **1** | Backend Graceful Degradation | ✅ **COMPLETE** | 7/7 tests | 7/7 ✅ | 1.5h ✅ |
-| **2** | Backend Retry LLM Calls | ✅ **COMPLETE** | 8/8 tests | 8/8 ✅ | 1h ✅ |
-| **3** | Frontend Error Messages | ✅ **COMPLETE** | 17/17 tests | 17/17 ✅ | 0.5h ✅ |
+| **0** | Setup & Error Code Contracts | ✅ **COMPLETE** | 4/4 archivos | N/A | 0.5h ✅ |
+| **1** | Backend Graceful Degradation | ✅ **COMPLETE** | 7/7 pruebas | 7/7 ✅ | 1.5h ✅ |
+| **2** | Backend Retry LLM Calls | ✅ **COMPLETE** | 8/8 pruebas | 8/8 ✅ | 1h ✅ |
+| **3** | Frontend Error Messages | ✅ **COMPLETE** | 17/17 pruebas | 17/17 ✅ | 0.5h ✅ |
 | **4** | Quality & Security Hardening | ✅ **COMPLETE** | 5/5 gates | 5/5 ✅ | 0.5h ✅ |
 | **5** | Validation & PR | ✅ **COMPLETE** | 19/19 gates | 19/19 ✅ | 0.5h ✅ |
-| **6** | Backend Chat History Support | ✅ **COMPLETE** | 21/21 tests | 21/21 ✅ | 2.5h ✅ |
-| **7** | Configurable Chat Limits | ✅ **COMPLETE** | 17/17 tests | 17/17 ✅ | 3h ✅ |
+| **6** | Backend Chat History Support | ✅ **COMPLETE** | 21/21 pruebas | 21/21 ✅ | 2.5h ✅ |
+| **7** | Configurable Chat Limits | ✅ **COMPLETE** | 17/17 pruebas | 17/17 ✅ | 3h ✅ |
 
-**Total Time:** 10h ✅ (Phase 0-5: 4.5h + Phase 6-7: 5.5h)
-**Total Tests:** 679 tests (256 Python + 423 Flutter) - **ALL PASSING** ✅
+**Total Time:** 10h ✅ (Fase 0-5: 4.5h + Fase 6-7: 5.5h)
+**Total Pruebas:** 679 pruebas (256 Python + 423 Flutter) - **ALL PASSING** ✅
 **Coverage:** Backend 96% (≥80%) ✅ | Frontend 86.5% (≥80%) ✅
 **Validation:** 19/19 gates passed ✅ **SAFE TO PUSH**
 
-**Latest Commits:**
-- Phase 6: `01eec76` - feat(backend): add chat history support for conversational context
-- Phase 7: `3786589` - feat(chat): make history limits configurable via environment variables
+**Laprueba Commits:**
+- Fase 6: `01eec76` - feat(backend): add chat history support for conversational context
+- Fase 7: `3786589` - feat(chat): make history limits configurable via environment variables
 
 ---
 
-## 🚀 Phase 0: Setup & Contracts
+## 🚀 Fase 0: Setup & Contracts
 
 **Objetivo:** Establecer contratos de error y estructura de trabajo antes de implementar.
 
-**Status:** 🟡 **IN PROGRESS** (2/4 archivos creados)
+**Estado:** 🟡 **IN PROGRESS** (2/4 archivos creados)
 
 ### Checklist
 
-#### 0.1 Branch & Documentation Setup ✅
+#### 0.1 Branch & Documentoation Setup ✅
 
-- [✅] Branch created: `feature/rag-llm-resilience`
-- [✅] Directory created: `doc/03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/`
-- [✅] README.md created (bilingual, 1000+ lines)
-- [✅] PROGRESS.md created (this file)
-- [ ] ARTIFACTS.md created
-- [ ] WORKFLOW_MASTER_DEFINITION.md created
+- [✅] Branch creard: `feature/rag-llm-resilience`
+- [✅] Directory creard: `doc/03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/`
+- [✅] README.md creard (bilingual, 1000+ lines)
+- [✅] PROGRESS.md creard (this archivo)
+- [ ] ARTIFACTS.md creard
+- [ ] WORKFLOW_MASTER_DEFINITION.md creard
 
 #### 0.2 Error Code Contracts 🔜
 
@@ -79,35 +79,35 @@
 - [ ] Verificar imports en `orchestrator.py`
 - [ ] Commit: `feat(hu-4.4): add missing error code contracts DB_ERR_001, RAG_ERR_001`
 
-#### 0.3 Dependencies Verification 🔜
+#### 0.3 Dependencies Verificación 🔜
 
 - [ ] Verify `httpx` in `requirements.txt` (backend retry)
 - [ ] Verify `asyncio` available (Python 3.12.3 stdlib)
 - [ ] Verify `app.core.retry.with_retry` decorator exists (HU-3.4)
-- [ ] Run `pytest tests/server/unit/core/test_retry.py` (debe pasar)
+- [ ] Ejecutar `pyprueba pruebas/server/unit/core/prueba_retry.py` (debe pasar)
 
 #### 0.4 Git Setup 🔜
 
-- [ ] Commit Phase 0: `git commit -m "docs(hu-4.4): initialize RAG/LLM resilience documentation"`
+- [ ] Commit Fase 0: `git commit -m "docs(hu-4.4): initialize RAG/LLM resilience documentoation"`
 - [ ] Push to remote: `git push origin feature/rag-llm-resilience`
 
 ---
 
-## 🔴 Phase 1: Backend Graceful Degradation (GAP 1)
+## 🔴 Fase 1: Backend Graceful Degradation (GAP 1)
 
 **Objetivo:** Implementar graceful degradation cuando ChromaDB falla o timeout.
 
-**Status:** 🔜 **PENDING**
+**Estado:** 🔜 **PENDING**
 
 **Estimated Time:** 1.5 horas
 
 **Priority:** 🔥 **CRÍTICO** (bloqueante producción)
 
-### 1.1 TDD RED: Escribir 7 Tests que Fallan 🔴
+### 1.1 TDD RED: Escribir 7 Pruebas que Fallan 🔴
 
-**Archivo nuevo:** `tests/server/unit/services/rag/test_orchestrator_degradation.py`
+**Archivo nuevo:** `pruebas/server/unit/services/rag/prueba_orchestrator_degradation.py`
 
-#### Tests a escribir:
+#### Pruebas a escribir:
 
 ```python
 # Test 1: Graceful degradation basic
@@ -168,7 +168,7 @@ async def test_orchestrator_stream_degrades_when_chromadb_fails():
     pass
 ```
 
-#### Ejecutar tests (deben fallar):
+#### Ejecutar pruebas (deben fallar):
 
 ```bash
 cd src/server
@@ -177,8 +177,8 @@ pytest ../../tests/server/unit/services/rag/test_orchestrator_degradation.py -v
 ```
 
 **Metrics:**
-- Tests written: 0/7
-- Tests passing: 0/7
+- Pruebas written: 0/7
+- Pruebas passing: 0/7
 - Coverage: 0%
 
 ---
@@ -271,7 +271,7 @@ from collections.abc import AsyncGenerator
 # ...
 ```
 
-#### Ejecutar tests (deben pasar):
+#### Ejecutar pruebas (deben pasar):
 
 ```bash
 pytest tests/server/unit/services/rag/test_orchestrator_degradation.py -v
@@ -279,9 +279,9 @@ pytest tests/server/unit/services/rag/test_orchestrator_degradation.py -v
 ```
 
 **Metrics:**
-- Tests written: 7/7
-- Tests passing: 7/7 ✅
-- Coverage: Calculated in refactor phase
+- Pruebas written: 7/7
+- Pruebas passing: 7/7 ✅
+- Coverage: Calculated in refactor fase
 
 ---
 
@@ -308,7 +308,7 @@ python -m pyright src/server/app/services/rag/orchestrator.py
 # Expected: "0 errors, 0 warnings"
 ```
 
-#### 1.3.4 Coverage Analysis
+#### 1.3.4 Coverage Análisis
 
 ```bash
 pytest tests/server/unit/services/rag/test_orchestrator_degradation.py \
@@ -338,21 +338,21 @@ Closes GAP 1 (Critical): System now works offline when ChromaDB fails"
 
 ---
 
-## 🟡 Phase 2: Backend Retry LLM Calls (GAP 2)
+## 🟡 Fase 2: Backend Retry LLM Calls (GAP 2)
 
 **Objetivo:** Aplicar decorador `@with_retry` a LLM calls para reintentos automáticos.
 
-**Status:** 🔜 **PENDING**
+**Estado:** 🔜 **PENDING**
 
 **Estimated Time:** 1 hora
 
 **Priority:** 🟡 **HIGH** (mejora UX significativa)
 
-### 2.1 TDD RED: Escribir 8 Tests que Fallan 🔴
+### 2.1 TDD RED: Escribir 8 Pruebas que Fallan 🔴
 
-**Archivo nuevo:** `tests/server/unit/infrastructure/llm/test_ollama_retry.py`
+**Archivo nuevo:** `pruebas/server/unit/infrastructure/llm/prueba_ollama_retry.py`
 
-#### Tests a escribir:
+#### Pruebas a escribir:
 
 ```python
 # Test 1: Retry succeeds on 3rd attempt
@@ -424,7 +424,7 @@ async def test_ollama_stream_generate_also_retries():
     pass
 ```
 
-#### Ejecutar tests (deben fallar):
+#### Ejecutar pruebas (deben fallar):
 
 ```bash
 pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py -v
@@ -432,8 +432,8 @@ pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py -v
 ```
 
 **Metrics:**
-- Tests written: 0/8
-- Tests passing: 0/8
+- Pruebas written: 0/8
+- Pruebas passing: 0/8
 - Coverage: 0%
 
 ---
@@ -497,7 +497,7 @@ async def stream_generate(...) -> AsyncGenerator[str, None]:
     ...
 ```
 
-#### Ejecutar tests (deben pasar):
+#### Ejecutar pruebas (deben pasar):
 
 ```bash
 pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py -v
@@ -505,9 +505,9 @@ pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py -v
 ```
 
 **Metrics:**
-- Tests written: 8/8
-- Tests passing: 8/8 ✅
-- Coverage: Calculated in refactor phase
+- Pruebas written: 8/8
+- Pruebas passing: 8/8 ✅
+- Coverage: Calculated in refactor fase
 
 ---
 
@@ -534,7 +534,7 @@ python -m pyright src/server/app/infrastructure/llm/ollama_client.py
 # Expected: "0 errors, 0 warnings"
 ```
 
-#### 2.3.4 Coverage Analysis
+#### 2.3.4 Coverage Análisis
 
 ```bash
 pytest tests/server/unit/infrastructure/llm/test_ollama_retry.py \
@@ -564,21 +564,21 @@ Closes GAP 2 (High): Transient network failures now auto-recover"
 
 ---
 
-## 🟢 Phase 3: Frontend Error Messages (GAP 4)
+## 🟢 Fase 3: Frontend Error Messages (GAP 4)
 
 **Objetivo:** Agregar mensajes ES para códigos DB_ERR_001, RAG_ERR_001.
 
-**Status:** 🔜 **PENDING**
+**Estado:** 🔜 **PENDING**
 
 **Estimated Time:** 0.5 horas
 
 **Priority:** 🟢 **LOW** (nice to have)
 
-### 3.1 TDD RED: Escribir 1 Test que Falla 🔴
+### 3.1 TDD RED: Escribir 1 Prueba que Falla 🔴
 
-**Archivo existente:** `tests/client/unit/core/error_handling/error_mapper_test.dart`
+**Archivo existente:** `pruebas/client/unit/core/error_handling/error_mapper_prueba.dart`
 
-#### Test a agregar:
+#### Prueba a agregar:
 
 ```dart
 // Test: Map DB_ERR_001 and RAG_ERR_001
@@ -608,7 +608,7 @@ void test_error_mapper_maps_chromadb_and_rag_errors() {
 }
 ```
 
-#### Ejecutar tests (deben fallar):
+#### Ejecutar pruebas (deben fallar):
 
 ```bash
 cd tests
@@ -617,8 +617,8 @@ flutter test client/unit/core/error_handling/error_mapper_test.dart
 ```
 
 **Metrics:**
-- Tests written: 0/1
-- Tests passing: 0/1
+- Pruebas written: 0/1
+- Pruebas passing: 0/1
 - Coverage: Existing
 
 ---
@@ -681,7 +681,7 @@ static bool isRetryable(String errorCode) => [
 ].contains(errorCode);
 ```
 
-#### Ejecutar tests (deben pasar):
+#### Ejecutar pruebas (deben pasar):
 
 ```bash
 flutter test client/unit/core/error_handling/error_mapper_test.dart
@@ -689,8 +689,8 @@ flutter test client/unit/core/error_handling/error_mapper_test.dart
 ```
 
 **Metrics:**
-- Tests written: 1/1
-- Tests passing: 1/1 ✅
+- Pruebas written: 1/1
+- Pruebas passing: 1/1 ✅
 - Coverage: ≥90% (existing coverage maintained)
 
 ---
@@ -728,11 +728,11 @@ Closes GAP 4 (Low): Error catalog complete"
 
 ---
 
-## 🔵 Phase 4: Quality & Security Hardening
+## 🔵 Fase 4: Quality & Security Hardening
 
 **Objetivo:** Validar cobertura, seguridad (OWASP), y calidad de código.
 
-**Status:** 🔜 **PENDING**
+**Estado:** 🔜 **PENDING**
 
 **Estimated Time:** 0.5 horas
 
@@ -799,7 +799,7 @@ Closes GAP 4 (Low): Error catalog complete"
 - [ ] **Rate limiting:** LLM calls tienen retry limit (3x) para evitar DoS
 - [ ] **Timeout enforcement:** 30s timeout evita resource exhaustion
 
-#### 4.4 Documentation Review
+#### 4.4 Documentoation Review
 
 - [ ] README.md completo y bilingüe
 - [ ] PROGRESS.md actualizado (este archivo)
@@ -808,11 +808,11 @@ Closes GAP 4 (Low): Error catalog complete"
 
 ---
 
-## 🚀 Phase 5: Validation & PR
+## 🚀 Fase 5: Validation & PR
 
-**Objetivo:** Ejecutar suite completa de tests y crear PR para merge.
+**Objetivo:** Ejecutar suite completa de pruebas y crear PR para merge.
 
-**Status:** 🔜 **PENDING**
+**Estado:** 🔜 **PENDING**
 
 **Estimated Time:** 0.5 horas
 
@@ -840,11 +840,11 @@ Ejecutar script maestro de validación:
 🎉 ALL 19/19 QUALITY GATES PASSED
 ```
 
-**If any gate fails:** Fix locally, re-run validation, do NOT push until all pass.
+**If any gate fails:** Fix locally, re-ejecutar validation, do NOT push until all pass.
 
 ---
 
-#### 5.2 Manual Testing (3 Scenarios)
+#### 5.2 Manual Pruebaing (3 Scenarios)
 
 **Scenario 1: ChromaDB Down (Graceful Degradation)**
 ```bash
@@ -863,9 +863,9 @@ curl -X POST http://localhost:8000/api/v1/chat/stream \
 # Expected: Log shows "⚠️ RAG degraded: continuing without context"
 ```
 
-- [ ] Test passed: Chat works offline
-- [ ] Test passed: Log shows WARNING (not ERROR)
-- [ ] Test passed: Response includes `template_used: "FALLBACK"`
+- [ ] Prueba passed: Chat works offline
+- [ ] Prueba passed: Log shows WARNING (not ERROR)
+- [ ] Prueba passed: Response includes `template_used: "FALLBACK"`
 
 ---
 
@@ -886,9 +886,9 @@ wait
 # Expected: Log shows "⚠️ Retry attempt X/3" if retries triggered
 ```
 
-- [ ] Test passed: Requests succeed with retries
-- [ ] Test passed: Logs show retry attempts (if triggered)
-- [ ] Test passed: Final success logged
+- [ ] Prueba passed: Requests succeed with retries
+- [ ] Prueba passed: Logs show retry attempts (if triggered)
+- [ ] Prueba passed: Final success logged
 
 ---
 
@@ -900,9 +900,9 @@ wait
 # Expected: Timeout after 30s, degradation triggered
 ```
 
-- [ ] Test passed: Timeout enforced (30s max wait)
-- [ ] Test passed: Degradation triggered after timeout
-- [ ] Test passed: User receives response (not indefinite wait)
+- [ ] Prueba passed: Timeout enforced (30s max wait)
+- [ ] Prueba passed: Degradation triggered after timeout
+- [ ] Prueba passed: User receives response (not indefinite wait)
 
 ---
 
@@ -940,7 +940,7 @@ wait
   git push origin feature/rag-llm-resilience
   ```
 
-- [ ] Create PR on GitHub:
+- [ ] Crear PR on GitHub:
   ```
   Title: feat: HU-4.4 - RAG/LLM Resilience Extensions
 
@@ -986,21 +986,21 @@ wait
   git checkout develop
   git pull origin develop
   ```
-- [ ] Delete feature branch:
+- [ ] Eliminar feature branch:
   ```bash
   git branch -d feature/rag-llm-resilience
   git push origin --delete feature/rag-llm-resilience
   ```
-- [ ] Update HU status in Linear/Jira: **COMPLETE**
+- [ ] Update HU estado in Linear/Jira: **COMPLETE**
 - [ ] Celebrate 🎉
 
 ---
 
-## 🧠 Phase 6: Backend Chat History Support
+## 🧠 Fase 6: Backend Chat History Support
 
 **Objetivo:** Implementar soporte de historial conversacional en backend para memoria a corto plazo del LLM.
 
-**Status:** ✅ **COMPLETE**
+**Estado:** ✅ **COMPLETE**
 
 **Estimated Time:** 2.5 horas | **Actual:** 2.5h ✅
 
@@ -1020,18 +1020,18 @@ wait
 - ✅ Límites hardcoded (20 mensajes, 5000 chars/mensaje)
 - ✅ Template builder formatea historial en prompts
 - ✅ Orchestrator pasa historial a template builder
-- ✅ 21 tests creados (9 unit + 7 template + 5 integration)
+- ✅ 21 pruebas creados (9 unit + 7 template + 5 integration)
 
-### 6.2 TDD Implementation
+### 6.2 TDD Implementación
 
-#### 6.2.1 RED Phase - Tests Escritos
+#### 6.2.1 RED Fase - Pruebas Escritos
 
-**Test Files Creados:**
-1. `tests/server/unit/domain/schemas/test_chat_history.py` (9 tests)
-2. `tests/server/unit/api/test_template_builder_history.py` (7 tests)
-3. `tests/server/integration/api/v1/test_chat_history_integration.py` (5 tests)
+**Prueba Archivos Creados:**
+1. `pruebas/server/unit/domain/schemas/prueba_chat_history.py` (9 pruebas)
+2. `pruebas/server/unit/api/prueba_template_builder_history.py` (7 pruebas)
+3. `pruebas/server/integration/api/v1/prueba_chat_history_integration.py` (5 pruebas)
 
-**Test Coverage:**
+**Prueba Coverage:**
 ```python
 # Test Suite 1: Schema Validation (9 tests)
 - test_chat_request_accepts_valid_history ✅
@@ -1061,7 +1061,7 @@ wait
 - test_chat_stream_endpoint_sanitizes_history_xss ✅
 ```
 
-**Tests Ejecutados:**
+**Pruebas Ejecutados:**
 ```bash
 pytest tests/server/unit/domain/schemas/test_chat_history.py -v
 # Result: 9/9 passing ✅
@@ -1073,9 +1073,9 @@ pytest tests/server/integration/api/v1/test_chat_history_integration.py -v
 # Result: 5/5 passing ✅
 ```
 
-#### 6.2.2 GREEN Phase - Implementación
+#### 6.2.2 GREEN Fase - Implementación
 
-**Files Modified:**
+**Archivos Modified:**
 
 ##### 1. Schema Definition (`chat.py`)
 
@@ -1204,7 +1204,7 @@ class MVPTemplateBuilder:
 
 **LOC:** +15 lines modified
 
-##### 3. Orchestrator Integration (`orchestrator.py`)
+##### 3. Orchestrator Integración (`orchestrator.py`)
 
 **Archivo:** `src/server/app/services/rag/orchestrator.py`
 
@@ -1244,7 +1244,7 @@ async def process_message_stream(...) -> AsyncGenerator[dict[str, Any], None]:
 
 **LOC:** +2 lines modified (2 calls updated)
 
-#### 6.2.3 REFACTOR Phase - Code Quality
+#### 6.2.3 REFACTOR Fase - Code Quality
 
 **Black Formatting:**
 ```bash
@@ -1270,7 +1270,7 @@ python -m pyright src/server/app/services/rag/orchestrator.py
 # Result: 0 errors, 0 warnings
 ```
 
-### 6.3 Test Results
+### 6.3 Prueba Resultados
 
 **Coverage Report:**
 ```bash
@@ -1283,22 +1283,22 @@ pytest tests/server/ --cov=app.domain.schemas --cov=app.api --cov=app.services.r
 # app/services/rag/orchestrator.py  88% coverage (history integration: 100%)
 ```
 
-**Test Summary:**
-- Unit Tests: 9/9 passing ✅
-- Template Tests: 7/7 passing ✅
-- Integration Tests: 5/5 passing ✅
-- **Total:** 21/21 tests passing ✅
+**Prueba Summary:**
+- Unit Pruebas: 9/9 passing ✅
+- Template Pruebas: 7/7 passing ✅
+- Integración Pruebas: 5/5 passing ✅
+- **Total:** 21/21 pruebas passing ✅
 
 ### 6.4 Limitations & Known Issues
 
-**Hardcoded Limits (Phase 6):**
-- ❌ Max 20 messages (too small for large projects)
+**Hardcoded Limits (Fase 6):**
+- ❌ Max 20 messages (too small for large proyectos)
 - ❌ Max 5000 chars/message (model supports 32K)
 - ❌ **Frontend NOT sending history** (backend ready but unused)
 
-**Resolución:** Estas limitaciones se resuelven en **Phase 7**.
+**Resolución:** Estas limitaciones se resuelven en **Fase 7**.
 
-### 6.5 Commit & Documentation
+### 6.5 Commit & Documentoation
 
 **Commit:**
 ```bash
@@ -1330,17 +1330,17 @@ Refs: HU-4.4 Phase 6
 
 **Metrics:**
 - Time: 2.5h (on target)
-- Tests: 21 new tests (100% passing)
+- Pruebas: 21 new pruebas (100% passing)
 - Coverage: Backend 92% (target: ≥80%)
-- LOC: +87 production, +580 tests
+- LOC: +87 production, +580 pruebas
 
 ---
 
-## ⚙️ Phase 7: Configurable Chat Limits
+## ⚙️ Fase 7: Configurable Chat Limits
 
 **Objetivo:** Convertir límites hardcoded en configurables vía environment variables y integrar frontend para enviar historial.
 
-**Status:** ✅ **COMPLETE**
+**Estado:** ✅ **COMPLETE**
 
 **Estimated Time:** 3 horas | **Actual:** 3h ✅
 
@@ -1363,14 +1363,14 @@ Refs: HU-4.4 Phase 6
 - ✅ Validación dinámica en backend (lee de `settings`)
 - ✅ Frontend carga y envía últimos 100 mensajes
 - ✅ Configuración via `.env` / Docker Compose
-- ✅ Tests actualizados (17/17 passing)
+- ✅ Pruebas actualizados (17/17 passing)
 - ✅ Graceful degradation frontend (continúa si SQLite falla)
 
-### 7.2 TDD Implementation
+### 7.2 TDD Implementación
 
-#### 7.2.1 Backend Configuration
+#### 7.2.1 Backend Configuración
 
-**File 1: Settings Class (`config.py`)**
+**Archivo 1: Settings Class (`config.py`)**
 
 **Archivo:** `src/server/app/core/config.py`
 
@@ -1400,12 +1400,12 @@ class Settings(BaseSettings):
 ```
 
 **Defaults:**
-- `CHAT_MAX_HISTORY_MESSAGES = 100` (5x más que Phase 6)
-- `CHAT_MAX_MESSAGE_LENGTH = 20000` (4x más que Phase 6)
+- `CHAT_MAX_HISTORY_MESSAGES = 100` (5x más que Fase 6)
+- `CHAT_MAX_MESSAGE_LENGTH = 20000` (4x más que Fase 6)
 
 **LOC:** +10 lines
 
-**File 2: Dynamic Validation (`chat.py`)**
+**Archivo 2: Dynamic Validation (`chat.py`)**
 
 **Archivo:** `src/server/app/domain/schemas/chat.py`
 
@@ -1464,9 +1464,9 @@ class ChatRequest(BaseModel):
 
 **LOC:** +20 lines modified
 
-#### 7.2.2 Frontend Integration
+#### 7.2.2 Frontend Integración
 
-**File 3: History Loading (`chat_repository_impl.dart`)**
+**Archivo 3: History Loading (`chat_repository_impl.dart`)**
 
 **Archivo:** `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart`
 
@@ -1530,9 +1530,9 @@ Stream<ChatStreamEvent> sendMessageStream(
 
 **LOC:** +40 lines modified
 
-#### 7.2.3 Configuration Files
+#### 7.2.3 Configuración Archivos
 
-**File 4: Environment Variables (`.env.example`)**
+**Archivo 4: Environment Variables (`.env.example`)**
 
 **Archivo:** `src/server/.env.example`
 
@@ -1555,7 +1555,7 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **LOC:** +12 lines
 
-**File 5: Docker Compose (`docker-compose.yml`)**
+**Archivo 5: Docker Compose (`docker-compose.yml`)**
 
 **Archivo:** `infrastructure/docker-compose.yml`
 
@@ -1574,11 +1574,11 @@ services:
 
 **LOC:** +4 lines
 
-#### 7.2.4 Tests Updated
+#### 7.2.4 Pruebas Updated
 
-**File 6: Unit Tests (`test_chat_history.py`)**
+**Archivo 6: Unit Pruebas (`prueba_chat_history.py`)**
 
-**Archivo:** `tests/server/unit/domain/schemas/test_chat_history.py`
+**Archivo:** `pruebas/server/unit/domain/schemas/prueba_chat_history.py`
 
 **Cambios:**
 ```python
@@ -1612,11 +1612,11 @@ def test_chat_request_rejects_oversized_message_in_history():
         ChatRequest(**request_data)
 ```
 
-**LOC:** +10 lines modified (2 tests updated)
+**LOC:** +10 lines modified (2 pruebas updated)
 
-**File 7: Integration Tests (`test_chat_history_integration.py`)**
+**Archivo 7: Integración Pruebas (`prueba_chat_history_integration.py`)**
 
-**Archivo:** `tests/server/integration/api/v1/test_chat_history_integration.py`
+**Archivo:** `pruebas/server/integration/api/v1/prueba_chat_history_integration.py`
 
 **Cambios:**
 ```python
@@ -1637,9 +1637,9 @@ async def test_chat_stream_endpoint_rejects_oversized_history():
     assert "exceeds maximum length (100 messages)" in response.json()["detail"]
 ```
 
-**LOC:** +5 lines modified (1 test updated)
+**LOC:** +5 lines modified (1 prueba updated)
 
-**Test Results:**
+**Prueba Resultados:**
 ```bash
 # Backend tests
 pytest tests/server/unit/domain/schemas/test_chat_history.py -v
@@ -1682,7 +1682,7 @@ dart analyze lib/features/chat/data/repositories/chat_repository_impl.dart --fat
 # Result: No issues found! ✅
 ```
 
-### 7.4 Test Results
+### 7.4 Prueba Resultados
 
 **Coverage Report:**
 ```bash
@@ -1694,11 +1694,11 @@ pytest tests/server/ --cov=app.core.config --cov=app.domain.schemas \
 # app/domain/schemas/chat.py  96% coverage (dynamic validation: 100%)
 ```
 
-**Test Summary:**
-- Unit Tests: 9/9 passing ✅ (updated with new limits)
-- Integration Tests: 4/4 passing ✅ (updated with new limits)
+**Prueba Summary:**
+- Unit Pruebas: 9/9 passing ✅ (updated with new limits)
+- Integración Pruebas: 4/4 passing ✅ (updated with new limits)
 - Frontend: Dart analyze clean ✅
-- **Total:** 17/17 tests passing ✅
+- **Total:** 17/17 pruebas passing ✅
 
 ### 7.5 Impact & Benefits
 
@@ -1714,7 +1714,7 @@ pytest tests/server/ --cov=app.core.config --cov=app.domain.schemas \
 - ✅ Frontend integrado completamente
 - ✅ Mensajes de error informativos
 
-### 7.6 Commit & Documentation
+### 7.6 Commit & Documentoation
 
 **Commit:**
 ```bash
@@ -1764,85 +1764,85 @@ Refs: HU-4.4 Phase 7
 
 **Metrics:**
 - Time: 3h (on target)
-- Tests: 17 tests updated (100% passing)
+- Pruebas: 17 pruebas updated (100% passing)
 - Coverage: Backend 96%, Frontend 100% (target: ≥80%)
-- LOC: +91 production, +15 tests modified
+- LOC: +91 production, +15 pruebas modified
 
 ---
 
 ## 📈 Summary Statistics
 
-### Time Breakdown (Actual vs Estimated)
+### Time Desglose (Actual vs Estimated)
 
-| Phase | Estimated | Actual | Delta |
+| Fase | Estimated | Actual | Delta |
 |-------|-----------|--------|-------|
-| Phase 0: Setup | 0.5h | TBD | - |
-| Phase 1: Degradation | 1.5h | TBD | - |
-| Phase 2: Retry LLM | 1h | TBD | - |
-| Phase 3: Frontend | 0.5h | TBD | - |
-| Phase 4: Quality | 0.5h | TBD | - |
-| Phase 5: Validation | 0.5h | TBD | - |
+| Fase 0: Setup | 0.5h | TBD | - |
+| Fase 1: Degradation | 1.5h | TBD | - |
+| Fase 2: Retry LLM | 1h | TBD | - |
+| Fase 3: Frontend | 0.5h | TBD | - |
+| Fase 4: Quality | 0.5h | TBD | - |
+| Fase 5: Validation | 0.5h | TBD | - |
 | **Total** | **4.5h** | **TBD** | **-** |
 
-### Test Coverage Summary
+### Prueba Coverage Summary
 
-| Module | Tests | Passing | Coverage |
+| Module | Pruebas | Passing | Coverage |
 |--------|-------|---------|----------|
 | Orchestrator Degradation | 7 | 0/7 | TBD |
 | Ollama Retry | 8 | 0/8 | TBD |
 | Error Mapper | 1 | 0/1 | TBD |
 | **Total** | **16** | **0/16** | **TBD** |
 
-**Target:** 16/16 tests passing, Backend ≥90%, Frontend ≥85%
+**Target:** 16/16 pruebas passing, Backend ≥90%, Frontend ≥85%
 
 ### Code Changes Summary
 
 | Metric | Value |
 |--------|-------|
-| Files Modified | 4 |
+| Archivos Modified | 4 |
 | Lines Added | ~150 |
 | Lines Removed | ~20 |
 | Net Lines | ~130 |
-| Tests Added | 16 |
+| Pruebas Added | 16 |
 | Coverage Increase | TBD |
 
-### Quality Gates Status
+### Quality Gates Estado
 
-| Gate | Status |
+| Gate | Estado |
 |------|--------|
-| Black Formatting | 🔜 Pending |
-| Ruff Linting | 🔜 Pending |
-| Pyright Type Check | 🔜 Pending |
-| Bandit Security | 🔜 Pending |
-| Unit Tests | 🔜 Pending |
-| Coverage Backend | 🔜 Pending |
-| Coverage Frontend | 🔜 Pending |
-| Manual Testing | 🔜 Pending |
+| Black Formatting | 🔜 Pendiente |
+| Ruff Linting | 🔜 Pendiente |
+| Pyright Type Check | 🔜 Pendiente |
+| Bandit Security | 🔜 Pendiente |
+| Unit Pruebas | 🔜 Pendiente |
+| Coverage Backend | 🔜 Pendiente |
+| Coverage Frontend | 🔜 Pendiente |
+| Manual Pruebaing | 🔜 Pendiente |
 
 **Target:** 8/8 gates passing
 
 ---
 
-## 🏁 Acceptance Criteria Status
+## 🏁 Acceptance Criteria Estado
 
 | # | Criterio | Estado |
 |---|----------|--------|
-| 1 | Si ChromaDB falla, chat continúa sin contexto RAG | 🔜 Pending |
-| 2 | LLM calls se reintentan 3x antes de fallar | 🔜 Pending |
-| 3 | RAG search tiene timeout de 30s | 🔜 Pending |
-| 4 | Mensajes de error traducidos para DB_ERR_001, RAG_ERR_001 | 🔜 Pending |
-| 5 | Log warning (no error) cuando RAG se degrada | 🔜 Pending |
-| 6 | Cobertura ≥90% en orchestrator degradation | 🔜 Pending |
-| 7 | Cobertura ≥95% en retry logic LLM | 🔜 Pending |
-| 8 | 0 errores Pyright en código modificado | 🔜 Pending |
-| 9 | Black + Ruff passing | 🔜 Pending |
-| 10 | 16/16 tests passing | 🔜 Pending |
-| 11 | No exponer stack traces en logs ante degradación | 🔜 Pending |
-| 12 | No exponer datos de usuario en error logs | 🔜 Pending |
+| 1 | Si ChromaDB falla, chat continúa sin contexto RAG | 🔜 Pendiente |
+| 2 | LLM calls se reintentan 3x antes de fallar | 🔜 Pendiente |
+| 3 | RAG search tiene timeout de 30s | 🔜 Pendiente |
+| 4 | Mensajes de error traducidos para DB_ERR_001, RAG_ERR_001 | 🔜 Pendiente |
+| 5 | Log warning (no error) cuando RAG se degrada | 🔜 Pendiente |
+| 6 | Cobertura ≥90% en orchestrator degradation | 🔜 Pendiente |
+| 7 | Cobertura ≥95% en retry logic LLM | 🔜 Pendiente |
+| 8 | 0 errores Pyright en código modificado | 🔜 Pendiente |
+| 9 | Black + Ruff passing | 🔜 Pendiente |
+| 10 | 16/16 pruebas passing | 🔜 Pendiente |
+| 11 | No exponer stack traces en logs ante degradación | 🔜 Pendiente |
+| 12 | No exponer datos de usuario en error logs | 🔜 Pendiente |
 
 **Progress:** 0/12 criteria met (0%)
 
 ---
 
-**Last Updated:** 2026-02-15 (Phase 0 - Initial Setup)
-**Next Phase:** Phase 1 - Backend Graceful Degradation (TDD RED)
+**Last Updated:** 2026-02-15 (Fase 0 - Initial Setup)
+**Siguiente Fase:** Fase 1 - Backend Graceful Degradation (TDD RED)

@@ -1,13 +1,13 @@
 # API Contract: POST /api/v1/chat/stream
 
-> **Version:** 1.0.0
-> **Status:** ✅ Phase 2 Complete
-> **Created:** 2026-02-15
+> **Versión:** 1.0.0
+> **Estado:** ✅ Fase 2 Complete
+> **Creard:** 2026-02-15
 > **Author:** ArchitectZero
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 - [Overview](#overview)
 - [Endpoint Specification](#endpoint-specification)
@@ -18,7 +18,7 @@
 - [Performance Metrics](#performance-metrics)
 - [Security Considerations](#security-considerations)
 - [Example Usage](#example-usage)
-- [Integration Notes](#integration-notes)
+- [Integración Notes](#integration-notes)
 
 ---
 
@@ -35,7 +35,7 @@
 
 **Design Philosophy:**
 - **Real-Time UX:** Progressive rendering eliminates perceived waiting time
-- **Error Resilience:** Errors emitted as SSE events (HTTP 200 always returned)
+- **Error Resiliencia:** Errors emitted as SSE events (HTTP 200 always returned)
 - **Security Hardened:** API key authentication, same sanitization as `/chat/message`
 - **Protocol Compliance:** Follows SSE W3C standard for maximum client compatibility
 
@@ -82,11 +82,11 @@ X-Accel-Buffering: no
 
 ### Fields
 
-| Field | Type | Required | Constraints | Description |
+| Field | Type | Required | Constraints | Descripción |
 |-------|------|----------|-------------|-------------|
 | `conversation_id` | UUID | ✅ Yes | Valid UUIDv4 | Unique identifier for conversation thread |
 | `message` | string | ✅ Yes | 1-2000 chars | User message (sanitized before processing) |
-| `project_id` | UUID | ✅ Yes | Valid UUIDv4 | Reference to project context |
+| `proyecto_id` | UUID | ✅ Yes | Valid UUIDv4 | Reference to proyecto context |
 
 ### Authentication
 
@@ -207,7 +207,7 @@ data: {"error": "AI service connection failed", "code": "LLM_CONNECTION_ERROR", 
 
 **Error Codes:**
 
-| Code | Description | Retry? |
+| Code | Descripción | Retry? |
 |------|-------------|--------|
 | `LLM_CONNECTION_ERROR` | Cannot connect to Ollama/Groq | ✅ Yes |
 | `LLM_STREAM_ERROR` | Stream interrupted mid-response | ✅ Yes |
@@ -278,7 +278,7 @@ eventSource.addEventListener('error', (e) => {
 ### Optimization Strategies
 
 1. **Async RAG Pipeline:** Vector search parallelized with LLM context building
-2. **Streaming Buffering:** Tokens flushed immediately (no chunking delay)
+2. **Streaming Buffering:** Tokens flushed inmediataly (no chunking delay)
 3. **Connection Pooling:** httpx AsyncClient reused across requests
 4. **Header Optimization:** `X-Accel-Buffering: no` disables reverse proxy buffering
 
@@ -415,9 +415,9 @@ eventSource.addEventListener('error', (e) => {
 
 ---
 
-## Integration Notes
+## Integración Notes
 
-### Frontend Integration (Flutter)
+### Frontend Integración (Flutter)
 
 Use `package:flutter_client_sse` or `package:http` with streaming:
 
@@ -451,9 +451,9 @@ Stream<String> streamChat(String message) async* {
 }
 ```
 
-### Backend Testing
+### Backend Pruebaing
 
-Use `httpx.ASGITransport` for async FastAPI testing:
+Use `httpx.ASGITransport` for async FastAPI pruebaing:
 
 ```python
 import pytest
@@ -486,11 +486,11 @@ async def test_sse_stream():
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0.0 | 2026-02-15 | Initial release (Phase 2 complete) |
+| 1.0.0 | 2026-02-15 | Initial release (Fase 2 complete) |
 
 ---
 
-**Related Documents:**
+**Related Documentos:**
 - [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md) - System architecture with SSE flow
-- [COVERAGE_REPORT.md](./COVERAGE_REPORT.md) - Test coverage metrics
-- [PROGRESS.md](./PROGRESS.md) - HU-4.3 implementation timeline
+- [COVERAGE_REPORT.md](./COVERAGE_REPORT.md) - Prueba coverage metrics
+- [PROGRESS.md](./PROGRESS.md) - HU-4.3 implementación timeline

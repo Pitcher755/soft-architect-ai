@@ -5,7 +5,7 @@
 
 ---
 
-## 🔍 PASO 1: Verificación de Compilación
+## 🔍 PASO 1: Verification de Compilación
 
 ```
 COMANDO: cd src/client && flutter clean && flutter pub get
@@ -92,9 +92,9 @@ Botón "Ver todos":
 
 ---
 
-## 📋 PASO 4: Test de Proyectos Reales
+## 📋 PASO 4: Test de Projects Reales
 
-### 4A: Crear Carpeta de Prueba
+### 4A: Create Folder de Test
 
 ```
 TERMINAL:
@@ -118,7 +118,7 @@ VERIFICAR:
 
 **✅ Status:** _______
 
-### 4B: Crear Más Proyectos (>8)
+### 4B: Create Más Projects (>8)
 
 ```
 TERMINAL:
@@ -198,7 +198,7 @@ $ ls -la ~/projects/  # o donde lo creaste
 
 ## 🔀 PASO 6: Test de Hybrid System
 
-### 6A: Navegar a Proyecto Real
+### 6A: Navegar a Project Real
 
 ```
 EN GRID:
@@ -269,7 +269,7 @@ Expandir Lista:
 
 ## 🛡️ PASO 8: Test de Error Handling
 
-### 8A: Simular Carpeta sin Permisos
+### 8A: Simular Folder sin Permisos
 
 ```
 TERMINAL:
@@ -288,7 +288,7 @@ EN APP:
 
 **✅ Status:** _______
 
-### 8B: Carpeta vacía
+### 8B: Folder vacía
 
 ```
 TERMINAL:

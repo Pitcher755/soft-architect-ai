@@ -4,7 +4,7 @@
 
 ## ❌ ANTES (ROTO)
 
-### Problema Visual: Botón "Ver todos" DESAPARECE
+### Problema Visual: Button "Ver todos" DESAPARECE
 
 ```
 ╔════════════════════════════════════════════════════╗
@@ -49,9 +49,9 @@ final displayedProjects = allProjects.take(8).toList();
 
 | Síntoma | Causa |
 |---------|-------|
-| Botón "Ver todos" no visible | `allProjects.length` nunca > 8 |
+| Button "Ver todos" no visible | `allProjects.length` nunca > 8 |
 | Solo muestra Guía | `getMockProjectsData()` sin cargar reales |
-| Proyectos creados desaparecen | No se recargan del filesystem |
+| Projects creados desaparecen | No se recargan del filesystem |
 | Spinner no aparece | No hay FutureBuilder manejo async |
 | ErrorState nunca se ve | No hay error handling |
 
@@ -59,7 +59,7 @@ final displayedProjects = allProjects.take(8).toList();
 
 ## ✅ DESPUÉS (FUNCIONAL)
 
-### Resultado Visual: Botón Y Proyectos APARECEN
+### Result Visual: Button Y Projects APARECEN
 
 ```
 ╔════════════════════════════════════════════════════╗
@@ -149,7 +149,7 @@ Widget build(BuildContext context) {
 
 ## 📊 Comparación Detallada
 
-### Estado Inicial: Componente Monta
+### Status Inicial: Componente Monta
 
 | Aspecto | ❌ Antes | ✅ Ahora |
 |---------|----------|---------|
@@ -163,7 +163,7 @@ Widget build(BuildContext context) {
 | Aspecto | ❌ Antes | ✅ Ahora |
 |---------|----------|---------|
 | UI | Scaffold vacío o error | Loading spinner |
-| Estado visible | Posible crash | CircularProgressIndicator |
+| Status visible | Posible crash | CircularProgressIndicator |
 | User feedback | Congelado | "Cargando..." |
 
 ### Después Carga: Datos Disponibles
@@ -171,7 +171,7 @@ Widget build(BuildContext context) {
 | Aspecto | ❌ Antes | ✅ Ahora |
 |-----------|----------|---------|
 | Grid | Solo Guía | 8 primeros (real + mock) |
-| Botón | Oculto (length ≤ 8) | Visible (length > 8) |
+| Button | Oculto (length ≤ 8) | Visible (length > 8) |
 | Lista expand | N/A | Todos ordenados A-Z |
 | Errores | Crash silencioso | Error message visible |
 
@@ -233,16 +233,16 @@ User puede expandir → ProjectListView ✅
 
 ---
 
-## 🎯 Resultados Finales
+## 🎯 Results Finales
 
 ### Métricas de Corrección
 
 | Métrica | Antes | Después |
 |---------|-------|---------|
 | Errores compilación | 7+ | 0 ✅ |
-| Proyectos mostrados | 1 (mock) | N (real + mock) ✅ |
-| Botón "Ver todos" | Oculto | Visible (>8) ✅ |
-| Proyectos persistentes | No | Sí ✅ |
+| Projects mostrados | 1 (mock) | N (real + mock) ✅ |
+| Button "Ver todos" | Oculto | Visible (>8) ✅ |
+| Projects persistentes | No | Sí ✅ |
 | Error handling | Ninguno | FutureBuilder + try/catch ✅ |
 | Loading state | Ninguno | Spinner visible ✅ |
 | Escalabilidad | Pobre | Excelente ✅ |
@@ -251,12 +251,12 @@ User puede expandir → ProjectListView ✅
 
 | Funcionalidad | Antes | Después |
 |---------------|-------|---------|
-| Ver proyectos reales | ❌ | ✅ |
-| Ver proyecto guía | ✅ (solo) | ✅ (junto otros) |
-| Crear nuevo proyecto | ❌ (no aparecía) | ✅ (aparece inmediato) |
-| Expandir lista | ❌ (botón oculto) | ✅ (botón visible) |
-| Ordenar proyectos | ❌ | ✅ (A-Z) |
-| Navegar a proyecto | ❌ (no había) | ✅ |
+| Ver projects reales | ❌ | ✅ |
+| Ver project guía | ✅ (solo) | ✅ (junto otros) |
+| Create nuevo project | ❌ (no aparecía) | ✅ (aparece inmediato) |
+| Expandir lista | ❌ (button oculto) | ✅ (button visible) |
+| Ordenar projects | ❌ | ✅ (A-Z) |
+| Navegar a project | ❌ (no había) | ✅ |
 | Persistencia | ❌ | ✅ (filesystem) |
 
 ---
@@ -298,12 +298,12 @@ User puede expandir → ProjectListView ✅
 
 ## ✅ Conclusión
 
-| Aspecto | Resultado |
+| Aspecto | Result |
 |---------|-----------|
 | **Compilación** | ✅ 0 errores |
-| **Funcionalidad** | ✅ Proyectos reales + mock |
-| **UX** | ✅ Botón y lista expansión |
-| **Persistencia** | ✅ Proyectos se guardan |
-| **Escalabilidad** | ✅ N proyectos soportados |
+| **Funcionalidad** | ✅ Projects reales + mock |
+| **UX** | ✅ Button y lista expansión |
+| **Persistencia** | ✅ Projects se guardan |
+| **Escalabilidad** | ✅ N projects soportados |
 | **Error Handling** | ✅ Manejo robusto |
 | **Listo para Prod** | ✅ SÍ |

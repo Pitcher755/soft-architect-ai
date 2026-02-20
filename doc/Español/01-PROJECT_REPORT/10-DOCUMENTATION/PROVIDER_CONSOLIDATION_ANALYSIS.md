@@ -1,11 +1,11 @@
-# 🔍 ANÁLISIS: projects_provider.dart vs project_providers.dart
+# 🔍 ANÁLISIS: proyectos_provider.dart vs proyecto_providers.dart
 
 **Fecha:** 9 de febrero de 2026
 **Análisis:** Consolidación de 2 archivos providers similares
 
 ---
 
-## 🐛 ERRORES ENCONTRADOS EN projects_provider.dart
+## 🐛 ERRORES ENCONTRADOS EN proyectos_provider.dart
 
 ### Error 1: `The method 'map' isn't defined for the type 'Future'`
 **Ubicación:** Línea 10
@@ -15,7 +15,7 @@ final mockData = getMockProjectsData();
 final mockProjects = mockData.map((m) => Project(...)).toList();
 ```
 
-**Problema:** `getMockProjectsData()` ahora retorna `Future<List<Map>>` (es async)
+**Problema:** `getMockProyectosData()` ahora retorna `Future<List<Map>>` (es async)
 pero el código trata `mockData` como `List<Map>` (síncrono).
 
 **Causa raíz:** Inconsistencia en tipos de retorno.
@@ -34,7 +34,7 @@ all.sort((a, b) { ... });
 
 ## 📊 COMPARACIÓN DE ARCHIVOS
 
-### 📄 projects_provider.dart
+### 📄 proyectos_provider.dart
 ```dart
 Responsabilidades:
 ├─ buildHybridProjectsList()      // Helper para combinar real + mock
@@ -50,7 +50,7 @@ Tipos de providers:
 └─ FutureProvider (2 providers)
 ```
 
-### 📄 project_providers.dart
+### 📄 proyecto_providers.dart
 ```dart
 Responsabilidades:
 ├─ projectRepositoryProvider      // Provider para repository
@@ -73,28 +73,28 @@ Tipos de providers:
 ### ¿Se pueden unificar? ✅ **SÍ - Recomendado**
 
 **Razones:**
-1. **Mismo contexto:** Ambos manejan "projects"
+1. **Mismo contexto:** Ambos manejan "proyectos"
 2. **Misma carpeta:** `presentation/providers/`
-3. **Relacionados:** `projects_provider.dart` depende de `project_providers.dart`
-4. **Nombres confusos:** `projects` vs `project` casi idénticos
+3. **Relacionados:** `proyectos_provider.dart` depende de `proyecto_providers.dart`
+4. **Nombres confusos:** `proyectos` vs `proyecto` casi idénticos
 5. **Pocas líneas totales:** 60 líneas combinadas (perfectamente manejable)
 
 ### ¿Qué consolidar?
 
 | Item | Acción |
 |------|--------|
-| `projectRepositoryProvider` | Mantener (core) |
-| `projectShellProvider` | Mantener (core) |
-| `buildHybridProjectsList()` | Mover a nuevo archivo |
-| `allProjectsProvider` | Mover a nuevo archivo |
-| `hybridProjectsProvider` | Mover a nuevo archivo |
+| `proyectoRepositoryProvider` | Mantener (core) |
+| `proyectoShellProvider` | Mantener (core) |
+| `buildHybridProyectosList()` | Mover a nuevo archivo |
+| `allProyectosProvider` | Mover a nuevo archivo |
+| `hybridProyectosProvider` | Mover a nuevo archivo |
 
 ---
 
 ## ✅ SOLUCIÓN PROPUESTA
 
 ### Opción A: "Unificar TODO en un archivo" ⭐ RECOMENDADO
-**Archivo único:** `project_providers.dart` (renombrado)
+**Archivo único:** `proyecto_providers.dart` (renombrado)
 **Contenido:**
 ```
 1. projectRepositoryProvider      [core - repository access]
@@ -117,8 +117,8 @@ Tipos de providers:
 
 ### Opción B: "Separar por propósito" (Alternativa)
 **Archivos:**
-1. `project_repository_providers.dart` - Para repository/shell
-2. `project_list_providers.dart` - Para list/hybrid
+1. `proyecto_repository_providers.dart` - Para repository/shell
+2. `proyecto_list_providers.dart` - Para list/hybrid
 
 **Ventajas:**
 - ✅ Separación clara de propósitos
@@ -131,7 +131,7 @@ Tipos de providers:
 
 ## 🔧 IMPLEMENTACIÓN DE SOLUCIÓN (Opción A)
 
-### Paso 1: Consolidar en `project_providers.dart`
+### Paso 1: Consolidar en `proyecto_providers.dart`
 
 **Archivo único con TODO:**
 
@@ -209,13 +209,13 @@ final hybridProjectsProvider = FutureProvider<List<Project>>((ref) async {
 });
 ```
 
-### Paso 2: Eliminar `projects_provider.dart`
+### Paso 2: Eliminar `proyectos_provider.dart`
 
 **Acción:** Borrar el archivo antiguo (después de migrar imports)
 
 ### Paso 3: Actualizar imports
 
-**Archivos que importan de `projects_provider.dart`:**
+**Archivos que importan de `proyectos_provider.dart`:**
 ```bash
 grep -r "from.*projects_provider" src/client/lib/
 ```
@@ -231,11 +231,11 @@ import '../providers/project_providers.dart';
 
 ---
 
-## 🔧 CORREGIR ERROR: getMockProjectsData()
+## 🔧 CORREGIR ERROR: getMockProyectosData()
 
-**Problema:** `getMockProjectsData()` es `Future` pero se usa como síncrono.
+**Problema:** `getMockProyectosData()` es `Future` pero se usa como síncrono.
 
-**Solución:** En `mock_projects_data.dart`, hacer la función **síncrona**:
+**Solución:** En `mock_proyectos_data.dart`, hacer la función **síncrona**:
 
 ```dart
 // ❌ ANTES (async)
@@ -264,25 +264,25 @@ Future<List<Map<String, dynamic>>> getMockProjectsDataAsync() async {
 
 ## 📋 PLAN DE IMPLEMENTACIÓN
 
-### Step 1: Crear unified `project_providers.dart`
-- [ ] Consolidar `project_providers.dart` + `projects_provider.dart`
+### Step 1: Crear unified `proyecto_providers.dart`
+- [ ] Consolidar `proyecto_providers.dart` + `proyectos_provider.dart`
 - [ ] Un único archivo con TODO
 
-### Step 2: Corregir `getMockProjectsData()`
+### Step 2: Corregir `getMockProyectosData()`
 - [ ] Hacer síncrona (si es solo data en memoria)
-- [ ] O crear `getMockProjectsDataAsync()` separada
+- [ ] O crear `getMockProyectosDataAsync()` separada
 
 ### Step 3: Migrar imports
-- [ ] Buscar usos de `projects_provider.dart`
-- [ ] Cambiar a `project_providers.dart`
+- [ ] Buscar usos de `proyectos_provider.dart`
+- [ ] Cambiar a `proyecto_providers.dart`
 
 ### Step 4: Eliminar archivo viejo
-- [ ] Borrar `projects_provider.dart`
+- [ ] Borrar `proyectos_provider.dart`
 - [ ] Verificar compilación
 
 ### Step 5: Validar
 - [ ] `flutter analyze` → 0 errors
-- [ ] `flutter run` → sin problemas
+- [ ] `flutter ejecutar` → sin problemas
 
 ---
 
@@ -292,7 +292,7 @@ Future<List<Map<String, dynamic>>> getMockProjectsDataAsync() async {
 |--------|---------|-------------|
 | Unificar providers | ✅ Limpia estructura | 🟢 Baja |
 | Corregir `Future` error | ✅ Resuelve error | 🟢 Baja |
-| Migrar imports | ✅ Documentable | 🟠 Media |
+| Migrar imports | ✅ Documentoable | 🟠 Media |
 | Eliminar archivo viejo | ✅ Organiza | 🟢 Baja |
 
 ---
@@ -324,6 +324,6 @@ Después:
 Razones:
 1. Ambos archivos están fuertemente relacionados
 2. Solo 70 líneas totales (perfectamente legible)
-3. Elimina confusión de nombres (`projects` vs `project`)
+3. Elimina confusión de nombres (`proyectos` vs `proyecto`)
 4. Resuelve dependencies circulares
 5. Mejora mantenibilidad

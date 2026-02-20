@@ -1,6 +1,6 @@
 # 🛠️ Herramientas y Stack Tecnológico
 
-Este documento recoge el inventario completo de herramientas utilizadas tanto para la gestión y concepción del proyecto (Meta-Herramientas) como para su implementación técnica (Tech Stack).
+Este documentoo recoge el inventario completo de herramientas utilizadas tanto para la gestión y concepción del proyecto (Meta-Herramientas) como para su implementación técnica (Tech Stack).
 
 ## 1. Meta-Herramientas (Gestión, Diseño e IA)
 Herramientas utilizadas para "construir al constructor".
@@ -11,8 +11,8 @@ Herramientas utilizadas para "construir al constructor".
 | **GEM "SoftArchitect AI"** | **Prototipado (Mago de Oz)** | Instancia personalizada de Gemini para simular el comportamiento del RAG antes de programar y validar los prompts del sistema. |
 | **Claude Sonnet** | **Analista de Conocimiento** | Extracción de información estructurada de los módulos del Máster y redacción del `MASTER_WORKFLOW_0-100.md`. |
 | **Notion** | **Gestión de Proyecto** | Seguimiento de tareas, checklist de hitos y repositorio de notas rápidas. |
-| **n8n** | **Orquestador de Automatización** | Motor Low-Code en HomeLab. Sincroniza la documentación y gestiona Webhooks. |
-| **Notion API** | **CMS de Conocimiento** | Destino final de la documentación viva. Integrado vía n8n. |
+| **n8n** | **Orquestador de Automatización** | Motor Low-Code en HomeLab. Sincroniza la documentoación y gestiona Webhooks. |
+| **Notion API** | **CMS de Conocimiento** | Destino final de la documentoación viva. Integrado vía n8n. |
 
 ## 2. Entorno de Desarrollo (Dev Environment)
 Infraestructura física y lógica donde se cocina el código.

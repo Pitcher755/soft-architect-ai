@@ -1,7 +1,7 @@
 # 🎯 Columnas Dinámicas Redimensionables - Guía de Uso
 
 **Fecha:** 07/02/2026
-**Estado:** ✅ **COMPLETADO Y OPERACIONAL**
+**Status:** ✅ **COMPLETADO Y OPERACIONAL**
 **Terminal de la app:** 49823a5a-8317-4cb5-9a5e-5b53d7479284
 
 ---
@@ -46,9 +46,9 @@ Las tres columnas del ProjectShellScreen ahora son **100% dinámicas y redimensi
 
 ## 📐 Comportamiento Técnico
 
-### Estado de Columnas
+### Status de Columnas
 
-El tamaño de cada columna se guarda en el estado del widget:
+El tamaño de cada columna se guarda en el status del widget:
 
 ```dart
 _leftColumnWidth = 280px    // Ancho inicial Explorer
@@ -99,20 +99,20 @@ Pequeño ícono `⋮` en el centro de cada divisor para claridad UX
 
 ## ✅ Casos de Uso
 
-### Caso 1: Exploración de Proyecto Grande
+### Caso 1: Exploración de Project Grande
 1. **Expande Explorer** (arrastra divisor izquierdo a la derecha)
-2. Explora la estructura completa del proyecto
-3. Ves todos los archivos y carpetas sin scroll
+2. Explora la estructura completa of the project
+3. Ves todos los files y folders sin scroll
 
 ### Caso 2: Escritura Intensiva de Prompts
 1. **Comprime Explorer** (arrastra divisor izquierdo a la izquierda)
 2. **Comprime Preview** (arrastra divisor derecho a la izquierda)
 3. Maximiza el área de Chat para escribir prompts largos
 
-### Caso 3: Revisión de Documentos
+### Caso 3: Revisión de Documents
 1. **Comprime Explorer** (oculta)
 2. **Expande Preview** (arrastra divisor derecho a la izquierda)
-3. Visualiza documentos generados en pantalla completa
+3. Visualiza documents generados en pantalla completa
 
 ### Caso 4: Layout Equilibrado
 1. Deja columnas en tamaños predeterminados (~25% | 50% | 25%)
@@ -120,11 +120,11 @@ Pequeño ícono `⋮` en el centro de cada divisor para claridad UX
 
 ---
 
-## 🔧 Implementación Técnica
+## 🔧 Implementation Técnica
 
 ### Cambios en `project_shell_screen.dart`
 
-1. **Variables de Estado (líneas 47-51):**
+1. **Variables de Status (líneas 47-51):**
    ```dart
    late double _leftColumnWidth;
    late double _rightColumnWidth;
@@ -176,7 +176,7 @@ onHorizontalDragUpdate: (details) {
 ✅ Cambiar ventanas y regresar → Estado persiste (durante sesión)
 ```
 
-### 🧪 Pruebas Adicionales (Futuro)
+### 🧪 Tests Adicionales (Futuro)
 
 - [ ] Windows (comportamiento de cursor en Windows)
 - [ ] macOS (trackpad gestures)
@@ -210,7 +210,7 @@ onHorizontalDragUpdate: (details) {
 
 1. **Persistencia:**
    - Guardar ancho de columnas en `SharedPreferences`
-   - Recuperar en siguiente sesión
+   - Recuperar en next sesión
 
 2. **Presets:**
    - Botones rápidos: "Explorer Focus", "Chat Focus", "Preview Focus", "Balanced"
@@ -235,9 +235,9 @@ onHorizontalDragUpdate: (details) {
 
 ## 📊 Resumen
 
-| Aspecto | Estado |
+| Aspecto | Status |
 |--------|--------|
-| **Implementación** | ✅ Completada |
+| **Implementation** | ✅ Completada |
 | **Testing** | ✅ Pasados |
 | **Compilación** | ✅ Sin errores |
 | **Ejecución** | ✅ Operacional |
@@ -246,6 +246,6 @@ onHorizontalDragUpdate: (details) {
 
 ---
 
-**Estado Final:** ✅ **FEATURE COMPLETADA Y LISTA PARA PRODUCCIÓN**
+**Status Final:** ✅ **FEATURE COMPLETADA Y LISTA PARA PRODUCCIÓN**
 
 Puedes experimentar arrastrando los divisores ahora mismo en la app que está ejecutándose.

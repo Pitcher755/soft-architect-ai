@@ -2,7 +2,7 @@
 
 > **Estado:** COMPLETED
 > **Fecha:** 03/02/2026
-> **Commit:** `9060771` - feat(paso-3.2): Create main UI widgets with GitHub Dark theme
+> **Commit:** `9060771` - feat(paso-3.2): Crear main UI widgets with GitHub Dark theme
 
 ---
 
@@ -12,9 +12,9 @@ Se han completado exitosamente los 4 componentes de **Paso 3.2** (Crear Widgets 
 
 | Componente | Líneas | Estado | Detalles |
 |-----------|--------|--------|----------|
-| **DirectoryTreeWidget** | 176 | ✅ | Árbol expandible de directorios (VS Code style) |
+| **DirectoryTreeWidget** | 176 | ✅ | Árbol expandible de directorios (VS Code estilo) |
 | **MarkdownPreviewWidget** | 154 | ✅ | Visualizador de markdown con header |
-| **ProjectShellScreen** | 344 | ✅ | Pantalla principal tipo IDE (3 panes) |
+| **ProyectoShellScreen** | 344 | ✅ | Pantalla principal tipo IDE (3 panes) |
 | **AppColors** | 50 | ✅ | Paleta de colores centralizada |
 | **TOTAL** | **724** | ✅ | **100% completo** |
 
@@ -125,9 +125,9 @@ ProjectShellScreen (ConsumerStatefulWidget)
 
 ### DirectoryTreeWidget
 
-- ✅ Árbol expandible de directorios (VS Code style)
+- ✅ Árbol expandible de directorios (VS Code estilo)
 - ✅ Iconos específicos por tipo de archivo (.dart, .py, .md, .json, etc.)
-- ✅ Selección de archivos con `ValueChanged<FileNode>` callback
+- ✅ Selección de archivos con `ValueChanged<ArchivoNode>` callback
 - ✅ Estado expandido/colapsado memorizado (Set<String>)
 - ✅ Hover effects y colores del tema
 - ✅ Recursive tree building
@@ -135,9 +135,9 @@ ProjectShellScreen (ConsumerStatefulWidget)
 - ✅ Soporte para directorios vacíos
 
 **Métodos principales:**
-- `_buildTreeNode(FileNode)` - Construye recursivamente
-- `_buildNodeTitle(FileNode, bool)` - Estilización de títulos
-- `_buildFileIcon(String)` - Retorna ícono por extensión
+- `_buildTreeNode(ArchivoNode)` - Construye recursivamente
+- `_buildNodeTitle(ArchivoNode, bool)` - Estilización de títulos
+- `_buildArchivoIcon(String)` - Retorna ícono por extensión
 
 ### MarkdownPreviewWidget
 
@@ -154,21 +154,21 @@ ProjectShellScreen (ConsumerStatefulWidget)
 - `_EmptyPreview` - Estado vacío
 - `_MarkdownContent` - Contenido con header
 
-### ProjectShellScreen
+### ProyectoShellScreen
 
 - ✅ Layout tipo IDE (3 panes: AppBar + Sidebar + Preview)
 - ✅ ConsumerStatefulWidget (Riverpod listo)
-- ✅ Integration con `projectShellProvider`
+- ✅ Integración con `proyectoShellProvider`
 - ✅ Selección de archivos con estado local
 - ✅ Mock tree structure (reemplazable)
 - ✅ Mock content loading
 - ✅ AppBar con información del proyecto
-- ✅ No project selected state
+- ✅ No proyecto selected state
 - ✅ Logging integrado
 
 **Estados manejados:**
 - `_selectedNode` - Nodo seleccionado actual
-- `_fileContent` - Contenido del archivo cargado
+- `_archivoContent` - Contenido del archivo cargado
 
 ### AppColors
 
@@ -282,7 +282,7 @@ DirectoryTreeWidget and MarkdownPreviewWidget refresh
 
 ## 🚀 Próximos Pasos (Paso 3.3)
 
-### Widget Testing
+### Widget Pruebaing
 
 ```dart
 // test/features/project_shell/presentation/widgets/directory_tree_widget_test.dart
@@ -301,11 +301,11 @@ testWidgets('ProjectShellScreen displays IDE layout', (WidgetTester tester) asyn
 });
 ```
 
-### Integration Points
+### Integración Points
 
-1. **Database Integration**
-   - Implementar `projectRepositoryProvider` con SQLite real
-   - Cargar tree structure desde FileSystem
+1. **Database Integración**
+   - Implementar `proyectoRepositoryProvider` con SQLite real
+   - Cargar tree structure desde ArchivoSystem
    - Cargar contenido de archivos reales
 
 2. **Performance**
@@ -342,7 +342,7 @@ PROYECTO OVERALL:              ~53% (completado)
 
 ### Código Generado
 
-| Fase | Líneas | Archivos | Tests | Status |
+| Fase | Líneas | Archivos | Pruebas | Estado |
 |------|--------|----------|-------|--------|
 | Fase 2 | ~500 | 9 | 17/17 | ✅ 100% |
 | Paso 3.1 | 122 | 2 | 0 | ✅ 100% |
@@ -355,7 +355,7 @@ PROYECTO OVERALL:              ~53% (completado)
 
 - [x] DirectoryTreeWidget creado y funcionando
 - [x] MarkdownPreviewWidget creado y funcionando
-- [x] ProjectShellScreen creado e integrado
+- [x] ProyectoShellScreen creado e integrado
 - [x] AppColors centralizado
 - [x] flutter analyze: 0 errores
 - [x] Todos los errores de compilación corregidos
@@ -363,7 +363,7 @@ PROYECTO OVERALL:              ~53% (completado)
 - [x] Diseño GitHub Dark aplicado
 - [x] Riverpod listo para integración
 - [x] Git commit exitoso
-- [x] Documentación completada
+- [x] Documentoación completada
 
 **ESTADO: ✅ 100% COMPLETADO**
 
@@ -419,4 +419,4 @@ const textSecondary = Color(0xFF8b949e);
 
 ---
 
-**Siguiente paso:** Paso 3.3 - Widget Tests para todos los componentes UI creados.
+**Siguiente paso:** Paso 3.3 - Widget Pruebas para todos los componentes UI creados.

@@ -1,14 +1,14 @@
 # 🚀 Quick Start Guide - SoftArchitect AI Functional
 
-> **Status:** ✅ **READY FOR DEVELOPMENT**
-> **Date:** January 28, 2026
-> **Result:** 18/18 tests passed (100%)
+> **Estado:** ✅ **READY FOR DEVELOPMENT**
+> **Fecha:** January 28, 2026
+> **Resultado:** 18/18 pruebas passed (100%)
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
-1. [Start the Project](#start-the-project)
+1. [Start the Proyecto](#start-the-proyecto)
 2. [Verify Services](#verify-services)
 3. [Access URLs](#access-urls)
 4. [Troubleshooting](#troubleshooting)
@@ -16,7 +16,7 @@
 
 ---
 
-## 🚀 Start the Project
+## 🚀 Start the Proyecto
 
 ### Option 1: Full Build (Recommended for first time)
 
@@ -45,7 +45,7 @@ docker compose up -d
 
 ## ✅ Verify Services
 
-### General Status
+### General Estado
 
 ```bash
 docker ps --filter "name=sa_"
@@ -95,16 +95,16 @@ curl http://localhost:8000/api/v1/health | jq .
 
 ### Backend API
 
-| Service | URL | Description |
+| Service | URL | Descripción |
 |---------|-----|-------------|
 | **API** | http://localhost:8000 | API root |
-| **Health** | http://localhost:8000/api/v1/health | Backend status |
-| **Swagger** | http://localhost:8000/docs | Interactive documentation |
-| **ReDoc** | http://localhost:8000/redoc | Alternative documentation |
+| **Health** | http://localhost:8000/api/v1/health | Backend estado |
+| **Swagger** | http://localhost:8000/docs | Interactive documentoation |
+| **ReDoc** | http://localhost:8000/redoc | Alternative documentoation |
 
 ### Internal Services
 
-| Service | Host | Port | Description |
+| Service | Host | Port | Descripción |
 |---------|------|------|-------------|
 | **Ollama** | ollama (sa_network) | 11434 | Local LLM engine |
 | **ChromaDB** | chromadb (sa_network) | 8000 | Vector database |
@@ -212,19 +212,19 @@ docker compose up -d
 ## 📊 Available Reports
 
 ### 1. [FUNCTIONAL_TEST_REPORT.md](../01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md)
-- ✅ Complete test results (18 tests)
+- ✅ Complete prueba results (18 pruebas)
 - ✅ Performance metrics
 - ✅ Compliance validation
 - ✅ 1000+ lines of detail
 
 ### 2. [INITIAL_SETUP_LOG.es.md](../01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md)
-- ✅ Documentation in Spanish
-- ✅ 4 setup phases
+- ✅ Documentoation in Spanish
+- ✅ 4 setup fases
 - ✅ Timeline and Mermaid diagram
 - ✅ 400+ lines
 
 ### 3. [INITIAL_SETUP_LOG.en.md](../01-PROJECT_REPORT/INITIAL_SETUP_LOG.en.md)
-- ✅ Documentation in English
+- ✅ Documentoation in English
 - ✅ Complete translated version
 - ✅ 500+ lines
 
@@ -240,7 +240,7 @@ docker compose up -d
 
 ### 6. [DOCKER_VALIDATION_REPORT.md](../../DOCKER_VALIDATION_REPORT.md)
 - ✅ Final validation report
-- ✅ Status comparison
+- ✅ Estado comparison
 - ✅ Impact metrics
 
 ---
@@ -256,7 +256,7 @@ flutter analyze
 flutter run -d linux
 ```
 
-### Run Backend Tests
+### Ejecutar Backend Pruebas
 
 ```bash
 cd src/server
@@ -298,7 +298,7 @@ mypy app/ --ignore-missing-imports
 
 ## 🔐 Environment Variables
 
-### Infrastructure (infrastructure/.env)
+### Infraestructura (infrastructure/.env)
 
 ```bash
 OLLAMA_IMAGE_VERSION=latest
@@ -320,7 +320,7 @@ Copy to `src/server/.env` and edit as needed:
 cp src/server/.env.example src/server/.env
 ```
 
-Main configurations:
+Main configuracións:
 ```bash
 DEBUG=False
 IRON_MODE=True
@@ -391,13 +391,13 @@ infrastructure/
 
 ---
 
-## 🎯 Next Steps
+## 🎯 Siguiente Steps
 
 ### For Developers
 
-1. **Read documentation:**
+1. **Read documentoation:**
    - [AGENTS.md](../../AGENTS.md) - Vision and rules
-   - [FUNCTIONAL_TEST_REPORT.md](../01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Test results
+   - [FUNCTIONAL_TEST_REPORT.md](../01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Prueba results
    - [INITIAL_SETUP_LOG.en.md](../01-PROJECT_REPORT/INITIAL_SETUP_LOG.en.md) - Complete setup
 
 2. **Start development:**
@@ -415,7 +415,7 @@ infrastructure/
 ### For DevOps
 
 1. **CI/CD Setup:**
-   - Create `.github/workflows/` for GitHub Actions
+   - Crear `.github/workflows/` for GitHub Actions
    - Implement Docker registry
 
 2. **Monitoring:**
@@ -433,7 +433,7 @@ infrastructure/
 
 ### Contact
 
-- **Documentation:** Read `AGENTS.md` and files in `doc/` and `context/`
+- **Documentoation:** Read `AGENTS.md` and archivos in `doc/` and `context/`
 - **Issues:** See `FUNCTIONAL_TEST_REPORT.md` for troubleshooting
 - **Logs:** `docker compose logs -f`
 
@@ -459,12 +459,12 @@ docker exec sa_api curl http://ollama:11434/
 
 - ✅ **Iron Mode (Local):** By default, all data is processed locally
 - ✅ **Privacy:** Data is not sent to the cloud without explicit consent
-- ✅ **Offline:** Project works completely offline (except initial model download)
+- ✅ **Offline:** Proyecto works completely offline (except initial model download)
 - ✅ **Resources:** Memory limited to 3.0 GB total (configurable)
-- ✅ **Port 8000:** Reserved for API, don't change without editing configuration
+- ✅ **Port 8000:** Reserved for API, don't change without editing configuración
 
 ---
 
 **Last updated:** January 28, 2026
 **Version:** 1.0
-**Status:** ✅ PRODUCTION READY
+**Estado:** ✅ PRODUCTION READY

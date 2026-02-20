@@ -18,16 +18,16 @@
 - `src/client/lib/core/network/websocket_client.dart`
 - `src/client/lib/core/models/stream_event.dart`
 
-### Tests
-- `tests/python/unit/api/websocket/test_streaming_handler.py`
-- `tests/python/unit/services/streaming/test_token_buffer.py`
-- `tests/python/integration/test_streaming_flow.py`
-- `tests/test/unit/features/chat/presentation/providers/streaming_provider_test.dart`
-- `tests/test/unit/core/buffer/circular_buffer_test.dart`
-- `tests/test/unit/features/chat/auto_scroll_controller_test.dart`
-- `tests/test/integration/features/chat/streaming_flow_test.dart`
+### Pruebas
+- `pruebas/python/unit/api/websocket/prueba_streaming_handler.py`
+- `pruebas/python/unit/services/streaming/prueba_token_buffer.py`
+- `pruebas/python/integration/prueba_streaming_flow.py`
+- `pruebas/prueba/unit/features/chat/presentation/providers/streaming_provider_prueba.dart`
+- `pruebas/prueba/unit/core/buffer/circular_buffer_prueba.dart`
+- `pruebas/prueba/unit/features/chat/auto_scroll_controller_prueba.dart`
+- `pruebas/prueba/integration/features/chat/streaming_flow_prueba.dart`
 
-### Documentación
+### Documentoación
 - `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.es.md`
 - `context/30-ARCHITECTURE/PERFORMANCE_TARGETS.en.md`
 - `context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.es.md` (actualizado)

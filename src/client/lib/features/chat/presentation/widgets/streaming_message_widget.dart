@@ -39,15 +39,15 @@ class StreamingMessageWidget extends ConsumerWidget {
                 isUser: false,
                 onSaveDocument: (path, cleanContent) async {
                   debugPrint(
-                    '📄 Intentando guardar documento en streaming en: $path',
+                    '📄 Attempting to save streaming document at: $path',
                   );
 
                   try {
                     final projectRoot = ref.read(projectRootProvider);
                     if (projectRoot == null) {
                       throw Exception(
-                        'Project root no configurado. '
-                        'Abre un proyecto primero.',
+                        'Project root not configured. '
+                        'Open a project first.',
                       );
                     }
 
@@ -62,13 +62,13 @@ class StreamingMessageWidget extends ConsumerWidget {
                       content: cleanContent,
                     );
 
-                    // Actualizar progreso del proyecto
+                    // Update project progress
                     try {
                       await ProjectProgressService.updateAfterDocumentSave(
                         projectRoot,
                       );
                     } on Exception catch (e) {
-                      debugPrint('⚠️ Error actualizando progreso: $e');
+                      debugPrint('⚠️ Error updating progress: $e');
                     }
 
                     ref.invalidate(fileSystemNotifierProvider);
@@ -77,17 +77,17 @@ class StreamingMessageWidget extends ConsumerWidget {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('✅ Documento guardado con éxito'),
+                          content: Text('✅ Document saved successfully'),
                           backgroundColor: Colors.green,
                         ),
                       );
                     }
                   } on Exception catch (e) {
-                    debugPrint('❌ Error guardando el documento: $e');
+                    debugPrint('❌ Error saving the document: $e');
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error al guardar: $e'),
+                          content: Text('Error saving: $e'),
                           backgroundColor: Colors.red,
                         ),
                       );

@@ -103,7 +103,7 @@ Haz clic en **ENVIAR** (o presiona Ctrl+Enter)
 La IA analizará tu respuesta y generará:
 
 ✅ **PROJECT_MANIFESTO.md**
-- Tu visión en documento profesional
+- Tu visión en documentoo profesional
 - Principios del proyecto
 - Promesa al usuario
 
@@ -124,26 +124,26 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 ### FASE 1: Gobernanza e Identidad
 **Pregunta:** ¿Cuál es el "Por qué"?
 **Duración:** 10-15 minutos
-**Documentos:** 4 (Manifesto, Agents, Rules, User Journey)
-**Resultado:** Todo el mundo entiende la visión
+**Documentoos:** 4 (Manifesto, Agents, Rules, User Journey)
+**Resultadoado:** Todo el mundo entiende la visión
 
 ### FASE 2: Especificación y Seguridad
 **Pregunta:** ¿Cuál es el "Qué"?
 **Duración:** 30 minutos
-**Documentos:** 3 (Requirements, User Stories, Security Policy)
-**Resultado:** Criterios claros de aceptación
+**Documentoos:** 3 (Requirements, User Stories, Security Policy)
+**Resultadoado:** Criterios claros de aceptación
 
 ### FASE 3: Arquitectura Técnica
 **Pregunta:** ¿Cuál es el "Cómo"?
 **Duración:** 45 minutos
-**Documentos:** 4 (Tech Stack, Structure Map, API Contract, Threat Model)
-**Resultado:** Arquitectura técnica profesional
+**Documentoos:** 4 (Tech Stack, Structure Map, API Contract, Threat Model)
+**Resultadoado:** Arquitectura técnica profesional
 
 ### FASE 4: Planificación y Calidad
 **Pregunta:** ¿Cuándo? ¿Con qué calidad?
 **Duración:** 20 minutos
-**Documentos:** 2 (Roadmap Phases, Testing Strategy)
-**Resultado:** Plan de ejecución y métricas de éxito
+**Documentoos:** 2 (Roadmap Fases, Pruebaing Strategy)
+**Resultadoado:** Plan de ejecución y métricas de éxito
 
 ---
 
@@ -163,7 +163,7 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
    - "¿Por qué recomiendas PostgreSQL y no MongoDB?"
    - La IA explicará sus decisiones
 
-4. **Descarga los documentos generados**
+4. **Descarga los documentoos generados**
    - Úsalos como referencia en tu equipo
    - Son Copyright tuyo, haz lo que quieras
 
@@ -173,7 +173,7 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
    - Las primeras 3 fases son diseño puro
    - Si pides código ante de FASE 4, la IA te lo dirá (educadamente)
 
-2. **No cambies decisiones sin documentar**
+2. **No cambies decisiones sin documentoar**
    - Si cambias de Flutter a React en medio, actualiza la FASE 3
    - La consistencia es importante
 
@@ -204,9 +204,9 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 - **Cuadro de entrada:** Donde escribes
 - **Botón ENVIAR:** O Ctrl+Enter
 
-### El Panel Derecho (Documentos)
+### El Panel Derecho (Documentoos)
 
-- **Preview** del documento que la IA acaba de generar
+- **Preview** del documentoo que la IA acaba de generar
 - **Botón DESCARGAR**
 - **Botón EDITAR** (si quieres ajustar manualmente)
 
@@ -217,7 +217,7 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 | Atajo | Acción |
 |-------|--------|
 | `Ctrl+Enter` | Enviar mensaje |
-| `Ctrl+D` | Descargar documento actual |
+| `Ctrl+D` | Descargar documentoo actual |
 | `Ctrl+.` | Abrir configuración |
 | `Escape` | Cerrar diálogos |
 
@@ -239,7 +239,7 @@ SoftArchitect te guía por 4 fases secuenciales. Cada una responde una pregunta:
 
 ---
 
-## 📖 Documentación Completa
+## 📖 Documentoación Completa
 
 Para ir más allá de Quick Start:
 
@@ -273,7 +273,7 @@ La IA te pedirá que definas los requisitos funcionales y no-funcionales.
 ¿Preguntas?
 
 - **GitHub Issues:** [github.com/Pitcher755/soft-architect-ai/issues](https://github.com/Pitcher755/soft-architect-ai/issues)
-- **Documentación Técnica:** Ver carpeta `doc/English/01-PROJECT_REPORT`
+- **Documentoación Técnica:** Ver carpeta `doc/English/01-PROJECT_REPORT`
 - **FAQ:** [08-TROUBLESHOOTING.md](08-TROUBLESHOOTING.md)
 
 ---

@@ -1,6 +1,6 @@
-# 🔒 Fase 4.2: Security & Code Quality Checklist
+# 🔒 Phase 4.2: Security & Code Quality Checklist
 
-**Estado:** ✅ COMPLETADA
+**Status:** ✅ COMPLETADA
 **Fecha:** 3 de febrero de 2026
 **Criterios:** OWASP Top 10 + AGENTS.md § 8
 
@@ -8,7 +8,7 @@
 
 ## 🔐 A. Path Traversal Prevention
 
-### Implementación
+### Implementation
 
 ✅ **ValidationConstants.dart** - Constantes centralizadas
 - `projectNamePattern`: `^[a-zA-Z0-9_-]{3,50}$`
@@ -19,7 +19,7 @@
 ✅ **PathValidator.dart** - Seguridad de rutas
 - `validateFilePathInProject()` - Validación completa
 - Rechaza: rutas absolutas, traversal (..), componentes disallowed
-- Valida boundary: archivo dentro de project dir
+- Valida boundary: file dentro de project dir
 - Extrae y valida extensiones
 
 ✅ **ProjectValidationUseCase.dart** - Validación mejorada
@@ -33,14 +33,14 @@
 ✅ TODOS los nombres validados con regex
 ✅ Rejección de `../../../etc/passwd` → `PathTraversalException`
 ✅ Rejección de rutas absolutas → `PathTraversalException`
-✅ Validación de boundary (archivo dentro de proyecto)
+✅ Validación de boundary (file dentro de project)
 ✅ Extensiones en whitelist
 
 ---
 
 ## 🔐 B. Exception Hierarchy (Segura)
 
-### Implementación
+### Implementation
 
 ✅ **Base Class: ProjectShellException**
 - `code`: SYS_001, DB_ERR_001, etc.
@@ -92,14 +92,14 @@ logger.info('Project path: ${project.path}');
 logger.info('API Key: ${apiKey}');
 ```
 
-### Implementación
+### Implementation
 
 ✅ Constantes de logging en `ValidationConstants`
 - `sensitivePatterns`: password, api_key, secret, token, credential
 - `maxLogLength`: 1000 (previene log injection)
 
 ✅ Métodos de logging usarán:
-- Nombres sin rutas absolutas
+- Names sin rutas absolutas
 - IDs en lugar de valores sensibles
 - Truncado a maxLogLength
 
@@ -107,7 +107,7 @@ logger.info('API Key: ${apiKey}');
 
 ## 🔐 D. Type Safety (0 Errors)
 
-### Resultados
+### Results
 
 ```
 ✅ flutter analyze: 43 issues (0 ERRORS)
@@ -136,7 +136,7 @@ logger.info('API Key: ${apiKey}');
 
 ## 🔐 E. Database Security
 
-### Implementación
+### Implementation
 
 ✅ **Parameterized queries (SQLite)**
 ```dart
@@ -180,7 +180,7 @@ await database.transaction((txn) async {
 
 ## 📊 Code Quality Metrics
 
-### Before Fase 4
+### Before Phase 4
 
 ```
 flutter analyze: 54 issues (0 ERRORS)
@@ -191,7 +191,7 @@ flutter analyze: 54 issues (0 ERRORS)
 - always_put_control_body_on_new_line: ~8
 ```
 
-### After Fase 4
+### After Phase 4
 
 ```
 flutter analyze: 43 issues (0 ERRORS)
@@ -261,7 +261,7 @@ dart format lib/ tests/
 
 ## 📝 Files Modified/Created
 
-**Nuevos archivos:**
+**Nuevos files:**
 - ✅ `core/constants/validation_constants.dart` - Constantes centralizadas
 - ✅ `core/security/path_validator.dart` - Validación de rutas
 
@@ -269,13 +269,13 @@ dart format lib/ tests/
 - ✅ `core/exceptions/project_shell_exceptions.dart` - 8 excepciones
 - ✅ `domain/use_cases/project_validation_use_case.dart` - Validación mejorada
 - ✅ `main.dart` - Catch con tipo explícito
-- ✅ Otros 25+ archivos - Formateados y linted
+- ✅ Otros 25+ files - Formateados y linted
 
 ---
 
 ## ✅ Summary
 
-**Fase 4.2 Completada:**
+**Phase 4.2 Completada:**
 - ✅ Path traversal prevention (CRÍTICA)
 - ✅ Security exception hierarchy
 - ✅ Safe logging practices

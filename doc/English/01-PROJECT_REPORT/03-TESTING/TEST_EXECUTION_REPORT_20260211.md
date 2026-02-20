@@ -21,7 +21,7 @@
 ## ❌ Tests Fallidos (18 total)
 
 ### 1. Widget Tests - ProposalCardWidget (6 fallos)
-**Archivo:** `tests/client/widget/features/chat/presentation/widgets/proposal_card_test.dart`
+**File:** `tests/client/widget/features/chat/presentation/widgets/proposal_card_test.dart`
 
 #### Tests Fallidos:
 - ❌ `should render markdown content`
@@ -40,7 +40,7 @@
 ---
 
 ### 2. Widget Tests - ProjectsSidebar (6 fallos)
-**Archivo:** `tests/client/features/project_shell/presentation/widgets/projects_sidebar_test.dart`
+**File:** `tests/client/features/project_shell/presentation/widgets/projects_sidebar_test.dart`
 
 #### Tests Fallidos:
 - ❌ `should display sidebar with projects list`
@@ -52,13 +52,13 @@
 
 **Categoría:** Widget Testing
 **Severidad:** ALTA
-**Razón Probable:** Falta de mock para provider de proyectos o navegación
+**Razón Probable:** Falta de mock para provider de projects o navegación
 **Recomendación:** Verificar ProviderScope setup y mock de ProjectShellNotifier
 
 ---
 
 ### 3. Widget Tests - MarkdownPreviewWidget (2 fallos)
-**Archivo:** `tests/client/widget/features/project_shell/presentation/markdown_preview_widget_test.dart`
+**File:** `tests/client/widget/features/project_shell/presentation/markdown_preview_widget_test.dart`
 
 #### Tests Fallidos:
 - ❌ `should display empty state when content is null`
@@ -66,13 +66,13 @@
 
 **Categoría:** Widget Testing
 **Severidad:** MEDIA
-**Razón Probable:** Assertion de widgets de estado vacío no encontrados
-**Recomendación:** Verificar implementación de empty state placeholder
+**Razón Probable:** Assertion de widgets de status vacío no encontrados
+**Recomendación:** Verificar implementation de empty state placeholder
 
 ---
 
 ### 4. Widget Tests - GlobalSearchDialog (1 fallo)
-**Archivo:** `tests/client/features/project_shell/presentation/widgets/global_search_dialog_test.dart`
+**File:** `tests/client/features/project_shell/presentation/widgets/global_search_dialog_test.dart`
 
 #### Tests Fallidos:
 - ❌ `should close dialog when close button is tapped`
@@ -85,7 +85,7 @@
 ---
 
 ### 5. Integration Tests - Streaming Flow (1 fallo)
-**Archivo:** `tests/client/integration/features/chat/streaming_flow_test.dart`
+**File:** `tests/client/integration/features/chat/streaming_flow_test.dart`
 
 #### Test Fallido:
 - ❌ `renders tokens incrementally without jank`
@@ -104,7 +104,7 @@
 ---
 
 ### 6. Integration Tests - Markdown Preview Flow (1 fallo)
-**Archivo:** `tests/client/integration/features/project_shell/presentation/markdown_preview_flow_test.dart`
+**File:** `tests/client/integration/features/project_shell/presentation/markdown_preview_flow_test.dart`
 
 #### Test Fallido:
 - ❌ `should handle complete markdown preview workflow`
@@ -123,7 +123,7 @@ Expected: exactly one matching candidate
 
 ---
 
-## ⚠️ Warnings del Análisis Flutter (52 warnings)
+## ⚠️ Warnings del Analysis Flutter (52 warnings)
 
 ### Categorías de Warnings:
 1. **`invalid_use_of_visible_for_testing_member`** (6 warnings)
@@ -132,7 +132,7 @@ Expected: exactly one matching candidate
 
 2. **`invalid_use_of_protected_member`** (46 warnings)
    - Acceso directo a property `.state` de StateNotifier en tests
-   - **Archivo:** `project_shell_notifier_test.dart`
+   - **File:** `project_shell_notifier_test.dart`
    - **Acción:** Considerar uso de `.debugState` o accessors públicos
 
 ---
@@ -157,7 +157,7 @@ Expected: exactly one matching candidate
 
 - ✅ **FileSearchUseCase** - 40 tests de búsqueda y filtrado (100% pass)
 - ✅ **LocaleNotifier** - 23 tests de internacionalización (100% pass)
-- ✅ **Project Creation Flow** - 7 integration tests de creación de proyectos (100% pass)
+- ✅ **Project Creation Flow** - 7 integration tests de creación de projects (100% pass)
 - ✅ **Directory Navigation Flow** - 12 integration tests de navegación (100% pass)
 - ✅ **Error Handling E2E** - Tests de manejo de errores bilingües (100% pass)
 
@@ -179,7 +179,7 @@ Expected: exactly one matching candidate
 ### Fortalezas
 - ✅ **Lógica de Negocio (Unit Tests):** 100% pass rate - arquitectura sólida
 - ✅ **Integration Tests:** 92.3% pass rate - flujos end-to-end funcionan correctamente
-- ✅ **Cobertura:** 429 tests totales - buena cobertura del proyecto
+- ✅ **Cobertura:** 429 tests totales - buena cobertura of the project
 
 ### Áreas de Mejora
 - ⚠️ **Widget Tests:** 72.7% pass rate - necesitan refactorización de mocking
@@ -190,4 +190,4 @@ Expected: exactly one matching candidate
 1. Consolidar estrategia de mocking para widgets con dependencias markdown
 2. Estandarizar setup de ProviderScope en todos los widget tests
 3. Agregar documentación de testing patterns en doc/02-SETUP_DEV/
-4. Configurar integration_test plugin para eliminar warnings
+4. Configurar integration_test plugin para delete warnings

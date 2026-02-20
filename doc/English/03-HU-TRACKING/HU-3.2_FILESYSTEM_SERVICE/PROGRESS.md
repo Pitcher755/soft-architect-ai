@@ -1,15 +1,15 @@
 # 📊 Progreso HU-3.2: FileSystemService
 
-> **Estado Actual:** 🟢 PHASE 2 COMPLETADO (60%)
+> **Status Actual:** 🟢 PHASE 2 COMPLETADO (60%)
 > **Fecha Actualización:** 2024/Q4
 > **Tests:** 33/33 PASSING ✅
 
 ---
 
-## 🎯 Fases de Implementación
+## 🎯 Phases de Implementation
 
-### ✅ Phase 1: TDD RED (Análisis & Seguridad)
-- **Estado:** COMPLETADO
+### ✅ Phase 1: TDD RED (Analysis & Seguridad)
+- **Status:** COMPLETADO
 - **Duración:** 1 día
 - **Commits:** 3
 - **Artefactos:**
@@ -17,8 +17,8 @@
   - 6 excepciones de dominio
   - 18 test cases (RED - fallando)
 
-### ✅ Phase 2: TDD GREEN (Implementación Core)
-- **Estado:** COMPLETADO + QUALITY REVIEW
+### ✅ Phase 2: TDD GREEN (Implementation Core)
+- **Status:** COMPLETADO + QUALITY REVIEW
 - **Duración:** 1.5 días
 - **Commits:** 2 (7ac6598, 543c8bd)
 - **Artefactos Implementados:**

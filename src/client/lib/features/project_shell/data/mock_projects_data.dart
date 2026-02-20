@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 
 import '../../../../core/theme/app_colors.dart';
 
-/// Formatea una fecha relativa en español
+/// Formats a relative date in Spanish
 String _formatModified(DateTime dateTime) {
   final now = DateTime.now();
   final diff = now.difference(dateTime);
@@ -24,7 +24,7 @@ String _formatModified(DateTime dateTime) {
   return '${dateTime.day}/${dateTime.month}';
 }
 
-/// Obtiene el color de fase
+/// Gets the phase color
 Color _getPhaseColor(String phase) {
   switch (phase.toLowerCase()) {
     case 'contexto':
@@ -42,8 +42,8 @@ Color _getPhaseColor(String phase) {
   }
 }
 
-/// Carga proyectos REALES del sistema de archivos
-/// Se buscan en directorios comunes de proyectos
+/// Loads REAL projects from the filesystem
+/// Searches in common project directories
 Future<List<Map<String, dynamic>>> _loadRealProjects() async {
   final projects = <Map<String, dynamic>>[];
   final homeDir = Directory.current.path;
@@ -84,8 +84,8 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
   return projects;
 }
 
-/// Carga proyectos: REALES (filesystem) + MOCK (Guía educativa)
-/// Retorna lista combinada de Map con proyectos listos para mostrar
+/// Loads projects: REAL (filesystem) + MOCK (Educational Guide)
+/// Returns combined list of Map with projects ready to display
 Future<List<Map<String, dynamic>>> getMockProjectsData() async {
   final allProjects = <Map<String, dynamic>>[];
 

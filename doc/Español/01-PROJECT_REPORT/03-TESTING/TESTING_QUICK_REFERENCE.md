@@ -1,25 +1,25 @@
-# 🔍 Testing Documentation Quick Reference
+# 🔍 Pruebaing Documentoation Quick Reference
 
-> **Propósito:** Acceso rápido a documentación de testing
+> **Propósito:** Acceso rápido a documentoación de pruebaing
 > **Actualizado:** 29 de enero de 2026
-> **Status:** ✅ Complete
+> **Estado:** ✅ Complete
 
 ---
 
 ## 🎯 Tengo una pregunta sobre...
 
-### ❓ "¿Cómo está la cobertura de tests ahora?"
+### ❓ "¿Cómo está la cobertura de pruebas ahora?"
 **Respuesta:** [TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md) - Línea 1
-- Cobertura actual: **98.13%** (20/20 tests PASS)
+- Cobertura actual: **98.13%** (20/20 pruebas PASS)
 - Target: ≥80% ✅ EXCEEDS
 - Desglose por módulo
 
-### ❓ "¿Qué tests faltan?"
-**Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "Testing Pyramid"
-- Integration tests: 0% (FALTA)
-- E2E tests: 0% (FALTA)
-- Load tests: 0% (FALTA)
-- Plan completo para Phases 6-8
+### ❓ "¿Qué pruebas faltan?"
+**Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "Pruebaing Pyramid"
+- Integración pruebas: 0% (FALTA)
+- E2E pruebas: 0% (FALTA)
+- Load pruebas: 0% (FALTA)
+- Plan completo para Fases 6-8
 
 ### ❓ "¿Qué áreas necesitan refuerzo?"
 **Respuesta:** [TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md) - Sección "Áreas de Refuerzo Necesario"
@@ -27,11 +27,11 @@
 - Checklist de robustez
 - Herramientas recomendadas
 
-### ❓ "¿Cuándo tendremos todo testeado?"
+### ❓ "¿Cuándo tendremos todo pruebaeado?"
 **Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "Roadmap"
-- Phase 6 (Weeks 1-2): Integration & E2E tests
-- Phase 7 (Weeks 3-4): Load & Performance tests
-- Phase 8 (Weeks 5-6): Chaos & Security tests
+- Fase 6 (Weeks 1-2): Integración & E2E pruebas
+- Fase 7 (Weeks 3-4): Load & Performance pruebas
+- Fase 8 (Weeks 5-6): Chaos & Security pruebas
 - **Total: 8-10 semanas** (8 semanas recomendadas)
 
 ### ❓ "¿Qué riesgos hay en producción?"
@@ -41,7 +41,7 @@
 - Riesgo 3: Concurrency (IMPORTANTE)
 - Riesgo 4: Security (IMPORTANTE)
 
-### ❓ "¿Cómo ejecuto los tests?"
+### ❓ "¿Cómo ejecuto los pruebas?"
 **Respuesta:** [TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md) - Sección "Comandos Reproducibles"
 ```bash
 # Standard
@@ -51,51 +51,51 @@ PYTHONPATH=. poetry run pytest app/tests/ -v --cov
 PYTHONPATH=. poetry run pytest app/tests/ --cov --cov-report=html
 ```
 
-### ❓ "¿Cuál es el plan detallado para Phase 6?"
+### ❓ "¿Cuál es el plan detallado para Fase 6?"
 **Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "PHASE 6"
-- Week 1: Infrastructure Setup (3-5 días)
-- Week 2: Integration & E2E Tests (5-7 días)
-- Expected: 15-20 tests nuevos
+- Week 1: Infraestructura Setup (3-5 días)
+- Week 2: Integración & E2E Pruebas (5-7 días)
+- Expected: 15-20 pruebas nuevos
 
 ### ❓ "¿Qué herramientas necesitamos?"
-**Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "Testing Technologies"
-- Ya tenemos: pytest, pytest-asyncio, pytest-cov, httpx
+**Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "Pruebaing Technologies"
+- Ya tenemos: pyprueba, pyprueba-asyncio, pyprueba-cov, httpx
 - Necesitamos agregar:
-  - testcontainers (Phase 6)
-  - faker (Phase 6)
-  - locust (Phase 7)
-  - pytest-xdist (Phase 7)
-  - hypothesis (Phase 8)
+  - pruebacontainers (Fase 6)
+  - faker (Fase 6)
+  - locust (Fase 7)
+  - pyprueba-xdist (Fase 7)
+  - hypothesis (Fase 8)
 
 ### ❓ "¿Cuál es la robustez actual?"
 **Respuesta:** [TEST_ASSESSMENT_VISUAL.md](TEST_ASSESSMENT_VISUAL.md) - Sección "Visual Dashboard"
 - Current: 50/100 (Moderate 🟡)
 - Target: 90/100 (Excellent 🟢)
-- Breakdown:
-  - Unit Tests: 98% ✅
-  - Integration: 0% ❌
+- Desglose:
+  - Unit Pruebas: 98% ✅
+  - Integración: 0% ❌
   - E2E: 0% ❌
   - Load: 0% ❌
   - Security: 70% ⚠️
 
-### ❓ "¿Qué tests críticos faltan?"
+### ❓ "¿Qué pruebas críticos faltan?"
 **Respuesta:** [TEST_EXECUTION_LOG.md](TEST_EXECUTION_LOG.md) - Sección "Análisis & Recomendaciones"
 1. Database interaction con BD real
 2. End-to-end API workflows
 3. Error recovery flows
 4. Concurrency & race conditions
-5. Load/stress testing
+5. Load/stress pruebaing
 
 ### ❓ "¿Cuál es la siguiente tarea?"
 **Respuesta:** [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Sección "PHASE 6"
-1. Setup integration test infrastructure (Week 1)
-2. Write integration tests (Week 2)
-3. Write E2E tests (Week 2)
+1. Setup integration prueba infrastructure (Week 1)
+2. Write integration pruebas (Week 2)
+3. Write E2E pruebas (Week 2)
 4. Validate quality gates
 
 ---
 
-## 📚 Documentos por Propósito
+## 📚 Documentoos por Propósito
 
 ### Para Entendimiento General
 1. **[TEST_ASSESSMENT_VISUAL.md](TEST_ASSESSMENT_VISUAL.md)** (5 min)
@@ -121,7 +121,7 @@ PYTHONPATH=. poetry run pytest app/tests/ --cov --cov-report=html
 
 ### Para Referencia
 1. **[TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md#🔧-configuración-de-herramientas)** - Tools
-2. **[TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md#-testing-technologies-needed)** - Tools list
+2. **[TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md#-pruebaing-technologies-needed)** - Tools list
 
 ---
 
@@ -154,7 +154,7 @@ Tiempo total: 30 minutos
 3. How to run tests section ............ 5 min (Commands)
 ```
 
-### Para QA/Testing Engineers
+### Para QA/Pruebaing Engineers
 ```
 Tiempo total: 60 minutos
 
@@ -169,13 +169,13 @@ Tiempo total: 60 minutos
 
 ### Inside TEST_COVERAGE_DASHBOARD.md
 - Line ~60: Áreas de refuerzo
-- Line ~100: Tipos de tests faltantes
+- Line ~100: Tipos de pruebas faltantes
 - Line ~150: Checklist de robustez
 - Line ~200: Herramientas recomendadas
 
 ### Inside TEST_STRATEGY_AND_ROADMAP.md
 - Sección "Críticas Identificadas": Riesgos detallados
-- Sección "Testing Pyramid": Visual de cobertura
+- Sección "Pruebaing Pyramid": Visual de cobertura
 - Sección "Roadmap Detallado": Plan semana a semana
 - Sección "Quality Gates": Criterios de éxito
 
@@ -213,7 +213,7 @@ Opcional (referencias):
 1. **Hoy:** Leer TEST_ASSESSMENT_VISUAL.md (5 min)
 2. **Mañana:** Estudiar TEST_STRATEGY_AND_ROADMAP.md (30 min)
 3. **Esta semana:** Revisar con el equipo
-4. **Próxima semana:** Comenzar PHASE 6 (Integration tests)
+4. **Próxima semana:** Comenzar PHASE 6 (Integración pruebas)
 
 ---
 
@@ -225,11 +225,11 @@ A: [TEST_ASSESSMENT_VISUAL.md](TEST_ASSESSMENT_VISUAL.md) - Dashboard visual
 **P: ¿Qué debería hacer primero?**
 A: Leer [TEST_ASSESSMENT_VISUAL.md](TEST_ASSESSMENT_VISUAL.md) (5 min)
 
-**P: ¿Cuándo hay que hacer tests de E2E?**
-A: Phase 6, Week 2 - [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md)
+**P: ¿Cuándo hay que hacer pruebas de E2E?**
+A: Fase 6, Week 2 - [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md)
 
 **P: ¿Qué herramientas instalar?**
-A: Ver "Testing Technologies Needed" en [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md)
+A: Ver "Pruebaing Technologies Needed" en [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md)
 
 **P: ¿Cuáles son los riesgos principales?**
 A: [TEST_ASSESSMENT_VISUAL.md](TEST_ASSESSMENT_VISUAL.md) - Risk Assessment Matrix
@@ -244,9 +244,9 @@ A: 98.13% - [TEST_COVERAGE_DASHBOARD.md](TEST_COVERAGE_DASHBOARD.md)
 | Métrica | Valor | Referencia |
 |---------|-------|-----------|
 | Coverage Actual | 98.13% | TEST_COVERAGE_DASHBOARD.md:L15 |
-| Tests Unitarios | 20/20 | TEST_COVERAGE_DASHBOARD.md:L25 |
+| Pruebas Unitarios | 20/20 | TEST_COVERAGE_DASHBOARD.md:L25 |
 | Robustness Score | 50/100 | TEST_ASSESSMENT_VISUAL.md:L20 |
-| Integration Tests | 0/25 | TEST_STRATEGY_AND_ROADMAP.md:L80 |
+| Integración Pruebas | 0/25 | TEST_STRATEGY_AND_ROADMAP.md:L80 |
 | Target Robustness | 90/100 | TEST_STRATEGY_AND_ROADMAP.md:L10 |
 | Timeline Total | 8-10 sem | TEST_STRATEGY_AND_ROADMAP.md:L50 |
 

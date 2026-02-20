@@ -2,11 +2,11 @@
 
 > **Fecha:** 9 de febrero de 2026
 > **Cambios Validados:** ✅ 2 archivos, 0 errores
-> **Estado:** Listo para Testing Manual
+> **Estado:** Listo para Pruebaing Manual
 
 ---
 
-## 📋 Testing Checklist
+## 📋 Pruebaing Checklist
 
 ### ANTES DE EMPEZAR
 ```
@@ -21,16 +21,16 @@
 
 ### Pasos
 1. Abrir SoftArchitect AI
-2. Ir a Dashboard (ProjectWorkspaceScreen)
+2. Ir a Dashboard (ProyectoWorkspaceScreen)
 3. Esperar a que cargue (ver spinner si es necesario)
 4. Observar grid de proyectos
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Si existen proyectos reales en DB → Aparecen en grid
 - Si NO existen → Muestra solo guía (es correcto)
 - Cada proyecto muestra: nombre, icono, fase, fecha
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - Grid vacío aunque existan proyectos
 - Proyectos no aparecen tras crear uno nuevo
 - Spinner infinito sin cargar
@@ -44,13 +44,13 @@
 2. Buscar en grid: "Guía SoftArchitect" (o "Quick Start")
 3. Verificar que está junto a otros proyectos
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Guía aparece en el grid
 - Se muestra con ícono de libro
-- Tiene badge de "Documentación"
+- Tiene badge de "Documentoación"
 - Ordenada por fecha junto a otros
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - Guía no aparece
 - Aparece duplicada
 - No se puede interactuar con ella
@@ -65,14 +65,14 @@
 3. Hacer click en botón
 4. Verificar que se expande
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Botón visible cuando hay >8 proyectos
 - Al hacer click: aparece lista expandible
 - Botón cambia a "Ocultar proyectos"
 - Lista muestra TODOS los proyectos (reales + mock)
 - Ordenados alfabéticamente
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - Botón no aparece aunque hay >8
 - Al hacer click no sucede nada
 - Lista no muestra todos los proyectos
@@ -85,20 +85,20 @@
 ### Pasos
 1. Dashboard → Click en "+ Nuevo Proyecto"
 2. Llenar formulario:
-   - Nombre: "Mi Proyecto Test"
+   - Nombre: "Mi Proyecto Prueba"
    - Ruta: Seleccionar carpeta vacía
-   - Descripción: "Test del sistema híbrido"
+   - Descripción: "Prueba del sistema híbrido"
 3. Click en "Crear Proyecto"
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Diálogo se cierra
 - Mensaje: "Proyecto creado exitosamente"
-- Navega a project-shell (proyecto nuevo)
+- Navega a proyecto-shell (proyecto nuevo)
 - Vuelve al dashboard
 - Nuevo proyecto aparece en grid
 - Se puede expandir y ver todos (aparece ahí)
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - Diálogo no se cierra
 - Error al crear proyecto
 - Proyecto no aparece en grid
@@ -113,14 +113,14 @@
 2. Click en una tarjeta de proyecto real
 3. Esperar a que navegue
 
-### Resultado Esperado ✅
-- URL cambia a `/project-shell?path=/home/user/...`
-- ProjectShellScreen carga
-- FileTreeWidget muestra árbol de archivos REALES
+### Resultadoado Esperado ✅
+- URL cambia a `/proyecto-shell?path=/home/user/...`
+- ProyectoShellScreen carga
+- ArchivoTreeWidget muestra árbol de archivos REALES
 - Se pueden expandir carpetas
 - Se pueden leer archivos reales
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - No navega
 - Navega a URL incorrecto
 - Muestra árbol mock en lugar de real
@@ -128,21 +128,21 @@
 
 ---
 
-## 🧪 TEST 6: Navegar a Guía (Mock Project)
+## 🧪 TEST 6: Navegar a Guía (Mock Proyecto)
 
 ### Pasos
 1. Dashboard → Grid
 2. Click en "Guía SoftArchitect" (o proyecto mock)
 3. Esperar a que navegue
 
-### Resultado Esperado ✅
-- URL cambia a `/project-shell?path=mock://softarchitect-guide`
-- ProjectShellScreen carga
-- FileTreeWidget muestra árbol de GUÍA
+### Resultadoado Esperado ✅
+- URL cambia a `/proyecto-shell?path=mock://softarchitect-guide`
+- ProyectoShellScreen carga
+- ArchivoTreeWidget muestra árbol de GUÍA
 - Archivos: "00-Bienvenido.md", "features/Chat-IA.md", etc.
 - Al hacer click en archivo: muestra contenido markdown
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - No navega a guía
 - URL incorrecto (no tiene mock://)
 - Árbol vacío o incorrecto
@@ -158,12 +158,12 @@
 2. Abrir Dashboard
 3. Observar mientras carga
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Spinner circular visible mientras carga
 - Mensaje "Cargando..."
 - Spinner desaparece al completar
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - No muestra spinner
 - Interfaz se congela
 - Spinner infinito sin cargar
@@ -179,12 +179,12 @@
 2. Abrir Dashboard
 3. Observar UI de error
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Muestra mensaje: "Error al cargar proyectos: [error]"
 - Ícono de error rojo
 - Usuario puede intentar de nuevo (recargar)
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - Pantalla blanca sin mensaje
 - App se crashea
 - Error stack trace expuesto
@@ -200,13 +200,13 @@
 4. Click de nuevo: se contrae → oculta lista
 5. Repetir 3 veces
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Cada click expande/contrae
 - Lista muestra todos (real + mock)
 - Sin lag o delays
 - Animación suave
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - Estado no cambia
 - Lista parcial
 - Lag visible
@@ -222,21 +222,21 @@
 3. Dashboard → Expandir (todos)
 4. Verificar orden
 
-### Resultado Esperado ✅
+### Resultadoado Esperado ✅
 - Grid: ordenados por fecha DESC (más recientes primero)
 - Lista: ordenados alfabéticamente (como está implementado)
 - Guía aparece en posición correcta
 
-### Resultado Incorrecto ❌
+### Resultadoado Incorrecto ❌
 - Orden aleatorio
 - Duplicados
 - Guía desaparece
 
 ---
 
-## 📊 Scoring del Testing
+## 📊 Scoring del Pruebaing
 
-| Test | Crítico | Resultado | Estado |
+| Prueba | Crítico | Resultadoado | Estado |
 |------|---------|-----------|--------|
 | 1. Reales muestran | 🔴 | ? | ⏳ |
 | 2. Mock muestra | 🔴 | ? | ⏳ |
@@ -320,6 +320,6 @@ Solución: Revisar repository.getAllProjects()
 
 ## ✨ Conclusión
 
-Si los 10 tests pasan → Sistema híbrido completamente funcional ✅
+Si los 10 pruebas pasan → Sistema híbrido completamente funcional ✅
 
 **Próximo paso:** Deployment/Release

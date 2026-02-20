@@ -609,6 +609,6 @@ Para problemas o preguntas:
 
 ---
 
-**Versión del Documento:** 1.0
+**Versión del Documentoo:** 1.0
 **Última Actualización:** 10/02/2025
 **Estado:** ✅ LISTO PARA PRODUCCIÓN

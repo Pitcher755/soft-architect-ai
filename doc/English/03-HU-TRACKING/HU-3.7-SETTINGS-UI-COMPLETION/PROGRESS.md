@@ -1,7 +1,7 @@
 # HU-3.7: Progress Tracking (6-Phase Workflow)
 
 > **Historia de Usuario:** Settings UI Completion & Widget Tests
-> **Estado Actual:** � Phase 5 - Testing (GREEN) - En Progreso
+> **Status Actual:** � Phase 5 - Testing (GREEN) - En Progreso
 > **Última Actualización:** 12/02/2026
 > **Commit Actual:** 18a3dd7
 
@@ -9,7 +9,7 @@
 
 ## 📊 Progress Overview
 
-| Phase | Status | Progress | Completado |
+| Phase | Status | Progress | Completed |
 |-------|--------|----------|-----------|
 | **Phase 1:** Setup & Analysis (RED) | ✅ Completada | 100% | 11/02/2026 |
 | **Phase 2:** Domain Layer | ✅ Completada | 100% | 11/02/2026 |
@@ -185,7 +185,7 @@
 - [x] **StorageSection** (`storage_section.dart`) - IMPLEMENTED
   - [x] Connect to settingsProvider
   - [x] Display current storage path
-  - [x] Button "Seleccionar Carpeta" → Open file_picker
+  - [x] Button "Seleccionar Folder" → Open file_picker
   - [x] Implement _pickFolder() using FilePickerDataSource
   - [x] Save selected path → updateStoragePath()
   - [x] Add DartDoc
@@ -230,7 +230,7 @@
 - [x] **ProjectsSidebar** (`projects_sidebar.dart`)
   - [x] Connect to lastProjectProvider
   - [x] Read last project path from provider
-  - [x] Update button "Proyecto Activo" navigation
+  - [x] Update button "Project Activo" navigation
   - [x] Navigate to last project
   - [x] Fallback if no last project
   - [x] Add DartDoc
@@ -277,7 +277,7 @@
 
 - [ ] **Test 2:** `storage_section_test.dart`
   - [ ] Renders current storage path
-  - [ ] "Seleccionar Carpeta" button opens file picker (mock)
+  - [ ] "Seleccionar Folder" button opens file picker (mock)
   - [ ] Selected path updates provider
   - [ ] Verify persistence
 

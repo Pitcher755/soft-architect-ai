@@ -1,7 +1,7 @@
 # 📄 White Paper: SoftArchitect AI
 
-> **Estado:** Draft V2
-> **Fecha:** Enero 2026
+> **Status:** Draft V2
+> **Date:** Enero 2026
 > **Foco:** Democratización de la Arquitectura de Software mediante IA Contextual.
 
 ---
@@ -13,14 +13,14 @@ SoftArchitect AI es una plataforma de desarrollo asistido ("AI-Augmented Develop
 
 ## 2. El Problema (The Pain)
 1.  **Juniorización del Software:** El acceso masivo a la programación ha bajado la barrera de entrada, pero ha disparado la deuda técnica.
-2.  **Parálisis por Análisis:** La cantidad de frameworks y patrones bloquea la toma de decisiones.
-3.  **Contexto Perdido:** Los LLMs genéricos no conocen las reglas específicas de tu empresa o proyecto (Naming conventions, estructura de carpetas).
+2.  **Parálisis por Analysis:** La cantidad de frameworks y patrones bloquea la toma de decisiones.
+3.  **Contexto Perdido:** Los LLMs genéricos no conocen las reglas específicas de tu empresa o project (Naming conventions, estructura de folders).
 
 ---
 
 ## 3. La Solución (The Product)
 Un sistema **RAG (Retrieval-Augmented Generation)** que:
-1.  **Entiende el Proyecto:** Sabe si estás en Flutter o Python y carga las reglas específicas (`Tech Packs`).
+1.  **Entiende el Project:** Sabe si estás en Flutter o Python y carga las reglas específicas (`Tech Packs`).
 2.  **Guía el Proceso:** No te deja escribir código sin antes haber definido la arquitectura (ADRs) y los tests.
 3.  **Opera Local-First:** Prioriza la privacidad ejecutando modelos (Ollama/Qwen) en local, con fallback a nube (Groq) para rendimiento.
 
@@ -42,6 +42,6 @@ El núcleo del sistema no es el modelo de IA, sino su **Memoria Estructurada** (
 ---
 
 ## 5. Roadmap Estratégico
-* **Fase 1 (Actual):** MVP CLI/Desktop. Generación de documentación y estructura (Scaffolding).
-* **Fase 2:** Agentes Autónomos. El sistema escribe los tests y el boilerplate basándose en las especificaciones.
-* **Fase 3:** IDE Integration. Plugin para VS Code que audita en tiempo real.
+* **Phase 1 (Actual):** MVP CLI/Desktop. Generación de documentación y estructura (Scaffolding).
+* **Phase 2:** Agentes Autónomos. El sistema escribe los tests y el boilerplate basándose en las especificaciones.
+* **Phase 3:** IDE Integration. Plugin para VS Code que audita en tiempo real.

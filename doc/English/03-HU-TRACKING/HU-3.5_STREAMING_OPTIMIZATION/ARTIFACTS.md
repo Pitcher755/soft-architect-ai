@@ -1,6 +1,6 @@
 # 📦 Artefactos HU-3.5: Streaming Optimization
 
-## Archivos Generados
+## Files Generados
 
 ### Backend (Python)
 - `src/server/app/api/v1/websocket/streaming_handler.py`
@@ -38,4 +38,4 @@
 - `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/COMPLETION_SUMMARY.es.md`
 - `doc/03-HU-TRACKING/HU-3.5_STREAMING_OPTIMIZATION/COMPLETION_SUMMARY.en.md`
 
-**Estado:** ✅ Completo
+**Status:** ✅ Completo

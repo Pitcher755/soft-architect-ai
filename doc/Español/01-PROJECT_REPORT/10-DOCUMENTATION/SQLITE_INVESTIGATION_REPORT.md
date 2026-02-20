@@ -1,24 +1,24 @@
-# 🔴 PHASE 1: RED - SQLite Investigation Report
+# 🔴 FASE 1: RED - SQLite Investigation Report
 
-> **Project:** SoftArchitect AI
-> **HU:** HU-3.6 Test Suite Completion & SQLite Fix (PIT-80)
-> **Phase:** 1.2 SQLite Investigation
-> **Date:** 2025-01-30
-> **Status:** ⚠️ PHASE 1 STEP 1.2 - Codebase Review Complete
-> **Methodology:** Empirical code analysis (not speculation)
+> **Proyecto:** SoftArchitect AI
+> **HU:** HU-3.6 Prueba Suite Completion & SQLite Fix (PIT-80)
+> **Fase:** 1.2 SQLite Investigation
+> **Fecha:** 2025-01-30
+> **Estado:** ⚠️ PHASE 1 STEP 1.2 - Codebase Review Complete
+> **Methodology:** Empirical code análisis (not speculation)
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
 1. [Executive Summary](#executive-summary)
-2. [SQLite-Related Test Failures](#sqlite-related-test-failures)
-3. [Current SQLite Implementation Analysis](#current-sqlite-implementation-analysis)
+2. [SQLite-Related Prueba Failures](#sqlite-related-prueba-failures)
+3. [Current SQLite Implementación Análisis](#current-sqlite-implementación-análisis)
 4. [Codebase Architecture Review](#codebase-architecture-review)
 5. [Identified Gaps and Problems](#identified-gaps-and-problems)
 6. [Root Cause Deep Dive](#root-cause-deep-dive)
 7. [SQLite Design Recommendations](#sqlite-design-recommendations)
-8. [Implementation Plan (PHASE 2: GREEN)](#implementation-plan-phase-2-green)
+8. [Implementación Plan (FASE 2: GREEN)](#implementación-plan-fase-2-green)
 9. [References](#references)
 
 ---
@@ -27,24 +27,24 @@
 
 ### Current State Assessment
 
-| **Aspect** | **Status** | **Details** |
+| **Aspect** | **Estado** | **Details** |
 |-----------|-----------|-----------|
 | **Transaction Management** | ✅ **IMPLEMENTED** | `TransactionManager` class exists, design looks correct |
 | **Connection Pooling** | ⚠️ **INCOMPLETE** | `ConnectionPool` class exists but not integrated |
 | **Schema Definition** | ❌ **MISSING** | No CREATE TABLE statements exist anywhere |
 | **Domain Entities** | ❌ **MINIMAL** | Only `ChatMessage` exists, no persistence entities |
-| **Repository Pattern** | ❌ **MISSING** | Repository interfaces defined but no implementations |
-| **CRUD Operations** | ❌ **NOT IMPLEMENTED** | No insert/select/update/delete wrappers |
+| **Repository Pattern** | ❌ **MISSING** | Repository interfaces defined but no implementacións |
+| **CRUD Operations** | ❌ **NOT IMPLEMENTED** | No insert/select/update/eliminar wrappers |
 | **Error Handling** | ⚠️ **PARTIAL** | TransactionManager has error handling, but no domain-level handling |
 | **Migrations** | ❌ **NOT IMPLEMENTED** | No schema versioning or migration scripts |
-| **Tests** | ❌ **BROKEN** | 13/13 new SQLite tests failing (fixture issue) |
+| **Pruebas** | ❌ **BROKEN** | 13/13 new SQLite pruebas failing (fixture issue) |
 
 ### Critical Findings
 
-1. **Agent's Premature Implementation:**
-   - `TransactionManager.py` created without proper testing
-   - Tests created with broken fixture (`initialized_db`)
-   - 13 immediate test failures due to in-memory database isolation
+1. **Agent's Premature Implementación:**
+   - `TransactionManager.py` creard without proper pruebaing
+   - Pruebas creard with broken fixture (`initialized_db`)
+   - 13 inmediata prueba failures due to in-memory database isolation
 
 2. **Architectural Separation is Clean:**
    - Core database initialization logic is isolated (`core/database.py`)
@@ -55,67 +55,67 @@
    - No SQL schema defined anywhere
    - Domain entities don't map to database tables
    - No way to persist ANY data to SQLite yet
-   - Tests fail because tables don't exist
+   - Pruebas fail because tables don't exist
 
 4. **Current Blocker:**
-   - Fixture creates schema in one connection
-   - Tests fail because new connections don't see the schema
+   - Fixture crears schema in one connection
+   - Pruebas fail because new connections don't see the schema
    - `:memory:` databases are isolated per connection
 
 ---
 
-## SQLite-Related Test Failures
+## SQLite-Related Prueba Failures
 
-### Total SQLite Failures from pytest
+### Total SQLite Failures from pyprueba
 
-**Data Source:** `python_test_results_initial.log`
+**Data Source:** `python_prueba_results_initial.log`
 
 **Summary:**
-- **Total SQLite-specific test failures:** 13
-- **Location:** `tests/python/unit/infrastructure/persistence/test_transaction_manager.py`
-- **All are from agent-created code** (not pre-existing tests)
+- **Total SQLite-specific prueba failures:** 13
+- **Location:** `pruebas/python/unit/infrastructure/persistence/prueba_transaction_manager.py`
+- **All are from agent-creard code** (not pre-existing pruebas)
 
-### Failure Breakdown by Test Class
+### Failure Desglose by Prueba Class
 
-#### Class: TestTransactionCommit (3 failures)
+#### Class: PruebaTransactionCommit (3 failures)
 
-| Test Name | Error | Root Cause |
+| Prueba Name | Error | Root Cause |
 |-----------|-------|-----------|
-| `test_transaction_commits_on_success` | `sqlite3.OperationalError: no such table: test` | Table `test` created in fixture, not visible in test |
-| `test_insert_commit` | `sqlite3.OperationalError: no such table: projects` | Table `projects` created in fixture, not visible in test |
-| `test_update_commit` | `sqlite3.OperationalError: no such table: projects` | Same as above |
+| `prueba_transaction_commits_on_success` | `sqlite3.OperationalError: no such table: prueba` | Table `prueba` creard in fixture, not visible in prueba |
+| `prueba_insert_commit` | `sqlite3.OperationalError: no such table: proyectos` | Table `proyectos` creard in fixture, not visible in prueba |
+| `prueba_update_commit` | `sqlite3.OperationalError: no such table: proyectos` | Same as above |
 
-#### Class: TestTransactionRollback (3 failures)
+#### Class: PruebaTransactionRollback (3 failures)
 
-| Test Name | Error | Root Cause |
+| Prueba Name | Error | Root Cause |
 |-----------|-------|-----------|
-| `test_rollback_on_exception` | `sqlite3.OperationalError: no such table: test` | Fixture isolation issue |
-| `test_partial_changes_rollback` | `sqlite3.OperationalError: no such table: projects` | Fixture isolation issue |
-| `test_constraint_violation_rollback` | `sqlite3.OperationalError: no such table: project_metadata` | Fixture isolation issue |
+| `prueba_rollback_on_exception` | `sqlite3.OperationalError: no such table: prueba` | Fixture isolation issue |
+| `prueba_partial_changes_rollback` | `sqlite3.OperationalError: no such table: proyectos` | Fixture isolation issue |
+| `prueba_constraint_violation_rollback` | `sqlite3.OperationalError: no such table: proyecto_metadata` | Fixture isolation issue |
 
-#### Class: TestTransactionAcidity (3 failures)
+#### Class: PruebaTransactionAcidity (3 failures)
 
-| Test Name | Error | Root Cause |
+| Prueba Name | Error | Root Cause |
 |-----------|-------|-----------|
-| `test_atomicity` | `sqlite3.OperationalError: no such table: projects` | Fixture isolation issue |
-| `test_isolation_level_deferred` | `sqlite3.OperationalError: no such table: test` | Fixture isolation issue |
-| `test_multiple_sequential_transactions` | `sqlite3.OperationalError: no such table: projects` | Fixture isolation issue |
+| `prueba_atomicity` | `sqlite3.OperationalError: no such table: proyectos` | Fixture isolation issue |
+| `prueba_isolation_level_deferred` | `sqlite3.OperationalError: no such table: prueba` | Fixture isolation issue |
+| `prueba_multiple_sequential_transactions` | `sqlite3.OperationalError: no such table: proyectos` | Fixture isolation issue |
 
-#### Class: TestTransactionExecution (2 failures)
+#### Class: PruebaTransactionExecution (2 failures)
 
-| Test Name | Error | Root Cause |
+| Prueba Name | Error | Root Cause |
 |-----------|-------|-----------|
-| `test_execute_multiple_operations` | `sqlite3.OperationalError: no such table: projects` | Fixture isolation issue |
-| `test_execute_transaction_rollback_on_error` | `sqlite3.OperationalError: no such table: projects` | Fixture isolation issue |
+| `prueba_ejecutar_multiple_operations` | `sqlite3.OperationalError: no such table: proyectos` | Fixture isolation issue |
+| `prueba_ejecutar_transaction_rollback_on_error` | `sqlite3.OperationalError: no such table: proyectos` | Fixture isolation issue |
 
-#### Class: TestTransactionEdgeCases (2 failures)
+#### Class: PruebaTransactionEdgeCases (2 failures)
 
-| Test Name | Error | Root Cause |
+| Prueba Name | Error | Root Cause |
 |-----------|-------|-----------|
-| `test_double_close` | `sqlite3.OperationalError: no such table: test` | Fixture isolation issue |
-| `test_transaction_with_rollback_error` | `AssertionError + Rollback Error` | Fixture cleanup failed + assertion error |
+| `prueba_double_close` | `sqlite3.OperationalError: no such table: prueba` | Fixture isolation issue |
+| `prueba_transaction_with_rollback_error` | `AssertionError + Rollback Error` | Fixture cleanup failed + assertion error |
 
-### Error Pattern Analysis
+### Error Pattern Análisis
 
 **Consistent Error Message:**
 ```
@@ -131,27 +131,27 @@ src/server/app/infrastructure/persistence/transaction_manager.py:91: in __exit__
 sqlite3.OperationalError: no such table: test
 ```
 
-**Logger Output (from test execution):**
+**Logger Output (from prueba execution):**
 ```
 ERROR src.server.app.infrastructure.persistence.transaction_manager:transaction_manager.py:91
 Transaction rolled back (operational error): no such table: test
 ```
 
-### Flutter SQLite Tests
+### Flutter SQLite Pruebas
 
-**Status:** No Flutter-specific SQLite tests found (compilation errors prevent test execution)
+**Estado:** No Flutter-specific SQLite pruebas found (compilation errors prevent prueba execution)
 
 ---
 
-## Current SQLite Implementation Analysis
+## Current SQLite Implementación Análisis
 
-### 1.2.2 Review Current SQLite Implementation
+### 1.2.2 Review Current SQLite Implementación
 
 #### A. Database Initialization (Validated ✅)
 
-**File:** `src/server/app/core/database.py`
+**Archivo:** `src/server/app/core/database.py`
 
-**Status:** ✅ CORRECT - Only initializes directories, no database schema
+**Estado:** ✅ CORRECT - Only initializes directories, no database schema
 
 ```python
 def init_sqlite():
@@ -162,19 +162,19 @@ def init_sqlite():
 ```
 
 **Assessment:**
-- Creates `./data/` directory for database file
+- Crears `./data/` directory for database archivo
 - Returns SQLAlchemy-compatible connection string
 - ✅ Safe and correct approach
 
-#### B. Transaction Manager (Implemented ❌ with Broken Tests)
+#### B. Transaction Manager (Implemented ❌ with Broken Pruebas)
 
-**File:** `src/server/app/infrastructure/persistence/transaction_manager.py` (118 lines)
+**Archivo:** `src/server/app/infrastructure/persistence/transaction_manager.py` (118 lines)
 
-**Status:** ⚠️ **CODE LOOKS CORRECT, TESTS ARE BROKEN**
+**Estado:** ⚠️ **CODE LOOKS CORRECT, TESTS ARE BROKEN**
 
-**Implementation Checklist:**
+**Implementación Checklist:**
 
-| Feature | Status | Details |
+| Feature | Estado | Details |
 |---------|--------|---------|
 | **Transaction context manager** | ✅ YES | Uses `@contextmanager` decorator |
 | **Isolation levels** | ✅ YES | Supports DEFERRED, IMMEDIATE, EXCLUSIVE |
@@ -182,7 +182,7 @@ def init_sqlite():
 | **Automatic rollback** | ✅ YES | Rollbacks on exception |
 | **Error handling** | ✅ YES | Catches IntegrityError, OperationalError, generic Exception |
 | **Connection cleanup** | ✅ YES | Closes connection in finally block |
-| **Bulk operations** | ✅ YES | `execute_transaction()` method for multiple SQLs |
+| **Bulk operations** | ✅ YES | `ejecutar_transaction()` method for multiple SQLs |
 | **Logging** | ✅ YES | Logs all operations at appropriate levels |
 
 **Code Quality:**
@@ -197,22 +197,22 @@ def __init__(self, db_path: str):
     self.db_path = db_path  # ← Stores path, creates new connection each time
 ```
 
-Each call to `.transaction()` creates a NEW connection to the database. This is fine for file-based SQLite but problematic for `:memory:` databases because each connection gets isolated in-memory instance.
+Each call to `.transaction()` crears a NEW connection to the database. This is fine for archivo-based SQLite but problematic for `:memory:` databases because each connection gets isolated in-memory instance.
 
-#### C. Connection Pool (Created but Incomplete ❌)
+#### C. Connection Pool (Creard but Incomplete ❌)
 
-**File:** `src/server/app/infrastructure/persistence/connection_pool.py` (145 lines)
+**Archivo:** `src/server/app/infrastructure/persistence/connection_pool.py` (145 lines)
 
-**Status:** ❌ **INCOMPLETE - NOT INTEGRATED**
+**Estado:** ❌ **INCOMPLETE - NOT INTEGRATED**
 
 **Observation:**
-- File exists but probably imports don't work correctly
+- Archivo exists but probably imports don't work correctly
 - Not referenced anywhere in codebase
-- Not used in tests
+- Not used in pruebas
 
 #### D. Domain Entities (Minimal ⚠️)
 
-**File:** `src/server/app/domain/entities/__init__.py` (64 lines)
+**Archivo:** `src/server/app/domain/entities/__init__.py` (64 lines)
 
 **Existing Entities:**
 ```python
@@ -222,26 +222,26 @@ class ChatMessage:
 ```
 
 **Missing Entities:**
-- ❌ `Project` (for project management)
-- ❌ `FileNode` (for filesystem representation)
-- ❌ `ProjectMetadata` (for project tracking)
+- ❌ `Proyecto` (for proyecto management)
+- ❌ `ArchivoNode` (for archivosystem representation)
+- ❌ `ProyectoMetadata` (for proyecto tracking)
 - ❌ `ChatSession` (for chat context)
-- ❌ `DocumentProposal` (for RAG proposals)
+- ❌ `DocumentoProposal` (for RAG proposals)
 
 #### E. Repository Pattern (Defined but Empty ❌)
 
-**File:** `src/server/app/domain/repositories/__init__.py` (5 lines)
+**Archivo:** `src/server/app/domain/repositories/__init__.py` (5 lines)
 
-**Status:** ❌ **EMPTY - INTERFACES ONLY**
+**Estado:** ❌ **EMPTY - INTERFACES ONLY**
 
 ```python
 """Domain layer: Repository interfaces (contracts)."""
 ```
 
 **Missing:**
-- ❌ `IProjectRepository` interface
+- ❌ `IProyectoRepository` interface
 - ❌ `IChatRepository` interface
-- ❌ Implementations of repositories
+- ❌ Implementacións of repositories
 
 ---
 
@@ -285,16 +285,16 @@ src/server/app/
 
 ✅ **Core Layer:** Centralized database, config, error handling
 ✅ **Domain Layer:** Entity definitions (minimal)
-✅ **Infrastructure Layer:** Transaction management, vector store
+✅ **Infraestructura Layer:** Transaction management, vector store
 ✅ **API Layer:** REST endpoints
 
 ### What DOESN'T EXIST (Critical Gaps)
 
 ❌ **Database Schema:** No SQL CREATE TABLE statements
 ❌ **Data Layer:** No SQLAlchemy models or ORMs
-❌ **Repository Implementations:** No concrete data access objects
+❌ **Repository Implementacións:** No concrete data access objects
 ❌ **Migrations:** No Alembic or custom migration scripts
-❌ **Persistence Tests:** Only transaction manager tests (broken)
+❌ **Persistence Pruebas:** Only transaction manager pruebas (broken)
 
 ---
 
@@ -304,8 +304,8 @@ src/server/app/
 
 **Severity:** CRITICAL
 
-**Description:**
-There is NO file or location where SQL schema is defined. The application initializes a database file but never creates any tables.
+**Descripción:**
+There is NO archivo or location where SQL schema is defined. The application initializes a database archivo but never crears any tables.
 
 **Evidence:**
 ```bash
@@ -316,14 +316,14 @@ $ grep -r "CREATE TABLE" src/
 **Impact:**
 - Cannot store ANY data in SQLite
 - All persistence operations fail
-- Core RAG system cannot persist projects/metadata
+- Core RAG system cannot persist proyectos/metadata
 
-### Problem 2: Broken Test Fixture ❌
+### Problem 2: Broken Prueba Fixture ❌
 
-**Severity:** CRITICAL (Blocks testing)
+**Severity:** CRITICAL (Blocks pruebaing)
 
-**Description:**
-The `initialized_db` fixture creates tables in one connection but tests fail to find those tables.
+**Descripción:**
+The `initialized_db` fixture crears tables in one connection but pruebas fail to find those tables.
 
 **Code Issue:**
 ```python
@@ -342,8 +342,8 @@ def test_insert_commit(self, initialized_db):
 
 **Root Cause:**
 - `:memory:` SQLite databases are isolated per connection
-- Each `transaction()` call creates a NEW connection
-- Tables created in connection #1 are invisible to connection #2
+- Each `transaction()` call crears a NEW connection
+- Tables creard in connection #1 are invisible to connection #2
 
 **Evidence from Logs:**
 ```
@@ -355,8 +355,8 @@ sqlite3.OperationalError: no such table: projects
 
 **Severity:** HIGH
 
-**Description:**
-Domain entities (ChatMessage, Project, etc.) don't have:
+**Descripción:**
+Domain entities (ChatMessage, Proyecto, etc.) don't have:
 - SQLAlchemy model definitions
 - Table mappings
 - Column definitions
@@ -384,14 +384,14 @@ class ProjectEntity(Base):
 
 **Severity:** HIGH
 
-**Description:**
-There are no repository implementations for:
-- **Create:** INSERT operations
+**Descripción:**
+There are no repository implementacións for:
+- **Crear:** INSERT operations
 - **Read:** SELECT queries with filters
 - **Update:** UPDATE operations with PUT/PATCH semantics
-- **Delete:** DELETE operations with cascading
+- **Eliminar:** DELETE operations with cascading
 
-**Missing Implementations:**
+**Missing Implementacións:**
 ```python
 # ❌ NOT IMPLEMENTED
 class ProjectRepository(IProjectRepository):
@@ -406,11 +406,11 @@ class ProjectRepository(IProjectRepository):
 
 **Severity:** MEDIUM
 
-**Description:**
+**Descripción:**
 - `ConnectionPool` class exists but:
   - Not imported anywhere
   - Not used by TransactionManager
-  - Not referenced in tests
+  - Not referenced in pruebas
   - Probably doesn't work with new connection each time
 
 **As Code Shows:**
@@ -430,7 +430,7 @@ class TransactionManager:
 
 **Severity:** MEDIUM
 
-**Description:**
+**Descripción:**
 While TransactionManager has try/except blocks, there's no domain-level error abstraction:
 
 ```python
@@ -452,7 +452,7 @@ class DataIntegrityError(DatabaseError):
 
 ## Root Cause Deep Dive
 
-### Why Do All 13 Tests Fail?
+### Why Do All 13 Pruebas Fail?
 
 #### The Core Problem: `:memory:` Database Isolation
 
@@ -464,9 +464,9 @@ sqlite3.connect(":memory:")  # Connection #2 - DIFFERENT isolated in-memory DB
 
 Each `:memory:` connection gets its own isolated RAM database. Tables exist ONLY in that connection.
 
-#### How This Breaks the Tests
+#### How This Breaks the Pruebas
 
-**Step 1: Fixture Creates Tables**
+**Step 1: Fixture Crears Tables**
 ```python
 @pytest.fixture
 def initialized_db(tx_manager):  # tx_manager = TransactionManager(":memory:")
@@ -475,7 +475,7 @@ def initialized_db(tx_manager):  # tx_manager = TransactionManager(":memory:")
     return tx_manager
 ```
 
-**Step 2: Test Uses Same Manager**
+**Step 2: Prueba Uses Same Manager**
 ```python
 def test_insert_commit(self, initialized_db):
     with initialized_db.transaction() as conn:  # Connection #2 (NEW!)
@@ -503,7 +503,7 @@ Connection #2 (test):
 └──────────────────┘
 ```
 
-#### Why TransactionManager Creates New Connections
+#### Why TransactionManager Crears New Connections
 
 **Code Pattern:**
 ```python
@@ -520,8 +520,8 @@ class TransactionManager:
 ```
 
 **Design Rationale:**
-- ✅ Good for file-based SQLite (each session gets fresh connection)
-- ❌ Bad for in-memory testing (each connection is isolated)
+- ✅ Good for archivo-based SQLite (each session gets fresh connection)
+- ❌ Bad for in-memory pruebaing (each connection is isolated)
 
 ---
 
@@ -566,7 +566,7 @@ src/server/app/
 
 ### Schema Design (SQL)
 
-**Required Tables (Based on Test Requirements):**
+**Required Tables (Based on Prueba Requirements):**
 
 ```sql
 -- Projects table
@@ -618,7 +618,7 @@ CREATE TABLE document_proposals (
 );
 ```
 
-### Test Fixture Fix (PHASE 2)
+### Prueba Fixture Fix (PHASE 2)
 
 **Solution: Persistent Shared Connection**
 
@@ -657,90 +657,90 @@ def sqlite_db():
     conn.close()
 ```
 
-### Implementation Phases
+### Implementación Fases
 
-#### Phase 2.1: Fix Test Fixture
+#### Fase 2.1: Fix Prueba Fixture
 - Modify `initialized_db` to use persistent connection
-- Verify all 13 tests pass
+- Verify all 13 pruebas pass
 
-#### Phase 2.2: Create SQLAlchemy Models
-- Define `ProjectEntity`, `ChatMessageEntity`, etc.
+#### Fase 2.2: Crear SQLAlchemy Models
+- Define `ProyectoEntity`, `ChatMessageEntity`, etc.
 - Map domain entities to database tables
 
-#### Phase 2.3: Implement Repositories
-- `ProjectRepository` with CRUD operations
+#### Fase 2.3: Implement Repositories
+- `ProyectoRepository` with CRUD operations
 - `ChatSessionRepository`
-- `DocumentProposalRepository`
+- `DocumentoProposalRepository`
 
-#### Phase 2.4: Integration
+#### Fase 2.4: Integración
 - Wire repositories into API endpoints
 - Add database initialization to `main.py`
-- Create migration chain
+- Crear migration chain
 
 ---
 
-## Implementation Plan (PHASE 2: GREEN)
+## Implementación Plan (FASE 2: GREEN)
 
 ### Deliverables for PHASE 2
 
-| Deliverable | File(s) | Est. Effort | Priority |
+| Deliverable | Archivo(s) | Est. Effort | Priority |
 |-------------|---------|-------------|----------|
-| **Fix Test Fixture** | `test_transaction_manager.py` | 30 min | 🔴 URGENT |
-| **Verify Tests Pass** | Test execution | 15 min | 🔴 URGENT |
-| **Create Schema** | `migrations/001_initial_schema.sql` | 45 min | 🔴 CRITICAL |
+| **Fix Prueba Fixture** | `prueba_transaction_manager.py` | 30 min | 🔴 URGENT |
+| **Verify Pruebas Pass** | Prueba execution | 15 min | 🔴 URGENT |
+| **Crear Schema** | `migrations/001_initial_schema.sql` | 45 min | 🔴 CRITICAL |
 | **SQLAlchemy Models** | `persistence/models.py` | 60 min | 🔴 CRITICAL |
-| **Project Repository** | `persistence/repositories/project_repository.py` | 60 min | 🟠 HIGH |
+| **Proyecto Repository** | `persistence/repositories/proyecto_repository.py` | 60 min | 🟠 HIGH |
 | **Chat Repository** | `persistence/repositories/chat_repository.py` | 45 min | 🟠 HIGH |
 | **Error Abstractions** | `domain/exceptions/persistence.py` | 30 min | 🟠 HIGH |
-| **Coverage Tests** | New test cases for CRUD ops | 90 min | 🟠 HIGH |
-| **Integration Tests** | Full persistence workflow tests | 60 min | 🟠 HIGH |
+| **Coverage Pruebas** | New prueba cases for CRUD ops | 90 min | 🟠 HIGH |
+| **Integración Pruebas** | Full persistence workflow pruebas | 60 min | 🟠 HIGH |
 
 **Total Estimated Effort:** 6-7 hours
 
 ### Acceptance Criteria (PHASE 2 Exit)
 
-- ✅ All 13 Python tests pass (blue status)
+- ✅ All 13 Python pruebas pass (blue estado)
 - ✅ Coverage ≥80% on persistence modules
-- ✅ All CRUD operations tested and working
+- ✅ All CRUD operations pruebaed and working
 - ✅ Schema properly initialized at app startup
-- ✅ 0 compilation errors in Flutter tests
+- ✅ 0 compilation errors in Flutter pruebas
 - ✅ No breaking changes to existing API contracts
 
 ---
 
 ## References
 
-### Files Analyzed
+### Archivos Analyzed
 
 **Core Database:**
 - `src/server/app/core/database.py` - ✅ Validated
 
 **Transaction Management:**
-- `src/server/app/infrastructure/persistence/transaction_manager.py` - ⚠️ Code correct, tests broken
+- `src/server/app/infrastructure/persistence/transaction_manager.py` - ⚠️ Code correct, pruebas broken
 - `src/server/app/infrastructure/persistence/connection_pool.py` - ❌ Incomplete
 
 **Domain Layer:**
 - `src/server/app/domain/entities/__init__.py` - ⚠️ Minimal (only ChatMessage)
 - `src/server/app/domain/repositories/__init__.py` - ❌ Empty
 
-**Tests:**
-- `tests/python/unit/infrastructure/persistence/test_transaction_manager.py` - ❌ 13 failures
-- `python_test_results_initial.log` - ✅ 184 lines, detailed failure info
+**Pruebas:**
+- `pruebas/python/unit/infrastructure/persistence/prueba_transaction_manager.py` - ❌ 13 failures
+- `python_prueba_results_initial.log` - ✅ 184 lines, detailed failure info
 
 ### Key Issues Summary
 
 | Issue | Severity | Root Cause | Fix |
 |-------|----------|-----------|-----|
-| 13 test failures | 🔴 CRITICAL | `:memory:` DB isolation + fixture design | Persistent shared connection |
-| No schema | 🔴 CRITICAL | Never implemented | Create SQL migration files |
-| No repositories | 🔴 CRITICAL | Not implemented | Create repository classes |
+| 13 prueba failures | 🔴 CRITICAL | `:memory:` DB isolation + fixture design | Persistent shared connection |
+| No schema | 🔴 CRITICAL | Never implemented | Crear SQL migration archivos |
+| No repositories | 🔴 CRITICAL | Not implemented | Crear repository classes |
 | No CRUD | 🔴 CRITICAL | Missing data layer | Implement repository methods |
 | Connection pool unused | 🟠 HIGH | Not integrated | Wire into TransactionManager |
-| Missing entities | 🟠 HIGH | Not defined | Create Project, etc. entities |
+| Missing entities | 🟠 HIGH | Not defined | Crear Proyecto, etc. entities |
 
 ---
 
-**Document Status:** ✅ COMPLETE (Phase 1 Step 1.2)
-**Deliverables Created:** This investigation report
-**Next Step:** Phase 1 Step 1.3 - i18n Architecture Design
+**Documento Estado:** ✅ COMPLETE (Fase 1 Step 1.2)
+**Deliverables Creard:** This investigation report
+**Siguiente Step:** Fase 1 Step 1.3 - i18n Architecture Design
 **Last Updated:** 2025-01-30

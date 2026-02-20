@@ -1,4 +1,4 @@
-# 🎯 Project Shell Screen Refactoring: Complete
+# 🎯 Proyecto Shell Screen Refactoring: Complete
 
 > **Estado:** ✅ COMPLETADO
 > **Fecha:** 2024-02-08
@@ -10,11 +10,11 @@
 
 ### ✅ Completado
 
-#### 1. **project_shell_screen.dart - Refactorización Completa**
-   - ✅ Layout de 4 columnas (Sidebar + Files + Chat + Preview)
+#### 1. **proyecto_shell_screen.dart - Refactorización Completa**
+   - ✅ Layout de 4 columnas (Sidebar + Archivos + Chat + Preview)
    - ✅ Integración de datos mock escalables
    - ✅ Progress indicator en header de chat
-   - ✅ File tree interactivo con selección
+   - ✅ Archivo tree interactivo con selección
    - ✅ Preview panel con markdown content
 
 #### 2. **mock_data.dart - Creado**
@@ -22,7 +22,7 @@
    - ✅ Estructura de directorios (00-ROOT, 10-CONTEXT, etc.)
    - ✅ Mensajes de chat de demo
    - ✅ Contenido markdown de ejemplo
-   - ✅ Datos de progreso (8/25 documentos)
+   - ✅ Datos de progreso (8/25 documentoos)
 
 #### 3. **chat_panel_widget.dart - Actualizado**
    - ✅ Soporte para mensajes mock
@@ -35,11 +35,11 @@
    - ✅ Toolbar completo (copy, download)
    - ✅ Content scrollable
    - ✅ Syntax highlighting ready
-   - ✅ Display de filename
+   - ✅ Display de archivoname
 
 #### 5. **chat_screen.dart - Marcado como NO NECESARIO**
    - ℹ️ Se mantiene pero no se usa (puede eliminarse)
-   - ℹ️ Funcionalidad trasladada a project_shell_screen.dart
+   - ℹ️ Funcionalidad trasladada a proyecto_shell_screen.dart
 
 ---
 
@@ -67,7 +67,7 @@
 
 ## 🗂️ Estructura de Datos Mock
 
-### MockProjectData
+### MockProyectoData
 ```dart
 class MockProjectData {
   // File System
@@ -93,7 +93,7 @@ class MockProjectData {
 
 ## 🎨 Datos Demo Incluidos
 
-### 1. **File Tree Structure**
+### 1. **Archivo Tree Structure**
 ```
 PROJECT-ALPHA/
 ├── context/
@@ -119,7 +119,7 @@ PROJECT-ALPHA/
 - Notas de estado
 
 ### 4. **Progress Indicator**
-- Título: "Generando Documento 8 de 25"
+- Título: "Generando Documentoo 8 de 25"
 - Barra de progreso visual (32%)
 - Botón Pause funcional
 
@@ -141,8 +141,8 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 
 ### Métodos Principales
 1. `_buildChatPanel()` - Chat + Progress Header
-2. `_buildFilesPanel()` - File Explorer
-3. `_buildFileTree(node, depth)` - Recursive file tree renderer
+2. `_buildArchivosPanel()` - Archivo Explorer
+3. `_buildArchivoTree(node, depth)` - Recursive archivo tree renderer
 
 ---
 
@@ -158,8 +158,8 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 ### ✅ Markdown Preview Widget
 - [x] Toolbar con botones
 - [x] Contenido scrollable
-- [x] Display de filename
-- [x] Copy/Download buttons
+- [x] Display de archivoname
+- [x] Copy/Download botóns
 
 ### ✅ Progress Indicator
 - [x] En header de chat (no separado)
@@ -167,9 +167,9 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 - [x] Label con contador
 - [x] Botón pause
 
-### ✅ File Tree
+### ✅ Archivo Tree
 - [x] Estructura jerárquica
-- [x] Iconos diferenciados (folder/file)
+- [x] Iconos diferenciados (carpeta/archivo)
 - [x] Selección interactiva
 - [x] Indentación por profundidad
 
@@ -177,21 +177,21 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 
 ## 🚀 Próximos Pasos
 
-### Fase 1: Backend Integration (Ready to implement)
-- Reemplazar `MockProjectData` con API calls
+### Fase 1: Backend Integración (Ready to implement)
+- Reemplazar `MockProyectoData` con API calls
 - Implementar `ChatNotifier` para mensajes reales
-- Conectar `FileSystemService` para árbol de directorios
+- Conectar `ArchivoSystemService` para árbol de directorios
 - Implementar markdown rendering real
 
 ### Fase 2: UI Polish
 - Animaciones de transición
-- Lazy loading de file tree
+- Lazy loading de archivo tree
 - Virtual scrolling para archivos largos
 - Temas oscuro/claro dinámicos
 
 ### Fase 3: Features Avanzadas
 - Edición inline de archivos
-- Busca en file tree
+- Busca en archivo tree
 - Resizable columns
 - Persistencia de layout preferences
 
@@ -219,9 +219,9 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 
 ## 📝 Notas Importantes
 
-1. **Datos Mock**: Todos los datos se cargan desde `MockProjectData`. Para conectar backend, solo cambiar los values sin modificar la estructura de widgets.
+1. **Datos Mock**: Todos los datos se cargan desde `MockProyectoData`. Para conectar backend, solo cambiar los values sin modificar la estructura de widgets.
 
-2. **File System Screen**: `file_system_screen.dart` puede usarse como modal/dialog para seleccionar directorio de nuevo proyecto.
+2. **Archivo System Screen**: `archivo_system_screen.dart` puede usarse como modal/dialog para seleccionar directorio de nuevo proyecto.
 
 3. **Chat Screen**: `chat_screen.dart` no se utiliza. Puede conservarse como referencia histórica o ser eliminada.
 
@@ -238,7 +238,7 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 | Chat integration | ✅ | Con messages y proposals |
 | Markdown preview | ✅ | Con toolbar y content |
 | Progress indicator | ✅ | Integrado en header |
-| File tree | ✅ | Interactivo y recursive |
+| Archivo tree | ✅ | Interactivo y recursive |
 | Compilación | ✅ | 0 errores |
 
 ---

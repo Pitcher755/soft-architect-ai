@@ -1,4 +1,4 @@
-# ✅ PHASE 2: Backend SSE Streaming - Checklist de Completitud
+# ✅ FASE 2: Backend SSE Streaming - Checklist de Completitud
 
 **Estado Final:** 🟢 **GREEN - 100% COMPLETO**
 
@@ -10,7 +10,7 @@
 - [x] Archivo: `src/server/app/api/v1/chat.py` creado y completo
 - [x] Clases Pydantic definidas:
   - [x] `ChatMessage` - modelo para mensajes (role, content)
-  - [x] `GenerateRequest` - modelo para solicitud (message, doc_type, project_context, chat_history)
+  - [x] `GenerateRequest` - modelo para solicitud (message, doc_type, proyecto_context, chat_history)
 - [x] Endpoint POST `/api/v1/chat/generate` implementado
 - [x] SSE streaming response con `StreamingResponse`
 - [x] Async generator `_stream_generator()` que:
@@ -85,25 +85,25 @@ def _build_prompt(
     context: dict[str, Any],
 ) -> str:
 ```
-- [x] Extrae documentos de RAG
+- [x] Extrae documentoos de RAG
 - [x] Aplana listas anidadas correctamente
 - [x] Extrae chat_history del contexto
 - [x] Renderiza template con variables:
-  - [x] `context` (documentos RAG)
+  - [x] `context` (documentoos RAG)
   - [x] `user_input` (entrada usuario)
   - [x] `chat_history` (historial)
 - [x] Retorna prompt final como string
 
 ---
 
-## Checkpoint: Ejecución de Tests ✅
+## Checkpoint: Ejecución de Pruebas ✅
 
 ### Comando:
 ```bash
 cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpoints.py -v
 ```
 
-### Resultados:
+### Resultadoados:
 ```
 ============================== 11 passed in 0.22s ========================
 
@@ -137,7 +137,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 - **Solución:** ✅ Usar `side_effect=lambda *args, **kwargs: _mock_async_gen(...)`
 
 ### 3. Error Handling en SSE
-- **Problema:** Tests esperaban HTTP 400+ pero endpoint retorna 200 con error en SSE
+- **Problema:** Pruebas esperaban HTTP 400+ pero endpoint retorna 200 con error en SSE
 - **Causa:** Los errores se manejan dentro del async generator, no antes
 - **Solución:** ✅ Validar eventos SSE con `assert "event: error" in response.text`
 
@@ -154,12 +154,12 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
   - `VectorStoreService` - adaptador para ChromaDB
   - `TemplateLoader` - carga de plantillas
 
-- [x] **Presentation Layer (UI/API):**
+- [x] **Presentación Layer (UI/API):**
   - Routers de FastAPI en `api/v1/chat.py`
   - Pydantic models para request/response
 
 ### Separación de Responsabilidades
-- [x] Endpoint (`generate_document`) - solo HTTP
+- [x] Endpoint (`generate_documento`) - solo HTTP
 - [x] Streaming generator (`_stream_generator`) - solo SSE
 - [x] Orquestación (`SequentialOrchestrator`) - lógica de negocio
 - [x] Excepciones - controladas y específicas
@@ -192,7 +192,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 ## Estado de CI/CD ✅
 
 ### Pre-commit Checks
-- [x] Tests pasan (11/11)
+- [x] Pruebas pasan (11/11)
 - [x] Sin unused imports (AsyncMock removido)
 - [x] Type hints completos
 
@@ -200,7 +200,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 - [x] Código formateado (Black)
 - [x] Linting completo (Ruff)
 - [x] Type checking completo (Pyright)
-- [x] Tests con coverage
+- [x] Pruebas con coverage
 
 ---
 
@@ -211,7 +211,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 | **Endpoint SSE** | ✅ | POST /api/v1/chat/generate implementado |
 | **Streaming** | ✅ | Async generator funcional, tokens en vivo |
 | **Orchestrator** | ✅ | generate(), _retrieve_context(), _build_prompt() |
-| **Tests** | ✅ | 11/11 pasando en verde |
+| **Pruebas** | ✅ | 11/11 pasando en verde |
 | **Error Handling** | ✅ | RAGError y LLMError manejados en SSE |
 | **Architecture** | ✅ | Clean Architecture + Dependency Rule |
 | **Type Safety** | ✅ | Type hints completos |
@@ -219,7 +219,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 
 ---
 
-## Next Steps: Phase 3
+## Siguiente Steps: Fase 3
 
 **Objetivo:** Implementar Frontend State Machine con Riverpod
 
@@ -231,5 +231,5 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 ---
 
 **Fecha Completitud:** 6 de febrero de 2026
-**Versión:** v0.1.0-phase2-complete
+**Versión:** v0.1.0-fase2-complete
 **Certificación:** ✅ LISTO PARA PRODUCCIÓN BACKEND

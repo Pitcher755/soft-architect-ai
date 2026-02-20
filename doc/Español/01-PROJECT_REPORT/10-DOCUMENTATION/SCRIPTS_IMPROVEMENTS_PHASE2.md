@@ -1,4 +1,4 @@
-# 🔧 Scripts Improvements - Phase 2 (HU-4.4)
+# 🔧 Scripts Improvements - Fase 2 (HU-4.4)
 
 > **Fecha:** 16/02/2026
 > **Estado:** ✅ COMPLETADO
@@ -8,7 +8,7 @@
 
 Se han realizado mejoras masivas en **8 scripts críticos** del proyecto para asegurar:
 - ✅ **Rutas relativas** (funcionan desde cualquier directorio)
-- ✅ **Documentación completa** (headers con usage, requirements, descripción)
+- ✅ **Documentoación completa** (headers con usage, requirements, descripción)
 - ✅ **Validación de requisitos** (checks previos de dependencias)
 - ✅ **Cobertura total** (validan TODO el proyecto, no solo features)
 - ✅ **Mensajes claros** (success/error/warning diferenciados)
@@ -17,7 +17,7 @@ Se han realizado mejoras masivas en **8 scripts críticos** del proyecto para as
 
 ## 1. ✅ PRE_PUSH_VALIDATION_MASTER.sh (COMPLETADO)
 
-**Path:** `scripts/testing/PRE_PUSH_VALIDATION_MASTER.sh`
+**Path:** `scripts/pruebaing/PRE_PUSH_VALIDATION_MASTER.sh`
 
 ### Mejoras Aplicadas:
 
@@ -83,7 +83,7 @@ fi
 echo -e "${GREEN}✅ Requirements OK${NC}"
 ```
 
-#### FIX CRÍTICO: Tests Unitarios Python
+#### FIX CRÍTICO: Pruebas Unitarios Python
 **ANTES (INCORRECTO):**
 ```bash
 run_check "Python Unit Tests" \
@@ -99,9 +99,9 @@ run_check "Python Unit Tests" \
 ```
 
 **Razón del fix:**
-El filtro `-k 'not integration'` aplicado sobre `tests/server/` era ambiguo y fallaba. Ahora apunta explícitamente a `tests/server/unit/`.
+El filtro `-k 'not integration'` aplicado sobre `pruebas/server/` era ambiguo y fallaba. Ahora apunta explícitamente a `pruebas/server/unit/`.
 
-#### FIX: Integration Tests Path
+#### FIX: Integración Pruebas Path
 **ANTES:**
 ```bash
 run_check "Python Integration Tests" \
@@ -127,18 +127,18 @@ PYTEST_BIN="$PYTHON_VENV/bin/pytest"
 BANDIT_BIN="$PYTHON_VENV/bin/bandit"
 ```
 
-### Resultado:
-✅ Script ejecutándose correctamente, tests unitarios Python ahora pasan.
+### Resultadoado:
+✅ Script ejecutándose correctamente, pruebas unitarios Python ahora pasan.
 
 ---
 
-## 2. ✅ test-workflows-locally.sh (COMPLETADO)
+## 2. ✅ prueba-workflows-locally.sh (COMPLETADO)
 
-**Path:** `scripts/workflows/test-workflows-locally.sh`
+**Path:** `scripts/workflows/prueba-workflows-locally.sh`
 
 ### Mejoras Aplicadas:
 
-#### Header Completo Con Requirements:
+#### Header Completo Con Requisitos:
 ```bash
 ################################################################################
 # 🚀 GITHUB ACTIONS LOCAL TESTING SCRIPT
@@ -224,7 +224,7 @@ echo "0) ❌ Exit"
 # - performance-tests.yml: Performance Tests
 ```
 
-### Resultado:
+### Resultadoado:
 ✅ Script validando workflows correctamente contra archivos en `.github/workflows/`.
 
 ---
@@ -236,10 +236,10 @@ echo "0) ❌ Exit"
 ### Mejoras Requeridas:
 
 1. **Header completo** con usage y requirements
-2. **Project root detection** con rutas relativas
+2. **Proyecto root detection** con rutas relativas
 3. **Validación YAML syntax** de workflows
 4. **Python imports check** (services, core, infrastructure)
-5. **Test collection** (verificar que tests existen)
+5. **Prueba collection** (verificar que pruebas existen)
 6. **Workflow jobs listing** (via act --list)
 
 ### Template Propuesto:
@@ -307,7 +307,7 @@ grep -r "def [a-z]*_[a-z]*[áéíóúñ]" src/server/app/
 # 4. Reportar issues con paths exactos
 ```
 
-### Resultado Esperado:
+### Resultadoado Esperado:
 ```
 🔍 AUDITORÍA: Código en Inglés (AGENTS.md)
 ════════════════════════════════════════════
@@ -357,7 +357,7 @@ dart analyze --fatal-infos src/client/
 
 ## 6. 🔄 generate_coverage_html.sh (PENDIENTE MEJORA)
 
-**Path:** `scripts/testing/generate_coverage_html.sh`
+**Path:** `scripts/pruebaing/generate_coverage_html.sh`
 
 ### Mejoras Requeridas:
 
@@ -400,7 +400,7 @@ esac
 
 ## 7. ✅ RUN_COMPLETE_TEST_SUITE.sh (YA CORRECTO)
 
-**Path:** `scripts/testing/RUN_COMPLETE_TEST_SUITE.sh`
+**Path:** `scripts/pruebaing/RUN_COMPLETE_TEST_SUITE.sh`
 
 ### Estado Actual:
 ```bash
@@ -412,20 +412,20 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ```
 
 ### Análisis:
-✅ **Correcto:** Se trata de un wrapper que delega en `run_tests.sh` con cobertura completa. Cumple su propósito.
+✅ **Correcto:** Se trata de un wrapper que delega en `ejecutar_pruebas.sh` con cobertura completa. Cumple su propósito.
 
 ---
 
-## 8. ✅ run_tests.sh (YA MEJORADO)
+## 8. ✅ ejecutar_pruebas.sh (YA MEJORADO)
 
-**Path:** `scripts/testing/run_tests.sh`
+**Path:** `scripts/pruebaing/ejecutar_pruebas.sh`
 
 ### Estado Actual:
-- ✅ Unified test runner (Flutter + Python)
+- ✅ Unified prueba ejecutarner (Flutter + Python)
 - ✅ Coverage support (--coverage flag)
 - ✅ Mode selection (all|flutter|python)
 - ✅ Rutas relativas desde PROJECT_ROOT
-- ✅ Extracts test counts correctamente
+- ✅ Extracts prueba counts correctamente
 
 ### Usage:
 ```bash
@@ -459,14 +459,14 @@ Flutter coverage: 86.6%
 
 | Script | Estado | Prioridad | Mejoras Aplicadas |
 |--------|--------|-----------|-------------------|
-| PRE_PUSH_VALIDATION_MASTER.sh | ✅ COMPLETADO | 🔴 CRÍTICO | Header, requisitos, fix tests unitarios, paths relativos |
-| test-workflows-locally.sh | ✅ COMPLETADO | 🟡 ALTA | Header, check dependencies, menú mejorado, validación workflows |
+| PRE_PUSH_VALIDATION_MASTER.sh | ✅ COMPLETADO | 🔴 CRÍTICO | Header, requisitos, fix pruebas unitarios, paths relativos |
+| prueba-workflows-locally.sh | ✅ COMPLETADO | 🟡 ALTA | Header, check dependencies, menú mejorado, validación workflows |
 | validate-workflows.sh | ⏳ PENDIENTE | 🟡 ALTA | Header, YAML validation, imports check |
 | audit-english-compliance.sh | ⏳ PENDIENTE | 🟢 MEDIA | Header, validación completa, reportes mejorados |
 | validate-quality-gates.sh | ⏳ PENDIENTE | 🟡 ALTA | Gates objetivos, thresholds configurables |
 | generate_coverage_html.sh | ⏳ PENDIENTE | 🟢 MEDIA | Header, Python+Flutter, auto-open |
 | RUN_COMPLETE_TEST_SUITE.sh | ✅ CORRECTO | 🟢 BAJA | Wrapper simple, cumple su propósito |
-| run_tests.sh | ✅ MEJORADO | 🟡 ALTA | Ya implementado correctamente |
+| ejecutar_pruebas.sh | ✅ MEJORADO | 🟡 ALTA | Ya implementado correctamente |
 
 ---
 
@@ -474,7 +474,7 @@ Flutter coverage: 86.6%
 
 ### Inmediatos (antes de push):
 1. ✅ Ejecutar `PRE_PUSH_VALIDATION_MASTER.sh` completo
-2. ✅ Verificar que todos los tests unitarios Python pasan
+2. ✅ Verificar que todos los pruebas unitarios Python pasan
 3. ✅ Confirmar coverage ≥80% en Python
 
 ### Post-Push (HU siguiente):
@@ -488,20 +488,20 @@ Flutter coverage: 86.6%
 ## 📝 Conclusiones
 
 ### Logros de Esta Fase:
-- ✅ **2 scripts críticos completamente mejorados** (PRE_PUSH, test-workflows)
-- ✅ **Fix crítico en tests unitarios** (Path explícito tests/server/unit/)
+- ✅ **2 scripts críticos completamente mejorados** (PRE_PUSH, prueba-workflows)
+- ✅ **Fix crítico en pruebas unitarios** (Path explícito pruebas/server/unit/)
 - ✅ **Rutas relativas en todos los scripts mejorados**
 - ✅ **Headers completos con requirements y usage**
 - ✅ **Validación de dependencias antes de ejecutar**
 
 ### Impacto:
 - 🎯 **Scripts funcionan desde cualquier directorio**
-- 🎯 **Documentación inline clara para nuevos desarrolladores**
+- 🎯 **Documentoación inline clara para nuevos desarrolladores**
 - 🎯 **Validaciones robustas antes de push a GitHub**
 - 🎯 **Detección temprana de issues (fail-fast)**
 
 ### Lecciones Aprendidas:
-1. **Paths explícitos > Filtros ambiguos**: `-k 'not integration'` causaba fallos, path directo `tests/server/unit/` es mejor
+1. **Paths explícitos > Filtros ambiguos**: `-k 'not integration'` causaba fallos, path directo `pruebas/server/unit/` es mejor
 2. **Requirements check es crítico**: Evita errores crípticos de "command not found"
 3. **Headers completos mejoran onboarding**: Nuevos devs entienden qué hace cada script sin leer código
 4. **Exit codes consistentes**: 0=success, 1=fail, permite encadenar scripts con `&&`

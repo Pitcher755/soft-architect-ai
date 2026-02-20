@@ -1,14 +1,14 @@
 # 🎯 Project Shell Screen Refactoring: Complete
 
-> **Estado:** ✅ COMPLETADO
-> **Fecha:** 2024-02-08
-> **Verificación:** `flutter analyze --no-pub` → **0 ERRORES**
+> **Status:** ✅ COMPLETADO
+> **Date:** 2024-02-08
+> **Verification:** `flutter analyze --no-pub` → **0 ERRORES**
 
 ---
 
 ## 📋 Resumen de Cambios
 
-### ✅ Completado
+### ✅ Completed
 
 #### 1. **project_shell_screen.dart - Refactorización Completa**
    - ✅ Layout de 4 columnas (Sidebar + Files + Chat + Preview)
@@ -18,11 +18,11 @@
    - ✅ Preview panel con markdown content
 
 #### 2. **mock_data.dart - Creado**
-   - ✅ Datos de proyecto completos (PROJECT-ALPHA)
+   - ✅ Datos de project completos (PROJECT-ALPHA)
    - ✅ Estructura de directorios (00-ROOT, 10-CONTEXT, etc.)
    - ✅ Mensajes de chat de demo
    - ✅ Contenido markdown de ejemplo
-   - ✅ Datos de progreso (8/25 documentos)
+   - ✅ Datos de progreso (8/25 documents)
 
 #### 3. **chat_panel_widget.dart - Actualizado**
    - ✅ Soporte para mensajes mock
@@ -38,7 +38,7 @@
    - ✅ Display de filename
 
 #### 5. **chat_screen.dart - Marcado como NO NECESARIO**
-   - ℹ️ Se mantiene pero no se usa (puede eliminarse)
+   - ℹ️ Se mantiene pero no se usa (puede deletese)
    - ℹ️ Funcionalidad trasladada a project_shell_screen.dart
 
 ---
@@ -116,12 +116,12 @@ PROJECT-ALPHA/
 - Secciones: System Context, Scalability, Performance
 - Diagrama ASCII
 - Tabla de métricas
-- Notas de estado
+- Notas de status
 
 ### 4. **Progress Indicator**
-- Título: "Generando Documento 8 de 25"
+- Título: "Generando Document 8 de 25"
 - Barra de progreso visual (32%)
-- Botón Pause funcional
+- Button Pause funcional
 
 ---
 
@@ -165,7 +165,7 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 - [x] En header de chat (no separado)
 - [x] Barra de progreso visual
 - [x] Label con contador
-- [x] Botón pause
+- [x] Button pause
 
 ### ✅ File Tree
 - [x] Estructura jerárquica
@@ -175,22 +175,22 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Next Steps
 
-### Fase 1: Backend Integration (Ready to implement)
+### Phase 1: Backend Integration (Ready to implement)
 - Reemplazar `MockProjectData` con API calls
 - Implementar `ChatNotifier` para mensajes reales
 - Conectar `FileSystemService` para árbol de directorios
 - Implementar markdown rendering real
 
-### Fase 2: UI Polish
+### Phase 2: UI Polish
 - Animaciones de transición
 - Lazy loading de file tree
-- Virtual scrolling para archivos largos
+- Virtual scrolling para files largos
 - Temas oscuro/claro dinámicos
 
-### Fase 3: Features Avanzadas
-- Edición inline de archivos
+### Phase 3: Features Avanzadas
+- Edición inline de files
 - Busca en file tree
 - Resizable columns
 - Persistencia de layout preferences
@@ -221,7 +221,7 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 
 1. **Datos Mock**: Todos los datos se cargan desde `MockProjectData`. Para conectar backend, solo cambiar los values sin modificar la estructura de widgets.
 
-2. **File System Screen**: `file_system_screen.dart` puede usarse como modal/dialog para seleccionar directorio de nuevo proyecto.
+2. **File System Screen**: `file_system_screen.dart` puede usarse como modal/dialog para seleccionar directorio de nuevo project.
 
 3. **Chat Screen**: `chat_screen.dart` no se utiliza. Puede conservarse como referencia histórica o ser eliminada.
 
@@ -229,9 +229,9 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 
 ---
 
-## 🎯 Estado Final
+## 🎯 Status Final
 
-| Componente | Estado | Notas |
+| Componente | Status | Notas |
 |-----------|--------|-------|
 | Layout 4 columnas | ✅ | Completo y funcional |
 | Mock data | ✅ | Escalable y organizado |
@@ -243,4 +243,4 @@ String _fileContent = MockProjectData.mockMarkdownContent;
 
 ---
 
-**Proyecto listo para integración backend. ✨**
+**Project listo para integración backend. ✨**

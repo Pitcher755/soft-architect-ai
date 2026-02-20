@@ -1,4 +1,4 @@
-# 📝 Imports en Tests Centralizados - Patrón Monorepo
+# 📝 Imports en Pruebas Centralizados - Patrón Monorepo
 
 > **Fecha:** 3 de febrero de 2026
 > **Estado:** ✅ Implementado y Verificado
@@ -15,7 +15,7 @@
 
 ## El Problema
 
-Cuando los tests están **centralizados** en `/tests/` pero los sources están en `src/client/lib/`, hay un conflicto de contexto:
+Cuando los pruebas están **centralizados** en `/pruebas/` pero los sources están en `src/client/lib/`, hay un conflicto de contexto:
 
 ```
 Ubicación del Test:
@@ -33,7 +33,7 @@ Problema:
 
 ## La Solución
 
-**Usar Relative Imports** desde la ubicación del test:
+**Usar Relative Imports** desde la ubicación del prueba:
 
 ```dart
 // ✅ CORRECTO: Import relativo desde tests
@@ -47,13 +47,13 @@ import 'package:softarchitect_ai/features/project_shell/domain/use_cases/my_use_
 
 1. **Relative Import:** `../../../../src/client/lib/...`
    - Resuelve desde la ubicación actual del archivo
-   - Funciona desde cualquier lugar del filesystem
+   - Funciona desde cualquier lugar del archivosystem
    - No depende del contexto del package
 
 2. **Package Import:** `package:softarchitect_ai/...`
    - Solo funciona dentro del scope del `pubspec.yaml`
    - Requiere que el analyzer esté dentro del package
-   - Los tests centralizados están FUERA del package
+   - Los pruebas centralizados están FUERA del package
 
 ---
 
@@ -61,7 +61,7 @@ import 'package:softarchitect_ai/features/project_shell/domain/use_cases/my_use_
 
 ### Resolución de Paths
 
-Cuando Flutter ejecuta un test con un import relativo:
+Cuando Flutter ejecuta un prueba con un import relativo:
 
 ```dart
 // tests/unit/flutter/domain/my_test.dart
@@ -83,14 +83,14 @@ src/client/lib/features/my_file.dart    (¡ENCONTRADO!)
 
 ### Conteo de Niveles
 
-Desde cualquier ubicación de test, el patrón es consistente:
+Desde cualquier ubicación de prueba, el patrón es consistente:
 
-| Ubicación del Test | Niveles Arriba | Path a `src/client/lib/` |
+| Ubicación del Prueba | Niveles Arriba | Path a `src/client/lib/` |
 |---|---|---|
-| `tests/unit/flutter/domain/` | 4 | `../../../../src/client/lib/` |
-| `tests/unit/flutter/data/` | 4 | `../../../../src/client/lib/` |
-| `tests/fixtures/` | 2 | `../../src/client/lib/` |
-| `tests/mocks/` | 2 | `../../src/client/lib/` |
+| `pruebas/unit/flutter/domain/` | 4 | `../../../../src/client/lib/` |
+| `pruebas/unit/flutter/data/` | 4 | `../../../../src/client/lib/` |
+| `pruebas/fixtures/` | 2 | `../../src/client/lib/` |
+| `pruebas/mocks/` | 2 | `../../src/client/lib/` |
 
 ---
 
@@ -124,7 +124,7 @@ soft-architect-ai/                              (raíz monorepo)
         └── project_fixtures.dart
 ```
 
-### Path Relativo desde Test
+### Path Relativo desde Prueba
 
 ```dart
 // tests/unit/flutter/domain/my_use_case_test.dart
@@ -144,7 +144,7 @@ import '../../../../src/client/lib/features/project_shell/domain/use_cases/my_us
 
 ## Ejemplos Prácticos
 
-### Domain Layer Tests
+### Domain Layer Pruebas
 
 ```dart
 // tests/unit/flutter/domain/project_validation_use_case_test.dart
@@ -158,7 +158,7 @@ void main() {
 }
 ```
 
-### Data Layer Tests
+### Data Layer Pruebas
 
 ```dart
 // tests/unit/flutter/data/sqlite_data_source_test.dart
@@ -188,18 +188,18 @@ final testProject = Project(...);
 
 ## ✅ Archivos Actualizados
 
-| Archivo | Imports Corregidos | Status |
+| Archivo | Imports Corregidos | Estado |
 |---|---|---|
-| `tests/unit/flutter/domain/project_validation_use_case_test.dart` | ✅ | Ready |
-| `tests/unit/flutter/domain/directory_tree_use_case_test.dart` | ✅ | Ready |
-| `tests/unit/flutter/domain/file_search_use_case_test.dart` | ✅ | Ready |
-| `tests/unit/flutter/data/sqlite_data_source_test.dart` | ✅ | Ready |
-| `tests/unit/flutter/data/project_repository_impl_test.dart` | ✅ | Ready |
-| `tests/fixtures/project_fixtures.dart` | ✅ | Ready |
+| `pruebas/unit/flutter/domain/proyecto_validation_use_case_prueba.dart` | ✅ | Ready |
+| `pruebas/unit/flutter/domain/directory_tree_use_case_prueba.dart` | ✅ | Ready |
+| `pruebas/unit/flutter/domain/archivo_search_use_case_prueba.dart` | ✅ | Ready |
+| `pruebas/unit/flutter/data/sqlite_data_source_prueba.dart` | ✅ | Ready |
+| `pruebas/unit/flutter/data/proyecto_repository_impl_prueba.dart` | ✅ | Ready |
+| `pruebas/fixtures/proyecto_fixtures.dart` | ✅ | Ready |
 
 ---
 
-## 🚀 Ejecución de Tests
+## 🚀 Ejecución de Pruebas
 
 ### Con Imports Corregidos
 
@@ -215,10 +215,10 @@ cd ../..
 
 ### Ventajas de Este Patrón
 
-1. ✅ **Tests Centralizados:** Única fuente de verdad en `/tests`
+1. ✅ **Pruebas Centralizados:** Única fuente de verdad en `/pruebas`
 2. ✅ **Relative Imports:** Funcionan desde cualquier ubicación
 3. ✅ **Mantenible:** Paths claros y predecibles
-4. ✅ **Escalable:** Nuevos tests siguen el mismo patrón
+4. ✅ **Escalable:** Nuevos pruebas siguen el mismo patrón
 5. ✅ **Monorepo Compatible:** Patrón estándar de la industria
 
 ---
@@ -227,4 +227,4 @@ cd ../..
 
 - [MONOREPO_TESTING_ARCHITECTURE.es.md](../02-SETUP_DEV/MONOREPO_TESTING_ARCHITECTURE.es.md)
 - [MONOREPO_TESTING_ARCHITECTURE.en.md](../02-SETUP_DEV/MONOREPO_TESTING_ARCHITECTURE.en.md)
-- [tests/README.md](../../tests/README.md)
+- [pruebas/README.md](../../pruebas/README.md)

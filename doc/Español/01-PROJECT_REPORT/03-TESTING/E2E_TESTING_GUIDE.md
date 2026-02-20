@@ -13,7 +13,7 @@
 - [Paso 1: Levantar Backend en Docker](#paso-1-levantar-backend-en-docker)
 - [Paso 2: Lanzar Frontend con Backend Real](#paso-2-lanzar-frontend-con-backend-real)
 - [Paso 3: Validación Visual](#paso-3-validación-visual)
-- [Paso 4: Test de Graceful Degradation](#paso-4-test-de-graceful-degradation)
+- [Paso 4: Prueba de Graceful Degradation](#paso-4-prueba-de-graceful-degradation)
 - [Troubleshooting](#troubleshooting)
 - [Criterios de Aceptación](#criterios-de-aceptación)
 
@@ -136,7 +136,7 @@ flutter run -d chrome \
 
 ## Paso 3: Validación Visual
 
-### Test 1: Streaming de Mensajes ✅
+### Prueba 1: Streaming de Mensajes ✅
 
 1. Abrir la aplicación Flutter (Linux Desktop o Chrome)
 2. Navegar al panel de chat (lado derecho)
@@ -150,7 +150,7 @@ flutter run -d chrome \
 - ✅ El mensaje se completa en ~5-10 segundos
 - ✅ No hay errores en el banner superior
 
-### Test 2: Múltiples Mensajes Consecutivos ✅
+### Prueba 2: Múltiples Mensajes Consecutivos ✅
 
 1. Enviar: **"Explícame el patrón MVC"**
 2. Esperar a que termine la respuesta
@@ -161,7 +161,7 @@ flutter run -d chrome \
 - ✅ Cada respuesta se renderiza con streaming
 - ✅ El scroll se ajusta automáticamente al último mensaje
 
-### Test 3: Manejo de Errores (ErrorEvent) ✅
+### Prueba 3: Manejo de Errores (ErrorEvent) ✅
 
 1. Detener el backend: `docker stop sa_api`
 2. Enviar: **"Hola"**
@@ -173,11 +173,11 @@ flutter run -d chrome \
 
 ---
 
-## Paso 4: Test de Graceful Degradation
+## Paso 4: Prueba de Graceful Degradation
 
 ### Escenario: ChromaDB Caído (Fallback Template)
 
-Este es el test crítico de **HU-4.4** para validar resiliencia.
+Este es el prueba crítico de **HU-4.4** para validar resiliencia.
 
 ```bash
 # 1. Detener ChromaDB (simulando fallo de base de datos vectorial)
@@ -203,7 +203,7 @@ docker logs sa_api --tail 20
 docker start sa_chromadb
 ```
 
-**Resultado Esperado:**
+**Resultadoado Esperado:**
 - El chat **NO se rompe** cuando ChromaDB falla
 - El usuario recibe una respuesta (aunque sin contexto del proyecto)
 - El sistema continúa operativo (Graceful Degradation ✅)
@@ -285,14 +285,14 @@ const bool _useRealBackend = true; // Forzar uso de backend real
 - [x] `ChatNotifier.sendMessageStream()` implementado
 - [x] `chatNotifierProvider` disponible para widgets
 
-### ✅ Fase 2: UI Integration
+### ✅ Fase 2: UI Integración
 
 - [x] `ChatPanelWidget` convertido a `ConsumerStatefulWidget`
 - [x] `ref.watch(chatNotifierProvider)` obtiene mensajes del estado
 - [x] Botón de envío llama `ref.read(chatNotifierProvider.notifier).sendMessageStream()`
 - [x] `ErrorBannerWidget` se muestra cuando `state.hasError == true`
 
-### ✅ Fase 3: E2E Tests
+### ✅ Fase 3: E2E Pruebas
 
 - [x] Backend Docker funcional (sa_api, sa_chromadb, sa_ollama)
 - [x] Flutter se conecta a `http://localhost:8000/api/v1/chat/stream`
@@ -303,7 +303,7 @@ const bool _useRealBackend = true; // Forzar uso de backend real
 
 ## 🎯 Validación Final
 
-Si completaste todos los tests anteriores con éxito:
+Si completaste todos los pruebas anteriores con éxito:
 
 ```
 ✅ La conexión E2E está funcional
@@ -313,7 +313,7 @@ Si completaste todos los tests anteriores con éxito:
 ✅ HU-4.4 está lista para merge
 ```
 
-**Siguiente paso:** Ejecutar suite completa de tests y Push to GitHub.
+**Siguiente paso:** Ejecutar suite completa de pruebas y Push to GitHub.
 
 ```bash
 # Ejecutar tests completos
@@ -329,6 +329,6 @@ git push origin feature/rag-llm-resilience
 
 ## 📞 Contacto y Soporte
 
-- **Referencia:** HU-4.4 RAG/LLM Resilience Extensions
-- **Documentación:** `doc/03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/`
-- **Manual Testing Results:** `doc/01-PROJECT_REPORT/MANUAL_TESTING_RESULTS.md`
+- **Referencia:** HU-4.4 RAG/LLM Resiliencia Extensions
+- **Documentoación:** `doc/03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/`
+- **Manual Pruebaing Resultados:** `doc/01-PROJECT_REPORT/MANUAL_TESTING_RESULTS.md`

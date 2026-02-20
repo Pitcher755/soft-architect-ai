@@ -12,14 +12,14 @@
 - ❌ `src/server/services/rag/vector_store.py` - Main VectorStoreService class
 - ❌ `src/server/scripts/ingest.py` - Manual ingestion script
 
-### Tests
-- ✅ `src/server/tests/unit/services/rag/test_vector_store.py` - Unit tests for VectorStoreService (FASE RED completa)
-- ❌ `tests/test_ingest_script.py` - Integration tests for ingestion
+### Pruebas
+- ✅ `src/server/pruebas/unit/services/rag/prueba_vector_store.py` - Unit pruebas for VectorStoreService (FASE RED completa)
+- ❌ `pruebas/prueba_ingest_script.py` - Integración pruebas for ingestion
 
 ### Configuración
-- ❌ `core/config.py` - ChromaDB configuration updates
+- ❌ `core/config.py` - ChromaDB configuración updates
 - ❌ `infrastructure/docker-compose.yml` - Volume mounts for ChromaDB data
 
-### Documentación
-- ❌ `doc/01-PROJECT_REPORT/VECTORIZATION_TEST_REPORT.md` - Test results
+### Documentoación
+- ❌ `doc/01-PROJECT_REPORT/VECTORIZATION_TEST_REPORT.md` - Prueba results
 - ❌ `doc/02-SETUP_DEV/VECTORIZATION_GUIDE.md` - Usage guide

@@ -110,7 +110,7 @@ final projectProvider = StateNotifierProvider<ProjectNotifier, ProjectState>(
 
 ## 📋 Estructuras de Datos que NO Cambian
 
-### 1. **FileNode**
+### 1. **ArchivoNode**
 ```dart
 class FileNode {
   final String id;
@@ -148,7 +148,7 @@ class ProgressData {
 
 ## 🔗 Ejemplo Real: Flujo Completo
 
-### Mock: project_shell_screen.dart (HOY)
+### Mock: proyecto_shell_screen.dart (HOY)
 ```dart
 class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   late FileNode _selectedNode;
@@ -168,7 +168,7 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
 }
 ```
 
-### Backend: project_shell_screen.dart (FUTURO)
+### Backend: proyecto_shell_screen.dart (FUTURO)
 ```dart
 class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   @override
@@ -336,8 +336,8 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
 
 | Beneficio | Explicación |
 |-----------|------------|
-| **Testeable** | Mockea Repository, widgets no cambian |
-| **Escalable** | Añade endpoints sin tocar Presentation |
+| **Pruebaeable** | Mockea Repository, widgets no cambian |
+| **Escalable** | Añade endpoints sin tocar Presentación |
 | **Flexible** | Cambia entre mock/backend con flag |
 | **Mantenible** | Cambios backend no afectan UI |
 | **Independiente** | Develop frontend mientras backend se construye |
@@ -369,12 +369,12 @@ ref.read(projectProvider.notifier).loadProject(projectPath);
 
 El mock es perfecto para:
 - ✅ Desarrollo de UI
-- ✅ Testing de widgets
+- ✅ Pruebaing de widgets
 - ✅ Demo interactivo
 - ✅ Base para backend
 
 Cuando el backend esté listo:
-- ✅ Reemplaza MockProjectData con API calls
+- ✅ Reemplaza MockProyectoData con API calls
 - ✅ Widgets NO CAMBIAN
 - ✅ Aplicación funciona igual
 

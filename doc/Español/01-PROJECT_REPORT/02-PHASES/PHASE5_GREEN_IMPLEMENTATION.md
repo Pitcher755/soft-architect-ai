@@ -1,8 +1,8 @@
-# 🟢 FASE 5: Integration The Gate (TDD GREEN)
+# 🟢 FASE 5: Integración The Gate (TDD GREEN)
 
 > **Fecha:** 6 de febrero de 2026
-> **Estado:** 🟢 GREEN - Implementation Complete (Mocks Ready)
-> **Objetivo:** Conectar Frontend → Backend → FileSystem (HU-3.2)
+> **Estado:** 🟢 GREEN - Implementación Complete (Mocks Ready)
+> **Objetivo:** Conectar Frontend → Backend → ArchivoSystem (HU-3.2)
 
 ---
 
@@ -11,7 +11,7 @@
 - [1. Resumen Ejecutivo](#1-resumen-ejecutivo)
 - [2. Implementación Completada](#2-implementación-completada)
 - [3. Arquitectura Integrada](#3-arquitectura-integrada)
-- [4. Mocks y Testing](#4-mocks-y-testing)
+- [4. Mocks y Pruebaing](#4-mocks-y-pruebaing)
 - [5. Checklist de Validación](#5-checklist-de-validación)
 - [6. Próximos Pasos](#6-próximos-pasos)
 
@@ -19,7 +19,7 @@
 
 ## 1. Resumen Ejecutivo
 
-### 📊 Status
+### 📊 Estado
 
 ```
 FASE 5 GREEN - IMPLEMENTATION COMPLETE
@@ -48,9 +48,9 @@ Commits: 2
 
 ## 2. Implementación Completada
 
-### 🏗️ A. FileSystemService
+### 🏗️ A. ArchivoSystemService
 
-**Ubicación:** `src/client/lib/project_shell/domain/services/file_system_service.dart`
+**Ubicación:** `src/client/lib/proyecto_shell/domain/services/archivo_system_service.dart`
 
 **Interfaz Abstracta:**
 ```dart
@@ -82,10 +82,10 @@ abstract class FileSystemService {
 }
 ```
 
-**Implementación (FileSystemServiceImpl):**
-- ✅ Full CRUD operations on filesystem
+**Implementación (ArchivoSystemServiceImpl):**
+- ✅ Full CRUD operations on archivosystem
 - ✅ Directory creation with recursion
-- ✅ Error handling with FileSystemException
+- ✅ Error handling with ArchivoSystemException
 - ✅ Flush writes for data safety
 - ✅ Proper async I/O patterns (ignore slow_async_io justified)
 
@@ -97,12 +97,12 @@ abstract class FileSystemService {
 
 **Nuevas Métodos:**
 
-1. **`setProjectPath(String path)`**
-   - Store project context in state
-   - Used by validateProposal() for file saving
+1. **`setProyectoPath(String path)`**
+   - Store proyecto context in state
+   - Used by validateProposal() for archivo saving
 
 2. **`sendMessage(String message)` - Expanded**
-   - Dynamic document type mapping (25 docs)
+   - Dynamic documento type mapping (25 docs)
    - Full streaming pipeline with StringBuffer
    - Automatic proposal creation
    - Complete error handling
@@ -128,13 +128,13 @@ abstract class FileSystemService {
    - Error recovery mechanism
    - Re-send last user message
 
-7. **`_triggerNextQuestion()` - Auto-advance**
-   - Generate contextual question for next doc
+7. **`_triggerSiguienteQuestion()` - Auto-advance**
+   - Generate contextual question for siguiente doc
    - Add as system message to chat
 
 8. **`_getDocTypeForCurrentIndex()`**
-   - Maps index (1-25) to document type
-   - 25 document workflow:
+   - Maps index (1-25) to documento type
+   - 25 documento workflow:
      ```
      1-3:   PROJECT_MANIFESTO, VISION_PROMISE, USER_JOURNEY
      4-9:   EXECUTIVE_SUMMARY, FUNCTIONAL_REQUIREMENTS, etc.
@@ -143,7 +143,7 @@ abstract class FileSystemService {
      ```
 
 9. **`_getSectionForDocType()`**
-   - Maps doc type to project directory:
+   - Maps doc type to proyecto directory:
      ```
      10-CONTEXT (Project docs)
      20-REQUIREMENTS_AND_SPEC (Specs and standards)
@@ -152,7 +152,7 @@ abstract class FileSystemService {
      ```
 
 10. **`_getQuestionForDocType()`**
-    - Contextual prompts for each document type
+    - Contextual prompts for each documento type
     - Examples:
       - "¿Cuál es el propósito y valores principales?"
       - "¿Cuál es la arquitectura técnica del sistema?"
@@ -164,7 +164,7 @@ abstract class FileSystemService {
 **Ubicación:** `src/client/lib/features/chat/presentation/notifiers/streaming_state.dart`
 
 **Cambios:**
-- ✅ Added `projectPath: String?` field
+- ✅ Added `proyectoPath: String?` field
 - ✅ Enhanced `copyWith()` with `clearProposal` flag
 - ✅ All linting standards met
 
@@ -229,11 +229,11 @@ abstract class FileSystemService {
 
 ---
 
-## 4. Mocks y Testing
+## 4. Mocks y Pruebaing
 
 ### 📝 A. Mock Services
 
-**Ubicación:** `tests/test/integration/mocks/mock_services.dart`
+**Ubicación:** `pruebas/prueba/integration/mocks/mock_services.dart`
 
 #### MockChatRepository
 ```dart
@@ -250,11 +250,11 @@ class MockChatRepository extends Mock implements ChatRepository {
 ```
 
 **Features:**
-- ✅ Document type-specific responses
+- ✅ Documento type-specific responses
 - ✅ Simulates streaming (token-by-token)
 - ✅ Fallback for unknown doc types
 
-#### MockFileSystemService
+#### MockArchivoSystemService
 ```dart
 class MockFileSystemService extends Mock implements FileSystemService {
   final Map<String, String> _fileStorage = {};
@@ -272,13 +272,13 @@ class MockFileSystemService extends Mock implements FileSystemService {
 ```
 
 **Features:**
-- ✅ In-memory file simulation
-- ✅ No actual disk I/O in tests
+- ✅ In-memory archivo simulation
+- ✅ No actual disk I/O in pruebas
 - ✅ Helper methods for assertions
 
-### 📝 B. Test Providers
+### 📝 B. Prueba Providers
 
-**Ubicación:** `tests/test/integration/mocks/test_providers.dart`
+**Ubicación:** `pruebas/prueba/integration/mocks/prueba_providers.dart`
 
 ```dart
 final testChatRepositoryProvider = Provider<ChatRepository>((ref) {
@@ -302,41 +302,41 @@ class TestMockHelper {
 
 ### ✅ Implementación
 
-- [x] FileSystemService (abstract + impl)
+- [x] ArchivoSystemService (abstract + impl)
 - [x] ChatNotifier con validación y guardar
-- [x] ChatState con project path
-- [x] 25-document workflow mapping
+- [x] ChatState con proyecto path
+- [x] 25-documento workflow mapping
 - [x] Auto-advance logic
 - [x] Error handling y recovery
 - [x] All linting standards met
 
-### ✅ Testing Infrastructure
+### ✅ Pruebaing Infraestructura
 
 - [x] MockChatRepository con responses
-- [x] MockFileSystemService con storage
-- [x] TestProviders para inyección
-- [x] TestMockHelper para assertions
+- [x] MockArchivoSystemService con storage
+- [x] PruebaProviders para inyección
+- [x] PruebaMockHelper para assertions
 
-### ✅ Integration Tests
+### ✅ Integración Pruebas
 
-- [x] Test 1: Full document generation cycle
+- [x] Prueba 1: Full documento generation cycle
   - [x] Navigation to chat
   - [x] User message input
   - [x] Streaming completion
   - [x] Proposal validation
-  - [x] FileSystem save
+  - [x] ArchivoSystem save
   - [x] Progress update
 
-- [x] Test 2: Error handling
+- [x] Prueba 2: Error handling
   - [x] Backend failure scenario
   - [x] Error message display
-  - [x] Retry button availability
+  - [x] Retry botón availability
 
 ### 🔲 Próxima Fase (REFACTOR/Backend)
 
 - [ ] Backend `/api/v1/chat/stream` endpoint (Python FastAPI)
 - [ ] HTTP client integration (dio or http package)
-- [ ] Navigation screen with "Nuevo Proyecto" button
+- [ ] Navigation screen with "Nuevo Proyecto" botón
 - [ ] Chat input widget
 - [ ] Toast/Snackbar component
 - [ ] Progress counter widget
@@ -346,14 +346,14 @@ class TestMockHelper {
 
 ## 6. Próximos Pasos
 
-### 🚀 FASE 6: REFACTOR & Backend Integration
+### 🚀 FASE 6: REFACTOR & Backend Integración
 
 **Orden Crítico:**
 
 1. **Backend Setup** (BLOCKER)
    - Implement `/api/v1/chat/stream` endpoint
    - Connect to RAG service (Ollama)
-   - Test streaming responses
+   - Prueba streaming responses
 
 2. **Frontend HTTP Client**
    - Add `dio` or `http` package
@@ -361,17 +361,17 @@ class TestMockHelper {
    - Error handling for network failures
 
 3. **Navigation & UI**
-   - Create home screen
-   - Add "Nuevo Proyecto" button
+   - Crear home screen
+   - Add "Nuevo Proyecto" botón
    - Chat screen layout
    - Toast/Snackbar components
 
 4. **Replace Mocks with Real**
    - Update main.dart providers
    - Point to backend URL
-   - Integration test execution
+   - Integración prueba execution
 
-### 📊 Expected Test Results (After FASE 6)
+### 📊 Expected Prueba Resultados (After FASE 6)
 
 ```
 Integration Tests: 2
@@ -393,15 +393,15 @@ Documentation:
 ## 📚 Archivos Modificados
 
 ### Creados
-- `src/client/lib/project_shell/domain/services/file_system_service.dart` (157 lines)
-- `src/client/lib/project_shell/domain/exports.dart` (2 lines)
-- `tests/test/integration/mocks/mock_services.dart` (136 lines)
-- `tests/test/integration/mocks/test_providers.dart` (31 lines)
+- `src/client/lib/proyecto_shell/domain/services/archivo_system_service.dart` (157 lines)
+- `src/client/lib/proyecto_shell/domain/exports.dart` (2 lines)
+- `pruebas/prueba/integration/mocks/mock_services.dart` (136 lines)
+- `pruebas/prueba/integration/mocks/prueba_providers.dart` (31 lines)
 
 ### Modificados
 - `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart` (+200 lines)
-- `src/client/lib/features/chat/presentation/notifiers/streaming_state.dart` (+projectPath field)
-- `tests/test/integration/features/chat/chat_flow_test.dart` (+error handling)
+- `src/client/lib/features/chat/presentation/notifiers/streaming_state.dart` (+proyectoPath field)
+- `pruebas/prueba/integration/features/chat/chat_flow_prueba.dart` (+error handling)
 
 ### Total: 5 archivos nuevos, 3 modificados, ~530 líneas de código
 
@@ -409,12 +409,12 @@ Documentation:
 
 ## 🔗 Referencias
 
-- [PHASE5_RED_ANALYSIS.md](../PHASE5_RED_ANALYSIS.md) - RED phase analysis
+- [PHASE5_RED_ANALYSIS.md](../PHASE5_RED_ANALYSIS.md) - RED fase análisis
 - `context/30-ARCHITECTURE/TECHNICAL_STACK.en.md` - Tech stack
 - `AGENTS.md` - Development standards
 
 ---
 
 **Autor:** ArchitectZero (AI Agent)
-**Estado:** 🟢 GREEN - Ready for Backend Integration
+**Estado:** 🟢 GREEN - Preparado para Backend Integración
 **Próximo:** Implement Backend `/api/v1/chat/stream` endpoint (FASE 6)

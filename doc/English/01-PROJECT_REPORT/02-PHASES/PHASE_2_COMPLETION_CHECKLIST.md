@@ -1,20 +1,20 @@
 # ✅ PHASE 2: Backend SSE Streaming - Checklist de Completitud
 
-**Estado Final:** 🟢 **GREEN - 100% COMPLETO**
+**Status Final:** 🟢 **GREEN - 100% COMPLETO**
 
 ---
 
 ## 5.1 Implementar Endpoint SSE ✅
 
 ### Requisitos:
-- [x] Archivo: `src/server/app/api/v1/chat.py` creado y completo
+- [x] File: `src/server/app/api/v1/chat.py` creado y completo
 - [x] Clases Pydantic definidas:
   - [x] `ChatMessage` - modelo para mensajes (role, content)
   - [x] `GenerateRequest` - modelo para solicitud (message, doc_type, project_context, chat_history)
 - [x] Endpoint POST `/api/v1/chat/generate` implementado
 - [x] SSE streaming response con `StreamingResponse`
 - [x] Async generator `_stream_generator()` que:
-  - [x] Consulta al orquestador
+  - [x] Consulta al orqustatusr
   - [x] Envía eventos "token" con datos JSON
   - [x] Envía evento "done" al finalizar
   - [x] Maneja excepciones RAGError y LLMError
@@ -36,9 +36,9 @@ assert "event: error" in response.text  # Cuando hay error
 
 ---
 
-## 5.2 Completar Implementación Orchestrator ✅
+## 5.2 Completar Implementation Orchestrator ✅
 
-### Archivo: `src/server/app/services/rag/sequential_orchestrator.py`
+### File: `src/server/app/services/rag/sequential_orchestrator.py`
 
 ### Método `generate()` ✅
 ```python
@@ -85,11 +85,11 @@ def _build_prompt(
     context: dict[str, Any],
 ) -> str:
 ```
-- [x] Extrae documentos de RAG
+- [x] Extrae documents de RAG
 - [x] Aplana listas anidadas correctamente
 - [x] Extrae chat_history del contexto
 - [x] Renderiza template con variables:
-  - [x] `context` (documentos RAG)
+  - [x] `context` (documents RAG)
   - [x] `user_input` (entrada usuario)
   - [x] `chat_history` (historial)
 - [x] Retorna prompt final como string
@@ -103,7 +103,7 @@ def _build_prompt(
 cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpoints.py -v
 ```
 
-### Resultados:
+### Results:
 ```
 ============================== 11 passed in 0.22s ========================
 
@@ -120,7 +120,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 ✅ test_generate_endpoint_handles_long_token_sequences
 ```
 
-**Estado:** 🟢 **TODOS LOS TESTS PASAN EN VERDE**
+**Status:** 🟢 **TODOS LOS TESTS PASAN EN VERDE**
 
 ---
 
@@ -189,7 +189,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 
 ---
 
-## Estado de CI/CD ✅
+## Status de CI/CD ✅
 
 ### Pre-commit Checks
 - [x] Tests pasan (11/11)
@@ -206,7 +206,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 
 ## Resumen Ejecutivo
 
-| Aspecto | Estado | Detalles |
+| Aspecto | Status | Detalles |
 |---------|--------|----------|
 | **Endpoint SSE** | ✅ | POST /api/v1/chat/generate implementado |
 | **Streaming** | ✅ | Async generator funcional, tokens en vivo |
@@ -223,7 +223,7 @@ cd src/server && python -m pytest ../../tests/python/unit/api/v1/test_chat_endpo
 
 **Objetivo:** Implementar Frontend State Machine con Riverpod
 
-- [ ] Crear estructura Riverpod (providers, state classes)
+- [ ] Create estructura Riverpod (providers, state classes)
 - [ ] State machine para orquestación de UI
 - [ ] Streaming de tokens en tiempo real
 - [ ] Error UI y recovery

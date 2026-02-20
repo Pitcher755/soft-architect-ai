@@ -1,7 +1,7 @@
 ## 📦 Dependencias Flutter - SoftArchitect AI Desktop Client
 
-> **Fecha:** 3 de febrero de 2026
-> **Estado:** ✅ Instaladas y configuradas
+> **Date:** 3 de febrero de 2026
+> **Status:** ✅ Instaladas y configuradas
 > **Plataforma:** Desktop (Linux, Windows, macOS) + Web (demo)
 
 ---
@@ -14,7 +14,7 @@
 | **sqflite_common_ffi** | ^2.4.0+2 | Backend FFI para desktop | 🖥️ Desktop (CRÍTICO) |
 | **sqlite3** | ^3.1.4 | Motor SQLite nativo | 🖥️ Desktop (dependencia de sqflite_common_ffi) |
 | **path** | ^1.9.1 | Manejo de rutas (multiplataforma) | Todos |
-| **file_picker** | ^10.3.10 | Diálogo de selección de carpetas | Todos |
+| **file_picker** | ^10.3.10 | Diálogo de selección de folders | Todos |
 | **flutter_riverpod** | ^3.1.0 | State management reactivo | Todos |
 | **flutter_markdown** | ^0.7.7+1 | Renderizado Markdown | Todos |
 | **highlight** | ^0.7.0 | Syntax highlighting para código | Todos |
@@ -25,7 +25,7 @@
 
 ---
 
-## 🔧 Configuración por Plataforma
+## 🔧 Configuration por Plataforma
 
 ### 🖥️ Desktop (Linux, Windows, macOS)
 
@@ -52,8 +52,8 @@ void main() async {
 }
 ```
 
-**Archivo de inicialización:**
-- `lib/core/database_initializer.dart` (configuración automática de sqflite_common_ffi)
+**File de inicialización:**
+- `lib/core/database_initializer.dart` (configuration automática de sqflite_common_ffi)
 
 ### 📱 Mobile (iOS/Android) - Futuro
 
@@ -70,7 +70,7 @@ Archivo: /data/data/com.example.softarchitect_ai/databases/user_data.db
 
 ---
 
-## 🚀 Verificación de Instalación
+## 🚀 Verification de Instalación
 
 ```bash
 # Desde src/client/
@@ -91,15 +91,15 @@ flutter run -d macos      # macOS
 
 ### ✅ Database-First Design
 
-1. **SQLite Local:** `user_data.db` contiene SOLO metadatos de proyectos
+1. **SQLite Local:** `user_data.db` contiene SOLO metadatos de projects
 2. **Ownership:** 100% Flutter (Backend NO toca la DB)
-3. **Persistence:** Archivos Markdown + sqflite local
+3. **Persistence:** Files Markdown + sqflite local
 4. **Backend:** Stateless RAG (ChromaDB en Docker)
 
 ### 🔐 Seguridad de Datos
 
 - ✅ No se envía `user_data.db` al Backend
-- ✅ Backend NO conoce las rutas de proyectos
+- ✅ Backend NO conoce las rutas de projects
 - ✅ Cifrado local de sensibles (futuro)
 - ✅ Validación de rutas antes de dar al Backend
 
@@ -132,7 +132,7 @@ xcode-select --install
 
 ### Database file not created
 
-**Causa:** Carpeta de datos no existe
+**Causa:** Folder de datos no existe
 **Solución:** DatabaseHelper crea automáticamente en `getDatabasesPath()`
 
 ---

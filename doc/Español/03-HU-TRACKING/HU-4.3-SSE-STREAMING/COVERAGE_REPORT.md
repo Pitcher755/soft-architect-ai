@@ -1,56 +1,56 @@
-# Coverage Report: HU-4.3 SSE Streaming (Phase 2)
+# Coverage Report: HU-4.3 SSE Streaming (Fase 2)
 
-> **Status:** ✅ Phase 2 Complete
+> **Estado:** ✅ Fase 2 Complete
 > **Coverage:** 92% (API  + Service layers)
-> **Date:** 2026-02-15
+> **Fecha:** 2026-02-15
 > ** Author:** ArchitectZero
 
 ---
 
 ## 📊 Summary
 
-| Layer | Coverage | Lines | Missed | Status |
+| Layer | Coverage | Lines | Missed | Estado |
 |-------|----------|-------|--------|--------|
 | **API Layer** (`app/api/v1/chat.py`) | 95% | 95 | 5 | ✅ Excellent |
 | **Service Layer** (`app/services/rag/orchestrator.py`) | 90% | 195 | 19 | ✅ Excellent |
-| **Infrastructure Layer** (`app/infrastructure/llm/ollama_client.py`) | 90% | 223 | 22 | ✅ Excellent |
+| **Infraestructura Layer** (`app/infrastructure/llm/ollama_client.py`) | 90% | 223 | 22 | ✅ Excellent |
 | **Dependencies** (`app/api/dependencies.py`) | 88% | 81 | 10 | ✅ Good |
 | **Overall Backend** | **92%** | **594** | **56** | ✅ **Target Met (≥85%)** |
 
 ---
 
-## 🎯 Phase 2 Test Coverage
+## 🎯 Fase 2 Prueba Coverage
 
-### Integration Tests (API Layer)
+### Integración Pruebas (API Layer)
 
-**File:** `tests/server/integration/api/v1/test_chat_stream_endpoint.py`
+**Archivo:** `pruebas/server/integration/api/v1/prueba_chat_stream_endpoint.py`
 
-| Test | Purpose | LOC | Status |
+| Prueba | Purpose | LOC | Estado |
 |------|---------|-----|--------|
-| `test_chat_stream_returns_sse_events()` | Verify SSE format compliance | 45 | ✅ Pass |
-| `test_chat_stream_content_type_header()` | Validate `text/event-stream` header | 28 | ✅ Pass |
-| `test_chat_stream_handles_empty_response()` | Test empty LLM response edge case | 32 | ✅ Pass |
-| `test_chat_stream_emits_done_event()` | Verify done event metadata | 38 | ✅ Pass |
-| `test_chat_stream_error_event_on_exception()` | Test error event emission | 35 | ✅ Pass |
-| `test_chat_stream_requires_authentication()` | Enforce API key validation | 24 | ✅ Pass |
-| **Total** | **6 tests** | **202** | **100% Pass** |
+| `prueba_chat_stream_returns_sse_events()` | Verify SSE format compliance | 45 | ✅ Pass |
+| `prueba_chat_stream_content_type_header()` | Validate `text/event-stream` header | 28 | ✅ Pass |
+| `prueba_chat_stream_handles_empty_response()` | Prueba empty LLM response edge case | 32 | ✅ Pass |
+| `prueba_chat_stream_emits_done_event()` | Verify done event metadata | 38 | ✅ Pass |
+| `prueba_chat_stream_error_event_on_exception()` | Prueba error event emission | 35 | ✅ Pass |
+| `prueba_chat_stream_requires_authentication()` | Enforce API key validation | 24 | ✅ Pass |
+| **Total** | **6 pruebas** | **202** | **100% Pass** |
 
-### Unit Tests (LLM Streaming - Phase 1)
+### Unit Pruebas (LLM Streaming - Fase 1)
 
-**File:** `tests/server/unit/infrastructure/llm/test_ollama_client_streaming.py`
+**Archivo:** `pruebas/server/unit/infrastructure/llm/prueba_ollama_client_streaming.py`
 
-| Test | Purpose | LOC | Status |
+| Prueba | Purpose | LOC | Estado |
 |------|---------|-----|--------|
-| `test_stream_generate_yields_tokens()` | Verify NDJSON token parsing | 42 | ✅ Pass |
-| `test_stream_generate_handles_ndjson()` | Test malformed JSON handling | 38 | ✅ Pass |
-| `test_stream_generate_empty_response()` | Edge case: empty stream | 30 | ✅ Pass |
-| `test_stream_generate_connection_error()` | Test LLM connection failures | 35 | ✅ Pass |
-| `test_stream_generate_timeout()` | Test timeout handling | 32 | ✅ Pass |
-| **Total** | **5 tests** | **177** | **100% Pass** |
+| `prueba_stream_generate_yields_tokens()` | Verify NDJSON token parsing | 42 | ✅ Pass |
+| `prueba_stream_generate_handles_ndjson()` | Prueba malformed JSON handling | 38 | ✅ Pass |
+| `prueba_stream_generate_empty_response()` | Edge case: empty stream | 30 | ✅ Pass |
+| `prueba_stream_generate_connection_error()` | Prueba LLM connection failures | 35 | ✅ Pass |
+| `prueba_stream_generate_timeout()` | Prueba timeout handling | 32 | ✅ Pass |
+| **Total** | **5 pruebas** | **177** | **100% Pass** |
 
 ---
 
-## 📈 Coverage Breakdown by Component
+## 📈 Coverage Desglose by Component
 
 ### 1. API Router (`app/api/v1/chat.py`)
 
@@ -67,7 +67,7 @@
 
 **Uncovered Paths:**
 - ❌ Generic exception handler (line 145)
-  - **Reason:** Requires unexpected exceptions (not in test scope)
+  - **Reason:** Requires unexpected exceptions (not in prueba scope)
   - **Risk:** Low (catch-all for unforeseen errors)
 
 **Coverage Detail:**
@@ -99,7 +99,7 @@ app/api/v1/chat.py                  90/95    95%
 **Uncovered Paths:**
 - ❌ RAGRetrievalError exception branch (lines 82-88)
   - **Reason:** Vector store stub never fails
-  - **Risk:** Medium (should test with real ChromaDB in Phase 5)
+  - **Risk:** Medium (should prueba with real ChromaDB in Fase 5)
 - ❌ Generic exception handler in streaming (lines 175-184)
   - **Reason:** Requires unexpected orchestrator errors
   - **Risk:** Low (catch-all for safety)
@@ -132,11 +132,11 @@ app/services/rag/orchestrator.py         176/195    90%
 
 **Uncovered Paths:**
 - ❌ HTTP 500 error handling (lines 165-168)
-  - **Reason:** Requires Ollama server errors (not in unit tests)
-  - **Risk:** Low (covered by integration tests)
+  - **Reason:** Requires Ollama server errors (not in unit pruebas)
+  - **Risk:** Low (covered by integration pruebas)
 - ❌ Stream interruption mid-response (lines 188-192)
   - **Reason:** Requires network interruption simulation
-  - **Risk:** Medium (should add in Phase 5)
+  - **Risk:** Medium (should add in Fase 5)
 
 **Coverage Detail:**
 ```
@@ -164,7 +164,7 @@ app/infrastructure/llm/ollama_client.py    201/223    90%
 
 **Uncovered Paths:**
 - ❌ Orchestrator initialization failure (lines 75-78)
-  - **Reason:** Requires missing LLM client (not in test scope)
+  - **Reason:** Requires missing LLM client (not in prueba scope)
   - **Risk:** Low (validated in CI/CD)
 
 **Coverage Detail:**
@@ -178,9 +178,9 @@ app/api/dependencies.py                 71/81     88%
 
 ---
 
-## 🧪 Test Execution Summary
+## 🧪 Prueba Execution Summary
 
-### All API v1 Tests
+### All API v1 Pruebas
 
 ```bash
 $ pytest tests/server/integration/api/v1/ -v
@@ -208,24 +208,24 @@ test_conversation_endpoints.py::test_list_conversations_with_pagination PASSED [
 ===================== 15 passed in 0.10s ====================
 ```
 
-**Result:** ✅ **15/15 tests passing (100%)**
+**Resultado:** ✅ **15/15 pruebas passing (100%)**
 
 ---
 
 ## 🔍 Code Quality Metrics
 
-### Static Analysis Results
+### Static Análisis Resultados
 
-| Tool | Status | Errors | Warnings | Notes |
+| Tool | Estado | Errors | Warnings | Notes |
 |------|--------|--------|----------|-------|
-| **Black** | ✅ Pass | 0 | 0 | All files formatted |
+| **Black** | ✅ Pass | 0 | 0 | All archivos formatted |
 | **Ruff** | ✅ Pass | 0 | 0 | 5 issues auto-fixed |
 | **Pyright** | ✅ Pass | 0 | 0 | Type safety validated |
-| **pytest** | ✅ Pass | 0 | 0 | 15/15 tests passing |
+| **pyprueba** | ✅ Pass | 0 | 0 | 15/15 pruebas passing |
 
 ### Type Safety
 
-**Pyright Analysis:**
+**Pyright Análisis:**
 ```bash
 $ pyright app/api/v1/chat.py app/services/rag/orchestrator.py
 0 errors, 0 warnings, 0 informations
@@ -238,30 +238,30 @@ $ pyright app/api/v1/chat.py app/services/rag/orchestrator.py
 
 ---
 
-## 📝 Coverage Analysis: Missing Paths
+## 📝 Coverage Análisis: Missing Paths
 
-### High-Priority Missing Coverage (Phase 5)
+### High-Priority Missing Coverage (Fase 5)
 
 1. **Vector Store Error Path** (orchestrator.py:82-88)
    - **Line:** RAGRetrievalError exception during vector search
-   - **Test Needed:** Mock vector store to raise exception
-   - **Priority:** Medium (ChromaDB integration test)
+   - **Prueba Needed:** Mock vector store to raise exception
+   - **Priority:** Medium (ChromaDB integration prueba)
 
 2. **Stream Interruption Handling** (ollama_client.py:188-192)
    - **Line:** Network interruption mid-stream
-   - **Test Needed:** Mock httpx to disconnect during streaming
+   - **Prueba Needed:** Mock httpx to disconnect during streaming
    - **Priority:** Medium (edge case, but possible)
 
-3. **Generic Exception Handlers** (multiple files)
+3. **Generic Exception Handlers** (multiple archivos)
    - **Lines:** Catch-all exception blocks
-   - **Test Needed:** Force unexpected exceptions
+   - **Prueba Needed:** Force unexpected exceptions
    - **Priority:** Low (safety net, hard to trigger)
 
 ### Low-Priority Missing Coverage
 
 1. **HTTP 500 Errors** (ollama_client.py:165-168)
    - **Reason:** Requires Ollama server errors
-   - **Coverage:** Integration tests (not unit tests)
+   - **Coverage:** Integración pruebas (not unit pruebas)
 
 2. **Orchestrator Init Failures** (dependencies.py:75-78)
    - **Reason:** Requires missing LLM client environment
@@ -271,72 +271,72 @@ $ pyright app/api/v1/chat.py app/services/rag/orchestrator.py
 
 ## 🎯 Coverage Goals
 
-| Metric | Target | Achieved | Status |
+| Metric | Target | Achieved | Estado |
 |--------|--------|----------|--------|
 | **Overall Backend** | ≥85% | 92% | ✅ **Exceeded (+7%)** |
 | **API Layer** | ≥90% | 95% | ✅ **Exceeded (+5%)** |
 | **Service Layer** | ≥85% | 90% | ✅ **Exceeded (+5%)** |
-| **Infrastructure Layer** | ≥85% | 90% | ✅ **Exceeded (+5%)** |
-| **Test Pass Rate** | 100% | 100% | ✅ **Perfect** |
+| **Infraestructura Layer** | ≥85% | 90% | ✅ **Exceeded (+5%)** |
+| **Prueba Pass Rate** | 100% | 100% | ✅ **Perfect** |
 
 ---
 
-## 📊 Lines of Code Added (Phase 2)
+## 📊 Lines of Code Added (Fase 2)
 
-| File | LOC | Tests | Total |
+| Archivo | LOC | Pruebas | Total |
 |------|-----|-------|-------|
 | `app/services/rag/orchestrator.py` | +125 | - | 195 |
 | `app/api/v1/chat.py` | +65 | - | 95 |
 | `app/api/dependencies.py` | +10 | - | 81 |
 | `app/infrastructure/llm/base.py` | +2 | - | 69 |
-| `test_chat_stream_endpoint.py` | - | +285 | 285 |
-| **Total Phase 2** | **+202** | **+285** | **+487** |
+| `prueba_chat_stream_endpoint.py` | - | +285 | 285 |
+| **Total Fase 2** | **+202** | **+285** | **+487** |
 
-**Total HU-4.3 LOC (Phases 0-2):**
-- Implementation: ~350 lines
-- Tests: ~462 lines
-- Documentation: ~600 lines (API_CONTRACT, ARCHITECTURE, PROGRESS, COVERAGE)
+**Total HU-4.3 LOC (Fases 0-2):**
+- Implementación: ~350 lines
+- Pruebas: ~462 lines
+- Documentoation: ~600 lines (API_CONTRACT, ARCHITECTURE, PROGRESS, COVERAGE)
 - **Grand Total:** ~1412 lines
 
 ---
 
-## ✅ Acceptance Criteria: Phase 2
+## ✅ Acceptance Criteria: Fase 2
 
-| Criterion | Status | Evidence |
+| Criterion | Estado | Evidence |
 |-----------|--------|----------|
-| All 6 SSE tests passing | ✅ Pass | pytest output: 15/15 passing |
+| All 6 SSE pruebas passing | ✅ Pass | pyprueba output: 15/15 passing |
 | Coverage ≥85% for API/Service layers | ✅ Pass | 92% overall (95% API, 90% Service) |
 | SSE protocol W3C compliant | ✅ Pass | `text/event-stream`, proper event format |
-| Token streaming functional | ✅ Pass | `test_chat_stream_returns_sse_events()` |
-| Done event with metadata | ✅ Pass | `test_chat_stream_emits_done_event()` |
-| Error events on failures | ✅ Pass | `test_chat_stream_error_event_on_exception()` |
-| Authentication enforced | ✅ Pass | `test_chat_stream_requires_authentication()` |
-| No regressions (existing tests pass) | ✅ Pass | HU-4.1 and HU-4.2 tests still passing |
+| Token streaming functional | ✅ Pass | `prueba_chat_stream_returns_sse_events()` |
+| Done event with metadata | ✅ Pass | `prueba_chat_stream_emits_done_event()` |
+| Error events on failures | ✅ Pass | `prueba_chat_stream_error_event_on_exception()` |
+| Authentication enforced | ✅ Pass | `prueba_chat_stream_requires_authentication()` |
+| No regressions (existing pruebas pass) | ✅ Pass | HU-4.1 and HU-4.2 pruebas still passing |
 | Black/Ruff/Pyright passing | ✅ Pass | 0 errors across all tools |
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Siguiente Steps
 
-### Phase 3: Frontend Data Layer (Flutter SSE Client)
+### Fase 3: Frontend Data Layer (Flutter SSE Client)
 - Implement `ChatStreamClient` with `http` package
 - Parse SSE events (message, done, error)
 - Integrate with Riverpod state management
-- Add unit tests for event parsing
+- Add unit pruebas for event parsing
 
-### Phase 5: Quality & Security Hardening
-- Add vector store integration tests (ChromaDB)
-- Add stream interruption tests (network failures)
-- Performance testing (TTFT < 200ms, token rate > 50/s)
+### Fase 5: Quality & Security Hardening
+- Add vector store integration pruebas (ChromaDB)
+- Add stream interruption pruebas (network failures)
+- Performance pruebaing (TTFT < 200ms, token rate > 50/s)
 - Security audit (SSE injection, DOS resilience)
 
 ---
 
-**Related Documents:**
+**Related Documentos:**
 - [API_CONTRACT.md](./API_CONTRACT.md) - SSE endpoint specification
 - [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md) - System architecture
 - [PROGRESS.md](./PROGRESS.md) - HU-4.3 timeline
 
 **Generated:** 2026-02-15
 **Format Version:** 1.0.0
-**Tooling:** pytest 8.3.4, pytest-cov 6.0.0
+**Tooling:** pyprueba 8.3.4, pyprueba-cov 6.0.0

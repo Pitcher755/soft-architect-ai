@@ -1,7 +1,7 @@
 # Testing Best Practices
 
-> **Fecha:** 10/02/2026
-> **Estado:** ✅ COMPLETE
+> **Date:** 10/02/2026
+> **Status:** ✅ COMPLETE
 > **Responsable:** ArchitectZero (QA Engineering)
 
 ---

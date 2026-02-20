@@ -1,8 +1,8 @@
 # 📊 Comparación Antes/Después - Consolidación de Providers
 
-## 🔴 ANTES (Estado Anterior)
+## 🔴 ANTES (Status Previous)
 
-### Estructura de Archivos
+### Estructura de Files
 ```
 src/client/lib/features/project_shell/presentation/providers/
 ├── project_providers.dart ..................... 30 líneas (CORE)
@@ -22,12 +22,12 @@ info  • Unnecessary 'await'
 ```
 
 ### Problemas Principales
-1. **Duplicación de lógica:** `buildHybridProjectsList()` existía en AMBOS archivos
-2. **Nombres confusos:** `project_providers.dart` vs `projects_provider.dart` (¿cuál usar?)
+1. **Duplicación de lógica:** `buildHybridProjectsList()` existía en AMBOS files
+2. **Names confusos:** `project_providers.dart` vs `projects_provider.dart` (¿cuál usar?)
 3. **Dependencia unidireccional:** `projects_provider.dart` importaba de `project_providers.dart`
 4. **Type mismatch crítico:** `getMockProjectsData()` es async, pero se usaba como sync
 5. **Imports rotos:** StateNotifierProvider no importado correctamente
-6. **Overhead de mantenimiento:** Cambios en hybrid logic requieren actualizar 2 archivos
+6. **Overhead de mantenimiento:** Cambios en hybrid logic requieren actualizar 2 files
 
 ### Código Problemático (projects_provider.dart)
 ```dart
@@ -39,9 +39,9 @@ final mockProjects = mockData.map((m) => Project(...))  // ❌ ERROR
 
 ---
 
-## 🟢 DESPUÉS (Estado Actual)
+## 🟢 DESPUÉS (Status Actual)
 
-### Estructura de Archivos
+### Estructura de Files
 ```
 src/client/lib/features/project_shell/presentation/providers/
 └── project_providers.dart ..................... 92 líneas (CORE + HYBRID)
@@ -62,8 +62,8 @@ Resultado: 0 ERRORES, 0 WARNINGS
 ```
 
 ### Beneficios Principales
-1. ✅ **Una sola fuente de verdad:** Toda lógica de providers en un archivo
-2. ✅ **Nombres claros:** Solo `project_providers.dart` (sin ambigüedad)
+1. ✅ **Una sola fuente de verdad:** Toda lógica de providers en un file
+2. ✅ **Names claros:** Solo `project_providers.dart` (sin ambigüedad)
 3. ✅ **Sin dependencias circulares:** Estructura lineal simple
 4. ✅ **Type safety:** `buildHybridProjectsList()` correctamente async
 5. ✅ **Imports correctos:** Todos los imports están presentes y válidos
@@ -94,11 +94,11 @@ Future<List<Project>> buildHybridProjectsList(
 
 ## 📐 Comparación Detallada
 
-### Archivos
+### Files
 
 | Métrica | Antes | Después | Cambio |
 |---------|-------|---------|--------|
-| **# de archivos** | 2 | 1 | -1 (eliminado redundante) |
+| **# de files** | 2 | 1 | -1 (eliminado redundante) |
 | **Total líneas** | 65 | 92 | +27 (mejor organización) |
 | **Duplicación** | Sí (buildHybridProjectsList en ambos) | No | Unificado |
 | **Dependencias** | Circular implícita | Lineal | Simplificado |
@@ -127,17 +127,17 @@ Future<List<Project>> buildHybridProjectsList(
 
 | Factor | Antes | Después |
 |--------|-------|---------|
-| **Archivos a sincronizar** | 2 | 1 |
+| **Files a sincronizar** | 2 | 1 |
 | **Riesgo de inconsistencia** | Alto (buildHybridProjectsList duplicado) | Nulo (una definición) |
 | **Lugar para agregar nuevo provider** | ¿project_providers o projects_provider? | Claro: project_providers.dart |
-| **Documentación requerida** | Mayor (explicar separación) | Menor (archivo unificado con secciones) |
+| **Documentación requerida** | Mayor (explicar separación) | Menor (file unificado con secciones) |
 
 ---
 
-## 🔍 Análisis de Impacto
+## 🔍 Analysis de Impacto
 
-### En Otros Archivos
-- ✅ **Sin cambios requeridos:** Otros archivos siguen importando de `project_providers.dart` (mismo nombre)
+### En Otros Files
+- ✅ **Sin cambios requeridos:** Otros files siguen importando de `project_providers.dart` (mismo nombre)
 - ✅ **Funcionalidad idéntica:** Los providers `allProjectsProvider` y `hybridProjectsProvider` se usan igual
 - ✅ **Cero breaking changes:** El contrato público de los providers no cambió
 
@@ -147,7 +147,7 @@ Future<List<Project>> buildHybridProjectsList(
 - ✅ **Beneficio:** Una fuente de verdad = menos confusión en desarrollo
 
 ### En Testing
-- ✅ **Más fácil de testear:** Toda lógica hybrid en un archivo
+- ✅ **Más fácil de testear:** Toda lógica hybrid en un file
 - ✅ **Mocks simplificados:** Referencia única a `project_providers.dart`
 - ✅ **Cobertura consolidada:** Tests para providers en un lugar
 
@@ -203,14 +203,14 @@ Future<List<Project>> buildHybridProjectsList(
 
 ## ✅ Validación de Consolidación
 
-### Checklist Completado
-- [x] Leer ambos archivos (project_providers.dart + projects_provider.dart)
+### Checklist Completed
+- [x] Leer ambos files (project_providers.dart + projects_provider.dart)
 - [x] Identificar duplicación (buildHybridProjectsList)
-- [x] Unificar en archivo único (project_providers.dart)
+- [x] Unificar en file único (project_providers.dart)
 - [x] Arreglar type safety (Future<List> await)
 - [x] Corregir lints (líneas largas, cascadas, awaits)
 - [x] Verificar imports (StateNotifierProvider)
-- [x] Eliminar archivo redundante (projects_provider.dart)
+- [x] Delete file redundante (projects_provider.dart)
 - [x] Validar 0 errores en flutter analyze
 - [x] Verificar cero breaking changes
 - [x] Documentar cambios
@@ -225,13 +225,13 @@ Future<List<Project>> buildHybridProjectsList(
 
 ## 🎯 Conclusión
 
-| Aspecto | Resultado |
+| Aspecto | Result |
 |--------|-----------|
-| **Consolidación** | ✅ Exitosa - 2 archivos → 1 archivo |
+| **Consolidación** | ✅ Exitosa - 2 files → 1 file |
 | **Errores resueltos** | ✅ 4 issues → 0 issues |
 | **Type safety** | ✅ Mejorada - Correctamente async |
 | **Duplicación eliminada** | ✅ Sí - buildHybridProjectsList unificado |
 | **Mantenibilidad** | ✅ Mejorada - Fuente única de verdad |
 | **Breaking changes** | ✅ Cero - API pública sin cambios |
 
-**Estado Final:** 🟢 LISTO PARA PRODUCCIÓN
+**Status Final:** 🟢 LISTO PARA PRODUCCIÓN

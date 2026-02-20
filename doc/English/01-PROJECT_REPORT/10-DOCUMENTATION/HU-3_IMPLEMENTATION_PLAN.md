@@ -1,18 +1,18 @@
-# 🔧 Plan de Implementación: Creación de Rama y Próximos Pasos
+# 🔧 Plan de Implementation: Creación de Rama y Next Steps
 
-> **Fecha:** 02/02/2026
-> **Estado:** 📋 CHECKLIST DE ACCIONES PRE-RAMA
+> **Date:** 02/02/2026
+> **Status:** 📋 CHECKLIST DE ACCIONES PRE-RAMA
 > **Tipo:** Operational Runbook
 > **Audiencia:** Development Team + ArchitectZero
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Decisiones Requeridas](#-decisiones-requeridas)
 2. [Estructura de Rama](#-estructura-de-rama)
-3. [Cambios en Archivos](#-cambios-en-archivos)
-4. [Pasos de Implementación](#-pasos-de-implementación)
+3. [Cambios en Files](#-cambios-en-files)
+4. [Pasos de Implementation](#-pasos-de-implementation)
 5. [Timeline Estimado](#-timeline-estimado)
 6. [Criterios de Aceptación](#-criterios-de-aceptación)
 
@@ -46,7 +46,7 @@
 
 ## 🌿 Estructura de Rama
 
-### Nombre Propuesto
+### Name Propuesto
 
 ```
 feature/hu-3-project-first-refactor
@@ -89,9 +89,9 @@ Implementación inicia: 06/02/2026
 
 ---
 
-## 📝 Cambios en Archivos
+## 📝 Cambios en Files
 
-### Archivo 1: `USER_STORIES_MASTER.es.json`
+### File 1: `USER_STORIES_MASTER.es.json`
 
 #### Step 1.1: Actualizar HU-3.1
 
@@ -351,9 +351,9 @@ Implementación inicia: 06/02/2026
 
 ---
 
-## 🔄 Pasos de Implementación
+## 🔄 Pasos de Implementation
 
-### Fase 0: Confirmación (HOY)
+### Phase 0: Confirmación (HOY)
 
 **Acción:** Usuario confirma decisiones en esta conversación
 
@@ -361,7 +361,7 @@ Implementación inicia: 06/02/2026
 Usuario confirma: "✅ Procedo con Opción B"
 ```
 
-### Fase 1: Crear Rama (02/02/2026)
+### Phase 1: Create Rama (02/02/2026)
 
 **Acción Técnica:**
 ```bash
@@ -382,7 +382,7 @@ git branch -a
 # >   main
 ```
 
-### Fase 2: Actualizar Archivos (02/02/2026)
+### Phase 2: Actualizar Files (02/02/2026)
 
 **Acción:** Realizar cambios en `USER_STORIES_MASTER.es.json` (Pasos 1.1-1.5 arriba)
 
@@ -395,7 +395,7 @@ python -m json.tool context/40-ROADMAP/USER_STORIES_MASTER.es.json > /dev/null
 # Si no da error: ✅ JSON válido
 ```
 
-### Fase 3: Commit y Push (02/02/2026)
+### Phase 3: Commit y Push (02/02/2026)
 
 **Acción:**
 ```bash
@@ -421,12 +421,12 @@ See HU-3_REFACTOR_ANALYSIS.es.md for full details"
 git push origin feature/hu-3-project-first-refactor
 ```
 
-### Fase 4: Crear PR y Revisar (03-04/02/2026)
+### Phase 4: Create PR y Revisar (03-04/02/2026)
 
 **Acción:**
 1. Ir a GitHub
-2. Crear PR: `feature/hu-3-project-first-refactor` → `develop`
-3. Descripción: Copiar del commit (arriba)
+2. Create PR: `feature/hu-3-project-first-refactor` → `develop`
+3. Description: Copiar del commit (arriba)
 4. Marcar como **Draft** (no lista para merge)
 5. Agregar labels: `epic/sprint3`, `refactoring`, `architecture`
 
@@ -435,14 +435,14 @@ git push origin feature/hu-3-project-first-refactor
 - Responder preguntas
 - Hacer ajustes si es necesario
 
-### Fase 5: Mergear a Develop (05/02/2026)
+### Phase 5: Mergear a Develop (05/02/2026)
 
 **Acción:**
 1. Esperar aprobaciones del equipo
 2. Cambiar PR de Draft → Ready
 3. Click: "Squash and merge" (1 commit limpio en develop)
 
-**Resultado:**
+**Result:**
 ```
 main ──────────────────────────────────
                                   (sin cambios)
@@ -523,17 +523,17 @@ develop ────────────────────────
 
 Esta rama es **SOLO para actualizar la especificación**, no para implementar.
 
-Implementación comienza en Sprint 3 (después de merge).
+Implementation comienza en Sprint 3 (después de merge).
 
 ### Bilingual Support
 
 Todos los nombres de ramas, commits, PRs deben ser en **inglés**.
-Los documentos (es.md) pueden ser en español.
+Los documents (es.md) pueden ser en español.
 
 ### Versioning
 
 Después del merge, considerar:
-- Crear tag `v0.1-spec-refactor` para referencia histórica
+- Create tag `v0.1-spec-refactor` para referencia histórica
 - Marcar esta decisión en CHANGELOG.md
 
 ---
@@ -551,7 +551,7 @@ Marca la transición de:
 1. ✅ Decisión clara del usuario (HOY)
 2. ✅ Aprobación del equipo (3-4/02)
 3. ✅ Merge limpio (05/02)
-4. ✅ Implementación disciplinada (06/02 en adelante)
+4. ✅ Implementation disciplinada (06/02 en adelante)
 
 ---
 

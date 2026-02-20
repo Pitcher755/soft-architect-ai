@@ -1,23 +1,23 @@
-# 🔍 HU-2.3: Workflow de Verificación RAG Perfecto
+# 🔍 HU-2.3: Workflow de Verification RAG Perfecto
 
-> **Fecha:** 01/02/2026
-> **Estado:** ✅ READY FOR EXECUTION
+> **Date:** 01/02/2026
+> **Status:** ✅ READY FOR EXECUTION
 > **Rama:** chore/rag-verification-tools
 > **Issue Linear:** PIT-65
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Introducción](#introducción)
 2. [Requisitos Previos](#requisitos-previos)
 3. [Mapeo de Criterios](#mapeo-de-criterios)
-4. [FASE 0: Inicio Limpio y Contexto](#fase-0-inicio-limpio-y-contexto)
-5. [FASE 1: Visibilidad de Datos (Infraestructura)](#fase-1-visibilidad-de-datos-infraestructura)
-6. [FASE 2: Ingesta y Persistencia Verificada](#fase-2-ingesta-y-persistencia-verificada)
-7. [FASE 3: Inspección Visual CLI](#fase-3-inspección-visual-cli)
-8. [FASE 4: Endpoint de Prueba (Integración Backend)](#fase-4-endpoint-de-prueba-integración-backend)
-9. [FASE 5: Validación Final y Documentación](#fase-5-validación-final-y-documentación)
+4. [PHASE 0: Inicio Limpio y Contexto](#phase-0-inicio-limpio-y-contexto)
+5. [PHASE 1: Visibilidad de Datos (Infraestructura)](#phase-1-visibilidad-de-datos-infraestructura)
+6. [PHASE 2: Ingesta y Persistencia Verificada](#phase-2-ingesta-y-persistencia-verificada)
+7. [PHASE 3: Inspección Visual CLI](#phase-3-inspección-visual-cli)
+8. [PHASE 4: Endpoint de Test (Integración Backend)](#phase-4-endpoint-de-test-integración-backend)
+9. [PHASE 5: Validación Final y Documentación](#phase-5-validación-final-y-documentación)
 10. [Limpieza y Finalización](#limpieza-y-finalización)
 11. [Troubleshooting](#troubleshooting)
 
@@ -62,21 +62,21 @@ poetry --version          # 1.8.3+
 
 ## 🔗 Mapeo de Criterios
 
-| Criterio de Aceptación | Fase | Validación | Status |
+| Criterio de Aceptación | Phase | Validación | Status |
 |---|---|---|---|
 | ✅ `infrastructure/chroma_data` visible en host | 1 | `ls -la infrastructure/chroma_data/` | ⏳ |
-| ✅ Archivos `.bin` tras ingesta (>1MB) | 2 | `du -sh infrastructure/chroma_data/` | ⏳ |
+| ✅ Files `.bin` tras ingesta (>1MB) | 2 | `du -sh infrastructure/chroma_data/` | ⏳ |
 | ✅ `inspect_db.py` devuelve texto legible | 3 | `poetry run python scripts/inspect_db.py` | ⏳ |
 | ✅ Endpoint `/api/v1/rag/test-retrieval` retorna JSON | 4 | `curl -X POST http://localhost:8000/...` | ⏳ |
 | ✅ Persistencia tras `docker compose down/up` | 5 | Reiniciar stack y verificar datos | ⏳ |
 
 ---
 
-## 🏁 FASE 0: Inicio Limpio y Contexto
+## 🏁 PHASE 0: Inicio Limpio y Contexto
 
 **Objetivo:** Preparar el ambiente y documentar el punto de partida.
 
-### 0.1: Verificar Estado Git
+### 0.1: Verificar Status Git
 
 ```bash
 # Cambiar a rama de trabajo
@@ -95,11 +95,11 @@ git log --oneline -5
 # Debe mostrar: 1fa15c1 (HEAD -> chore/rag-verification-tools, origin/develop)
 ```
 
-### 0.3: Crear Documentación de Tracking
+### 0.3: Create Documentación de Tracking
 
 ✅ **ARTIFACTS a generar:**
 1. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/README.md` (bilingual)
-2. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/PROGRESS.md` (checklist de 6 fases)
+2. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/PROGRESS.md` (checklist de 6 phases)
 3. `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/ARTIFACTS.md` (manifest de files)
 
 ```bash
@@ -121,7 +121,7 @@ git commit -m "docs(hu-2.3): initialize tracking documentation structure
 
 ---
 
-## 🐳 FASE 1: Visibilidad de Datos (Infraestructura)
+## 🐳 PHASE 1: Visibilidad de Datos (Infraestructura)
 
 **Objetivo:** Configurar bind mount en docker-compose.yml para que ChromaDB data sea visible en el host.
 
@@ -159,11 +159,11 @@ services:
 ```
 
 **Detalle Técnico:**
-- `./chroma_data:/chroma/chroma` = Mapea carpeta local al punto de montaje de Chroma
+- `./chroma_data:/chroma/chroma` = Mapea folder local al punto de montaje de Chroma
 - Path relativo `./chroma_data/` se resuelve en `infrastructure/chroma_data/`
 - Los datos persisten incluso si el contenedor se elimina (siempre que el volumen no se borre)
 
-### 1.3: Limpiar y Recrear Infraestructura
+### 1.3: Limpiar y Recreate Infraestructura
 
 ```bash
 cd infrastructure
@@ -184,7 +184,7 @@ docker compose ps
 # Expected: chromadb  RUNNING  ... (healthy or starting)
 ```
 
-### 1.4: Verificación Física
+### 1.4: Verification Física
 
 ```bash
 # Esperar 3-5 segundos a que Chroma inicie
@@ -204,9 +204,9 @@ curl -s http://localhost:8000/api/v3/version
 python3 -c "import chromadb; client = chromadb.HttpClient(host='localhost', port=8000); print('✅ Chroma ready')"
 ```
 
-### 1.5: Verificación en Código
+### 1.5: Verification en Código
 
-Crear un test simple en `src/server/tests/integration/services/rag/test_chroma_mount.py`:
+Create un test simple en `src/server/tests/integration/services/rag/test_chroma_mount.py`:
 
 ```python
 """Test to verify ChromaDB bind mount is working correctly."""
@@ -251,9 +251,9 @@ git commit -m "chore(infra): configure ChromaDB bind mount for data visibility
 
 ---
 
-## 💾 FASE 2: Ingesta y Persistencia Verificada
+## 💾 PHASE 2: Ingesta y Persistencia Verificada
 
-**Objetivo:** Ejecutar ingesta y validar que los datos persisten físicamente en el host.
+**Objetivo:** Execute ingesta y validar que los datos persisten físicamente en el host.
 
 ### 2.1: Revisar/Actualizar scripts/ingest.py
 
@@ -312,7 +312,7 @@ def ingest_knowledge_base(
     # Implementation...
 ```
 
-### 2.2: Ejecutar Ingesta
+### 2.2: Execute Ingesta
 
 ```bash
 cd src/server
@@ -326,7 +326,7 @@ CHROMA_HOST=localhost CHROMA_PORT=8000 poetry run python scripts/ingest.py
 # INFO: Ingestion complete: 42 successful, 0 failed, 3 skipped
 ```
 
-### 2.3: Verificación Física de Persistencia
+### 2.3: Verification Física de Persistencia
 
 ```bash
 cd infrastructure
@@ -349,7 +349,7 @@ stat chroma_data/ | grep "Access:"
 
 ### 2.4: Tests de Persistencia
 
-Crear `src/server/tests/integration/services/rag/test_persistence.py`:
+Create `src/server/tests/integration/services/rag/test_persistence.py`:
 
 ```python
 """Tests for ChromaDB data persistence."""
@@ -410,13 +410,13 @@ git commit -m "test(rag): add persistence verification tests
 
 ---
 
-## 🕵️ FASE 3: Inspección Visual CLI
+## 🕵️ PHASE 3: Inspección Visual CLI
 
-**Objetivo:** Crear script interactivo que permite "ver" qué recuerda el RAG.
+**Objetivo:** Create script interactivo que permite "ver" qué recuerda el RAG.
 
-### 3.1: Crear inspect_db.py Mejorado
+### 3.1: Create inspect_db.py Mejorado
 
-Crear `src/server/scripts/inspect_db.py`:
+Create `src/server/scripts/inspect_db.py`:
 
 ```python
 """
@@ -550,7 +550,7 @@ cd src/server
 poetry add click
 ```
 
-### 3.3: Ejecutar Inspección
+### 3.3: Execute Inspección
 
 ```bash
 cd src/server
@@ -578,7 +578,7 @@ poetry run python scripts/inspect_db.py query "Docker" --limit 2 --json-output
 
 ### 3.4: Tests para inspect_db.py
 
-Crear `src/server/tests/unit/scripts/test_inspect_db.py`:
+Create `src/server/tests/unit/scripts/test_inspect_db.py`:
 
 ```python
 """Tests for inspect_db CLI tool."""
@@ -627,13 +627,13 @@ git commit -m "feat(cli): add ChromaDB inspection tool with health/query/stats
 
 ---
 
-## 🔌 FASE 4: Endpoint de Prueba (Integración Backend)
+## 🔌 PHASE 4: Endpoint de Test (Integración Backend)
 
 **Objetivo:** Exponer un endpoint temporal que demuestre la integración completa LangChain + ChromaDB + FastAPI.
 
-### 4.1: Crear rag_test.py Router Mejorado
+### 4.1: Create rag_test.py Router Mejorado
 
-Crear `src/server/app/api/v1/endpoints/rag_test.py`:
+Create `src/server/app/api/v1/endpoints/rag_test.py`:
 
 ```python
 """
@@ -819,7 +819,7 @@ router.include_router(rag_test.router)
 
 ### 4.3: Tests para el Endpoint
 
-Crear `src/server/tests/unit/app/api/test_rag_endpoint.py`:
+Create `src/server/tests/unit/app/api/test_rag_endpoint.py`:
 
 ```python
 """Tests for RAG test endpoint."""
@@ -882,7 +882,7 @@ def test_rag_retrieval_invalid_query(mock_store, client):
     assert response.status_code == 422  # Validation error
 ```
 
-### 4.4: Ejecutar Tests del Endpoint
+### 4.4: Execute Tests del Endpoint
 
 ```bash
 cd src/server
@@ -909,11 +909,11 @@ git commit -m "feat(api): add temporary RAG retrieval test endpoint
 
 ---
 
-## ✅ FASE 5: Validación Final y Documentación
+## ✅ PHASE 5: Validación Final y Documentación
 
-**Objetivo:** Ejecutar smoke test completo, documentar hallazgos, y limpiar recursos temporales.
+**Objetivo:** Execute smoke test completo, documentar hallazgos, y limpiar recursos temporales.
 
-### 5.1: Ejecutar Stack Completo
+### 5.1: Execute Stack Completo
 
 ```bash
 cd infrastructure
@@ -954,7 +954,7 @@ poetry run pytest tests/unit/app/api/test_rag_endpoint.py -v
 
 ### 5.3: Verificar Criterios de Aceptación
 
-Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/VALIDATION_CHECKLIST.md`:
+Create `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/VALIDATION_CHECKLIST.md`:
 
 ```markdown
 # ✅ Validation Checklist - HU-2.3
@@ -996,7 +996,7 @@ Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/VALIDATION_CHECKLIST.md`
 
 ### 5.4: Documentación de Tracking (Generar)
 
-Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/README.md`:
+Create `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/README.md`:
 
 ```markdown
 # HU-2.3: RAG Verification Tools
@@ -1045,7 +1045,7 @@ to validate that the RAG works before integrating the Frontend.
 - See [WORKFLOW_MASTER_DEFINITION.md](WORKFLOW_MASTER_DEFINITION.md) for detailed guide
 ```
 
-Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/PROGRESS.md`:
+Create `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/PROGRESS.md`:
 
 ```markdown
 # 🚀 PROGRESS - HU-2.3: 6 Phase Completion Tracker
@@ -1105,7 +1105,7 @@ Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/PROGRESS.md`:
 - [x] Create PR
 ```
 
-Crear `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/ARTIFACTS.md`:
+Create `doc/03-HU-TRACKING/HU-2.3-RAG-VERIFICATION-TOOLS/ARTIFACTS.md`:
 
 ```markdown
 # 📦 ARTIFACTS - HU-2.3: Generated & Modified Files
@@ -1221,7 +1221,7 @@ Temporary RAG test endpoint for verification.
 """
 ```
 
-Crear issue de cleanup:
+Create issue de cleanup:
 
 ```
 Title: Remove temporary RAG test endpoint (HU-2.3 cleanup)
@@ -1245,7 +1245,7 @@ git push origin chore/rag-verification-tools
 # Expected: Everything up-to-date or X files changed
 ```
 
-### Paso 4: Crear Pull Request en GitHub
+### Paso 4: Create Pull Request en GitHub
 
 ```
 Title: chore(rag): Add RAG verification tools (HU-2.3)

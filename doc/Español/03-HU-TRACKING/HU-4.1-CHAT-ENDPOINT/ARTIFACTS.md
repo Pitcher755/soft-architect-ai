@@ -1,46 +1,46 @@
 # 🧠 HU-4.1: Artifacts Manifest - Backend Chat Endpoint & RAG Orchestration
 
-> **Purpose:** Complete inventory of all files created, modified, or related to HU-4.1
+> **Purpose:** Complete inventory of all archivos creard, modified, or related to HU-4.1
 > **Last Updated:** 2026-02-14
-> **Status:** ✅ Completed (Implementation + validation complete)
+> **Estado:** ✅ Completado (Implementación + validation complete)
 
 ---
 
 ## 📋 Table of Contents
-- [📝 Documentation Files](#-documentation-files)
+- [📝 Documentoation Archivos](#-documentoation-archivos)
 - [🧩 Domain Layer](#-domain-layer)
-- [🏗️ Infrastructure Layer](#️-infrastructure-layer)
+- [🏗️ Infraestructura Layer](#️-infrastructure-layer)
 - [🔧 Service Layer](#-service-layer)
 - [🌐 API Layer](#-api-layer)
-- [🧪 Test Files](#-test-files)
-- [⚙️ Configuration Files](#️-configuration-files)
+- [🧪 Prueba Archivos](#-prueba-archivos)
+- [⚙️ Configuración Archivos](#️-configuración-archivos)
 - [📊 Metrics & Reports](#-metrics--reports)
 
 ---
 
-## 📝 Documentation Files
+## 📝 Documentoation Archivos
 
-### Tracking Documentation
-| File | Status | Purpose |
+### Tracking Documentoation
+| Archivo | Estado | Purpose |
 |------|--------|---------|
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/README.md` | ✅ Created | Bilingual HU description |
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/PROGRESS.md` | ✅ Created | Phase tracking checklist |
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/ARTIFACTS.md` | ✅ Created | This file - artifacts inventory |
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/WORKFLOW_MASTER_DEFINITION.md` | ✅ Created | Complete TDD workflow |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/README.md` | ✅ Creard | Bilingual HU descripción |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/PROGRESS.md` | ✅ Creard | Fase tracking checklist |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/ARTIFACTS.md` | ✅ Creard | This archivo - artifacts inventory |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/WORKFLOW_MASTER_DEFINITION.md` | ✅ Creard | Complete TDD workflow |
 
-### Architecture Documentation
-| File | Status | Purpose |
+### Architecture Documentoation
+| Archivo | Estado | Purpose |
 |------|--------|---------|
 | `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/API_CONTRACT.md` | ✅ Implemented | OpenAPI/Swagger specification |
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/ARCHITECTURE_DIAGRAM.md` | ✅ Created | RAG flow diagram (Mermaid + detailed architecture) |
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/ERROR_CODES_REFERENCE.md` | ✅ Created | Custom error codes reference (LLM_001, RAG_001, etc.) |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/ARCHITECTURE_DIAGRAM.md` | ✅ Creard | RAG flow diagram (Mermaid + detailed architecture) |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/ERROR_CODES_REFERENCE.md` | ✅ Creard | Custom error codes reference (LLM_001, RAG_001, etc.) |
 
 ---
 
 ## 🧩 Domain Layer
 
 ### Schemas (Pydantic Models)
-| File | Status | Purpose | Test Coverage |
+| Archivo | Estado | Purpose | Prueba Coverage |
 |------|--------|---------|---------------|
 | `src/server/app/domain/schemas/chat.py` | ✅ Implemented | Request/Response models | ✅ Covered |
 
@@ -53,7 +53,7 @@
 ```
 
 ### Domain Exceptions
-| File | Status | Purpose |
+| Archivo | Estado | Purpose |
 |------|--------|---------|
 | `src/server/app/core/exceptions.py` | ✅ Implemented | Custom chat/RAG/LLM domain exceptions |
 
@@ -69,15 +69,15 @@
 
 ---
 
-## 🏗️ Infrastructure Layer
+## 🏗️ Infraestructura Layer
 
 ### LLM Clients (Strategy Pattern)
-| File | Status | Purpose | Test Coverage |
+| Archivo | Estado | Purpose | Prueba Coverage |
 |------|--------|---------|---------------|
 | `src/server/app/infrastructure/llm/base.py` | ✅ Implemented | Abstract base class | ✅ 100% |
 | `src/server/app/infrastructure/llm/ollama_client.py` | ✅ Implemented | Ollama integration | ✅ 100% |
 | `src/server/app/infrastructure/llm/groq_client.py` | ✅ Implemented | Groq stub (future) | ✅ 100% |
-| `src/server/app/infrastructure/llm/factory.py` | ✅ Implemented | Runtime provider switching | ✅ 95% |
+| `src/server/app/infrastructure/llm/factory.py` | ✅ Implemented | Ejecutartime provider switching | ✅ 95% |
 | `src/server/app/infrastructure/llm/__init__.py` | ✅ Implemented | Exports & factory | ✅ 100% |
 
 **Classes to Implement:**
@@ -98,7 +98,7 @@
 ```
 
 ### Utilities
-| File | Status | Purpose |
+| Archivo | Estado | Purpose |
 |------|--------|---------|
 | `src/server/app/infrastructure/llm/retry.py` | 📌 Deferred (HU-4.4) | Retry decorator with backoff |
 | `src/server/app/domain/utils/sanitizer.py` | ✅ Implemented | Input sanitization utilities (HTML escaping, XSS prevention) |
@@ -108,7 +108,7 @@
 ## 🔧 Service Layer
 
 ### RAG Orchestrator
-| File | Status | Purpose | Test Coverage |
+| Archivo | Estado | Purpose | Prueba Coverage |
 |------|--------|---------|---------------|
 | `src/server/app/services/rag/orchestrator.py` | ✅ Implemented | Main orchestration logic | ✅ 100% |
 | `src/server/app/services/rag/vector_store_protocol.py` | ✅ Implemented | Vector store protocol stub | ✅ 100% |
@@ -128,9 +128,9 @@
 ## 🌐 API Layer
 
 ### Endpoints
-| File | Status | Purpose | Test Coverage |
+| Archivo | Estado | Purpose | Prueba Coverage |
 |------|--------|---------|---------------|
-| `src/server/app/api/v1/chat.py` | ✅ Implemented | POST /api/v1/chat/message endpoint | ✅ Covered by integration tests |
+| `src/server/app/api/v1/chat.py` | ✅ Implemented | POST /api/v1/chat/message endpoint | ✅ Covered by integration pruebas |
 | `src/server/app/api/v1/__init__.py` | ✅ Exists | Router registration | - |
 
 **Endpoint Signature:**
@@ -159,22 +159,22 @@ async def send_message(
 ```
 
 ### Dependency Injection
-| File | Status | Purpose |
+| Archivo | Estado | Purpose |
 |------|--------|---------|
 | `src/server/app/api/dependencies.py` | ✅ Implemented | `get_rag_orchestrator()` DI container + stubs |
 
 ---
 
-## 🧪 Test Files
+## 🧪 Prueba Archivos
 
-### Unit Tests - Domain
+### Unit Pruebas - Domain
 
 Layer
-| File | Status | Purpose | Coverage Target |
+| Archivo | Estado | Purpose | Coverage Target |
 |------|--------|---------|-----------------|
-| `tests/server/unit/domain/schemas/test_chat_schemas.py` | ✅ Implemented | Schema validation tests | >95% |
+| `pruebas/server/unit/domain/schemas/prueba_chat_schemas.py` | ✅ Implemented | Schema validation pruebas | >95% |
 
-**Test Cases:**
+**Prueba Cases:**
 ```python
 # test_chat_schemas.py (10+ tests)
 - test_chat_request_rejects_over_2000_chars
@@ -187,13 +187,13 @@ Layer
 - test_rag_context_serialization
 ```
 
-### Unit Tests - Infrastructure Layer
-| File | Status | Purpose | Coverage Target |
+### Unit Pruebas - Infraestructura Layer
+| Archivo | Estado | Purpose | Coverage Target |
 |------|--------|---------|-----------------|
-| `tests/server/unit/infrastructure/llm/test_llm_clients.py` | ✅ Implemented | Base/Ollama/Groq client tests | ✅ >90% |
-| `tests/server/unit/infrastructure/llm/test_llm_factory.py` | ✅ Implemented | Factory selection tests | ✅ Covered |
+| `pruebas/server/unit/infrastructure/llm/prueba_llm_clients.py` | ✅ Implemented | Base/Ollama/Groq client pruebas | ✅ >90% |
+| `pruebas/server/unit/infrastructure/llm/prueba_llm_factory.py` | ✅ Implemented | Factory selection pruebas | ✅ Covered |
 
-**Test Cases:**
+**Prueba Cases:**
 ```python
 # test_ollama_client.py (15+ tests)
 - test_ollama_client_generates_response
@@ -204,13 +204,13 @@ Layer
 - test_ollama_client_validates_model_name
 ```
 
-### Unit Tests - Service Layer
-| File | Status | Purpose | Coverage Target |
+### Unit Pruebas - Service Layer
+| Archivo | Estado | Purpose | Coverage Target |
 |------|--------|---------|-----------------|
-| `tests/server/unit/services/rag/test_orchestrator.py` | ✅ Implemented | RAGOrchestrator business logic tests | ✅ 100% (module) |
-| `tests/server/unit/services/rag/test_sequential_orchestrator.py` | ✅ Updated (HU-4.1) | Sequential orchestrator with 5 new edge case tests | ✅ 95% coverage |
+| `pruebas/server/unit/services/rag/prueba_orchestrator.py` | ✅ Implemented | RAGOrchestrator business logic pruebas | ✅ 100% (module) |
+| `pruebas/server/unit/services/rag/prueba_sequential_orchestrator.py` | ✅ Updated (HU-4.1) | Sequential orchestrator with 5 new edge case pruebas | ✅ 95% coverage |
 
-**Test Cases:**
+**Prueba Cases:**
 ```python
 # test_orchestrator.py (20+ tests)
 - test_orchestrator_builds_context_and_calls_llm
@@ -229,12 +229,12 @@ Layer
 - test_retrieve_context_passes_correct_filters
 ```
 
-### Integration Tests - API Layer
-| File | Status | Purpose | Coverage Target |
+### Integración Pruebas - API Layer
+| Archivo | Estado | Purpose | Coverage Target |
 |------|--------|---------|-----------------|
-| `tests/server/integration/api/v1/test_chat_endpoints.py` | ✅ Implemented | E2E endpoint tests (success/422/503/500) | ✅ Passing |
+| `pruebas/server/integration/api/v1/prueba_chat_endpoints.py` | ✅ Implemented | E2E endpoint pruebas (success/422/503/500) | ✅ Passing |
 
-**Test Cases:**
+**Prueba Cases:**
 ```python
 # test_chat_endpoint.py (10+ tests)
 - test_chat_endpoint_returns_200_and_schema
@@ -245,17 +245,17 @@ Layer
 - test_chat_endpoint_uses_correct_template
 ```
 
-### Performance & Security Tests
-| File | Status | Purpose |
+### Performance & Security Pruebas
+| Archivo | Estado | Purpose |
 |------|--------|---------|
-| `tests/server/security/test_prompt_injection.py` | 📌 Deferred | Prompt injection prevention |
-| `tests/server/performance/test_chat_latency.py` | 📌 Deferred | Response time profiling |
+| `pruebas/server/security/prueba_prompt_injection.py` | 📌 Deferred | Prompt injection prevention |
+| `pruebas/server/performance/prueba_chat_latency.py` | 📌 Deferred | Response time profiling |
 
 ---
 
-## ⚙️ Configuration Files
+## ⚙️ Configuración Archivos
 
-| File | Status | Purpose |
+| Archivo | Estado | Purpose |
 |------|--------|---------|
 | `src/server/.env.example` | ✅ Implemented | Complete LLM, ChromaDB, and API config template |
 | `src/server/app/core/config.py` | ✅ Implemented | Pydantic Settings with LLM_PROVIDER, OLLAMA_BASE_URL, etc. |
@@ -279,36 +279,36 @@ RAG_MIN_SIMILARITY=0.7  # Minimum similarity threshold
 ## 📊 Metrics & Reports
 
 ### Generated Reports
-| File | Status | Purpose |
+| Archivo | Estado | Purpose |
 |------|--------|---------|
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/COVERAGE_REPORT.md` | ✅ Generated | Test coverage summary (Python 85%, Flutter 86.1%) |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/COVERAGE_REPORT.md` | ✅ Generated | Prueba coverage summary (Python 85%, Flutter 86.1%) |
 | `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/PERFORMANCE_REPORT.md` | ✅ Generated | Response time profiling (<2ms avg, <500ms target exceeded) |
 | `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/SECURITY_AUDIT.md` | ✅ Generated | Bandit scan results (0 high-severity issues) |
 
 ### Validation Logs
-| File | Status | Purpose |
+| Archivo | Estado | Purpose |
 |------|--------|---------|
-| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/E2E_TEST_GUIDE.md` | ✅ Created | Step-by-step E2E testing guide (Docker + Ollama + FastAPI + Swagger) |
+| `doc/03-HU-TRACKING/HU-4.1-CHAT-ENDPOINT/E2E_TEST_GUIDE.md` | ✅ Creard | Step-by-step E2E pruebaing guide (Docker + Ollama + FastAPI + Swagger) |
 
 ---
 
 ## 📈 Summary Statistics
 
-| Category | Total Files | Created | Modified | Tests |
+| Category | Total Archivos | Creard | Modified | Pruebas |
 |----------|-------------|---------|----------|-------|
-| **Documentation** | 7 | 4 | 3 | - |
+| **Documentoation** | 7 | 4 | 3 | - |
 | **Domain Layer** | 2 | 2 | 0 | 1 |
-| **Infrastructure** | 7 | 7 | 0 | 4 |
+| **Infraestructura** | 7 | 7 | 0 | 4 |
 | **Service Layer** | 2 | 2 | 0 | 1 |
 | **API Layer** | 2 | 1 | 1 | 1 |
-| **Tests** | 8 | 8 | 0 | - |
-| **Configuration** | 2 | 2 | 0 | - |
+| **Pruebas** | 8 | 8 | 0 | - |
+| **Configuración** | 2 | 2 | 0 | - |
 | **Reports** | 5 | 5 | 0 | - |
 | **TOTAL** | **35** | **31** | **2** | **7** |
 
 ---
 
-## 🔍 File Dependency Graph
+## 🔍 Archivo Dependency Graph
 
 ```mermaid
 graph TD
@@ -331,19 +331,19 @@ graph TD
 
 ## ✅ Completion Checklist
 
-- [x] README.md created
-- [x] PROGRESS.md created
-- [x] ARTIFACTS.md created (this file)
-- [x] WORKFLOW_MASTER_DEFINITION.md created
-- [x] All domain files created
-- [x] All infrastructure files created
-- [x] All service files created
-- [x] All API files created
-- [x] All tests written and passing
+- [x] README.md creard
+- [x] PROGRESS.md creard
+- [x] ARTIFACTS.md creard (this archivo)
+- [x] WORKFLOW_MASTER_DEFINITION.md creard
+- [x] All domain archivos creard
+- [x] All infrastructure archivos creard
+- [x] All service archivos creard
+- [x] All API archivos creard
+- [x] All pruebas written and passing
 - [x] All reports generated
 - [ ] PR opened (ready to merge to develop)
 - [ ] GitHub Actions CI passed
 
 ---
 
-**Last Update:** 2026-02-14 | **Next Review:** PR + CI merge verification
+**Last Update:** 2026-02-14 | **Siguiente Review:** PR + CI merge verificación

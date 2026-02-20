@@ -1,8 +1,8 @@
 # 🐋 Docker Compose Setup Guide - SoftArchitect AI
 
 > **Last Updated:** 28 de enero de 2026
-> **Status:** ✅ Production Ready
-> **Tested On:** Linux (Ubuntu 22.04), Windows (WSL2), macOS (M1/Intel)
+> **Estado:** ✅ Production Ready
+> **Pruebaed On:** Linux (Ubuntu 22.04), Windows (WSL2), macOS (M1/Intel)
 
 ---
 
@@ -336,7 +336,7 @@ docker compose up --build
 docker compose exec api-server ls -la /app/app/main.py
 ```
 
-### Problema 7: "NVIDIA Container runtime not found"
+### Problema 7: "NVIDIA Container ejecutartime not found"
 
 ```bash
 # Si descomentas la sección GPU pero no tienes driver instalado
@@ -480,7 +480,7 @@ docker stats
 
 - **AGENTS.md:** Definición de arquitectura del proyecto
 - **context/30-ARCHITECTURE/TECH_STACK_DETAILS.es.md:** Stack tecnológico
-- **src/server/README.md:** Documentación de backend
+- **src/server/README.md:** Documentoación de backend
 - **Docker Compose Docs:** https://docs.docker.com/compose/
 - **Ollama Docs:** https://ollama.ai
 - **ChromaDB Docs:** https://docs.trychroma.com

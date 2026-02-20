@@ -17,7 +17,7 @@
 
 ## 🎥 Tutoriales Disponibles
 
-### 🚀 Primeros Pasos (Beginners)
+### 🚀 Primeros Pasos (Principiantes)
 
 #### 1. Instalación Completa en Windows
 **Duración:** 15 minutos
@@ -43,13 +43,13 @@
 - Crear nuevo proyecto "TODO App"
 - Definir problema y requisitos
 - Conversación con la IA
-- Generación de documentación automática
+- Generación de documentoación automática
 
 **Link:** *(Próximamente en YouTube)*
 
 ---
 
-### 🏗️ Arquitectura (Intermediate)
+### 🏗️ Arquitectura (Intermedio)
 
 #### 3. Diseño de API REST con Tech Packs
 **Duración:** 25 minutos
@@ -75,13 +75,13 @@
 - Conversación guiada con la IA
 - Análisis de trade-offs
 - Caso de estudio: E-commerce
-- Documentación de decisión
+- Documentoación de decisión
 
 **Link:** *(Próximamente en YouTube)*
 
 ---
 
-### 🔧 Avanzado (Advanced)
+### 🔧 Avanzado (Avanzado)
 
 #### 5. Personalizar Tech Packs Propios
 **Duración:** 20 minutos
@@ -105,7 +105,7 @@
 
 **Contenido:**
 - Configurar API keys de Notion/Jira
-- Exportar documentación automáticamente
+- Exportar documentoación automáticamente
 - Sincronizar historias de usuario
 - Workflow completo
 
@@ -127,7 +127,7 @@
 - Diagramas C4
 - ADRs (Architecture Decision Records)
 
-**Episodio 3: Fase 2 - Implementation** (25 min)
+**Episodio 3: Fase 2 - Implementación** (25 min)
 - Historias de usuario
 - Backlog priorizado
 - Sprint planning
@@ -188,7 +188,7 @@
 **Video (45 minutos):**
 - Entrevista con el CTO
 - Sesión en vivo de diseño con la IA
-- Resultado: Documentación completa en 2 días
+- Resultadoado: Documentoación completa en 2 días
 - Implementación en 3 semanas
 - Retrospectiva y lecciones aprendidas
 
@@ -206,7 +206,7 @@
 - Integración en syllabus de la materia
 - Estudiantes diseñan proyectos propios
 - Comparación de decisiones arquitectónicas
-- Resultados: Mejora del 40% en calidad de entregas
+- Resultadoados: Mejora del 40% en calidad de entregas
 
 **Link:** *(Próximamente en YouTube)*
 
@@ -223,7 +223,7 @@
 3. **Abrir issue en GitHub:** https://github.com/Pitcher755/soft-architect-ai/issues
    - Título: `[VIDEO] Nombre del caso de uso`
    - Descripción: Link al video + resumen
-   - Etiquetar: `documentation`, `video-tutorial`
+   - Etiquetar: `documentoation`, `video-tutorial`
 4. **Revisión del equipo** (2-3 días)
 5. **Si aprobado:** Se añade a esta página y al canal oficial
 
@@ -307,7 +307,7 @@
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documentoos Relacionados
 
 - [Inicio Rápido](01-QUICK_START.md) - Comenzar desde cero
 - [Master Workflow](04-MASTER_WORKFLOW.md) - Entender la metodología

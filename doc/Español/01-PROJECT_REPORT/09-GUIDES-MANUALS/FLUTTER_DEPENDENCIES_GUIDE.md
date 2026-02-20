@@ -14,7 +14,7 @@
 | **sqflite_common_ffi** | ^2.4.0+2 | Backend FFI para desktop | 🖥️ Desktop (CRÍTICO) |
 | **sqlite3** | ^3.1.4 | Motor SQLite nativo | 🖥️ Desktop (dependencia de sqflite_common_ffi) |
 | **path** | ^1.9.1 | Manejo de rutas (multiplataforma) | Todos |
-| **file_picker** | ^10.3.10 | Diálogo de selección de carpetas | Todos |
+| **archivo_picker** | ^10.3.10 | Diálogo de selección de carpetas | Todos |
 | **flutter_riverpod** | ^3.1.0 | State management reactivo | Todos |
 | **flutter_markdown** | ^0.7.7+1 | Renderizado Markdown | Todos |
 | **highlight** | ^0.7.0 | Syntax highlighting para código | Todos |
@@ -130,7 +130,7 @@ sudo apt-get install build-essential
 xcode-select --install
 ```
 
-### Database file not created
+### Database archivo not creard
 
 **Causa:** Carpeta de datos no existe
 **Solución:** DatabaseHelper crea automáticamente en `getDatabasesPath()`
@@ -139,7 +139,7 @@ xcode-select --install
 
 ## 📚 Referencias
 
-- [sqflite documentation](https://pub.dev/packages/sqflite)
+- [sqflite documentoation](https://pub.dev/packages/sqflite)
 - [sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi)
 - [flutter_riverpod](https://riverpod.dev/)
-- [file_picker](https://pub.dev/packages/file_picker)
+- [archivo_picker](https://pub.dev/packages/archivo_picker)

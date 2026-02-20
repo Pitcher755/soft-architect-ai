@@ -2,11 +2,11 @@
 
 > **Referencia:** AGENTS.md §6 - Regla de Integridad
 > **Última Actualización:** 29/01/2026
-> **Estado:** ✅ Activo
+> **Status:** ✅ Activo
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Regla: Todo en Inglés](#regla-todo-en-inglés)
 2. [Ejemplos Válidos vs Inválidos](#ejemplos-válidos-vs-inválidos)
@@ -21,7 +21,7 @@
 
 Según **AGENTS.md §6**, todo lo escrito en el código debe estar en **INGLÉS**:
 
-- ✅ **Nombres de variables, funciones, clases**
+- ✅ **Names de variables, funciones, clases**
 - ✅ **Comentarios inline y docstrings**
 - ✅ **Documentación (DartDoc, PyDoc)**
 - ✅ **TODO, FIXME, NOTE comments**
@@ -163,8 +163,8 @@ flutter analyze
 
 **Reglas configuradas:**
 - `slash_for_doc_comments` - Usar `///` para documentación
-- `camel_case_types` - Nombres de clases en PascalCase
-- `library_names` - Nombres de librerías en snake_case
+- `camel_case_types` - Names de clases en PascalCase
+- `library_names` - Names de librerías en snake_case
 - `package_api_docs` - Requiere documentación en APIs públicas
 - `public_member_api_docs` - Requiere docs en miembros públicos
 
@@ -185,7 +185,7 @@ Detecta:
 - ❌ Código duplicado
 - ❌ Imports no usados
 
-**Configuración:** `.pylintrc`
+**Configuration:** `.pylintrc`
 
 #### 2. MyPy (Type Checking)
 
@@ -199,7 +199,7 @@ Detecta:
 - ❌ Retornos inconsistentes
 - ❌ Acceso a atributos inexistentes
 
-**Configuración:** `pyproject.toml [tool.mypy]`
+**Configuration:** `pyproject.toml [tool.mypy]`
 
 #### 3. Black (Format)
 
@@ -213,7 +213,7 @@ Asegura:
 - ✅ Comillas dobles en strings
 - ✅ Espacios alrededor de operadores
 
-**Configuración:** `pyproject.toml [tool.black]`
+**Configuration:** `pyproject.toml [tool.black]`
 
 #### 4. isort (Import Sorting)
 
@@ -227,7 +227,7 @@ Organiza imports en:
 2. Dependencias externas
 3. Módulos locales
 
-**Configuración:** `pyproject.toml [tool.isort]`
+**Configuration:** `pyproject.toml [tool.isort]`
 
 ---
 
@@ -265,14 +265,14 @@ cd ../..
 - [ ] ✅ `pylint` score > 8.5 (Python)
 - [ ] ✅ `mypy` sin errores críticos
 - [ ] ✅ `black` format OK
-- [ ] ✅ Pruebas pasan: `flutter test` / `pytest`
-- [ ] ✅ No hay archivos `*.pyc`, `.DS_Store`, etc.
+- [ ] ✅ Tests pasan: `flutter test` / `pytest`
+- [ ] ✅ No hay files `*.pyc`, `.DS_Store`, etc.
 
 ---
 
 ## 🔄 GitHub Actions Integration
 
-El proyecto ejecuta validaciones automáticas en cada **push** y **pull request**.
+El project ejecuta validaciones automáticas en cada **push** y **pull request**.
 
 ### Workflow: `.github/workflows/lint.yml`
 
@@ -281,7 +281,7 @@ El proyecto ejecuta validaciones automáticas en cada **push** y **pull request*
 1. **dart-lint**
    - Corre `flutter analyze`
    - Verifica formato con `dart format`
-   - Ejecuta pruebas unitarias
+   - Ejecuta tests unitarias
 
 2. **python-lint**
    - Corre `pylint`
@@ -293,7 +293,7 @@ El proyecto ejecuta validaciones automáticas en cada **push** y **pull request*
    - Busca caracteres españoles en comentarios
    - Ejecuta auditoría completa
 
-**Resultado:**
+**Result:**
 - ❌ Si algo falla → PR no se puede mergear
 - ⚠️ Si hay warnings → Se muestra en el PR
 - ✅ Si todo pasa → PR listo para revisar
@@ -352,7 +352,7 @@ user = fetch_user("123")
 
 ---
 
-### Problema: Nombres en español aparecen
+### Problema: Names en español aparecen
 
 ```bash
 find src/server/app -name "*.py" | xargs grep "def obtener"

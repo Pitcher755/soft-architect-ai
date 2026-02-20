@@ -1,7 +1,7 @@
-# 📊 HU-4.1: Test Coverage Report
+# 📊 HU-4.1: Prueba Coverage Report
 
-> **Generated:** 2026-02-14 (Updated after edge case test implementation)
-> **Status:** ✅ All coverage targets exceeded
+> **Generated:** 2026-02-14 (Updated after edge case prueba implementación)
+> **Estado:** ✅ All coverage targets exceeded
 > **Overall Python Coverage:** 87% (Target: ≥80%)
 > **Overall Flutter Coverage:** 86.1%
 > **Hardware:** AMD Ryzen 9, 16GB RAM, NVIDIA RTX 3050 4GB
@@ -10,20 +10,20 @@
 
 ## 🎯 Executive Summary
 
-The HU-4.1 implementation has achieved **excellent test coverage** across all layers of the architecture:
+The HU-4.1 implementación has achieved **excellent prueba coverage** across all layers of the architecture:
 
 - ✅ **Python Backend:** 87% coverage (7% above target)
 - ✅ **Flutter Frontend:** 86.1% coverage
-- ✅ **36 HU-specific tests** passing (5 new edge case tests added)
+- ✅ **36 HU-specific pruebas** passing (5 new edge case pruebas added)
 - ✅ **Domain layer:** >95% coverage (critical business logic)
-- ✅ **Infrastructure layer:** >90% coverage (LLM clients)
+- ✅ **Infraestructura layer:** >90% coverage (LLM clients)
 - ✅ **Service layer:** 96.2% coverage (RAG orchestration - improved)
 
 ---
 - ✅ **Flutter Frontend:** 86.1% coverage
-- ✅ **36 HU-specific tests** passing (5 new edge case tests added)
+- ✅ **36 HU-specific pruebas** passing (5 new edge case pruebas added)
 - ✅ **Domain layer:** >95% coverage (critical business logic)
-- ✅ **Infrastructure layer:** >90% coverage (LLM clients)
+- ✅ **Infraestructura layer:** >90% coverage (LLM clients)
 - ✅ **Service layer:** 96.2% coverage (RAG orchestration)
 
 ---
@@ -40,13 +40,13 @@ The HU-4.1 implementation has achieved **excellent test coverage** across all la
 
 **Total Domain Coverage:** 97.6% ✅ (Target: >95%)
 
-**Missing Lines Analysis:**
+**Missing Lines Análisis:**
 - `chat.py:45-46` - Edge case in `RAGContext` serialization (non-critical)
 - `base.py:18-19` - Exception base class `__repr__` (cosmetic)
 
 ---
 
-### Infrastructure Layer (External Integrations)
+### Infraestructura Layer (External Integracións)
 
 | Module | Coverage | Lines | Missing | Critical |
 |--------|----------|-------|---------|----------|
@@ -55,11 +55,11 @@ The HU-4.1 implementation has achieved **excellent test coverage** across all la
 | `infrastructure/llm/groq_client.py` | 100% | 28 | 0 | ⚠️ (Stub) |
 | `infrastructure/llm/factory.py` | 95% | 38 | 2 | ✅ |
 
-**Total Infrastructure Coverage:** 98.94% ✅ (Target: >90%)
+**Total Infraestructura Coverage:** 98.94% ✅ (Target: >90%)
 
-**Missing Lines Analysis:**
+**Missing Lines Análisis:**
 - `ollama_client.py:78-79` - Graceful shutdown handler (edge case)
-- `factory.py:32-33` - Invalid mode error path (tested via pytest.raises)
+- `factory.py:32-33` - Invalid mode error path (pruebaed via pyprueba.raises)
 
 ---
 
@@ -74,9 +74,9 @@ The HU-4.1 implementation has achieved **excellent test coverage** across all la
 
 **Total Service Coverage:** 96.2% ✅ (Target: >85%)
 
-**Missing Lines Analysis:**
+**Missing Lines Análisis:**
 - `sequential_orchestrator.py:152-153` - Template formatting with special characters (edge case)
-- `sequential_orchestrator.py:156-158` - Final prompt assembly (covered via integration tests)
+- `sequential_orchestrator.py:156-158` - Final prompt assembly (covered via integration pruebas)
 
 ---
 
@@ -89,15 +89,15 @@ The HU-4.1 implementation has achieved **excellent test coverage** across all la
 
 **Total API Coverage:** 90% ✅ (Target: >80%)
 
-**Missing Lines Analysis:**
+**Missing Lines Análisis:**
 - `chat.py:42-46` - Rare exception handling path (validated manually)
-- `dependencies.py:18-24` - Singleton initialization edge case (tested via functional tests)
+- `dependencies.py:18-24` - Singleton initialization edge case (pruebaed via functional pruebas)
 
 ---
 
-## 🧪 Test Suite Breakdown
+## 🧪 Prueba Suite Desglose
 
-### Unit Tests (28 tests)
+### Unit Pruebas (28 pruebas)
 
 ```
 tests/server/unit/
@@ -111,24 +111,24 @@ tests/server/unit/
     └── test_sequential_orchestrator.py .. 5 tests ✅ (NEW)
 ```
 
-**Key Test Cases:**
-- ✅ `test_chat_request_escapes_html_entities` - XSS prevention
-- ✅ `test_chat_request_preserves_code_snippets` - Developer Tool Trap fix
-- ✅ `test_ollama_client_handles_connection_error` - Resilience
-- ✅ `test_orchestrator_happy_path` - E2E orchestration
+**Key Prueba Cases:**
+- ✅ `prueba_chat_request_escapes_html_entities` - XSS prevention
+- ✅ `prueba_chat_request_preserves_code_snippets` - Developer Tool Trap fix
+- ✅ `prueba_ollama_client_handles_connection_error` - Resiliencia
+- ✅ `prueba_orchestrator_happy_path` - E2E orchestration
 
-**NEW Edge Case Tests (Sequential Orchestrator):**
-- ✅ `test_build_prompt_handles_nested_document_lists` - Flattening nested ChromaDB results
-- ✅ `test_build_prompt_handles_empty_rag_context` - Graceful empty vector search
-- ✅ `test_build_prompt_handles_non_list_documents` - Single document structure
-- ✅ `test_build_prompt_handles_chat_history_as_list` - Chat history as list of messages
-- ✅ `test_retrieve_context_passes_correct_filters` - Vector store doc_type filtering
+**NEW Edge Case Pruebas (Sequential Orchestrator):**
+- ✅ `prueba_build_prompt_handles_nested_documento_lists` - Flattening nested ChromaDB results
+- ✅ `prueba_build_prompt_handles_empty_rag_context` - Graceful empty vector search
+- ✅ `prueba_build_prompt_handles_non_list_documentos` - Single documento structure
+- ✅ `prueba_build_prompt_handles_chat_history_as_list` - Chat history as list of messages
+- ✅ `prueba_retrieve_context_passes_correct_filters` - Vector store doc_type filtering
 
 **Coverage Impact:** Sequential Orchestrator increased from 75% to 95% (+20pp)
 
 ---
 
-### Integration Tests (8 tests)
+### Integración Pruebas (8 pruebas)
 
 ```
 tests/server/integration/
@@ -137,22 +137,22 @@ tests/server/integration/
     └── test_rag_integration.py .......... 4 tests ✅
 ```
 
-**Key Test Cases:**
-- ✅ `test_chat_endpoint_returns_200_and_schema` - Happy path
-- ✅ `test_chat_endpoint_handles_invalid_input` - Validation (422)
-- ✅ `test_chat_endpoint_handles_llm_failure` - Error handling (503)
-- ✅ `test_rag_pipeline_with_real_vectorstore` - Real ChromaDB integration
+**Key Prueba Cases:**
+- ✅ `prueba_chat_endpoint_returns_200_and_schema` - Happy path
+- ✅ `prueba_chat_endpoint_handles_invalid_input` - Validation (422)
+- ✅ `prueba_chat_endpoint_handles_llm_failure` - Error handling (503)
+- ✅ `prueba_rag_pipeline_with_real_vectorstore` - Real ChromaDB integration
 
 ---
 
-## 🎓 Test Quality Metrics
+## 🎓 Prueba Quality Metrics
 
-| Metric | Value | Target | Status |
+| Metric | Value | Target | Estado |
 |--------|-------|--------|--------|
-| **Total Tests** | 31 | >20 | ✅ |
-| **Lines of Test Code** | 847 | >500 | ✅ |
-| **Test-to-Code Ratio** | 1.8:1 | >1.5:1 | ✅ |
-| **Assertions per Test** | 4.2 avg | >3 | ✅ |
+| **Total Pruebas** | 31 | >20 | ✅ |
+| **Lines of Prueba Code** | 847 | >500 | ✅ |
+| **Prueba-to-Code Ratio** | 1.8:1 | >1.5:1 | ✅ |
+| **Assertions per Prueba** | 4.2 avg | >3 | ✅ |
 | **Mock Usage** | 87% isolation | >80% | ✅ |
 
 ---
@@ -173,7 +173,7 @@ Phase 4 (API):         85% █████████████████�
 
 **Critical Workflow:** `User Query → Sanitize → RAG Search → Template → LLM → Response`
 
-| Step | Module | Coverage | Tested |
+| Step | Module | Coverage | Pruebaed |
 |------|--------|----------|--------|
 | 1. Sanitize Input | `sanitizer.py` | 100% | ✅ |
 | 2. Validate Schema | `chat.py (schemas)` | 98% | ✅ |
@@ -194,12 +194,12 @@ Phase 4 (API):         85% █████████████████�
 1. **Sequential Orchestrator Legacy Code**
    - **Lines:** `sequential_orchestrator.py:45-67`
    - **Risk:** Low (preserved for regression, not used in production)
-   - **Mitigation:** Integration tests cover the new `RAGOrchestrator`
+   - **Mitigation:** Integración pruebas cover the new `RAGOrchestrator`
 
 2. **Graceful Shutdown Path**
    - **Lines:** `ollama_client.py:78-79`
    - **Risk:** Very Low (cleanup logic)
-   - **Mitigation:** Manually tested via process termination
+   - **Mitigation:** Manually pruebaed via process termination
 
 3. **Exception Repr Methods**
    - **Lines:** `base.py:18-19`, various `__str__`
@@ -208,13 +208,13 @@ Phase 4 (API):         85% █████████████████�
 
 ---
 
-## ✅ Coverage Gates Status
+## ✅ Coverage Gates Estado
 
-| Gate | Threshold | Actual | Status |
+| Gate | Threshold | Actual | Estado |
 |------|-----------|--------|--------|
 | **Overall Backend** | ≥80% | 85% | ✅ PASS |
 | **Domain Layer** | ≥95% | 97.6% | ✅ PASS |
-| **Infrastructure** | ≥90% | 98.94% | ✅ PASS |
+| **Infraestructura** | ≥90% | 98.94% | ✅ PASS |
 | **Service Layer** | ≥85% | 91.34% | ✅ PASS |
 | **API Layer** | ≥80% | 90% | ✅ PASS |
 | **Critical Path** | ≥95% | 98.3% | ✅ PASS |
@@ -224,18 +224,18 @@ Phase 4 (API):         85% █████████████████�
 ## 🎯 Recommendations for Future Sprints
 
 1. ~~**Increase Sequential Orchestrator Coverage**~~ ✅ **COMPLETED**
-   - ✅ Added 5 edge case tests (nested lists, empty context, non-list docs, chat history, filters)
+   - ✅ Added 5 edge case pruebas (nested lists, empty context, non-list docs, chat history, filters)
    - ✅ Coverage increased from 75% to 95% (+20pp)
    - ✅ Effort: 2 hours (applied in this update)
 
-2. **Add Performance Regression Tests**
+2. **Add Performance Regression Pruebas**
    - Automate latency benchmarks in CI
    - Monitor P95 response time over commits
    - Est. effort: 4 hours (HU-4.4)
 
-3. **Expand Security Test Suite**
-   - Dedicated `tests/server/security/` directory
-   - OWASP Top 10 systematic coverage (fuzzing, penetration tests)
+3. **Expand Security Prueba Suite**
+   - Dedicated `pruebas/server/security/` directory
+   - OWASP Top 10 systematic coverage (fuzzing, penetration pruebas)
    - Est. effort: 8 hours (HU-4.5)
 
 ---
@@ -262,21 +262,21 @@ open coverage_html/index.html
 
 ## 🏆 Conclusion
 
-**HU-4.1 has achieved EXCEPTIONAL test coverage** across all architectural layers. The **87% overall coverage** significantly exceeds the 80% target, with critical business logic (domain layer) reaching 97.6%.
+**HU-4.1 has achieved EXCEPTIONAL prueba coverage** across all architectural layers. The **87% overall coverage** significantly exceeds the 80% target, with critical business logic (domain layer) reaching 97.6%.
 
 **Key Achievements:**
 - ✅ All quality gates PASSED
 - ✅ Sequential Orchestrator improved from 75% to 95%
-- ✅ 36 comprehensive tests (5 new edge case tests)
+- ✅ 36 comprehensive pruebas (5 new edge case pruebas)
 - ✅ 100% coverage on XSS prevention & code preservation
 
 **All quality gates: ✅ PASSED**
 
-**Recommendation:** Ready for merge to `develop` branch.
+**Recommendation:** Preparado para merge to `develop` branch.
 
 ---
 
 **Report Generated By:** ArchitectZero
-**Validation Tool:** pytest-cov 5.0.0
+**Validation Tool:** pyprueba-cov 5.0.0
 **Coverage Engine:** Coverage.py 7.4.0
 **Last Updated:** 2026-02-14

@@ -5,7 +5,7 @@
 ## 🎯 Requisitos Implementados
 
 ### 1. ✅ Columnas Dinámicas Redimensionables
-**Estado:** Completado y Operacional
+**Status:** Completed y Operacional
 
 - Divisores drag-and-drop entre columnas
 - Cursor visual (`↔`) al pasar sobre divisores
@@ -19,7 +19,7 @@
 ---
 
 ### 2. ✅ Botones de Ocultar Columnas
-**Estado:** Completado y Operacional
+**Status:** Completed y Operacional
 
 - Tres botones (📁, 💬, 📄) en esquina superior derecha del AppBar
 - Toggle columna izquierda (Explorer)
@@ -32,63 +32,63 @@
 
 ---
 
-### 3. ✅ Diálogo Mejorado de Crear Proyecto
-**Estado:** Completado y Operacional
+### 3. ✅ Diálogo Mejorado de Create Project
+**Status:** Completed y Operacional
 
 Implementado exactamente como el HTML proporcionado:
 
-- **Modal Dialog** con header "Nuevo Proyecto"
-- **Campo de Nombre:** Con validación y placeholder
-- **Selector de Ruta:** Con botón "Examinar..."
+- **Modal Dialog** con header "New Project"
+- **Campo de Name:** Con validación y placeholder
+- **Selector de Ruta:** Con button "Examinar..."
   - Ruta base por defecto: `~/Documents/SoftArchitectProjects`
   - Readonly (solo lectura)
-- **Descripción:** Campo textarea opcional
-- **Botones de Acción:** "Cancelar" y "Crear Proyecto"
+- **Description:** Campo textarea opcional
+- **Botones de Acción:** "Cancelar" y "Create Project"
 - **Styling:** Dark theme GitHub, Material Icons
-- **Enter Key Support:** Crear proyecto con Enter
+- **Enter Key Support:** Create project con Enter
 
 **Commit:** bdff68c - Incluido en refactorización
 
 ---
 
-### 4. ✅ Pantalla de Proyectos Dashboard
-**Estado:** Completado y Operacional
+### 4. ✅ Pantalla de Projects Dashboard
+**Status:** Completed y Operacional
 
-Transformación de `ProjectWorkspaceScreen` a "Mis Proyectos" Dashboard:
+Transformación de `ProjectWorkspaceScreen` a "Mis Projects" Dashboard:
 
 **Componentes:**
 - **Sidebar (64px):**
   - Logo con icono de terminal
   - Botones de navegación (Projects activo, Search)
-  - Botón Settings en la base
+  - Button Settings en la base
 - **Main Content:**
-  - Header: "Mis Proyectos" + Botón "Nuevo Proyecto"
+  - Header: "Mis Projects" + Button "New Project"
   - Grid responsive (3 cols desktop, 2 tablet, 1 mobile)
-  - Tarjetas de proyecto con:
+  - Tarjetas de project con:
     - Icono colorido
-    - Nombre del proyecto
-    - Badge de Fase (con color específico)
+    - Name of the project
+    - Badge de Phase (con color específico)
     - Ruta local
     - Fecha de modificación
     - Efecto hover con transición
 
-**Proyectos Mock Incluidos:**
-1. E-Commerce Platform (Fase 2)
-2. Uber for Dogs (Fase 1)
-3. FinTech Core API (Fase 3)
+**Projects Mock Incluidos:**
+1. E-Commerce Platform (Phase 2)
+2. Uber for Dogs (Phase 1)
+3. FinTech Core API (Phase 3)
 
 **Commit:** bdff68c - "refactor: Convert ProjectWorkspaceScreen to Projects Dashboard"
 
 ---
 
-### 5. ✅ Aislamiento de Directorio por Proyecto
-**Estado:** Completado y Operacional
+### 5. ✅ Aislamiento de Directorio por Project
+**Status:** Completed y Operacional
 
 **Cambios:**
 - `ProjectShellScreen` ahora acepta parámetro `projectPath`
-- Cada proyecto abre su árbol de directorios específico
-- No hay acceso a directorios de otros proyectos
-- AppBar muestra la ruta del proyecto actual
+- Cada project abre su árbol de directorios específico
+- No hay acceso a directorios de otros projects
+- AppBar muestra la ruta of the project actual
 
 **Ejemplo de Flujo:**
 ```
@@ -106,7 +106,7 @@ ProjectShellScreen muestra SOLO ese directorio
 ---
 
 ### 6. ✅ Navegación Mejorada
-**Estado:** Completado y Operacional
+**Status:** Completed y Operacional
 
 **Cambios de Router:**
 - **Antes:** `/workspace/:projectId` → ProjectWorkspaceScreen
@@ -142,7 +142,7 @@ ProjectShellScreen muestra SOLO ese directorio
 
 ---
 
-## 🔧 Archivos Modificados
+## 🔧 Files Modificados
 
 1. **src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart**
    - Agregado parámetro `projectPath`
@@ -151,10 +151,10 @@ ProjectShellScreen muestra SOLO ese directorio
    - Conditionals para mostrar/ocultar paneles
 
 2. **src/client/lib/features/project_shell/presentation/screens/project_workspace_screen.dart**
-   - Reescrito como dashboard de proyectos
+   - Reescrito como dashboard de projects
    - Grid de tarjetas responsive
-   - Sidebar con navegación
-   - Diálogo mejorado de crear proyecto
+   - Sidebar with navegación
+   - Diálogo mejorado de create project
 
 3. **src/client/lib/core/router/app_router.dart**
    - Actualizado rutas
@@ -171,7 +171,7 @@ ProjectShellScreen muestra SOLO ese directorio
 - ✅ Visual feedback (cursor, icons)
 - ✅ Smooth performance
 
-### Dashboard de Proyectos
+### Dashboard de Projects
 - ✅ Sidebar navigation
 - ✅ Project cards grid
 - ✅ Hover effects
@@ -193,7 +193,7 @@ ProjectShellScreen muestra SOLO ese directorio
 
 ## 🎯 User Workflows
 
-### Crear Nuevo Proyecto
+### Create Nuevo Project
 ```
 1. Click "Nuevo Proyecto" en dashboard
 2. Modal con nombre, ruta, descripción
@@ -201,14 +201,14 @@ ProjectShellScreen muestra SOLO ese directorio
 4. → ProjectShellScreen con directorio específico
 ```
 
-### Abrir Proyecto Existente
+### Abrir Project Existente
 ```
 1. Dashboard muestra todos los proyectos
 2. Click en tarjeta de proyecto
 3. → ProjectShellScreen con archivos del proyecto
 ```
 
-### Navegar en Proyecto
+### Navegar en Project
 ```
 1. Arrastra divisores para redimensionar columnas
 2. Click botones toggle para ocultar/mostrar paneles
@@ -222,11 +222,11 @@ ProjectShellScreen muestra SOLO ese directorio
 1. **4926e38** - "feat: Add dynamic resizable columns to ProjectShellScreen"
    - Columnas dinámicas
    - Divisores redimensionables
-   - Estado de visibilidad
+   - Status de visibilidad
 
 2. **bdff68c** - "refactor: Convert ProjectWorkspaceScreen to Projects Dashboard"
    - Refactorización completa
-   - Dashboard de proyectos
+   - Dashboard de projects
    - Router actualizado
    - Diálogo mejorado
 
@@ -235,7 +235,7 @@ ProjectShellScreen muestra SOLO ese directorio
 
 ---
 
-## 🚀 Estado Final
+## 🚀 Status Final
 
 **Status:** ✅ **100% COMPLETADO**
 
@@ -253,14 +253,14 @@ Todos los requisitos han sido implementados y testeados:
 ## 📝 Notas
 
 - Las columnas se redimensionan en tiempo real sin lag
-- El estado de visibilidad se mantiene durante la sesión
-- Los proyectos aislados garantizan seguridad de datos
+- El status de visibilidad se mantiene durante la sesión
+- Los projects aislados garantizan seguridad de datos
 - El dashboard es completamente funcional
 - Listo para extended testing y backend integration
 
-**Próximos Pasos (Opcionales):**
+**Next Steps (Opcionales):**
 - Persistencia de ancho de columnas (SharedPreferences)
-- Persistencia de proyectos (base de datos)
+- Persistencia de projects (base de datos)
 - Integración con backend API
 - File picker real para selector de ruta
-- Importar/exportar proyectos
+- Importar/exportar projects

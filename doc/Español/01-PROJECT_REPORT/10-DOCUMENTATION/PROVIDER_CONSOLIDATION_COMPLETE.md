@@ -14,18 +14,18 @@ Se ha consolidado exitosamente la arquitectura de providers del proyecto, unific
 
 | Acción | Antes | Después |
 |--------|-------|---------|
-| **Archivos de providers** | 2 archivos (`project_providers.dart` + `projects_provider.dart`) | 1 archivo unificado (`project_providers.dart`) |
+| **Archivos de providers** | 2 archivos (`proyecto_providers.dart` + `proyectos_provider.dart`) | 1 archivo unificado (`proyecto_providers.dart`) |
 | **Líneas de código** | ~65 líneas (distribuidas) | ~91 líneas (concentradas + mejor organizadas) |
 | **Problemas flutter analyze** | 4 errores + 2 warnings | 0 errores |
-| **Duplicación de lógica** | buildHybridProjectsList() duplicada en ambos | Única definición en project_providers.dart |
+| **Duplicación de lógica** | buildHybridProyectosList() duplicada en ambos | Única definición en proyecto_providers.dart |
 
 ---
 
 ## 🔧 Cambios Técnicos Realizados
 
-### 1. **Archivo Consolidado: `project_providers.dart`**
+### 1. **Archivo Consolidado: `proyecto_providers.dart`**
 
-**Ubicación:** `src/client/lib/features/project_shell/presentation/providers/project_providers.dart`
+**Ubicación:** `src/client/lib/features/proyecto_shell/presentation/providers/proyecto_providers.dart`
 
 **Estructura (Secciones claramente marcadas):**
 
@@ -42,13 +42,13 @@ Se ha consolidado exitosamente la arquitectura de providers del proyecto, unific
 └──────────────────────────────────────┘
 ```
 
-### 2. **Archivo Eliminado: `projects_provider.dart`**
+### 2. **Archivo Eliminado: `proyectos_provider.dart`**
 
-- ❌ Eliminado: `src/client/lib/features/project_shell/presentation/providers/projects_provider.dart`
-- Razón: Todo su contenido consolidado en `project_providers.dart`
+- ❌ Eliminado: `src/client/lib/features/proyecto_shell/presentation/providers/proyectos_provider.dart`
+- Razón: Todo su contenido consolidado en `proyecto_providers.dart`
 - No había referencias externas en código Dart
 
-### 3. **Cambios en `buildHybridProjectsList()`**
+### 3. **Cambios en `buildHybridProyectosList()`**
 
 **Antes:**
 ```dart
@@ -80,7 +80,7 @@ Future<List<Project>> buildHybridProjectsList(
 }
 ```
 
-### 4. **Cambios en `hybridProjectsProvider`**
+### 4. **Cambios en `hybridProyectosProvider`**
 
 **Antes:**
 ```dart
@@ -104,14 +104,14 @@ final hybridProjectsProvider = FutureProvider<List<Project>>((ref) async {
 |----------|----------|
 | Línea > 80 caracteres | Refactorizado código multi-línea y extraction de variable `dateTime` |
 | Cascada innecesaria | Eliminada usando lambda con variables locales para `aDate` y `bDate` |
-| Await innecesario | Removido de `buildHybridProjectsList()` call en provider |
+| Await innecesario | Removido de `buildHybridProyectosList()` call en provider |
 | `StateNotifierProvider` no definido (false positive) | Desapareció después de `flutter clean` |
 
 ---
 
 ## ✅ Validación Final
 
-### Test de flutter analyze
+### Prueba de flutter analyze
 
 ```bash
 $ flutter analyze lib/features/project_shell/presentation/providers/project_providers.dart
@@ -121,7 +121,7 @@ Analyzing project_providers.dart...
 No issues found! (ran in 0.7s)
 ```
 
-**Resultado:** ✅ 0 ERRORES
+**Resultadoado:** ✅ 0 ERRORES
 
 ---
 
@@ -155,20 +155,20 @@ Beneficio: Single source of truth, imports simplificados
 ## 🔍 Archivos Afectados
 
 ### Modificados
-- ✏️ `src/client/lib/features/project_shell/presentation/providers/project_providers.dart`
-  - Agregadas funciones hybrid (antes en projects_provider.dart)
-  - Arreglado tipo async de buildHybridProjectsList()
+- ✏️ `src/client/lib/features/proyecto_shell/presentation/providers/proyecto_providers.dart`
+  - Agregadas funciones hybrid (antes en proyectos_provider.dart)
+  - Arreglado tipo async de buildHybridProyectosList()
   - Mejorada formación de código (lint compliance)
 
 ### Eliminados
-- 🗑️ `src/client/lib/features/project_shell/presentation/providers/projects_provider.dart`
+- 🗑️ `src/client/lib/features/proyecto_shell/presentation/providers/proyectos_provider.dart`
   - Archivo totalmente consolidado (no hay más referencias)
 
 ### Revisados (NO requieren cambios)
-- ✅ `src/client/lib/features/project_shell/data/mock_projects_data.dart`
-  - `getMockProjectsData()` es correctamente async
+- ✅ `src/client/lib/features/proyecto_shell/data/mock_proyectos_data.dart`
+  - `getMockProyectosData()` es correctamente async
   - No necesita cambios
-- ✅ Cualquier archivo que importa de project_providers.dart
+- ✅ Cualquier archivo que importa de proyecto_providers.dart
   - Importa desde el mismo archivo unificado
   - Funcionalidad preservada
 
@@ -187,7 +187,7 @@ Beneficio: Single source of truth, imports simplificados
    cd src/client && flutter pub get && flutter analyze
    ```
 
-3. **Ejecutar tests** (si existen)
+3. **Ejecutar pruebas** (si existen)
    ```bash
    flutter test
    ```
@@ -201,7 +201,7 @@ Beneficio: Single source of truth, imports simplificados
 
 ## 📝 Notas Técnicas
 
-### Por qué buildHybridProjectsList() debe ser async
+### Por qué buildHybridProyectosList() debe ser async
 
 ```
 getMockProjectsData() = Future<List<Map>>
@@ -221,7 +221,7 @@ $ grep -r "projects_provider" src/client/lib --include="*.dart"
 # (No matches found - archivo huérfano)
 ```
 
-Con esto, fue seguro eliminar `projects_provider.dart` sin causar imports rotos.
+Con esto, fue seguro eliminar `proyectos_provider.dart` sin causar imports rotos.
 
 ---
 

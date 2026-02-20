@@ -8,13 +8,13 @@
 1. [El Problema](#el-problema)
 2. [La Solución](#la-solución)
 3. [Archivos de Configuración](#archivos-de-configuración)
-4. [Cómo Usar en VS Code](#cómo-usar-en-vs-code)
+4. [Cómo Usar en VS Code](#cómo-usar-en-vs-código)
 
 ---
 
 ## El Problema
 
-Los tests centralizados en `/tests/` estaban fuera del scope del `pubspec.yaml`, por lo que:
+Los pruebas centralizados en `/pruebas/` estaban fuera del scope del `pubspec.yaml`, por lo que:
 
 ```
 ❌ Analyzer no podía resolver:
@@ -30,7 +30,7 @@ Los tests centralizados en `/tests/` estaban fuera del scope del `pubspec.yaml`,
 Crear una configuración de **monorepo multinivel** con:
 
 1. **pubspec.yaml en raíz** - Declara dependencias compartidas
-2. **analysis_options.yaml** - Configura el analyzer para monorepo
+2. **análisis_options.yaml** - Configura el analyzer para monorepo
 3. **.dart_tool symlink** - Apunta a `src/client/.dart_tool`
 4. **soft-architect-ai.code-workspace** - Configuración de VS Code
 
@@ -60,7 +60,7 @@ dev_dependencies:
 
 **Función:** Define dependencias que el analyzer de monorepo puede resolver.
 
-### 2. `analysis_options.yaml` (raíz)
+### 2. `análisis_options.yaml` (raíz)
 
 ```yaml
 analyzer:
@@ -129,7 +129,7 @@ Encuentra: flutter/test/...
 ✅ Import Resuelto
 ```
 
-### Estructura Resultante
+### Estructura Resultadoante
 
 ```
 soft-architect-ai/                    (monorepo raíz)
@@ -157,7 +157,7 @@ soft-architect-ai/                    (monorepo raíz)
 File → Open Workspace from File → soft-architect-ai.code-workspace
 ```
 
-### 2. Reiniciar Analysis Server
+### 2. Reiniciar Análisis Server
 
 ```
 Ctrl+Shift+P → Dart: Restart Analysis Server
@@ -173,7 +173,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../src/client/lib/features/...';
 ```
 
-### 4. Ejecutar Tests
+### 4. Ejecutar Pruebas
 
 ```bash
 ./run_tests.sh flutter
@@ -183,20 +183,20 @@ import '../../../../src/client/lib/features/...';
 
 ## ✅ Estado
 
-| Elemento | Status | Detalles |
+| Elemento | Estado | Detalles |
 |----------|--------|----------|
 | pubspec.yaml (raíz) | ✅ | Declara dependencias |
-| analysis_options.yaml | ✅ | Configura analyzer |
+| análisis_options.yaml | ✅ | Configura analyzer |
 | .dart_tool symlink | ✅ | Apunta a src/client/.dart_tool |
 | VS Code workspace | ✅ | soft-architect-ai.code-workspace |
-| Imports en tests | ✅ | Funcionan con package: y relative |
-| 15 tests listos | ✅ | Sin errores de compilación |
+| Imports en pruebas | ✅ | Funcionan con package: y relative |
+| 15 pruebas listos | ✅ | Sin errores de compilación |
 
 ---
 
 ## 🚀 Próximos Pasos
 
-1. **Abrir workspace:** File → Open Workspace from File
-2. **Reiniciar analyzer:** Ctrl+Shift+P → Dart: Restart Analysis
-3. **Ejecutar tests:** `./run_tests.sh flutter`
-4. **Agregar Python tests** cuando esté listo `src/server/`
+1. **Abrir workspace:** Archivo → Open Workspace from Archivo
+2. **Reiniciar analyzer:** Ctrl+Shift+P → Dart: Restart Análisis
+3. **Ejecutar pruebas:** `./ejecutar_pruebas.sh flutter`
+4. **Agregar Python pruebas** cuando esté listo `src/server/`

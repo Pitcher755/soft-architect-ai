@@ -1,7 +1,7 @@
 # 📋 Test Suite Roadmap & Pending Tasks
 
-> **Fecha:** 2025-01-31
-> **Estado:** In Progress
+> **Date:** 2025-01-31
+> **Status:** In Progress
 > **Responsable:** ArchitectZero (Agente)
 
 ---

@@ -5,12 +5,12 @@ import 'package:path/path.dart' as p;
 
 import '../../domain/entities/file_node.dart';
 
-/// Servicio de Infraestructura especializado en lectura jerárquica.
+/// Infrastructure service specialized in hierarchical reading.
 ///
-/// Responsabilidad: Convertir la estructura física del disco (dart:io)
-/// en entidades de dominio (FileNode) para la UI.
+/// Responsibility: Convert the physical disk structure (dart:io)
+/// into domain entities (FileNode) for the UI.
 class FileTreeService {
-  /// Construye el árbol completo a partir de una ruta raíz.
+  /// Builds the complete tree from a root path.
   static Future<FileNode> buildTreeFromPath(String rootPath) async {
     final rootDir = Directory(rootPath);
 
@@ -30,7 +30,7 @@ class FileTreeService {
     // 2. Recursión
     final node = await _buildNodeRecursive(rootDir);
 
-    // 3. Retornamos la raíz con el nombre formateado (Mayúsculas para el proyecto)
+    // 3. Return the root with the formatted name (uppercase for project)
     return FileNode(
       id: node.id,
       name: rootName.toUpperCase(),

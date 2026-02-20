@@ -1,4 +1,4 @@
-# 🧪 Manual de Prueba - Project Shell Screen
+# 🧪 Manual de Test - Project Shell Screen
 
 > **Objetivo:** Validar todas las características implementadas
 > **Duración Estimada:** 10-15 minutos
@@ -6,7 +6,7 @@
 
 ---
 
-## ✅ Checklist de Pruebas Funcionales
+## ✅ Checklist de Tests Funcionales
 
 ### Test 1: Interfaz General ✅
 
@@ -48,14 +48,14 @@ RESULTADO ESPERADO:
 
 **Sub-tests:**
 
-a) **Expandir carpeta:**
+a) **Expandir folder:**
    - Haz clic en `►` de PROJECT-ALPHA
-   - **Esperado:** Cambia a `▼` y muestra subcarpetas
+   - **Esperado:** Cambia a `▼` y muestra subfolders
    - **Confirmado:** ✅ / ❌
 
-b) **Contraer carpeta:**
+b) **Contraer folder:**
    - Haz clic en `▼` de PROJECT-ALPHA
-   - **Esperado:** Cambia a `►` y oculta subcarpetas
+   - **Esperado:** Cambia a `►` y oculta subfolders
    - **Confirmado:** ✅ / ❌
 
 c) **Expandir 10-CONTEXT:**
@@ -68,10 +68,10 @@ c) **Expandir 10-CONTEXT:**
      ```
    - **Confirmado:** ✅ / ❌
 
-d) **Seleccionar archivo:**
+d) **Seleccionar file:**
    - Haz clic en `01-vision.md`
    - **Esperado:**
-     - Archivo se resalta en AZUL
+     - File se resalta en AZUL
      - Preview actualiza contenido
      - Árbol NO se cierra
    - **Confirmado:** ✅ / ❌
@@ -81,7 +81,7 @@ d) **Seleccionar archivo:**
 ### Test 3: Preview Markdown 📄
 
 **Pasos:**
-1. Selecciona un archivo .md del árbol
+1. Selecciona un file .md del árbol
 2. Verifica panel Preview (derecha):
 
 ```
@@ -110,7 +110,7 @@ b) **Scroll funciona:**
    - **Confirmado:** ✅ / ❌
 
 c) **Botones toolbar:**
-   - Botón Copy (📋)
+   - Button Copy (📋)
    - **Esperado:** Copia contenido al clipboard
    - **Confirmado:** ✅ / ❌ (verificar con paste en otro lado)
 
@@ -150,7 +150,7 @@ c) **Input field:**
    - **Confirmado:** ✅ / ❌
 
 d) **Send button:**
-   - Botón visible con icono ✈
+   - Button visible con icono ✈
    - Clickeable (aunque no hace nada en demo)
    - **Confirmado:** ✅ / ❌
 
@@ -237,7 +237,7 @@ RESULTADO ESPERADO:
 
 ### Test 7: Interacción Completa 🎭
 
-**Escenario:** Revisar documentos y cambiar layout
+**Escenario:** Revisar documents y cambiar layout
 
 Pasos:
 1. ✅ Files panel visible (test 2 passed)
@@ -248,7 +248,7 @@ Pasos:
 6. ✅ Oculta Preview (ganas espacio para chat)
 7. ✅ Oculta Files (solo Chat)
 8. ✅ Muestra ambos nuevamente
-9. ✅ Selecciona otro archivo (02-constraints.md)
+9. ✅ Selecciona otro file (02-constraints.md)
 10. ✅ Preview se actualiza sin cerrar Files
 
 ```
@@ -279,7 +279,7 @@ Verifica estos elementos visuales:
 
 ---
 
-## 🐛 Pruebas de Error (Edge Cases)
+## 🐛 Tests de Error (Edge Cases)
 
 ### Test E1: Árbol profundo
 - ✅ Expande múltiples niveles
@@ -292,8 +292,8 @@ Verifica estos elementos visuales:
 - **Esperado:** Todo cabe en pantalla, no hay overflow
 
 ### Test E3: Selecciones múltiples
-- Selecciona archivo A
-- Selecciona archivo B
+- Selecciona file A
+- Selecciona file B
 - **Esperado:** Solo B está resaltado, A se deselecciona
 
 ### Test E4: Toggle rápido
@@ -302,11 +302,11 @@ Verifica estos elementos visuales:
 
 ---
 
-## 📊 Resultados
+## 📊 Results
 
-### Resumen de Pruebas
+### Resumen de Tests
 
-| Test | Resultado | Notas |
+| Test | Result | Notas |
 |------|-----------|-------|
 | T1: Interfaz General | ✅ / ❌ | |
 | T2: Árbol Directorios | ✅ / ❌ | |
@@ -354,4 +354,4 @@ Si todos los tests son **✅**, entonces:
 
 **Tester:** ________________
 **Fecha:** ________________
-**Resultado Final:** ✅ PASS / ❌ FAIL
+**Result Final:** ✅ PASS / ❌ FAIL

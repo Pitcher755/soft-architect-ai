@@ -137,7 +137,7 @@ Actúa como Infra Engineer. Basándote en la **Fase 6** del Master Workflow:
 
 1. Ve a tu GEM.
 2. Ejecuta estos 5 prompts en orden.
-3. Copia todas las respuestas en un solo documento (ej: `SIMULACION_SOFTARCHITECT.md`).
+3. Copia todas las respuestas en un solo documentoo (ej: `SIMULACION_SOFTARCHITECT.md`).
 4. **Sube aquí** cuando lo tengas.
 
 Te reviso y te digo: "Javi, esto es oro, tenemos 80% de la tesis hecha" o "Hay un fallo aquí X, vamos a ajustar el prompt". ¡Vamos a por ello! 👨‍💻🔥
@@ -190,8 +190,8 @@ Identificación de riesgos técnicos y de negocio con plan de mitigación:
 | Riesgo | Tipo | Impacto | Probabilidad | Plan de Mitigación (Plan B) |
 | --- | --- | --- | --- | --- |
 | **Rendimiento IA Local (Latencia)** | Técnico | ALTO | PROBABLE | Implementar soporte para modelos cuantizados (4-bit) y verificar hardware mínimo al arranque. Fallback a modelos más ligeros (ej: Phi-3) si no hay GPU. |
-| **Complejidad de Instalación (Dependencias)** | Técnico | ALTO | PROBABLE | Empaquetar el runtime Python como ejecutable (PyInstaller) o contenedor Docker embebido para evitar que el usuario configure Python/Ollama manualmente. |
-| **Alucinaciones Arquitecturales** | Calidad | MEDIO | PROBABLE | Strict System Prompts que obliguen a la IA a citar el documento base y responder "No lo sé" si la información no está en el RAG (Grounding Estricto). |
+| **Complejidad de Instalación (Dependencias)** | Técnico | ALTO | PROBABLE | Empaquetar el ejecutartime Python como ejecutable (PyInstaller) o contenedor Docker embebido para evitar que el usuario configure Python/Ollama manualmente. |
+| **Alucinaciones Arquitecturales** | Calidad | MEDIO | PROBABLE | Strict System Prompts que obliguen a la IA a citar el documentoo base y responder "No lo sé" si la información no está en el RAG (Grounding Estricto). |
 
 ---
 
@@ -200,7 +200,7 @@ Identificación de riesgos técnicos y de negocio con plan de mitigación:
 Definición de indicadores para Open Source / Developer Tool:
 
 1. **Tasa de Completación de Fase (Indicador Principal):** Porcentaje de usuarios que inician Fase 0 y avanzan exitosamente a Fase 2 (Setup). Mide la utilidad real del asistente para desbloquear progreso.
-2. **Frecuencia de Generación de Artefactos:** Número promedio de entregables generados (ADRs, Diagramas, Specs) por sesión. Valida que el RAG es útil para crear documentación técnica.
+2. **Frecuencia de Generación de Artefactos:** Número promedio de entregables generados (ADRs, Diagramas, Specs) por sesión. Valida que el RAG es útil para crear documentoación técnica.
 3. **Time-to-Hello-World (Eficiencia):** Tiempo medido desde que el usuario crea un nuevo proyecto en SoftArchitect AI hasta que tiene su estructura de carpetas (Scaffolding) definida y lista para codificar.
 
 ---
@@ -245,7 +245,7 @@ Para una aplicación de escritorio que debe ejecutar modelos IA locales, la gest
 
 ## 1.2. Architecture Decision Record (ADR-001)
 
-Documentando la decisión crítica de arquitectura "Local First" siguiendo la plantilla estándar.
+Documentoando la decisión crítica de arquitectura "Local First" siguiendo la plantilla estándar.
 
 # ADR-001: Estrategia IA Local (Local-First RAG)
 
@@ -259,13 +259,13 @@ Usar una arquitectura 100% local basada en Ollama y ChromaDB, sin dependencias d
 
 ## Rationale
 1. **Privacidad (Security by Design):** Elimina completamente el vector de intercepción de datos en tránsito o retención por terceros.
-2. **Costo Operacional:** Marginal cero costo por token. Permite contextos largos (ingesta de documentación técnica entera) sin sorpresas de facturación.
+2. **Costo Operacional:** Marginal cero costo por token. Permite contextos largos (ingesta de documentoación técnica entera) sin sorpresas de facturación.
 3. **Resiliencia:** Funciona offline, crítico para entornos corporativos con firewalls estrictos.
 
 ## Consecuencias
 - ✅ Privacidad garantizada total (Soberanía de datos).
 - ⚠️ **Requisitos de Hardware:** Usuario final necesita mínimo 16GB RAM (ideal GPU dedicada). Esto reduce TAM (Total Addressable Market).
-- ⚠️ **Complejidad de Setup:** Debemos empaquetar el runtime Python y gestionar descargas de modelos (GBs) en primer arranque.
+- ⚠️ **Complejidad de Setup:** Debemos empaquetar el ejecutartime Python y gestionar descargas de modelos (GBs) en primer arranque.
 
 ## Estado: Aceptado
 
@@ -324,7 +324,7 @@ Análisis de amenazas enfocado en proteger código del usuario.
 <br>2. **Permisos de Sistema de Archivos:** Las carpetas de ChromaDB (`postgres_data`, `chroma_data`) deben tener permisos `700` (solo owner).<br>
 
 <br>3. **Memoria Efímera:** Opción para iniciar ChromaDB en memoria (sin persistencia en disco) para sesiones altamente sensibles. |
-| **Manipulación** | Inyección de documentos falsos en el RAG para alucinar respuestas incorrectas de seguridad. | Validación de integridad (checksums) de documentos ingeridos antes de procesar. |
+| **Manipulación** | Inyección de documentoos falsos en el RAG para alucinar respuestas incorrectas de seguridad. | Validación de integridad (checksums) de documentoos ingeridos antes de procesar. |
 | **Suplantación** | Otra aplicación local haciéndose pasar por el backend de SoftArchitect. | Implementar un token de autenticación simple (generado al vuelo) entre Flutter y Python. |
 
 ---
@@ -560,7 +560,7 @@ flutter run -d windows # o macos/linux
 ---
 
 **Próximo paso sugerido:**
-La infraestructura está lista. ¿Deseas proceder a **[TRIGGER: FASE 3 - DESARROLLO (BACKEND)]** para implementar el primer endpoint API (ingesta de documentos RAG) siguiendo TDD + Copilot cycle?
+La infraestructura está lista. ¿Deseas proceder a **[TRIGGER: FASE 3 - DESARROLLO (BACKEND)]** para implementar el primer endpoint API (ingesta de documentoos RAG) siguiendo TDD + Copilot cycle?
 
 ---
 Ejecutando protocolo de **Fase 5: Seguridad (Shift-Left)** según el estándar *MASTER_WORKFLOW_0-100*.
@@ -589,11 +589,11 @@ Aunque no hay nube, el riesgo es que otro proceso local acceda a los datos.
 
 * [ ] **Permisos de Sistema de Archivos:** Volúmenes Docker (`postgres_data`, `chroma_data`) deben tener permisos `700` (solo owner).
 * [ ] **Modo Memoria Efímera:** Implementar "Modo Incógnito" en el frontend que inicie ChromaDB en memoria (sin persistencia en disco) para sesiones altamente sensibles.
-* [ ] **Contenedores No-Root:** Configurar Dockerfiles para ejecutar procesos como usuario no-privilegiado (`UID 1001`), previniendo que una vulnerabilidad Python dé acceso root al host.
+* [ ] **Contenedores No-Root:** Configurar Dockerarchivos para ejecutar procesos como usuario no-privilegiado (`UID 1001`), previniendo que una vulnerabilidad Python dé acceso root al host.
 
 ### 📦 A06: Vulnerable Components (Supply Chain)
 
-* [ ] **Pinning de Versiones:** NUNCA usar tags `:latest` en `docker-compose.yml`. Usar SHAs o versiones semánticas (ej: `python:3.11-slim-bookworm`).
+* [ ] **Pinning de Versiones:** NUNCA usar tags `:laprueba` en `docker-compose.yml`. Usar SHAs o versiones semánticas (ej: `python:3.11-slim-bookworm`).
 * [ ] **Escaneo de Imágenes:** Integrar `trivy` o `snyk` en el pipeline CI para escanear imágenes base antes de build.
 * [ ] **Imágenes Base Mínimas:** Usar imágenes `alpine` o `slim` para reducir superficie de ataque.
 
@@ -712,7 +712,7 @@ async def add_security_headers(request, call_next):
 ---
 
 **Próximo paso sugerido:**
-La base de seguridad está definida. ¿Deseas proceder a **[TRIGGER: FASE 6 - INFRAESTRUCTURA]** para crear el Dockerfile optimizado de producción (Multi-stage build) para el servicio Python?
+La base de seguridad está definida. ¿Deseas proceder a **[TRIGGER: FASE 6 - INFRAESTRUCTURA]** para crear el Dockerarchivo optimizado de producción (Multi-stage build) para el servicio Python?
 
 ---
 Ejecutando protocolo de **Fase 6: Infraestructura** según el estándar *MASTER_WORKFLOW_0-100*.
@@ -884,9 +884,9 @@ exec uvicorn src.main:app --host 0.0.0.0 --port 8080
 
 ```
 
-**Integración en `Dockerfile` (API Server):**
+**Integración en `Dockerarchivo` (API Server):**
 
-```dockerfile
+```dockerarchivo
 # ... (etapas de build previas) ...
 
 COPY scripts/init_models.sh /app/scripts/init_models.sh
@@ -898,14 +898,14 @@ ENTRYPOINT ["/app/scripts/init_models.sh"]
 ```
 
 **Justificación:**
-Esto asegura que la API *nunca* acepte requests del frontend hasta que los modelos necesarios estén físicamente disponibles en el volumen Docker, evitando errores "Model not found" en runtime.
+Esto asegura que la API *nunca* acepte requests del frontend hasta que los modelos necesarios estén físicamente disponibles en el volumen Docker, evitando errores "Model not found" en ejecutartime.
 
 ---
 
 **Próximo paso sugerido:**
 La infraestructura CI/CD y automatización está lista. El proyecto está técnicamente listo para entrar en fase masiva de codificación. ¿Deseas proceder a **[TRIGGER: FASE 7 - DEPLOY A STAGING]** (en este caso, simular un Release Candidate v0.1.0 localmente)?
 
-# 🧪 Resultados de Simulación: SoftArchitect AI (Proof of Concept)
+# 🧪 Resultadoados de Simulación: SoftArchitect AI (Proof of Concept)
 
 ## 1. Objetivo de Simulación
 Validar usando técnica "Wizard of Oz" (usando un LLM avanzado simulando sistema local) si el workflow propuesto en `MASTER_WORKFLOW_0-100.md` es capaz de generar entregables útiles de ingeniería antes de escribir código.
@@ -913,9 +913,9 @@ Validar usando técnica "Wizard of Oz" (usando un LLM avanzado simulando sistema
 ## 2. Metodología
 - **Modelo:** Gemini (Simulando RAG Local).
 - **Inputs:** Prompts estructurados ("Triggers") correspondientes a Fases 0, 1, 2, 5 y 6.
-- **Contexto:** Documentación de Máster en Desarrollo de Software con IA (Enfoque Web/General).
+- **Contexto:** Documentoación de Máster en Desarrollo de Software con IA (Enfoque Web/General).
 
-## 3. Resultados Obtenidos
+## 3. Resultadoados Obtenidos
 La simulación generó exitosamente los siguientes artefactos estratégicos para el desarrollo de SoftArchitect AI en sí mismo:
 
 ### ✅ Fase 0: Visión y Alcance
@@ -936,7 +936,7 @@ La simulación generó exitosamente los siguientes artefactos estratégicos para
 - **Sanitización:** Algoritmo "Lógica Media" diseñado en Python para limpiar prompts antes de llegar al LLM.
 - **Aislamiento:** Binding estricto a `127.0.0.1` para evitar acceso LAN.
 
-## 4. Conclusiones y Brechas Detectadas (Gap Analysis)
+## 4. Conclusiones y Brechas Detectadas (Gap Análisis)
 1.  **Dependencia de Modelo:** Calidad de respuesta dependió del conocimiento general de Gemini. RAG local necesitará una base de conocimiento mucho más amplia que solo PDFs de Máster para replicar este nivel de detalle en stacks no-web (ej: Móvil Nativo).
 2.  **Especificidad:** Se requiere una estrategia "Tech Packs" (paquetes de conocimiento) para que el sistema asista en Swift, Kotlin o Rust con la misma solvencia que en Web.
 

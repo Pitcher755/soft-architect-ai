@@ -1,7 +1,7 @@
-# 📂 Monorepo Test Structure - MANDATORY REFERENCE
+# 📂 Monorepo Prueba Structure - MANDATORY REFERENCE
 
-> **Status:** 🔴 MANDATORY
-> **Aplicable a:** All HU implementations (HU-3.1+)
+> **Estado:** 🔴 MANDATORY
+> **Aplicable a:** All HU implementacións (HU-3.1+)
 > **Actualizado:** 2026-02-05
 
 ---
@@ -26,7 +26,7 @@ soft-architect-ai/
 
 ## ✅ CORRECT Structure
 
-### Python Tests (Backend)
+### Python Pruebas (Backend)
 
 ```
 tests/python/
@@ -58,11 +58,11 @@ tests/python/
         └── mock_data.json
 ```
 
-**Path Pattern:** `tests/python/[unit|integration]/[module]/test_*.py`
+**Path Pattern:** `pruebas/python/[unit|integration]/[module]/prueba_*.py`
 
-**Example:** `tests/python/unit/services/rag/test_orchestrator.py`
+**Example:** `pruebas/python/unit/services/rag/prueba_orchestrator.py`
 
-### Flutter Tests (Frontend)
+### Flutter Pruebas (Frontend)
 
 ```
 tests/test/
@@ -91,9 +91,9 @@ tests/test/
     └── test_helpers.dart
 ```
 
-**Path Pattern:** `tests/test/[unit|widget|integration]/features/[feature]/...test.dart`
+**Path Pattern:** `pruebas/prueba/[unit|widget|integration]/features/[feature]/...prueba.dart`
 
-**Example:** `tests/test/unit/features/chat/domain/entities/chat_message_test.dart`
+**Example:** `pruebas/prueba/unit/features/chat/domain/entities/chat_message_prueba.dart`
 
 ---
 
@@ -110,9 +110,9 @@ tests/test/
 
 ---
 
-## 🔄 For Each HU Implementation
+## 🔄 For Each HU Implementación
 
-### When Creating Tests
+### When Creating Pruebas
 
 **DO:**
 ```bash
@@ -130,9 +130,9 @@ src/server/tests/test_[feature].py
 src/client/test/[feature]_test.dart
 ```
 
-### When Referencing Tests
+### When Referencing Pruebas
 
-**In Workflow Documents:**
+**In Workflow Documentos:**
 ```markdown
 # ✅ Correct
 **File:** `tests/python/unit/services/rag/test_orchestrator.py`
@@ -143,7 +143,7 @@ src/client/test/[feature]_test.dart
 **File:** `src/client/tests/unit/features/chat/chat_message_test.dart`
 ```
 
-### When Running Tests
+### When Ejecutarning Pruebas
 
 ```bash
 # Python tests (from project root)
@@ -162,9 +162,9 @@ pytest tests/python/ --cov=app --cov-report=html
 
 ---
 
-## 📋 Configuration Files
+## 📋 Configuración Archivos
 
-### pyproject.toml
+### pyproyecto.toml
 
 ```toml
 [tool.pytest.ini_options]
@@ -196,49 +196,49 @@ python_functions = ["test_*"]
 
 ## 🔗 Migration Reference
 
-### Python Tests Migrated (22 files)
+### Python Pruebas Migrated (22 archivos)
 
 | Old Path | New Path |
 |----------|----------|
-| `src/server/tests/unit/app/` | `tests/python/unit/app/` |
-| `src/server/tests/unit/core/` | `tests/python/unit/core/` |
-| `src/server/tests/unit/services/rag/` | `tests/python/unit/services/rag/` |
-| `src/server/tests/integration/` | `tests/python/integration/` |
+| `src/server/pruebas/unit/app/` | `pruebas/python/unit/app/` |
+| `src/server/pruebas/unit/core/` | `pruebas/python/unit/core/` |
+| `src/server/pruebas/unit/services/rag/` | `pruebas/python/unit/services/rag/` |
+| `src/server/pruebas/integration/` | `pruebas/python/integration/` |
 
-**Status:** ✅ COMPLETED (commit 4efe4c2)
+**Estado:** ✅ COMPLETED (commit 4efe4c2)
 
-### Flutter Tests (TO BE MIGRATED)
+### Flutter Pruebas (TO BE MIGRATED)
 
 | Old Path | New Path |
 |----------|----------|
-| `src/client/tests/unit/` | `tests/test/unit/` |
-| `src/client/tests/widget/` | `tests/test/widget/` |
-| `src/client/tests/integration/` | `tests/test/integration/` |
+| `src/client/pruebas/unit/` | `pruebas/prueba/unit/` |
+| `src/client/pruebas/widget/` | `pruebas/prueba/widget/` |
+| `src/client/pruebas/integration/` | `pruebas/prueba/integration/` |
 
-**Status:** ⏳ PENDING (post HU-3.3)
+**Estado:** ⏳ PENDING (post HU-3.3)
 
 ---
 
 ## ✅ Validation Checklist
 
-For every test file creation:
+For every prueba archivo creation:
 
-- [ ] Test file located in `tests/python/` (Python) or `tests/test/` (Flutter)
+- [ ] Prueba archivo located in `pruebas/python/` (Python) or `pruebas/prueba/` (Flutter)
 - [ ] Directory structure mirrors source structure
-- [ ] Path follows pattern: `tests/[python|test]/[type]/[module]/test_*.py[dart]`
-- [ ] No tests exist in `src/` directories
-- [ ] Configuration files updated if new test type added
-- [ ] Documentation updated with correct path references
+- [ ] Path follows pattern: `pruebas/[python|prueba]/[type]/[module]/prueba_*.py[dart]`
+- [ ] No pruebas exist in `src/` directories
+- [ ] Configuración archivos updated if new prueba type added
+- [ ] Documentoation updated with correct path references
 
 ---
 
 ## 📚 See Also
 
 - [HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md](../HU-3.3_CHAT_SEQUENTIAL_DOCS/HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md) - References this structure
-- [tests/python/README_MIGRATION.md](../../tests/python/README_MIGRATION.md) - Python test setup
+- [pruebas/python/README_MIGRATION.md](../../pruebas/python/README_MIGRATION.md) - Python prueba setup
 - [TESTS_MIGRATION_REPORT.md](../PROJECT_REPORT/TESTS_MIGRATION_REPORT.md) - Migration details
 
 ---
 
-> **This is the OFFICIAL reference for all test structure decisions.**
-> **All HU workflows and implementations MUST comply with this structure.**
+> **This is the OFFICIAL reference for all prueba structure decisions.**
+> **All HU workflows and implementacións MUST comply with this structure.**

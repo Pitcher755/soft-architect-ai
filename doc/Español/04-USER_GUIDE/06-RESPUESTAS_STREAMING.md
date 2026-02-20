@@ -106,7 +106,7 @@ data: {"done": true}
 | **Teclado** | Presionar `Esc` |
 | **API** | Enviar `DELETE /api/chat/stream/{session_id}` |
 
-**Resultado:**
+**Resultadoado:**
 ```
 🤖 SoftArchitect AI:
 "Para diseñar una API REST necesitas considerar..."
@@ -308,7 +308,7 @@ class StreamingConfig:
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documentoos Relacionados
 
 - [Interfaz de Chat](05-INTERFAZ_CHAT.md) - Cómo usar el chat
 - [Solución de Problemas](08-SOLUCIÓN_DE_PROBLEMAS.md) - Troubleshooting

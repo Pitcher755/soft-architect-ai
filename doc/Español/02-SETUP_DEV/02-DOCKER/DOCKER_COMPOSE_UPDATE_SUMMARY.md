@@ -13,7 +13,7 @@ Revisar y mejorar la configuración de Docker Compose para asegurar:
 - ✅ Funcionalidad completa y verificada
 - ✅ Seguridad y privacidad (OWASP)
 - ✅ Performance eficiente (RAM, CPU)
-- ✅ Documentación clara para developers
+- ✅ Documentoación clara para developers
 
 ---
 
@@ -23,20 +23,20 @@ Revisar y mejorar la configuración de Docker Compose para asegurar:
 
 | Aspecto | Evaluación | Impacto |
 |---------|-----------|--------|
-| **Dockerfile** | ❌ FALTANTE | Build fallaba |
+| **Dockerarchivo** | ❌ FALTANTE | Build fallaba |
 | **Uvicorn Command** | ❌ INCORRECTO | Container fallaba |
 | **Variables Env** | ⚠️ INCOMPLETAS | Logs no bufferizados |
 | **Healthchecks** | ❌ FALTANTES | Sin sincronización de startups |
 | **Límites Recursos** | ⚠️ PARCIALES | GPU obligatoria, no flexible |
-| **Documentación** | ❌ AUSENTE | Developers sin guía |
+| **Documentoación** | ❌ AUSENTE | Developers sin guía |
 
 ---
 
 ## ✅ Cambios Implementados
 
-### 1. **Dockerfile Nuevo** (`src/server/Dockerfile`)
+### 1. **Dockerarchivo Nuevo** (`src/server/Dockerarchivo`)
 
-```dockerfile
+```dockerarchivo
 # Multi-stage build (builder + runtime)
 # Python 3.12.3 (latest compatible)
 # Optimizaciones:
@@ -80,7 +80,7 @@ Revisar y mejorar la configuración de Docker Compose para asegurar:
 - Logging con json-file + límite de tamaño
 ```
 
-### 3. **.env Configuration Templates**
+### 3. **.env Configuración Templates**
 
 **`infrastructure/.env.example`** y **`.env`**
 - Variables de imagen (versiones)
@@ -90,12 +90,12 @@ Revisar y mejorar la configuración de Docker Compose para asegurar:
 - Privacy settings
 
 **`src/server/.env.example`**
-- Documentación exhaustiva en comentarios
+- Documentoación exhaustiva en comentarios
 - Secciones: APP, API, LLM, ChromaDB, SQLite, Security
 - Valores por defecto funcionales
 - ⚠️ Warnings para variables sensibles
 
-### 4. **Documentación Completa** (`doc/02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md`)
+### 4. **Documentoación Completa** (`doc/02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md`)
 
 **Contenidos:**
 - 📋 Tabla de contenidos
@@ -190,21 +190,21 @@ Health check:   ~3s interval, 5 retries max
 
 ## 🔍 Validación
 
-### Build Test
+### Build Prueba
 ```bash
 cd infrastructure
 docker compose up --build
 ```
 
-**Resultados esperados:**
+**Resultadoados esperados:**
 - ✅ Base image pulled
-- ✅ Dockerfile build success
+- ✅ Dockerarchivo build success
 - ✅ Ollama starts, healthcheck pasa
 - ✅ ChromaDB starts, healthcheck pasa
 - ✅ API starts, healthcheck pasa
 - ✅ Swagger UI en http://localhost:8000/docs
 
-### Funcionalidad Test
+### Funcionalidad Prueba
 ```bash
 curl http://localhost:8000/api/v1/health
 # {"status":"OK","message":"...","version":"0.1.0"}
@@ -285,7 +285,7 @@ http://localhost:8000/docs
 | Métrica | Antes | Después |
 |---------|-------|---------|
 | **Funcionalidad** | ❌ No funciona | ✅ 100% operacional |
-| **Documentación** | ❌ 0 | ✅ ~1000 líneas |
+| **Documentoación** | ❌ 0 | ✅ ~1000 líneas |
 | **Validabilidad** | ❌ Manual | ✅ Script automático |
 | **Performance** | ❌ Indefinido | ✅ RAM bounded |
 | **Security** | ⚠️ Parcial | ✅ Complete |

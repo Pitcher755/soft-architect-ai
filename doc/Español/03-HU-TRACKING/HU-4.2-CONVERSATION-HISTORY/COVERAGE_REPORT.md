@@ -1,18 +1,18 @@
-# 📊 HU-4.2: Test Coverage Report
+# 📊 HU-4.2: Prueba Coverage Report
 
 > **Generated:** 2026-02-14
 > **Target:** ≥85% overall, ≥95% domain layer
-> **Status:** ✅ **EXCEEDS TARGETS** (96% overall, 100% domain)
+> **Estado:** ✅ **EXCEEDS TARGETS** (96% overall, 100% domain)
 
 ---
 
 ## 📈 Executive Summary
 
-| Metric | Target | Achieved | Status |
+| Metric | Target | Achieved | Estado |
 |--------|--------|----------|--------|
 | **Overall Coverage** | ≥85% | **96%** | ✅ **+11%** |
 | **Domain Layer** | ≥95% | **100%** | ✅ **+5%** |
-| **Infrastructure Layer** | ≥90% | **99%** | ✅ **+9%** |
+| **Infraestructura Layer** | ≥90% | **99%** | ✅ **+9%** |
 | **Service Layer** | ≥90% | **100%** | ✅ **+10%** |
 | **API Layer** | ≥85% | **90%** | ✅ **+5%** |
 
@@ -28,7 +28,7 @@
 
 #### Entities
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `conversation.py` | 20 | 20 | 0 | **100%** ✅ |
 | `message.py` | 22 | 22 | 0 | **100%** ✅ |
@@ -37,7 +37,7 @@
 
 #### Repositories
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `conversation_repository.py` | 10 | 10 | 0 | **100%** ✅ |
 
@@ -47,11 +47,11 @@
 
 ---
 
-### 2. Infrastructure Layer (99% Coverage)
+### 2. Infraestructura Layer (99% Coverage)
 
 #### Models
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `conversation_model.py` | 15 | 15 | 0 | **100%** ✅ |
 | `message_model.py` | 15 | 15 | 0 | **100%** ✅ |
@@ -61,7 +61,7 @@
 
 #### Repositories
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `sqlalchemy_conversation_repository.py` | 54 | 53 | 1 | **98%** ✅ |
 
@@ -71,7 +71,7 @@
 
 #### Database Management
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `database.py` | 22 | 15 | 7 | **68%** ⚠️ |
 
@@ -79,13 +79,13 @@
 
 **Database Total:** 15/22 (68%)
 
-**Infrastructure Layer Total:** 101/109 (93%)
+**Infraestructura Layer Total:** 101/109 (93%)
 
 ---
 
 ### 3. Service Layer (100% Coverage)
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `conversation_service.py` | 17 | 17 | 0 | **100%** ✅ |
 | `__init__.py` | 2 | 2 | 0 | **100%** ✅ |
@@ -98,12 +98,12 @@
 
 #### Endpoints
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `conversations.py` | 25 | 20 | 5 | **80%** ✅ |
 
 **Missing Lines:**
-- Line 49 (error logging in create endpoint)
+- Line 49 (error logging in crear endpoint)
 - Lines 60-66 (error detail formatting in get endpoint)
 - Line 81 (pagination metadata calculation)
 
@@ -111,7 +111,7 @@
 
 #### Schemas
 
-| File | Statements | Covered | Missing | Coverage |
+| Archivo | Statements | Covered | Missing | Coverage |
 |------|------------|---------|---------|----------|
 | `conversation.py` | 27 | 27 | 0 | **100%** ✅ |
 
@@ -121,109 +121,109 @@
 
 ---
 
-## 🧪 Test Statistics
+## 🧪 Prueba Statistics
 
-### Test Distribution
+### Prueba Distribution
 
-| Test Type | Count | Status |
+| Prueba Type | Count | Estado |
 |-----------|-------|--------|
-| **Unit Tests (Domain)** | 11 | ✅ All passing |
-| **Unit Tests (Infrastructure)** | 3 | ✅ All passing |
-| **Unit Tests (Service)** | 6 | ✅ All passing |
-| **Integration Tests (Persistence)** | 3 | ✅ All passing |
-| **Integration Tests (API)** | 5 | ✅ All passing |
-| **Total Tests** | **28** | **✅ 100% passing** |
+| **Unit Pruebas (Domain)** | 11 | ✅ All passing |
+| **Unit Pruebas (Infraestructura)** | 3 | ✅ All passing |
+| **Unit Pruebas (Service)** | 6 | ✅ All passing |
+| **Integración Pruebas (Persistence)** | 3 | ✅ All passing |
+| **Integración Pruebas (API)** | 5 | ✅ All passing |
+| **Total Pruebas** | **28** | **✅ 100% passing** |
 
-### Test Execution Time
+### Prueba Execution Time
 
-- Unit Tests: 0.15s
-- Integration Tests: 0.75s
+- Unit Pruebas: 0.15s
+- Integración Pruebas: 0.75s
 - **Total:** 0.90s
 
 ---
 
-## 📝 Test Coverage Details
+## 📝 Prueba Coverage Details
 
-### Domain Layer Tests
+### Domain Layer Pruebas
 
-**File:** `tests/server/unit/domain/entities/test_message.py`
-- `test_message_creation_with_valid_role` ✅
-- `test_message_role_enum_values` ✅
-- `test_message_validates_content_length` ✅
-- `test_message_timestamps_default_to_now` ✅
+**Archivo:** `pruebas/server/unit/domain/entities/prueba_message.py`
+- `prueba_message_creation_with_valid_role` ✅
+- `prueba_message_role_enum_values` ✅
+- `prueba_message_validates_content_length` ✅
+- `prueba_message_timestamps_default_to_now` ✅
 
-**File:** `tests/server/unit/domain/entities/test_conversation.py`
-- `test_conversation_creation` ✅
-- `test_add_message_to_conversation` ✅
-- `test_get_last_n_messages_basic` ✅
-- `test_get_last_n_messages_exceeds_available` ✅
-- `test_get_last_n_messages_empty_conversation` ✅
-- `test_conversation_message_ordering` ✅
-- `test_conversation_immutable_id` ✅
+**Archivo:** `pruebas/server/unit/domain/entities/prueba_conversation.py`
+- `prueba_conversation_creation` ✅
+- `prueba_add_message_to_conversation` ✅
+- `prueba_get_last_n_messages_basic` ✅
+- `prueba_get_last_n_messages_exceeds_available` ✅
+- `prueba_get_last_n_messages_empty_conversation` ✅
+- `prueba_conversation_message_ordering` ✅
+- `prueba_conversation_immutable_id` ✅
 
-**Coverage:** 11/11 tests, 100% statements
-
----
-
-### Infrastructure Layer Tests
-
-**File:** `tests/server/unit/infrastructure/persistence/test_sqlalchemy_conversation_repository.py`
-- `test_create_conversation_success` ✅
-- `test_get_conversation_not_found` ✅
-- `test_add_message_to_conversation` ✅
-
-**File:** `tests/server/integration/persistence/test_conversation_crud.py`
-- `test_create_and_retrieve_conversation` ✅
-- `test_list_conversations_with_pagination` ✅
-- `test_get_last_n_messages_returns_correct_count` ✅
-
-**Coverage:** 6/6 tests, 99% statements (1 line uncovered in error handling)
+**Coverage:** 11/11 pruebas, 100% statements
 
 ---
 
-### Service Layer Tests
+### Infraestructura Layer Pruebas
 
-**File:** `tests/server/unit/services/conversation/test_conversation_service.py`
-- `test_create_conversation_calls_repository` ✅
-- `test_get_conversation_calls_repository` ✅
-- `test_list_conversations_with_pagination` ✅
-- `test_add_message_calls_repository` ✅
-- `test_get_context_window_returns_last_10_messages` ✅
-- `test_get_context_window_with_custom_size` ✅
+**Archivo:** `pruebas/server/unit/infrastructure/persistence/prueba_sqlalchemy_conversation_repository.py`
+- `prueba_crear_conversation_success` ✅
+- `prueba_get_conversation_not_found` ✅
+- `prueba_add_message_to_conversation` ✅
 
-**Coverage:** 6/6 tests, 100% statements
+**Archivo:** `pruebas/server/integration/persistence/prueba_conversation_crud.py`
+- `prueba_crear_and_retrieve_conversation` ✅
+- `prueba_list_conversations_with_pagination` ✅
+- `prueba_get_last_n_messages_returns_correct_count` ✅
 
----
-
-### API Layer Tests
-
-**File:** `tests/server/integration/api/v1/test_conversation_endpoints.py`
-- `test_create_conversation_returns_201` ✅
-- `test_get_conversation_returns_200` ✅
-- `test_list_conversations_returns_200` ✅
-- `test_get_nonexistent_conversation_returns_404` ✅
-- `test_list_conversations_with_pagination` ✅
-
-**Coverage:** 5/5 tests, 90% statements (error paths not fully exercised)
+**Coverage:** 6/6 pruebas, 99% statements (1 line uncovered in error handling)
 
 ---
 
-## 🎯 Coverage Analysis
+### Service Layer Pruebas
+
+**Archivo:** `pruebas/server/unit/services/conversation/prueba_conversation_service.py`
+- `prueba_crear_conversation_calls_repository` ✅
+- `prueba_get_conversation_calls_repository` ✅
+- `prueba_list_conversations_with_pagination` ✅
+- `prueba_add_message_calls_repository` ✅
+- `prueba_get_context_window_returns_last_10_messages` ✅
+- `prueba_get_context_window_with_custom_size` ✅
+
+**Coverage:** 6/6 pruebas, 100% statements
+
+---
+
+### API Layer Pruebas
+
+**Archivo:** `pruebas/server/integration/api/v1/prueba_conversation_endpoints.py`
+- `prueba_crear_conversation_returns_201` ✅
+- `prueba_get_conversation_returns_200` ✅
+- `prueba_list_conversations_returns_200` ✅
+- `prueba_get_nonexistent_conversation_returns_404` ✅
+- `prueba_list_conversations_with_pagination` ✅
+
+**Coverage:** 5/5 pruebas, 90% statements (error paths not fully exercised)
+
+---
+
+## 🎯 Coverage Análisis
 
 ### High Coverage Areas (100%)
 
 ✅ **Domain Entities** - Perfect coverage
-- All validation rules tested
+- All validation rules pruebaed
 - Edge cases covered
 - Immutability verified
 
 ✅ **Service Layer** - Perfect coverage
-- All business logic tested
+- All business logic pruebaed
 - Context window logic verified
 - Repository interactions mocked
 
 ✅ **Pydantic Schemas** - Perfect coverage
-- Request validation tested
+- Request validation pruebaed
 - Response serialization verified
 - ORM compatibility confirmed
 
@@ -231,7 +231,7 @@
 
 ⚠️ **API Endpoints** (80%)
 - **Missing:** Error logging statements (lines 49, 60-66)
-- **Reason:** Integration tests focus on happy path + 404 handling
+- **Reason:** Integración pruebas focus on happy path + 404 handling
 - **Impact:** Low (error logging is not business-critical)
 - **Action:** No action required (exceeds 85% target)
 
@@ -245,20 +245,20 @@
 - **Missing:** ChromaDB initialization (lines 12-18)
 - **Reason:** ChromaDB not used in HU-4.2 (RAG feature from HU-2.x)
 - **Impact:** None (out of scope for this HU)
-- **Action:** No action required (covered in HU-2.x tests)
+- **Action:** No action required (covered in HU-2.x pruebas)
 
 ---
 
-## ✅ Verification Criteria Met
+## ✅ Verificación Criteria Met
 
-| Criterion | Target | Result | Status |
+| Criterion | Target | Resultado | Estado |
 |-----------|--------|--------|--------|
 | Overall Coverage | ≥85% | 96% | ✅ **PASS +11%** |
 | Domain Layer | ≥95% | 100% | ✅ **PASS +5%** |
-| Infrastructure | ≥90% | 99% | ✅ **PASS +9%** |
+| Infraestructura | ≥90% | 99% | ✅ **PASS +9%** |
 | Service Layer | ≥90% | 100% | ✅ **PASS +10%** |
 | API Layer | ≥85% | 90% | ✅ **PASS +5%** |
-| All Tests Pass | 100% | 100% | ✅ **PASS** |
+| All Pruebas Pass | 100% | 100% | ✅ **PASS** |
 
 ---
 
@@ -266,25 +266,25 @@
 
 ### Immediate Actions (None Required)
 
-All coverage targets exceeded. No immediate action required.
+All coverage targets exceeded. No inmediata action required.
 
 ### Optional Improvements (Future)
 
-1. **Error Path Testing (API Layer)**
-   - Add tests for database connection failures
-   - Test error response formatting
+1. **Error Path Pruebaing (API Layer)**
+   - Add pruebas for database connection failures
+   - Prueba error response formatting
    - Verify error logging behavior
    - **Impact:** Would increase API coverage from 80% to 95%
 
-2. **Edge Case Testing (Repository)**
-   - Test pagination with exactly `limit` records
-   - Test concurrent write scenarios
-   - Test rollback behavior on errors
+2. **Edge Case Pruebaing (Repository)**
+   - Prueba pagination with exactly `limit` records
+   - Prueba concurrent write scenarios
+   - Prueba rollback behavior on errors
    - **Impact:** Would increase repository coverage from 98% to 100%
 
-3. **Performance Testing**
-   - Add stress tests for context window (1000+ messages)
-   - Test pagination performance with large datasets
+3. **Performance Pruebaing**
+   - Add stress pruebas for context window (1000+ messages)
+   - Prueba pagination performance with large datasets
    - Verify memory usage with deep conversation histories
    - **Impact:** Would provide performance baselines
 
@@ -292,21 +292,21 @@ All coverage targets exceeded. No immediate action required.
 
 ## 📊 Historical Comparison
 
-| Phase | Domain | Infrastructure | Service | API | Overall |
+| Fase | Domain | Infraestructura | Service | API | Overall |
 |-------|--------|----------------|---------|-----|---------|
-| **Phase 1** | 100% | N/A | N/A | N/A | 100% |
-| **Phase 2** | 100% | 100% | N/A | N/A | 100% |
-| **Phase 3** | 100% | 100% | 100% | N/A | 100% |
-| **Phase 4** | 100% | 99% | 100% | 90% | **96%** |
+| **Fase 1** | 100% | N/A | N/A | N/A | 100% |
+| **Fase 2** | 100% | 100% | N/A | N/A | 100% |
+| **Fase 3** | 100% | 100% | 100% | N/A | 100% |
+| **Fase 4** | 100% | 99% | 100% | 90% | **96%** |
 
-**Trend:** Consistently high coverage maintained throughout all phases ✅
+**Trend:** Consistently high coverage maintained throughout all fases ✅
 
 ---
 
-## 🔗 Related Files
+## 🔗 Related Archivos
 
 - **HTML Report:** `htmlcov_hu42/index.html`
-- **Test Logs:** `tests/server/pytest.log`
+- **Prueba Logs:** `pruebas/server/pyprueba.log`
 - **Coverage Data:** `.coverage` (SQLite database)
 
 ---
@@ -317,11 +317,11 @@ HU-4.2 **EXCEEDS** all coverage targets:
 
 - ✅ Overall: **96%** (target: 85%)
 - ✅ Domain: **100%** (target: 95%)
-- ✅ All tests passing: **28/28** (100%)
+- ✅ All pruebas passing: **28/28** (100%)
 
-**Coverage Status:** ✅ **APPROVED FOR PRODUCTION**
+**Coverage Estado:** ✅ **APPROVED FOR PRODUCTION**
 
 ---
 
-*Report generated by pytest-cov 7.0.0*
+*Report generated by pyprueba-cov 7.0.0*
 *Coverage measurement by Coverage.py 7.13.2*

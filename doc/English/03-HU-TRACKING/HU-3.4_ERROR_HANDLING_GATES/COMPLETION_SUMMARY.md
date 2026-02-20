@@ -269,7 +269,7 @@ Successfully implemented a **production-ready error handling system** for `soft-
 - [x] **Localized Errors:** 11+ Spanish messages with actionable suggestions
   - 11 error codes mapped to Spanish
   - Each code has user-friendly message + suggestion
-  - Examples: "🔌 No hay conexión", "📝 El documento es inválido"
+  - Examples: "🔌 No hay conexión", "📝 El document es inválido"
 
 - [x] **Test Coverage:** >90% target achieved (157/157 tests, 100% passing)
   - Domain logic: 100% coverage

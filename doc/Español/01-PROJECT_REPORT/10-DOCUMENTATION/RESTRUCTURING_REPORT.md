@@ -1,4 +1,4 @@
-# 🏗️ Restructuring Report: Clean Architecture Implementation
+# 🏗️ Restructuring Report: Clean Architecture Implementación
 
 > **Fecha:** 8 de febrero de 2026
 > **Estado:** ✅ COMPLETADO
@@ -26,27 +26,27 @@ Se completó una **reestructuración mayor** del proyecto Flutter para implement
 - ❌ **Redundancias**: Múltiples tree widgets con la misma funcionalidad
 - ❌ **Violaciones de separación de concerns**: Widgets globales en features específicas
 
-**Resultado:** Arquitectura limpia, escalable y modular con máxima separación de concerns.
+**Resultadoado:** Arquitectura limpia, escalable y modular con máxima separación de concerns.
 
 ---
 
 ## 🔍 Análisis de Redundancias
 
-### Widget: FileSystemTreeWidget vs DirectoryTreeWidget
+### Widget: ArchivoSystemTreeWidget vs DirectoryTreeWidget
 
-| Aspecto | FileSystemTreeWidget | DirectoryTreeWidget |
+| Aspecto | ArchivoSystemTreeWidget | DirectoryTreeWidget |
 |--------|-----|------|
-| **Ubicación Original** | `project_shell/presentation/widgets/` | `project_shell/presentation/widgets/` |
+| **Ubicación Original** | `proyecto_shell/presentation/widgets/` | `proyecto_shell/presentation/widgets/` |
 | **Tipo Widget** | `ConsumerWidget` (Riverpod) | `StatefulWidget` (Local state) |
-| **Entity** | `DirectoryNode` | `FileNode` |
-| **Integraciones** | `FileSystemNotifier` + `MarkdownPreviewNotifier` | Ninguna (stand-alone) |
+| **Entity** | `DirectoryNode` | `ArchivoNode` |
+| **Integraciones** | `ArchivoSystemNotifier` + `MarkdownPreviewNotifier` | Ninguna (stand-alone) |
 | **Producción Ready** | ✅ SÍ | ❌ NO (Mock/Demo) |
 | **Escalabilidad** | ✅ Soporta notifiers | ⚠️ Local state limits |
 | **Decisión** | ✅ **MANTENER** (producción) | ❌ **DESCARTAR** (mock) |
 
 ### Conclusión
 
-- **FileSystemTreeWidget** → Renombrado a **FileTreeWidget**, movido a `chat/presentation/widgets/`
+- **ArchivoSystemTreeWidget** → Renombrado a **ArchivoTreeWidget**, movido a `chat/presentation/widgets/`
 - **DirectoryTreeWidget** → Eliminado (era mock para desarrollo)
 
 ---
@@ -124,43 +124,43 @@ lib/
 
 #### 1. `lib/features/chat/presentation/screens/sequential_chat_screen.dart`
 - **Propósito**: Pantalla principal de conversación AI (IDE-like 4-column layout)
-- **Antes**: `lib/features/project_shell/presentation/screens/project_shell_screen.dart`
-- **Renombramiento**: `ProjectShellScreen` → `SequentialChatScreen`
+- **Antes**: `lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart`
+- **Renombramiento**: `ProyectoShellScreen` → `SequentialChatScreen`
 - **Mejoras**:
-  - ✅ Documentación extensa (Clean Architecture patterns)
+  - ✅ Documentoación extensa (Clean Architecture patterns)
   - ✅ Imports correctos apuntando a feature `chat`
   - ✅ Referencias correctas a widgets movidos
 
-#### 2. `lib/features/chat/presentation/widgets/file_tree_widget.dart`
+#### 2. `lib/features/chat/presentation/widgets/archivo_tree_widget.dart`
 - **Propósito**: Árbol de archivos del proyecto (Riverpod integrated)
-- **Antes**: `FileSystemTreeWidget` en `project_shell/`
+- **Antes**: `ArchivoSystemTreeWidget` en `proyecto_shell/`
 - **Cambios**:
-  - ✅ Consolidación: Mantiene lo mejor de `FileSystemTreeWidget`
+  - ✅ Consolidación: Mantiene lo mejor de `ArchivoSystemTreeWidget`
   - ✅ Desplazada `DirectoryTreeWidget` (mock eliminado)
-  - ✅ Integración con `FileSystemNotifier` y `MarkdownPreviewNotifier`
+  - ✅ Integración con `ArchivoSystemNotifier` y `MarkdownPreviewNotifier`
   - ✅ Soporte de colores por fase (00-, 10-, 20-, etc.)
 
 #### 3. `lib/features/chat/presentation/widgets/chat_panel_widget.dart`
 - **Propósito**: Panel de chat con entrada de 3 líneas
-- **Antes**: `project_shell/presentation/widgets/`
+- **Antes**: `proyecto_shell/presentation/widgets/`
 - **Mejoras**:
   - ✅ Refactorización completa con ConsumerStatefulWidget
-  - ✅ Documentación de Clean Architecture
+  - ✅ Documentoación de Clean Architecture
   - ✅ Separación de concerns (buildMessagesList, buildInputArea, etc.)
   - ✅ Error handling centralizado
   - ✅ Empty state UI
 
 #### 4. `lib/features/chat/presentation/widgets/markdown_preview_widget.dart`
 - **Propósito**: Previsualización de markdown
-- **Antes**: `project_shell/presentation/widgets/`
+- **Antes**: `proyecto_shell/presentation/widgets/`
 - **Mejoras**:
-  - ✅ Documentación de ubicación lógica
+  - ✅ Documentoación de ubicación lógica
   - ✅ Styling consistente con GitHub Dark theme
   - ✅ Empty state cuando no hay archivo seleccionado
 
-#### 5. `lib/shared/presentation/widgets/projects_sidebar.dart`
+#### 5. `lib/shared/presentation/widgets/proyectos_sidebar.dart`
 - **Propósito**: Barra lateral global (64px, presente en todas las pantallas)
-- **Antes**: `project_shell/presentation/widgets/` (INCORRECTO - era global!)
+- **Antes**: `proyecto_shell/presentation/widgets/` (INCORRECTO - era global!)
 - **Cambios**:
   - ✅ Movida a `shared/` (ubicación correcta)
   - ✅ Puede ser usada por: Chat, Settings, Workspace, etc.
@@ -170,20 +170,20 @@ lib/
 
 | Archivo | Razón |
 |---------|-------|
-| `project_shell/presentation/widgets/project_shell_screen.dart` | Reemplazado por `sequential_chat_screen.dart` |
-| `project_shell/presentation/widgets/chat_panel_widget.dart` | Movido a `chat/presentation/widgets/` |
-| `project_shell/presentation/widgets/markdown_preview_widget.dart` | Movido a `chat/presentation/widgets/` |
-| `project_shell/presentation/widgets/directory_tree_widget.dart` | Mock redundante, consolidado en `file_tree_widget.dart` |
-| `project_shell/presentation/widgets/file_system_tree_widget.dart` | Renombrado y movido a `file_tree_widget.dart` |
-| `project_shell/presentation/widgets/projects_sidebar.dart` | Movido a `shared/presentation/widgets/` |
+| `proyecto_shell/presentation/widgets/proyecto_shell_screen.dart` | Reemplazado por `sequential_chat_screen.dart` |
+| `proyecto_shell/presentation/widgets/chat_panel_widget.dart` | Movido a `chat/presentation/widgets/` |
+| `proyecto_shell/presentation/widgets/markdown_preview_widget.dart` | Movido a `chat/presentation/widgets/` |
+| `proyecto_shell/presentation/widgets/directory_tree_widget.dart` | Mock redundante, consolidado en `archivo_tree_widget.dart` |
+| `proyecto_shell/presentation/widgets/archivo_system_tree_widget.dart` | Renombrado y movido a `archivo_tree_widget.dart` |
+| `proyecto_shell/presentation/widgets/proyectos_sidebar.dart` | Movido a `shared/presentation/widgets/` |
 
 ### 🔄 Archivos Modificados (Imports)
 
 | Archivo | Cambio |
 |---------|--------|
-| `lib/core/router/app_router.dart` | ✅ `ProjectShellScreen` → `SequentialChatScreen` |
-| `lib/features/settings/presentation/screens/settings_screen.dart` | ✅ Import de `ProjectsSidebar` → `shared/` |
-| `lib/features/project_shell/presentation/screens/project_workspace_screen.dart` | ✅ Import de `ProjectsSidebar` → `shared/` |
+| `lib/core/router/app_router.dart` | ✅ `ProyectoShellScreen` → `SequentialChatScreen` |
+| `lib/features/settings/presentation/screens/settings_screen.dart` | ✅ Import de `ProyectosSidebar` → `shared/` |
+| `lib/features/proyecto_shell/presentation/screens/proyecto_workspace_screen.dart` | ✅ Import de `ProyectosSidebar` → `shared/` |
 
 ---
 
@@ -263,12 +263,12 @@ Presentation Layer (UI - Riverpod + Flutter)
 ```
 
 - ✅ Lógica de negocio separada de UI
-- ✅ Fácil testear (mock data layers)
+- ✅ Fácil pruebaear (mock data layers)
 - ✅ Depende del router, nunca viceversa
 
 ### 2. **Separation of Concerns**
 
-- ✅ Widgets grandes divididos en métodos pequeños (`_buildTopBar()`, `_buildFilesPanel()`)
+- ✅ Widgets grandes divididos en métodos pequeños (`_buildTopBar()`, `_buildArchivosPanel()`)
 - ✅ Cada widget tiene responsabilidad única
 - ✅ State management centralizado (Riverpod notifiers)
 
@@ -282,16 +282,16 @@ Presentation Layer (UI - Riverpod + Flutter)
 | Lógica en widgets | Separado en notifiers (Riverpod) |
 | Widgets enormes (1256 líneas) | División en métodos helper (~400-500 líneas) |
 
-### 4. **Documentation Excellence**
+### 4. **Documentoation Excellence**
 
 - ✅ DartDoc (///) para todas las clases y métodos públicos
-- ✅ Architecture decisions documentadas en comentarios
+- ✅ Architecture decisions documentoadas en comentarios
 - ✅ Ejemplos de uso en descripciones
 
 ### 5. **Naming Conventions**
 
-- ✅ `SequentialChatScreen` - Nombre específico (no genérico `ProjectShellScreen`)
-- ✅ `FileTreeWidget` - Descriptor claro (no `MyTreeWidget`)
+- ✅ `SequentialChatScreen` - Nombre específico (no genérico `ProyectoShellScreen`)
+- ✅ `ArchivoTreeWidget` - Descriptor claro (no `MyTreeWidget`)
 - ✅ `MarkdownPreviewWidget` - Purpose-driven naming
 
 ---
@@ -308,9 +308,9 @@ flutter analyze --no-pub
 
 **Expected**: 0 compilation errors
 
-### 2. **Test Updates (30 min)**
+### 2. **Prueba Updates (30 min)**
 
-Archivos de tests a actualizar:
+Archivos de pruebas a actualizar:
 ```
 tests/test/integration/features/project_shell/presentation/
   ├── project_shell_screen_flow_test.dart      → Actualizar referencias
@@ -320,13 +320,13 @@ tests/test/widget/features/project_shell/presentation/
   ├── directory_tree_widget_test.dart         → Referencia DirectoryTreeWidget (ELIMINAR)
 ```
 
-### 3. **Widget Usage Analysis (20 min)**
+### 3. **Widget Usage Análisis (20 min)**
 
 Identificar widgets sin usar:
-- `project_shell/presentation/widgets/create_project_dialog.dart` - Análisis
+- `proyecto_shell/presentation/widgets/crear_proyecto_dialog.dart` - Análisis
 - Otros widgets huérfanos
 
-### 4. **Documentation Update**
+### 4. **Documentoation Update**
 
 Crear/actualizar:
 - ✅ `doc/03-HU-TRACKING/HU-2.X-REFACTORING/` - Historial de cambios
@@ -342,7 +342,7 @@ Crear/actualizar:
 | **Code Smell Violations** | 6+ | 0 | ✅ Mejorado |
 | **Feature Isolation** | Pobre (widgets globales en features) | Excelente | ✅ Mejorado |
 | **Compilation Errors** | TBD | 0 (target) | ⏳ Verificando |
-| **Documentation Coverage** | Parcial | Completo | ✅ Mejorado |
+| **Documentoation Coverage** | Parcial | Completo | ✅ Mejorado |
 | **Maintainability Index** | ~60 | ~85 (est.) | ✅ Mejorado |
 
 ---
@@ -356,6 +356,6 @@ Crear/actualizar:
 
 ---
 
-**Documento creado:** 2026-02-08
+**Documentoo creado:** 2026-02-08
 **Estado:** ✅ COMPLETADO Y VALIDADO
 **Próxima acción:** Ejecutar `flutter analyze` para verificación final

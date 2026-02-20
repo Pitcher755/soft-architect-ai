@@ -2,13 +2,13 @@
 
 **Fecha:** 6 de febrero de 2026
 **Rama:** feature/chat-sequential-docs
-**HU:** HU-3.3 - Chat Secuencial con Generación de Documentos Guiada por RAG
+**HU:** HU-3.3 - Chat Secuencial con Generación de Documents Guiada por RAG
 
 ---
 
 ## 📋 CHECKLIST DE FASES COMPLETADAS
 
-### FASE 4: UI Components Golden Kit (TDD GREEN)
+### PHASE 4: UI Components Golden Kit (TDD GREEN)
 - [x] ProposalCardWidget (100+ líneas, logística de propuestas)
 - [x] StreamingIndicatorWidget (animación typing)
 - [x] MessageBubbleWidget (renderización de mensajes)
@@ -17,7 +17,7 @@
 - [x] API modernization (withValues vs withOpacity)
 - [x] Flutter analyze: 0 issues
 
-### FASE 5: Integration the Gate (TDD RED → GREEN)
+### PHASE 5: Integration the Gate (TDD RED → GREEN)
 - [x] ChatNotifier (351 líneas, stream-to-save workflow)
 - [x] FileSystemService (157 líneas, CRUD + persistence)
 - [x] Mock Services (167 líneas, testing infrastructure)
@@ -27,7 +27,7 @@
 - [x] Auto-advance logic
 - [x] Error recovery
 
-### FASE 6: End-to-End Validation (TDD GREEN)
+### PHASE 6: End-to-End Validation (TDD GREEN)
 - [x] validate_hu_3_3.sh script (executable)
 - [x] PHASE6_E2E_VALIDATION.md (550+ líneas, 8 flujos)
 - [x] PHASE6_QUICK_REFERENCE.md (150+ líneas)
@@ -40,7 +40,7 @@
 
 ## 📊 REQUISITOS FUNCIONALES VERIFICADOS
 
-| Requisito | Componente | Estado | Evidencia |
+| Requisito | Componente | Status | Evidencia |
 |-----------|-----------|--------|-----------|
 | Chat input | MessageInputField | ✅ | Widget + test |
 | Button disable si vacío | SendButton state | ✅ | Logic in ChatNotifier |
@@ -77,7 +77,7 @@
 ### ✅ Positivos (P1-P8: MUST HAVE)
 - [x] P1: Chat genera Doc 1
 - [x] P2: Propuesta temporal (no persiste sin "Validar")
-- [x] P3: Botón enviar deshabilitado si vacío
+- [x] P3: Button enviar deshabilitado si vacío
 - [x] P4: Copy button en código
 - [x] P5: FileSystemService integration
 - [x] P6: Streaming documented
@@ -85,13 +85,13 @@
 - [x] P8: Flujo secuencial
 
 ### ❌ Negativos (N1-N3: MUST NOT HAVE)
-- [x] N1: Documentos NO se guardan sin "Validar"
+- [x] N1: Documents NO se guardan sin "Validar"
 - [x] N2: NO hay stack traces en UI
 - [x] N3: NO crashes con errores de red
 
 ---
 
-## 🧪 ESTADO DE TESTS ACTUAL
+## 🧪 STATUS DE TESTS ACTUAL
 
 ```
 FRAMEWORK          | UBICACIÓN          | STATUS  | COVERAGE
@@ -167,15 +167,15 @@ tests/
 
 **Status Global:** 🟡 85% COMPLETO
 
-- ✅ FASE 4: 100% (Widgets + Tests)
-- ✅ FASE 5: 100% (ChatNotifier + FileSystemService)
-- ✅ FASE 6: 100% (Documentación + Script)
+- ✅ PHASE 4: 100% (Widgets + Tests)
+- ✅ PHASE 5: 100% (ChatNotifier + FileSystemService)
+- ✅ PHASE 6: 100% (Documentación + Script)
 - ⏳ Backend API: READY (awaiting FASE 6 implementation)
 - ⏳ HTTP Client: READY (awaiting FASE 6 implementation)
 - ⏳ Coverage Tests: PENDING (need execution)
 
 **Next Steps:**
-1. Ejecutar test suite completa
+1. Execute test suite completa
 2. Medir coverage (Backend + Frontend)
 3. Mejorar run_tests.sh
-4. Ejecutar `flutter run -d linux`
+4. Execute `flutter run -d linux`

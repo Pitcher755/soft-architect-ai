@@ -1,6 +1,6 @@
 # 🔍 Auditoría de docker-compose.yml
 **Fecha:** 28 de enero de 2026
-**Estado:** ⚠️ REQUIERE ACTUALIZACIONES CRÍTICAS
+**Status:** ⚠️ REQUIERE ACTUALIZACIONES CRÍTICAS
 
 ---
 
@@ -25,7 +25,7 @@
 1. **DOCKERFILE FALTANTE**
    - **Problema:** El compose referencia `dockerfile: Dockerfile` pero no existe.
    - **Impacto:** `docker compose up` fallará en build.
-   - **Solución:** Crear `src/server/Dockerfile` con Python 3.12.3.
+   - **Solución:** Create `src/server/Dockerfile` con Python 3.12.3.
 
 2. **ENTRYPOINT INCORRECTO**
    - **Problema:** `command: uvicorn main:app --reload`
@@ -51,16 +51,16 @@
    - **Solución:** Agregar healthchecks con curl/ping.
 
 6. **FALTA LOGGING EXPLÍCITO**
-   - **Problema:** Sin configuración de logging, los logs se pierden.
+   - **Problema:** Sin configuration de logging, los logs se pierden.
    - **Solución:** Agregar `logging:` con driver `json-file` y límite de tamaño.
 
 7. **CHROME MAPPING DE PUERTOS**
    - **Problema:** Mapea puerto 8000 del contenedor ChromaDB al 8001 del host (confuso).
    - **Mejor Práctica:** No mapear puertos de servicios internos. Usar red interna `sa_network`.
-   - **Solución:** Eliminar mapeo de puerto para ChromaDB (solo API-Server necesita 8000).
+   - **Solución:** Delete mapeo de puerto para ChromaDB (solo API-Server necesita 8000).
 
 8. **OLLAMA GPU CONFIG INCOMPLETA**
-   - **Problema:** Configuración NVIDIA asume RTX 3050. ¿Todos los usuarios la tienen?
+   - **Problema:** Configuration NVIDIA asume RTX 3050. ¿Todos los usuarios la tienen?
    - **Impacto:** Container falla si no hay GPU.
    - **Solución:** Hacer GPU opcional (no obligatorio en `reservations`). Usar `limits`.
 
@@ -86,7 +86,7 @@
 
 ## 2. REQUISITOS INCUMPLIDOS (vs AGENTS.md + context/)
 
-| Requisito | Estado | Observación |
+| Requisito | Status | Observación |
 |-----------|--------|-------------|
 | **NFR-01 Local-First** | ⚠️ Parcial | Ollama presente pero falta validación de modo |
 | **NFR-02 Soberanía Datos** | ✅ Completo | ChromaDB local, no cloud |
@@ -135,7 +135,7 @@ DOCUMENTACIÓN:
 
 ## 4. FUNCIONABILIDAD ACTUAL
 
-**Resultado:** 🔴 **NO FUNCIONARÍA** en estado actual.
+**Result:** 🔴 **NO FUNCIONARÍA** en status actual.
 
 **Razones:**
 1. Falta Dockerfile (build fallará).
@@ -143,17 +143,17 @@ DOCUMENTACIÓN:
 3. Sin healthchecks (API intentará conectar a servicios no listos).
 
 **Pasos Necesarios:**
-1. ✅ Crear Dockerfile
+1. ✅ Create Dockerfile
 2. ✅ Corregir docker-compose.yml
-3. ✅ Crear .env con variables
-4. ✅ Crear doc de setup
+3. ✅ Create .env con variables
+4. ✅ Create doc de setup
 5. ✅ Test local: `docker compose up --build`
 
 ---
 
 ## 5. RECOMENDACIÓN FINAL
 
-**Acción:** Implementar el docker-compose mejorado siguiente que cumpla:
+**Acción:** Implementar el docker-compose mejorado next que cumpla:
 - ✅ Todos los requisitos de AGENTS.md
 - ✅ Requisitos de seguridad y privacidad
 - ✅ Benchmarks de performance (RAM, CPU)
@@ -162,5 +162,5 @@ DOCUMENTACIÓN:
 
 **Impacto:**
 - Desarrolladores pueden hacer `docker compose up` y todo funciona.
-- Transparencia en decisiones de configuración.
+- Transparencia en decisiones de configuration.
 - Fácil escalar a testing y producción.

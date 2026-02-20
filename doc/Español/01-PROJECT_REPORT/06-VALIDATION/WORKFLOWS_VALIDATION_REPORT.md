@@ -12,7 +12,7 @@
 
 - **act instalado:** `/usr/local/bin/act`
 - **Docker configurado:** Listo para ejecutar containers
-- **Config act:** `~/.config/act/actrc` configurado con imagen `catthehacker/ubuntu:act-latest`
+- **Config act:** `~/.config/act/actrc` configurado con imagen `catthehacker/ubuntu:act-laprueba`
 
 ### 2. ✅ Workflows Disponibles
 
@@ -60,10 +60,10 @@ Stage 1 (Después de Stage 0):
 ### 4. ✅ Configuración Pylance/Pyright
 
 **Archivo:** `pyrightconfig.json`
-- Include paths: `[app, services, core, tests]` ✅
+- Include paths: `[app, services, core, pruebas]` ✅
 - venv excluded: NO (fue removido) ✅
 - venvPath configurado: SÍ ✅
-- Resultado: 0 errores de Pylance ✅
+- Resultadoado: 0 errores de Pylance ✅
 
 ### 5. ✅ Cambios Realizados (Esta Sesión)
 
@@ -73,9 +73,9 @@ Stage 1 (Después de Stage 0):
 | `pyrightconfig.json` | Actualizado paths | ✅ Committed |
 | `.vscode/settings.json` | Agregado extraPaths | ✅ Local (no commiteado) |
 | `src/server/services/rag/vector_store.py` | Fixed type warnings | ✅ Committed |
-| `scripts/test-workflows-locally.sh` | Script interactivo | ✅ Committed |
-| `scripts/WORKFLOWS_LOCAL_TESTING.md` | Documentación | ✅ Committed |
-| `scripts/validate-workflows.sh` | Script validación | ✅ Created |
+| `scripts/prueba-workflows-locally.sh` | Script interactivo | ✅ Committed |
+| `scripts/WORKFLOWS_LOCAL_TESTING.md` | Documentoación | ✅ Committed |
+| `scripts/validate-workflows.sh` | Script validación | ✅ Creard |
 
 ### 6. ✅ Commits Realizados
 
@@ -98,7 +98,7 @@ f70bf41 - fix(deps): add chromadb and dependencies to requirements.txt for CI
 
 ### Opción 2: Comandos Directos
 
-**Unit Tests (Lo más importante):**
+**Unit Pruebas (Lo más importante):**
 ```bash
 act -j unit-tests -W .github/workflows/backend-ci.yaml
 ```
@@ -122,9 +122,9 @@ act --list
 
 ## ✅ ESTADO LISTO PARA GITHUB ACTIONS
 
-### Tests Unitarios (HU-2.2)
-- ✅ 15 unit tests con mocking (sin Docker)
-- ✅ 9 E2E tests con Docker real
+### Pruebas Unitarios (HU-2.2)
+- ✅ 15 unit pruebas con mocking (sin Docker)
+- ✅ 9 E2E pruebas con Docker real
 - ✅ Coverage: 82% (exceeds 80% requirement)
 - ✅ Pylance: 0 errors
 - ✅ Ruff/Black: Passed
@@ -134,16 +134,16 @@ act --list
 - ✅ Pyright config updated
 - ✅ Import hierarchy fixed
 - ✅ Type annotations corrected
-- ✅ All 24 tests passing locally
+- ✅ All 24 pruebas passing locally
 
-### Next Steps
-1. Push to GitHub → GitHub Actions will run automatically
+### Siguiente Steps
+1. Push to GitHub → GitHub Actions will ejecutar automatically
 2. Monitor PR #12 for workflow results
 3. All checks should show ✅ GREEN
 
 ---
 
-## 📚 Documentación Completa
+## 📚 Documentoación Completa
 
 Ver [scripts/WORKFLOWS_LOCAL_TESTING.md](../scripts/WORKFLOWS_LOCAL_TESTING.md) para:
 - Instalación detallada de act

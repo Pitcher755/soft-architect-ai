@@ -1,25 +1,25 @@
 # 🚀 PROGRESS - HU-2.3: 6 Phase Completion Tracker
 
-> **Versión:** 1.0
+> **Version:** 1.0
 > **Última actualización:** 01/02/2026
-> **Estado Actual:** READY FOR EXECUTION
+> **Status Actual:** READY FOR EXECUTION
 
 ---
 
 ## 📊 Executive Summary
 
-| Métrica | Estado |
+| Métrica | Status |
 |---------|--------|
-| **Fases Planificadas** | 6 |
-| **Fases Completadas** | 0 (pending execution) |
-| **% Completado** | 0% |
+| **Phases Planificadas** | 6 |
+| **Phases Completadas** | 0 (pending execution) |
+| **% Completed** | 0% |
 | **Duración Estimada Total** | 60 minutos |
 | **Última Actualización** | 01/02/2026 |
 | **Bloqueadores** | None |
 
 ---
 
-## 🏁 FASE 0: Initialization & Context
+## 🏁 PHASE 0: Initialization & Context
 
 **Duración:** 5 minutos
 **Objetivo:** Prepare environment and document starting point
@@ -46,7 +46,7 @@
 
 ---
 
-## 🐳 FASE 1: Infrastructure - Data Visibility
+## 🐳 PHASE 1: Infrastructure - Data Visibility
 
 **Duración:** 10 minutos
 **Objetivo:** Configure bind mount so ChromaDB data is visible on host
@@ -83,7 +83,7 @@
 
 ---
 
-## 💾 FASE 2: Ingestion & Persistence Verification
+## 💾 PHASE 2: Ingestion & Persistence Verification
 
 **Duración:** 5 minutos
 **Objetivo:** Run ingestion and validate data persists physically on host
@@ -119,7 +119,7 @@
 
 ---
 
-## 🕵️ FASE 3: CLI Inspection Tool
+## 🕵️ PHASE 3: CLI Inspection Tool
 
 **Duración:** 15 minutos
 **Objetivo:** Create interactive CLI for viewing what RAG remembers
@@ -164,7 +164,7 @@
 
 ---
 
-## 🔌 FASE 4: API Test Endpoint
+## 🔌 PHASE 4: API Test Endpoint
 
 **Duración:** 15 minutos
 **Objetivo:** Create temporary endpoint demonstrating full RAG integration
@@ -216,7 +216,7 @@
 
 ---
 
-## ✅ FASE 5: Final Validation & Documentation
+## ✅ PHASE 5: Final Validation & Documentation
 
 **Duración:** 10 minutos
 **Objetivo:** Complete smoke test, verify acceptance criteria, document findings
@@ -276,7 +276,7 @@
 
 ---
 
-## 📦 FASE 6: Merge & Release
+## 📦 PHASE 6: Merge & Release
 
 **Duración:** 5 minutos
 **Objetivo:** Push to GitHub and create Pull Request
@@ -284,12 +284,12 @@
 ### Subtasks
 
 - [ ] **6.1** Verify all commits are present:
-  - FASE 0: docs
-  - FASE 1: infra + tests
-  - FASE 2: persistence tests
-  - FASE 3: CLI tool
-  - FASE 4: API endpoint
-  - FASE 5: docs + gitignore
+  - PHASE 0: docs
+  - PHASE 1: infra + tests
+  - PHASE 2: persistence tests
+  - PHASE 3: CLI tool
+  - PHASE 4: API endpoint
+  - PHASE 5: docs + gitignore
 - [ ] **6.2** Push to GitHub:
   ```bash
   git push origin chore/rag-verification-tools

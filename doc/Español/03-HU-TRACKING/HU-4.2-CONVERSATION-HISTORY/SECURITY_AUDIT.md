@@ -3,13 +3,13 @@
 > **Audit Date:** 2026-02-14
 > **Auditor:** Bandit 1.8.0 + Manual Review
 > **Scope:** Conversation persistence (SQLite + SQLAlchemy)
-> **Status:** ✅ **CLEAN** (0 high-severity issues)
+> **Estado:** ✅ **CLEAN** (0 high-severity issues)
 
 ---
 
 ## 📋 Executive Summary
 
-| Category | Issues Found | Status |
+| Category | Issues Found | Estado |
 |----------|--------------|--------|
 | **High Severity** | 0 | ✅ **PASS** |
 | **Medium Severity** | 0 | ✅ **PASS** |
@@ -22,11 +22,11 @@
 
 ---
 
-## 🛡️ Security Analysis by Category
+## 🛡️ Security Análisis by Category
 
 ### 1. SQL Injection Prevention
 
-**Status:** ✅ **FULLY PROTECTED**
+**Estado:** ✅ **FULLY PROTECTED**
 
 #### Protection Mechanisms
 
@@ -56,22 +56,22 @@ stmt = select(MessageModel).where(
 ).order_by(MessageModel.created_at.desc()).limit(limit)
 ```
 
-3. **Manual Injection Test Results**
+3. **Manual Injection Prueba Resultados**
 
-Tested 100+ malicious inputs (from HU-3.4 security test suite):
+Pruebaed 100+ malicious inputs (from HU-3.4 security prueba suite):
 - `'; DROP TABLE conversations; --`
 - `' OR '1'='1`
 - `UNION SELECT * FROM users`
 - `<script>alert('XSS')</script>`
 - `../../etc/passwd`
 
-**Result:** All inputs safely sanitized by ORM ✅
+**Resultado:** All inputs safely sanitized by ORM ✅
 
 ---
 
 ### 2. Input Validation
 
-**Status:** ✅ **ALL INPUTS VALIDATED**
+**Estado:** ✅ **ALL INPUTS VALIDATED**
 
 #### Validation Layers
 
@@ -125,7 +125,7 @@ class MessageModel(Base):
 
 ### 3. Authentication & Authorization
 
-**Status:** ✅ **ENFORCED** (inherited from HU-4.1)
+**Estado:** ✅ **ENFORCED** (inherited from HU-4.1)
 
 #### Security Controls
 
@@ -134,10 +134,10 @@ class MessageModel(Base):
    - Validated on every request
    - Passed via `X-API-Key` header
 
-2. **Project ID Scoping** (implied by design)
-   - Conversations scoped to `project_id`
-   - List endpoint filters by `project_id`
-   - Cross-project access prevented (future: add explicit checks)
+2. **Proyecto ID Scoping** (implied by design)
+   - Conversations scoped to `proyecto_id`
+   - List endpoint filters by `proyecto_id`
+   - Cross-proyecto access prevented (future: add explicit checks)
 
 3. **No User Authentication** (MVP scope)
    - Single-user application (desktop)
@@ -148,7 +148,7 @@ class MessageModel(Base):
 
 ### 4. Data Exposure
 
-**Status:** ✅ **NO SENSITIVE DATA LEAKAGE**
+**Estado:** ✅ **NO SENSITIVE DATA LEAKAGE**
 
 #### Data Handling
 
@@ -185,7 +185,7 @@ class MessageModel(Base):
 
 ---
 
-### 5. Bandit Static Analysis
+### 5. Bandit Static Análisis
 
 **Command:**
 ```bash
@@ -197,7 +197,7 @@ bandit -r src/server/app/domain/entities \
        -ll -q
 ```
 
-**Results:**
+**Resultados:**
 
 ```
 [No issues found]
@@ -209,11 +209,11 @@ bandit -r src/server/app/domain/entities \
 
 ### 6. Dependency Vulnerabilities
 
-**Status:** ✅ **NO KNOWN VULNERABILITIES**
+**Estado:** ✅ **NO KNOWN VULNERABILITIES**
 
 #### Dependencies Analyzed
 
-| Package | Version | Vulnerabilities | Status |
+| Package | Version | Vulnerabilities | Estado |
 |---------|---------|-----------------|--------|
 | `sqlalchemy` | 2.0.36 | 0 | ✅ **SAFE** |
 | `aiosqlite` | 0.20.0 | 0 | ✅ **SAFE** |
@@ -237,14 +237,14 @@ bandit -r src/server/app/domain/entities \
    - Session cleanup enforced
 
 2. **Transaction Integrity**
-   - Cascade delete configured (`ondelete="CASCADE"`)
+   - Cascade eliminar configured (`oneliminar="CASCADE"`)
    - Foreign key constraints enforced
    - No orphaned messages possible
 
 3. **Type Safety**
    - 100% type annotations
    - Pyright: 0 errors
-   - Runtime type validation via Pydantic
+   - Ejecutartime type validation via Pydantic
 
 4. **Error Handling**
    - Graceful failure modes
@@ -256,25 +256,25 @@ bandit -r src/server/app/domain/entities \
 1. **Rate Limiting** (future enhancement)
    - Currently no rate limiting on endpoints
    - **Risk:** Low (desktop application, single user)
-   - **Recommendation:** Add rate limiting in Phase 6 (production hardening)
+   - **Recommendation:** Add rate limiting in Fase 6 (production hardening)
 
 2. **Input Length Limits** (already implemented)
    - Title: 255 chars ✅
    - Content: 5000 chars ✅
-   - **Status:** Adequate for MVP
+   - **Estado:** Adequate for MVP
 
 3. **Pagination Limits** (already implemented)
    - Default: 100 records
    - Max: 1000 records (hardcoded)
-   - **Status:** Prevents DoS via large queries ✅
+   - **Estado:** Prevents DoS via large queries ✅
 
 ---
 
-## 🧪 Security Testing Results
+## 🧪 Security Pruebaing Resultados
 
-### Integration Tests (from `test_conversation_endpoints.py`)
+### Integración Pruebas (from `prueba_conversation_endpoints.py`)
 
-✅ **Test 1:** Input validation (UUID format)
+✅ **Prueba 1:** Input validation (UUID format)
 ```python
 # Input: Invalid UUID
 response = await client.post("/api/v1/conversations/", json={
@@ -284,7 +284,7 @@ response = await client.post("/api/v1/conversations/", json={
 assert response.status_code == 422  # ✅ Pydantic rejects
 ```
 
-✅ **Test 2:** SQL injection prevention (ORM)
+✅ **Prueba 2:** SQL injection prevention (ORM)
 ```python
 # Input: SQL injection attempt
 response = await client.post("/api/v1/conversations/", json={
@@ -294,7 +294,7 @@ response = await client.post("/api/v1/conversations/", json={
 assert response.status_code == 201  # ✅ ORM sanitizes, creates safely
 ```
 
-✅ **Test 3:** XSS prevention (Pydantic)
+✅ **Prueba 3:** XSS prevention (Pydantic)
 ```python
 # Input: XSS payload
 response = await client.post("/api/v1/conversations/", json={
@@ -305,28 +305,28 @@ data = response.json()
 assert "<script>" in data["title"]  # ✅ Stored as plain text (frontend escapes)
 ```
 
-✅ **Test 4:** Authorization (404 for nonexistent resource)
+✅ **Prueba 4:** Authorization (404 for nonexistent resource)
 ```python
 # Input: Non-existent conversation ID
 response = await client.get(f"/api/v1/conversations/{fake_uuid}")
 assert response.status_code == 404  # ✅ No information leak
 ```
 
-**Security Tests:** 4/4 passing ✅
+**Security Pruebas:** 4/4 passing ✅
 
 ---
 
 ## 🛡️ Security Compliance
 
-### OWASP Top 10 (2021) Analysis
+### OWASP Top 10 (2021) Análisis
 
-| Risk | Mitigation | Status |
+| Risk | Mitigation | Estado |
 |------|------------|--------|
-| **A01: Broken Access Control** | Project-scoped queries | ✅ **MITIGATED** |
+| **A01: Broken Access Control** | Proyecto-scoped queries | ✅ **MITIGATED** |
 | **A02: Cryptographic Failures** | No sensitive data stored | ✅ **N/A** |
 | **A03: Injection** | ORM-only queries | ✅ **MITIGATED** |
 | **A04: Insecure Design** | Clean Architecture | ✅ **MITIGATED** |
-| **A05: Security Misconfiguration** | Secure defaults | ✅ **MITIGATED** |
+| **A05: Security Misconfiguración** | Secure defaults | ✅ **MITIGATED** |
 | **A06: Vulnerable Components** | Up-to-date dependencies | ✅ **MITIGATED** |
 | **A07: Auth Failures** | API key validation | ✅ **MITIGATED** |
 | **A08: Data Integrity Failures** | Input validation | ✅ **MITIGATED** |
@@ -352,21 +352,21 @@ HU-4.2 **PASSES** all security audits:
 
 ### Certification
 
-**Security Status:** ✅ **APPROVED FOR PRODUCTION**
+**Security Estado:** ✅ **APPROVED FOR PRODUCTION**
 
 **Auditor:** ArchitectZero (AI Lead)
 **Date:** 2026-02-14
-**Next Audit:** After Phase 5 (Quality & Security Hardening)
+**Siguiente Audit:** After Fase 5 (Quality & Security Hardening)
 
 ---
 
 ## 📚 References
 
-- [Bandit Documentation](https://bandit.readthedocs.io/)
+- [Bandit Documentoation](https://bandit.readthedocs.io/)
 - [OWASP Top 10 (2021)](https://owasp.org/Top10/)
 - [SQLAlchemy Security Best Practices](https://docs.sqlalchemy.org/en/20/faq/security.html)
 - [FastAPI Security](https://fastapi.tiangolo.com/tutorial/security/)
-- [Pydantic Validation](https://docs.pydantic.dev/latest/concepts/validators/)
+- [Pydantic Validation](https://docs.pydantic.dev/laprueba/concepts/validators/)
 
 ---
 

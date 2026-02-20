@@ -63,7 +63,7 @@ ProjectShellScreen
             └─→ TextField + Send Button (input)
 ```
 
-### Botón de Chat Agregado
+### Button de Chat Agregado
 
 **Ubicación:** `src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart`
 
@@ -77,21 +77,21 @@ IconButton(
 
 ---
 
-## 📁 Archivos Modificados
+## 📁 Files Modificados
 
 ### Creados (1)
-| Archivo | Líneas | Descripción |
+| File | Líneas | Description |
 |---------|--------|-------------|
 | `chat_screen.dart` | 190 | Screen que integra los 3 widgets |
 
 ### Modificados (2)
-| Archivo | Cambios | Descripción |
+| File | Cambios | Description |
 |---------|---------|-------------|
 | `app_router.dart` | +4 | Importó ChatScreen real |
-| `project_shell_screen.dart` | +19 | Agregó botón de navegación |
+| `project_shell_screen.dart` | +19 | Agregó button de navegación |
 
 ### Documentación
-| Archivo | Líneas |
+| File | Líneas |
 |---------|--------|
 | `HU-3.3_WIDGET_INTEGRATION_REPORT.md` | 328 |
 
@@ -104,7 +104,7 @@ IconButton(
 - [x] StreamingIndicatorWidget conectado
 - [x] ProposalCardWidget listo para futura integración
 - [x] Router actualizado con nueva ruta `/chat`
-- [x] Botón de navegación agregado a ProjectShell
+- [x] Button de navegación agregado a ProjectShell
 - [x] Flutter analyze: ✓ Sin errores
 - [x] Pre-commit hooks: ✓ Pasando
 - [x] Git commits: ✓ 2 nuevos commits
@@ -125,7 +125,7 @@ flutter run -d linux
 # 3. Ver los widgets renderizados
 ```
 
-### Opción 2: Verificación Rápida
+### Opción 2: Verification Rápida
 ```bash
 cd src/client
 flutter analyze --no-fatal-infos  # ✓ Sin errores
@@ -141,8 +141,8 @@ flutter pub upgrade
 |---------|-------|
 | **Widgets Integrados** | 3/3 ✅ |
 | **Líneas de Código Agregadas** | ~213 |
-| **Archivos Creados** | 1 |
-| **Archivos Modificados** | 2 |
+| **Files Creados** | 1 |
+| **Files Modificados** | 2 |
 | **Nuevos Commits** | 2 |
 | **Errores de Compilación** | 0 ✅ |
 | **Warnings** | 0 ✅ |
@@ -150,7 +150,7 @@ flutter pub upgrade
 
 ---
 
-## 🎯 Resultado Final
+## 🎯 Result Final
 
 ### ✨ Antes
 ```
@@ -187,7 +187,7 @@ e5a236b - docs(HU-3.3): Add widget integration verification report
 
 ---
 
-## 🔮 Próximos Pasos (Opcional)
+## 🔮 Next Steps (Opcional)
 
 1. **ProposalCardWidget Integration**
    - Conectar propuestas en ChatScreen
@@ -204,7 +204,7 @@ e5a236b - docs(HU-3.3): Add widget integration verification report
 
 ---
 
-**Estado Final:** ✅ **100% COMPLETADO**
+**Status Final:** ✅ **100% COMPLETADO**
 **Lista para:** Flutter run & visual testing
 
-¡Los widgets están listos para ser vistos en la app! 🎉
+¡Los widgets están ready for ser vistos en la app! 🎉

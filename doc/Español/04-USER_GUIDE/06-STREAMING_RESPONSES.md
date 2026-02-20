@@ -1,14 +1,14 @@
 # ⚡ Streaming Responses - SoftArchitect AI
 
-> **Date:** 02/19/2026
-> **Status:** ✅ Technical streaming guide
-> **Reading time:** 6 minutes
+> **Fecha:** 02/19/2026
+> **Estado:** ✅ Technical streaming guide
+> **Tiempo de lectura:** 6 minutes
 
 ---
 
-## 📖 Table of Contents
+## 📖 Tabla de Contenidos
 
-- [What is Streaming?](#what-is-streaming)
+- [Qué es Streaming?](#what-is-streaming)
 - [How It Works](#how-it-works)
 - [Control Streaming](#control-streaming)
 - [Streaming Advantages](#streaming-advantages)
@@ -16,7 +16,7 @@
 
 ---
 
-## 🎬 What is Streaming?
+## 🎬 Qué es Streaming?
 
 Instead of waiting 30 seconds to receive a complete response, **streaming** shows text **word by word** in real time, as if the AI were "typing" in front of you.
 
@@ -102,11 +102,11 @@ data: {"done": true}
 
 | Method | Action |
 |--------|--------|
-| **UI Button** | Click `[⏹️ Stop]` |
+| **UI Botón** | Click `[⏹️ Stop]` |
 | **Keyboard** | Press `Esc` |
 | **API** | Send `DELETE /api/chat/stream/{session_id}` |
 
-**Result:**
+**Resultado:**
 ```
 🤖 SoftArchitect AI:
 "To design a REST API you need to consider..."
@@ -175,7 +175,7 @@ STREAMING_DELAY_MS=0   # Maximum speed (no artificial delay)
 
 **With streaming:**
 - At 3s you see "MongoDB is a NoSQL database..."
-- Press `Esc` immediately
+- Press `Esc` inmediataly
 - Rephrase question
 - Time saved: 27s
 
@@ -261,7 +261,7 @@ docker logs soft-architect-ai-backend | grep "connection closed"
 
 ---
 
-### ❌ "Stop button doesn't appear"
+### ❌ "Stop botón doesn't appear"
 
 **Cause:** Streaming disabled in config
 
@@ -276,7 +276,7 @@ docker-compose restart backend
 
 ---
 
-## 🛠️ Advanced Configuration
+## 🛠️ Avanzado Configuración
 
 ### Customize Behavior
 
@@ -308,7 +308,7 @@ class StreamingConfig:
 
 ---
 
-## 📚 Related Documents
+## 📚 Related Documentos
 
 - [Chat Interface](05-CHAT_INTERFACE.md) - How to use chat
 - [Troubleshooting](08-TROUBLESHOOTING.md) - Problem solving

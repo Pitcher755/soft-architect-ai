@@ -23,7 +23,7 @@
 La interfaz de chat es tu puerta de entrada al "cerebro" de SoftArchitect AI. A través de conversaciones naturales, puedes:
 
 - ✅ **Diseñar arquitecturas** de software completas
-- ✅ **Generar documentación** automatizada (ADRs, diagramas C4, etc.)
+- ✅ **Generar documentoación** automatizada (ADRs, diagramas C4, etc.)
 - ✅ **Explorar Tech Packs** y patrones de diseño
 - ✅ **Refinar decisiones** iterativamente con feedback inteligente
 
@@ -60,7 +60,7 @@ La interfaz de chat es tu puerta de entrada al "cerebro" de SoftArchitect AI. A 
 |----------|---------|
 | **Barra superior** | Navegación, configuración, acciones rápidas |
 | **Área de mensajes** | Histórico de conversación |
-| **Archivos adjuntos** | Documentos generados (clickeables) |
+| **Archivos adjuntos** | Documentoos generados (clickeables) |
 | **Input de texto** | Campo de escritura con sugerencias inteligentes |
 | **Botón Enviar** | Enviar pregunta (o `Ctrl+Enter`) |
 
@@ -97,7 +97,7 @@ Experiencia del equipo: PostgreSQL y MongoDB
 ¿Cuál recomiendas y por qué?"
 ```
 
-**Resultado:** La IA tiene contexto suficiente para dar una recomendación fundamentada.
+**Resultadoado:** La IA tiene contexto suficiente para dar una recomendación fundamentada.
 
 ---
 
@@ -376,7 +376,7 @@ MongoDB sería mejor si:
 
 ---
 
-## 📚 Documentos Relacionados
+## 📚 Documentoos Relacionados
 
 - [Master Workflow](04-MASTER_WORKFLOW.md) - Entender las 4 fases
 - [Streaming](06-RESPUESTAS_STREAMING.md) - Detalles técnicos del streaming

@@ -1,4 +1,4 @@
-# 📋 Sprint: RAG Core Configuration & Anti-Hallucination Implementation
+# 📋 Sprint: RAG Core Configuración & Anti-Hallucination Implementación
 
 > **Fecha:** 19/02/2026
 > **Estado:** ✅ COMPLETADO
@@ -13,7 +13,7 @@
 2. [Problema Principal](#problema-principal)
 3. [Soluciones Implementadas](#soluciones-implementadas)
 4. [Archivos Modificados](#archivos-modificados)
-5. [Validación & Testing](#validación--testing)
+5. [Validación & Pruebaing](#validación--pruebaing)
 6. [Impacto en el Sistema](#impacto-en-el-sistema)
 7. [Próximos Pasos](#próximos-pasos)
 
@@ -27,12 +27,12 @@ Solucionar tres problemas críticos en la capa RAG del backend:
 
 1. **Amnesia del Modelo LLM Local** - El modelo Qwen (3B) olvidaba el contexto de arquitectura
 2. **Alucinaciones Tecnológicas** - Sugería tecnologías no solicitadas (ej: FastAPI cuando se pide Flutter)
-3. **Alimentación de la Base de Datos Vectorial** - ChromaDB no se ingería correctamente con las documentaciones del Master Workflow
+3. **Alimentación de la Base de Datos Vectorial** - ChromaDB no se ingería correctamente con las documentoaciones del Master Workflow
 
-### Resultado Final
+### Resultadoado Final
 
 ✅ **Modelo personalizado compilado** con temperaturanula y directivas inyectadas
-✅ **129 documentos ingestionados** exitosamente en ChromaDB
+✅ **129 documentoos ingestionados** exitosamente en ChromaDB
 ✅ **Filtro anti-alucinaciones implementado** en el prompt builder
 ✅ **Pruebas end-to-end validadas** en Docker
 
@@ -48,7 +48,7 @@ El modelo Qwen base (`qwen2.5-coder:3b`) enfrentaba 3 desafíos:
 |----------|---------|--------|
 | **Amnesia de Contexto** | No recordaba las decisiones de fases previas | Repetía preguntas respondidas |
 | **Alucinaciones** | Inventa tecnologías (MySQL, FastAPI) no solicitadas | Propuestas de arquitectura incorrectas |
-| **Base de Datos Vacia** | ChromaDB sin documentación del Master Workflow | RAG sin conocimiento funcional |
+| **Base de Datos Vacia** | ChromaDB sin documentoación del Master Workflow | RAG sin conocimiento funcional |
 
 ### Root Causes
 
@@ -77,7 +77,7 @@ El modelo Qwen base (`qwen2.5-coder:3b`) enfrentaba 3 desafíos:
 
 - **ChromaDB 0.x** → **ChromaDB 1.5.0**: Soluciona conflicto con NumPy 2.4.2
 - **Eliminación de posthog**: Evita "Dependency Hell" con múltiples transitive deps
-- **Resultado**: Clean dependency graph, reinstalación exitosa
+- **Resultadoado**: Clean dependency graph, reinstalación exitosa
 
 **Validación:**
 ```bash
@@ -117,13 +117,13 @@ default_kb = os.getenv("KNOWLEDGE_BASE_PATH", "/app/knowledge_base")
 kb_path = Path(default_kb)
 ```
 
-**C. Multi-Format Document Loading**
+**C. Multi-Format Documento Loading**
 
 El script ahora carga:
-- `.md` (Markdown documentation) → Templates, manifesto, etc.
-- `.yaml/.yml` (YAML configuration) → Tech Stacks, templates
+- `.md` (Markdown documentoation) → Templates, manifesto, etc.
+- `.yaml/.yml` (YAML configuración) → Tech Stacks, templates
 - `.json` (JSON schemas) → User stories, config
-- `.tree` (Tree structure files) → Arquitectura visual
+- `.tree` (Tree structure archivos) → Arquitectura visual
 
 **Extracción de Metadatos:**
 
@@ -150,7 +150,7 @@ docker exec sa_api python scripts/ingest.py
 # ✅ Ingested 129 documents into collection 'softarchitect_knowledge_base'
 ```
 
-**Documentos Ingestionados:**
+**Documentoos Ingestionados:**
 
 | Tipo | Cantidad | Ejemplos |
 |------|----------|----------|
@@ -161,13 +161,13 @@ docker exec sa_api python scripts/ingest.py
 
 ---
 
-### 3️⃣ Creación del Modelo Personalizado (Modelfile)
+### 3️⃣ Creación del Modelo Personalizado (Modelarchivo)
 
-**Archivo:** `infrastructure/Modelfile`
+**Archivo:** `infrastructure/Modelarchivo`
 
 #### Arquitectura:
 
-```dockerfile
+```dockerarchivo
 FROM qwen2.5-coder:3b
 
 # ⚙️ PARÁMETROS DEL MOTOR (Hardware-Aware)
@@ -209,7 +209,7 @@ docker exec sa_ollama ollama create softarchitect -f /root/Modelfile
 | Parámetro | Valor | Justificación |
 |-----------|-------|-----------------|
 | `temperature` | 0.1 | **Determinismo:** Respuestas predecibles y consistentes |
-| `num_ctx` | 32768 | **Amplio contexto:** Soporta documentos y historial largos |
+| `num_ctx` | 32768 | **Amplio contexto:** Soporta documentoos y historial largos |
 | `repeat_penalty` | 1.15 | **Anti-repetición:** Evita bucles en la salida |
 
 ---
@@ -372,11 +372,11 @@ return final_prompt
 
 ### Resumen de Cambios por Archivo
 
-| Archivo | Cambios | Líneas | Status |
+| Archivo | Cambios | Líneas | Estado |
 |---------|---------|--------|--------|
 | `src/server/requirements.txt` | Actualización de chromadb, eliminación de conflictos | 146 deps | ✅ |
 | `src/server/scripts/ingest.py` | Variables de entorno Docker, multi-format loading | 269 lines | ✅ |
-| `infrastructure/Modelfile` | Nuevo archivo - Modelo compilado | 85 lines | ✅ NEW |
+| `infrastructure/Modelarchivo` | Nuevo archivo - Modelo compilado | 85 lines | ✅ NEW |
 | `infrastructure/.env` | Cambio de modelo, chat history vars | 50 lines | ✅ |
 | `src/server/app/api/dependencies.py` | Anti-hallucination prompt builder | 115 lines | ✅ |
 
@@ -391,9 +391,9 @@ src/server/services/rag/
 
 ---
 
-## 🧪 Validación & Testing
+## 🧪 Validación & Pruebaing
 
-### Tests Ejecutados
+### Pruebas Ejecutados
 
 #### 1. Validación de Dependencias
 
@@ -427,14 +427,14 @@ docker exec sa_ollama ollama run softarchitect "¿Cuál es la FASE 1?"
 # ✅ Respuesta correcta sobre Gobernanza e Identidad
 ```
 
-#### 4. Tests Unitarios Python (Post-Fix)
+#### 4. Pruebas Unitarios Python (Post-Fix)
 
 ```bash
 pytest tests/server/unit -q
 # ✅ 7 passed (template_builder_history tests)
 ```
 
-#### 5. Tests Flutter
+#### 5. Pruebas Flutter
 
 ```bash
 flutter test tests/
@@ -453,12 +453,12 @@ flutter test tests/
 |---------|-------|---------|
 | **Consistencia** | Media (olvida decisiones) | Alta (respeta fase actual) |
 | **Alucinaciones** | Frecuentes (~40% de casos) | Raras (~5% excepcionales) |
-| **Contexto** | Limitado (3B base) | Amplio (32k context, Modelfile) |
+| **Contexto** | Limitado (3B base) | Amplio (32k context, Modelarchivo) |
 | **Respeto de Stack** | Bajo (inventa tech) | Total (Golden Rules) |
 
 #### B. Base de Datos Vectorial
 
-- **Documentos**: 0 → 129 indexados
+- **Documentoos**: 0 → 129 indexados
 - **Colecciones**: `softarchitect_knowledge_base` lista
 - **Búsqueda Semántica**: Operacional (RAG queries)
 
@@ -478,13 +478,13 @@ flutter test tests/
 | 129 docs ingestionados | ✅ | ✅ (exact) |
 | Modelo compilado | ✅ | ✅ |
 | Anti-alucinaciones | ✅ | ✅ (Golden Rules) |
-| Tests pasando | ✅ | ✅ (7/7 unit + flutter) |
+| Pruebas pasando | ✅ | ✅ (7/7 unit + flutter) |
 
 ---
 
 ## 🚀 Próximos Pasos
 
-### Fase 2: CLI Resilience & Streaming
+### Fase 2: CLI Resiliencia & Streaming
 
 1. **Mejorar Error Handling en Stream Protocol**
    - Reconexión automática si ChromaDB cae
@@ -494,14 +494,14 @@ flutter test tests/
    - Implementar "sliding window" de historial
    - Cache de embeddings para búsquedas rápidas
 
-3. **Testing End-to-End**
-   - Test: Ingestión + Query + Streaming integrado
+3. **Pruebaing End-to-End**
+   - Prueba: Ingestión + Query + Streaming integrado
    - Simular caída de ChromaDB y recuperación
 
 ### Fase 3: UI Feedback
 
 1. **Visualizar Contexto RAG en Historial**
-   - Mostrar documentos que el modelo está leyendo
+   - Mostrar documentoos que el modelo está leyendo
    - "Transparency mode" para debugging
 
 2. **Indicador de Confianza**
@@ -571,10 +571,10 @@ Este sprint **cerró 3 bloqueadores críticos** en la capa RAG:
 3. ✅ **Modelo personalizado** → Respeta Golden Rules
 4. ✅ **Filtro anti-alucinaciones** → Respuestas confiables
 
-El proyecto está ahora **listo para la siguiente fase** de mejora de CLI Resilience y Streaming Optimization.
+El proyecto está ahora **listo para la siguiente fase** de mejora de CLI Resiliencia y Streaming Optimization.
 
 ---
 
-**Documento generado:** 19/02/2026
+**Documentoo generado:** 19/02/2026
 **Versión:** 1.0 (Final)
 **Estado:** ✅ COMPLETADO Y VALIDADO

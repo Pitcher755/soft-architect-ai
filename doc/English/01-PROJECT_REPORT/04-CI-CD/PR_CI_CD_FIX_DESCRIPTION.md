@@ -1,17 +1,17 @@
 # 🐛 PIT-79: HU-3.5 Streaming Optimization - CI/CD Pipeline Fixes
 
-## 📝 Descripción
+## 📝 Description
 
 Este PR incluye las correcciones necesarias para resolver todos los fallos en los workflows de GitHub Actions que impedían el paso de los tests en el entorno CI/CD.
 
-**Estado**: 🟢 **ACTUALIZADO - Listo para merge a develop**
+**Status**: 🟢 **ACTUALIZADO - Listo para merge a develop**
 
 ---
 
 ## 🔧 Cambios Realizados
 
 ### 1. **Dependencia Faltante: httpx** ✅
-**Archivo**: `requirements.txt`
+**File**: `requirements.txt`
 
 ```diff
 + httpx==0.28.0
@@ -23,14 +23,14 @@ RuntimeError: The starlette.testclient module requires the httpx package to be i
 ```
 
 **Solución**:
-- Agregado `httpx==0.28.0` al archivo `requirements.txt`
+- Agregado `httpx==0.28.0` al file `requirements.txt`
 - Requerido por `FastAPI.TestClient` que depende de `Starlette.TestClient`
 - Resuelve el error de colección de tests en CI
 
 ---
 
 ### 2. **Errores de Pylance en Websocket Tests** ✅
-**Archivo**: `tests/python/integration/test_streaming_flow.py` (línea 62+)
+**File**: `tests/python/integration/test_streaming_flow.py` (línea 62+)
 
 **Problemas**:
 ```
@@ -63,7 +63,7 @@ for _ in range(max_attempts):
 ---
 
 ### 3. **Test Flaky de 500+ Tokens** ✅
-**Archivo**: `tests/python/integration/test_streaming_flow.py::test_connection_survives_500_plus_tokens`
+**File**: `tests/python/integration/test_streaming_flow.py::test_connection_survives_500_plus_tokens`
 
 **Problema**:
 ```
@@ -88,7 +88,7 @@ assert tokens_received >= 400, f"Expected >=400 tokens, got {tokens_received}"
 ---
 
 ### 4. **Workflow GitHub Actions Mejorado** ✅
-**Archivo**: `.github/workflows/lint.yml`
+**File**: `.github/workflows/lint.yml`
 
 **Cambios**:
 
@@ -140,7 +140,7 @@ on:
 
 ---
 
-## 📊 Impacto en Resultados
+## 📊 Impacto en Results
 
 ### Antes (CI/CD Fallando)
 ```
@@ -159,7 +159,7 @@ on:
 
 ---
 
-## 🧪 Pruebas Ejecutadas Localmente
+## 🧪 Tests Ejecutadas Localmente
 
 ```bash
 # Unit Tests
@@ -184,10 +184,10 @@ ruff check .
 
 ---
 
-## 🚀 Verificación pre-merge
+## 🚀 Verification pre-merge
 
 - [x] Todos los tests pasan localmente (28/28)
-- [x] Pre-commit hooks ejecutaron exitosamente
+- [x] Pre-commit hooks executeon exitosamente
 - [x] Code quality checks: ✅ Verde
 - [x] Pylance type checking: ✅ Verde (0 errors)
 - [x] Flutter analyze: ✅ Verde (0 issues)
@@ -235,7 +235,7 @@ All 159 tests should now pass in CI environment.
 
 ---
 
-## 🎯 Próximos Pasos
+## 🎯 Next Steps
 
 1. ✅ **Merge a develop** - Una vez aprobado el PR
 2. 📦 **Deploy a staging** - Para validación final
@@ -244,4 +244,4 @@ All 159 tests should now pass in CI environment.
 ---
 
 **PR #31 - PIT 79 - Feature/streaming-optimization**
-**Estado**: 🟢 **LISTO PARA MERGE**
+**Status**: 🟢 **LISTO PARA MERGE**

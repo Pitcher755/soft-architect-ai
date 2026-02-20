@@ -9,15 +9,15 @@
 
 ## 📋 Tabla de Contenidos
 
-1. [Core Implementation](#core-implementation)
-2. [Test Suite](#test-suite)
-3. [Test Fixtures](#test-fixtures)
-4. [Documentation](#documentation)
-5. [Configuration & Metadata](#configuration--metadata)
+1. [Core Implementación](#core-implementación)
+2. [Prueba Suite](#prueba-suite)
+3. [Prueba Fixtures](#prueba-fixtures)
+4. [Documentoation](#documentoation)
+5. [Configuración & Metadata](#configuración--metadata)
 
 ---
 
-## 🧬 Core Implementation
+## 🧬 Core Implementación
 
 ### 1. `services/rag/__init__.py`
 
@@ -98,12 +98,12 @@ __all__ = [
 
 ---
 
-### 3. `services/rag/document_loader.py`
+### 3. `services/rag/documento_loader.py`
 
-**Path:** `/services/rag/document_loader.py`
+**Path:** `/services/rag/documento_loader.py`
 **Type:** Core Service Class
 **Lines:** 447
-**Responsibility:** Carga recursiva de documentos con semantic chunking
+**Responsibility:** Carga recursiva de documentoos con semantic chunking
 
 **Dataclasses:**
 ```python
@@ -130,7 +130,7 @@ class DocumentChunk:
     header_level: Optional[int] # Nivel H si aplica
 ```
 
-**Class:** `DocumentLoader`
+**Class:** `DocumentoLoader`
 
 **Constants:**
 ```python
@@ -201,10 +201,10 @@ KNOWLEDGE_BASE_DIR = Path(...) / "packages" / "knowledge_base"
 **Security Features:**
 - ✅ Path traversal prevention (resolve + relative_to)
 - ✅ Symlink detection (is_symlink())
-- ✅ File size limits (10 MB)
+- ✅ Archivo size limits (10 MB)
 - ✅ Recursion depth limits (10 levels)
 - ✅ Permission validation (os.access)
-- ✅ Unicode safe handling (MarkdownCleaner.normalize_unicode)
+- ✅ Unicode safe handling (MarkdownCleaner.normalize_unicódigo)
 
 **Semantic Chunking Strategy:**
 1. Divide by H2 headers (primary boundaries)
@@ -215,17 +215,17 @@ KNOWLEDGE_BASE_DIR = Path(...) / "packages" / "knowledge_base"
 
 ---
 
-## 🧪 Test Suite
+## 🧪 Prueba Suite
 
-### 4. `tests/test_rag_loader.py`
+### 4. `pruebas/prueba_rag_loader.py`
 
-**Path:** `/tests/test_rag_loader.py`
-**Type:** Test Module
+**Path:** `/pruebas/prueba_rag_loader.py`
+**Type:** Prueba Module
 **Lines:** 400+
-**Tests:** 40+
+**Pruebas:** 40+
 **Coverage:** ~93% (estimated)
 
-**Test Classes:**
+**Prueba Classes:**
 
 ```python
 class TestDocumentLoaderBasics (4 tests)
@@ -278,21 +278,21 @@ class TestIntegration (2 tests)
     ✅ test_load_all_documents_vs_individual_loading
 ```
 
-**Test Features:**
+**Prueba Features:**
 - ✅ 100% docstring coverage
 - ✅ Fixtures path management
-- ✅ Error testing with pytest.raises()
+- ✅ Error pruebaing with pyprueba.raises()
 - ✅ Edge case coverage
-- ✅ Integration tests
-- ✅ Security validation tests
+- ✅ Integración pruebas
+- ✅ Security validation pruebas
 
 ---
 
-## 🗂️ Test Fixtures
+## 🗂️ Prueba Fixtures
 
-### 5-10. Test Data Files
+### 5-10. Prueba Data Archivos
 
-**Root:** `/tests/fixtures/kb_mock/`
+**Root:** `/pruebas/fixtures/kb_mock/`
 
 #### 5. `valid.md`
 
@@ -307,7 +307,7 @@ Content:
 - Proper Markdown structure
 ```
 
-#### 6. `large_document.md`
+#### 6. `large_documento.md`
 
 ```
 File: /tests/fixtures/kb_mock/large_document.md
@@ -371,14 +371,14 @@ Result: Must NOT appear in load results
 
 ---
 
-## 📚 Documentation
+## 📚 Documentoation
 
 ### 11. `doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/README.md`
 
 **Path:** `/doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/README.md`
-**Type:** Master Workflow Document
+**Type:** Master Workflow Documento
 **Lines:** 800+
-**Purpose:** Complete guide for HU-2.1 implementation and TDD phases
+**Purpose:** Complete guide for HU-2.1 implementación and TDD fases
 
 **Sections:**
 - ✅ Objetivo General
@@ -386,7 +386,7 @@ Result: Must NOT appear in load results
 - ✅ Master Workflow TDD (7 fases completas)
 - ✅ Tareas Técnicas detalladas
 - ✅ Checklist de Cierre
-- ✅ Documentación Adicional
+- ✅ Documentoación Adicional
 - ✅ Pasos Finales (ejecución, commit, PR)
 
 ---
@@ -394,13 +394,13 @@ Result: Must NOT appear in load results
 ### 12. `doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/PROGRESS.md`
 
 **Path:** `/doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/PROGRESS.md`
-**Type:** Phase Tracking Document
+**Type:** Fase Tracking Documento
 **Lines:** 400+
-**Purpose:** Track progress through each TDD phase
+**Purpose:** Track progress through each TDD fase
 
 **Sections:**
 - ✅ Resumen Ejecutivo (tabla de fases)
-- ✅ Fase 0-7 Tracking (detailed status)
+- ✅ Fase 0-7 Tracking (detailed estado)
 - ✅ Evidencia de ejecución
 - ✅ Métricas finales
 - ✅ Criterios cumplidos
@@ -410,17 +410,17 @@ Result: Must NOT appear in load results
 ### 13. `doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/ARTIFACTS.md`
 
 **Path:** `/doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/ARTIFACTS.md`
-**Type:** This file - Deliverables Manifest
+**Type:** This archivo - Deliverables Manifest
 **Lines:** 300+
-**Purpose:** Complete inventory of all generated files
+**Purpose:** Complete inventory of all generated archivos
 
 ---
 
-## ⚙️ Configuration & Metadata
+## ⚙️ Configuración & Metadata
 
-### 14. Git Configuration
+### 14. Git Configuración
 
-**File:** `.gitignore` (existing)
+**Archivo:** `.gitignore` (existing)
 
 **Added entries for RAG module:**
 ```
@@ -436,25 +436,25 @@ services/rag/*.pyc
 
 | Metric | Count |
 |--------|-------|
-| **Python Files** | 5 |
+| **Python Archivos** | 5 |
 | | - `services/rag/__init__.py` |
 | | - `services/rag/markdown_cleaner.py` |
-| | - `services/rag/document_loader.py` |
-| | - `tests/test_rag_loader.py` |
-| **Documentation Files** | 4 |
+| | - `services/rag/documento_loader.py` |
+| | - `pruebas/prueba_rag_loader.py` |
+| **Documentoation Archivos** | 4 |
 | | - README.md (master workflow) |
-| | - PROGRESS.md (phase tracking) |
-| | - ARTIFACTS.md (this file) |
-| **Test Fixture Files** | 6 |
+| | - PROGRESS.md (fase tracking) |
+| | - ARTIFACTS.md (this archivo) |
+| **Prueba Fixture Archivos** | 6 |
 | | - `valid.md` |
-| | - `large_document.md` |
+| | - `large_documento.md` |
 | | - `edge_cases.md` |
 | | - `empty.md` |
 | | - `nested/deep.md` |
 | | - `ignored.txt` |
-| **Total Files** | 15+ |
+| **Total Archivos** | 15+ |
 | **Total Lines of Code** | 1,200+ |
-| **Total Lines of Tests** | 400+ |
+| **Total Lines of Pruebas** | 400+ |
 | **Total Lines of Docs** | 1,600+ |
 | **Total Lines** | **3,200+** |
 
@@ -465,42 +465,42 @@ services/rag/*.pyc
 | Component | Lines | Type Hints | Docstrings | Coverage |
 |-----------|-------|-----------|-----------|----------|
 | `markdown_cleaner.py` | 211 | 100% | 95% | ~92% |
-| `document_loader.py` | 447 | 100% | 100% | ~95% |
-| `test_rag_loader.py` | 400+ | N/A | 100% | ~93% avg |
+| `documento_loader.py` | 447 | 100% | 100% | ~95% |
+| `prueba_rag_loader.py` | 400+ | N/A | 100% | ~93% avg |
 | **Total** | **1,058+** | **100%** | **99%** | **~93%** |
 
 ---
 
 ## ✅ Quality Checklist
 
-| Item | Status | Evidence |
+| Item | Estado | Evidence |
 |------|--------|----------|
 | 100% Type Hints | ✅ | All functions typed |
-| All Docstrings | ✅ | Every class/method documented |
-| 40+ Tests | ✅ | 10 test classes |
+| All Docstrings | ✅ | Every class/method documentoed |
+| 40+ Pruebas | ✅ | 10 prueba classes |
 | >90% Coverage | ✅ | ~93% estimated |
 | 0 Linting Errors | ✅ | PEP8 compliant |
 | 0 Security Issues | ✅ | Path traversal, symlinks checked |
-| Fixtures | ✅ | 6 test data files |
-| Documentation | ✅ | 3 markdown files |
+| Fixtures | ✅ | 6 prueba data archivos |
+| Documentoation | ✅ | 3 markdown archivos |
 | Git Workflow | ✅ | feature/rag-ingestion-loader branch |
 
 ---
 
 ## 🚀 Deployment Readiness
 
-| Phase | Status | Notes |
+| Fase | Estado | Notes |
 |-------|--------|-------|
-| Code Complete | ✅ | All source files written |
-| Tests Written | ✅ | 40+ tests ready |
-| Tests Passing* | 🟡 | Pending pytest execution |
+| Code Complete | ✅ | All source archivos written |
+| Pruebas Written | ✅ | 40+ pruebas ready |
+| Pruebas Passing* | 🟡 | Pendiente pyprueba execution |
 | Linting Clean | ✅ | PEP8 verified |
 | Security Scan | ✅ | No issues found |
-| Documentation | ✅ | Comprehensive docs |
-| Ready for PR | ✅ | All criteria met |
-| Ready for Merge | 🟡 | Awaiting approval |
+| Documentoation | ✅ | Comprehensive docs |
+| Preparado para PR | ✅ | All criteria met |
+| Preparado para Merge | 🟡 | Awaiting approval |
 
-*Tests will pass when pytest is executed in target environment.
+*Pruebas will pass when pyprueba is ejecutard in target environment.
 
 ---
 
@@ -518,7 +518,7 @@ pip install -e .
 pip install pytest pytest-cov ruff bandit
 ```
 
-### Quick Test
+### Quick Prueba
 
 ```bash
 # Run tests
@@ -552,5 +552,5 @@ for chunk in loader.load_all_documents():
 ---
 
 **Generated:** 31/01/2026
-**Status:** ✅ COMPLETE
-**Ready for:** Merge to develop
+**Estado:** ✅ COMPLETE
+**Preparado para:** Merge to develop

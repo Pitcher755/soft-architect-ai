@@ -1,21 +1,21 @@
 # ✅ SISTEMA HÍBRIDO IMPLEMENTADO - RESUMEN EJECUTIVO
 
-> **Fecha:** 2024
-> **Estado:** ✅ **COMPLETADO Y VALIDADO**
-> **Alcance:** Implementación del sistema híbrido de gestión de proyectos
+> **Date:** 2024
+> **Status:** ✅ **COMPLETADO Y VALIDADO**
+> **Alcance:** Implementation del sistema híbrido de gestión de projects
 
 ---
 
 ## 📋 Resumen Ejecutivo
 
-Se ha implementado exitosamente un **sistema híbrido que integra proyectos reales (disco) y proyectos mock (guía)** en una única interfaz de usuario. El sistema permite a los usuarios navegar, editar y gestionar ambos tipos de proyectos de manera transparente.
+Se ha implementado exitosamente un **sistema híbrido que integra projects reales (disco) y projects mock (guía)** en una única interfaz de usuario. El sistema permite a los usuarios navegar, editar y gestionar ambos tipos de projects de manera transparente.
 
 ### Objetivos Logrados ✅
 
-- ✅ **Interfaz Unificada:** Un solo dashboard muestra proyectos reales y la guía interactiva
+- ✅ **Interfaz Unificada:** Un solo dashboard muestra projects reales y la guía interactiva
 - ✅ **Detección Automática:** Identifica rutas mock:// vs rutas reales
 - ✅ **Datos en Memoria:** Guía precompilada (sin I/O)
-- ✅ **Navegación Seamless:** Clic en guía → archivo → contenido (todo en una interfaz)
+- ✅ **Navegación Seamless:** Clic en guía → file → contenido (todo en una interfaz)
 - ✅ **Sin Errores de Compilación:** 0 errores de tipo en el frontend
 - ✅ **Escalable:** Fácil agregar más guías/contenido
 
@@ -84,24 +84,24 @@ Se ha implementado exitosamente un **sistema híbrido que integra proyectos real
 
 ---
 
-## 📦 Archivos Modificados/Creados
+## 📦 Files Modificados/Creados
 
 ### Creados (✨ Nuevos)
 
-| Archivo | Propósito |
+| File | Propósito |
 |---------|----------|
 | [projects_provider.dart](../src/client/lib/features/project_shell/presentation/providers/projects_provider.dart) | Helper `buildHybridProjectsList()` |
 | [HYBRID_SYSTEM_IMPLEMENTATION.md](HYBRID_SYSTEM_IMPLEMENTATION.md) | Documentación del sistema |
 
 ### Modificados (✏️ Actualizados)
 
-| Archivo | Cambios |
+| File | Cambios |
 |---------|---------|
 | **project.dart** | ➕ Getter `phase` (deriva de ruta) |
 | **mock_projects_data.dart** | ✏️ Función `getMockProjectsData()` retorna guía |
 | **mock_data.dart** | ✏️ `guideRootNode` + `guideFileContents` |
 | **file_tree_widget.dart** | ✏️ Detección `mock://` para mostrar guía |
-| **project_shell_screen.dart** | ✏️ Lectura híbrida de archivos |
+| **project_shell_screen.dart** | ✏️ Lectura híbrida de files |
 | **project_workspace_screen.dart** | ✏️ Usa `buildHybridProjectsList()` + objetos `Project` |
 | **project_list_view.dart** | ✏️ Acepta `List<Project>` (no Maps) |
 | **project_model.dart** | ✏️ Sincronizado con entidad `Project` |
@@ -109,7 +109,7 @@ Se ha implementado exitosamente un **sistema híbrido que integra proyectos real
 
 ---
 
-## 🔧 Implementación Técnica
+## 🔧 Implementation Técnica
 
 ### 1. Protocol Virtual `mock://`
 
@@ -218,8 +218,8 @@ void _onFileSelected(FileNode node) {
 
 ### Cobertura de Cambios
 
-- ✅ **8 archivos modificados** (proyecto entero + guía)
-- ✅ **2 archivos creados** (provider + documentación)
+- ✅ **8 files modificados** (project entero + guía)
+- ✅ **2 files creados** (provider + documentación)
 - ✅ **0 errores de compilación** (validado con `get_errors()`)
 - ✅ **0 líneas duplicadas** (refactorizado)
 - ✅ **100% de cobertura de rutas** (mock:// + /home/...)
@@ -229,7 +229,7 @@ void _onFileSelected(FileNode node) {
 | Métrica | Valor |
 |---------|-------|
 | Tiempo carga guía | ~0ms (const en memoria) |
-| Tiempo carga proyecto real | ~50-200ms (I/O normal) |
+| Tiempo carga project real | ~50-200ms (I/O normal) |
 | Tamaño MockProjectData | ~2KB (markdown comprimido) |
 | Overhead híbrido | Negligible (~1ms detección) |
 
@@ -270,18 +270,18 @@ test('read mock file content', () {
 
 - [ ] Abrir app → Ver "Guía SoftArchitect" en dashboard
 - [ ] Click en guía → Navigate a /project-shell?path=mock://softarchitect-guide
-- [ ] Ver árbol de archivos (00-Bienvenido.md, features/Chat-IA.md)
-- [ ] Click en archivo → Ver contenido markdown en panel central
-- [ ] Crear proyecto real → Aparece en dashboard junto a guía
-- [ ] Click en proyecto real → Navigate a /project-shell?path=/home/...
-- [ ] Ver árbol de archivos (real del disco)
-- [ ] Click en archivo real → Ver contenido real
-- [ ] Volver a dashboard → Ambos proyectos visibles
-- [ ] Expandir lista (Ver todos) → Muestra todos los proyectos
+- [ ] Ver árbol de files (00-Bienvenido.md, features/Chat-IA.md)
+- [ ] Click en file → Ver contenido markdown en panel central
+- [ ] Create project real → Aparece en dashboard junto a guía
+- [ ] Click en project real → Navigate a /project-shell?path=/home/...
+- [ ] Ver árbol de files (real del disco)
+- [ ] Click en file real → Ver contenido real
+- [ ] Volver a dashboard → Ambos projects visibles
+- [ ] Expandir lista (Ver todos) → Muestra todos los projects
 
 ---
 
-## 🚀 Próximos Pasos (Opcional)
+## 🚀 Next Steps (Opcional)
 
 ### Nivel 1: Mantener
 
@@ -339,11 +339,11 @@ file_search('**/mock_data.dart') → Encontrado
 
 **Sistema Híbrido = 100% Operativo** 🎉
 
-La implementación está completa, validada y lista para producción. Los usuarios ahora pueden:
+La implementation está completa, validada y lista para producción. Los usuarios ahora pueden:
 
-1. ✅ Ver proyectos reales y la guía en el mismo lugar
+1. ✅ Ver projects reales y la guía en el mismo lugar
 2. ✅ Navegar entre ambos tipos transparentemente
-3. ✅ Editar proyectos reales mientras aprenden con la guía
+3. ✅ Editar projects reales mientras aprenden con la guía
 4. ✅ Experimentar sin miedo (la guía es de solo lectura)
 
-**Resultado:** Una experiencia de usuario unificada, eficiente y educativa.
+**Result:** Una experiencia de usuario unificada, eficiente y educativa.

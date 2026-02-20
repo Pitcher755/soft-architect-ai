@@ -80,7 +80,7 @@ try {
 
 | Error Code | Meaning | Spanish Message | User Action | Retryable | Status Code |
 |------------|---------|-----------------|-------------|-----------|-------------|
-| **AUTH_001** | Missing API key | 🔑 Falta la clave de API de Groq Cloud | Ve a Configuración y agrega tu clave de API | ❌ No | 401 |
+| **AUTH_001** | Missing API key | 🔑 Falta la clave de API de Groq Cloud | Ve a Configuration y agrega tu clave de API | ❌ No | 401 |
 
 ### RAG Errors (RAG_XXX)
 
@@ -93,11 +93,11 @@ try {
 
 | Error Code | Gate | Spanish Message | User Action | Retryable | Status Code |
 |------------|------|-----------------|-------------|-----------|-------------|
-| **VAL_001** | Content Length | 📝 El documento generado es inválido (muy corto) | Intenta generar el documento nuevamente | ✅ Yes | 400 |
-| **VAL_002** | Markdown Format | 📝 El documento tiene formato Markdown incorrecto | Revisa la estructura del documento | ✅ Yes | 400 |
-| **VAL_003** | UTF-8 Encoding | 📝 El documento tiene problemas de codificación | Asegúrate de usar texto en UTF-8 | ❌ No | 400 |
-| **VAL_004** | XSS Security | ⚠️ El documento contiene contenido sospechoso | Contacta al soporte si el problema persiste | ❌ No | 400 |
-| **VAL_005** | File Size | 📦 El documento es demasiado grande | Reduce el tamaño del documento | ❌ No | 400 |
+| **VAL_001** | Content Length | 📝 El document generado es inválido (muy corto) | Intenta generar el document nuevamente | ✅ Yes | 400 |
+| **VAL_002** | Markdown Format | 📝 El document tiene formato Markdown incorrecto | Revisa la estructura del document | ✅ Yes | 400 |
+| **VAL_003** | UTF-8 Encoding | 📝 El document tiene problemas de codificación | Asegúrate de usar texto en UTF-8 | ❌ No | 400 |
+| **VAL_004** | XSS Security | ⚠️ El document contiene contenido sospechoso | Contacta al soporte si el problema persiste | ❌ No | 400 |
+| **VAL_005** | File Size | 📦 El document es demasiado grande | Reduce el tamaño del document | ❌ No | 400 |
 
 ---
 

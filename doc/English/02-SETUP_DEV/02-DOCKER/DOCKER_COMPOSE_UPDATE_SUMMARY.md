@@ -2,13 +2,13 @@
 
 **Fecha:** 28 de enero de 2026
 **Responsable:** ArchitectZero Agent
-**Estado:** ✅ COMPLETADO Y VALIDADO
+**Status:** ✅ COMPLETADO Y VALIDADO
 
 ---
 
 ## 🎯 Objetivo
 
-Revisar y mejorar la configuración de Docker Compose para asegurar:
+Revisar y mejorar la configuration de Docker Compose para asegurar:
 - ✅ Cumplimiento de requisitos de AGENTS.md
 - ✅ Funcionalidad completa y verificada
 - ✅ Seguridad y privacidad (OWASP)
@@ -19,7 +19,7 @@ Revisar y mejorar la configuración de Docker Compose para asegurar:
 
 ## 📊 Diagnóstico Inicial
 
-### Estado Anterior: ⚠️ NO FUNCIONAL
+### Status Previous: ⚠️ NO FUNCIONAL
 
 | Aspecto | Evaluación | Impacto |
 |---------|-----------|--------|
@@ -86,7 +86,7 @@ Revisar y mejorar la configuración de Docker Compose para asegurar:
 - Variables de imagen (versiones)
 - Límites de recursos configurables
 - LLM provider selection
-- Configuración Ollama/Groq
+- Configuration Ollama/Groq
 - Privacy settings
 
 **`src/server/.env.example`**
@@ -102,7 +102,7 @@ Revisar y mejorar la configuración de Docker Compose para asegurar:
 - ✅ Requisitos previos detallados
 - 🚀 Instalación rápida (4 pasos)
 - 🎛️ Modos de ejecución (dev, background, prod, rebuild)
-- 🔍 Verificación de servicios
+- 🔍 Verification de servicios
 - 🐛 Troubleshooting exhaustivo (7 problemas comunes)
 - ⚡ Performance tuning
 - 🏗️ Arquitectura detallada con diagramas
@@ -120,8 +120,8 @@ bash validate-docker-setup.sh
 - ✓ Docker instalado y daemon corriendo
 - ✓ Docker Compose v2.0+
 - ✓ Recursos del sistema (RAM, Disco)
-- ✓ Estructura de carpetas
-- ✓ Archivos de configuración
+- ✓ Estructura de folders
+- ✓ Files de configuration
 - ✓ Puertos disponibles
 - ✓ Sintaxis YAML válida
 - ✓ GPU NVIDIA (opcional)
@@ -134,7 +134,7 @@ bash validate-docker-setup.sh
 
 ### AGENTS.md Requirements
 
-| Requisito | Implementación |
+| Requisito | Implementation |
 |-----------|---|
 | **Clean Architecture** | ✅ Modular Monolith en backend, volumen compartido para src/server |
 | **Local-First Privacy** | ✅ Ollama local por defecto, Groq opcional |
@@ -155,7 +155,7 @@ bash validate-docker-setup.sh
 
 ### Security & Privacy (SECURITY_AND_PRIVACY_RULES.es.md)
 
-| Requisito | Implementación |
+| Requisito | Implementation |
 |-----------|---|
 | **Modo Iron** | ✅ IRON_MODE=True, no outbound salvo Groq |
 | **Modo Ether** | ✅ GROQ_API_KEY con advertencia |
@@ -196,7 +196,7 @@ cd infrastructure
 docker compose up --build
 ```
 
-**Resultados esperados:**
+**Results esperados:**
 - ✅ Base image pulled
 - ✅ Dockerfile build success
 - ✅ Ollama starts, healthcheck pasa
@@ -215,7 +215,7 @@ docker compose logs api-server
 
 ---
 
-## 📦 Archivos Entregados
+## 📦 Files Entregados
 
 ```
 soft-architect-ai/
@@ -293,7 +293,7 @@ http://localhost:8000/docs
 
 ---
 
-## ✨ Próximos Pasos Opcionales
+## ✨ Next Steps Opcionales
 
 1. **CI/CD Pipeline:** GitHub Actions para validar en PRs
 2. **Kubernetes Deployment:** Convert docker-compose a Helm charts
@@ -311,6 +311,6 @@ http://localhost:8000/docs
 
 ---
 
-**Estado:** ✅ LISTO PARA PRODUCCIÓN
+**Status:** ✅ LISTO PARA PRODUCCIÓN
 **Reviewed By:** ArchitectZero
 **Date:** 28 de enero de 2026

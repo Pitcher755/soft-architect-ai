@@ -1,19 +1,19 @@
-# HU-3.8: Pull Request Description
+# HU-3.8: Pull Request Descripción
 
 ## 🎯 Title
-`feat(HU-3.8): Implement real project phase logic with Doc N/25 progress tracking`
+`feat(HU-3.8): Implement real proyecto fase logic with Doc N/25 progress tracking`
 
 ---
 
-## 📝 Description
+## 📝 Descripción
 
-Implements a **real phase engine** for Project Shell that replaces simulated progress with objective, file-based milestones. Progress (`Doc N/25`) now derives from actually generated project artifacts following the structure defined in `packages/knowledge_base/01-TEMPLATES`.
+Implements a **real fase engine** for Proyecto Shell that replaces simulated progress with objective, archivo-based milestones. Progress (`Doc N/25`) now derives from actually generated proyecto artifacts following the structure defined in `packages/knowledge_base/01-TEMPLATES`.
 
 ### 🌟 Key Features
 
-- **7 Project Phases:** ROOT → 10-CONTEXT → 20-REQUIREMENTS → 30-ARCHITECTURE → 35-UX_UI → 40-PLANNING → 99-META
-- **Deterministic Progress:** `Doc N/25` calculated from real filesystem scan
-- **Phase Validation:** Mandatory artifacts enforced before phase transitions
+- **7 Proyecto Fases:** ROOT → 10-CONTEXT → 20-REQUIREMENTS → 30-ARCHITECTURE → 35-UX_UI → 40-PLANNING → 99-META
+- **Deterministic Progress:** `Doc N/25` calculated from real archivosystem scan
+- **Fase Validation:** Mandatory artifacts enforced before fase transitions
 - **Idempotent Operations:** Re-scan doesn't duplicate or corrupt artifacts
 - **User-Friendly Errors:** Controlled error handling without stack traces
 
@@ -24,46 +24,46 @@ Implements a **real phase engine** for Project Shell that replaces simulated pro
 ### Frontend (Flutter - Clean Architecture)
 
 **Domain Layer:**
-- `src/client/lib/features/project_shell/domain/models/project_phase.dart`
-  Entity representing project phase with validation rules
+- `src/client/lib/features/proyecto_shell/domain/models/proyecto_fase.dart`
+  Entity representing proyecto fase with validation rules
 
-- `src/client/lib/features/project_shell/domain/services/project_phase_service.dart`
-  Core business logic: phase detection, validation, progress calculation
+- `src/client/lib/features/proyecto_shell/domain/services/proyecto_fase_service.dart`
+  Core business logic: fase detection, validation, progress calculation
 
-- `src/client/lib/features/project_shell/core/constants/project_structure_constants.dart`
-  Phase definitions and mandatory artifacts mapping
+- `src/client/lib/features/proyecto_shell/core/constants/proyecto_structure_constants.dart`
+  Fase definitions and mandatory artifacts mapping
 
-**Presentation Layer:**
-- `src/client/lib/features/project_shell/presentation/providers/project_providers.dart`
-  Riverpod providers for real-time phase state management
+**Presentación Layer:**
+- `src/client/lib/features/proyecto_shell/presentation/providers/proyecto_providers.dart`
+  Riverpod providers for real-time fase state management
 
-- `src/client/lib/features/project_shell/presentation/screens/project_shell_screen.dart`
-  Updated Dashboard to reflect real phase and progress
+- `src/client/lib/features/proyecto_shell/presentation/screens/proyecto_shell_screen.dart`
+  Updated Dashboard to reflect real fase and progress
 
-- `src/client/lib/features/project_shell/presentation/widgets/project_card.dart`
-  Visual updates: phase badge, Doc N/25 indicator
+- `src/client/lib/features/proyecto_shell/presentation/widgets/proyecto_card.dart`
+  Visual updates: fase badge, Doc N/25 indicator
 
 ###Backend (Python - Supporting Tools)
 
-- Updated validation scripts to support new phase logic
-- Enhanced test coverage for phase transitions
+- Updated validation scripts to support new fase logic
+- Enhanced prueba coverage for fase transitions
 
 ---
 
-## ✅ Testing
+## ✅ Pruebaing
 
-### Test Coverage
+### Prueba Coverage
 
-| Category | Tests | Status |
+| Category | Pruebas | Estado |
 |----------|-------|--------|
-| **Python Unit Tests** | 181 | ✅ ALL PASS |
-| **Flutter Widget Tests** | - | ✅ ALL PASS |
-| **Integration Tests** | 39 (+2 skipped) | ✅ ALL PASS |
+| **Python Unit Pruebas** | 181 | ✅ ALL PASS |
+| **Flutter Widget Pruebas** | - | ✅ ALL PASS |
+| **Integración Pruebas** | 39 (+2 skipped) | ✅ ALL PASS |
 | **Type Checking** | 0 errors | ✅ PASS |
 | **Security Audit** | 0 issues | ✅ PASS |
 | **Code Formatting** | - | ✅ COMPLIANT |
 
-### PRE_PUSH_VALIDATION Results
+### PRE_PUSH_VALIDATION Resultados
 
 ```
 ═══════════════════════════════════════════════════════
@@ -80,18 +80,18 @@ Failed: 0
 
 ---
 
-## 📋 Acceptance Criteria (AC) Status
+## 📋 Acceptance Criteria (AC) Estado
 
-| ID | Criterion | Status |
+| ID | Criterion | Estado |
 |----|-----------|--------|
-| AC-1 | Phase model equals template sequence | ✅ VALIDATED |
+| AC-1 | Fase model equals template sequence | ✅ VALIDATED |
 | AC-2 | Mandatory artifacts are validated | ✅ VALIDATED |
-| AC-3 | Doc N/25 computed from real files | ✅ VALIDATED |
+| AC-3 | Doc N/25 computed from real archivos | ✅ VALIDATED |
 | AC-4 | ROOT enforces required docs | ✅ VALIDATED |
 | AC-5 | Non-ROOT require full completion | ✅ VALIDATED |
-| AC-6 | Phase transition is idempotent | ✅ VALIDATED |
+| AC-6 | Fase transition is idempotent | ✅ VALIDATED |
 | AC-7 | User-friendly error messages | ✅ VALIDATED |
-| AC-8 | Test coverage ≥90% (HU module) | ✅ VALIDATED |
+| AC-8 | Prueba coverage ≥90% (HU module) | ✅ VALIDATED |
 
 **Full validation matrix:** [ACCEPTANCE_CRITERIA_VERIFICATION.md](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/ACCEPTANCE_CRITERIA_VERIFICATION.md)
 
@@ -99,8 +99,8 @@ Failed: 0
 
 ## 🔗 Dependencies
 
-- ✅ HU-3.1 (ProjectShell base structure)
-- ✅ HU-3.2 (FileSystemService)
+- ✅ HU-3.1 (ProyectoShell base structure)
+- ✅ HU-3.2 (ArchivoSystemService)
 - ✅ `packages/knowledge_base/01-TEMPLATES/*`
 - ✅ `context/40-ROADMAP/USER_STORIES_MASTER.es.json`
 
@@ -108,9 +108,9 @@ Failed: 0
 
 ## ⚠️ Breaking Changes
 
-**NONE.** This implementation is backward compatible with existing ProjectShell functionality.
+**NONE.** This implementación is backward compatible with existing ProyectoShell functionality.
 
-- Existing projects continue to work normally
+- Existing proyectos continue to work normally
 - No database migrations required
 - No API contract changes
 
@@ -118,18 +118,18 @@ Failed: 0
 
 ## 📸 Screenshots
 
-### Dashboard - Real Phase Progress
-![Project Dashboard showing Doc 5/25 progress](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/dashboard_screenshot.png)
+### Dashboard - Real Fase Progress
+![Proyecto Dashboard showing Doc 5/25 progress](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/dashboard_screenshot.png)
 
 *(Screenshot pending: Manual validation step - OBJ-7)*
 
 ---
 
-## 📚 Documentation
+## 📚 Documentoation
 
-**Created/Updated:**
+**Creard/Updated:**
 - ✅ [README.md](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/README.md) - Overview and scope
-- ✅ [PROGRESS.md](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/PROGRESS.md) - Phase-by-phase checklist
+- ✅ [PROGRESS.md](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/PROGRESS.md) - Fase-by-fase checklist
 - ✅ [ARTIFACTS.md](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/ARTIFACTS.md) - Code manifest
 - ✅ [WORKFLOW_MASTER_DEFINITION.md](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/WORKFLOW_MASTER_DEFINITION.md) - Technical execution plan
 - ✅ [ACCEPTANCE_CRITERIA_VERIFICATION.md](doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/ACCEPTANCE_CRITERIA_VERIFICATION.md) - AC validation matrix
@@ -143,15 +143,15 @@ Failed: 0
 
 1. Merge to `develop`
 2. Standard CI/CD pipeline will handle build
-3. No configuration changes needed
+3. No configuración changes needed
 
 ---
 
-## ✨ Next Steps (Post-Merge)
+## ✨ Siguiente Steps (Post-Merge)
 
-- HU-3.9: Integrate RAG context with current phase detection
-- HU-4.1: Chat endpoint that adapts to project phase context
-- HU-4.3: Real-time streaming responses with phase-aware prompts
+- HU-3.9: Integrate RAG context with current fase detection
+- HU-4.1: Chat endpoint that adapts to proyecto fase context
+- HU-4.3: Real-time streaming responses with fase-aware prompts
 
 ---
 
@@ -164,9 +164,9 @@ git diff develop...feature/project_phase_logic --stat | tail -1
 ```
 
 **Modules Affected:**
-- `src/client/lib/features/project_shell/` (Domain, Presentation)
-- `doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/` (Documentation)
-- `scripts/PRE_PUSH_VALIDATION_MASTER.sh` (Test automation fix)
+- `src/client/lib/features/proyecto_shell/` (Domain, Presentación)
+- `doc/03-HU-TRACKING/HU-3.8-PROJECT-PHASE-LOGIC/` (Documentoation)
+- `scripts/PRE_PUSH_VALIDATION_MASTER.sh` (Prueba automation fix)
 
 ---
 
@@ -175,13 +175,13 @@ git diff develop...feature/project_phase_logic --stat | tail -1
 - [x] Código formateado (`black`, `dart format`)
 - [x] Linting passed (`ruff`, `dart analyze`)
 - [x] Type checking passed (0 errors)
-- [x] All tests passing (220 tests)
+- [x] All pruebas passing (220 pruebas)
 - [x] Security audit clean (0 issues)
 - [x] AC-1 to AC-8 validated
-- [x] Documentation updated
+- [x] Documentoation updated
 - [x] PRE_PUSH_VALIDATION passed (16/16 ✅)
 - [ ] Screenshots captured (pending manual validation)
-- [x] Ready for review
+- [x] Preparado para review
 
 ---
 
@@ -189,10 +189,10 @@ git diff develop...feature/project_phase_logic --stat | tail -1
 
 Please check:
 1. ✅ Architecture compliance (Clean Architecture + Hexagonal)
-2. ✅ Test coverage adequacy (220 tests)
+2. ✅ Prueba coverage adequacy (220 pruebas)
 3. ✅ Error handling logic (user-friendly messages)
-4. ✅ Performance consideration (filesystem scan efficiency)
-5. ⚠️ UI/UX validation (manual verification recommended)
+4. ✅ Performance consideration (archivosystem scan efficiency)
+5. ⚠️ UI/UX validation (manual verificación recommended)
 
 ---
 
@@ -204,7 +204,7 @@ Roadmap: `context/40-ROADMAP/USER_STORIES_MASTER.es.json`
 
 ---
 
-**Created by:** ArchitectZero
+**Creard by:** ArchitectZero
 **Date:** 12/02/2026
-**Branch:** `feature/project_phase_logic`
+**Branch:** `feature/proyecto_fase_logic`
 **Target:** `develop`

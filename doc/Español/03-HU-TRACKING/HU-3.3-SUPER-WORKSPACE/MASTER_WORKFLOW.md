@@ -2,8 +2,8 @@
 
 > **Branch:** `feature/chat-sequential-docs`
 > **Estimation:** XXL (21 Story Points)
-> **Methodology:** TDD (Test-Driven Development)
-> **Status:** 🚀 READY TO IMPLEMENT
+> **Methodology:** TDD (Prueba-Driven Development)
+> **Estado:** 🚀 READY TO IMPLEMENT
 
 ---
 
@@ -11,21 +11,21 @@
 
 - [Vision](#vision)
 - [Architecture Overview](#architecture-overview)
-- [Implementation Phases](#implementation-phases)
+- [Implementación Fases](#implementación-fases)
 - [Widget Mapping](#widget-mapping)
 - [TDD Strategy](#tdd-strategy)
-- [Verification Criteria](#verification-criteria)
+- [Verificación Criteria](#verificación-criteria)
 - [Progress Tracking](#progress-tracking)
 
 ---
 
 ## 🎨 Vision
 
-**Objective:** Build a complete VS Code-like workspace where users generate documents sequentially through an interactive chat, with real-time file system visualization and markdown preview.
+**Objective:** Build a complete VS Code-like workspace where users generate documentos sequentially through an interactive chat, with real-time archivo system visualization and markdown preview.
 
 **Components:**
-1. **ProjectWorkspaceScreen** - The 3-column container
-2. **FileSystemTreeWidget** - Left panel (file explorer)
+1. **ProyectoWorkspaceScreen** - The 3-column container
+2. **ArchivoSystemTreeWidget** - Left panel (archivo explorer)
 3. **SequentialChatScreen** - Center panel (chat + proposals)
 4. **MarkdownPreviewWidget** - Right panel (live preview)
 
@@ -71,12 +71,12 @@ FileSystemState (Immutable)
 
 ---
 
-## 🗺️ Implementation Phases
+## 🗺️ Implementación Fases
 
-### **PHASE 1: Shell Container (The Foundation)**
-**Goal:** Create the 3-column workspace layout with routing
+### **FASE 1: Shell Container (The Fundación)**
+**Goal:** Crear the 3-column workspace layout with routing
 
-#### 1.1 Tests (RED Phase)
+#### 1.1 Pruebas (RED Fase)
 ```dart
 // test/features/project_shell/presentation/screens/project_workspace_screen_test.dart
 
@@ -100,8 +100,8 @@ testWidgets('AppBar shows project progress (Doc X/25)', (tester) async {
 });
 ```
 
-#### 1.2 Implementation (GREEN Phase)
-**File:** `lib/features/project_shell/presentation/screens/project_workspace_screen.dart`
+#### 1.2 Implementación (GREEN Fase)
+**Archivo:** `lib/features/proyecto_shell/presentation/screens/proyecto_workspace_screen.dart`
 
 ```dart
 class ProjectWorkspaceScreen extends ConsumerWidget {
@@ -167,19 +167,19 @@ class ProjectWorkspaceScreen extends ConsumerWidget {
 }
 ```
 
-#### 1.3 Verification Checklist
-- [ ] Route `/workspace/:projectId` navigates to ProjectWorkspaceScreen
+#### 1.3 Verificación Checklist
+- [ ] Route `/workspace/:proyectoId` navigates to ProyectoWorkspaceScreen
 - [ ] 3 columns render with correct widths (250px, flex, 450px)
 - [ ] AppBar shows progress indicator
 - [ ] Progress updates when doc index changes
-- [ ] Tests pass: `flutter test test/features/project_shell/`
+- [ ] Pruebas pass: `flutter prueba prueba/features/proyecto_shell/`
 
 ---
 
-### **PHASE 2: File System Tree (Left Panel)**
-**Goal:** Display project directory structure with expand/collapse
+### **FASE 2: Archivo System Tree (Left Panel)**
+**Goal:** Display proyecto directory structure with expand/collapse
 
-#### 2.1 Tests (RED Phase)
+#### 2.1 Pruebas (RED Fase)
 ```dart
 // test/features/project_shell/presentation/widgets/file_system_tree_widget_test.dart
 
@@ -212,8 +212,8 @@ testWidgets('Clicking file updates selected state', (tester) async {
 });
 ```
 
-#### 2.2 Implementation (GREEN Phase)
-**File:** `lib/features/project_shell/presentation/widgets/file_system_tree_widget.dart`
+#### 2.2 Implementación (GREEN Fase)
+**Archivo:** `lib/features/proyecto_shell/presentation/widgets/archivo_system_tree_widget.dart`
 
 ```dart
 class FileSystemTreeWidget extends ConsumerWidget {
@@ -313,7 +313,7 @@ class _DirectoryTreeView extends StatelessWidget {
 ```
 
 #### 2.3 Domain Models
-**File:** `lib/features/project_shell/domain/entities/directory_node.dart`
+**Archivo:** `lib/features/proyecto_shell/domain/entities/directory_node.dart`
 
 ```dart
 class DirectoryNode {
@@ -332,7 +332,7 @@ class DirectoryNode {
 ```
 
 #### 2.4 State Management
-**File:** `lib/features/project_shell/presentation/notifiers/file_system_notifier.dart`
+**Archivo:** `lib/features/proyecto_shell/presentation/notifiers/archivo_system_notifier.dart`
 
 ```dart
 @riverpod
@@ -381,20 +381,20 @@ class FileSystemState with _$FileSystemState {
 }
 ```
 
-#### 2.5 Verification Checklist
-- [ ] Tree displays all folders from `context/`
-- [ ] Clicking folder expands/collapses children
-- [ ] Clicking file highlights it and triggers preview
+#### 2.5 Verificación Checklist
+- [ ] Tree displays all carpetas from `context/`
+- [ ] Clicking carpeta expands/collapses children
+- [ ] Clicking archivo highlights it and triggers preview
 - [ ] Scrollable when content overflows
-- [ ] Icons match file types (folder, markdown)
-- [ ] Tests pass: `flutter test test/features/project_shell/widgets/`
+- [ ] Icons match archivo types (carpeta, markdown)
+- [ ] Pruebas pass: `flutter prueba prueba/features/proyecto_shell/widgets/`
 
 ---
 
-### **PHASE 3: Markdown Preview (Right Panel)**
+### **FASE 3: Markdown Preview (Right Panel)**
 **Goal:** Render selected markdown with GitHub Dark theme
 
-#### 3.1 Tests (RED Phase)
+#### 3.1 Pruebas (RED Fase)
 ```dart
 // test/features/project_shell/presentation/widgets/markdown_preview_widget_test.dart
 
@@ -418,8 +418,8 @@ testWidgets('MarkdownPreviewWidget renders markdown content', (tester) async {
 });
 ```
 
-#### 3.2 Implementation (GREEN Phase)
-**File:** `lib/features/project_shell/presentation/widgets/markdown_preview_widget.dart`
+#### 3.2 Implementación (GREEN Fase)
+**Archivo:** `lib/features/proyecto_shell/presentation/widgets/markdown_preview_widget.dart`
 
 ```dart
 class MarkdownPreviewWidget extends ConsumerWidget {
@@ -488,7 +488,7 @@ class MarkdownPreviewWidget extends ConsumerWidget {
 ```
 
 #### 3.3 State Management
-**File:** `lib/features/project_shell/presentation/notifiers/markdown_preview_notifier.dart`
+**Archivo:** `lib/features/proyecto_shell/presentation/notifiers/markdown_preview_notifier.dart`
 
 ```dart
 @riverpod
@@ -524,20 +524,20 @@ class MarkdownPreviewState with _$MarkdownPreviewState {
 }
 ```
 
-#### 3.4 Verification Checklist
-- [ ] Shows "Select a file..." when no file selected
+#### 3.4 Verificación Checklist
+- [ ] Shows "Select a archivo..." when no archivo selected
 - [ ] Renders markdown with GitHub Dark theme
 - [ ] Code blocks have syntax highlighting
 - [ ] Headers, lists, links render correctly
 - [ ] Scrollable when content overflows
-- [ ] Tests pass: `flutter test test/features/project_shell/widgets/`
+- [ ] Pruebas pass: `flutter prueba prueba/features/proyecto_shell/widgets/`
 
 ---
 
-### **PHASE 4: Chat Components (Center Panel - Part 1)**
+### **FASE 4: Chat Components (Center Panel - Part 1)**
 **Goal:** Implement basic chat UI widgets
 
-#### 4.1 Tests (RED Phase)
+#### 4.1 Pruebas (RED Fase)
 ```dart
 // test/features/chat/presentation/widgets/message_bubble_widget_test.dart
 
@@ -572,27 +572,27 @@ testWidgets('StreamingIndicatorWidget shows progress animation', (tester) async 
 });
 ```
 
-#### 4.2 Implementation (GREEN Phase)
+#### 4.2 Implementación (GREEN Fase)
 
-**Already implemented in previous session!** ✅
+**Already implemented in anterior session!** ✅
 
 These widgets are complete:
 - `MessageBubbleWidget` (99 lines)
 - `StreamingIndicatorWidget` (168 lines)
 - `ProposalCardWidget` (184 lines)
 
-**Verification:**
+**Verificación:**
 - [ ] MessageBubbleWidget renders user/assistant messages
 - [ ] StreamingIndicatorWidget animates progress
-- [ ] ProposalCardWidget shows Validate/Refine/Reject buttons
-- [ ] All widget tests passing (289/289 ✅)
+- [ ] ProposalCardWidget shows Validate/Refine/Reject botóns
+- [ ] All widget pruebas passing (289/289 ✅)
 
 ---
 
-### **PHASE 5: Sequential Chat Logic (Center Panel - Part 2)**
-**Goal:** Orchestrate document generation flow
+### **FASE 5: Sequential Chat Logic (Center Panel - Part 2)**
+**Goal:** Orchestrate documento generation flow
 
-#### 5.1 Tests (RED Phase)
+#### 5.1 Pruebas (RED Fase)
 ```dart
 // test/features/chat/presentation/screens/sequential_chat_screen_test.dart
 
@@ -631,25 +631,25 @@ testWidgets('ProposalCard appears when AI generates document', (tester) async {
 });
 ```
 
-#### 5.2 Implementation (GREEN Phase)
+#### 5.2 Implementación (GREEN Fase)
 
-**Already implemented in previous session!** ✅
+**Already implemented in anterior session!** ✅
 
-File: `lib/features/chat/presentation/screens/chat_screen.dart` (190 lines)
+Archivo: `lib/features/chat/presentation/screens/chat_screen.dart` (190 lines)
 
-**Verification:**
-- [ ] Chat screen integrated into ProjectWorkspaceScreen
+**Verificación:**
+- [ ] Chat screen integrated into ProyectoWorkspaceScreen
 - [ ] Messages displayed in ListView
 - [ ] Streaming indicator appears when isStreaming=true
 - [ ] ProposalCard appears when currentProposal is set
-- [ ] TextField and send button functional
+- [ ] TextField and send botón functional
 
 ---
 
-### **PHASE 6: Integration & Wiring**
+### **FASE 6: Integración & Wiring**
 **Goal:** Connect all panels to work together
 
-#### 6.1 Tests (RED Phase)
+#### 6.1 Pruebas (RED Fase)
 ```dart
 // test/features/integration/workspace_integration_test.dart
 
@@ -689,9 +689,9 @@ testWidgets('Selecting file in tree updates preview', (tester) async {
 });
 ```
 
-#### 6.2 Implementation (GREEN Phase)
+#### 6.2 Implementación (GREEN Fase)
 
-**File:** Update `lib/features/chat/presentation/notifiers/chat_notifier.dart`
+**Archivo:** Update `lib/features/chat/presentation/notifiers/chat_notifier.dart`
 
 Add validation logic:
 ```dart
@@ -733,29 +733,29 @@ Future<void> validateProposal() async {
 }
 ```
 
-#### 6.3 Verification Checklist
-- [ ] Validate button saves file to disk
-- [ ] File tree updates automatically
-- [ ] Preview shows newly created file
-- [ ] Chat advances to next document
+#### 6.3 Verificación Checklist
+- [ ] Validate botón saves archivo to disk
+- [ ] Archivo tree updates automatically
+- [ ] Preview shows newly creard archivo
+- [ ] Chat advances to siguiente documento
 - [ ] Error handling displays user-friendly messages
-- [ ] Tests pass: `flutter test test/features/integration/`
+- [ ] Pruebas pass: `flutter prueba prueba/features/integration/`
 
 ---
 
 ## 📊 Widget Mapping: Wireframes → Code
 
-| Wireframe HTML | Flutter Widget | Status | Phase |
+| Wireframe HTML | Flutter Widget | Estado | Fase |
 |----------------|----------------|--------|-------|
-| `dashboard.html` | `ProjectSelectionScreen` | ✅ HU-3.1 | - |
-| `create_project_modal.html` | `CreateProjectDialog` | ✅ HU-3.1 | - |
-| `workspace.html` (Shell) | `ProjectWorkspaceScreen` | 🔄 Phase 1 | PHASE 1 |
-| `workspace.html` (Sidebar) | `FileSystemTreeWidget` | 🔄 Phase 2 | PHASE 2 |
-| `workspace.html` (Preview) | `MarkdownPreviewWidget` | 🔄 Phase 3 | PHASE 3 |
+| `dashboard.html` | `ProyectoSelectionScreen` | ✅ HU-3.1 | - |
+| `crear_proyecto_modal.html` | `CrearProyectoDialog` | ✅ HU-3.1 | - |
+| `workspace.html` (Shell) | `ProyectoWorkspaceScreen` | 🔄 Fase 1 | PHASE 1 |
+| `workspace.html` (Sidebar) | `ArchivoSystemTreeWidget` | 🔄 Fase 2 | PHASE 2 |
+| `workspace.html` (Preview) | `MarkdownPreviewWidget` | 🔄 Fase 3 | PHASE 3 |
 | `chat_components.html` (MessageBubble) | `MessageBubbleWidget` | ✅ Done | PHASE 4 |
 | `chat_components.html` (Streaming) | `StreamingIndicatorWidget` | ✅ Done | PHASE 4 |
 | `chat_components.html` (ProposalCard) | `ProposalCardWidget` | ✅ Done | PHASE 4 |
-| `chat_components.html` (ErrorBanner) | `ErrorBannerWidget` | 🔄 Phase 5 | PHASE 5 |
+| `chat_components.html` (ErrorBanner) | `ErrorBannerWidget` | 🔄 Fase 5 | PHASE 5 |
 | Chat orchestration | `SequentialChatScreen` | ✅ Done | PHASE 5 |
 
 ---
@@ -766,31 +766,31 @@ Future<void> validateProposal() async {
 
 For each component:
 
-#### 🔴 RED Phase (Write Failing Tests)
-1. Write widget test for UI rendering
-2. Write unit test for business logic
-3. Write integration test for data flow
-4. **Run tests:** `flutter test` → Should FAIL
+#### 🔴 RED Fase (Write Failing Pruebas)
+1. Write widget prueba for UI rendering
+2. Write unit prueba for business logic
+3. Write integration prueba for data flow
+4. **Ejecutar pruebas:** `flutter prueba` → Should FAIL
 
-#### 🟢 GREEN Phase (Minimal Implementation)
-1. Implement widget/class to pass tests
+#### 🟢 GREEN Fase (Minimal Implementación)
+1. Implement widget/class to pass pruebas
 2. Focus on functionality, not optimization
-3. **Run tests:** `flutter test` → Should PASS
+3. **Ejecutar pruebas:** `flutter prueba` → Should PASS
 
-#### 🔵 REFACTOR Phase (Optimize)
+#### 🔵 REFACTOR Fase (Optimize)
 1. Extract duplicated code
 2. Improve naming and structure
-3. Add documentation
-4. **Run tests:** `flutter test` → Should still PASS
+3. Add documentoation
+4. **Ejecutar pruebas:** `flutter prueba` → Should still PASS
 
-### Test Coverage Requirements
+### Prueba Coverage Requirements
 
-- **Widget Tests:** 100% for all UI components
-- **Unit Tests:** >90% for business logic (Notifiers, Services)
-- **Integration Tests:** Critical user flows
+- **Widget Pruebas:** 100% for all UI components
+- **Unit Pruebas:** >90% for business logic (Notifiers, Services)
+- **Integración Pruebas:** Critical user flows
 - **Total Coverage:** >80% minimum
 
-### Running Tests
+### Ejecutarning Pruebas
 
 ```bash
 # All tests
@@ -806,51 +806,51 @@ genhtml coverage/lcov.info -o coverage/html
 
 ---
 
-## ✅ Verification Criteria (Per Phase)
+## ✅ Verificación Criteria (Per Fase)
 
-### Phase 1: Shell Container
+### Fase 1: Shell Container
 - [ ] Navigation to `/workspace/:id` works
 - [ ] 3 columns visible (250px | flex | 450px)
 - [ ] AppBar shows progress (Doc X/25)
 - [ ] Progress bar updates reactively
-- [ ] Tests: 10/10 passing
+- [ ] Pruebas: 10/10 passing
 
-### Phase 2: File System Tree
-- [ ] Displays project folder structure
-- [ ] Expand/collapse folders works
-- [ ] File selection highlights item
+### Fase 2: Archivo System Tree
+- [ ] Displays proyecto carpeta structure
+- [ ] Expand/collapse carpetas works
+- [ ] Archivo selection highlights item
 - [ ] Scrollable overflow
-- [ ] Icons differentiate folders/files
-- [ ] Tests: 15/15 passing
+- [ ] Icons differentiate carpetas/archivos
+- [ ] Pruebas: 15/15 passing
 
-### Phase 3: Markdown Preview
-- [ ] Shows empty state when no file selected
+### Fase 3: Markdown Preview
+- [ ] Shows empty state when no archivo selected
 - [ ] Renders markdown with GitHub Dark theme
 - [ ] Code blocks have syntax highlighting
 - [ ] Scrollable content
-- [ ] Tests: 8/8 passing
+- [ ] Pruebas: 8/8 passing
 
-### Phase 4: Chat Components
+### Fase 4: Chat Components
 - [ ] MessageBubbleWidget renders correctly
 - [ ] StreamingIndicatorWidget animates
-- [ ] ProposalCardWidget has 3 buttons
+- [ ] ProposalCardWidget has 3 botóns
 - [ ] Error banner displays errors
-- [ ] Tests: 20/20 passing (already done ✅)
+- [ ] Pruebas: 20/20 passing (already done ✅)
 
-### Phase 5: Sequential Chat Logic
+### Fase 5: Sequential Chat Logic
 - [ ] Initial prompt displays
 - [ ] Send message calls API
 - [ ] Streaming responses update UI
 - [ ] ProposalCard appears with AI response
-- [ ] Tests: 12/12 passing (already done ✅)
+- [ ] Pruebas: 12/12 passing (already done ✅)
 
-### Phase 6: Integration
-- [ ] Validate saves file to disk
-- [ ] File tree refreshes automatically
-- [ ] Preview loads newly saved file
-- [ ] Chat advances to next doc
+### Fase 6: Integración
+- [ ] Validate saves archivo to disk
+- [ ] Archivo tree refreshes automatically
+- [ ] Preview loads newly saved archivo
+- [ ] Chat advances to siguiente doc
 - [ ] Error handling works end-to-end
-- [ ] Tests: 25/25 passing
+- [ ] Pruebas: 25/25 passing
 
 ---
 
@@ -858,16 +858,16 @@ genhtml coverage/lcov.info -o coverage/html
 
 ### Overall Progress: 40% Complete
 
-| Phase | Component | Status | Tests | Lines |
+| Fase | Component | Estado | Pruebas | Lines |
 |-------|-----------|--------|-------|-------|
-| 1 | ProjectWorkspaceScreen | 🔄 TODO | 0/10 | 0/150 |
-| 2 | FileSystemTreeWidget | 🔄 TODO | 0/15 | 0/300 |
+| 1 | ProyectoWorkspaceScreen | 🔄 TODO | 0/10 | 0/150 |
+| 2 | ArchivoSystemTreeWidget | 🔄 TODO | 0/15 | 0/300 |
 | 3 | MarkdownPreviewWidget | 🔄 TODO | 0/8 | 0/200 |
 | 4 | Chat Widgets | ✅ DONE | 20/20 | 451/451 |
 | 5 | SequentialChatScreen | ✅ DONE | 12/12 | 190/190 |
-| 6 | Integration | 🔄 TODO | 0/25 | 0/200 |
+| 6 | Integración | 🔄 TODO | 0/25 | 0/200 |
 
-**Total Tests:** 32/90 passing (35.6%)
+**Total Pruebas:** 32/90 passing (35.6%)
 **Total Lines:** 641/1,491 (43.0%)
 
 ---
@@ -912,12 +912,12 @@ COMPLETE ✅
 
 The HU-3.3 is considered DONE when:
 
-1. ✅ All 6 phases completed
-2. ✅ All tests passing (90/90)
+1. ✅ All 6 fases completed
+2. ✅ All pruebas passing (90/90)
 3. ✅ Coverage >80%
 4. ✅ Flutter analyze: 0 errors
-5. ✅ Manual testing checklist completed
-6. ✅ Documentation updated
+5. ✅ Manual pruebaing checklist completed
+6. ✅ Documentoation updated
 7. ✅ Git history clean (professional commits)
 8. ✅ Demo video recorded
 9. ✅ PR approved and merged to develop
@@ -925,5 +925,5 @@ The HU-3.3 is considered DONE when:
 ---
 
 **Last Updated:** 06/02/2026
-**Created By:** ArchitectZero Agent
+**Creard By:** ArchitectZero Agent
 **Branch:** `feature/chat-sequential-docs`

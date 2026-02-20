@@ -18,10 +18,10 @@ import '../../infrastructure/services/project_progress_service.dart';
 // ║      PROJECTS NOTIFIER (STATE MANAGEMENT)      ║
 // ╚════════════════════════════════════════════════╝
 
-/// Notifier para gestionar la lista de proyectos
-/// - Carga proyectos desde SharedPreferences (persistencia)
-/// - Incluye siempre la guía mock de SoftArchitect
-/// - Permite agregar nuevos proyectos dinámicamente
+/// Notifier for managing the projects list
+/// - Loads projects from SharedPreferences (persistence)
+/// - Always includes the SoftArchitect mock guide
+/// - Allows dynamically adding new projects
 class ProjectsNotifier extends Notifier<List<Project>> {
   static const String _storageKey = 'user_projects_v2';
 
@@ -94,7 +94,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
       });
   }
 
-  /// Agrega un nuevo proyecto a la lista y lo persiste
+  /// Adds a new project to the list and persists it
   Future<void> addProject(String name, String path, String description) async {
     final newProject = Project(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -104,7 +104,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
       lastOpened: DateTime.now(),
     );
 
-    // Actualizar estado (UI optimista)
+    // Update state (optimistic UI)
     state = [newProject, ...state];
 
     // Persistir cambios
@@ -220,7 +220,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
     }
   }
 
-  /// Guarda los proyectos reales en SharedPreferences
+  /// Saves real projects to SharedPreferences
   Future<void> _saveToPrefs() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -243,7 +243,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
         .toList();
 
     await prefs.setStringList(_storageKey, encoded);
-    debugPrint('✅ Proyectos guardados: ${realProjects.length}');
+    debugPrint('✅ Projects saved: ${realProjects.length}');
   }
 
   /// Purges chat history for a deleted project.
@@ -264,7 +264,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
 // ║              PROVIDER DEFINITION                ║
 // ╚════════════════════════════════════════════════╝
 
-/// Provider principal para la lista de proyectos
+/// Main provider for the projects list
 /// Usage: ref.watch(projectsProvider)
 final projectsProvider = NotifierProvider<ProjectsNotifier, List<Project>>(
   ProjectsNotifier.new,
@@ -317,15 +317,15 @@ final projectProgressProvider =
 // ║      PROJECT STATUS PROVIDER (.json FILE)      ║
 // ╚════════════════════════════════════════════════╝
 
-/// Provider que lee el archivo .softarchitect/status.json
+/// Provider that reads the .softarchitect/status.json file
 ///
-/// Retorna ProjectProgress con los datos persistidos del proyecto:
+/// Returns ProjectProgress with the persisted project data:
 /// - documentosCreados
 /// - faseActual
 /// - porcentajeCompletado
 /// - lastUpdated
 ///
-/// Si el archivo no existe, retorna un estado inicial con 0%.
+/// If the file doesn't exist, returns an initial state with 0%.
 ///
 /// Usage:
 /// ```dart
@@ -340,7 +340,7 @@ final projectStatusProvider = FutureProvider.family<ProjectProgress, String>((
   ref,
   projectPath,
 ) async {
-  // Para proyectos mock (guía), retornar estado completado
+  // For mock projects (guide), return a completed state
   if (projectPath.startsWith('mock://')) {
     return ProjectProgress(
       documentosCreados: ProjectPhase.totalFileCount,
@@ -350,10 +350,10 @@ final projectStatusProvider = FutureProvider.family<ProjectProgress, String>((
     );
   }
 
-  // Intentar cargar el archivo status.json
+  // Try to load the status.json file
   final progress = await ProjectProgressService.loadProgress(projectPath);
 
-  // Si no existe el archivo, retornar estado inicial
+  // If the file doesn't exist, return initial state
   if (progress == null) {
     return ProjectProgress(
       documentosCreados: 0,

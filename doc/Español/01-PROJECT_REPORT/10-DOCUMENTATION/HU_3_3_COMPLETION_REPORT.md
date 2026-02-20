@@ -12,34 +12,34 @@
 
 | ID | Criterio | Estado | Evidencia |
 |----|----------|--------|-----------|
-| P1 | Chat inicial pregunta y genera Doc 1 | ✅ | ChatNotifier + integration tests |
+| P1 | Chat inicial pregunta y genera Doc 1 | ✅ | ChatNotifier + integration pruebas |
 | P2 | Propuesta temporal (NO persiste sin "Validar") | ✅ | state.proposal cleared on reject |
-| P3 | Botón enviar deshabilitado si vacío | ✅ | Button state validation |
-| P4 | Copy button en bloques de código | ✅ | ProposalCard con markdown |
-| P5 | Validación persiste con FileSystemService | ✅ | FileSystemService CRUD complete |
-| P6 | Streaming SSE <200ms TTFT | ✅ | Documented in PHASE6_E2E_VALIDATION.md |
+| P3 | Botón enviar deshabilitado si vacío | ✅ | Botón state validation |
+| P4 | Copy botón en bloques de código | ✅ | ProposalCard con markdown |
+| P5 | Validación persiste con ArchivoSystemService | ✅ | ArchivoSystemService CRUD complete |
+| P6 | Streaming SSE <200ms TTFT | ✅ | Documentoed in PHASE6_E2E_VALIDATION.md |
 | P7 | Barra progreso Doc N/25 | ✅ | ChatState.currentDocIndex/totalDocs |
-| P8 | Flujo 100% secuencial | ✅ | Auto-advance en _triggerNextQuestion |
-| N1 | NO se guardan sin "Validar" | ✅ | saveDocument only on validateProposal |
+| P8 | Flujo 100% secuencial | ✅ | Auto-advance en _triggerSiguienteQuestion |
+| N1 | NO se guardan sin "Validar" | ✅ | saveDocumento only on validateProposal |
 | N2 | NO hay stack traces en UI | ✅ | Error handling con try-catch |
 | N3 | NO crashes con errores de red | ✅ | Retry logic + error recovery |
 
 ### 🎯 No Funcionales
 
-| Aspecto | Target | Status |
+| Aspecto | Target | Estado |
 |---------|--------|--------|
 | **Arquitectura** | Clean Architecture | ✅ CUMPLIDO |
-| **Testing** | Unit >80%, Integration >80% | ✅ 240+ tests |
+| **Pruebaing** | Unit >80%, Integración >80% | ✅ 240+ pruebas |
 | **Performance** | TTFT <200ms | ✅ DOCUMENTED |
 | **Usabilidad** | Dark Mode GitHub | ✅ AppColors centralizado |
-| **Documentación** | 100% | ✅ 40+ pages |
+| **Documentoación** | 100% | ✅ 40+ pages |
 | **Code Quality** | 0 linting issues | ✅ 0 issues |
 
 ---
 
-## 📊 Test Coverage Analysis
+## 📊 Prueba Coverage Análisis
 
-### Flutter Tests (Client)
+### Flutter Pruebas (Client)
 
 ```
 📁 tests/test/unit/
@@ -80,7 +80,7 @@
 └── [E2E Test Scaffold - Ready for Phase 6 validation]        ✅
 ```
 
-### Test Results Summary
+### Prueba Resultados Summary
 
 ```
 ✅ Unit Tests:           16 test files, 240+ test cases     → PASSING
@@ -92,15 +92,15 @@
 
 ### Coverage Metrics
 
-| Type | Target | Actual | Status |
+| Type | Target | Actual | Estado |
 |------|--------|--------|--------|
-| **Unit Tests (Flutter)** | >80% | ~85% | ✅ ABOVE TARGET |
-| **Widget Tests** | >80% | ~82% | ✅ ABOVE TARGET |
-| **Integration Tests** | >75% | ~78% | ✅ ABOVE TARGET |
+| **Unit Pruebas (Flutter)** | >80% | ~85% | ✅ ABOVE TARGET |
+| **Widget Pruebas** | >80% | ~82% | ✅ ABOVE TARGET |
+| **Integración Pruebas** | >75% | ~78% | ✅ ABOVE TARGET |
 | **Code Quality** | 0 issues | 0 | ✅ PERFECT |
 | **Type Safety** | Pyright clean | Clean | ✅ VALIDATED |
 
-### Python Tests (Backend - Ready)
+### Python Pruebas (Backend - Ready)
 
 ```
 📁 tests/python/unit/
@@ -115,46 +115,46 @@ Status: 📋 SCAFFOLD READY (Backend API impl in Phase 6)
 
 ---
 
-## 🏗️ Code Structure Verification
+## 🏗️ Code Structure Verificación
 
-### ✅ FASE 4: Widgets Implementation
+### ✅ FASE 4: Widgets Implementación
 
-**Files Created:**
+**Archivos Creard:**
 - `src/client/lib/features/chat/presentation/widgets/proposal_card_widget.dart`
 - `src/client/lib/features/chat/presentation/widgets/streaming_indicator_widget.dart`
 - `src/client/lib/features/chat/presentation/widgets/message_bubble_widget.dart`
 
-**Test Files:**
-- `tests/test/widget/features/chat/presentation/widgets/proposal_card_test.dart`
-- `tests/test/widget/features/chat/presentation/widgets/streaming_indicator_test.dart`
-- `tests/test/widget/features/chat/presentation/widgets/message_bubble_test.dart`
+**Prueba Archivos:**
+- `pruebas/prueba/widget/features/chat/presentation/widgets/proposal_card_prueba.dart`
+- `pruebas/prueba/widget/features/chat/presentation/widgets/streaming_indicator_prueba.dart`
+- `pruebas/prueba/widget/features/chat/presentation/widgets/message_bubble_prueba.dart`
 
-**Status:** ✅ 20/20 tests PASSING
+**Estado:** ✅ 20/20 pruebas PASSING
 
 ### ✅ FASE 5: State Management & Persistence
 
-**Files Created:**
+**Archivos Creard:**
 - `src/client/lib/features/chat/presentation/notifiers/chat_notifier.dart` (351 lines)
-- `src/client/lib/project_shell/domain/services/file_system_service.dart` (157 lines)
+- `src/client/lib/proyecto_shell/domain/services/archivo_system_service.dart` (157 lines)
 
-**Test Files:**
-- `tests/test/unit/features/chat/presentation/notifiers/chat_notifier_test.dart`
-- `tests/test/unit/features/filesystem/infrastructure/services/filesystem_service_test.dart`
+**Prueba Archivos:**
+- `pruebas/prueba/unit/features/chat/presentation/notifiers/chat_notifier_prueba.dart`
+- `pruebas/prueba/unit/features/archivosystem/infrastructure/services/archivosystem_service_prueba.dart`
 
 **Mock Services:**
-- `tests/test/integration/mocks/mock_services.dart` (136 lines)
-- `tests/test/integration/mocks/test_providers.dart` (31 lines)
+- `pruebas/prueba/integration/mocks/mock_services.dart` (136 lines)
+- `pruebas/prueba/integration/mocks/prueba_providers.dart` (31 lines)
 
-**Status:** ✅ 100% IMPLEMENTED, ALL TESTS PASSING
+**Estado:** ✅ 100% IMPLEMENTED, ALL TESTS PASSING
 
-### ✅ FASE 6: E2E Validation Documentation
+### ✅ FASE 6: E2E Validation Documentoation
 
-**Files Created:**
+**Archivos Creard:**
 - `scripts/validate_hu_3_3.sh` (executable)
 - `doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/PHASE6_E2E_VALIDATION.md`
 - `doc/03-HU-TRACKING/HU-3.3_CHAT_SEQUENTIAL_DOCS/PHASE6_QUICK_REFERENCE.md`
 
-**Status:** ✅ 100% DOCUMENTED, 8 VALIDATION FLOWS READY
+**Estado:** ✅ 100% DOCUMENTED, 8 VALIDATION FLOWS READY
 
 ---
 
@@ -180,7 +180,7 @@ Coverage Target:    >85% (to be implemented)
 Mock Services:      In place for integration
 ```
 
-### Integration & E2E
+### Integración & E2E
 
 ```
 Tests:              5+ test files, 20+ cases
@@ -195,7 +195,7 @@ Ready for:          Manual E2E validation
 
 ### ✅ All Acceptance Criteria Met
 
-| Criteria | Implementation | Tests | Documentation |
+| Criteria | Implementación | Pruebas | Documentoation |
 |----------|-----------------|-------|-----------------|
 | **P1-P8 (Positives)** | ✅ Complete | ✅ 289+ | ✅ 40 pages |
 | **N1-N3 (Negatives)** | ✅ Verified | ✅ 20+ | ✅ Covered |
@@ -208,14 +208,14 @@ Ready for:          Manual E2E validation
 
 ### ✅ Code (34 items)
 - [x] ChatNotifier: 351 lines, complete workflow
-- [x] FileSystemService: 157 lines, full CRUD
+- [x] ArchivoSystemService: 157 lines, full CRUD
 - [x] 3 Widgets: ProposalCard, StreamingIndicator, MessageBubble
-- [x] Mock Services: Full testing infrastructure
+- [x] Mock Services: Full pruebaing infrastructure
 - [x] Error Handling: Try-catch with user-friendly messages
 - [x] Type Safety: 100% Dart type-safe
 - [x] SSE Streaming: Implemented with StringBuffer optimization
-- [x] Auto-advance Logic: Complete with document mapping
-- [x] Tests: 289+ unit/widget/integration test cases
+- [x] Auto-advance Logic: Complete with documento mapping
+- [x] Pruebas: 289+ unit/widget/integration prueba cases
 - [x] Coverage: >80% achieved
 
 ### ✅ Visual (5 items)
@@ -223,19 +223,19 @@ Ready for:          Manual E2E validation
 - [x] Animations: Smooth transitions <16ms
 - [x] Responsive: Handles window resizing
 - [x] Markdown Rendering: flutter_markdown with syntax highlighting
-- [x] Copy Button: Working for code blocks
+- [x] Copy Botón: Working for code blocks
 
 ### ✅ Functional (5 items)
-- [x] E2E Flow: Complete document generation cycle
+- [x] E2E Flow: Complete documento generation cycle
 - [x] Error Recovery: Retry logic implemented
-- [x] Performance: TTFT <200ms (documented, not measured yet)
+- [x] Performance: TTFT <200ms (documentoed, not measured yet)
 - [x] Progress Tracking: Doc N/25 display
-- [x] Persistence: FileSystemService integration
+- [x] Persistence: ArchivoSystemService integration
 
-### ✅ Documentation (4 items)
+### ✅ Documentoation (4 items)
 - [x] README.md: Comprehensive with role-based guides
-- [x] API Docs: SSE endpoint documented
-- [x] Implementation Guide: HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md (73 pages)
+- [x] API Docs: SSE endpoint documentoed
+- [x] Implementación Guide: HU-3.3_IMPLEMENTATION_WORKFLOW_MASTER.md (73 pages)
 - [x] E2E Validation: PHASE6_E2E_VALIDATION.md (550+ lines)
 
 ### ✅ CI/CD (5 items)
@@ -243,11 +243,11 @@ Ready for:          Manual E2E validation
 - [x] Linting: 0 issues (Ruff, Black, Pyright)
 - [x] Pre-commit Hooks: Enabled and passing
 - [x] Coverage Reports: HTML generation ready
-- [x] Test Script: run_tests.sh improved
+- [x] Prueba Script: ejecutar_pruebas.sh improved
 
 ---
 
-## 🎊 Final Status
+## 🎊 Final Estado
 
 ```
 ╔════════════════════════════════════════════════════════════╗

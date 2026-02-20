@@ -1,12 +1,12 @@
 # Especificación de Métricas de Performance - HU-3.5
 
-> **Fecha:** 10/02/2026
-> **Estado:** ✅ Validado (Post-implementación)
+> **Date:** 10/02/2026
+> **Status:** ✅ Validado (Post-implementation)
 > **HU:** HU-3.5 - Streaming Optimization
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Latency Metrics](#1-latency-metrics)
 2. [Throughput Metrics](#2-throughput-metrics)
@@ -116,13 +116,13 @@
 ### 5.2 Ping/Pong Interval
 - **Target:** 30 segundos (fijo)
 - **Definición:** Intervalo entre heartbeats para keep-alive
-- **Medición:** Configuración de StreamingHandler
+- **Medición:** Configuration de StreamingHandler
 - **Prioridad:** 🟢 BAJA
 
 ### 5.3 Max Idle Time
 - **Target:** 5 minutos antes de timeout
 - **Definición:** Tiempo máximo de inactividad antes de cerrar conexión
-- **Medición:** Configuración de WebSocket timeout
+- **Medición:** Configuration de WebSocket timeout
 - **Prioridad:** 🟢 BAJA
 
 ---
@@ -188,7 +188,7 @@ flutter test tests/test/integration/features/chat/streaming_flow_test.dart
 
 ## 📊 Baseline Metrics (Post-Optimization)
 
-> **Nota:** Métricas validadas tras implementación HU-3.5.
+> **Nota:** Métricas validadas tras implementation HU-3.5.
 
 | Métrica | Baseline | Target | Gap |
 |---------|----------|--------|-----|
@@ -200,4 +200,4 @@ flutter test tests/test/integration/features/chat/streaming_flow_test.dart
 ---
 
 **Última Actualización:** 10/02/2026
-**Próxima Revisión:** Post-Fase 0 (Baseline Capture)
+**Próxima Revisión:** Post-Phase 0 (Baseline Capture)

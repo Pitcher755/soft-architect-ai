@@ -1,4 +1,4 @@
-# 📦 Artefactos HU-3.1: Project Shell
+# 📦 Artefactos HU-3.1: Proyecto Shell
 
 > **Archivos a generar durante el desarrollo**
 > **Última Actualización:** 03/02/2026
@@ -63,7 +63,7 @@
   └─ Size Est: ~150 líneas
 ```
 
-### Tests
+### Pruebas
 
 ```
 ✓ test/presentation/screens/project_shell_screen_test.dart
@@ -82,7 +82,7 @@
   └─ Test Cases: 6+
 ```
 
-### Documentation
+### Documentoation
 
 ```
 ✓ doc/HU-3.1/IMPLEMENTATION_NOTES.md
@@ -100,27 +100,27 @@
 
 ## 🎨 Componentes UI a Crear
 
-### ProjectShellScreen (Main Container)
+### ProyectoShellScreen (Main Container)
 - **Estructura:** Column con 3 paneles
 - **Paneles:**
-  - Top: MenuBar (File, Edit, View, Help)
+  - Top: MenuBar (Archivo, Edit, View, Help)
   - Left: Sidebar (DirectoryTreeView + ChatWidget)
-  - Right: MainContent (DocumentPreviewPanel)
+  - Right: MainContent (DocumentoPreviewPanel)
 
 ### DirectoryTreeView
 - **Features:** Expandible, seleccionable, drag-drop ready
 - **Estructura:** Árbol de 5 niveles (context/10-20-30-35-40/)
 - **Acciones:** Expand, Collapse, Select, ContextMenu
 
-### DocumentPreviewPanel
-- **Features:** Markdown rendering, syntax highlighting, copy button
+### DocumentoPreviewPanel
+- **Features:** Markdown rendering, syntax highlighting, copy botón
 - **Librerías:** `flutter_markdown`, `flutter_highlighter`
 - **Responsive:** Mantiene proporción con window resize
 
-### ProjectCreationDialog
+### ProyectoCreationDialog
 - **Validación:** Nombres únicos, caracteres válidos
 - **Campos:** Nombre proyecto, descripción, ubicación (si aplica)
-- **Acciones:** Create, Cancel
+- **Acciones:** Crear, Cancel
 
 ---
 
@@ -147,20 +147,20 @@ clean_architecture/
 
 ---
 
-## 🧪 Estrategia de Testing
+## 🧪 Estrategia de Pruebaing
 
-### Unit Tests (Domain + Data)
+### Unit Pruebas (Domain + Data)
 - [ ] Models serialization/deserialization
 - [ ] Repository CRUD operations
 - [ ] Provider state management
 
-### Widget Tests (Presentation)
+### Widget Pruebas (Presentación)
 - [ ] DirectoryTreeView rendering
-- [ ] DocumentPreviewPanel updates
-- [ ] ProjectCreationDialog validation
+- [ ] DocumentoPreviewPanel updates
+- [ ] ProyectoCreationDialog validation
 
-### Integration Tests (E2E)
-- [ ] Create project → navigate → preview doc
+### Integración Pruebas (E2E)
+- [ ] Crear proyecto → navigate → preview doc
 - [ ] Expand/collapse tree
 - [ ] Update preview on selection
 
@@ -199,20 +199,20 @@ clean_architecture/
 
 ### Code
 - [ ] Código sin linter warnings
-- [ ] Documentación completada
-- [ ] Tests verdes
+- [ ] Documentoación completada
+- [ ] Pruebas verdes
 - [ ] Code review aprobada
 
-### Documentation
+### Documentoation
 - [ ] README.md actualizado
 - [ ] Javadoc/DartDoc completado
-- [ ] API contracts documentados
+- [ ] API contracts documentoados
 - [ ] Guía de uso
 
-### Testing
-- [ ] Unit tests >85% cobertura
-- [ ] Widget tests ejecutados
-- [ ] Integration tests pasados
+### Pruebaing
+- [ ] Unit pruebas >85% cobertura
+- [ ] Widget pruebas ejecutados
+- [ ] Integración pruebas pasados
 - [ ] Performance benchmarked
 
 ### Integración
@@ -231,8 +231,8 @@ clean_architecture/
 
 **Criterios de Aceptación:**
 - ✅ 100% de funcionalidades implementadas
-- ✅ Tests pasan
-- ✅ Documentación completa
+- ✅ Pruebas pasan
+- ✅ Documentoación completa
 - ✅ Performance <100ms
 - ✅ 2+ approvals en PR
 

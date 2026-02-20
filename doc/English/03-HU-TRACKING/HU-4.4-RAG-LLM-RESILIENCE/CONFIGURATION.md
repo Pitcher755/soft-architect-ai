@@ -18,15 +18,15 @@
 
 <div id="español">
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Introducción](#-introducción)
 2. [Variables de Entorno](#-variables-de-entorno)
-3. [Métodos de Configuración](#-métodos-de-configuración)
+3. [Métodos de Configuration](#-métodos-de-configuration)
 4. [Ejemplos por Caso de Uso](#-ejemplos-por-caso-de-uso)
 5. [Performance Tuning](#-performance-tuning)
 6. [Troubleshooting](#-troubleshooting)
-7. [Validación de Configuración](#-validación-de-configuración)
+7. [Validación de Configuration](#-validación-de-configuration)
 
 ---
 
@@ -36,9 +36,9 @@ Desde **Phase 7** (commit `3786589`), los límites de historial de chat son **co
 
 ### ¿Por qué es importante?
 
-- 📈 **Escalabilidad:** Proyectos grandes (25+ documentos) necesitan más contexto.
+- 📈 **Escalabilidad:** Projects grandes (25+ documents) necesitan más contexto.
 - ⚙️ **Flexibilidad:** Ajustar límites según recursos (RAM, latencia).
-- 🚀 **Sin downtime:** Cambiar configuración con restart rápido (no redeploy).
+- 🚀 **Sin downtime:** Cambiar configuration con restart rápido (no redeploy).
 - 🧠 **Mejor memoria:** Aprovechar capacidad del modelo (32K tokens).
 
 ### Antes vs Después
@@ -56,7 +56,7 @@ Desde **Phase 7** (commit `3786589`), los límites de historial de chat son **co
 
 ### 1. CHAT_MAX_HISTORY_MESSAGES
 
-**Descripción:** Número máximo de mensajes en el historial conversacional.
+**Description:** Número máximo de mensajes en el historial conversacional.
 
 **Tipo:** `int`
 
@@ -72,9 +72,9 @@ CHAT_MAX_HISTORY_MESSAGES=100
 ```
 
 **Consideraciones:**
-- **Valor bajo (30-50):** Proyectos pequeños, prioridad en latencia baja.
-- **Valor medio (100-120):** Proyectos medianos, balance contexto/latencia.
-- **Valor alto (150-200):** Proyectos grandes, prioridad en contexto completo.
+- **Valor bajo (30-50):** Projects pequeños, prioridad en latencia baja.
+- **Valor medio (100-120):** Projects medianos, balance contexto/latencia.
+- **Valor alto (150-200):** Projects grandes, prioridad en contexto completo.
 
 **Trade-offs:**
 | Valor | Ventajas | Desventajas |
@@ -87,7 +87,7 @@ CHAT_MAX_HISTORY_MESSAGES=100
 
 ### 2. CHAT_MAX_MESSAGE_LENGTH
 
-**Descripción:** Número máximo de caracteres por mensaje individual (tanto mensaje actual como en historial).
+**Description:** Número máximo de caracteres por mensaje individual (tanto mensaje actual como en historial).
 
 **Tipo:** `int`
 
@@ -104,8 +104,8 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **Consideraciones:**
 - **Valor bajo (8000-12000):** VPS con poca RAM (<4GB).
-- **Valor medio (20000):** Balance ideal, soporta documentos extensos.
-- **Valor alto (25000-30000):** Proyectos de documentación, código completo.
+- **Valor medio (20000):** Balance ideal, soporta documents extensos.
+- **Valor alto (25000-30000):** Projects de documentación, código completo.
 
 **Límite del Modelo:**
 El modelo soporta **~32K tokens** (~32000 caracteres). Configurar >32000 no tiene beneficio.
@@ -113,20 +113,20 @@ El modelo soporta **~32K tokens** (~32000 caracteres). Configurar >32000 no tien
 **Trade-offs:**
 | Valor | Ventajas | Desventajas |
 |-------|----------|-------------|
-| 8000 | 🪶 Bajo uso de RAM | 📝 Documentos cortos solo |
+| 8000 | 🪶 Bajo uso de RAM | 📝 Documents cortos solo |
 | 20000 | ⚖️ Balance ideal | ⚖️ RAM media (~2GB) |
 | 30000 | 📚 Documentación completa | 🐏 Alto uso de RAM (>4GB) |
 
 ---
 
-## 🛠️ Métodos de Configuración
+## 🛠️ Métodos de Configuration
 
 ### Method 1: .env File (Development - Recomendado)
 
-**Archivo:** `src/server/.env`
+**File:** `src/server/.env`
 
 **Pasos:**
-1. Crear archivo `.env` si no existe:
+1. Create file `.env` si no existe:
    ```bash
    cd src/server
    cp .env.example .env
@@ -160,7 +160,7 @@ El modelo soporta **~32K tokens** (~32000 caracteres). Configurar >32000 no tien
 
 ### Method 2: Docker Compose (Staging/Production - Recomendado)
 
-**Archivo:** `infrastructure/docker-compose.yml`
+**File:** `infrastructure/docker-compose.yml`
 
 **Opción A: Valores Directos**
 
@@ -196,7 +196,7 @@ docker-compose down && docker-compose up -d
 ```
 
 **Pros:**
-- ✅ Configuración centralizada
+- ✅ Configuration centralizada
 - ✅ Defaults con sintaxis `${VAR:-default}`
 - ✅ Funcionan en staging/production
 
@@ -221,7 +221,7 @@ uvicorn app.main:app --reload
 
 **Pros:**
 - ✅ Rápido para testing
-- ✅ No modifica archivos
+- ✅ No modifica files
 
 **Cons:**
 - ❌ No persiste (solo sesión actual)
@@ -231,7 +231,7 @@ uvicorn app.main:app --reload
 
 ### Method 4: Systemd Service (Production Linux)
 
-**Archivo:** `/etc/systemd/system/softarchitect-backend.service`
+**File:** `/etc/systemd/system/softarchitect-backend.service`
 
 ```ini
 [Unit]
@@ -258,14 +258,14 @@ sudo systemctl restart softarchitect-backend
 ```
 
 **Pros:**
-- ✅ Configuración persistente en servidor
+- ✅ Configuration persistente en servidor
 - ✅ Arranca en boot automáticamente
 
 ---
 
 ### Method 5: Kubernetes ConfigMap (Cloud Native)
 
-**Archivo:** `k8s/backend-config.yaml`
+**File:** `k8s/backend-config.yaml`
 
 ```yaml
 apiVersion: v1
@@ -310,14 +310,14 @@ kubectl rollout restart deployment/backend
 
 ## 💼 Ejemplos por Caso de Uso
 
-### Caso 1: Proyecto Personal / Prototipo
+### Caso 1: Project Personal / Prototipo
 
 **Características:**
-- 1-5 documentos en knowledge base
+- 1-5 documents en knowledge base
 - Usuario solo (conversaciones cortas)
 - VPS económico (2GB RAM)
 
-**Configuración Recomendada:**
+**Configuration Recomendada:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=30
 CHAT_MAX_MESSAGE_LENGTH=10000
@@ -330,15 +330,15 @@ CHAT_MAX_MESSAGE_LENGTH=10000
 
 ---
 
-### Caso 2: Proyecto Mediano / Startup
+### Caso 2: Project Mediano / Startup
 
 **Características:**
-- 10-25 documentos en knowledge base
+- 10-25 documents en knowledge base
 - 2-5 usuarios simultáneos
 - Conversaciones medianas (5-10 preguntas seguidas)
 - Servidor estándar (4GB RAM)
 
-**Configuración Recomendada:**
+**Configuration Recomendada:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=100
 CHAT_MAX_MESSAGE_LENGTH=20000
@@ -346,20 +346,20 @@ CHAT_MAX_MESSAGE_LENGTH=20000
 
 **Justificación:**
 - 100 mensajes = 50 pares (conversación extensa)
-- 20K chars = Soporta documentos técnicos completos
+- 20K chars = Soporta documents técnicos completos
 - Balance latencia/contexto (1-2s response time)
 
 ---
 
-### Caso 3: Proyecto Grande / Enterprise
+### Caso 3: Project Grande / Enterprise
 
 **Características:**
-- 50+ documentos en knowledge base
+- 50+ documents en knowledge base
 - 10+ usuarios simultáneos
 - Conversaciones muy largas (20+ preguntas)
 - Servidor dedicado (16GB+ RAM)
 
-**Configuración Recomendada:**
+**Configuration Recomendada:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=200
 CHAT_MAX_MESSAGE_LENGTH=30000
@@ -379,7 +379,7 @@ CHAT_MAX_MESSAGE_LENGTH=30000
 - Preguntas muy específicas con mucho contexto
 - Prioridad en precisión sobre latencia
 
-**Configuración Recomendada:**
+**Configuration Recomendada:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=150
 CHAT_MAX_MESSAGE_LENGTH=28000
@@ -399,7 +399,7 @@ CHAT_MAX_MESSAGE_LENGTH=28000
 - Prioridad en respuesta rápida (<1s)
 - Conversaciones cortas y directas
 
-**Configuración Recomendada:**
+**Configuration Recomendada:**
 ```bash
 CHAT_MAX_HISTORY_MESSAGES=20
 CHAT_MAX_MESSAGE_LENGTH=8000
@@ -414,7 +414,7 @@ CHAT_MAX_MESSAGE_LENGTH=8000
 
 ## 📊 Performance Tuning
 
-### Relación RAM vs Configuración
+### Relación RAM vs Configuration
 
 **Fórmula Estimada:**
 ```
@@ -436,7 +436,7 @@ RAM_por_request ≈ (MESSAGES × AVG_CHARS × 2 bytes) + overhead
 
 ---
 
-### Latencia vs Configuración
+### Latencia vs Configuration
 
 **Factores que Afectan Latencia:**
 1. **Contexto más grande → Mayor latencia LLM**
@@ -578,7 +578,7 @@ docker-compose logs backend | grep "CHAT_MAX"
 ValidationError: Message 0 content exceeds 20000 characters (got 25000)
 ```
 
-**Causa:** Tests usan mensajes muy largos sin ajustar configuración.
+**Causa:** Tests usan mensajes muy largos sin ajustar configuration.
 
 **Solución:**
 ```python
@@ -591,7 +591,7 @@ def test_accepts_long_message():
 
 ---
 
-## ✅ Validación de Configuración
+## ✅ Validación de Configuration
 
 ### Paso 1: Verificar Backend Carga Variables
 
@@ -700,9 +700,9 @@ CHAT_MAX_HISTORY_MESSAGES=200 CHAT_MAX_MESSAGE_LENGTH=30000 \
 
 ## 📚 Referencias
 
-### Archivos Relacionados
+### Files Relacionados
 
-**Configuración:**
+**Configuration:**
 - `src/server/app/core/config.py` - Settings class (defaults)
 - `src/server/.env.example` - Template con documentación
 - `infrastructure/docker-compose.yml` - Mapeo de env vars
@@ -717,8 +717,8 @@ CHAT_MAX_HISTORY_MESSAGES=200 CHAT_MAX_MESSAGE_LENGTH=30000 \
 ### Documentación Relacionada
 
 - [RECENT_CHANGES.md](./RECENT_CHANGES.md) - Resumen de Phase 6 y 7
-- [PROGRESS.md](./PROGRESS.md) - Tracking detallado de implementación
-- [ARTIFACTS.md](./ARTIFACTS.md) - Lista de archivos modificados
+- [PROGRESS.md](./PROGRESS.md) - Tracking detallado de implementation
+- [ARTIFACTS.md](./ARTIFACTS.md) - Lista de files modificados
 - [README.md](./README.md) - HU-4.4 overview completo
 
 ### Commits

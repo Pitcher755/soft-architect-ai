@@ -1,6 +1,6 @@
-# 📦 HU-4.4: RAG/LLM Resilience Extensions - ARTIFACTS MANIFEST
+# 📦 HU-4.4: RAG/LLM Resiliencia Extensions - ARTIFACTS MANIFEST
 
-> **User Story:** HU-4.4 - RAG/LLM Resilience Extensions
+> **User Story:** HU-4.4 - RAG/LLM Resiliencia Extensions
 > **Branch:** `feature/rag-llm-resilience`
 > **Purpose:** Lista completa de archivos a modificar/crear para completar los 4 GAPS críticos
 
@@ -8,22 +8,22 @@
 
 ## 📋 Tabla de Contenidos
 
-1. [Files to Modify](#-files-to-modify)
-2. [Files to Create](#-files-to-create)
+1. [Archivos to Modify](#-archivos-to-modify)
+2. [Archivos to Crear](#-archivos-to-crear)
 3. [LOC Estimates](#-loc-estimates)
-4. [Test Files Distribution](#-test-files-distribution)
+4. [Prueba Archivos Distribution](#-prueba-archivos-distribution)
 5. [Coverage Targets](#-coverage-targets)
-6. [Phase 6: Backend Chat History Support](#-phase-6-backend-chat-history-support-additional-artifacts)
-7. [Phase 7: Configurable Chat Limits](#-phase-7-configurable-chat-limits-additional-artifacts)
+6. [Fase 6: Backend Chat History Support](#-fase-6-backend-chat-history-support-additional-artifacts)
+7. [Fase 7: Configurable Chat Limits](#-fase-7-configurable-chat-limits-additional-artifacts)
 8. [Directory Structure](#-directory-structure-after-hu-44)
 
 ---
 
-## 📝 Files to Modify
+## 📝 Archivos to Modify
 
 ### Backend (3 archivos)
 
-| # | File Path | Purpose | LOC Changed | Tests | Priority |
+| # | Archivo Path | Purpose | LOC Changed | Pruebas | Priority |
 |---|-----------|---------|-------------|-------|----------|
 | 1 | `src/server/app/services/rag/orchestrator.py` | Graceful degradation + timeout | ~40 | 7 | 🔴 Critical |
 | 2 | `src/server/app/infrastructure/llm/ollama_client.py` | Apply `@with_retry` decorator | ~10 | 8 | 🟡 High |
@@ -35,7 +35,7 @@
 
 ### Frontend (1 archivo)
 
-| # | File Path | Purpose | LOC Changed | Tests | Priority |
+| # | Archivo Path | Purpose | LOC Changed | Pruebas | Priority |
 |---|-----------|---------|-------------|-------|----------|
 | 4 | `src/client/lib/core/error_handling/error_mapper.dart` | Add error messages for new codes | ~10 | 1 | 🟢 Low |
 
@@ -43,17 +43,17 @@
 
 ---
 
-## 🆕 Files to Create
+## 🆕 Archivos to Crear
 
-### Test Files (3 archivos nuevos)
+### Prueba Archivos (3 archivos nuevos)
 
-| # | File Path | Purpose | LOC | Tests | Priority |
+| # | Archivo Path | Purpose | LOC | Pruebas | Priority |
 |---|-----------|---------|-----|-------|----------|
-| 1 | `tests/server/unit/services/rag/test_orchestrator_degradation.py` | Test graceful degradation | ~250 | 7 | 🔴 Critical |
-| 2 | `tests/server/unit/infrastructure/llm/test_ollama_retry.py` | Test retry logic | ~280 | 8 | 🟡 High |
-| 3 | *(Updated existing)* `tests/client/unit/core/error_handling/error_mapper_test.dart` | Test new error codes | ~50 | 1 | 🟢 Low |
+| 1 | `pruebas/server/unit/services/rag/prueba_orchestrator_degradation.py` | Prueba graceful degradation | ~250 | 7 | 🔴 Critical |
+| 2 | `pruebas/server/unit/infrastructure/llm/prueba_ollama_retry.py` | Prueba retry logic | ~280 | 8 | 🟡 High |
+| 3 | *(Updated existing)* `pruebas/client/unit/core/error_handling/error_mapper_prueba.dart` | Prueba new error codes | ~50 | 1 | 🟢 Low |
 
-**Total Test LOC:** ~580 lines new
+**Total Prueba LOC:** ~580 lines new
 
 ---
 
@@ -61,28 +61,28 @@
 
 ### By Language
 
-| Language | Files Modified | Files Created | Total LOC | Tests LOC | Production LOC |
+| Language | Archivos Modified | Archivos Creard | Total LOC | Pruebas LOC | Production LOC |
 |----------|----------------|---------------|-----------|-----------|----------------|
-| **Python (Phases 0-5)** | 3 | 2 | ~620 | ~530 | ~90 |
-| **Python (Phase 6)** | 3 | 3 | ~767 | ~680 | ~87 |
-| **Python (Phase 7)** | 3 | 0 | ~67 | ~15 | ~52 |
-| **Dart (Phases 0-5)** | 1 | 0 | ~60 | ~50 | ~10 |
-| **Dart (Phase 7)** | 1 | 0 | ~40 | 0 | ~40 |
-| **Config (Phase 7)** | 3 | 0 | ~24 | 0 | ~24 |
+| **Python (Fases 0-5)** | 3 | 2 | ~620 | ~530 | ~90 |
+| **Python (Fase 6)** | 3 | 3 | ~767 | ~680 | ~87 |
+| **Python (Fase 7)** | 3 | 0 | ~67 | ~15 | ~52 |
+| **Dart (Fases 0-5)** | 1 | 0 | ~60 | ~50 | ~10 |
+| **Dart (Fase 7)** | 1 | 0 | ~40 | 0 | ~40 |
+| **Config (Fase 7)** | 3 | 0 | ~24 | 0 | ~24 |
 | **Total** | **14** | **5** | **~1578** | **~1275** | **~303** |
 
-### By Phase
+### By Fase
 
-| Phase | Focus | Files Modified | Files Created | LOC Production | LOC Tests | Total LOC |
+| Fase | Focus | Archivos Modified | Archivos Creard | LOC Production | LOC Pruebas | Total LOC |
 |-------|-------|----------------|---------------|----------------|-----------|-----------|
-| **0-5** | Resilience (4 GAPS) | 4 | 2 | ~100 | ~580 | ~680 |
+| **0-5** | Resiliencia (4 GAPS) | 4 | 2 | ~100 | ~580 | ~680 |
 | **6** | Chat History Support | 3 | 3 | ~87 | ~680 | ~767 |
 | **7** | Configurable Limits | 7 | 0 | ~116 | ~15 | ~131 |
-| **Total** | **All Phases** | **14** | **5** | **~303** | **~1275** | **~1578** |
+| **Total** | **All Fases** | **14** | **5** | **~303** | **~1275** | **~1578** |
 
 ### By Priority
 
-| Priority | Files | LOC Production | LOC Tests | Total LOC |
+| Priority | Archivos | LOC Production | LOC Pruebas | Total LOC |
 |----------|-------|----------------|-----------|-----------|
 | 🔴 **Critical** | 1 | ~40 | ~250 | ~290 |
 | 🟡 **High/Medium** | 9 | ~223 | ~1015 | ~1238 |
@@ -91,11 +91,11 @@
 
 ---
 
-## 🧪 Test Files Distribution
+## 🧪 Prueba Archivos Distribution
 
-### Backend Tests (15 tests total)
+### Backend Pruebas (15 pruebas total)
 
-#### File 1: `test_orchestrator_degradation.py` (7 tests)
+#### Archivo 1: `prueba_orchestrator_degradation.py` (7 pruebas)
 
 ```python
 # tests/server/unit/services/rag/test_orchestrator_degradation.py
@@ -145,7 +145,7 @@ Total LOC: ~250
 
 ---
 
-#### File 2: `test_ollama_retry.py` (8 tests)
+#### Archivo 2: `prueba_ollama_retry.py` (8 pruebas)
 
 ```python
 # tests/server/unit/infrastructure/llm/test_ollama_retry.py
@@ -200,9 +200,9 @@ Total LOC: ~280
 
 ---
 
-### Frontend Tests (1 test)
+### Frontend Pruebas (1 prueba)
 
-#### File 3: `error_mapper_test.dart` (1 test added)
+#### Archivo 3: `error_mapper_prueba.dart` (1 prueba added)
 
 ```dart
 // tests/client/unit/core/error_handling/error_mapper_test.dart
@@ -241,7 +241,7 @@ Total LOC: ~50 (4 sub-tests)
 
 ### Backend
 
-| Module | File | Current | Target | Tests | Priority |
+| Module | Archivo | Current | Target | Pruebas | Priority |
 |--------|------|---------|--------|-------|----------|
 | RAG Orchestrator | `orchestrator.py` | 85% | ≥90% | 7 | 🔴 Critical |
 | LLM Client | `ollama_client.py` | 88% | ≥95% | 8 | 🟡 High |
@@ -253,7 +253,7 @@ Total LOC: ~50 (4 sub-tests)
 
 ### Frontend
 
-| Module | File | Current | Target | Tests | Priority |
+| Module | Archivo | Current | Target | Pruebas | Priority |
 |--------|------|---------|--------|-------|----------|
 | Error Mapper | `error_mapper.dart` | 92% | ≥85% | 1 | 🟢 Low |
 
@@ -261,33 +261,33 @@ Total LOC: ~50 (4 sub-tests)
 
 ---
 
-## 🧠 Phase 6: Backend Chat History Support (ADDITIONAL ARTIFACTS)
+## 🧠 Fase 6: Backend Chat History Support (ADDITIONAL ARTIFACTS)
 
 > **Commit:** `01eec76`
 > **Purpose:** Add conversational memory support to backend
-> **Status:** ✅ Complete
+> **Estado:** ✅ Complete
 
-### Files Modified (Phase 6)
+### Archivos Modified (Fase 6)
 
-| # | File Path | Purpose | LOC Changed | Tests | Priority |
+| # | Archivo Path | Purpose | LOC Changed | Pruebas | Priority |
 |---|-----------|---------|-------------|-------|----------|
 | 1 | `src/server/app/domain/schemas/chat.py` | Add `history` field + validation | +70 | 9 | 🟡 Medium |
 | 2 | `src/server/app/api/dependencies.py` | Template builder history formatting | +15 | 7 | 🟡 Medium |
 | 3 | `src/server/app/services/rag/orchestrator.py` | Pass history to template builder | +2 | 5 | 🟡 Medium |
 
-**Total Backend LOC (Phase 6):** +87 lines
+**Total Backend LOC (Fase 6):** +87 lines
 
-### Test Files Created (Phase 6)
+### Prueba Archivos Creard (Fase 6)
 
-| # | File Path | Purpose | LOC | Tests | Priority |
+| # | Archivo Path | Purpose | LOC | Pruebas | Priority |
 |---|-----------|---------|-----|-------|----------|
-| 1 | `tests/server/unit/domain/schemas/test_chat_history.py` | Schema validation tests | ~280 | 9 | 🟡 Medium |
-| 2 | `tests/server/unit/api/test_template_builder_history.py` | Template formatting tests | ~210 | 7 | 🟡 Medium |
-| 3 | `tests/server/integration/api/v1/test_chat_history_integration.py` | E2E history tests | ~190 | 5 | 🟡 Medium |
+| 1 | `pruebas/server/unit/domain/schemas/prueba_chat_history.py` | Schema validation pruebas | ~280 | 9 | 🟡 Medium |
+| 2 | `pruebas/server/unit/api/prueba_template_builder_history.py` | Template formatting pruebas | ~210 | 7 | 🟡 Medium |
+| 3 | `pruebas/server/integration/api/v1/prueba_chat_history_integration.py` | E2E history pruebas | ~190 | 5 | 🟡 Medium |
 
-**Total Test LOC (Phase 6):** ~680 lines
+**Total Prueba LOC (Fase 6):** ~680 lines
 
-### Implementation Details (Phase 6)
+### Implementación Details (Fase 6)
 
 **Schema Changes (`chat.py`):**
 ```python
@@ -311,7 +311,7 @@ def build_prompt(..., history: list[dict[str, str]] | None = None):
     # ...
 ```
 
-**Orchestrator Integration:**
+**Orchestrator Integración:**
 ```python
 # Both sync and async methods:
 prompt = self.template_builder.build_prompt(
@@ -334,60 +334,60 @@ User Query
 ```
 
 **Limitations:**
-- ❌ Max 20 messages (too small for large projects)
+- ❌ Max 20 messages (too small for large proyectos)
 - ❌ Max 5000 chars/message (model supports 32K)
 - ❌ Frontend NOT sending history (backend ready but unused)
-- ✅ Resolved in Phase 7
+- ✅ Resolved in Fase 7
 
 ---
 
-## ⚙️ Phase 7: Configurable Chat Limits (ADDITIONAL ARTIFACTS)
+## ⚙️ Fase 7: Configurable Chat Limits (ADDITIONAL ARTIFACTS)
 
 > **Commit:** `3786589`
 > **Purpose:** Make chat limits configurable + integrate frontend
-> **Status:** ✅ Complete
+> **Estado:** ✅ Complete
 
-### Files Modified (Phase 7)
+### Archivos Modified (Fase 7)
 
-#### Backend (3 files)
+#### Backend (3 archivos)
 
-| # | File Path | Purpose | LOC Changed | Tests | Priority |
+| # | Archivo Path | Purpose | LOC Changed | Pruebas | Priority |
 |---|-----------|---------|-------------|-------|----------|
 | 1 | `src/server/app/core/config.py` | Add env vars to Settings | +10 | N/A | 🟡 High |
 | 2 | `src/server/app/domain/schemas/chat.py` | Dynamic validation from settings | +20 | 9 (updated) | 🟡 High |
-| 3 | `src/server/.env.example` | Document new variables | +12 | N/A | 🟢 Low |
+| 3 | `src/server/.env.example` | Documento new variables | +12 | N/A | 🟢 Low |
 
-**Total Backend LOC (Phase 7):** +42 lines
+**Total Backend LOC (Fase 7):** +42 lines
 
-#### Frontend (1 file)
+#### Frontend (1 archivo)
 
-| # | File Path | Purpose | LOC Changed | Tests | Priority |
+| # | Archivo Path | Purpose | LOC Changed | Pruebas | Priority |
 |---|-----------|---------|-------------|-------|----------|
 | 4 | `src/client/lib/features/chat/data/repositories/chat_repository_impl.dart` | Load & send history | +40 | N/A | 🟡 High |
 
-**Total Frontend LOC (Phase 7):** +40 lines
+**Total Frontend LOC (Fase 7):** +40 lines
 
-#### Configuration (2 files)
+#### Configuración (2 archivos)
 
-| # | File Path | Purpose | LOC Changed | Tests | Priority |
+| # | Archivo Path | Purpose | LOC Changed | Pruebas | Priority |
 |---|-----------|---------|-------------|-------|----------|
 | 5 | `infrastructure/docker-compose.yml` | Map env vars to container | +4 | N/A | 🟢 Low |
 | 6 | `src/server/app/api/dependencies.py` | LLM provider translator | +8 | N/A | 🟢 Low |
 
-**Total Config LOC (Phase 7):** +12 lines
+**Total Config LOC (Fase 7):** +12 lines
 
-### Test Files Updated (Phase 7)
+### Prueba Archivos Updated (Fase 7)
 
-| # | File Path | Purpose | LOC Changed | Tests Updated | Priority |
+| # | Archivo Path | Purpose | LOC Changed | Pruebas Updated | Priority |
 |---|-----------|---------|-------------|---------------|----------|
-| 1 | `tests/server/unit/domain/schemas/test_chat_history.py` | Update limits (21→101, 5001→20001) | +10 | 9 | 🟡 High |
-| 2 | `tests/server/integration/api/v1/test_chat_history_integration.py` | Update limits (21→101) | +5 | 4 | 🟡 High |
+| 1 | `pruebas/server/unit/domain/schemas/prueba_chat_history.py` | Update limits (21→101, 5001→20001) | +10 | 9 | 🟡 High |
+| 2 | `pruebas/server/integration/api/v1/prueba_chat_history_integration.py` | Update limits (21→101) | +5 | 4 | 🟡 High |
 
-**Total Test LOC Updated (Phase 7):** +15 lines
+**Total Prueba LOC Updated (Fase 7):** +15 lines
 
-### Implementation Details (Phase 7)
+### Implementación Details (Fase 7)
 
-**Configuration (`config.py`):**
+**Configuración (`config.py`):**
 ```python
 class Settings(BaseSettings):
     # New fields:
@@ -454,7 +454,7 @@ environment:
 - ✅ **4x more characters:** 5000 → 20000
 - ✅ **Configurable:** Edit .env, no recompilation
 - ✅ **Frontend integrated:** Sends history automatically
-- ✅ **Large projects viable:** 25+ documents supported
+- ✅ **Large proyectos viable:** 25+ documentos supported
 
 ---
 
@@ -543,29 +543,29 @@ chore(hu-4.4): update USER_STORIES_MASTER.es.json with new HU-4.4
 
 ## 📌 Key Deliverables Checklist
 
-### Documentation ✅
+### Documentoation ✅
 
 - [✅] README.md (bilingual, 1000+ lines)
-- [✅] PROGRESS.md (6-phase TDD tracking, 1400+ lines)
-- [✅] ARTIFACTS.md (this file, 400+ lines)
+- [✅] PROGRESS.md (6-fase TDD tracking, 1400+ lines)
+- [✅] ARTIFACTS.md (this archivo, 400+ lines)
 - [ ] USER_STORIES_MASTER.es.json updated
 
-### Backend Implementation 🔜
+### Backend Implementación 🔜
 
 - [ ] `orchestrator.py` modified (graceful degradation + timeout)
 - [ ] `ollama_client.py` modified (retry decorator applied)
 - [ ] `exceptions.py` modified (DB_ERR_001, RAG_ERR_001 added)
 
-### Frontend Implementation 🔜
+### Frontend Implementación 🔜
 
 - [ ] `error_mapper.dart` modified (messages for new codes)
 
-### Testing 🔜
+### Pruebaing 🔜
 
-- [ ] `test_orchestrator_degradation.py` created (7 tests)
-- [ ] `test_ollama_retry.py` created (8 tests)
-- [ ] `error_mapper_test.dart` modified (1 test added)
-- [ ] All 16/16 tests passing
+- [ ] `prueba_orchestrator_degradation.py` creard (7 pruebas)
+- [ ] `prueba_ollama_retry.py` creard (8 pruebas)
+- [ ] `error_mapper_prueba.dart` modified (1 prueba added)
+- [ ] All 16/16 pruebas passing
 - [ ] Coverage: Backend ≥90%, Frontend ≥85%
 
 ### Quality Gates 🔜
@@ -580,26 +580,26 @@ chore(hu-4.4): update USER_STORIES_MASTER.es.json with new HU-4.4
 
 - [ ] All changes committed (conventional commits)
 - [ ] Pushed to remote: `feature/rag-llm-resilience`
-- [ ] PR created on GitHub
+- [ ] PR creard on GitHub
 - [ ] PR approved and merged to `develop`
-- [ ] Feature branch deleted post-merge
+- [ ] Feature branch eliminard post-merge
 
 ---
 
 ## 🎯 Success Metrics
 
-| Metric | Target | Actual | Status |
+| Metric | Target | Actual | Estado |
 |--------|--------|--------|--------|
-| **Tests Passing** | 16/16 (100%) | 0/16 | 🔜 Pending |
-| **Coverage Backend** | ≥90% | TBD | 🔜 Pending |
-| **Coverage Frontend** | ≥85% | TBD | 🔜 Pending |
-| **Quality Gates** | 19/19 | 0/19 | 🔜 Pending |
-| **Manual Tests** | 3/3 | 0/3 | 🔜 Pending |
-| **Time Estimate** | ~4.5h | TBD | 🔜 Pending |
-| **LOC Production** | ~100 | 0 | 🔜 Pending |
-| **LOC Tests** | ~580 | 0 | 🔜 Pending |
+| **Pruebas Passing** | 16/16 (100%) | 0/16 | 🔜 Pendiente |
+| **Coverage Backend** | ≥90% | TBD | 🔜 Pendiente |
+| **Coverage Frontend** | ≥85% | TBD | 🔜 Pendiente |
+| **Quality Gates** | 19/19 | 0/19 | 🔜 Pendiente |
+| **Manual Pruebas** | 3/3 | 0/3 | 🔜 Pendiente |
+| **Time Estimate** | ~4.5h | TBD | 🔜 Pendiente |
+| **LOC Production** | ~100 | 0 | 🔜 Pendiente |
+| **LOC Pruebas** | ~580 | 0 | 🔜 Pendiente |
 
 ---
 
-**Last Updated:** 2026-02-15 (Phase 0 - Documentation Setup)
-**Next Step:** Update USER_STORIES_MASTER.es.json and start Phase 1 (TDD RED)
+**Last Updated:** 2026-02-15 (Fase 0 - Documentoation Setup)
+**Siguiente Step:** Update USER_STORIES_MASTER.es.json and start Fase 1 (TDD RED)

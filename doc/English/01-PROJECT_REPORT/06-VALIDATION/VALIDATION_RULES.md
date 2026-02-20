@@ -20,7 +20,7 @@
 ### VAL_001: Minimum Length
 - **Rule:** Document content must be at least 50 characters
 - **Rationale:** Prevent incomplete/corrupted generation
-- **Error Message (ES):** "El documento debe tener al menos 50 caracteres"
+- **Error Message (ES):** "El document debe tener al menos 50 caracteres"
 - **User Action:** Regenerate document
 - **Implementation:** `DocumentValidator.validate_content()`
 
@@ -30,14 +30,14 @@
   - Brackets balanced: `[` count == `]` count
   - Parentheses balanced: `(` count == `)` count
   - No unclosed code blocks (```)
-- **Error Message (ES):** "El documento contiene Markdown mal formado"
+- **Error Message (ES):** "El document contiene Markdown mal formado"
 - **User Action:** Review structure, regenerate
 - **Implementation:** `DocumentValidator.validate_markdown()`
 
 ### VAL_003: UTF-8 Encoding
 - **Rule:** Content must be valid UTF-8
 - **Rationale:** Prevent encoding corruption in ChromaDB
-- **Error Message (ES):** "El documento no está codificado en UTF-8"
+- **Error Message (ES):** "El document no está codificado en UTF-8"
 - **User Action:** Internal fix, report if persistent
 - **Implementation:** `DocumentValidator.validate_encoding()`
 
@@ -48,14 +48,14 @@
   - `javascript:` (javascript protocol)
   - `onerror\s*=` (onerror handlers)
   - `onload\s*=` (onload handlers)
-- **Error Message (ES):** "El documento contiene código potencialmente malicioso"
+- **Error Message (ES):** "El document contiene código potencialmente malicioso"
 - **User Action:** Contact support
 - **Implementation:** `DocumentValidator.validate_safety()`
 
 ### VAL_005: Maximum Size
 - **Rule:** Document must be < 5MB
 - **Rationale:** Prevent memory issues, ChromaDB limits
-- **Error Message (ES):** "El documento excede el tamaño máximo de 5MB"
+- **Error Message (ES):** "El document excede el tamaño máximo de 5MB"
 - **User Action:** Reduce document size
 - **Implementation:** `DocumentValidator.validate_size()`
 
@@ -130,11 +130,11 @@ def critical_operation():
 
 | Code | Technical Cause | Spanish Message | Retryable |
 |------|----------------|-----------------|-----------|
-| **VAL_001** | Length < 50 chars | 📝 El documento generado es inválido (muy corto) | ✅ Yes (regenerate) |
-| **VAL_002** | Malformed Markdown | 📝 El documento tiene formato Markdown incorrecto | ✅ Yes (regenerate) |
-| **VAL_003** | Invalid UTF-8 | 📝 El documento tiene problemas de codificación | ❌ No (bug) |
-| **VAL_004** | XSS Pattern Detected | ⚠️ El documento contiene contenido sospechoso | ❌ No (security) |
-| **VAL_005** | Size > 5MB | 📦 El documento es demasiado grande | ❌ No |
+| **VAL_001** | Length < 50 chars | 📝 El document generado es inválido (muy corto) | ✅ Yes (regenerate) |
+| **VAL_002** | Malformed Markdown | 📝 El document tiene formato Markdown incorrecto | ✅ Yes (regenerate) |
+| **VAL_003** | Invalid UTF-8 | 📝 El document tiene problemas de codificación | ❌ No (bug) |
+| **VAL_004** | XSS Pattern Detected | ⚠️ El document contiene contenido sospechoso | ❌ No (security) |
+| **VAL_005** | Size > 5MB | 📦 El document es demasiado grande | ❌ No |
 
 ---
 
