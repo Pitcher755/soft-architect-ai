@@ -14,8 +14,9 @@ import 'package:softarchitect_ai/features/chat/presentation/widgets/smart_messag
 /// - Text selection works for markdown content
 void main() {
   group('SmartMessageRenderer', () {
-    testWidgets('renders user message as plain markdown',
-        (WidgetTester tester) async {
+    testWidgets('renders user message as plain markdown', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '# User Question\nThis is a **bold** question.';
 
@@ -23,10 +24,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: true,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: true),
           ),
         ),
       );
@@ -39,8 +37,9 @@ void main() {
       expect(find.text('Validar'), findsNothing);
     });
 
-    testWidgets('renders AI message without documents as plain markdown',
-        (WidgetTester tester) async {
+    testWidgets('renders AI message without documents as plain markdown', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 ## Analysis Complete
@@ -58,10 +57,7 @@ Would you like me to proceed?
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -74,8 +70,9 @@ Would you like me to proceed?
       expect(find.text('Validar'), findsNothing);
     });
 
-    testWidgets('renders AI message with single document as DocumentCard',
-        (WidgetTester tester) async {
+    testWidgets('renders AI message with single document as DocumentCard', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 I've created the architecture document for you:
@@ -102,10 +99,7 @@ src/
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -131,8 +125,9 @@ src/
       expect(find.textContaining('Directory Structure'), findsOneWidget);
     });
 
-    testWidgets('renders AI message with multiple documents correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders AI message with multiple documents correctly', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 I've prepared two documents:
@@ -156,10 +151,7 @@ Both are ready for validation.
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -181,8 +173,9 @@ Both are ready for validation.
       expect(find.textContaining('Both are ready'), findsOneWidget);
     });
 
-    testWidgets('document card has proper visual structure',
-        (WidgetTester tester) async {
+    testWidgets('document card has proper visual structure', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 ```document
@@ -196,10 +189,7 @@ Content here
         MaterialApp(
           theme: ThemeData.light(),
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -219,8 +209,9 @@ Content here
       expect(containers, findsWidgets);
     });
 
-    testWidgets('validate button shows snackbar when pressed',
-        (WidgetTester tester) async {
+    testWidgets('validate button shows snackbar when pressed', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 ```document
@@ -232,10 +223,7 @@ Content here
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -249,14 +237,12 @@ Content here
 
       // Assert
       expect(find.byType(SnackBar), findsOneWidget);
-      expect(
-        find.text('Documento enviado a validación...'),
-        findsOneWidget,
-      );
+      expect(find.text('Documento enviado a validación...'), findsOneWidget);
     });
 
-    testWidgets('markdown content supports text selection',
-        (WidgetTester tester) async {
+    testWidgets('markdown content supports text selection', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = 'This is **selectable** text.';
 
@@ -264,10 +250,7 @@ Content here
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -277,8 +260,9 @@ Content here
       expect(find.textContaining('selectable'), findsOneWidget);
     });
 
-    testWidgets('handles empty document block gracefully',
-        (WidgetTester tester) async {
+    testWidgets('handles empty document block gracefully', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 Here's an empty document:
@@ -293,10 +277,7 @@ That was empty.
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -325,10 +306,7 @@ That was empty.
         MaterialApp(
           theme: ThemeData.dark(),
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -344,8 +322,9 @@ That was empty.
       expect(containers, findsWidgets);
     });
 
-    testWidgets('handles malformed document blocks gracefully',
-        (WidgetTester tester) async {
+    testWidgets('handles malformed document blocks gracefully', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 This has a malformed document block:
@@ -360,10 +339,7 @@ Still in the document?
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: SmartMessageRenderer(
-              rawContent: testContent,
-              isUser: false,
-            ),
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
           ),
         ),
       );
@@ -376,8 +352,9 @@ Still in the document?
       );
     });
 
-    testWidgets('extracts path and triggers callback on validation',
-        (WidgetTester tester) async {
+    testWidgets('extracts path and triggers callback on validation', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 ```document
@@ -421,14 +398,12 @@ Still in the document?
       expect(capturedContent, contains('- Rule 1'));
 
       // Assert snackbar appears
-      expect(
-        find.text('Documento enviado a validación...'),
-        findsOneWidget,
-      );
+      expect(find.text('Documento enviado a validación...'), findsOneWidget);
     });
 
-    testWidgets('uses fallback path when no path found',
-        (WidgetTester tester) async {
+    testWidgets('uses fallback path when no path found', (
+      WidgetTester tester,
+    ) async {
       // Arrange
       const testContent = '''
 ```document
@@ -461,6 +436,70 @@ Just some content without path metadata.
 
       // Assert fallback path is used
       expect(capturedPath, 'context/UNSORTED/untitled.md');
+    });
+
+    testWidgets('decodes double-escaped HTML entities correctly', (
+      WidgetTester tester,
+    ) async {
+      // Arrange - Simulates content with double-escaped HTML from backend
+      const testContent = '''
+Here's the document structure:
+
+&amp;lt;document&amp;gt;
+# README.md
+
+Use &amp;lt;Component&amp;gt; in your code.
+&amp;lt;/document&amp;gt;
+''';
+
+      // Act
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert - Should decode to proper <document> tags
+      // The document card should be rendered (meaning <document> was detected)
+      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
+
+      // Content should show <Component> not &lt;Component&gt;
+      expect(
+        find.textContaining('<Component>'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('decodes common HTML entities in text', (
+      WidgetTester tester,
+    ) async {
+      // Arrange
+      const testContent = '''
+Code example: List&lt;String&gt; myList = [];
+
+Use &quot;quotes&quot; and &#39;apostrophes&#39; correctly.
+
+Check if x &gt; 5 &amp; y &lt; 10.
+''';
+
+      // Act
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert - Should display decoded entities
+      expect(find.textContaining('List<String>'), findsOneWidget);
+      expect(find.textContaining('"quotes"'), findsOneWidget);
+      expect(find.textContaining("'apostrophes'"), findsOneWidget);
+      expect(find.textContaining('x > 5 & y < 10'), findsOneWidget);
     });
   });
 }

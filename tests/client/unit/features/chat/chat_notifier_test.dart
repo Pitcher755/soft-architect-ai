@@ -194,7 +194,7 @@ void main() {
         final notifier = container.read(chatNotifierProvider.notifier);
 
         // ACT: Try to send message without project context
-        await notifier.sendMessage('Hello without context');
+        await notifier.sendMessageStream('Hello without context');
 
         // ASSERT: State should have error message
         final state = container.read(chatNotifierProvider);

@@ -50,14 +50,20 @@ class ChatRepositoryImpl implements ChatRepository {
     return _database!;
   }
 
+  /// **DEPRECATED:** Not implemented. Use [sendMessageStream] instead.
+  ///
+  /// This method throws [UnimplementedError]. For document generation,
+  /// use [sendMessageStream] which provides SSE streaming functionality.
   @override
+  @Deprecated('Not implemented. Use sendMessageStream() instead.')
   Stream<String> generateDocument(
     String docType,
     String userInput,
     Map<String, dynamic> context,
   ) {
-    // Existing implementation (stub for now)
-    throw UnimplementedError('generateDocument not yet implemented');
+    // Not implemented - use sendMessageStream instead
+    throw UnimplementedError('generateDocument not yet implemented. '
+        'Use sendMessageStream() instead.');
   }
 
   @override

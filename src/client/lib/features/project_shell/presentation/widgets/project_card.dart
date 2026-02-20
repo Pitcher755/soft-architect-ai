@@ -1,11 +1,10 @@
-// ignore_for_file: avoid_catches_without_on_clauses
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../domain/models/project_phase.dart';
 import '../providers/project_providers.dart';
 
 /// ProjectCard - Displays a single project in the dashboard grid
@@ -15,27 +14,33 @@ import '../providers/project_providers.dart';
 /// - Left click: Open project
 /// - Right click: Delete project (with confirmation)
 /// - Visual indicator for missing projects (grayed out)
+/// - Real-time progress tracking from .softarchitect/status.json
 class ProjectCard extends ConsumerWidget {
   const ProjectCard({
     required this.name,
     required this.icon,
-    required this.iconColor,
-    required this.phase,
-    required this.phaseColor,
     required this.path,
     required this.modified,
     required this.onTap,
     required this.projectId,
     required this.isMissing,
+    // Deprecated: estos parámetros se calculan del provider
+    this.iconColor,
+    this.phase,
+    this.phaseColor,
     this.progress,
     super.key,
   });
 
   final String name;
   final IconData icon;
-  final Color iconColor;
-  final String phase;
-  final Color phaseColor;
+  @Deprecated('Use projectStatusProvider to get phase color')
+  final Color? iconColor;
+  @Deprecated('Use projectStatusProvider to get phase name')
+  final String? phase;
+  @Deprecated('Use projectStatusProvider to get phase color')
+  final Color? phaseColor;
+  @Deprecated('Use projectStatusProvider to get progress')
   final double? progress;
   final String path;
   final String modified;
@@ -62,6 +67,197 @@ class ProjectCard extends ConsumerWidget {
     }
 
     return lastSegment;
+  }
+
+  /// Obtiene el ProjectPhase basándose en el nombre de la fase
+  /// Retorna ProjectPhase.root por defecto si no se encuentra
+  ProjectPhase _getPhaseByName(String phaseName) {
+    // Buscar en todas las fases
+    for (final phase in ProjectPhase.all) {
+      if (phase.name.toLowerCase() == phaseName.toLowerCase()) {
+        return phase;
+      }
+    }
+
+    // Para "Proyecto Completado" o fases no encontradas
+    if (phaseName.toLowerCase().contains('completado')) {
+      // Retornar la última fase con color apropiado
+      return ProjectPhase.all.last;
+    }
+
+    // Por defecto retornar la fase raíz
+    return ProjectPhase.root;
+  }
+
+  /// Muestra un menú contextual con opciones del proyecto
+  Future<void> _showContextMenu(
+    BuildContext context,
+    WidgetRef ref,
+    Offset position,
+  ) async {
+    // Proteger proyectos guía (mock://)
+    final isGuideProject = path.startsWith('mock://');
+    final overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox?;
+
+    if (overlay == null) {
+      return;
+    }
+
+    final result = await showMenu<String>(
+      context: context,
+      position: RelativeRect.fromRect(
+        position & const Size(40, 40),
+        Offset.zero & overlay.size,
+      ),
+      items: [
+        // Opción Renombrar (deshabilitada para proyectos guía)
+        PopupMenuItem<String>(
+          value: 'rename',
+          enabled: !isGuideProject,
+          child: Row(
+            children: [
+              Icon(
+                Icons.edit,
+                size: 18,
+                color: isGuideProject
+                    ? AppColors.textSecondary.withValues(alpha: 0.5)
+                    : AppColors.textSecondary,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Cambiar Nombre',
+                style: TextStyle(
+                  color: isGuideProject
+                      ? AppColors.textSecondary.withValues(alpha: 0.5)
+                      : AppColors.textMain,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Opción Eliminar (deshabilitada para proyectos guía)
+        PopupMenuItem<String>(
+          value: 'delete',
+          enabled: !isGuideProject,
+          child: Row(
+            children: [
+              Icon(
+                Icons.delete_outline,
+                size: 18,
+                color: isGuideProject
+                    ? Colors.redAccent.withValues(alpha: 0.5)
+                    : Colors.redAccent,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Eliminar',
+                style: TextStyle(
+                  color: isGuideProject
+                      ? Colors.redAccent.withValues(alpha: 0.5)
+                      : Colors.redAccent,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    if (result == 'rename' && context.mounted) {
+      await _showRenameDialog(context, ref);
+    } else if (result == 'delete' && context.mounted) {
+      await _showDeleteConfirmationDialog(context, ref);
+    }
+  }
+
+  /// Muestra un diálogo para renombrar el proyecto
+  Future<void> _showRenameDialog(BuildContext context, WidgetRef ref) async {
+    final controller = TextEditingController(text: name);
+    final formKey = GlobalKey<FormState>();
+
+    final newName = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('✏️ Cambiar Nombre'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Ingrese el nuevo nombre del proyecto:'),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: controller,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  labelText: 'Nombre del proyecto',
+                  hintText: 'Ej: mi-proyecto',
+                  border: OutlineInputBorder(),
+                  counterText: '',
+                ),
+                maxLength: 50,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'El nombre no puede estar vacío';
+                  }
+                  if (value.length < 3) {
+                    return 'Mínimo 3 caracteres';
+                  }
+                  if (!RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(value)) {
+                    return 'Solo letras, números, guiones y guiones bajos';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                Navigator.pop(context, controller.text);
+              }
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+
+    if (newName != null && newName != name && context.mounted) {
+      try {
+        // Renombrar en el repositorio
+        await ref
+            .read(projectsProvider.notifier)
+            .renameProject(projectId, newName);
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('✅ Proyecto renombrado a "$newName"'),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      } on Exception catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('❌ Error al renombrar: $e'),
+              duration: const Duration(seconds: 3),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+        }
+      }
+    }
   }
 
   /// Muestra un diálogo de confirmación para eliminar el proyecto
@@ -115,14 +311,21 @@ class ProjectCard extends ConsumerWidget {
     );
 
     if (shouldDelete == true) {
-      // Delete project directory
+      // Delete project directory (forced delete - ignore if doesn't exist)
       try {
         final directory = Directory(path);
         if (directory.existsSync()) {
           await directory.delete(recursive: true);
         }
+      } on FileSystemException catch (e) {
+        // Log warning but continue with database deletion
+        // (cleanup ghost projects)
+        debugPrint('⚠️ Warning: Could not delete directory: $e');
+      }
 
-        // Remove project from state
+      // Remove project from state
+      // (always execute, even if directory delete failed)
+      try {
         await ref.read(projectsProvider.notifier).deleteProject(projectId);
 
         // Show success message
@@ -134,12 +337,13 @@ class ProjectCard extends ConsumerWidget {
             ),
           );
         }
-      } catch (e) {
+      } on Exception catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('❌ Error al eliminar: $e'),
+              content: Text('❌ Error al eliminar de la base de datos: $e'),
               duration: const Duration(seconds: 3),
+              backgroundColor: Colors.redAccent,
             ),
           );
         }
@@ -149,6 +353,9 @@ class ProjectCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Observar el provider de estado del proyecto
+    final statusAsync = ref.watch(projectStatusProvider(path));
+
     // Responsive sizing based on screen width
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -194,12 +401,30 @@ class ProjectCard extends ConsumerWidget {
       badgeFontSize = 10;
     }
 
+    // Obtener fase y progreso del provider o usar valores por defecto
+    final currentPhase = statusAsync.maybeWhen(
+      data: (progress) => _getPhaseByName(progress.faseActual),
+      orElse: () => _getPhaseByName(phase ?? ProjectPhase.root.name),
+    );
+
+    final actualPhaseColor = currentPhase.color;
+    final actualIconColor = iconColor ?? currentPhase.color;
+    final actualPhaseName = statusAsync.maybeWhen(
+      data: (progress) => progress.faseActual,
+      orElse: () => phase ?? ProjectPhase.root.name,
+    );
+    final actualProgress = statusAsync.maybeWhen(
+      data: (progress) => progress.porcentajeCompletado / 100,
+      orElse: () => progress ?? 0.0,
+    );
+
     return AspectRatio(
       aspectRatio: 1.9,
       child: GestureDetector(
-        onSecondaryTap: isMissing
+        onSecondaryTapDown: isMissing
             ? null
-            : () => _showDeleteConfirmationDialog(context, ref),
+            : (details) =>
+                  _showContextMenu(context, ref, details.globalPosition),
         child: Tooltip(
           message: isMissing
               ? '⚠️ Directorio faltante. Clic derecho para eliminar.'
@@ -216,8 +441,8 @@ class ProjectCard extends ConsumerWidget {
                       : AppColors.surfaceBg,
                   border: Border.all(
                     color: isMissing
-                        ? phaseColor.withValues(alpha: 0.2)
-                        : phaseColor.withValues(alpha: 0.5),
+                        ? actualPhaseColor.withValues(alpha: 0.2)
+                        : actualPhaseColor.withValues(alpha: 0.5),
                     width: 1.5,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -243,7 +468,7 @@ class ProjectCard extends ConsumerWidget {
                                   width: iconContainerSize,
                                   height: iconContainerSize,
                                   decoration: BoxDecoration(
-                                    color: iconColor.withValues(
+                                    color: actualIconColor.withValues(
                                       alpha: isMissing ? 0.05 : 0.1,
                                     ),
                                     borderRadius: BorderRadius.circular(6),
@@ -251,8 +476,8 @@ class ProjectCard extends ConsumerWidget {
                                   child: Icon(
                                     icon,
                                     color: isMissing
-                                        ? iconColor.withValues(alpha: 0.5)
-                                        : iconColor,
+                                        ? actualIconColor.withValues(alpha: 0.5)
+                                        : actualIconColor,
                                     size: iconSize,
                                   ),
                                 ),
@@ -264,22 +489,22 @@ class ProjectCard extends ConsumerWidget {
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: phaseColor.withValues(
+                                        color: actualPhaseColor.withValues(
                                           alpha: isMissing ? 0.05 : 0.1,
                                         ),
                                         border: Border.all(
-                                          color: phaseColor.withValues(
+                                          color: actualPhaseColor.withValues(
                                             alpha: isMissing ? 0.2 : 0.4,
                                           ),
                                         ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Text(
-                                        phase,
+                                        actualPhaseName,
                                         style: TextStyle(
                                           fontSize: badgeFontSize,
                                           fontFamily: 'Courier',
-                                          color: phaseColor.withValues(
+                                          color: actualPhaseColor.withValues(
                                             alpha: isMissing ? 0.5 : 1.0,
                                           ),
                                           fontWeight: FontWeight.w600,
@@ -310,11 +535,10 @@ class ProjectCard extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                            if (progress != null) ...[
+                            if (actualProgress > 0) ...[
                               const SizedBox(height: 4),
                               Text(
-                                'Doc '
-                                '${(progress!.clamp(0.0, 1.0) * 100).toInt()}%',
+                                'Doc ${(actualProgress.clamp(0.0, 1.0) * 100).toInt()}%',
                                 style: TextStyle(
                                   fontSize: badgeFontSize,
                                   fontFamily: 'Courier',
@@ -355,7 +579,7 @@ class ProjectCard extends ConsumerWidget {
                         decoration: BoxDecoration(
                           border: Border(
                             top: BorderSide(
-                              color: phaseColor.withValues(
+                              color: actualPhaseColor.withValues(
                                 alpha: isMissing ? 0.15 : 0.3,
                               ),
                             ),

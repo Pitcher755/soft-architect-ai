@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:http/http.dart' as http;
 
@@ -181,10 +182,13 @@ class SseClient {
             if (event != null) {
               yield event;
             }
-          } on FormatException {
+          } on FormatException catch (e) {
             // Log JSON parse error but continue streaming
-            // ignore: avoid_print
-            print('Warning: Failed to parse SSE data: $dataStr');
+            developer.log(
+              'Warning: Failed to parse SSE data: $dataStr',
+              name: 'SSEClient',
+              error: e,
+            );
           }
         }
       }
@@ -210,8 +214,10 @@ class SseClient {
       case 'error':
         return ErrorEvent.fromJson(data);
       default:
-        // ignore: avoid_print
-        print('Warning: Unknown SSE event type: $eventType');
+        developer.log(
+          'Warning: Unknown SSE event type: $eventType',
+          name: 'SSEClient',
+        );
         return null;
     }
   }

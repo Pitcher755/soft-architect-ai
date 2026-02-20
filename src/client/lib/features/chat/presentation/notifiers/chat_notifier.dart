@@ -102,7 +102,12 @@ class ChatNotifier extends StateNotifier<ChatState> {
     }
   }
 
-  /// Sends a user message and initiates document generation streaming.
+  /// **DEPRECATED:** Use [sendMessageStream] instead.
+  ///
+  /// This method uses the unimplemented `generateDocument()` which throws
+  /// UnimplementedError. Use [sendMessageStream] for proper SSE streaming.
+  @Deprecated('Use sendMessageStream() instead. This method calls '
+      'generateDocument() which is not implemented.')
   Future<void> sendMessage(String message) async {
     if (message.trim().isEmpty) {
       return;

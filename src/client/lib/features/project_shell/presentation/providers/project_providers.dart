@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 // lib/features/project_shell/presentation/providers/project_providers.dart
 import 'dart:convert';
 import 'dart:io';
@@ -11,8 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../services/database_helper.dart';
 import '../../domain/entities/project.dart';
+import '../../domain/entities/project_progress.dart';
 import '../../domain/models/project_phase.dart';
 import '../../domain/services/project_phase_service.dart';
+import '../../infrastructure/services/project_progress_service.dart';
 
 // ╔════════════════════════════════════════════════╗
 // ║      PROJECTS NOTIFIER (STATE MANAGEMENT)      ║
@@ -71,7 +71,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
             isMissing: !exists, // ✅ Mark as missing, don't delete
           ),
         );
-      } catch (e) {
+      } on Exception catch (e) {
         debugPrint('❌ Error loading project: $e');
       }
     }
@@ -86,14 +86,12 @@ class ProjectsNotifier extends Notifier<List<Project>> {
     );
 
     // 3. Combine and sort (most recent first)
-    final all = [guideProject, ...userProjects];
-    all.sort((a, b) {
-      final aTime = a.lastOpened ?? a.createdAt;
-      final bTime = b.lastOpened ?? b.createdAt;
-      return bTime.compareTo(aTime);
-    });
-
-    state = all;
+    state = [guideProject, ...userProjects]
+      ..sort((a, b) {
+        final aTime = a.lastOpened ?? a.createdAt;
+        final bTime = b.lastOpened ?? b.createdAt;
+        return bTime.compareTo(aTime);
+      });
   }
 
   /// Agrega un nuevo proyecto a la lista y lo persiste
@@ -131,6 +129,75 @@ class ProjectsNotifier extends Notifier<List<Project>> {
     await _purgeChatHistory(projectId);
 
     debugPrint('🗑️ Project deleted: $projectId');
+  }
+
+  /// ✅ NEW: Rename a project
+  ///
+  /// Updates the project name in:
+  /// 1. Physical directory (if exists)
+  /// 2. UI state (immediate feedback)
+  /// 3. SharedPreferences (persistence)
+  ///
+  /// Throws exception if project not found or name is invalid.
+  Future<void> renameProject(String projectId, String newName) async {
+    try {
+      // Find the project
+      final projectIndex = state.indexWhere((p) => p.id == projectId);
+      if (projectIndex == -1) {
+        throw Exception('Project not found: $projectId');
+      }
+
+      final project = state[projectIndex];
+
+      // Protection: Cannot rename guide projects
+      if (project.path.startsWith('mock://')) {
+        throw Exception('Cannot rename guide projects');
+      }
+
+      debugPrint('✏️ Renaming project: ${project.name} -> $newName');
+
+      // Rename physical directory
+      var newPath = project.path;
+      try {
+        final currentDir = Directory(project.path);
+        if (currentDir.existsSync()) {
+          // Get parent directory
+          final parentDir = currentDir.parent.path;
+          // Create new path with new name
+          newPath = '$parentDir/$newName';
+
+          // Check if target directory already exists
+          final newDir = Directory(newPath);
+          if (newDir.existsSync()) {
+            throw Exception('A directory with name "$newName" already exists');
+          }
+
+          // Rename directory
+          await currentDir.rename(newPath);
+          debugPrint('📁 Directory renamed: ${project.path} -> $newPath');
+        } else {
+          debugPrint('⚠️ Directory does not exist, only updating state');
+        }
+      } on FileSystemException catch (e) {
+        debugPrint('❌ Error renaming directory: $e');
+        throw Exception('Failed to rename project directory: ${e.message}');
+      }
+
+      // Update state immutably with new name and path
+      final updatedProject = project.copyWith(name: newName, path: newPath);
+      state = [
+        for (int i = 0; i < state.length; i++)
+          if (i == projectIndex) updatedProject else state[i],
+      ];
+
+      // Persist changes
+      await _saveToPrefs();
+
+      debugPrint('✅ Project renamed successfully');
+    } catch (e) {
+      debugPrint('❌ Error renaming project: $e');
+      rethrow;
+    }
   }
 
   /// ✅ NEW: Restore a missing project (mark as found)
@@ -230,7 +297,7 @@ class ProjectProgressNotifier
 
       final progress = _analyzer(projectPath);
       state = AsyncData(progress);
-    } catch (error, stackTrace) {
+    } on Exception catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);
     }
   }
@@ -243,6 +310,58 @@ final projectProgressProvider =
       String
     >((ref, projectPath) {
       final notifier = ProjectProgressNotifier();
-      notifier.loadProgress(projectPath);
-      return notifier;
+      return notifier..loadProgress(projectPath);
     });
+
+// ╔════════════════════════════════════════════════╗
+// ║      PROJECT STATUS PROVIDER (.json FILE)      ║
+// ╚════════════════════════════════════════════════╝
+
+/// Provider que lee el archivo .softarchitect/status.json
+///
+/// Retorna ProjectProgress con los datos persistidos del proyecto:
+/// - documentosCreados
+/// - faseActual
+/// - porcentajeCompletado
+/// - lastUpdated
+///
+/// Si el archivo no existe, retorna un estado inicial con 0%.
+///
+/// Usage:
+/// ```dart
+/// final status = ref.watch(projectStatusProvider(projectPath));
+/// status.when(
+///   data: (progress) => Text('${progress.porcentajeCompletado}%'),
+///   loading: () => CircularProgressIndicator(),
+///   error: (e, _) => Text('Error'),
+/// );
+/// ```
+final projectStatusProvider = FutureProvider.family<ProjectProgress, String>((
+  ref,
+  projectPath,
+) async {
+  // Para proyectos mock (guía), retornar estado completado
+  if (projectPath.startsWith('mock://')) {
+    return ProjectProgress(
+      documentosCreados: ProjectPhase.totalFileCount,
+      faseActual: 'Proyecto Completado',
+      porcentajeCompletado: 100,
+      lastUpdated: DateTime.now(),
+    );
+  }
+
+  // Intentar cargar el archivo status.json
+  final progress = await ProjectProgressService.loadProgress(projectPath);
+
+  // Si no existe el archivo, retornar estado inicial
+  if (progress == null) {
+    return ProjectProgress(
+      documentosCreados: 0,
+      faseActual: ProjectPhase.root.name,
+      porcentajeCompletado: 0,
+      lastUpdated: DateTime.now(),
+    );
+  }
+
+  return progress;
+});

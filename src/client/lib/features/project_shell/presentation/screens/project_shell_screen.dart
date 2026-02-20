@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -83,7 +81,9 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
   Future<void> _onFileSelected(FileNode node) async {
     setState(() => _selectedNode = node);
 
-    if (node.isDirectory) return;
+    if (node.isDirectory) {
+      return;
+    }
 
     // Mock project
     if (node.path.startsWith('mock://')) {
@@ -95,13 +95,13 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
     // Real project
     try {
       final file = File(node.path);
-      if (await file.exists()) {
+      if (file.existsSync()) {
         final content = await file.readAsString();
         if (mounted) {
           setState(() => _fileContent = content);
         }
       }
-    } catch (e) {
+    } on Exception catch (e) {
       if (mounted) {
         setState(() => _fileContent = 'Error leyendo archivo:\n$e');
       }

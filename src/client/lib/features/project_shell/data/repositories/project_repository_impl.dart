@@ -1,6 +1,7 @@
 // lib/features/project_shell/data/repositories/project_repository_impl.dart
 import 'dart:convert';
 import 'dart:developer' as developer;
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 
@@ -101,6 +102,92 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<void> deleteProject(String projectId) =>
       sqliteDataSource.deleteProject(projectId);
+
+  @override
+  Future<Project> renameProject(String projectId, String newName) async {
+    try {
+      // 1. Validate new name
+      ProjectValidationUseCase.validateNameOrThrow(newName);
+
+      // 2. Get current project
+      final currentProject = await getProject(projectId);
+      if (currentProject == null) {
+        throw ProjectNotFoundException('Project not found: $projectId');
+      }
+
+      // 3. Check if it's a mock project (cannot rename guide projects)
+      if (currentProject.path.startsWith('mock://')) {
+        throw ProjectOperationException('Cannot rename guide projects');
+      }
+
+      developer.log(
+        'Renaming project: ${currentProject.name} -> $newName',
+        name: 'ProjectRepository',
+      );
+
+      // 4. Rename physical directory
+      var newPath = currentProject.path;
+      try {
+        final currentDir = Directory(currentProject.path);
+        if (currentDir.existsSync()) {
+          // Get parent directory
+          final parentDir = currentDir.parent.path;
+          // Create new path with new name
+          newPath = '$parentDir/$newName';
+
+          // Check if target directory already exists
+          final newDir = Directory(newPath);
+          if (newDir.existsSync()) {
+            throw ProjectOperationException(
+              'A directory with name "$newName" already exists',
+            );
+          }
+
+          // Rename directory
+          await currentDir.rename(newPath);
+          developer.log(
+            'Directory renamed: ${currentProject.path} -> $newPath',
+            name: 'ProjectRepository',
+          );
+        } else {
+          // If directory doesn't exist, keep the old path structure
+          // but update name
+          developer.log(
+            'Warning: Directory does not exist, only updating database',
+            name: 'ProjectRepository',
+          );
+        }
+      } on FileSystemException catch (e) {
+        developer.log(
+          'Error renaming directory: $e',
+          name: 'ProjectRepository',
+          error: e,
+        );
+        throw ProjectOperationException(
+          'Failed to rename project directory: ${e.message}',
+        );
+      }
+
+      // 5. Update database with new name and path
+      final updatedProject = ProjectModel(
+        id: currentProject.id,
+        name: newName,
+        path: newPath,
+        createdAt: currentProject.createdAt,
+        lastOpened: currentProject.lastOpened,
+      );
+      await sqliteDataSource.updateProject(updatedProject);
+
+      return updatedProject;
+    } catch (e) {
+      developer.log(
+        'Error renaming project: $e',
+        name: 'ProjectRepository',
+        error: e,
+      );
+      rethrow;
+    }
+  }
 
   /// Generate deterministic ID from name + path using SHA-256
   String _generateId(String name, String path) {

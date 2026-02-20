@@ -107,4 +107,17 @@ class WebMockProjectRepository implements ProjectRepository {
     _projects.removeWhere((p) => p.id == id);
     debugPrint('✅ Project deleted: $id');
   }
+
+  @override
+  Future<Project> renameProject(String projectId, String newName) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    final index = _projects.indexWhere((p) => p.id == projectId);
+    if (index < 0) {
+      throw Exception('Project not found: $projectId');
+    }
+    final updatedProject = _projects[index].copyWith(name: newName);
+    _projects[index] = updatedProject;
+    debugPrint('✅ Project renamed: $projectId -> $newName');
+    return updatedProject;
+  }
 }

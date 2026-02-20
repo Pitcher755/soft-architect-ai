@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../filesystem/presentation/providers/filesystem_providers.dart';
+import '../../../project_shell/core/services/file_system_service.dart';
+import '../../../project_shell/infrastructure/services/project_progress_service.dart';
 import 'smart_message_renderer.dart';
 
 /// Optimized widget for rendering streaming messages.
-///
-/// Performance optimizations:
-/// - RepaintBoundary to isolate repaints
-/// - Minimal widget rebuilds
-///
-/// Transformado a ConsumerWidget para integración con FileSystem.
 class StreamingMessageWidget extends ConsumerWidget {
   const StreamingMessageWidget({
     required this.text,
@@ -18,10 +15,7 @@ class StreamingMessageWidget extends ConsumerWidget {
     this.isStreaming = false,
   });
 
-  /// Message text content.
   final String text;
-
-  /// Flag indicating if message is still streaming.
   final bool isStreaming;
 
   @override
@@ -44,30 +38,50 @@ class StreamingMessageWidget extends ConsumerWidget {
                 rawContent: text,
                 isUser: false,
                 onSaveDocument: (path, cleanContent) async {
-                  // ✅ IMPLEMENTACIÓN REAL DEL GUARDADO
-                  debugPrint('📄 Intentando guardar documento en: $path');
+                  debugPrint(
+                    '📄 Intentando guardar documento en streaming en: $path',
+                  );
 
                   try {
-                    // Obtenemos el repository del filesystem
-                    final repository = ref.read(fileSystemRepositoryProvider);
-
-                    if (repository == null) {
+                    final projectRoot = ref.read(projectRootProvider);
+                    if (projectRoot == null) {
                       throw Exception(
-                        'FileSystem no disponible. Abre un proyecto primero.',
+                        'Project root no configurado. '
+                        'Abre un proyecto primero.',
                       );
                     }
 
-                    // Normalizamos la ruta (removemos / inicial si existe)
-                    final normalizedPath =
-                        path.startsWith('/') ? path.substring(1) : path;
+                    final normalizedPath = path.startsWith('/')
+                        ? path.substring(1)
+                        : path;
 
-                    // Llamamos al método saveFile del repository
-                    await repository.saveFile(
+                    final fsService = FileSystemServiceImpl();
+                    await fsService.saveDocument(
+                      projectPath: projectRoot,
                       relativePath: normalizedPath,
                       content: cleanContent,
                     );
 
-                    debugPrint('✅ Documento guardado con éxito');
+                    // Actualizar progreso del proyecto
+                    try {
+                      await ProjectProgressService.updateAfterDocumentSave(
+                        projectRoot,
+                      );
+                    } on Exception catch (e) {
+                      debugPrint('⚠️ Error actualizando progreso: $e');
+                    }
+
+                    ref.invalidate(fileSystemNotifierProvider);
+                    ref.read(fileSystemNotifierProvider.notifier).refresh();
+
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('✅ Documento guardado con éxito'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
                   } on Exception catch (e) {
                     debugPrint('❌ Error guardando el documento: $e');
                     if (context.mounted) {

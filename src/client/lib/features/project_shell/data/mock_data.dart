@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 import 'package:flutter/material.dart';
 
 import '../../chat/presentation/widgets/message_bubble_widget.dart';
@@ -160,14 +158,19 @@ Prueba a pedir:
       id: 'msg2',
       role: 'user',
       content:
-          'Generate the high-level architecture overview based on the vision and constraints defined. Focus on scalability for the microservices layer.',
+          'Generate the high-level architecture overview based on '
+          'the vision and constraints defined. Focus on scalability '
+          'for the microservices layer.',
       timestamp: DateTime.now().subtract(const Duration(minutes: 4)),
     ),
     ChatMessageUI(
       id: 'msg3',
       role: 'assistant',
       content:
-          'I have analyzed the constraints. Moving to module definition. Identifying key scalability bottlenecks in current constraint definitions. Mapping event-driven patterns...',
+          'I have analyzed the constraints. Moving to module '
+          'definition. Identifying key scalability bottlenecks in '
+          'current constraint definitions. Mapping event-driven '
+          'patterns...',
       timestamp: DateTime.now().subtract(const Duration(minutes: 3)),
     ),
   ];
@@ -175,7 +178,8 @@ Prueba a pedir:
   // ========================
   // Markdown Preview Mock Data (RICH CONTENT)
   // ========================
-  // Usamos r''' (raw string) para evitar conflictos con el símbolo $ en el código Dart
+  // Usamos r''' (raw string) para evitar conflictos con el símbolo $
+  // en el código Dart
   static const String mockMarkdownContent = r'''
 
 # 🚀 Project Vision: SoftArchitect AI

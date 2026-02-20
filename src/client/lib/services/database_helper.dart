@@ -16,6 +16,7 @@
 ///   - Frontend: Project owner, filesystem manager, persistence authority
 library;
 
+import 'dart:developer' as developer;
 import 'dart:io' as io;
 
 import 'package:path/path.dart' as p;
@@ -135,8 +136,10 @@ class DatabaseHelper {
       final databasesPath = await getDatabasesPath();
       final path = p.join(databasesPath, _databaseName);
 
-      // ignore: avoid_print
-      print('📊 Initializing database at: $path (version $_databaseVersion)');
+      developer.log(
+        '📊 Initializing database at: $path (version $_databaseVersion)',
+        name: 'DatabaseHelper',
+      );
 
       return await openDatabase(
         path,
@@ -145,10 +148,12 @@ class DatabaseHelper {
         onUpgrade: _onUpgrade,
       );
     } catch (e, stackTrace) {
-      // ignore: avoid_print
-      print('🔥 Database initialization error: $e');
-      // ignore: avoid_print
-      print('Stack trace: $stackTrace');
+      developer.log(
+        '🔥 Database initialization error: $e',
+        name: 'DatabaseHelper',
+        error: e,
+        stackTrace: stackTrace,
+      );
       throw DatabaseException(
         'Failed to initialize database: $e',
         e is Exception ? e : null,
@@ -434,10 +439,8 @@ class DatabaseHelper {
 
       // Delete the database file
       final databaseFile = io.File(path);
-      // ignore: avoid_slow_async_io
-      if (await databaseFile.exists()) {
-        // ignore: avoid_slow_async_io
-        await databaseFile.delete();
+      if (databaseFile.existsSync()) {
+        databaseFile.deleteSync();
       }
     } catch (e) {
       throw DatabaseException('Failed to reset database', e as Exception);
@@ -453,10 +456,8 @@ class DatabaseHelper {
       final path = p.join(databasesPath, _databaseName);
       final file = io.File(path);
 
-      // ignore: avoid_slow_async_io
-      if (await file.exists()) {
-        // ignore: avoid_slow_async_io
-        return await file.length();
+      if (file.existsSync()) {
+        return file.lengthSync();
       }
       return -1;
     } catch (e) {

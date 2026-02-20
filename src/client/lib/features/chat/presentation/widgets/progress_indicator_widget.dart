@@ -3,19 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../project_shell/domain/models/project_phase.dart';
+import '../../../project_shell/presentation/providers/project_providers.dart';
 import '../../../settings/presentation/providers/settings_providers.dart';
 
 class ProgressIndicatorWidget extends ConsumerStatefulWidget {
   const ProgressIndicatorWidget({
-    required this.documentsCreated,
-    required this.currentPhase,
-    this.projectPath,
+    required this.projectPath,
+    // Deprecated: estos parámetros ya no se usan (se leen de status.json)
+    this.documentsCreated = 0,
+    this.currentPhase = '',
     super.key,
   });
 
-  final int documentsCreated;
-  final String currentPhase;
   final String? projectPath;
+  @Deprecated('Use projectStatusProvider instead')
+  final int documentsCreated;
+  @Deprecated('Use projectStatusProvider instead')
+  final String currentPhase;
 
   @override
   ConsumerState<ProgressIndicatorWidget> createState() =>
@@ -44,13 +48,11 @@ class _ProgressIndicatorWidgetState
 
   void _updateAnimationController(bool enableAnimations) {
     if (enableAnimations && _shimmerController == null) {
-      // Inicializar animación si está habilitada y no existe
       _shimmerController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 1500),
       )..repeat();
     } else if (!enableAnimations && _shimmerController != null) {
-      // Detener y liberar animación si está deshabilitada
       _shimmerController!.dispose();
       _shimmerController = null;
     }
@@ -65,10 +67,113 @@ class _ProgressIndicatorWidgetState
   @override
   Widget build(BuildContext context) {
     final enableAnimations = ref.watch(enableAnimationsProvider);
-    final isGuideProject = widget.projectPath?.startsWith('mock://') ?? false;
-    final globalPercentage = isGuideProject
-        ? 1.0
-        : (widget.documentsCreated / _totalFiles).clamp(0.0, 1.0);
+
+    // Si no hay projectPath, mostrar estado inicial
+    if (widget.projectPath == null || widget.projectPath!.isEmpty) {
+      return _buildEmptyState();
+    }
+
+    // Observar el provider de estado del proyecto
+    final statusAsync = ref.watch(projectStatusProvider(widget.projectPath!));
+
+    return statusAsync.when(
+      data: (progress) {
+        final documentsCreated = progress.documentosCreados;
+        final currentPhase = progress.faseActual;
+        final progressPercent = progress.porcentajeCompletado;
+
+        return _buildProgressBar(
+          enableAnimations: enableAnimations,
+          documentsCreated: documentsCreated,
+          currentPhase: currentPhase,
+          progressPercent: progressPercent,
+        );
+      },
+      loading: _buildLoadingState,
+      error: (error, stack) {
+        debugPrint('⚠️ Error loading project status: $error');
+        return _buildEmptyState();
+      },
+    );
+  }
+
+  Widget _buildEmptyState() => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    decoration: const BoxDecoration(
+      color: AppColors.surfaceLight,
+      border: Border(bottom: BorderSide(color: AppColors.border)),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Generando: Raíz',
+              style: TextStyle(
+                color: AppColors.textMain,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              '0%',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+                fontFamily: 'JetBrains Mono',
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 8,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.surfaceBg,
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            '0 / $_totalFiles docs',
+            style: TextStyle(
+              color: AppColors.textSecondary.withValues(alpha: 0.5),
+              fontSize: 10,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget _buildLoadingState() => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    decoration: const BoxDecoration(
+      color: AppColors.surfaceLight,
+      border: Border(bottom: BorderSide(color: AppColors.border)),
+    ),
+    child: const Center(
+      child: SizedBox(
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      ),
+    ),
+  );
+
+  Widget _buildProgressBar({
+    required bool enableAnimations,
+    required int documentsCreated,
+    required String currentPhase,
+    required double progressPercent,
+  }) {
+    final globalPercentage = (progressPercent / 100).clamp(0.0, 1.0);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -94,13 +199,12 @@ class _ProgressIndicatorWidgetState
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           color: AppColors.primary,
-                          // Solo animar si las animaciones están habilitadas
                           value: enableAnimations ? null : 0.0,
                         ),
                       ),
                     ),
                   Text(
-                    'Generando: ${widget.currentPhase}',
+                    'Generando: $currentPhase',
                     style: const TextStyle(
                       color: AppColors.textMain,
                       fontSize: 12,
@@ -110,7 +214,7 @@ class _ProgressIndicatorWidgetState
                 ],
               ),
               Text(
-                '${(globalPercentage * 100).toInt()}%',
+                '${progressPercent.toInt()}%',
                 style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
@@ -125,7 +229,9 @@ class _ProgressIndicatorWidgetState
           // Barra Segmentada
           SizedBox(
             height: 8,
-            child: Row(children: _buildSegments(enableAnimations)),
+            child: Row(
+              children: _buildSegments(enableAnimations, documentsCreated),
+            ),
           ),
 
           const SizedBox(height: 4),
@@ -134,7 +240,7 @@ class _ProgressIndicatorWidgetState
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              '${widget.documentsCreated} / $_totalFiles docs',
+              '$documentsCreated / $_totalFiles docs',
               style: TextStyle(
                 color: AppColors.textSecondary.withValues(alpha: 0.5),
                 fontSize: 10,
@@ -146,7 +252,7 @@ class _ProgressIndicatorWidgetState
     );
   }
 
-  List<Widget> _buildSegments(bool enableAnimations) {
+  List<Widget> _buildSegments(bool enableAnimations, int documentsCreated) {
     final segments = <Widget>[];
     var accumulator = 0;
 
@@ -155,12 +261,11 @@ class _ProgressIndicatorWidgetState
       final startRange = accumulator;
       final endRange = accumulator + phase.fileCount;
 
-      var isCompleted = widget.documentsCreated >= endRange;
+      var isCompleted = documentsCreated >= endRange;
       var isActive =
-          widget.documentsCreated > startRange &&
-          widget.documentsCreated < endRange;
+          documentsCreated > startRange && documentsCreated < endRange;
 
-      if (widget.documentsCreated == startRange && phase.fileCount > 0) {
+      if (documentsCreated == startRange && phase.fileCount > 0) {
         isActive = true;
         isCompleted = false;
       }
@@ -169,7 +274,7 @@ class _ProgressIndicatorWidgetState
       if (isCompleted) {
         localProgress = 1.0;
       } else if (isActive) {
-        final filesDoneInPhase = widget.documentsCreated - startRange;
+        final filesDoneInPhase = documentsCreated - startRange;
         localProgress = filesDoneInPhase / phase.fileCount;
       }
 
@@ -227,30 +332,22 @@ class _PhaseSegment extends StatelessWidget {
       right: isLast ? const Radius.circular(4) : Radius.zero,
     );
 
-    // Fondo gris oscuro para la parte vacía
     const backgroundColor = AppColors.surfaceBg;
 
     return ClipRRect(
       borderRadius: borderRadius,
       child: Stack(
         children: [
-          // 1. Fondo (Base vacía)
           Container(color: backgroundColor),
-
-          // 2. Progreso de Relleno (Fill Color)
           FractionallySizedBox(
             widthFactor: localProgress.clamp(0.0, 1.0),
+            alignment: Alignment.centerLeft,
             child: Container(color: color),
           ),
-
-          // 3. Efecto Shimmer - Solo si animaciones están habilitadas
           if (isActive && enableAnimations && shimmerController != null)
             AnimatedBuilder(
               animation: shimmerController!,
               builder: (context, child) {
-                // Movemos el gradiente de izquierda a derecha
-                // Valores ajustados para asegurar que el
-                //brillo cruce toda la barra
                 final start = -1.5 + (shimmerController!.value * 3.5);
                 final end = start + 1.5;
                 final shimmerColor = Theme.of(context).colorScheme.onSurface;

@@ -167,7 +167,7 @@ void main() {
       // ✅ Required: Set project path before sending message
       await notifier.setProjectPath('/tmp/test_project');
 
-      notifier.sendMessage('Test message');
+      await notifier.sendMessageStream('Test message');
 
       // Wait for async operations
       await Future<void>.delayed(const Duration(milliseconds: 100));
@@ -187,7 +187,7 @@ void main() {
       // ✅ Required: Set project path before sending message
       await notifier.setProjectPath('/tmp/test_project');
 
-      notifier.sendMessage('Generate document');
+      await notifier.sendMessageStream('Generate document');
 
       // Wait for streaming to complete
       await Future<void>.delayed(const Duration(milliseconds: 150));
@@ -210,7 +210,7 @@ void main() {
         // ✅ Required: Set project path before sending message
         await notifier.setProjectPath('/tmp/test_project');
 
-        notifier.sendMessage('Create document');
+        await notifier.sendMessageStream('Create document');
 
         // Wait for streaming to complete and proposal to be created
         await Future<void>.delayed(const Duration(milliseconds: 200));
@@ -233,7 +233,7 @@ void main() {
       // ✅ Required: Set project path before sending message
       await notifier.setProjectPath('/tmp/test_project');
 
-      notifier.sendMessage('This will fail');
+      await notifier.sendMessageStream('This will fail');
 
       // Wait for error to be captured
       await Future<void>.delayed(const Duration(milliseconds: 150));
@@ -254,7 +254,7 @@ void main() {
       notifier.setProjectPath('/tmp/test_project');
 
       // Generate first document
-      notifier.sendMessage('First document');
+      await notifier.sendMessageStream('First document');
       await Future<void>.delayed(const Duration(milliseconds: 200));
 
       final initialState = container.read(chatNotifierProvider);
@@ -392,7 +392,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       // Generate document and wait for proposal
-      notifier.sendMessage('Generate document');
+      await notifier.sendMessageStream('Generate document');
       await Future<void>.delayed(const Duration(milliseconds: 220));
 
       final stateWithProposal = container.read(chatNotifierProvider);
@@ -414,7 +414,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       // Trigger error
-      notifier.sendMessage('Fail');
+      await notifier.sendMessageStream('Fail');
       await Future<void>.delayed(const Duration(milliseconds: 180));
 
       final stateWithError = container.read(chatNotifierProvider);
@@ -435,7 +435,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       // Send some messages first
-      notifier.sendMessage('Test message');
+      await notifier.sendMessageStream('Test message');
 
       // Reset for new project
       notifier.resetForNewProject(totalDocs: 30);
@@ -466,7 +466,7 @@ void main() {
 
       // Send successful message first
       fakeRepository.generatedTokens = ['First', ' ', 'message'];
-      notifier.sendMessage('First message');
+      await notifier.sendMessageStream('First message');
       await Future<void>.delayed(const Duration(milliseconds: 220));
 
       final initialState = container.read(chatNotifierProvider);
@@ -476,7 +476,7 @@ void main() {
       // Simulate error scenario by failing next message
       fakeRepository.shouldFail = true;
       fakeRepository.errorMessage = 'Connection error';
-      notifier.sendMessage('Second message');
+      await notifier.sendMessageStream('Second message');
       await Future<void>.delayed(const Duration(milliseconds: 180));
 
       final stateWithError = container.read(chatNotifierProvider);
@@ -502,7 +502,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       // Generate initial document
-      notifier.sendMessage('Generate document');
+      await notifier.sendMessageStream('Generate document');
       await Future<void>.delayed(const Duration(milliseconds: 220));
 
       final initialState = container.read(chatNotifierProvider);
@@ -579,7 +579,7 @@ void main() {
         ' ',
         'Description',
       ];
-      notifier.sendMessage('Generate README');
+      await notifier.sendMessageStream('Generate README');
       await Future<void>.delayed(const Duration(milliseconds: 250));
 
       // Validate the generated proposal
@@ -603,7 +603,7 @@ void main() {
         ' ',
         'Statement',
       ];
-      notifier.sendMessage('Generate project manifesto');
+      await notifier.sendMessageStream('Generate project manifesto');
       await Future<void>.delayed(const Duration(milliseconds: 250));
 
       // Validate the generated proposal
@@ -626,7 +626,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       fakeRepository.generatedTokens = ['# TEST DOC\n\n', 'Content'];
-      notifier.sendMessage('Generate document');
+      await notifier.sendMessageStream('Generate document');
       await Future<void>.delayed(const Duration(milliseconds: 250));
 
       final stateBeforeValidation = container.read(chatNotifierProvider);
@@ -652,7 +652,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       fakeRepository.generatedTokens = ['# DESIGN DOC\n\n', 'Architecture'];
-      notifier.sendMessage('Generate design doc');
+      await notifier.sendMessageStream('Generate design doc');
       await Future<void>.delayed(const Duration(milliseconds: 250));
 
       final stateBeforeValidation = container.read(chatNotifierProvider);
@@ -675,7 +675,7 @@ void main() {
 
         // Generate and validate first version
         fakeRepository.generatedTokens = ['# README\n\n', 'Version', ' ', '1'];
-        notifier.sendMessage('Generate README v1');
+        await notifier.sendMessageStream('Generate README v1');
         await Future<void>.delayed(const Duration(milliseconds: 250));
         await notifier.validateProposal();
 
@@ -684,7 +684,7 @@ void main() {
 
         // Generate and validate second version (should replace)
         fakeRepository.generatedTokens = ['# README\n\n', 'Version', ' ', '2'];
-        notifier.sendMessage('Generate README v2');
+        await notifier.sendMessageStream('Generate README v2');
         await Future<void>.delayed(const Duration(milliseconds: 250));
         await notifier.validateProposal();
 
@@ -705,7 +705,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       fakeRepository.generatedTokens = ['# TEST DOC\n\n', 'Content'];
-      notifier.sendMessage('Generate document');
+      await notifier.sendMessageStream('Generate document');
       await Future<void>.delayed(const Duration(milliseconds: 250));
 
       // Simulate filesystem error
@@ -726,7 +726,7 @@ void main() {
         await notifier.setProjectPath('/tmp/test_project');
 
         fakeRepository.generatedTokens = ['# PROPOSAL\n\n', 'Content'];
-        notifier.sendMessage('Generate proposal');
+        await notifier.sendMessageStream('Generate proposal');
         await Future<void>.delayed(const Duration(milliseconds: 250));
 
         final stateBeforeValidation = container.read(chatNotifierProvider);
@@ -747,7 +747,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       fakeRepository.generatedTokens = ['# DOC 1\n\n', 'Content'];
-      notifier.sendMessage('Generate doc 1');
+      await notifier.sendMessageStream('Generate doc 1');
       await Future<void>.delayed(const Duration(milliseconds: 250));
 
       final stateBeforeValidation = container.read(chatNotifierProvider);
@@ -767,7 +767,7 @@ void main() {
         await notifier.setProjectPath('/tmp/test_project');
 
         fakeRepository.generatedTokens = ['# DOC 1\n\n', 'Content'];
-        notifier.sendMessage('Generate doc 1');
+        await notifier.sendMessageStream('Generate doc 1');
         await Future<void>.delayed(const Duration(milliseconds: 250));
 
         final stateBeforeValidation = container.read(chatNotifierProvider);
@@ -789,7 +789,7 @@ void main() {
       // DON'T set project path
 
       fakeRepository.generatedTokens = ['# DOC\n\n', 'Content'];
-      notifier.sendMessage('Generate doc');
+      await notifier.sendMessageStream('Generate doc');
       await Future<void>.delayed(const Duration(milliseconds: 250));
 
       // Attempt validation without project path

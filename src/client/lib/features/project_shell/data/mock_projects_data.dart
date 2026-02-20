@@ -1,4 +1,4 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+// ignore_for_file: lines_longer_than_80_chars
 
 import 'dart:io';
 
@@ -12,7 +12,9 @@ String _formatModified(DateTime dateTime) {
   final now = DateTime.now();
   final diff = now.difference(dateTime);
   if (diff.inDays == 0) {
-    if (diff.inHours == 0) return 'Hace ${diff.inMinutes}m';
+    if (diff.inHours == 0) {
+      return 'Hace ${diff.inMinutes}m';
+    }
     return 'Hace ${diff.inHours}h';
   } else if (diff.inDays == 1) {
     return 'Ayer';
@@ -54,11 +56,11 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
   for (final pathStr in commonPaths) {
     try {
       final dir = Directory(pathStr);
-      if (await dir.exists()) {
+      if (dir.existsSync()) {
         final entities = dir.listSync();
         for (final entity in entities) {
           if (entity is Directory) {
-            final stat = await entity.stat();
+            final stat = entity.statSync();
             final name = p.basename(entity.path);
             projects.add({
               'id': name,
@@ -73,7 +75,7 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
           }
         }
       }
-    } catch (e) {
+    } on Exception catch (e) {
       // Ignorar errores de acceso a directorios
       debugPrint('⚠️ Error loading projects from $pathStr: $e');
     }
@@ -92,7 +94,7 @@ Future<List<Map<String, dynamic>>> getMockProjectsData() async {
     final realProjects = await _loadRealProjects();
     allProjects.addAll(realProjects);
     debugPrint('✅ Loaded ${realProjects.length} real projects');
-  } catch (e) {
+  } on Exception catch (e) {
     debugPrint('❌ Error loading real projects: $e');
   }
 

@@ -91,6 +91,15 @@ class ProjectNotFoundException extends ProjectShellException {
   String toUserMessage() => 'El proyecto no existe.';
 }
 
+/// Operation not allowed on this project
+class ProjectOperationException extends ProjectShellException {
+  ProjectOperationException(String message, {super.stackTrace})
+    : super(code: 'PROJ_004', message: message);
+
+  @override
+  String toUserMessage() => message;
+}
+
 /// Invalid file type
 class InvalidFileTypeException extends ProjectShellException {
   InvalidFileTypeException(String fileName, {super.stackTrace})
