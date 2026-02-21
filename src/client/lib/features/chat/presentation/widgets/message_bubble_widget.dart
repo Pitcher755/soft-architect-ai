@@ -265,7 +265,9 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   .refresh();
 
                               // Invalidate project status provider (triggers progress bar refresh)
-                              ref.invalidate(projectStatusProvider(projectRoot));
+                              ref.invalidate(
+                                projectStatusProvider(projectRoot),
+                              );
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(

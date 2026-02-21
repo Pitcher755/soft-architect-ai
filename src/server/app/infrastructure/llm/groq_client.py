@@ -57,12 +57,12 @@ class GroqClient(BaseLLMClient):
             stream = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=temperature
-                if temperature is not None
-                else 0.5,  # Un poco más bajo para mejor código/formato
-                max_tokens=max_tokens
-                if max_tokens is not None
-                else 8000,  # Necesitamos límite alto para documentos largos
+                temperature=(
+                    temperature if temperature is not None else 0.5
+                ),  # Un poco más bajo para mejor código/formato
+                max_tokens=(
+                    max_tokens if max_tokens is not None else 8000
+                ),  # Necesitamos límite alto para documentos largos
                 stream=True,
             )
 

@@ -26,9 +26,9 @@ class TestChatRequestValidation:
 
         Security: Prevents long-input DOS attacks (qwen2.5-coder:3b supports up to 32K tokens).
         """
-        long_message = "A" * 30001
+        long_message = "A" * 20001
 
-        with pytest.raises(ValueError, match="at most 30000 characters"):
+        with pytest.raises(ValueError, match="Message exceeds maximum length"):
             ChatRequest(
                 conversation_id=uuid4(),
                 message=long_message,
@@ -36,8 +36,8 @@ class TestChatRequestValidation:
             )
 
     def test_chat_request_accepts_exactly_30000_chars(self):
-        """Test boundary condition: accept exactly 30000 chars."""
-        boundary_message = "B" * 30000
+        """Test boundary condition: accept exactly 20000 chars."""
+        boundary_message = "B" * 20000
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -45,7 +45,7 @@ class TestChatRequestValidation:
             project_id=uuid4(),
         )
 
-        assert len(request.message) == 30000
+        assert len(request.message) == 20000
 
     def test_chat_request_escapes_html_entities(self):
         """Test XSS prevention: HTML entities must be escaped.
