@@ -9,7 +9,7 @@
 ## 📈 Progreso General
 
 ```
-Progreso Global: [█░░░░░░░░░░░] 5% (Fase 1 completada)
+Progreso Global: [█░░░░░░░░░░░] 8% (Fase 1 completada, Fase 2 iniciada)
 ```
 
 ### Desglose por Fases
@@ -17,7 +17,7 @@ Progreso Global: [█░░░░░░░░░░░] 5% (Fase 1 completada)
 | Fase | Estado | Progreso | Duración Est. | Duración Real | Completado |
 |------|--------|----------|---------------|---------------|------------|
 | **Fase 1:** Setup & Planning | ✅ Completado | 100% | 1h | 1h | 2026-02-21 |
-| **Fase 2:** Backend LLM Refinement | 🚧 Pendiente | 0% | 28.5h | - | - |
+| **Fase 2:** Backend LLM Refinement | 🚧 En Progreso | 15% | 28.5h | 2h | - |
 | **Fase 3:** Frontend Integration | ⏸️ Bloqueado | 0% | 5.5h | - | - |
 | **Fase 4:** Testing Suite | ⏸️ Bloqueado | 0% | 16h | - | - |
 | **Fase 5:** Deployment Homelab | ⏸️ Bloqueado | 0% | 12.5h | - | - |
@@ -42,17 +42,43 @@ Progreso Global: [█░░░░░░░░░░░] 5% (Fase 1 completada)
 
 ---
 
-## 🚧 Fase 2: Backend LLM Refinement (0% completado)
+## 🚧 Fase 2: Backend LLM Refinement (15% completado)
 
 **Objetivo:** Refinar comportamiento del Arquitecto IA con 10 reglas del system prompt
 
+### Tareas Completadas
+
+#### 2.1 Ajuste de Temperatura LLM ✅ (1h completado)
+- [x] Verificar temperatura en `src/server/app/infrastructure/llm/groq_client.py` (ya estaba en 0.7)
+- [x] Crear ADR-005 documentando decisión técnica (bilingüe)
+- [x] Documentar justificación: creatividad balanceada + coherencia
+- [x] Commit: `feat(llm): Refine system prompt and document temperature decision`
+
+#### 2.2 Refinamiento System Prompt ✅ (1h completado)
+- [x] Actualizar `template_builder.py` con 10 reglas mejoradas
+- [x] Enhanced RULE-01: Anti-Interview mode con preguntas clarificadoras
+- [x] Enhanced RULE-02: Proactividad total (sin placeholders)
+- [x] Enhanced RULE-03: Efecto WOW (emojis, tablas, tree blocks)
+- [x] Enhanced RULE-04: Limpieza `<document>` tag
+- [x] Enhanced RULE-05: Enforcement directorios (`context/` obligatorio)
+- [x] Enhanced RULE-06: Bloqueo por validación
+- [x] Añadir soporte inyección userName ("Developer" por defecto)
+
+**Duración completada:** 2 horas
+**Fecha:** 2026-02-21
+
 ### Tareas Pendientes
 
-#### 2.1 Ajuste de Temperatura LLM (1h estimado)
-- [ ] Modificar `src/server/services/llm/groq_client.py`
-- [ ] Cambiar temperatura de 0.5 a 0.6 (o 0.7 para mayor creatividad)
-- [ ] Crear ADR documentando justificación técnica
-- [ ] **Test:** Validar que respuestas LLM sean más creativas pero coherentes
+#### 2.3 Implementar Servicios de Soporte para Reglas (26.5h estimado)
+- [ ] **RULE-01:** Anti-Manifesto Automático (2h)
+  - [ ] Crear `short_prompt_detector.py`
+  - [ ] Integrar en `orchestrator.py`
+  - [ ] Tests: `test_short_prompt_detector.py` (5 tests)
+
+- [ ] **RULE-02:** Proactividad Total (3h)
+  - [ ] Crear `placeholder_detector.py`
+  - [ ] Integrar post-processing en orchestrator
+  - [ ] Tests: `test_placeholder_detector.py` (7 tests)
 
 #### 2.2 Implementar 10 Reglas System Prompt (20h estimado)
 - [ ] **RULE-01:** Anti-Manifesto Automático (2h)
@@ -229,9 +255,9 @@ Progreso Global: [█░░░░░░░░░░░] 5% (Fase 1 completada)
 
 | Métrica | Estimado | Actual | Target |
 |---------|----------|--------|--------|
-| **Duración Total** | 88.5h | 1h | - |
+| **Duración Total** | 88.5h | 3h | - |
 | **Días Trabajados** | - | 1 de 7 | 7 días |
-| **Progreso Global** | - | 5% | 100% |
+| **Progreso Global** | - | 8% | 100% |
 | **Fecha Estimada Completado** | - | - | 2026-02-28 |
 
 ---
@@ -293,21 +319,29 @@ Progreso Global: [█░░░░░░░░░░░] 5% (Fase 1 completada)
 ### Día 1: 2026-02-21 (Viernes)
 **Estado:** ✅ Completado
 **Trabajo realizado:**
+
+**Sesión 1: Setup & Planning (1h)**
 - ✅ Creada rama `feature/hu-5.0-full-workflow-refinement`
 - ✅ Mergeado `develop` (fast-forward, sin conflictos)
 - ✅ Añadido HU-5.0 a `USER_STORIES_MASTER.es.json` (Sprint 5)
-- ✅ Creada documentación inicial:
+- ✅ Creada documentación inicial bilingüe:
   - `doc/English/03-HU-TRACKING/HU-5.0-ARCHITECT-AI-REFINEMENT/README.md` (20K chars)
   - `doc/English/03-HU-TRACKING/HU-5.0-ARCHITECT-AI-REFINEMENT/PROGRESS.md` (11K chars)
   - `doc/English/03-HU-TRACKING/HU-5.0-ARCHITECT-AI-REFINEMENT/WORKFLOW.md` (35K chars)
-- ✅ Documentación en español iniciada
+  - `doc/Español/03-HU-TRACKING/HU-5.0-ARCHITECT-AI-REFINEMENT/` (3 docs)
+- ✅ Commit: `docs(hu-5.0): Inicializar documentación bilingüe HU-5.0`
 
-**Duración:** 1 hora
+**Sesión 2: Backend LLM Refinement (2h)**
+- ✅ Verificada temperatura LLM en `groq_client.py` (confirmado: 0.7)
+- ✅ Creado ADR-005 bilingüe documentando decisión temperatura
+- ✅ Refinado system prompt en `template_builder.py` (10 reglas mejoradas)
+- ✅ Añadido soporte inyección userName
+- ✅ Mejorado enforcement 24-document workflow
+- ✅ Commit: `feat(llm): Refine system prompt and document temperature decision`
+
+**Duración total:** 3 horas
 **Bloqueadores:** Ninguno
-**Próximos pasos:** Implementar RULE-01 (temperature + short prompt detection)
-
----
-
+**Próximos pasos:** Implementar servicios de soporte para RULE-01 y RULE-02
 ## 🎯 Próximas Acciones Prioritarias
 
 ### Día 2 (2026-02-22) - Foco Inmediato
