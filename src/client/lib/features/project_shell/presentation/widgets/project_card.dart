@@ -89,6 +89,10 @@ class ProjectCard extends ConsumerWidget {
     return ProjectPhase.root;
   }
 
+  /// Maps project phase to appropriate icon
+  /// Returns different icons based on development stage
+  IconData _getIconForPhase(ProjectPhase phase) => phase.icon;
+
   /// Shows a context menu with project options
   Future<void> _showContextMenu(
     BuildContext context,
@@ -408,11 +412,17 @@ class ProjectCard extends ConsumerWidget {
     );
 
     final actualPhaseColor = currentPhase.color;
-    final actualIconColor = iconColor ?? currentPhase.color;
-    final actualPhaseName = statusAsync.maybeWhen(
-      data: (progress) => progress.faseActual,
-      orElse: () => phase ?? ProjectPhase.root.name,
-    );
+    final actualIconColor = currentPhase.color; // Always use phase color
+
+    // For guide projects, show "Quick Start" instead of phase name
+    final isGuideProject = path.startsWith('mock://');
+    final actualPhaseName = isGuideProject
+        ? ProjectPhase.quickStart.name
+        : statusAsync.maybeWhen(
+            data: (progress) => progress.faseActual,
+            orElse: () => phase ?? ProjectPhase.root.name,
+          );
+
     final actualProgress = statusAsync.maybeWhen(
       data: (progress) => progress.porcentajeCompletado / 100,
       orElse: () => progress ?? 0.0,
@@ -421,10 +431,8 @@ class ProjectCard extends ConsumerWidget {
     return AspectRatio(
       aspectRatio: 1.9,
       child: GestureDetector(
-        onSecondaryTapDown: isMissing
-            ? null
-            : (details) =>
-                  _showContextMenu(context, ref, details.globalPosition),
+        onSecondaryTapDown: (details) =>
+            _showContextMenu(context, ref, details.globalPosition),
         child: Tooltip(
           message: isMissing
               ? '⚠️ Directorio faltante. Clic derecho para eliminar.'
@@ -474,7 +482,7 @@ class ProjectCard extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Icon(
-                                    icon,
+                                    _getIconForPhase(currentPhase),
                                     color: isMissing
                                         ? actualIconColor.withValues(alpha: 0.5)
                                         : actualIconColor,

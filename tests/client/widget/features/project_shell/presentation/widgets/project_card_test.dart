@@ -44,9 +44,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -82,9 +82,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -119,9 +119,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -156,9 +156,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -191,9 +191,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -202,15 +202,17 @@ void main() {
 
       // Find the Container with border decoration
       final container = tester.widget<Container>(
-        find.descendant(
-          of: find.byType(ProjectCard),
-          matching: find.byWidgetPredicate(
-            (widget) =>
-                widget is Container &&
-                widget.decoration is BoxDecoration &&
-                (widget.decoration as BoxDecoration).border != null,
-          ),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(ProjectCard),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is Container &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).border != null,
+              ),
+            )
+            .first,
       );
 
       final decoration = container.decoration as BoxDecoration;
@@ -243,9 +245,9 @@ void main() {
             isMissing: true, // Project directory is missing
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -275,9 +277,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => throw Exception('File read error'),
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => throw Exception('File read error')),
           ],
         ),
       );
@@ -289,9 +291,7 @@ void main() {
       expect(find.byType(ProjectCard), findsOneWidget);
     });
 
-    testWidgets('should display project metadata', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('should display project metadata', (WidgetTester tester) async {
       final mockProgress = ProjectProgress(
         documentosCreados: 10,
         faseActual: 'Requisitos',
@@ -311,9 +311,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -351,9 +351,9 @@ void main() {
             isMissing: false,
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -391,9 +391,9 @@ void main() {
             isMissing: true, // Missing project
           ),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -407,5 +407,201 @@ void main() {
       // Should not trigger callback
       expect(tapped, isFalse);
     });
+
+    testWidgets('should allow right-click context menu for missing projects', (
+      WidgetTester tester,
+    ) async {
+      final mockProgress = ProjectProgress(
+        documentosCreados: 0,
+        faseActual: ProjectPhase.root.name,
+        porcentajeCompletado: 0,
+        lastUpdated: DateTime.now(),
+      );
+
+      await tester.pumpWidget(
+        createTestApp(
+          ProjectCard(
+            name: testProjectName,
+            icon: Icons.folder,
+            path: testProjectPath,
+            modified: '5 mins ago',
+            onTap: () {},
+            projectId: testProjectId,
+            isMissing: true, // Missing project
+          ),
+          overrides: [
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
+          ],
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify GestureDetector has onSecondaryTapDown handler
+      // (context menu should be available even for missing projects)
+      final gestureDetectors = tester.widgetList<GestureDetector>(
+        find.byType(GestureDetector),
+      );
+
+      // Should have at least one GestureDetector with onSecondaryTapDown
+      final hasContextMenuHandler = gestureDetectors.any(
+        (gd) => gd.onSecondaryTapDown != null,
+      );
+
+      expect(
+        hasContextMenuHandler,
+        isTrue,
+        reason: 'Context menu should be available for missing projects',
+      );
+    });
+
+    testWidgets('should display icon with color matching current phase', (
+      WidgetTester tester,
+    ) async {
+      // Test with architecture phase
+      final mockProgress = ProjectProgress(
+        documentosCreados: 5,
+        faseActual: ProjectPhase.architecture.name,
+        porcentajeCompletado: 30,
+        lastUpdated: DateTime.now(),
+      );
+
+      await tester.pumpWidget(
+        createTestApp(
+          ProjectCard(
+            name: testProjectName,
+            icon: Icons.folder, // This will be replaced by dynamic icon
+            path: testProjectPath,
+            modified: '5 mins ago',
+            onTap: () {},
+            projectId: testProjectId,
+            isMissing: false,
+          ),
+          overrides: [
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
+          ],
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Find the icon widget
+      final iconFinder = find.byIcon(ProjectPhase.architecture.icon);
+
+      // The project card should display the architecture icon
+      expect(
+        iconFinder,
+        findsAtLeastNWidgets(1),
+        reason: 'Icon should match the architecture phase icon',
+      );
+
+      // Find the Icon widget and verify its color
+      final iconWidget = tester.widget<Icon>(iconFinder);
+      expect(
+        iconWidget.color,
+        ProjectPhase.architecture.color,
+        reason: 'Icon color should match the architecture phase color',
+      );
+    });
+
+    testWidgets('should display correct icon and color for planning phase', (
+      WidgetTester tester,
+    ) async {
+      final mockProgress = ProjectProgress(
+        documentosCreados: 8,
+        faseActual: ProjectPhase.planning.name,
+        porcentajeCompletado: 50,
+        lastUpdated: DateTime.now(),
+      );
+
+      await tester.pumpWidget(
+        createTestApp(
+          ProjectCard(
+            name: testProjectName,
+            icon: Icons.folder,
+            path: testProjectPath,
+            modified: '1 min ago',
+            onTap: () {},
+            projectId: testProjectId,
+            isMissing: false,
+          ),
+          overrides: [
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
+          ],
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify planning phase icon
+      final planningIconFinder = find.byIcon(ProjectPhase.planning.icon);
+      expect(
+        planningIconFinder,
+        findsAtLeastNWidgets(1),
+        reason: 'Icon should match the planning phase icon',
+      );
+
+      // Verify color
+      final iconWidget = tester.widget<Icon>(planningIconFinder);
+      expect(
+        iconWidget.color,
+        ProjectPhase.planning.color,
+        reason: 'Icon color should match the planning phase color',
+      );
+    });
+
+    testWidgets(
+      'should display "Quick start" for guide projects regardless of actual phase',
+      (WidgetTester tester) async {
+        // Guide project with completed phase
+        final mockProgress = ProjectProgress(
+          documentosCreados: 25,
+          faseActual: 'Proyecto Completado',
+          porcentajeCompletado: 100,
+          lastUpdated: DateTime.now(),
+        );
+
+        await tester.pumpWidget(
+          createTestApp(
+            ProjectCard(
+              name: 'Guía SoftArchitect',
+              icon: Icons.folder,
+              path: 'mock://guide-project', // Guide project path
+              modified: '1 min ago',
+              onTap: () {},
+              projectId: 'guide-1',
+              isMissing: false,
+            ),
+            overrides: [
+              projectStatusProvider(
+                'mock://guide-project',
+              ).overrideWith((ref) async => mockProgress),
+            ],
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify "Quick start" badge is shown instead of "Proyecto Completado"
+        expect(
+          find.text(ProjectPhase.quickStart.name),
+          findsOneWidget,
+          reason: 'Guide project should show "Quick start" in badge',
+        );
+
+        // Verify the actual phase name is NOT shown
+        expect(
+          find.text('Proyecto Completado'),
+          findsNothing,
+          reason: 'Guide project should not show actual phase name',
+        );
+      },
+    );
   });
 }
