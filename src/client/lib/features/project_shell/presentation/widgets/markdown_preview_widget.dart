@@ -7,7 +7,6 @@ import 'package:flutter_highlighter/themes/atom-one-dark.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'package:path/path.dart' as p;
 
 import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../filesystem/presentation/providers/filesystem_providers.dart';
@@ -56,49 +55,45 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
     }
 
     try {
-      // 1. Obtener root seguro
-      var projectRoot = ref.read(projectRootProvider);
-      if (projectRoot == null || projectRoot.isEmpty) {
-        final projects = ref.read(projectsProvider);
-        projectRoot = projects
-            .where((p) => !p.path.startsWith('mock://'))
-            .firstOrNull
-            ?.path;
-      }
+      // 1. widget.filename ya trae la ruta absoluta completa
+      final file = File(widget.filename!);
 
-      if (projectRoot == null) {
-        throw Exception('No project root found');
-      }
-
-      // 2. Normalizar ruta
-      final normalizedPath = widget.filename!.startsWith('/')
-          ? widget.filename!.substring(1)
-          : widget.filename!;
-
-      // 3. Construir ruta absoluta física
-      final absolutePath = p.join(projectRoot, normalizedPath);
-      final file = File(absolutePath);
-
-      // 4. Crear directorio padre si no existe
+      // 2. Crear directorio padre si no existe
       final parentDir = file.parent;
       if (!parentDir.existsSync()) {
         await parentDir.create(recursive: true);
       }
 
-      // 5. Escribir contenido directamente con dart:io
+      // 3. Escribir contenido directamente con dart:io
       await file.writeAsString(_textController.text, flush: true);
 
-      // 6. Actualizar progreso del proyecto
+      // 4. Actualizar progreso del proyecto
       try {
-        await ProjectProgressService.updateAfterDocumentSave(projectRoot);
+        // Extraer project root desde la ruta del archivo
+        var projectRoot = ref.read(projectRootProvider);
+        if (projectRoot == null || projectRoot.isEmpty) {
+          final projects = ref.read(projectsProvider);
+          projectRoot = projects
+              .where((p) => !p.path.startsWith('mock://'))
+              .firstOrNull
+              ?.path;
+        }
+
+        if (projectRoot != null) {
+          await ProjectProgressService.updateAfterDocumentSave(projectRoot);
+        }
       } on Exception catch (e) {
         debugPrint('⚠️ Error actualizando progreso: $e');
         // No bloqueamos por error en progreso
       }
 
-      // 7. Refrescar estado y salir de edición
+      // 5. Recargar el contenido desde el archivo guardado
+      final savedContent = await file.readAsString();
+
+      // 6. Refrescar estado y salir de edición
       setState(() {
         _isEditing = false;
+        _textController.text = savedContent; // Usar contenido guardado
       });
       ref.invalidate(fileSystemNotifierProvider);
       ref.read(fileSystemNotifierProvider.notifier).refresh();
@@ -148,10 +143,10 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
 
     return Container(
       color: Theme.of(context).colorScheme.surface,
-      child: Column(
+      child: Stack(
         children: [
-          SelectionContainer.disabled(child: _buildToolbar()),
-          Expanded(
+          // Base layer: content fills entire area
+          Positioned.fill(
             child: _isEditing
                 ? _buildEditorView()
                 : SelectionArea(
@@ -160,96 +155,93 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
                         : _buildMarkdownView(_textController.text),
                   ),
           ),
+          // Floating toolbar in top-right corner
+          Positioned(
+            top: 8,
+            right: 8,
+            child: _buildFloatingToolbar(context),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildToolbar() => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    decoration: const BoxDecoration(
-      color: Color(0xFF161B22),
-      border: Border(bottom: BorderSide(color: Color(0xFF30363D))),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Icon(
-              _isEditing ? Icons.edit_note : Icons.visibility_outlined,
-              size: 16,
-              color: _isEditing ? Colors.orangeAccent : const Color(0xFF8B949E),
+  // Floating toolbar with semi-transparent background
+  Widget _buildFloatingToolbar(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xFF161B22).withValues(alpha: 0.95),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xFF30363D)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            const SizedBox(width: 8),
-            Text(
-              widget.filename ?? 'Preview.md',
-              style: TextStyle(
-                color: _isEditing
-                    ? Colors.orangeAccent
-                    : const Color(0xFFC9D1D9),
-                fontSize: 12,
-                fontWeight: _isEditing ? FontWeight.bold : FontWeight.normal,
-                fontFamily: 'JetBrains Mono',
-              ),
-            ),
-            if (_isEditing)
-              const Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: Text(
-                  '(Modo Edición)',
-                  style: TextStyle(color: Colors.orangeAccent, fontSize: 10),
-                ),
-              ),
           ],
         ),
-        Row(
-          children: [
-            if (_isEditing) ...[
-              _ToolbarButton(
-                icon: Icons.close_rounded,
-                tooltip: 'Cancelar edición',
-                color: Colors.redAccent,
-                onPressed: () {
-                  setState(() {
-                    _isEditing = false;
-                    _textController.text =
-                        widget.content ?? ''; // Revertir cambios
-                  });
-                },
-              ),
-              const SizedBox(width: 8),
-              FilledButton.icon(
-                onPressed: _saveEdits,
-                icon: const Icon(Icons.save, size: 14),
-                label: const Text('Guardar', style: TextStyle(fontSize: 12)),
-                style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xFF238636),
-                  visualDensity: VisualDensity.compact,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: SelectionContainer.disabled(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_isEditing) ...[
+                // Cancel button
+                _ToolbarButton(
+                  icon: Icons.close_rounded,
+                  tooltip: 'Cancelar edición',
+                  color: Colors.redAccent,
+                  onPressed: () {
+                    setState(() {
+                      _isEditing = false;
+                      _textController.text =
+                          widget.content ?? ''; // Revertir cambios
+                    });
+                  },
                 ),
-              ),
-            ] else ...[
-              _ToolbarButton(
-                icon: Icons.edit_rounded,
-                tooltip: 'Editar archivo',
-                onPressed: () {
-                  setState(() {
-                    _isEditing = true;
-                  });
-                },
-              ),
-              _ToolbarButton(
-                icon: Icons.copy_rounded,
-                tooltip: 'Copiar contenido',
-                onPressed: _handleCopy,
-              ),
+                const SizedBox(width: 4),
+                // Save button
+                SizedBox(
+                  height: 32,
+                  child: FilledButton.icon(
+                    onPressed: _saveEdits,
+                    icon: const Icon(Icons.save, size: 14),
+                    label: const Text('Guardar', style: TextStyle(fontSize: 12)),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: const Color(0xFF238636),
+                      visualDensity: VisualDensity.compact,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                    ),
+                  ),
+                ),
+              ] else ...[
+                // Edit button
+                _ToolbarButton(
+                  icon: Icons.edit_rounded,
+                  tooltip: 'Editar archivo',
+                  onPressed: () {
+                    setState(() {
+                      _isEditing = true;
+                    });
+                  },
+                ),
+                const SizedBox(width: 4),
+                // Copy button
+                _ToolbarButton(
+                  icon: Icons.copy_rounded,
+                  tooltip: 'Copiar contenido',
+                  onPressed: _handleCopy,
+                ),
+              ],
             ],
-          ],
+          ),
         ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 
   Widget _buildEditorView() => Container(
     color: const Color(0xFF0D1117), // Fondo oscuro IDE

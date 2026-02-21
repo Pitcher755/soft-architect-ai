@@ -49,12 +49,11 @@ void main() {
         const MaterialApp(home: Scaffold(body: MarkdownPreviewWidget())),
       );
 
-      // Widget renders without crashing, no empty state text required
+      // Widget renders without crashing
       expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
-      expect(
-        find.byIcon(Icons.visibility_outlined),
-        findsOneWidget,
-      ); // Toolbar icon
+      // Floating toolbar should have edit and copy buttons
+      expect(find.byIcon(Icons.edit_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.copy_rounded), findsOneWidget);
     });
 
     testWidgets('should display widget when content is empty', (
@@ -66,12 +65,10 @@ void main() {
         ),
       );
 
-      // Widget renders without crashing, shows toolbar with default filename
+      // Widget renders without crashing, shows toolbar with edit/copy buttons
       expect(find.byType(MarkdownPreviewWidget), findsOneWidget);
-      expect(
-        find.text('Preview.md'),
-        findsOneWidget,
-      ); // Default filename in toolbar
+      expect(find.byIcon(Icons.edit_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.copy_rounded), findsOneWidget);
     });
 
     testWidgets('should display markdown content when provided', (
@@ -91,14 +88,15 @@ void main() {
         ),
       );
 
-      // Should display the filename in the header
-      expect(find.text(filename), findsOneWidget);
-
       // Should render markdown content
       expect(find.byType(Markdown), findsOneWidget);
 
       // Should contain the rendered text
       expect(find.text('Hello World'), findsOneWidget);
+
+      // Should have floating toolbar buttons
+      expect(find.byIcon(Icons.edit_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.copy_rounded), findsOneWidget);
     });
 
     testWidgets('should display header with filename when provided', (
@@ -325,9 +323,13 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      // Should render HighlightView for JSON
       expect(find.byType(HighlightView), findsOneWidget);
       expect(find.byType(Markdown), findsNothing);
-      expect(find.text('data.json'), findsOneWidget);
+
+      // Should have floating toolbar buttons
+      expect(find.byIcon(Icons.edit_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.copy_rounded), findsOneWidget);
     });
 
     testWidgets('copy button should execute action without crashing', (
