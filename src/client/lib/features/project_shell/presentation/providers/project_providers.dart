@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/legacy.dart' as legacy;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../services/database_helper.dart';
+import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/entities/project_progress.dart';
 import '../../domain/models/project_phase.dart';
@@ -327,6 +328,9 @@ final projectProgressProvider =
 ///
 /// If the file doesn't exist, returns an initial state with 0%.
 ///
+/// **REACTIVE:** This provider watches fileSystemNotifierProvider,
+/// so it automatically recalculates when files are added/removed.
+///
 /// Usage:
 /// ```dart
 /// final status = ref.watch(projectStatusProvider(projectPath));
@@ -340,6 +344,10 @@ final projectStatusProvider = FutureProvider.family<ProjectProgress, String>((
   ref,
   projectPath,
 ) async {
+  // Watch fileSystemNotifierProvider to make this provider reactive
+  // When filesystem changes (new files created), this provider recalculates
+  ref.watch(fileSystemNotifierProvider);
+
   // For mock projects (guide), return a completed state
   if (projectPath.startsWith('mock://')) {
     return ProjectProgress(

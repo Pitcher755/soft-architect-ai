@@ -258,10 +258,14 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 debugPrint('⚠️ Error updating progress: $e');
                               }
 
+                              // Invalidate filesystem provider (triggers file tree refresh)
                               ref.invalidate(fileSystemNotifierProvider);
                               ref
                                   .read(fileSystemNotifierProvider.notifier)
                                   .refresh();
+
+                              // Invalidate project status provider (triggers progress bar refresh)
+                              ref.invalidate(projectStatusProvider(projectRoot));
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
