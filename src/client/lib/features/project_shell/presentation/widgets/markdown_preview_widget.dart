@@ -32,13 +32,47 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.content ?? '');
+    // Si hay filename, leer el contenido real del archivo
+    if (widget.filename != null) {
+      _loadFileContent();
+    }
   }
 
   @override
   void didUpdateWidget(MarkdownPreviewWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.content != widget.content && !_isEditing) {
+    // Si cambia el filename, recargar desde archivo
+    if (oldWidget.filename != widget.filename && widget.filename != null) {
+      _loadFileContent();
+    }
+    // Si no hay filename y cambia el content
+    else if (widget.filename == null &&
+        oldWidget.content != widget.content &&
+        !_isEditing) {
       _textController.text = widget.content ?? '';
+    }
+  }
+
+  // Cargar contenido directamente desde el archivo físico
+  Future<void> _loadFileContent() async {
+    try {
+      final file = File(widget.filename!);
+      if (await file.exists()) {
+        final content = await file.readAsString();
+        if (mounted && !_isEditing) {
+          setState(() {
+            _textController.text = content;
+          });
+        }
+      }
+    } on Exception catch (e) {
+      debugPrint('⚠️ Error leyendo archivo: $e');
+      // Fallback a widget.content si falla la lectura
+      if (mounted && !_isEditing) {
+        setState(() {
+          _textController.text = widget.content ?? '';
+        });
+      }
     }
   }
 
@@ -87,14 +121,15 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
         // No bloqueamos por error en progreso
       }
 
-      // 5. Recargar el contenido desde el archivo guardado
-      final savedContent = await file.readAsString();
-
-      // 6. Refrescar estado y salir de edición
+      // 5. Salir de modo edición
       setState(() {
         _isEditing = false;
-        _textController.text = savedContent; // Usar contenido guardado
       });
+
+      // 6. Recargar contenido desde archivo físico (asegura persistencia)
+      await _loadFileContent();
+
+      // 7. Refrescar filesystem notifier
       ref.invalidate(fileSystemNotifierProvider);
       ref.read(fileSystemNotifierProvider.notifier).refresh();
 
@@ -156,92 +191,90 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
                   ),
           ),
           // Floating toolbar in top-right corner
-          Positioned(
-            top: 8,
-            right: 8,
-            child: _buildFloatingToolbar(context),
-          ),
+          Positioned(top: 8, right: 8, child: _buildFloatingToolbar(context)),
         ],
       ),
     );
   }
 
   // Floating toolbar with semi-transparent background
-  Widget _buildFloatingToolbar(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF161B22).withValues(alpha: 0.95),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xFF30363D)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: SelectionContainer.disabled(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (_isEditing) ...[
-                // Cancel button
-                _ToolbarButton(
-                  icon: Icons.close_rounded,
-                  tooltip: 'Cancelar edición',
-                  color: Colors.redAccent,
-                  onPressed: () {
-                    setState(() {
-                      _isEditing = false;
-                      _textController.text =
-                          widget.content ?? ''; // Revertir cambios
-                    });
-                  },
-                ),
-                const SizedBox(width: 4),
-                // Save button
-                SizedBox(
-                  height: 32,
-                  child: FilledButton.icon(
-                    onPressed: _saveEdits,
-                    icon: const Icon(Icons.save, size: 14),
-                    label: const Text('Guardar', style: TextStyle(fontSize: 12)),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF238636),
-                      visualDensity: VisualDensity.compact,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                    ),
+  Widget _buildFloatingToolbar(BuildContext context) => Material(
+    color: Colors.transparent,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF161B22).withValues(alpha: 0.95),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFF30363D)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: SelectionContainer.disabled(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_isEditing) ...[
+              // Cancel button
+              _ToolbarButton(
+                icon: Icons.close_rounded,
+                tooltip: 'Cancelar edición',
+                color: Colors.redAccent,
+                onPressed: () {
+                  setState(() {
+                    _isEditing = false;
+                  });
+                  // Recargar contenido desde archivo (descarta cambios no guardados)
+                  if (widget.filename != null) {
+                    _loadFileContent();
+                  } else {
+                    _textController.text = widget.content ?? '';
+                  }
+                },
+              ),
+              const SizedBox(width: 4),
+              // Save button
+              SizedBox(
+                height: 32,
+                child: FilledButton.icon(
+                  onPressed: _saveEdits,
+                  icon: const Icon(Icons.save, size: 14),
+                  label: const Text('Guardar', style: TextStyle(fontSize: 12)),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFF238636),
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                   ),
                 ),
-              ] else ...[
-                // Edit button
-                _ToolbarButton(
-                  icon: Icons.edit_rounded,
-                  tooltip: 'Editar archivo',
-                  onPressed: () {
-                    setState(() {
-                      _isEditing = true;
-                    });
-                  },
-                ),
-                const SizedBox(width: 4),
-                // Copy button
-                _ToolbarButton(
-                  icon: Icons.copy_rounded,
-                  tooltip: 'Copiar contenido',
-                  onPressed: _handleCopy,
-                ),
-              ],
+              ),
+            ] else ...[
+              // Edit button
+              _ToolbarButton(
+                icon: Icons.edit_rounded,
+                tooltip: 'Editar archivo',
+                onPressed: () {
+                  setState(() {
+                    _isEditing = true;
+                  });
+                },
+              ),
+              const SizedBox(width: 4),
+              // Copy button
+              _ToolbarButton(
+                icon: Icons.copy_rounded,
+                tooltip: 'Copiar contenido',
+                onPressed: _handleCopy,
+              ),
             ],
-          ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
 
   Widget _buildEditorView() => Container(
     color: const Color(0xFF0D1117), // Fondo oscuro IDE
