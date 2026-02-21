@@ -2,18 +2,18 @@
 
 > **Modelo:** Communicating Sequential Processes (CSP)
 > **Mantra:** "Do not communicate by sharing memory; instead, share memory by communicating."
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 La filosofía de Go: procesos ligeros que se comunican por canales, no threads pesados que comparten memoria.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Goroutines: Threads Ligeros](#goroutines-threads-ligeros)
 2. [Channels: Tuberías de Comunicación](#channels-tuberías-de-comunicación)
-3. [Patrones: Worker Pool](#patrones-worker-pool)
-4. [Patrones: Fan-Out/Fan-In](#patrones-fan-outfan-in)
+3. [Patterns: Worker Pool](#patrones-worker-pool)
+4. [Patterns: Fan-Out/Fan-In](#patrones-fan-outfan-in)
 5. [Select: Multiplexing](#select-multiplexing)
 6. [Anti-Patterns](#anti-patterns)
 
@@ -205,7 +205,7 @@ func main() {
 
 ---
 
-## Patrones: Worker Pool
+## Patterns: Worker Pool
 
 Procesar N jobs con M workers (limitar concurrencia).
 
@@ -253,7 +253,7 @@ Worker 0 processing job 4
 
 ---
 
-## Patrones: Fan-Out/Fan-In
+## Patterns: Fan-Out/Fan-In
 
 Distribuir trabajo a múltiples workers y recopilar resultados.
 
@@ -548,6 +548,6 @@ func main() {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ CSP CONCURRENCY PATTERNS READY
 **Responsable:** ArchitectZero AI Agent

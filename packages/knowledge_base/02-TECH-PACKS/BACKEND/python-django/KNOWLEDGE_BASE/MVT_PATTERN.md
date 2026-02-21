@@ -1,20 +1,20 @@
 # 🏛️ Django MVT Pattern: Model-View-Template Clarified
 
-> **Versión:** Django 4.2+ LTS
+> **Version:** Django 4.2+ LTS
 > **Paradigma:** Monolítico, Baterías Incluidas, MTV (Model-Template-View)
 > **Filosofía:** "Convention over Configuration" + "The Framework Way"
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [La Confusión Fundamental: MVT vs MVC](#la-confusión-fundamental)
 2. [Componentes de la Trinidad Django](#componentes-de-la-trinidad)
 3. [Fat Models, Thin Views (Regla de Oro)](#fat-models-thin-views)
 4. [Service Layer (El Patrón Híbrido)](#service-layer)
-5. [Patrones de Request-Response](#patrones-de-request-response)
+5. [Patterns de Request-Response](#patrones-de-request-response)
 6. [Errores Comunes en Django](#errores-comunes)
 7. [Ejemplo Completo: E-commerce](#ejemplo-completo)
 
@@ -402,7 +402,7 @@ class CheckoutView(View):
 
 ---
 
-## Patrones de Request-Response
+## Patterns de Request-Response
 
 ### 1. Form Handling (Validación)
 

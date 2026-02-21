@@ -12,5 +12,24 @@ class TemplateBuilderProtocol(ABC):
         """Select the appropriate template identifier."""
 
     @abstractmethod
-    def build_prompt(self, query: str, context: list[str], template_id: str) -> str:
-        """Build final prompt with query and retrieved context."""
+    def build_prompt(
+        self,
+        query: str,
+        context: list[str],
+        template_id: str,
+        history: list[dict[str, str]] | None = None,
+    ) -> str:
+        """
+        Build final prompt with query, context, and optional history.
+
+        ✅ UPDATED: Now supports optional chat history parameter.
+
+        Args:
+            query: User's current question
+            context: RAG-retrieved knowledge snippets
+            template_id: Selected template identifier
+            history: Optional chat history (list of {"role": str, "content": str})
+
+        Returns:
+            Complete formatted prompt ready for LLM
+        """

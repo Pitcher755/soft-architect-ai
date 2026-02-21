@@ -21,7 +21,7 @@ router = APIRouter(prefix="/rag/test", tags=["RAG Testing"])
 class QueryRequest(BaseModel):
     """Request model for RAG test queries."""
 
-    question: str = Field(..., min_length=1, max_length=500, description="Query text")
+    question: str = Field(..., min_length=1, max_length=30000, description="Query text")
     limit: int = Field(default=3, ge=1, le=10, description="Max results to return")
 
     model_config = {

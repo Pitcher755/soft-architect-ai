@@ -1,14 +1,14 @@
 # 🌊 Kotlin Coroutines & Flow: Structured Concurrency
 
-> **Concepto:** Lightweight threads, non-blocking async
+> **Concept:** Lightweight threads, non-blocking async
 > **Scope:** Lifecycle-aware (`viewModelScope`, `lifecycleScope`)
 > **Min API:** 21+
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Established
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Coroutines Basics](#coroutines-basics)
 2. [Suspend Functions](#suspend-functions)
@@ -22,20 +22,20 @@
 
 ## Coroutines Basics
 
-### ¿Por Qué Coroutines?
+### Why Coroutines?
 
 ```kotlin
-// ❌ Viejo: Callbacks Hell
+// ❌ Old: Callbacks Hell
 apiService.getUser("123", object : Callback<User> {
     override fun onSuccess(user: User) {
         apiService.getPosts(user.id, object : Callback<List<Post>> {
             override fun onSuccess(posts: List<Post>) {
-                // Nesting profundo = legibilidad mala
+                // Deep nesting = bad readability
                 println("User: ${user.name}, Posts: ${posts.size}")
             }
 
             override fun onError(error: Throwable) {
-                // Manejo de error duplicado
+                // Duplicate error handling
             }
         })
     }
@@ -43,7 +43,7 @@ apiService.getUser("123", object : Callback<User> {
     override fun onError(error: Throwable) { }
 })
 
-// ✅ Moderno: Coroutines (código secuencial, no bloqueante)
+// ✅ Modern: Coroutines (sequential code, non-blocking)
 viewModelScope.launch {
     try {
         val user = apiService.getUser("123")
@@ -59,37 +59,37 @@ viewModelScope.launch {
 
 ## Suspend Functions
 
-### Qué son Suspend Functions
+### What are Suspend Functions
 
 ```kotlin
-// "suspend" = puede pausar sin bloquear el hilo
+// "suspend" = can pause without blocking the thread
 suspend fun fetchUser(id: String): User {
-    // Retorna el resultado después de esperar (sin bloquear)
+    // Returns the result after waiting (without blocking)
     return withContext(Dispatchers.IO) {
-        apiService.getUser(id)  // Llamada de red
+        apiService.getUser(id)  // Network call
     }
 }
 
-// Uso: Solo dentro de una corrutina
+// Usage: Only inside a coroutine
 viewModelScope.launch {
-    val user = fetchUser("123")  // ✅ Funciona
+    val user = fetchUser("123")  // ✅ Works
 }
 
-// ❌ No se puede llamar desde contexto síncrono
-// val user = fetchUser("123")  // ❌ Error de compilación
+// ❌ Cannot call from synchronous context
+// val user = fetchUser("123")  // ❌ Compilation error
 ```
 
-### withContext: Cambiar Dispatcher
+### withContext: Switch Dispatcher
 
 ```kotlin
 suspend fun loadData(): String {
-    // Por defecto en Main thread
+    // Default on Main thread
 
     val result = withContext(Dispatchers.IO) {
-        // Cambiar a IO thread para operación de red
+        // Switch to IO thread for network operation
         apiService.fetchData()
     }
-    // Vuelve a Main thread automáticamente
+    // Automatically returns to Main thread
 
     return result
 }
@@ -99,42 +99,42 @@ suspend fun loadData(): String {
 
 ## Dispatchers
 
-### Tres Dispatchers Principales
+### Three Main Dispatchers
 
 ```kotlin
-// 1. Dispatchers.Main: UI thread (actualizar UI)
+// 1. Dispatchers.Main: UI thread (update UI)
 viewModelScope.launch(Dispatchers.Main) {
-    updateUI()  // Seguro para UI
+    updateUI()  // Safe for UI
 }
 
 // 2. Dispatchers.IO: Network/Database I/O
 viewModelScope.launch(Dispatchers.IO) {
-    val data = apiService.fetchData()  // No bloquea Main
+    val data = apiService.fetchData()  // Doesn't block Main
 }
 
 // 3. Dispatchers.Default: CPU-intensive
 viewModelScope.launch(Dispatchers.Default) {
-    val result = heavyComputation()  // No bloquea Main
+    val result = heavyComputation()  // Doesn't block Main
 }
 ```
 
-### Conversión Entre Threads
+### Switching Between Threads
 
 ```kotlin
 suspend fun processUserData(userId: String): User {
-    // 1. Cambiar a IO (red)
+    // 1. Switch to IO (network)
     val apiData = withContext(Dispatchers.IO) {
         apiService.getUser(userId)
     }
 
-    // 2. Cambiar a Default (procesamiento)
+    // 2. Switch to Default (processing)
     val processed = withContext(Dispatchers.Default) {
         val normalized = apiData.name.uppercase()
         val validated = validateEmail(apiData.email)
         apiData.copy(name = normalized)
     }
 
-    // 3. Vuelve a Main (UI updates)
+    // 3. Return to Main (UI updates)
     return processed
 }
 ```
@@ -151,25 +151,25 @@ class UserViewModel : ViewModel() {
     val user: LiveData<User> = _user
 
     fun loadUser(id: String) {
-        // viewModelScope = cancela automáticamente si ViewModel muere
+        // viewModelScope = automatically cancels if ViewModel dies
         viewModelScope.launch {
             try {
                 val userData = apiService.getUser(id)
                 _user.value = userData
             } catch (e: Exception) {
-                // Manejo de error
+                // Error handling
             }
         }
     }
 
-    // Limpieza automática en onCleared()
+    // Automatic cleanup in onCleared()
     override fun onCleared() {
         super.onCleared()
-        // viewModelScope.coroutineContext.cancel()  // Automático
+        // viewModelScope.coroutineContext.cancel()  // Automatic
     }
 }
 
-// Uso en Activity/Fragment
+// Usage in Activity/Fragment
 class UserActivity : AppCompatActivity() {
     private val viewModel: UserViewModel by viewModels()
 
@@ -190,10 +190,10 @@ class UserActivity : AppCompatActivity() {
 ```kotlin
 // launch: "fire and forget"
 viewModelScope.launch {
-    apiService.uploadData()  // No esperar resultado
+    apiService.uploadData()  // Don't wait for result
 }
 
-// async: "esperar resultado"
+// async: "wait for result"
 viewModelScope.launch {
     val result = async { apiService.fetchData() }.await()
     _data.value = result
@@ -274,7 +274,7 @@ val userWithPosts = combine(
     Pair(user, posts)
 }
 
-// catch: Manejo de errores
+// catch: Error handling
 userFlow
     .catch { e ->
         println("Error: ${e.message}")
@@ -308,7 +308,7 @@ class UserViewModel : ViewModel() {
     }
 }
 
-// En View (Compose)
+// In View (Compose)
 @Composable
 fun UserScreen(viewModel: UserViewModel) {
     val state by viewModel.state.collectAsState()
@@ -324,7 +324,7 @@ fun UserScreen(viewModel: UserViewModel) {
 ### SharedFlow: Event Broadcasting
 
 ```kotlin
-// SharedFlow para eventos (sin estado anterior)
+// SharedFlow for events (no previous state)
 class EventBus {
     private val _events = MutableSharedFlow<Event>()
     val events: SharedFlow<Event> = _events.asSharedFlow()
@@ -334,7 +334,7 @@ class EventBus {
     }
 }
 
-// Uso
+// Usage
 viewModelScope.launch {
     eventBus.events
         .filter { it is Event.UserDeleted }
@@ -348,7 +348,7 @@ viewModelScope.launch {
 
 ## Error Handling
 
-### Try-Catch en Corrutinas
+### Try-Catch in Coroutines
 
 ```kotlin
 viewModelScope.launch {
@@ -370,22 +370,22 @@ viewModelScope.launch {
 ```kotlin
 userFlow
     .catch { e ->
-        // Manejo de error
+        // Error handling
         _error.value = e.message
-        emit(User())  // O emitir valor por defecto
+        emit(User())  // Or emit default value
     }
     .collect { user -> /* ... */ }
 
-// Alternativamente
+// Alternatively
 userFlow
     .catch { e -> println("Error: $e") }
-    .retry(3)  // Reintentar 3 veces
+    .retry(3)  // Retry 3 times
     .collect { user -> /* ... */ }
 ```
 
 ---
 
-## Ejemplo Completo: User Search
+## Complete Example: User Search
 
 ```kotlin
 class SearchViewModel : ViewModel() {
@@ -397,11 +397,11 @@ class SearchViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             _searchQuery
-                .debounce(300)  // Esperar 300ms
+                .debounce(300)  // Wait 300ms
                 .distinctUntilChanged()
-                .filter { it.isNotEmpty() }  // Ignorar vacíos
+                .filter { it.isNotEmpty() }  // Ignore empties
                 .flatMapLatest { query ->
-                    apiService.searchUsers(query)  // Llamada de red
+                    apiService.searchUsers(query)  // Network call
                         .catch { e ->
                             _results.value = emptyList()
                             emit(emptyList())
@@ -444,18 +444,18 @@ fun SearchScreen(viewModel: SearchViewModel) {
 
 ---
 
-## Resumen: Coroutines Mastery
+## Summary: Coroutines Mastery
 
-✅ **Principios:**
-- `suspend` = pausa sin bloquear
-- `Dispatchers` para cambiar contexto
-- `viewModelScope` para lifecycle-aware
-- `Flow` para streams continuos
+✅ **Principles:**
+- `suspend` = pause without blocking
+- `Dispatchers` to switch context
+- `viewModelScope` for lifecycle-aware
+- `Flow` for continuous streams
 
-✅ **Mejores Prácticas:**
-- Siempre usar `viewModelScope` (nunca `GlobalScope`)
-- `StateFlow` para estado UI
-- `Flow` con `collect` para streams
-- Manejo de errores con `try-catch` o `.catch()`
+✅ **Best Practices:**
+- Always use `viewModelScope` (never `GlobalScope`)
+- `StateFlow` for UI state
+- `Flow` with `collect` for streams
+- Error handling with `try-catch` or `.catch()`
 
-Coroutines son el alma asincrónica de Kotlin/Android. 🌊✨
+Coroutines are the asynchronous soul of Kotlin/Android. 🌊✨

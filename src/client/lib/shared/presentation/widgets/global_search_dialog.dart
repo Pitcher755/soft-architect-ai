@@ -213,6 +213,8 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
                           phase: phase.name,
                           phaseColor: phase.color,
                           path: project.path,
+                          projectId: project.id,
+                          isMissing: project.isMissing,
                           modified: modified,
                           onTap: () {
                             Navigator.of(context).pop(); // Close dialog first

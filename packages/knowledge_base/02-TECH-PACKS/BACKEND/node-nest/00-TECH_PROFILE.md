@@ -4,13 +4,13 @@
 > **Filosofía:** "Angular para el Backend"
 > **Stack Base:** Express o Fastify (Abstracted)
 > **Paradigma:** Inyección de Dependencias + Decoradores
-> **Versión Objetivo:** NestJS 10+
+> **Versión Goal:** NestJS 10+
 
 NestJS es el framework estándar para arquitecturas escalables en Node.js. Si Angular es el estándar frontend enterprise, NestJS es su contraparte backend.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [¿Por Qué NestJS?](#por-qué-nestjs)
 2. [NestJS vs Express vs Fastify](#nestjs-vs-express-vs-fastify)
@@ -58,7 +58,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)           // Seguridad declarativa
+  @UseGuards(JwtAuthGuard)           // Security declarativa
   @UsePipes(ValidationPipe)          // Validación automática
   create(@Body() createUserDto: CreateUserDto) {
     // Lógica pura: validación y error handling se hacen automáticamente
@@ -69,7 +69,7 @@ export class UsersController {
 
 **Ventajas:**
 - ✅ Estructura predecible (todos los equipos siguen el mismo patrón)
-- ✅ Seguridad declarativa (Guards, Pipes)
+- ✅ Security declarativa (Guards, Pipes)
 - ✅ Validación automática (Decoradores)
 - ✅ Error handling estándar (Exception Filters)
 - ✅ DI integrado (inyección de dependencias)
@@ -81,7 +81,7 @@ export class UsersController {
 
 | Aspecto | NestJS | Express | Fastify |
 |:---|:---:|:---:|:---:|
-| **Arquitectura** | Opinions + Modular | Minimal | Minimal |
+| **Architecture** | Opinions + Modular | Minimal | Minimal |
 | **Learning Curve** | Steep (pero predecible) | Gradual | Gradual |
 | **Performance** | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
 | **TypeScript** | ✅ Native | ⚠️ Manual | ⚠️ Manual |
@@ -138,7 +138,7 @@ export class UsersController {
   constructor(private service: UsersService) {} // DI automática
 
   @Get(':id')                          // GET /users/:id
-  @UseGuards(JwtAuthGuard)             // Seguridad
+  @UseGuards(JwtAuthGuard)             // Security
   @UseInterceptors(LoggingInterceptor) // Logging
   findOne(@Param('id') id: string) {
     return this.service.findOne(id);
@@ -224,13 +224,13 @@ Stack Recomendado (TRAMA 5.2 - NestJS Backend)
 ## Ventajas Competitivas para SoftArchitect
 
 1. **Simetría Frontend-Backend:** Angular ↔ NestJS (mismos principios: DI, Decoradores, Módulos)
-2. **Enterprise Ready:** Seguridad, validación, error handling OOTB
+2. **Enterprise Ready:** Security, validación, error handling OOTB
 3. **Microservicios:** Transporte nativo (gRPC, RabbitMQ, Kafka)
 4. **Escalabilidad:** Estructura predecible permite crecimiento sin "refactoring catastrophe"
 5. **TypeScript Puro:** 100% tipado, incluyendo tipos de DB
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ ADOPTED (Backend Standard)
 **Responsable:** ArchitectZero AI Agent

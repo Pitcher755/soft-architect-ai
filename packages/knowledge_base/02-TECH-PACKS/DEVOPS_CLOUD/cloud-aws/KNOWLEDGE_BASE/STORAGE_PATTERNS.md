@@ -4,12 +4,12 @@
 > **Durabilidad:** 99.999999999% (11 nueves)
 > **Disponibilidad:** 99.99%
 > **Filosofía:** "Tiering automático para ahorrar 90% en storage"
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Conceptos Fundamentales](#conceptos-fundamentales)
 2. [Storage Classes](#storage-classes)
@@ -89,7 +89,7 @@ Archivo LEGAL/COMPLIANCE (años)  → S3 Glacier Deep Archive ($0.00099/GB/mes)
 ```yaml
 StorageClass: STANDARD
 
-# Características
+# Features
 - Acceso inmediato
 - Replicado en ≥3 AZs automáticamente
 - Throughput: Ilimitado
@@ -106,7 +106,7 @@ StorageClass: STANDARD
 ```yaml
 StorageClass: STANDARD_IA
 
-# Características
+# Features
 - Almacenamiento 40% más barato que Standard
 - PERO: Retrieval fee = $0.01 por GB descargado
 - Mínimo de 30 días de almacenamiento
@@ -129,7 +129,7 @@ Si un objeto está almacenado 90 días y se descarga 1 vez:
 ```yaml
 StorageClass: GLACIER_IR
 
-# Características
+# Features
 - Almacenamiento 80% más barato
 - Retrieval tarda: milisegundos (instant)
 - Mínimo: 30 días
@@ -146,7 +146,7 @@ StorageClass: GLACIER_IR
 ```yaml
 StorageClass: GLACIER
 
-# Características
+# Features
 - Almacenamiento 95% más barato ($0.0036/GB/mes)
 - Retrieval tardío:
   * Standard: 3-5 horas
@@ -165,7 +165,7 @@ StorageClass: GLACIER
 ```yaml
 StorageClass: DEEP_ARCHIVE
 
-# Características
+# Features
 - Almacenamiento 99% más barato ($0.00099/GB/mes)
 - Retrieval tardío:
   * Standard: 12 horas
@@ -594,7 +594,7 @@ NotificationConfiguration:
 - Presigned URLs para acceso temporal
 - CRR para DR
 
-✅ **Checklist de Seguridad:**
+✅ **Checklist de Security:**
 - [ ] Block Public Access: true
 - [ ] Encryption: SSE-KMS
 - [ ] Versioning: Enabled

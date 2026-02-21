@@ -1,9 +1,12 @@
 // ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../domain/entities/document_proposal.dart';
+import '../../../settings/presentation/providers/settings_providers.dart';
+import '../../domain/entities/chat_message.dart';
+import '../notifiers/chat_notifier.dart';
+import '../widgets/chat_input_widget.dart';
 import '../widgets/error_banner_widget.dart';
 import '../widgets/message_bubble_widget.dart';
 import '../widgets/proposal_card_widget.dart';
@@ -11,40 +14,29 @@ import '../widgets/proposal_card_widget.dart';
 /// Chat panel widget displaying the chat interface for the project shell.
 ///
 /// Integrates the sequential chat experience within the IDE layout.
-class ChatPanelWidget extends StatefulWidget {
+/// Uses Riverpod for state management and real-time streaming.
+class ChatPanelWidget extends ConsumerStatefulWidget {
   const ChatPanelWidget({
     this.onFileSelected,
-    this.messages = const [],
-    this.proposal,
-    this.showError = false,
-    this.errorMessage = '',
     this.isGuideProject = false,
+    this.projectId = 'default-project',
     super.key,
   });
 
   /// Callback when a file is selected from chat context (unused placeholder).
   final Function? onFileSelected;
 
-  /// List of chat messages to display.
-  final List<ChatMessageUI> messages;
-
-  /// Current document proposal being displayed.
-  final DocumentProposal? proposal;
-
-  /// Whether to show the error banner.
-  final bool showError;
-
-  /// Error message to display in the error banner.
-  final String errorMessage;
-
   /// Whether this is the guide project (shows help assistant message).
   final bool isGuideProject;
 
+  /// Project ID for chat context (used in backend API calls).
+  final String projectId;
+
   @override
-  State<ChatPanelWidget> createState() => _ChatPanelWidgetState();
+  ConsumerState<ChatPanelWidget> createState() => _ChatPanelWidgetState();
 }
 
-class _ChatPanelWidgetState extends State<ChatPanelWidget> {
+class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
   late TextEditingController _messageController;
   late ScrollController _scrollController;
 
@@ -69,153 +61,157 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
   void didUpdateWidget(covariant ChatPanelWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Auto-scroll when messages change (new tokens or messages)
-    if (widget.messages.length != oldWidget.messages.length ||
-        _hasStreamingContentChanged(oldWidget)) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (_scrollController.hasClients) {
-          _scrollController.animateTo(
-            0, // reverse: true means 0 is the bottom
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        }
-      });
-    }
-  }
-
-  /// Checks if streaming content has changed (tokens added).
-  bool _hasStreamingContentChanged(ChatPanelWidget oldWidget) {
-    if (widget.messages.length != oldWidget.messages.length) {
-      return false; // Already handled by length check
-    }
-
-    for (var i = 0; i < widget.messages.length; i++) {
-      final newMsg = widget.messages[i];
-      final oldMsg = oldWidget.messages[i];
-      if (newMsg.isStreaming && newMsg.content != oldMsg.content) {
-        return true;
+    // Auto-scroll will be handled by listening to state changes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0, // reverse: true means 0 is the bottom
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       }
-    }
-    return false;
+    });
   }
+
+  /// Converts domain ChatMessage to UI ChatMessageUI.
+  ChatMessageUI _toUIMessage(ChatMessage message) => ChatMessageUI(
+    id: message.id,
+    role: message.role == MessageRole.user ? 'user' : 'assistant',
+    content: message.content,
+    timestamp: DateTime.parse(message.timestamp),
+    isStreaming: message.isStreaming,
+  );
 
   /// Builds the chat panel layout including
   /// error banner, messages, and input area.
   @override
-  Widget build(BuildContext context) => Container(
-    color: const Color(0xFF0D1117),
-    child: Column(
-      children: [
-        // Error banner
-        if (widget.showError) ErrorBannerWidget(message: widget.errorMessage),
+  Widget build(BuildContext context) {
+    // Watch chat state from Riverpod provider
+    final chatState = ref.watch(chatNotifierProvider);
+    final messages = chatState.messages.map(_toUIMessage).toList();
+    final proposal = chatState.currentProposal;
+    final showError = chatState.hasError;
+    final errorMessage = chatState.errorMessage ?? '';
+    final userName = ref.watch(userNameProvider);
 
-        // Chat messages area
-        Expanded(
-          child: widget.messages.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  controller: _scrollController,
-                  reverse: true,
-                  padding: const EdgeInsets.all(16),
-                  itemCount:
-                      widget.messages.length +
-                      (widget.proposal != null ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    // Proposal card at top
-                    if (index == widget.messages.length &&
-                        widget.proposal != null) {
-                      return ProposalCardWidget(
-                        proposal: widget.proposal!,
-                        onValidate: () {},
-                        onRefine: () {},
-                        onReject: () {},
-                      );
-                    }
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      child: Column(
+        children: [
+          // Error banner with readable messages
+          if (showError)
+            ErrorBannerWidget(message: _getReadableErrorMessage(errorMessage)),
 
-                    // Messages
-                    final message =
-                        widget.messages[widget.messages.length - 1 - index];
-                    return MessageBubbleWidget(message: message);
-                  },
-                ),
-        ),
+          // Chat messages area wrapped in SelectionArea for text selection
+          Expanded(
+            child: messages.isEmpty
+                ? _buildEmptyState()
+                : SelectionArea(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      reverse: true,
+                      padding: const EdgeInsets.all(16),
+                      itemCount: messages.length + (proposal != null ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        // Proposal card at top
+                        if (index == messages.length && proposal != null) {
+                          return ProposalCardWidget(
+                            proposal: proposal,
+                            onValidate: () {},
+                            onRefine: () {},
+                            onReject: () {},
+                          );
+                        }
 
-        // Input area (Fixed overflow issue)
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
-            color: Color(0xFF161B22),
-            border: Border(top: BorderSide(color: Color(0xFF30363D))),
-          ),
-          child: Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.end, // Alineado abajo si crece
-            children: [
-              Expanded(
-                child: ConstrainedBox(
-                  // Limitar altura máxima
-                  constraints: const BoxConstraints(maxHeight: 120),
-                  child: TextField(
-                    controller: _messageController,
-                    maxLines: null, // Auto-grow
-                    minLines: 1, // Start small
-                    style: const TextStyle(
-                      color: Color(0xFFC9D1D9),
-                      fontSize: 13,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Provide feedback or additional context...',
-                      hintStyle: const TextStyle(color: Color(0xFF8B949E)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Color(0xFF30363D)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        // Consistent border color
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Color(0xFF30363D)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        // Highlight on focus
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: AppColors.primary),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
+                        // Messages
+                        final message = messages[messages.length - 1 - index];
+                        final chatNotifier = ref.read(
+                          chatNotifierProvider.notifier,
+                        );
+                        final isValidated = chatState.validatedMessageIds
+                            .contains(message.id);
+                        return MessageBubbleWidget(
+                          key: ValueKey(
+                            message.id,
+                          ), // ✅ Preserva estado entre rebuilds
+                          message: message,
+                          messageController: _messageController,
+                          userName: userName,
+                          isValidated: isValidated,
+                          onValidate:
+                              message.role == 'assistant' &&
+                                  message.content.startsWith('#') &&
+                                  !message.isStreaming
+                              ? () => chatNotifier.validateProposal(message.id)
+                              : null,
+                        );
+                      },
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Send Button (Replaces FAB for better desktop alignment)
-              IconButton(
-                onPressed: () {
-                  // Send message logic
-                  if (_messageController.text.trim().isNotEmpty) {
-                    _messageController.clear();
-                  }
-                },
-                icon: const Icon(Icons.send_rounded),
-                color: AppColors.primary,
-                iconSize: 24,
-                padding: const EdgeInsets.all(12),
-                style: IconButton.styleFrom(
-                  backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                  hoverColor: AppColors.primary.withValues(alpha: 0.2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ],
           ),
-        ),
-      ],
-    ),
-  );
+
+          // Input area using professional chat input widget
+          ChatInputWidget(
+            controller: _messageController,
+            onSend: (text) {
+              ref.read(chatNotifierProvider.notifier).sendMessageStream(text);
+            },
+            hintText: 'Proporciona retroalimentación o contexto adicional...',
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Converts raw error messages into user-friendly messages.
+  String _getReadableErrorMessage(String rawError) {
+    final lowerError = rawError.toLowerCase();
+
+    if (lowerError.contains('connection refused') ||
+        lowerError.contains('failed host lookup') ||
+        lowerError.contains('network unreachable')) {
+      return '⚠️ No se puede conectar con el servidor. ¿Está Docker encendido?';
+    }
+
+    if (lowerError.contains('http 400') || lowerError.contains('bad request')) {
+      return '⚠️ Error de configuración de IA. Verifica las variables de entorno.';
+    }
+
+    if (lowerError.contains('http 401') ||
+        lowerError.contains('unauthorized')) {
+      return '⚠️ Error de autenticación. Verifica tu API key.';
+    }
+
+    if (lowerError.contains('http 403') || lowerError.contains('forbidden')) {
+      return '⚠️ Acceso denegado. Verifica tus permisos.';
+    }
+
+    if (lowerError.contains('http 404') || lowerError.contains('not found')) {
+      return '⚠️ Servicio no encontrado. Verifica la configuración del servidor.';
+    }
+
+    if (lowerError.contains('http 500') ||
+        lowerError.contains('internal server')) {
+      return '⚠️ Error interno del servidor. Revisa los logs del backend.';
+    }
+
+    if (lowerError.contains('timeout') || lowerError.contains('timed out')) {
+      return '⚠️ El servidor tardó demasiado en responder. Intenta de nuevo.';
+    }
+
+    if (lowerError.contains('rate limit') ||
+        lowerError.contains('too many requests')) {
+      return '⚠️ Has excedido el límite de peticiones. Espera un momento.';
+    }
+
+    // Si no coincide con ningún patrón conocido, devolver el mensaje original
+    // pero truncado si es muy largo
+    if (rawError.length > 100) {
+      return '⚠️ ${rawError.substring(0, 97)}...';
+    }
+
+    return rawError;
+  }
 
   /// Builds the empty state widget for the chat panel.
   Widget _buildEmptyState() {
@@ -233,19 +229,20 @@ class _ChatPanelWidgetState extends State<ChatPanelWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 64, color: Colors.grey[600]),
-          const SizedBox(height: 24),
-          Text(
-            title,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(color: const Color(0xFFC9D1D9)),
+          Icon(
+            icon,
+            size: 64,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
+          const SizedBox(height: 24),
+          Text(title, style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 8),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey[400], fontSize: 14),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(fontSize: 14),
           ),
         ],
       ),

@@ -1,14 +1,14 @@
 # 💎 Eloquent ORM: Active Record Mastery
 
-> **Versión:** Laravel 11.0+
+> **Version:** Laravel 11.0+
 > **Patrón:** Active Record (Model = Row + Methods)
 > **Estilo:** Fluent Interface, Chainable Queries
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Paradigma: Active Record](#paradigma-active-record)
 2. [CRUD Básico](#crud-básico)
@@ -77,7 +77,7 @@ $product = Product::updateOrCreate(
 );
 ```
 
-**Importante:** Mass Assignment
+**Important:** Mass Assignment
 
 ```php
 // app/Models/Product.php

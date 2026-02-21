@@ -4,42 +4,57 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../features/settings/presentation/providers/settings_providers.dart';
 
+/// Keyboard zoom wrapper with comprehensive keyboard support.
+///
+/// Supports all keyboard layouts (ISO/ANSI/Spanish/English):
+/// - Ctrl/Cmd + Plus/Equal (Zoom In)
+/// - Ctrl/Cmd + Minus (Zoom Out)
+/// - Ctrl/Cmd + 0 (Reset)
+///
+/// CRITICAL: Does NOT rebuild router or navigation.
 class KeyboardZoomWrapper extends ConsumerWidget {
   const KeyboardZoomWrapper({required this.child, super.key});
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final globalZoom = ref.watch(globalZoomProvider);
-    final notifier = ref.read(settingsProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) => Focus(
+    autofocus: true,
+    canRequestFocus: false,
+    onKeyEvent: (node, event) {
+      if (event is KeyDownEvent) {
+        final isControlPressed =
+            HardwareKeyboard.instance.isControlPressed ||
+            HardwareKeyboard.instance.isMetaPressed;
 
-    return CallbackShortcuts(
-      bindings: {
-        // Ctrl + '+' (Numpad y Teclado estándar)
-        const SingleActivator(LogicalKeyboardKey.add, control: true): () =>
-            notifier.updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0)),
-        const SingleActivator(LogicalKeyboardKey.equal, control: true): () =>
-            notifier.updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0)),
+        if (isControlPressed) {
+          final key = event.logicalKey;
 
-        // Ctrl + '-'
-        const SingleActivator(LogicalKeyboardKey.minus, control: true): () =>
-            notifier.updateGlobalZoom((globalZoom - 0.1).clamp(0.5, 2.0)),
+          // ZOOM IN: Ctrl + Plus/Equal (ISO/ANSI keyboards)
+          if (key == LogicalKeyboardKey.add ||
+              key == LogicalKeyboardKey.numpadAdd ||
+              key == LogicalKeyboardKey.equal) {
+            ref.read(settingsProvider.notifier).increaseZoom();
+            return KeyEventResult.handled;
+          }
 
-        // Ctrl + '0' (Resetear Zoom)
-        const SingleActivator(LogicalKeyboardKey.digit0, control: true): () =>
-            notifier.updateGlobalZoom(1),
-      },
-      child: Focus(
-        autofocus: true,
-        child: MediaQuery(
-          // La magia del Zoom: Escala todo el texto de la app
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(globalZoom)),
-          child: child,
-        ),
-      ),
-    );
-  }
+          // ZOOM OUT: Ctrl + Minus
+          if (key == LogicalKeyboardKey.minus ||
+              key == LogicalKeyboardKey.numpadSubtract) {
+            ref.read(settingsProvider.notifier).decreaseZoom();
+            return KeyEventResult.handled;
+          }
+
+          // RESET ZOOM: Ctrl + 0
+          if (key == LogicalKeyboardKey.digit0 ||
+              key == LogicalKeyboardKey.numpad0) {
+            ref.read(settingsProvider.notifier).resetZoom();
+            return KeyEventResult.handled;
+          }
+        }
+      }
+      return KeyEventResult.ignored;
+    },
+    child: child,
+  );
 }

@@ -2,12 +2,12 @@
 
 > **Región Default:** us-east-1 (N. Virginia)
 > **Filosofía:** "No provisiones lo que no usas."
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Principios Serverless](#principios-serverless)
 2. [AWS Lambda](#aws-lambda)
@@ -418,7 +418,7 @@ HTTP API (Moderno)
   → RECOMENDADO para la mayoría de casos
 ```
 
-### Configuración HTTP API
+### Configuration HTTP API
 
 ```yaml
 Resources:

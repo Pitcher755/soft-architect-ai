@@ -22,19 +22,22 @@
 
 #### 📚 Key Documentation
 
-- [White Paper & Vision](doc/00-VISION/CONCEPT_WHITE_PAPER.en.md)
-- [Quick Start Guide](doc/02-SETUP_DEV/QUICK_START_GUIDE.en.md)
-- [Functional Test Report](doc/01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md)
-- [Initial Setup Log](doc/01-PROJECT_REPORT/INITIAL_SETUP_LOG.en.md)
-- [Methodology & Structure](doc/01-PROJECT_REPORT/MEMORIA_METODOLOGICA.en.md)
-- [Detailed Setup Guide](doc/02-SETUP_DEV/SETUP_GUIDE.en.md)
-- [Technology Stack](doc/02-SETUP_DEV/TOOLS_AND_STACK.en.md)
-- [Automation & DevOps](doc/02-SETUP_DEV/AUTOMATION.en.md)
-- **⭐ NEW:** [Knowledge Base Completion Report](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
+- [📖 Complete Documentation Index](doc/INDEX.md) - Start here for organized navigation
+- [White Paper & Vision](doc/English/00-VISION/CONCEPT_WHITE_PAPER.md)
+- [Quick Start Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/QUICK_START_GUIDE.md)
+- [Local LLM Setup Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/LOCAL_LLM_GUIDE.md) - Run AI 100% privately on your hardware
+- [Hardware Acceleration Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/HARDWARE_ACCELERATION_GUIDE.md) - GPU configuration (NVIDIA/Apple Silicon/CPU)
+- [Functional Test Report](doc/English/01-PROJECT_REPORT/03-TESTING/FUNCTIONAL_TEST_REPORT.md)
+- [Initial Setup Log](doc/English/01-PROJECT_REPORT/01-ARCHITECTURE/INITIAL_SETUP_LOG.md)
+- [Methodology & Structure](doc/English/01-PROJECT_REPORT/10-DOCUMENTATION/MEMORIA_METODOLOGICA.md)
+- [Detailed Setup Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/SETUP_GUIDE.md)
+- [Technology Stack](doc/English/02-SETUP_DEV/01-INSTALLATION/TOOLS_AND_STACK.md)
+- [Automation & DevOps](doc/English/02-SETUP_DEV/04-AUTOMATION/AUTOMATION.md)
+- **⭐ NEW:** [Knowledge Base Completion Report](doc/English/01-PROJECT_REPORT/05-COMPLETION-STATUS/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
 - **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
-- **✅ VERIFIED:** [Pre-Push Validation Report (2026-02-12)](doc/01-PROJECT_REPORT/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 gates passed
-- **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
-- **🚧 IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests stabilized, coverage uplift in progress
+- **✅ VERIFIED:** [Pre-Push Validation Report (2026-02-12)](doc/English/01-PROJECT_REPORT/06-VALIDATION/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 gates passed
+- **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/English/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
+- **🚧 IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/English/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests stabilized, coverage uplift in progress
 - **📊 TEST STATUS:** Client Flutter full suite green + Server app coverage gate ≥80% passing
 
 #### 📖 Vision
@@ -67,7 +70,7 @@ scripts/devops/stop_stack.sh
 
 **Requirements:** Docker 20.10+ and Docker Compose 2.0+ | **Time:** ~2 minutes (first-time pull)
 
-For detailed setup, troubleshooting, and advanced configuration, see [Detailed Setup Guide](doc/02-SETUP_DEV/SETUP_GUIDE.en.md).
+For detailed setup, troubleshooting, and advanced configuration, see [Detailed Setup Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/SETUP_GUIDE.md).
 
 #### 🚀 Key Features
 
@@ -111,7 +114,7 @@ soft-architect-ai/
 
 1. **Clone Repository:**
 
-> See the [Quick Start Guide](doc/02-SETUP_DEV/QUICK_START_GUIDE.en.md) for quick instructions or the [Detailed Setup Guide](doc/02-SETUP_DEV/SETUP_GUIDE.en.md) for complete steps and troubleshooting.
+> See the [Quick Start Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/QUICK_START_GUIDE.md) for quick instructions or the [Detailed Setup Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/SETUP_GUIDE.md) for complete steps and troubleshooting.
 
 ```bash
 git clone https://github.com/YOUR_USER/soft-architect-ai.git
@@ -133,6 +136,7 @@ docker compose -f infrastructure/docker-compose.yml up -d
 
 #### 📚 Additional Resources
 
+- [📖 Complete Documentation Index](doc/INDEX.md) - Master navigation portal
 - [Architecture Documentation](context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.en.md)
 - [Security & Privacy Rules](context/20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.en.md)
 - [Roadmap & Phases](context/40-ROADMAP/ROADMAP_PHASES.en.md)
@@ -183,18 +187,22 @@ See [tests/README.md](tests/README.md) for detailed testing documentation and st
 
 #### 📚 Documentación Clave
 
-- [White Paper y Visión](doc/00-VISION/CONCEPT_WHITE_PAPER.es.md)
-- [Guía Rápida de Inicio](doc/02-SETUP_DEV/QUICK_START_GUIDE.es.md)
-- [Reporte de Pruebas Funcionales](doc/01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md)
-- [Log de Instalación Inicial](doc/01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md)
-- [Metodología y Estructura](doc/01-PROJECT_REPORT/MEMORIA_METODOLOGICA.es.md)
-- [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.es.md)
-- [Stack Tecnológico](doc/02-SETUP_DEV/TOOLS_AND_STACK.es.md)
-- [Automatización y DevOps](doc/02-SETUP_DEV/AUTOMATION.es.md)
-- **⭐ NUEVO:** [Reporte de Knowledge Base Completada](doc/01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Fases 0-6 (29 archivos, 934 líneas)
-- **✅ VERIFICADO:** [Reporte de Validación Pre-Push (2026-02-12)](doc/01-PROJECT_REPORT/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 compuertas aprobadas
-- **🚀 COMPLETADO:** [HU-3.1: Implementación Shell UI del Proyecto](doc/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - Todas 4 Fases + Seguridad ✅
-- **🚧 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests estabilizados, cobertura en subida
+- [📖 Índice Completo de Documentación](doc/INDEX.md) - Comienza aquí para navegación organizada
+- [White Paper y Visión](doc/Español/00-VISION/CONCEPT_WHITE_PAPER.md)
+- [Guía Rápida de Inicio](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md)
+- [Guía de LLM Local](doc/Español/02-SETUP_DEV/01-INSTALACION/LOCAL_LLM_GUIDE.md) - Ejecuta IA 100% privada en tu hardware
+- [Guía de Aceleración Hardware](doc/Español/02-SETUP_DEV/01-INSTALACION/HARDWARE_ACCELERATION_GUIDE.md) - Configuración GPU (NVIDIA/Apple Silicon/CPU)
+- [Reporte de Pruebas Funcionales](doc/Español/01-PROJECT_REPORT/03-TESTING/FUNCTIONAL_TEST_REPORT.md)
+- [Log de Instalación Inicial](doc/Español/01-PROJECT_REPORT/01-ARCHITECTURE/INITIAL_SETUP_LOG.md)
+- [Metodología y Estructura](doc/Español/01-PROJECT_REPORT/10-DOCUMENTATION/MEMORIA_METODOLOGICA.md)
+- [Guía de Instalación Detallada](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_CONFIGURACION.md)
+- [Stack Tecnológico](doc/Español/02-SETUP_DEV/01-INSTALACION/HERRAMIENTAS_Y_STACK.md)
+- [Automatización y DevOps](doc/Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md)
+- **⭐ NUEVO:** [Reporte de Knowledge Base Completada](doc/Español/01-PROJECT_REPORT/05-COMPLETION-STATUS/KNOWLEDGE_BASE_COMPLETION.md) - Fases 0-6 (29 archivos, 934 líneas)
+- **⭐ NUEVO:** [Reglas Constitucionales](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 archivos, 3,742 líneas)
+- **✅ VERIFICADO:** [Reporte de Validación Pre-Push (2026-02-12)](doc/Español/01-PROJECT_REPORT/06-VALIDATION/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 compuertas aprobadas
+- **🚀 COMPLETADO:** [HU-3.1: Implementación Shell UI del Proyecto](doc/Español/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - Todas 4 Fases + Seguridad ✅
+- **🚧 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/Español/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests estabilizados, cobertura en subida
 - **📊 ESTADO TESTS:** Cliente Flutter suite completa en verde + Server app con gate de cobertura ≥80% aprobado
 
 #### 📖 Visión
@@ -227,7 +235,7 @@ scripts/devops/stop_stack.sh
 
 **Requisitos:** Docker 20.10+ y Docker Compose 2.0+ | **Tiempo:** ~2 minutos (primer descargar)
 
-Para configuración detallada, solución de problemas y opciones avanzadas, consulta la [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.es.md).
+Para configuración detallada, solución de problemas y opciones avanzadas, consulta la [Guía de Instalación Detallada](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_CONFIGURACION.md).
 
 #### 🚀 Características Clave
 
@@ -271,7 +279,7 @@ soft-architect-ai/
 
 1. **Clonar el repositorio:**
 
-> Consulta la [Guía Rápida](doc/02-SETUP_DEV/QUICK_START_GUIDE.es.md) para instrucciones rápidas o la [Guía de Instalación Detallada](doc/02-SETUP_DEV/SETUP_GUIDE.es.md) para pasos completos y resolución de problemas.
+> Consulta la [Guía Rápida](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md) para instrucciones rápidas o la [Guía de Instalación Detallada](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_CONFIGURACION.md) para pasos completos y resolución de problemas.
 
 ```bash
 git clone https://github.com/TU_USUARIO/soft-architect-ai.git
@@ -293,6 +301,7 @@ docker compose -f infrastructure/docker-compose.yml up -d
 
 #### 📚 Recursos Adicionales
 
+- [📖 Índice Completo de Documentación](doc/INDEX.md) - Portal maestro de navegación
 - [Documentación de Arquitectura](context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.es.md)
 - [Reglas de Seguridad & Privacidad](context/20-REQUIREMENTS_AND_SPEC/SECURITY_AND_PRIVACY_RULES.es.md)
 - [Roadmap y Fases](context/40-ROADMAP/ROADMAP_PHASES.es.md)

@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -60,7 +58,7 @@ class LocalProjectFileScanner {
                 relativePath.isNotEmpty && !relativePath.endsWith('.DS_Store'),
           )
           .toList();
-    } catch (_) {
+    } on Exception {
       return const [];
     }
   }
@@ -103,7 +101,7 @@ class ProjectPhaseService {
   ProjectPhaseProgress analyzeProjectPath(String projectPath) {
     try {
       PathValidator.validateProjectPath(projectPath);
-    } catch (_) {
+    } on Exception {
       return const ProjectPhaseProgress(
         currentPhase: 0,
         docsCompleted: 0,
@@ -188,7 +186,8 @@ class ProjectPhaseService {
   /// Determines the current phase of a project.
   ///
   /// For the guide project, always returns [ProjectPhase.quickStart].
-  /// For real projects, analyzes the project directory structure to determine phase.
+  /// For real projects, analyzes the project directory structure
+  /// to determine phase.
   ///
   /// Phase detection logic:
   /// - Root: Only base files present
@@ -211,7 +210,7 @@ class ProjectPhaseService {
       }
       final phaseProgress = analyzeProject(project.path);
       return _mapPhaseIndexToModel(phaseProgress.currentPhase);
-    } catch (e) {
+    } on Exception {
       // If error reading directory, default to root
       return ProjectPhase.root;
     }
@@ -227,7 +226,9 @@ class ProjectPhaseService {
     }
 
     const totalFiles = ProjectStructureConstants.totalExpectedDocs;
-    if (totalFiles == 0) return 0;
+    if (totalFiles == 0) {
+      return 0;
+    }
 
     return (documentsCreated / totalFiles).clamp(0.0, 1.0);
   }

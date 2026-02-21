@@ -1,22 +1,22 @@
 # 🛠️ Django Admin: Power Tool for Operations
 
-> **Versión:** Django 4.2+
+> **Version:** Django 4.2+
 > **Propósito:** Panel de administración ultra-poderoso (la "Killer Feature" de Django)
 > **Público:** Administradores, Ops, Product Managers (sin código)
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Por Qué Django Admin es Especial](#por-qué-django-admin-es-especial)
-2. [Configuración Básica](#configuración-básica)
+2. [Configuration Básica](#configuración-básica)
 3. [Personalización de Lista](#personalización-de-lista)
 4. [Búsqueda y Filtrado](#búsqueda-y-filtrado)
 5. [Actions Personalizadas](#actions-personalizadas)
 6. [Inline Editing](#inline-editing)
-7. [Permisos y Seguridad](#permisos-y-seguridad)
+7. [Permisos y Security](#permisos-y-seguridad)
 8. [Advanced Customization](#advanced-customization)
 
 ---
@@ -50,11 +50,11 @@ admin.site.register(Product)
 | **Search** | ✅ | ❌ | ❌ |
 | **Filtering** | ✅ | ❌ | ❌ |
 
-**Conclusión:** Django Admin = **10 horas ahorradas por proyecto**.
+**Conclusion:** Django Admin = **10 horas ahorradas por proyecto**.
 
 ---
 
-## Configuración Básica
+## Configuration Básica
 
 ### ModelAdmin Simple
 
@@ -329,7 +329,7 @@ admin.site.register(Order, OrderAdmin)
 
 ---
 
-## Permisos y Seguridad
+## Permisos y Security
 
 ### Permisos Automáticos
 

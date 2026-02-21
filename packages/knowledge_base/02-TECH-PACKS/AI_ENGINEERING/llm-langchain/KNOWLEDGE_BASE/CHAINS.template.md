@@ -2,13 +2,13 @@
 
 > **Paradigma:** Declarativo, Componible, Streamable
 > **Sintaxis:** `Input | Prompt | Model | OutputParser`
-> **Versión:** LangChain 0.1.0+ (LCEL Stable)
+> **Version:** LangChain 0.1.0+ (LCEL Stable)
 
 La unidad fundamental de trabajo en LangChain moderno.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Patrón Básico (Basic Chain)](#patrón-básico-basic-chain)
 2. [Patrón RAG (Retrieval Augmented Generation)](#patrón-rag-retrieval-augmented-generation)
@@ -574,6 +574,6 @@ async def process():
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ PRODUCTION-READY PATTERNS
 **Responsable:** ArchitectZero AI Agent

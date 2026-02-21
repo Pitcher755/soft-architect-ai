@@ -1,16 +1,16 @@
 # 🆔 Tech Profile: Laravel - "Developer Happiness"
 
 > **Lenguaje:** PHP 8.2+ (JIT Compilation)
-> **Versión:** Laravel 11.0 LTS
+> **Version:** Laravel 11.0 LTS
 > **Filosofía:** "Convention over Configuration" + "Elegant Syntax"
 > **Motor BD:** PostgreSQL/MySQL (con Eloquent ORM)
 > **Ecosistema:** Composer, Laravel Artisan, Blade Templates
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [¿Qué es Laravel?](#qué-es-laravel)
 2. [Pilares del Ecosistema](#pilares-del-ecosistema)
@@ -62,7 +62,7 @@ PHP 8.3+ (Performance como Go)
 LARAVEL 11 (Production-Ready) ✅
 ```
 
-**Nota:** PHP 8.2+ con JIT es **5-10x más rápido** que PHP 7.4.
+**Note:** PHP 8.2+ con JIT es **5-10x más rápido** que PHP 7.4.
 
 ---
 
@@ -264,7 +264,7 @@ Node.js: 18+ (para frontend tooling)
 Composer: 2.0+
 ```
 
-### Instalación
+### Installation
 
 ```bash
 # Crear proyecto
@@ -384,7 +384,7 @@ php artisan serve
 
 ---
 
-## Conclusión
+## Conclusion
 
 **Laravel es:**
 - ✅ La opción más rápida para MVPs

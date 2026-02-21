@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppSettings {
   const AppSettings({
     this.themeMode = ThemeMode.dark,
-    this.fontSize = 1.0,
+    this.baseFontSize = 14.0,
     this.globalZoom = 1.0,
     this.enableZoomShortcuts = true,
     this.enableAnimations = true,
@@ -26,22 +26,38 @@ class AppSettings {
     this.projectDirectory,
   });
 
-  factory AppSettings.fromJson(Map<String, dynamic> json) => AppSettings(
-    themeMode: ThemeMode.values[json['themeMode'] ?? 1], // 1 = ThemeMode.dark
-    fontSize: json['fontSize'] ?? 1.0,
-    globalZoom: json['globalZoom'] ?? 1.0,
-    enableZoomShortcuts: json['enableZoomShortcuts'] ?? true,
-    enableAnimations: json['enableAnimations'] ?? true,
-    enableMemoryOptimization: json['enableMemoryOptimization'] ?? true,
-    userName: json['userName'] ?? 'Architect',
-    avatarIndex: json['avatarIndex'] ?? 0,
-    customAvatarPath: json['customAvatarPath'],
-    projectDirectory: json['projectDirectory'],
-  );
+  factory AppSettings.fromJson(Map<String, dynamic> json) {
+    // Handle migration from old fontSize (multiplier 0.8-1.4) to baseFontSize (points 10-24)
+    double loadedValue = (json['baseFontSize'] ?? json['fontSize'] ?? 14.0)
+        .toDouble();
+
+    // If value is less than 10, it's probably the old multiplier system
+    // Convert: multiplier * 14.0 = points
+    if (loadedValue < 10.0) {
+      loadedValue = (loadedValue * 14.0).clamp(10.0, 24.0);
+    }
+
+    // Ensure value is always in valid range
+    final baseFontSize = loadedValue.clamp(10.0, 24.0);
+
+    return AppSettings(
+      themeMode: ThemeMode.values[json['themeMode'] ?? 1], // 1 = ThemeMode.dark
+      baseFontSize: baseFontSize,
+      globalZoom: json['globalZoom'] ?? 1.0,
+      enableZoomShortcuts: json['enableZoomShortcuts'] ?? true,
+      enableAnimations: json['enableAnimations'] ?? true,
+      enableMemoryOptimization: json['enableMemoryOptimization'] ?? true,
+      userName: json['userName'] ?? 'Architect',
+      avatarIndex: json['avatarIndex'] ?? 0,
+      customAvatarPath: json['customAvatarPath'],
+      projectDirectory: json['projectDirectory'],
+    );
+  }
+
   static const Object _unset = Object();
 
   final ThemeMode themeMode;
-  final double fontSize;
+  final double baseFontSize;
   final double globalZoom;
   final bool enableZoomShortcuts;
   final bool enableAnimations;
@@ -56,7 +72,7 @@ class AppSettings {
 
   AppSettings copyWith({
     ThemeMode? themeMode,
-    double? fontSize,
+    double? baseFontSize,
     double? globalZoom,
     bool? enableZoomShortcuts,
     bool? enableAnimations,
@@ -67,7 +83,7 @@ class AppSettings {
     Object? projectDirectory = _unset,
   }) => AppSettings(
     themeMode: themeMode ?? this.themeMode,
-    fontSize: fontSize ?? this.fontSize,
+    baseFontSize: baseFontSize ?? this.baseFontSize,
     globalZoom: globalZoom ?? this.globalZoom,
     enableZoomShortcuts: enableZoomShortcuts ?? this.enableZoomShortcuts,
     enableAnimations: enableAnimations ?? this.enableAnimations,
@@ -85,7 +101,7 @@ class AppSettings {
 
   Map<String, dynamic> toJson() => {
     'themeMode': themeMode.index,
-    'fontSize': fontSize,
+    'baseFontSize': baseFontSize,
     'globalZoom': globalZoom,
     'enableZoomShortcuts': enableZoomShortcuts,
     'enableAnimations': enableAnimations,
@@ -138,12 +154,12 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     await _saveSettings();
   }
 
-  Future<void> updateFontSize(double fontSize) async {
+  Future<void> updateBaseFontSize(double baseFontSize) async {
     final currentState = state.value;
     if (currentState == null) return;
 
     state = AsyncValue.data(
-      currentState.copyWith(fontSize: fontSize.clamp(0.8, 1.4)),
+      currentState.copyWith(baseFontSize: baseFontSize.clamp(10.0, 24.0)),
     );
     await _saveSettings();
   }
@@ -157,6 +173,29 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
       currentState.copyWith(globalZoom: globalZoom.clamp(0.5, 2.0)),
     );
     await _saveSettings();
+  }
+
+  /// Increase zoom by 10% (max 200%).
+  Future<void> increaseZoom() async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    final newZoom = (currentState.globalZoom + 0.1).clamp(0.5, 2.0);
+    await updateGlobalZoom(newZoom);
+  }
+
+  /// Decrease zoom by 10% (min 50%).
+  Future<void> decreaseZoom() async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    final newZoom = (currentState.globalZoom - 0.1).clamp(0.5, 2.0);
+    await updateGlobalZoom(newZoom);
+  }
+
+  /// Reset zoom to 100%.
+  Future<void> resetZoom() async {
+    await updateGlobalZoom(1);
   }
 
   Future<void> updateZoomShortcuts({required bool enableZoomShortcuts}) async {
@@ -227,26 +266,28 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateProjectDirectory(path);
   }
 
+  /// Persists current settings to SharedPreferences.
   Future<void> _saveSettings() async {
     final currentState = state.value;
     if (currentState == null) return;
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_storageKey, jsonEncode(currentState.toJson()));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final settingsJson = jsonEncode(currentState.toJson());
+      await prefs.setString(_storageKey, settingsJson);
+    } catch (e) {
+      developer.log('Error saving settings: $e', name: 'SettingsNotifier');
+    }
   }
 }
 
 // ============================================================================
-// INTERNAL PROVIDER (USE GRANULAR PROVIDERS INSTEAD)
+// GRANULAR PROVIDERS (Per-Property)
 // ============================================================================
 
 final settingsProvider = AsyncNotifierProvider<SettingsNotifier, AppSettings>(
   SettingsNotifier.new,
 );
-
-// ============================================================================
-// GRANULAR PROVIDERS (USE THESE AT APP ROOT & WIDGETS)
-// ============================================================================
 
 final themeModeProvider = Provider<ThemeMode>(
   (ref) => ref.watch(
@@ -254,14 +295,19 @@ final themeModeProvider = Provider<ThemeMode>(
   ),
 );
 
-final fontSizeProvider = Provider<double>(
-  (ref) => ref.watch(settingsProvider.select((s) => s.value?.fontSize ?? 1.0)),
+final baseFontSizeProvider = Provider<double>(
+  (ref) =>
+      ref.watch(settingsProvider.select((s) => s.value?.baseFontSize ?? 14.0)),
 );
 
 final globalZoomProvider = Provider<double>(
   (ref) =>
       ref.watch(settingsProvider.select((s) => s.value?.globalZoom ?? 1.0)),
 );
+
+// ============================================================================
+// REMAINING PROVIDERS
+// ============================================================================
 
 final enableZoomShortcutsProvider = Provider<bool>(
   (ref) => ref.watch(

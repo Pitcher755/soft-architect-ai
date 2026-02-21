@@ -27,16 +27,16 @@ class TestInputSanitizer:
         assert result == "spaced input"
 
     def test_sanitize_string_max_length_default(self):
-        """Test default max length (1000 characters)."""
-        long_input = "a" * 1000
+        """Test default max length (30000 characters)."""
+        long_input = "a" * 30000
         result = InputSanitizer.sanitize_string(long_input)
         assert result == long_input
 
     def test_sanitize_string_exceeds_max_length(self):
         """Test that input exceeding max length raises ValueError."""
-        long_input = "a" * 1001
+        long_input = "a" * 30001
 
-        with pytest.raises(ValueError, match="Input exceeds maximum length of 1000"):
+        with pytest.raises(ValueError, match="Input exceeds maximum length of 30000"):
             InputSanitizer.sanitize_string(long_input)
 
     def test_sanitize_string_custom_max_length(self):
@@ -113,16 +113,16 @@ class TestInputSanitizer:
         assert result == prompt
 
     def test_sanitize_prompt_higher_length_limit(self):
-        """Test that prompts allow higher length limit (5000 chars)."""
-        long_prompt = "a" * 5000
+        """Test that prompts allow higher length limit (30000 chars)."""
+        long_prompt = "a" * 30000
         result = InputSanitizer.sanitize_prompt(long_prompt)
         assert result == long_prompt
 
     def test_sanitize_prompt_exceeds_limit(self):
-        """Test that prompts exceeding 5000 chars are rejected."""
-        too_long_prompt = "a" * 5001
+        """Test that prompts exceeding 30000 chars are rejected."""
+        too_long_prompt = "a" * 30001
 
-        with pytest.raises(ValueError, match="Input exceeds maximum length of 5000"):
+        with pytest.raises(ValueError, match="Input exceeds maximum length of 30000"):
             InputSanitizer.sanitize_prompt(too_long_prompt)
 
     def test_sanitize_prompt_injection_detection(self):

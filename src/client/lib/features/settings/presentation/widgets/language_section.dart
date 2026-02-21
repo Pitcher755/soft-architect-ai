@@ -17,6 +17,8 @@ class LanguageSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final currentLocale = ref.watch(localeProvider);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return SettingsCard(
       title: l10n.languageTitle,
@@ -28,8 +30,8 @@ class LanguageSection extends ConsumerWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFF0D1117),
-              border: Border.all(color: const Color(0xFF30363d)),
+              color: colorScheme.surface,
+              border: Border.all(color: colorScheme.outline),
               borderRadius: BorderRadius.circular(6),
             ),
             child: DropdownButton<Locale>(
@@ -39,10 +41,13 @@ class LanguageSection extends ConsumerWidget {
                   ref.read(localeProvider.notifier).setLocale(newLocale);
                 }
               },
-              dropdownColor: const Color(0xFF161B22),
+              dropdownColor: colorScheme.surfaceContainerHighest,
               underline: const SizedBox.shrink(),
-              icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF8b949e)),
-              style: const TextStyle(color: Color(0xFFE6EDF3), fontSize: 14),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              style: textTheme.bodyMedium?.copyWith(fontSize: 14),
               items: [
                 // Opción Español
                 DropdownMenuItem(

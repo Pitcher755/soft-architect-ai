@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../features/project_shell/presentation/providers/project_providers.dart';
 import '../../../features/settings/presentation/providers/settings_providers.dart'
     show lastProjectProvider;
 import 'global_search_dialog.dart';
@@ -18,6 +22,126 @@ class ProjectsSidebar extends ConsumerStatefulWidget {
 }
 
 class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
+  /// Show dialog to open a project from directory path using file picker
+  Future<void> _showOpenProjectDialog() async {
+    // Use file picker to select directory
+    final result = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: '📁 Selecciona el directorio del proyecto',
+      lockParentWindow: true,
+    );
+
+    // Handle cancellation (result will be null if user cancels)
+    if (result == null) {
+      return;
+    }
+
+    if (result.isNotEmpty) {
+      final projectDir = Directory(result);
+
+      if (!projectDir.existsSync()) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('❌ El directorio no existe'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+        return;
+      }
+
+      // Extract project name from path
+      final projectName = result.split('/').last.isEmpty
+          ? result.split('/')[result.split('/').length - 2]
+          : result.split('/').last;
+
+      // Add project to projects list
+      await ref
+          .read(projectsProvider.notifier)
+          .addProject(projectName, result, 'Proyecto abierto desde $result');
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('✅ Proyecto "$projectName" añadido'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+
+        // Navigate to project
+        context.go(
+          Uri(
+            path: '/project-shell',
+            queryParameters: {'path': result},
+          ).toString(),
+        );
+      }
+    }
+  }
+
+  /// Exit application safely
+  Future<void> _exitApplication() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('⚠️ Salir de la Aplicación'),
+        content: const Text(
+          '¿Estás seguro de que deseas cerrar SoftArchitect AI?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
+            child: const Text('Salir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      // Close the application safely
+      exit(0);
+    }
+  }
+
+  /// Close current project (navigate to workspace)
+  Future<void> _closeCurrentProject() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('⚠️ Cerrar Proyecto'),
+        content: const Text('¿Estás seguro de que deseas cerrar el proyecto?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      if (mounted) {
+        context.go('/workspace');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Proyecto cerrado'),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Obtenemos la ruta actual para resaltar el icono activo
@@ -43,20 +167,92 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
       ),
       child: Column(
         children: [
-          // Logo / Brand
+          // Menu Button (File Menu) - Professional IDE style
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.terminal,
-                color: AppColors.primary,
-                size: 24,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'open') {
+                  _showOpenProjectDialog();
+                } else if (value == 'settings') {
+                  context.go('/settings');
+                } else if (value == 'close') {
+                  _closeCurrentProject();
+                } else if (value == 'exit') {
+                  _exitApplication();
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem<String>(
+                  value: 'open',
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.folder_open_rounded, size: 18),
+                      SizedBox(width: 12),
+                      Text('Abrir Proyecto'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'settings',
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.settings_rounded, size: 18),
+                      SizedBox(width: 12),
+                      Text('Ajustes'),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem<String>(
+                  value: 'close',
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.close_rounded,
+                        size: 18,
+                        color: Colors.redAccent,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        'Cerrar Proyecto',
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem<String>(
+                  value: 'exit',
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.exit_to_app_rounded,
+                        size: 18,
+                        color: Colors.redAccent,
+                      ),
+                      SizedBox(width: 12),
+                      Text('Salir', style: TextStyle(color: Colors.redAccent)),
+                    ],
+                  ),
+                ),
+              ],
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.terminal,
+                  color: AppColors.primary,
+                  size: 24,
+                ),
               ),
             ),
           ),
@@ -66,7 +262,7 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Column(
               children: [
-                // 1. BOTÓN DE WORKSPACE (Proyectos)
+                // 1. WORKSPACE BUTTON (Projects)
                 Tooltip(
                   message: 'Explorador de Proyectos',
                   child: _SidebarButton(
@@ -79,7 +275,7 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
 
                 const SizedBox(height: 16),
 
-                // 2. BOTÓN DE PROYECTO ACTIVO (Último proyecto abierto)
+                // 2. ACTIVE PROJECT BUTTON (Last opened project)
                 Tooltip(
                   message: lastProjectPath != null
                       ? 'Proyecto: ${_extractProjectName(lastProjectPath)}'
@@ -142,15 +338,15 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
     );
   }
 
-  /// Extrae el nombre del proyecto del path completo.
-  /// Ejemplo: '/home/user/projects/my-project' -> 'my-project'
+  /// Extracts the project name from the full path.
+  /// Example: '/home/user/projects/my-project' -> 'my-project'
   String _extractProjectName(String path) {
     final parts = path.split('/');
     return parts.isNotEmpty ? parts.last : path;
   }
 }
 
-/// Widget auxiliar para botones de la sidebar
+/// Helper widget for sidebar buttons
 class _SidebarButton extends StatelessWidget {
   const _SidebarButton({
     required this.icon,

@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/core/theme/app_colors.dart';
 import 'package:softarchitect_ai/features/project_shell/presentation/widgets/project_card.dart';
 
 void main() {
   Widget _build(Widget child, {double width = 1024}) {
-    return MaterialApp(
-      home: MediaQuery(
-        data: MediaQueryData(size: Size(width, 800)),
-        child: Scaffold(
-          body: Center(
-            child: SizedBox(width: width / 2, child: child),
+    return ProviderScope(
+      child: MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(size: Size(width, 800)),
+          child: Scaffold(
+            body: Center(
+              child: SizedBox(width: width / 2, child: child),
+            ),
           ),
         ),
       ),
     );
   }
 
-  ProjectCard makeCard({VoidCallback? onTap, String path = '/tmp/my-project'}) {
+  ProjectCard makeCard({
+    VoidCallback? onTap,
+    String path = '/tmp/my-project',
+    String projectId = 'test-project-123',
+    bool isMissing = false,
+  }) {
     return ProjectCard(
       name: 'Proyecto Demo',
       icon: Icons.folder,
@@ -27,6 +35,8 @@ void main() {
       path: path,
       modified: 'hoy',
       onTap: onTap ?? () {},
+      projectId: projectId,
+      isMissing: isMissing,
     );
   }
 
@@ -35,9 +45,9 @@ void main() {
       await tester.pumpWidget(_build(makeCard()));
       expect(find.text('Proyecto Demo'), findsOneWidget);
       expect(find.text('Arquitectura'), findsOneWidget);
-      expect(find.textContaining('Mod:'), findsOneWidget);
+      expect(find.text('hoy'), findsOneWidget);
       expect(find.byIcon(Icons.folder), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(Icons.folder_open), findsOneWidget);
     });
 
     testWidgets('invokes onTap callback', (tester) async {
@@ -77,10 +87,11 @@ void main() {
     testWidgets('shows full path in tooltip', (tester) async {
       const path = '/tmp/sample-project';
       await tester.pumpWidget(_build(makeCard(path: path)));
-      final tooltipFinder = find.byType(Tooltip);
-      expect(tooltipFinder, findsOneWidget);
-      final tooltip = tester.widget<Tooltip>(tooltipFinder);
-      expect(tooltip.message, path);
+
+      // Find all Tooltips and verify one has the path
+      final tooltips = tester.widgetList<Tooltip>(find.byType(Tooltip));
+      final hasPathTooltip = tooltips.any((tooltip) => tooltip.message == path);
+      expect(hasPathTooltip, isTrue, reason: 'Should find tooltip with path: $path');
     });
   });
 }

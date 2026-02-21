@@ -2,15 +2,15 @@
 
 > **Categoría:** Systems Programming Language
 > **Filosofía:** "Simplicity is Complicated"
-> **Versión:** Go 1.21+
+> **Version:** Go 1.21+
 > **Compilación:** Binario Estático Nativo (Sin dependencias externas)
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 El lenguaje de la nube. Diseñado por Google (2009) para reemplazar a C++ y Java en sistemas distribuidos. Si Docker y Kubernetes existen, es porque Go existe.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Visión de Go](#visión-de-go)
 2. [Casos de Uso](#casos-de-uso)
@@ -253,7 +253,7 @@ ENTRYPOINT ["./app"]
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ GO SYSTEMS PROGRAMMING READY
 **Responsable:** ArchitectZero AI Agent
 

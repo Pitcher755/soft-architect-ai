@@ -4,8 +4,8 @@
 # 🚀 SOFTARCHITECT AI - AUTOMATED DEVELOPMENT ENVIRONMENT SETUP
 ################################################################################
 # Purpose: One-command project onboarding for new developers
-# Usage: ./setup_project.sh
-# Author: DevOps Team
+# Usage: ./scripts/setup/setup_project.sh
+# Author: PitcherDev
 # Version: 1.0.0
 # Created: 2026-02-15
 ################################################################################
@@ -39,7 +39,7 @@ readonly REQUIRED_FLUTTER_VERSION="3.38"
 readonly REQUIRED_DOCKER_VERSION="20.10"
 
 # Ollama Models (from .env.example and code analysis)
-readonly OLLAMA_MODELS=("qwen2.5-coder:7b" "llama2")
+readonly OLLAMA_MODELS=("qwen2.5-coder:3b" "llama2")
 
 # State tracking
 ERRORS_FOUND=0

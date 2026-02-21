@@ -4,11 +4,11 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 
-/// Servicio para operaciones del sistema de archivos
-/// Encapsula toda la lógica de creación de archivos y directorios
+/// Service for filesystem operations
+/// Encapsulates all file and directory creation logic
 class FilesystemService {
-  /// Crea la estructura completa de un nuevo proyecto
-  /// Incluye directorios y archivos iniciales (README.md, AGENTS.md)
+  /// Creates the complete structure for a new project
+  /// Includes directories and initial files (README.md, AGENTS.md)
   Future<void> createProjectStructure(
     String basePath,
     String projectName,
@@ -26,27 +26,27 @@ class FilesystemService {
       );
     }
 
-    // Crear directorios
+    // Create directories
     await projectDir.create(recursive: true);
     await Directory(contextPath).create();
 
-    // Crear archivos iniciales
+    // Create initial files
     await _createReadmeFile(fullProjectPath, projectName, description);
     await _createAgentsFile(fullProjectPath, projectName, description);
   }
 
-  /// Crea un directorio en la ruta especificada
+  /// Creates a directory at the specified path
   Future<void> createDirectory(String path) async {
     await Directory(path).create(recursive: true);
   }
 
-  /// Crea un archivo con el contenido especificado
+  /// Creates a file with the specified content
   Future<void> createFile(String path, String content) async {
     final file = File(path);
     await file.writeAsString(content);
   }
 
-  /// Crea el archivo README.md con contenido inicial
+  /// Creates the README.md file with initial content
   Future<void> _createReadmeFile(
     String projectPath,
     String projectName,
@@ -142,7 +142,7 @@ Este proyecto está bajo la Licencia MIT. Ver [`LICENSE`](LICENSE) para más det
     await createFile(readmePath, content);
   }
 
-  /// Crea el archivo AGENTS.md con contenido inicial
+  /// Creates the AGENTS.md file with initial content
   Future<void> _createAgentsFile(
     String projectPath,
     String projectName,

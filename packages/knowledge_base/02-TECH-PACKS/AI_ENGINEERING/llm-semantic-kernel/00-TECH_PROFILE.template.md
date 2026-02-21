@@ -3,13 +3,13 @@
 > **Categoría:** AI Orchestration SDK
 > **Mantenedor:** Microsoft
 > **Lenguajes:** Python, C#, Java
-> **Versión Objetivo:** 1.0.0+
+> **Versión Goal:** 1.0.0+
 
 El SDK ligero para integrar LLMs con código existente ("Native Functions").
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Casos de Uso (Suitability)](#casos-de-uso-suitability)
 2. [Conceptos Clave](#conceptos-clave)
@@ -123,6 +123,6 @@ pip install semantic-kernel[pinecone]      # Vector DB
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ ADOPTED (Enterprise Stack)
 **Responsable:** ArchitectZero AI Agent

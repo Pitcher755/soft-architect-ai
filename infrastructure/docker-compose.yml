@@ -1,4 +1,3 @@
----
 services:
   # ================================
   # FastAPI Backend Service
@@ -11,14 +10,29 @@ services:
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     environment:
+      # Core Configuration
       - ENVIRONMENT=${ENVIRONMENT:-development}
       - DEBUG=${DEBUG:-true}
-      - OLLAMA_BASE_URL=http://ollama:11434
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+
+      # Service Connections
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
       - CHROMADB_HOST=chromadb
       - CHROMADB_PORT=8000
-      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+
+      # LLM Provider Config
+      - LLM_PROVIDER=${LLM_PROVIDER:-local}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL}
+
+      # Chat Memory Configuration (NEW)
+      - CHAT_MAX_HISTORY_MESSAGES=${CHAT_MAX_HISTORY_MESSAGES:-20}
+      - CHAT_MAX_MESSAGE_LENGTH=${CHAT_MAX_MESSAGE_LENGTH:-5000}
+
     volumes:
       - ./data/logs:/app/logs
+      - ../src/server/app:/app/app
+      - ../packages/knowledge_base:/app/knowledge_base
     depends_on:
       chromadb:
         condition: service_healthy
@@ -28,10 +42,7 @@ services:
       - sa_network
     restart: unless-stopped
     healthcheck:
-      test:
-        - CMD-SHELL
-        - >
-          python -c "import socket; socket.create_connection(('localhost', 8000), timeout=2)"
+      test: [ "CMD-SHELL", "python -c \"import socket; socket.create_connection(('localhost', 8000), timeout=2)\"" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -41,23 +52,21 @@ services:
   # ChromaDB Vector Database Service
   # ================================
   chromadb:
-    image: chromadb/chroma:1.4.2.dev96
+    image: chromadb/chroma:latest
     container_name: sa_chromadb
     ports:
       - "8001:8000"
     environment:
       - CHROMA_DB_IMPL=duckdb
       - PERSIST_DIRECTORY=/data
+      - ANONYMIZED_TELEMETRY=False
     volumes:
       - ./chroma_data:/data
     networks:
       - sa_network
     restart: unless-stopped
     healthcheck:
-      test:
-        - CMD-SHELL
-        - >
-          bash -c 'echo > /dev/tcp/localhost/8000'
+      test: [ "CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8000'" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -76,25 +85,20 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0:11434
       - OLLAMA_MODELS=/root/.ollama/models
+      # Allow connection from other containers
+      - OLLAMA_ORIGINS=*
     networks:
       - sa_network
     restart: unless-stopped
     deploy:
       resources:
         reservations:
-          # GPU support: Active for Nvidia RTX 3050
-          # For systems without GPU: comment the following 4 lines and
-          # uncomment 'devices: []'
-          # Use devices: [] if you do NOT have Nvidia GPU
           devices:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
     healthcheck:
-      test:
-        - CMD-SHELL
-        - >
-          bash -c 'echo > /dev/tcp/localhost/11434'
+      test: [ "CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/11434'" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -114,7 +118,5 @@ networks:
 # Volumes (Data Persistence)
 # ================================
 volumes:
-  # chromadb_data: Replaced with bind mount ./chroma_data
-  # This allows direct inspection of ChromaDB data from host filesystem
   ollama_data:
     driver: local

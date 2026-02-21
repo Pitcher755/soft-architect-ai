@@ -5,12 +5,12 @@
 > **Durabilidad:** 99.999999999% (11 nueves)
 > **Disponibilidad:** 99.99% (RA-GRS)
 > **Filosofía:** "Almacenamiento masivo, barato y seguro"
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Conceptos Fundamentales](#conceptos-fundamentales)
 2. [Access Tiers](#access-tiers)
@@ -75,7 +75,7 @@ Hoy o ayer         → Hot      ($0.0192/GB/mes)
 ```yaml
 AccessTier: Hot
 
-# Características
+# Features
 - Almacenamiento: $0.0192/GB/mes
 - Retrieval: Inmediato (ms)
 - Lectura/Escritura: Frecuente, sin penalidad
@@ -92,7 +92,7 @@ AccessTier: Hot
 ```yaml
 AccessTier: Cool
 
-# Características
+# Features
 - Almacenamiento: $0.01/GB/mes (48% cheaper)
 - Retrieval: Inmediato pero con mínimo de billable
 - Mínimo billable: 30 días (si lo borras antes, pagas igual)
@@ -115,12 +115,12 @@ AccessTier: Cool
 ```yaml
 AccessTier: Archive
 
-# Características
+# Features
 - Almacenamiento: $0.00099/GB/mes (94% cheaper que Hot)
 - Retrieval: 12+ horas (Rehidratación, no instantáneo)
 - Mínimo billable: 180 días
 - Mínimo por blob: 128 KB
-- Estado: Offline (no accesible hasta rehidratar)
+- Status: Offline (no accesible hasta rehidratar)
 - Caso de uso: Backup anual, archivos legales, disaster recovery
 
 # Rehydration (traer de Archive):
@@ -163,7 +163,7 @@ blob.set_blob_tier('Hot')  # Tarda ~12 horas
 ### Automatizar Transiciones
 
 ```yaml
-# Configuración de ciclo de vida
+# Configuration de ciclo de vida
 LifecyclePolicy:
   Rules:
     - Name: archive-old-logs
@@ -243,7 +243,7 @@ LifecyclePolicy:
 ```yaml
 # Container = Privado (por defecto)
 ContainerProperties:
-  PublicAccess: None  # Obligatorio en producción
+  PublicAccess: None  # Mandatory en producción
 
 # ❌ NUNCA hacer esto:
 ContainerProperties:
@@ -554,7 +554,7 @@ az storage blob generate-sas \
 - Archive para retención legal
 - Immutable + Soft Delete para compliance
 
-✅ **Checklist de Seguridad:**
+✅ **Checklist de Security:**
 - [ ] Container = Private
 - [ ] Managed Identity si backend
 - [ ] SAS tokens si frontend

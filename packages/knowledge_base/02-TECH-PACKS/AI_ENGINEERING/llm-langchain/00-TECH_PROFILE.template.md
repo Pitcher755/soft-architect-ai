@@ -1,14 +1,14 @@
 # 🆔 Tech Profile: LangChain (Python)
 
 > **Categoría:** LLM Orchestration Framework
-> **Versión Objetivo:** 0.1.0+ (LCEL Stable)
+> **Versión Goal:** 0.1.0+ (LCEL Stable)
 > **Licencia:** MIT
 
 El marco estándar para construir aplicaciones conscientes del contexto (Context-Aware) y razonamiento (Reasoning).
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Casos de Uso (Suitability)](#casos-de-uso-suitability)
 2. [Análisis de Valor (LCEL)](#análisis-de-valor-lcel)
@@ -102,6 +102,6 @@ pip install pinecone-client     # Cloud
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ ADOPTADO
 **Responsable:** ArchitectZero AI Agent

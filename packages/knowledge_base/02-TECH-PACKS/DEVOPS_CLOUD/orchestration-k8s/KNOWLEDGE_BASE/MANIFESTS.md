@@ -1,19 +1,19 @@
 # ☸️ Kubernetes Manifests: The Declarative Way
 
-> **Versión:** Kubernetes 1.25+
+> **Version:** Kubernetes 1.25+
 > **Formato:** YAML Declarativo
 > **Filosofía:** Infrastructure as Code (IaC) - Immutable, Reproducible
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Filosofía Declarativa](#filosofía-declarativa)
 2. [Workloads: Deployment](#workloads-deployment)
 3. [Networking: Service & Ingress](#networking-service--ingress)
-4. [Configuración: ConfigMap & Secret](#configuración-configmap--secret)
+4. [Configuration: ConfigMap & Secret](#configuración-configmap--secret)
 5. [Storage Persistence](#storage-persistence)
 6. [Health Checks & Probes](#health-checks--probes)
 7. [Resource Management](#resource-management)
@@ -30,7 +30,7 @@ Monolito (VM única)
   ↓
 Docker (Contenedor, pero ¿quién lo orquesta?)
   ↓
-Kubernetes (Orquestación automática de contenedores)
+Kubernetes (Orchestration automática de contenedores)
 
 Kubernetes = Autopiloto para infraestructura
 ```
@@ -114,7 +114,7 @@ spec:
       imagePullSecrets:
         - name: dockerhub-credentials
 
-      # Contenedores
+      # Containers
       containers:
         - name: api
           image: softarchitect-api:v1.0.0
@@ -319,7 +319,7 @@ Ahorro: 90%+ del costo de LB
 
 ---
 
-## Configuración: ConfigMap & Secret
+## Configuration: ConfigMap & Secret
 
 ### ConfigMap (No-Sensitive)
 
@@ -384,7 +384,7 @@ containers:
           name: app-secrets
 ```
 
-**⚠️ Nota:** Secrets en K8s está codificado en Base64, NOT encriptado. Para encriptación:
+**⚠️ Note:** Secrets en K8s está codificado en Base64, NOT encriptado. Para encriptación:
 - Usar **Sealed Secrets** (tercero)
 - Usar **AWS Secrets Manager** / **Azure Key Vault**
 - Usar **HashiCorp Vault**
@@ -586,7 +586,7 @@ spec:
 4. Siempre limits (requests + limits)
 5. Ingress para HTTP, Service para interno
 
-✅ **Checklist de Seguridad:**
+✅ **Checklist de Security:**
 - [ ] runAsNonRoot: true
 - [ ] readOnlyRootFilesystem: true (si aplica)
 - [ ] No usar :latest (pinear versiones)

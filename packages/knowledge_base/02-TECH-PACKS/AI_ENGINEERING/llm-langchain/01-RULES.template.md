@@ -1,14 +1,14 @@
 # 📏 Tech Governance Rules: LangChain
 
-> **Fecha:** 30 de Enero de 2026
-> **Estado:** ✅ MANDATORY RULES
-> **Alcance:** Todo código Python que use LangChain en SoftArchitect
+> **Date:** 30 de Enero de 2026
+> **Status:** ✅ MANDATORY RULES
+> **Scope:** Todo código Python que use LangChain en SoftArchitect
 
 Reglas estrictas e inapelables para el desarrollo de IA con LangChain.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [La Regla de Oro: LCEL Mandatorio](#la-regla-de-oro-lcel-mandatorio)
 2. [Gestión de Prompts](#gestión-de-prompts)
@@ -23,7 +23,7 @@ Reglas estrictas e inapelables para el desarrollo de IA con LangChain.
 
 ### Regla 1: The Pipe Rule (`|`)
 
-**Obligatorio:** TODO nuevo desarrollo debe usar **LCEL (LangChain Expression Language)** con el operador pipe.
+**Mandatory:** TODO nuevo desarrollo debe usar **LCEL (LangChain Expression Language)** con el operador pipe.
 
 **Sintaxis Permitida:**
 ```python
@@ -81,7 +81,7 @@ model = ChatOllama(model="llama3")
 chain = prompt_string | model  # Type error: str no es compatible
 ```
 
-**Obligatorio:** Usar `ChatPromptTemplate` o `SystemMessagePromptTemplate`.
+**Mandatory:** Usar `ChatPromptTemplate` o `SystemMessagePromptTemplate`.
 
 ```python
 # ✅ GOOD: Templates estructurados
@@ -155,7 +155,7 @@ json_str = response.content
 parsed = json.loads(json_str)  # ¿Qué si no es válido JSON?
 ```
 
-**Obligatorio:** Usar `PydanticOutputParser` o `.with_structured_output()`.
+**Mandatory:** Usar `PydanticOutputParser` o `.with_structured_output()`.
 
 ```python
 # ✅ GOOD: Schema validado con Pydantic
@@ -389,6 +389,6 @@ logger.info(f"Chain result: {result}")
 
 **Validación:** RAG rechazará PRs que violen estas reglas.
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ ENFORCED
 **Responsable:** ArchitectZero AI Agent

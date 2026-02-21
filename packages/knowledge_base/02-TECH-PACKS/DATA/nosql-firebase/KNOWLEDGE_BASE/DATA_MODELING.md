@@ -3,19 +3,19 @@
 > **Motor:** Google Cloud Firestore (Document Store NoSQL)
 > **Filosofía:** "Duplica datos, ahorra lecturas"
 > **Paradigma:** Desnormalización (Opposite of SQL)
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 NoSQL requiere un cambio de mentalidad. Optimizamos para lectura, no para normalización.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [SQL vs NoSQL Mindset](#sql-vs-nosql-mindset)
 2. [Colecciones vs Subcolecciones](#colecciones-vs-subcolecciones)
 3. [Desnormalización: El Arte de Copiar](#desnormalización-el-arte-de-copiar)
-4. [Patrones de Consulta](#patrones-de-consulta)
-5. [Optimización de Escritura](#optimización-de-escritura)
+4. [Patterns de Consulta](#patrones-de-consulta)
+5. [Optimization de Escritura](#optimización-de-escritura)
 6. [Anti-Patterns](#anti-patterns)
 
 ---
@@ -223,7 +223,7 @@ collection('posts').doc('post-1').collection('comments').doc('comment-1')
 
 ---
 
-## Patrones de Consulta
+## Patterns de Consulta
 
 ### Query Simple
 
@@ -286,7 +286,7 @@ async function getPosts(lastDocument?: any) {
 
 ---
 
-## Optimización de Escritura
+## Optimization de Escritura
 
 ### Batch Writes (Economizar escrituras)
 
@@ -380,7 +380,7 @@ await db.collection('posts').doc('post-1').update({
 // posts/{id}/comments/{id}  (subcolección para el resto)
 ```
 
-### ❌ ANTI-PATTERN 3: Queries Complejas Sin Índices
+### ❌ ANTI-PATTERN 3: Queries Complejas Sin Indexes
 
 ```typescript
 // ❌ BAD: Query sin índice compuesto
@@ -394,7 +394,7 @@ const results = await db
 // Firestore lanza error y pide crear índice
 
 // ✅ GOOD: Crear índice compuesto PRIMERO
-// En Firebase Console: Firestore → Índices
+// En Firebase Console: Firestore → Indexes
 // O dejar que Firestore sugiera automáticamente
 ```
 
@@ -429,7 +429,7 @@ import { serverTimestamp } from 'firebase/firestore'
 
 # ✅ 2. Queries
 [ ] Queries por campo principal (authorId, categoryId)
-[ ] Índices compuestos creados para multi-field queries
+[ ] Indexes compuestos creados para multi-field queries
 [ ] Paginación cursor-based implementada
 
 # ✅ 3. Optimization
@@ -454,6 +454,6 @@ import { serverTimestamp } from 'firebase/firestore'
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ NOSQL ARCHITECTURE READY
 **Responsable:** ArchitectZero AI Agent

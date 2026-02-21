@@ -1,39 +1,39 @@
 # 🧪 Testing Strategy & QA Plan
 
-Estrategia de calidad para **{{PROJECT_NAME}}**.
-**Coverage Mínimo Objetivo:** {{COVERAGE_TARGET}}%
+Quality strategy for **{{PROJECT_NAME}}**.
+**Minimum Target Coverage:** {{COVERAGE_TARGET}}%
 
-## 1. Pirámide de Tests
+## 1. Test Pyramid
 
-### Nivel 1: Unit Testing (Base)
-* **Herramienta:** {{UNIT_TEST_TOOL}} (Ej: Pytest / Flutter Test).
-* **Alcance:** Funciones puras, utilidades, modelos de dominio.
+### Level 1: Unit Testing (Base)
+* **Tool:** {{UNIT_TEST_TOOL}} (e.g., Pytest / Flutter Test).
+* **Scope:** Pure functions, utilities, domain models.
 * **Target:** {{UNIT_TEST_COUNT}} tests.
-* **Regla:** Se ejecutan en cada commit local.
+* **Rule:** Run on every local commit.
 
-### Nivel 2: Integration Testing (Medio)
-* **Herramienta:** {{INTEGRATION_TEST_TOOL}}.
-* **Alcance:** Endpoints API con base de datos real (en Docker), Comunicación Componente-Store.
+### Level 2: Integration Testing (Middle)
+* **Tool:** {{INTEGRATION_TEST_TOOL}}.
+* **Scope:** API endpoints with real database (in Docker), Component-Store communication.
 * **Target:** {{INTEGRATION_TEST_COUNT}} tests.
-* **Regla:** Se ejecutan en PRs.
+* **Rule:** Run on PRs.
 
-### Nivel 3: E2E Testing (Punta)
-* **Herramienta:** {{E2E_TEST_TOOL}} (Ej: Playwright / Patrol).
-* **Alcance:** Flujos críticos de usuario (Login -> Compra).
+### Level 3: E2E Testing (Top)
+* **Tool:** {{E2E_TEST_TOOL}} (e.g., Playwright / Patrol).
+* **Scope:** Critical user flows (Login -> Purchase).
 * **Target:** {{E2E_TEST_COUNT}} tests.
-* **Regla:** Se ejecutan en Staging antes de Deploy.
+* **Rule:** Run in Staging before Deploy.
 
-## 2. Datos de Prueba (Fixtures)
-* Usar `Faker` o `FactoryBoy` para generar datos deterministas.
-* **NUNCA** usar datos reales de producción en entornos de test.
+## 2. Test Data (Fixtures)
+* Use `Faker` or `FactoryBoy` to generate deterministic data.
+* **NEVER** use real production data in test environments.
 
 ## 3. Performance Testing
-* **Herramienta:** {{PERF_TEST_TOOL}} (Ej: k6 / Locust).
-* **Objetivos:**
+* **Tool:** {{PERF_TEST_TOOL}} (e.g., k6 / Locust).
+* **Objectives:**
     * API Response Time: < {{MAX_RESPONSE_TIME}}ms (p95).
     * Throughput: {{MIN_THROUGHPUT}} req/s.
 
 ## 4. Security Testing
-* **SAST (Static):** {{SAST_TOOL}} (Ej: SonarQube / Bandit).
-* **DAST (Dynamic):** {{DAST_TOOL}} (Ej: ZAP / Burp).
+* **SAST (Static):** {{SAST_TOOL}} (e.g., SonarQube / Bandit).
+* **DAST (Dynamic):** {{DAST_TOOL}} (e.g., ZAP / Burp).
 * **Dependency Check:** {{DEPENDENCY_CHECKER}} (pip-audit / npm audit).

@@ -86,14 +86,17 @@ void main() {
           ),
         );
 
-        final align = tester.widget<Align>(
+        // Assistant messages use a Row layout (not Align)
+        // The Row should expand from the left side
+        final row = tester.widget<Row>(
           find.ancestor(
             of: find.text('Assistant response'),
-            matching: find.byType(Align),
+            matching: find.byType(Row),
           ),
         );
 
-        expect(align.alignment, Alignment.centerLeft);
+        // Verify the Row has CrossAxisAlignment.start (left-aligned)
+        expect(row.crossAxisAlignment, CrossAxisAlignment.start);
       });
 
       testWidgets('should have appropriate padding', (tester) async {

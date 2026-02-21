@@ -17,6 +17,8 @@ class AccessibilitySection extends ConsumerWidget {
     final globalZoom = ref.watch(globalZoomProvider);
     final enableZoomShortcuts = ref.watch(enableZoomShortcutsProvider);
     final l10n = AppLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return SettingsCard(
       title: l10n.accessibilityTitle,
@@ -34,8 +36,8 @@ class AccessibilitySection extends ConsumerWidget {
               divisions: 15,
               onChanged: (value) =>
                   ref.read(settingsProvider.notifier).updateGlobalZoom(value),
-              activeColor: const Color(0xFF58A6FF),
-              inactiveColor: const Color(0xFF30363d),
+              activeColor: colorScheme.primary,
+              inactiveColor: colorScheme.outline,
             ),
           ),
         ),
@@ -43,10 +45,10 @@ class AccessibilitySection extends ConsumerWidget {
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
           child: Text(
             '${(globalZoom * 100).round()}%',
-            style: const TextStyle(fontSize: 12, color: Color(0xFF8b949e)),
+            style: textTheme.bodySmall?.copyWith(fontSize: 12),
           ),
         ),
-        const Divider(color: Color(0xFF30363d)),
+        Divider(color: colorScheme.outline),
         SettingItem(
           title: l10n.enableZoomShortcuts,
           subtitle: 'Ctrl + / Ctrl - para zoom, Ctrl + 0 para reset',
@@ -55,7 +57,7 @@ class AccessibilitySection extends ConsumerWidget {
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateZoomShortcuts(enableZoomShortcuts: value),
-            activeThumbColor: const Color(0xFF58A6FF),
+            activeTrackColor: colorScheme.primary,
           ),
         ),
       ],

@@ -1,122 +1,122 @@
 # 🆔 Tech Profile: Google Flutter
 
-> **Categoría:** Cross-Platform UI Framework
-> **Licencia:** BSD-3-Clause
-> **Lenguaje:** Dart 3.0+ (Sound Null Safety)
-> **Versión Objetivo:** Flutter 3.19+ (Stable Channel)
+> **Category:** Cross-Platform UI Framework
+> **License:** BSD-3-Clause
+> **Language:** Dart 3.0+ (Sound Null Safety)
+> **Target Version:** Flutter 3.19+ (Stable Channel)
 
-Este perfil permite a **SoftArchitect AI** evaluar la idoneidad de Flutter para desarrollar interfaces de usuario multiplataforma.
+This profile allows **SoftArchitect AI** to evaluate Flutter's suitability for developing multiplatform user interfaces.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-- [1. Casos de Uso (Suitability)](#1-casos-de-uso-suitability)
-- [2. Análisis de Valor](#2-análisis-de-valor)
-- [3. Requisitos del Sistema](#3-requisitos-del-sistema)
+- [1. Use Cases (Suitability)](#1-use-cases-suitability)
+- [2. Value Analysis](#2-value-analysis)
+- [3. System Requirements](#3-system-requirements)
 - [4. Stack Integration](#4-stack-integration)
-- [5. Ciclo de Vida & Versioning](#5-ciclo-de-vida--versioning)
-- [6. Rendimiento (Benchmarks)](#6-rendimiento-benchmarks)
-- [7. Referencias](#7-referencias)
+- [5. Lifecycle & Versioning](#5-lifecycle--versioning)
+- [6. Performance (Benchmarks)](#6-performance-benchmarks)
+- [7. References](#7-references)
 
 ---
 
-## 1. Casos de Uso (Suitability)
+## 1. Use Cases (Suitability)
 
-### ✅ Ideal Para (Best Fit)
+### ✅ Ideal For (Best Fit)
 
-**MVPs Multiplataforma**
-- Un solo código para iOS, Android, Web y Desktop (Windows/Mac/Linux).
-- Ideal para startups y empresas con recursos limitados.
-- Reduce time-to-market en 40-60% comparado con desarrollo nativo separado.
-- **Ejemplo:** SoftArchitect UI corre en Desktop (Linux) + Web en navegador + teórico iOS/Android.
+**Multiplatform MVPs**
+- Single codebase for iOS, Android, Web, and Desktop (Windows/Mac/Linux).
+- Ideal for startups and companies with limited resources.
+- Reduces time-to-market by 40-60% compared to separate native development.
+- **Example:** SoftArchitect UI runs on Desktop (Linux) + Web browser + theoretical iOS/Android.
 
-**UIs Personalizadas (Pixel Perfect)**
-- Gracias al motor **Skia** (soon **Impeller**), se tiene control total de cada píxel.
-- No depende de componentes nativos del OEM; toda la UI es renderizada por Flutter.
-- Garantiza consistencia visual 100% entre plataformas (a pixel nivel).
-- Ideal para apps de diseño creativo, UIs personalizadas, branded experiences.
+**Custom UIs (Pixel Perfect)**
+- Thanks to **Skia** engine (soon **Impeller**), you have total control of every pixel.
+- Doesn't depend on OEM native components; entire UI is rendered by Flutter.
+- Guarantees 100% visual consistency across platforms (at pixel level).
+- Ideal for creative design apps, custom UIs, branded experiences.
 
-**Aplicaciones B2B/Enterprise**
-- Tipado fuerte con **Dart** + arquitectura robusta facilitan mantenimiento a largo plazo.
-- Hot Reload permite iteración rápida en desarrollo.
-- Comunidad en crecimiento con soporte profesional (Google, Canonical, many companies).
-- Escalable desde MVP a millones de usuarios.
+**B2B/Enterprise Applications**
+- Strong typing with **Dart** + robust architecture facilitate long-term maintenance.
+- Hot Reload enables rapid iteration during development.
+- Growing community with professional support (Google, Canonical, many companies).
+- Scalable from MVP to millions of users.
 
 **Performance-Critical Apps**
-- Compilación **AOT (Ahead-of-Time)** genera código nativo eficiente.
-- Sustenta 60/120 FPS incluso en devices de gama baja (Android Go, iOS SE).
-- Menos overhead que React Native, Ionic.
+- **AOT (Ahead-of-Time)** compilation generates efficient native code.
+- Sustains 60/120 FPS even on low-end devices (Android Go, iOS SE).
+- Less overhead than React Native, Ionic.
 
-### ❌ No Usar Para (Anti-Patterns)
+### ❌ Not To Use For (Anti-Patterns)
 
-**Apps Muy Ligeras (<5MB)**
-- Motor de Flutter añade overhead base (~12-20MB en APK).
-- Para apps instantáneas simples (weather, calculator), web nativa es mejor.
-- **Alternativa:** Web con JavaScript vanila, Alpine.js, htmx.
+**Very Light Apps (<5MB)**
+- Flutter engine adds base overhead (~12-20MB in APK).
+- For simple instant apps (weather, calculator), native web is better.
+- **Alternative:** Web with vanilla JavaScript, Alpine.js, htmx.
 
-**Integración Profunda con Hardware Oscuro**
-- Si se depende de APIs nativas no estándar o drivers propietarios desconocidos.
-- El puente nativo (**MethodChannel**) puede volverse costoso de mantener.
-- **Alternativa:** Desarrollo nativo (Swift/Kotlin) con MethodChannel como bridge.
+**Deep Integration with Obscure Hardware**
+- If depending on non-standard native APIs or unknown proprietary drivers.
+- Native bridge (**MethodChannel**) can become costly to maintain.
+- **Alternative:** Native development (Swift/Kotlin) with MethodChannel as bridge.
 
-**Aplicaciones 100% Web-Only sin necesidad Desktop/Mobile**
-- Si solo se necesita web, usa **React/Vue/Angular** (ecosystem más maduro para web).
-- Flutter Web es bueno pero aún en desarrollo; menor SEO.
+**100% Web-Only Applications without Desktop/Mobile need**
+- If only web is needed, use **React/Vue/Angular** (more mature ecosystem for web).
+- Flutter Web is good but still developing; lower SEO.
 
 ---
 
-## 2. Análisis de Valor
+## 2. Value Analysis
 
-### Matriz de Dimensiones
+### Dimension Matrix
 
-| Dimensión | Valoración | Comentario |
+| Dimension | Rating | Comment |
 |:---|:---:|:---|
-| **Velocidad de Desarrollo** | 5/5 | Hot Reload cambia código en milisegundos sin perder estado. Incrementa productividad 2-3x. |
-| **Rendimiento UI** | 5/5 | 60/120 FPS estables gracias a AOT. Mejor que React Native en pruebas independientes. |
-| **Curva de Aprendizaje** | 3/5 | Requiere aprender Dart (similar a Java/Kotlin) + paradigma declarativo de Widgets + Riverpod. ~4-6 semanas para productividad. |
-| **Ecosistema** | 4/5 | Pub.dev tiene ~80k paquetes (vs npm ~3M). Crecimiento acelerado. Comunidad activísima. |
-| **Mantenibilidad** | 4/5 | Typado fuerte + declarativo = código autoexplicativo. Refactorización segura con IDE support. |
-| **LTS & Viabilidad** | 5/5 | Respaldado por Google, usado por Google Ads, Alibaba, BMW, eBay, Philips. Futures asegurado. |
+| **Development Speed** | 5/5 | Hot Reload changes code in milliseconds without losing state. Increases productivity 2-3x. |
+| **UI Performance** | 5/5 | Stable 60/120 FPS thanks to AOT. Better than React Native in independent tests. |
+| **Learning Curve** | 3/5 | Requires learning Dart (similar to Java/Kotlin) + declarative Widget paradigm + Riverpod. ~4-6 weeks for productivity. |
+| **Ecosystem** | 4/5 | Pub.dev has ~80k packages (vs npm ~3M). Accelerated growth. Very active community. |
+| **Maintainability** | 4/5 | Strong typing + declarative = self-explanatory code. Safe refactoring with IDE support. |
+| **LTS & Viability** | 5/5 | Backed by Google, used by Google Ads, Alibaba, BMW, eBay, Philips. Future assured. |
 
 ---
 
-## 3. Requisitos del Sistema
+## 3. System Requirements
 
 ### SDK & Tooling
 
 **Flutter SDK**
-- Versión: 3.19+ (Stable Channel)
-- Tamaño: ~600MB
-- Actualización: ~3 veces/año (minor), patches constantes
+- Version: 3.19+ (Stable Channel)
+- Size: ~600MB
+- Updates: ~3 times/year (minor), constant patches
 
 **Dart**
-- Incluido con Flutter SDK (v3.0+)
-- Sound Null Safety obligatorio (no null-unsafe code)
-- Compilación: JIT (dev), AOT (release)
+- Included with Flutter SDK (v3.0+)
+- Sound Null Safety mandatory (no null-unsafe code)
+- Compilation: JIT (dev), AOT (release)
 
-**Gestión de Paquetes**
-- `pub` (oficial, integrado en `flutter pub`)
-- **pubspec.yaml:** Define dependencias (análogo a package.json o requirements.txt)
-- **pubspec.lock:** Versiones bloqueadas (COMMIT THIS!)
+**Package Management**
+- `pub` (official, integrated in `flutter pub`)
+- **pubspec.yaml:** Defines dependencies (analogous to package.json or requirements.txt)
+- **pubspec.lock:** Locked versions (COMMIT THIS!)
 
-**IDEs Soportados**
-- **VS Code** (ligero, recomendado por Flutter team)
-- **Android Studio / IntelliJ IDEA** (pesado pero excelente tooling)
-- **Vim/Neovim** (con plugins, avanzado)
+**Supported IDEs**
+- **VS Code** (lightweight, recommended by Flutter team)
+- **Android Studio / IntelliJ IDEA** (heavy but excellent tooling)
+- **Vim/Neovim** (with plugins, advanced)
 
-### Hardware Mínimo
+### Minimum Hardware
 
 **Development Machine**
-- CPU: 2+ cores (para hot reload rápido)
-- RAM: 4GB mínimo (8GB recomendado)
+- CPU: 2+ cores (for fast hot reload)
+- RAM: 4GB minimum (8GB recommended)
 - Storage: 10GB (SDK + dependencies)
-- GPU: Cualquiera (no requerida)
+- GPU: Any (not required)
 
 **Target Devices**
 - iOS: iOS 11.0+
 - Android: API 21+ (Android 5.0+)
-- Web: Chrome, Firefox, Safari, Edge (últimas 2 versiones)
+- Web: Chrome, Firefox, Safari, Edge (last 2 versions)
 - Desktop: Windows 7+, macOS 10.14+, Linux (Debian-based)
 
 ---
@@ -165,76 +165,76 @@ Este perfil permite a **SoftArchitect AI** evaluar la idoneidad de Flutter para 
 
 ---
 
-## 5. Ciclo de Vida & Versioning
+## 5. Lifecycle & Versioning
 
 ### Release Schedule
 
 **Flutter**
-- **Major releases:** ~3 veces/año (marzo, mayo, septiembre)
-- **Minor updates:** Continuamente (breaking changes = major bump)
-- **Patches:** Semanales en stable channel
+- **Major releases:** ~3 times/year (March, May, September)
+- **Minor updates:** Continuously (breaking changes = major bump)
+- **Patches:** Weekly on stable channel
 
 **Dart**
-- Alineado con Flutter (mismo ciclo)
+- Aligned with Flutter (same cycle)
 
 ### LTS & Stability
 
-Flutter NO tiene "Long Term Support" formal. **Todas las versiones** son soportadas hasta que se vuelvan **muy antiguas** (2+ años).
+Flutter does NOT have formal "Long Term Support". **All versions** are supported until they become **very old** (2+ years).
 
-**Recomendación de SoftArchitect:**
-- Mantener Stable Channel actualizado (1-2 versiones detrás de latest)
-- Testear en dev channel antes de adoptar breaking changes
-- Monitorear changelog: https://github.com/flutter/flutter/wiki/Breaking-changes
+**SoftArchitect Recommendation:**
+- Keep Stable Channel updated (1-2 versions behind latest)
+- Test on dev channel before adopting breaking changes
+- Monitor changelog: https://github.com/flutter/flutter/wiki/Breaking-changes
 
 ### Upgrade Path
 
 ```
-3.16.x (LTS de facto)
+3.16.x (de facto LTS)
   ↓
-3.19.x (Stable actual)
+3.19.x (Current stable)
   ↓
-3.22.x (Próximo stable esperado)
+3.22.x (Expected next stable)
 ```
 
 ---
 
-## 6. Rendimiento (Benchmarks)
+## 6. Performance (Benchmarks)
 
-### Compilación
+### Compilation
 
-| Métrica | Flutter | React Native | Native Swift |
-|:---|:---:|:---:|:---:|
+| Metric | Flutter | React Native | Native Swift |
+|:---|:---:|:---:|:---|
 | **Cold Build** | 45-60s | 30-40s | 20-30s |
 | **Hot Reload** | 300-500ms | N/A | N/A |
 | **Release Build** | 2-3min | 2-3min | 1-2min |
 
 ### Runtime
 
-| Métrica | Flutter | React Native | Native |
-|:---|:---:|:---:|:---:|
+| Metric | Flutter | React Native | Native |
+|:---|:---:|:---:|:---|
 | **App Startup** | 600-800ms | 800-1200ms | 300-500ms |
 | **List Scroll (10k items)** | 60 FPS | 30-45 FPS | 60 FPS |
 | **Memory (idle)** | 45-70MB | 80-120MB | 40-60MB |
 | **APK Size** | 15-20MB | 30-40MB | 5-15MB |
 
-**Conclusión:** Flutter es competitivo en performance. No sacrifica velocidad por versatilidad.
+**Conclusion:** Flutter is competitive in performance. Doesn't sacrifice speed for versatility.
 
 ---
 
-## 7. Referencias
+## 7. References
 
-**Documentación Oficial**
+**Official Documentation**
 - [Flutter Docs](https://flutter.dev/docs)
 - [Dart Docs](https://dart.dev/guides)
 - [Riverpod Docs](https://riverpod.dev)
 - [GoRouter Docs](https://pub.dev/packages/go_router)
 
-**Comunidades**
+**Communities**
 - Flutter Community (Slack, Discord)
 - Dart Language GitHub Issues
 
-**Ejemplos en Producción**
-- SoftArchitect AI (este proyecto)
+**Production Examples**
+- SoftArchitect AI (this project)
 - Google Ads
 - Alibaba AliPay
 - BMW Cars
@@ -242,6 +242,6 @@ Flutter NO tiene "Long Term Support" formal. **Todas las versiones** son soporta
 
 ---
 
-**Última Actualización:** 30/01/2026
-**Versión de Perfil:** 1.0
-**Validado Por:** ArchitectZero (Lead Architect)
+**Last Updated:** 30/01/2026
+**Profile Version:** 1.0
+**Validated By:** ArchitectZero (Lead Architect)

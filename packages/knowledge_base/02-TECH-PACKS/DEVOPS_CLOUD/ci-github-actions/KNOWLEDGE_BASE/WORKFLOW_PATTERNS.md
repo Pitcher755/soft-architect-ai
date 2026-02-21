@@ -3,12 +3,12 @@
 > **Enfoque:** DRY (Don't Repeat Yourself), Secure-First
 > **Ubicación:** `.github/workflows/`
 > **Paradigma:** Infrastructure as Pipelines
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Fundamentos](#fundamentos)
 2. [Triggers & Concurrency](#triggers--concurrency)

@@ -2,14 +2,14 @@
 
 > **Rol:** Cache de Datos en Memoria (Key-Value)
 > **Motor:** Almacenamiento Datos Volátil (RAM)
-> **Objetivo:** Reducir latencia de DB (100ms → 1ms)
+> **Goal:** Reducir latencia de DB (100ms → 1ms)
 > **Filosofía:** "La caché es un espejo, no la fuente de verdad. Si se rompe, vuelves a la DB"
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Fundamental: Caché NO es Base de Datos](#fundamental-caché-no-es-base-de-datos)
 2. [Cache-Aside Pattern (Recomendado)](#cache-aside-pattern-recomendado)
@@ -60,7 +60,7 @@ App -> Intenta leer
    ❌ Redis miss: Lee de DB, llena caché (lento pero funciona)
 ```
 
-### Arquitectura Típica
+### Architecture Típica
 
 ```
 ┌──────────────┐
@@ -184,7 +184,7 @@ def write_through_update(user_id: int, data: UserUpdate):
         value=json.dumps(user.dict())
     )
 
-    # Nota: Esperar a que ambos terminen
+    # Note: Esperar a que ambos terminen
     return user
 ```
 
@@ -286,7 +286,7 @@ SETEX users:100:profile 3600 '{"name": "Alice", "age": 30}'
 | **Cotización de Acciones** | 1-5 minutos | Datos volátiles, actualizan frecuente |
 | **Conteo de Vistas** | 24 horas | Agregación, baja frecuencia |
 | **Producto en Catálogo** | 1 hora | Cambios ocasionales |
-| **Configuración App** | 12 horas | Muy estable |
+| **Configuration App** | 12 horas | Muy estable |
 | **OTP (One-Time Pass)** | 10 minutos | Crítico, tiempo limitado |
 
 ### Implementación en FastAPI + Redis
@@ -503,7 +503,7 @@ async def get_with_lock(key: str, ttl: int, db_fetch_fn):
 ```
 Formato: <namespace>:<entity_type>:<entity_id>:<attribute>
 
-Ejemplos:
+Examples:
 
 users:100:profile              # Perfil de usuario 100
 users:100:settings            # Preferencias de usuario 100
@@ -617,7 +617,7 @@ for message in pubsub.listen():
         print(f"Notificación: {data['message']}")
 ```
 
-**Características:**
+**Features:**
 - ✅ Rápido (fire-and-forget)
 - ❌ No persistente (si suscriptor no está, pierde mensaje)
 - ✅ Ideal para: Websocket broadcasts, real-time updates
@@ -644,7 +644,7 @@ for stream_key, messages_list in messages:
         redis.xack("email-queue", "my_group", message_id)
 ```
 
-**Características:**
+**Features:**
 - ✅ Persistente (si consumer falla, reinicia desde último mensaje)
 - ✅ Grupos de consumidores (distribución de carga)
 - ✅ Ideal para: Colas de trabajos, event sourcing
@@ -748,7 +748,7 @@ maxmemory-policy allkeys-lru
 
 ---
 
-## Resumen: Patrones de Caché en SoftArchitect
+## Resumen: Patterns de Caché en SoftArchitect
 
 | Patrón | Lectura | Escritura | Consistencia | Riesgo | Recomendación |
 |:---|:---|:---|:---|:---|:---|

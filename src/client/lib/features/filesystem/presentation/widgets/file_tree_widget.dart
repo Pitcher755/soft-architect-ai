@@ -12,13 +12,13 @@ class FileTreeWidget extends StatefulWidget {
   const FileTreeWidget({
     required this.onFileSelected,
     this.rootNode,
-    this.projectPath, // Nuevo parámetro para ruta real
+    this.projectPath, // New parameter for real path
     super.key,
   });
 
   final ValueChanged<FileNode> onFileSelected;
-  final FileNode? rootNode; // Para Mocks (opcional)
-  final String? projectPath; // Para Real (opcional)
+  final FileNode? rootNode; // For Mocks (optional)
+  final String? projectPath; // For Real (optional)
 
   @override
   State<FileTreeWidget> createState() => _FileTreeWidgetState();
@@ -29,7 +29,7 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
   FileNode? _selectedNode;
   final Set<String> _expandedFolders = {};
 
-  // Estado de UI
+  // UI state
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -42,7 +42,7 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
   @override
   void didUpdateWidget(FileTreeWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Si cambia la ruta del proyecto, recargamos
+    // If the project path changes, reload
     if (oldWidget.projectPath != widget.projectPath) {
       _loadData();
     }
@@ -60,7 +60,7 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
       return;
     }
 
-    // 2. MODO REAL: Si hay projectPath, usamos el servicio de infraestructura
+    // 2. REAL MODE: If there's a projectPath, use the infrastructure service
     if (widget.projectPath != null) {
       if (!mounted) return;
       setState(() {

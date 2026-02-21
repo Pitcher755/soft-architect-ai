@@ -1,14 +1,14 @@
 # 📏 Tech Governance Rules: Semantic Kernel
 
-> **Fecha:** 30 de Enero de 2026
-> **Estado:** ✅ MANDATORY RULES
-> **Alcance:** Todo código Python que use Semantic Kernel en SoftArchitect
+> **Date:** 30 de Enero de 2026
+> **Status:** ✅ MANDATORY RULES
+> **Scope:** Todo código Python que use Semantic Kernel en SoftArchitect
 
 Reglas estrictas para el desarrollo de Plugins y Kernels.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [La Regla de Oro: Kernel Stateless](#la-regla-de-oro-kernel-stateless)
 2. [Organización de Plugins](#organización-de-plugins)
@@ -23,7 +23,7 @@ Reglas estrictas para el desarrollo de Plugins y Kernels.
 
 ### Regla 1: Kernel por Request
 
-**Obligatorio:** El Kernel debe ser **stateless** en contexto web. No guardar estado mutable en la instancia.
+**Mandatory:** El Kernel debe ser **stateless** en contexto web. No guardar estado mutable en la instancia.
 
 ```python
 # ❌ BAD: Kernel como singleton global con estado mutable
@@ -58,7 +58,7 @@ async def process_request(input_data):
 
 ### Regla 2: Plugin = Carpeta, No Archivo
 
-**Obligatorio:** Un plugin es una **carpeta** con funciones relacionadas.
+**Mandatory:** Un plugin es una **carpeta** con funciones relacionadas.
 
 ```
 plugins/
@@ -124,12 +124,12 @@ class DatabasePlugin:
 **Semantic Functions:**
 - Input: Texto ambiguo, creative
 - Output: Texto generado por LLM
-- Ejemplos: Summarize, Translate, GenerateIdeas
+- Examples: Summarize, Translate, GenerateIdeas
 
 **Native Functions:**
 - Input: Datos estructurados
 - Output: Determinístico (siempre igual input = mismo output)
-- Ejemplos: CalculateSum, FetchFromDB, ValidateEmail
+- Examples: CalculateSum, FetchFromDB, ValidateEmail
 
 ```python
 # ✅ GOOD: Semantic
@@ -149,7 +149,7 @@ class MathPlugin:
 
 ### Regla 5: Descriptores Claros
 
-**Obligatorio:** Cada función debe tener descripción clara. El Planner las lee.
+**Mandatory:** Cada función debe tener descripción clara. El Planner las lee.
 
 ```python
 # ❌ BAD: Sin descripción
@@ -172,7 +172,7 @@ def process(csv_content: str) -> dict:
 
 ### Regla 6: Sandbox Strict para Planner
 
-**Obligatorio:** Nunca exponer funciones de escritura (POST/DELETE) directamente al Planner sin validación.
+**Mandatory:** Nunca exponer funciones de escritura (POST/DELETE) directamente al Planner sin validación.
 
 ```python
 # ❌ BAD: Planner tiene acceso a funciones peligrosas
@@ -213,7 +213,7 @@ await plan.invoke(kernel)  # ← Seguro: solo lectura + logging
 
 ### Regla 7: Timeout en Planners
 
-**Obligatorio:** Limitar iteraciones del planner.
+**Mandatory:** Limitar iteraciones del planner.
 
 ```python
 planner = HandlebarsPlanner(kernel)
@@ -341,6 +341,6 @@ plan = await planner.create_plan(goal)  # ← Puede iterar infinitamente
 
 **Validación:** RAG rechazará PRs que violen estas reglas.
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ ENFORCED
 **Responsable:** ArchitectZero AI Agent

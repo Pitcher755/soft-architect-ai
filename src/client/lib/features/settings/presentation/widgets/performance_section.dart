@@ -17,6 +17,7 @@ class PerformanceSection extends ConsumerWidget {
     final enableMemoryOptimization = ref.watch(
       enableMemoryOptimizationProvider,
     );
+    final colorScheme = Theme.of(context).colorScheme;
 
     return SettingsCard(
       title: 'Rendimiento',
@@ -30,10 +31,10 @@ class PerformanceSection extends ConsumerWidget {
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateAnimations(enableAnimations: value),
-            activeThumbColor: const Color(0xFF58A6FF),
+            activeTrackColor: colorScheme.primary,
           ),
         ),
-        const Divider(color: Color(0xFF30363d)),
+        Divider(color: colorScheme.outline),
         SettingItem(
           title: 'Optimización de memoria',
           subtitle: 'Libera memoria automáticamente cuando sea necesario',
@@ -42,7 +43,7 @@ class PerformanceSection extends ConsumerWidget {
             onChanged: (value) => ref
                 .read(settingsProvider.notifier)
                 .updateMemoryOptimization(enableMemoryOptimization: value),
-            activeThumbColor: const Color(0xFF58A6FF),
+            activeTrackColor: colorScheme.primary,
           ),
         ),
       ],

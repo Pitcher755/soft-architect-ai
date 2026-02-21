@@ -2,13 +2,13 @@
 
 > **Estándar:** golang-standards/project-layout
 > **Filosofía:** Opinión sobre estructura de carpetas
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 Go es opinionado. La comunidad ha convergido en una estructura de directorios clara. Síguelo.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [El Estándar](#el-estándar)
 2. [Estructura Detallada](#estructura-detallada)
@@ -219,7 +219,7 @@ message User {
 }
 ```
 
-### `configs/` - Configuración
+### `configs/` - Configuration
 
 ```yaml
 # myapp/configs/dev.yaml
@@ -467,7 +467,7 @@ func (r *sqlRepository) FindUser(id string) (*domain.User, error) { }
 [ ] Exponer solo pkg/ (público)
 [ ] NO circular imports
 
-# ✅ 4. Configuración
+# ✅ 4. Configuration
 [ ] configs/ con archivos por ambiente
 [ ] Usar environment variables en prod
 [ ] Health checks en main
@@ -485,6 +485,6 @@ func (r *sqlRepository) FindUser(id string) (*domain.User, error) { }
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ GOLANG PROJECT LAYOUT READY
 **Responsable:** ArchitectZero AI Agent

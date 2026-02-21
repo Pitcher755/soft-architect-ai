@@ -1,25 +1,28 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 // lib/features/project_shell/presentation/providers/project_providers.dart
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart' as legacy;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../services/database_helper.dart';
+import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../domain/entities/project.dart';
+import '../../domain/entities/project_progress.dart';
 import '../../domain/models/project_phase.dart';
 import '../../domain/services/project_phase_service.dart';
+import '../../infrastructure/services/project_progress_service.dart';
 
 // ╔════════════════════════════════════════════════╗
 // ║      PROJECTS NOTIFIER (STATE MANAGEMENT)      ║
 // ╚════════════════════════════════════════════════╝
 
-/// Notifier para gestionar la lista de proyectos
-/// - Carga proyectos desde SharedPreferences (persistencia)
-/// - Incluye siempre la guía mock de SoftArchitect
-/// - Permite agregar nuevos proyectos dinámicamente
+/// Notifier for managing the projects list
+/// - Loads projects from SharedPreferences (persistence)
+/// - Always includes the SoftArchitect mock guide
+/// - Allows dynamically adding new projects
 class ProjectsNotifier extends Notifier<List<Project>> {
   static const String _storageKey = 'user_projects_v2';
 
@@ -30,34 +33,51 @@ class ProjectsNotifier extends Notifier<List<Project>> {
     return [];
   }
 
-  /// Carga proyectos desde SharedPreferences + Guía Mock
+  /// ✅ CRITICAL FIX: Mark missing projects instead of deleting them
+  ///
+  /// This allows users to:
+  /// 1. See missing projects in the UI (grayed out)
+  /// 2. Restore the directory later
+  /// 3. Manually delete if desired
   Future<void> _loadProjects() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // 1. Cargar proyectos reales (guardados en prefs)
+    // 1. Load projects from SharedPreferences
     final savedJson = prefs.getStringList(_storageKey) ?? [];
     final userProjects = <Project>[];
 
     for (final str in savedJson) {
       try {
         final Map<String, dynamic> json = jsonDecode(str);
+        final projectPath = json['path'] as String;
+
+        // ✅ CRITICAL: Check if directory exists (but DON'T delete)
+        final directory = Directory(projectPath);
+        final exists = directory.existsSync();
+
+        if (!exists) {
+          debugPrint('⚠️ Project directory missing: $projectPath');
+        }
+
+        // ✅ Add project with isMissing flag instead of skipping
         userProjects.add(
           Project(
             id: json['id'] as String,
             name: json['name'] as String,
-            path: json['path'] as String,
+            path: projectPath,
             createdAt: DateTime.parse(json['createdAt'] as String),
             lastOpened: json['lastOpened'] != null
                 ? DateTime.parse(json['lastOpened'] as String)
                 : null,
+            isMissing: !exists, // ✅ Mark as missing, don't delete
           ),
         );
-      } catch (e) {
+      } on Exception catch (e) {
         debugPrint('❌ Error loading project: $e');
       }
     }
 
-    // 2. Cargar la guía mock (siempre presente)
+    // 2. Add guide project (always available)
     final guideProject = Project(
       id: 'guide-softarchitect-01',
       name: 'Guía SoftArchitect',
@@ -66,18 +86,16 @@ class ProjectsNotifier extends Notifier<List<Project>> {
       lastOpened: DateTime.now(),
     );
 
-    // 3. Combinar y ordenar (más reciente primero)
-    final all = [guideProject, ...userProjects];
-    all.sort((a, b) {
-      final aTime = a.lastOpened ?? a.createdAt;
-      final bTime = b.lastOpened ?? b.createdAt;
-      return bTime.compareTo(aTime);
-    });
-
-    state = all;
+    // 3. Combine and sort (most recent first)
+    state = [guideProject, ...userProjects]
+      ..sort((a, b) {
+        final aTime = a.lastOpened ?? a.createdAt;
+        final bTime = b.lastOpened ?? b.createdAt;
+        return bTime.compareTo(aTime);
+      });
   }
 
-  /// Agrega un nuevo proyecto a la lista y lo persiste
+  /// Adds a new project to the list and persists it
   Future<void> addProject(String name, String path, String description) async {
     final newProject = Project(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -87,14 +105,123 @@ class ProjectsNotifier extends Notifier<List<Project>> {
       lastOpened: DateTime.now(),
     );
 
-    // Actualizar estado (UI optimista)
+    // Update state (optimistic UI)
     state = [newProject, ...state];
 
     // Persistir cambios
     await _saveToPrefs();
   }
 
-  /// Guarda los proyectos reales en SharedPreferences
+  /// ✅ NEW: Manually delete a project (user-initiated only)
+  ///
+  /// This should ONLY be called when user explicitly clicks "Delete" button.
+  /// It will:
+  /// 1. Remove from UI state
+  /// 2. Remove from SharedPreferences
+  /// 3. Purge chat history from SQLite
+  Future<void> deleteProject(String projectId) async {
+    // Remove from state
+    state = state.where((p) => p.id != projectId).toList();
+
+    // Persist changes
+    await _saveToPrefs();
+
+    // Purge chat history for this project
+    await _purgeChatHistory(projectId);
+
+    debugPrint('🗑️ Project deleted: $projectId');
+  }
+
+  /// ✅ NEW: Rename a project
+  ///
+  /// Updates the project name in:
+  /// 1. Physical directory (if exists)
+  /// 2. UI state (immediate feedback)
+  /// 3. SharedPreferences (persistence)
+  ///
+  /// Throws exception if project not found or name is invalid.
+  Future<void> renameProject(String projectId, String newName) async {
+    try {
+      // Find the project
+      final projectIndex = state.indexWhere((p) => p.id == projectId);
+      if (projectIndex == -1) {
+        throw Exception('Project not found: $projectId');
+      }
+
+      final project = state[projectIndex];
+
+      // Protection: Cannot rename guide projects
+      if (project.path.startsWith('mock://')) {
+        throw Exception('Cannot rename guide projects');
+      }
+
+      debugPrint('✏️ Renaming project: ${project.name} -> $newName');
+
+      // Rename physical directory
+      var newPath = project.path;
+      try {
+        final currentDir = Directory(project.path);
+        if (currentDir.existsSync()) {
+          // Get parent directory
+          final parentDir = currentDir.parent.path;
+          // Create new path with new name
+          newPath = '$parentDir/$newName';
+
+          // Check if target directory already exists
+          final newDir = Directory(newPath);
+          if (newDir.existsSync()) {
+            throw Exception('A directory with name "$newName" already exists');
+          }
+
+          // Rename directory
+          await currentDir.rename(newPath);
+          debugPrint('📁 Directory renamed: ${project.path} -> $newPath');
+        } else {
+          debugPrint('⚠️ Directory does not exist, only updating state');
+        }
+      } on FileSystemException catch (e) {
+        debugPrint('❌ Error renaming directory: $e');
+        throw Exception('Failed to rename project directory: ${e.message}');
+      }
+
+      // Update state immutably with new name and path
+      final updatedProject = project.copyWith(name: newName, path: newPath);
+      state = [
+        for (int i = 0; i < state.length; i++)
+          if (i == projectIndex) updatedProject else state[i],
+      ];
+
+      // Persist changes
+      await _saveToPrefs();
+
+      debugPrint('✅ Project renamed successfully');
+    } catch (e) {
+      debugPrint('❌ Error renaming project: $e');
+      rethrow;
+    }
+  }
+
+  /// ✅ NEW: Restore a missing project (mark as found)
+  ///
+  /// Call this when user restores the directory or wants to retry.
+  Future<void> restoreProject(String projectId) async {
+    final project = state.firstWhere((p) => p.id == projectId);
+    final directory = Directory(project.path);
+
+    if (directory.existsSync()) {
+      // Update state to mark as found
+      state = state
+          .map((p) => p.id == projectId ? p.copyWith(isMissing: false) : p)
+          .toList();
+
+      await _saveToPrefs();
+      debugPrint('✅ Project restored: $projectId');
+    } else {
+      debugPrint('⚠️ Cannot restore, directory still missing: ${project.path}');
+    }
+  }
+
+  /// Saves real projects to SharedPreferences
   Future<void> _saveToPrefs() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -111,12 +238,26 @@ class ProjectsNotifier extends Notifier<List<Project>> {
             'path': p.path,
             'createdAt': p.createdAt.toIso8601String(),
             'lastOpened': p.lastOpened?.toIso8601String(),
+            'isMissing': p.isMissing, // ✅ NEW: Persist missing flag
           }),
         )
         .toList();
 
     await prefs.setStringList(_storageKey, encoded);
-    debugPrint('✅ Proyectos guardados: ${realProjects.length}');
+    debugPrint('✅ Projects saved: ${realProjects.length}');
+  }
+
+  /// Purges chat history for a deleted project.
+  Future<void> _purgeChatHistory(String projectId) async {
+    try {
+      final dbHelper = DatabaseHelper();
+      final deletedCount = await dbHelper.deleteChatMessagesForProject(
+        projectId,
+      );
+      debugPrint('🗑️ Chat history purged: $deletedCount messages');
+    } on Exception catch (e) {
+      debugPrint('❌ Error purging chat history: $e');
+    }
   }
 }
 
@@ -124,7 +265,7 @@ class ProjectsNotifier extends Notifier<List<Project>> {
 // ║              PROVIDER DEFINITION                ║
 // ╚════════════════════════════════════════════════╝
 
-/// Provider principal para la lista de proyectos
+/// Main provider for the projects list
 /// Usage: ref.watch(projectsProvider)
 final projectsProvider = NotifierProvider<ProjectsNotifier, List<Project>>(
   ProjectsNotifier.new,
@@ -157,7 +298,7 @@ class ProjectProgressNotifier
 
       final progress = _analyzer(projectPath);
       state = AsyncData(progress);
-    } catch (error, stackTrace) {
+    } on Exception catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);
     }
   }
@@ -170,6 +311,65 @@ final projectProgressProvider =
       String
     >((ref, projectPath) {
       final notifier = ProjectProgressNotifier();
-      notifier.loadProgress(projectPath);
-      return notifier;
+      return notifier..loadProgress(projectPath);
     });
+
+// ╔════════════════════════════════════════════════╗
+// ║      PROJECT STATUS PROVIDER (.json FILE)      ║
+// ╚════════════════════════════════════════════════╝
+
+/// Provider that reads the .softarchitect/status.json file
+///
+/// Returns ProjectProgress with the persisted project data:
+/// - documentosCreados
+/// - faseActual
+/// - porcentajeCompletado
+/// - lastUpdated
+///
+/// If the file doesn't exist, returns an initial state with 0%.
+///
+/// **REACTIVE:** This provider watches fileSystemNotifierProvider,
+/// so it automatically recalculates when files are added/removed.
+///
+/// Usage:
+/// ```dart
+/// final status = ref.watch(projectStatusProvider(projectPath));
+/// status.when(
+///   data: (progress) => Text('${progress.porcentajeCompletado}%'),
+///   loading: () => CircularProgressIndicator(),
+///   error: (e, _) => Text('Error'),
+/// );
+/// ```
+final projectStatusProvider = FutureProvider.family<ProjectProgress, String>((
+  ref,
+  projectPath,
+) async {
+  // Watch fileSystemNotifierProvider to make this provider reactive
+  // When filesystem changes (new files created), this provider recalculates
+  ref.watch(fileSystemNotifierProvider);
+
+  // For mock projects (guide), return a completed state
+  if (projectPath.startsWith('mock://')) {
+    return ProjectProgress(
+      documentosCreados: ProjectPhase.totalFileCount,
+      faseActual: 'Proyecto Completado',
+      porcentajeCompletado: 100,
+      lastUpdated: DateTime.now(),
+    );
+  }
+
+  // Try to load the status.json file
+  final progress = await ProjectProgressService.loadProgress(projectPath);
+
+  // If the file doesn't exist, return initial state
+  if (progress == null) {
+    return ProjectProgress(
+      documentosCreados: 0,
+      faseActual: ProjectPhase.root.name,
+      porcentajeCompletado: 0,
+      lastUpdated: DateTime.now(),
+    );
+  }
+
+  return progress;
+});

@@ -29,7 +29,15 @@ class TestSettingsDefaults:
         assert test_settings.APP_VERSION == "0.1.0"
         assert test_settings.API_V1_STR == "/api/v1"
 
-    @patch.dict(os.environ, {"GROQ_API_KEY": ""})
+    @patch.dict(
+        os.environ,
+        {
+            "LLM_PROVIDER": "local",
+            "OLLAMA_BASE_URL": "http://localhost:11434",
+            "GROQ_API_KEY": "",
+        },
+        clear=False,
+    )
     def test_default_llm_settings(self):
         """Test default LLM configuration values."""
         test_settings = Settings()
@@ -129,6 +137,9 @@ class TestSettingsValidation:
         test_settings = Settings(LLM_PROVIDER="cloud")
         assert test_settings.LLM_PROVIDER == "cloud"
 
+        test_settings = Settings(LLM_PROVIDER="ollama")
+        assert test_settings.LLM_PROVIDER == "ollama"
+
     def test_llm_provider_invalid_value(self):
         """Test that LLM_PROVIDER rejects invalid values."""
         with pytest.raises(ValueError):
@@ -194,6 +205,7 @@ class TestSettingsIntegration:
             "DEBUG": "true",
             "APP_NAME": "Integration Test App",
             "LLM_PROVIDER": "cloud",
+            "OLLAMA_BASE_URL": "http://localhost:11434",
             "GROQ_API_KEY": "integration_test_key",
             "LOG_LEVEL": "WARNING",
         },

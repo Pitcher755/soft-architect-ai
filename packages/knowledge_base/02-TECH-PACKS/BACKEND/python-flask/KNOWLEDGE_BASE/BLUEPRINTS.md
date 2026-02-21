@@ -1,14 +1,14 @@
 # 🗺️ Flask Blueprints: Modularización y Escalabilidad
 
-> **Versión:** Flask 2.3+
+> **Version:** Flask 2.3+
 > **Patrón:** Blueprints para organización modular
-> **Objetivo:** Evitar app.py gigante, escalar a múltiples dominios
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Goal:** Evitar app.py gigante, escalar a múltiples dominios
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [¿Por Qué Blueprints?](#por-qué-blueprints)
 2. [Blueprint Básico](#blueprint-básico)

@@ -1,20 +1,20 @@
 # 🐙 Git Conventions & Workflow
 
-> **Fecha:** 30/01/2026
-> **Estado:** ✅ MANDATORY
-> **Estándar:** GitFlow Simplificado + Conventional Commits
-> **Objetivo:** Historial limpio, trazable, automatizable
+> **Date:** 30/01/2026
+> **Status:** ✅ MANDATORY
+> **Standard:** Simplified GitFlow + Conventional Commits
+> **Objective:** Clean, traceable, automatable history
 > **Enforcement:** Pre-commit hooks + CI/CD validation
 
-Estandarización absoluta de colaboración en Git. Sin esto, el historial es basura.
+Absolute standardization of Git collaboration. Without this, history is garbage.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-1. [Estrategia de Ramas (Branching)](#estrategia-de-ramas-branching)
-2. [Mensajes de Commit (Conventional Commits)](#mensajes-de-commit-conventional-commits)
-3. [Workflow Práctico](#workflow-práctico)
+1. [Branching Strategy](#branching-strategy)
+2. [Commit Messages (Conventional Commits)](#commit-messages-conventional-commits)
+3. [Practical Workflow](#practical-workflow)
 4. [Pull Requests (PRs)](#pull-requests-prs)
 5. [Code Review Guidelines](#code-review-guidelines)
 6. [Git Hooks & Automation](#git-hooks--automation)
@@ -22,19 +22,19 @@ Estandarización absoluta de colaboración en Git. Sin esto, el historial es bas
 
 ---
 
-## Estrategia de Ramas (Branching)
+## Branching Strategy
 
-### Ramas Principales
+### Main Branches
 
-| Rama | Protección | Propósito | Deploy |
+| Branch | Protection | Purpose | Deploy |
 |:---|:---|:---|:---|
-| **`main`** | ✅ Protected | Código de Producción | Automático en cada merge |
-| **`develop`** | ✅ Protected | Integración Continua | Staging en cada merge |
-| **`feature/xyz`** | ❌ Efímera | Nueva funcionalidad | Manual (PR → develop) |
-| **`fix/xyz`** | ❌ Efímera | Bug fix en develop | Manual (PR → develop) |
-| **`hotfix/xyz`** | ❌ Efímera | Error crítico en prod | Manual (PR → main + develop) |
+| **`main`** | ✅ Protected | Production Code | Automatic on each merge |
+| **`develop`** | ✅ Protected | Continuous Integration | Staging on each merge |
+| **`feature/xyz`** | ❌ Ephemeral | New functionality | Manual (PR → develop) |
+| **`fix/xyz`** | ❌ Ephemeral | Bug fix in develop | Manual (PR → develop) |
+| **`hotfix/xyz`** | ❌ Ephemeral | Critical production error | Manual (PR → main + develop) |
 
-### Reglas de Nombrado
+### Naming Rules
 
 #### Feature Branches
 
@@ -76,9 +76,9 @@ hotfix/critical-error
 
 ---
 
-## Mensajes de Commit (Conventional Commits)
+## Commit Messages (Conventional Commits)
 
-### Formato Obligatorio
+### Mandatory Format
 
 ```
 <type>(<scope>): <description>
@@ -88,23 +88,23 @@ hotfix/critical-error
 [optional footer]
 ```
 
-### Tipos Permitidos
+### Allowed Types
 
-| Tipo | Propósito | Ejemplo |
+| Type | Purpose | Example |
 |:---|:---|:---|
-| **`feat`** | Nueva característica (para usuario final) | `feat(auth): implement JWT login endpoint` |
-| **`fix`** | Solución de un bug | `fix(ui): resolve overflow in user card` |
-| **`docs`** | Solo cambios en documentación | `docs(arch): update threat model diagram` |
-| **`style`** | Formato, comillas, espacios (sin cambiar lógica) | `style: run prettier on all files` |
-| **`refactor`** | Reorganizar código sin cambiar comportamiento | `refactor(api): extract auth logic to service` |
-| **`test`** | Añadir o mejorar tests | `test(unit): add validation for email schema` |
-| **`chore`** | Tareas de build, dependencias, versioning | `chore: upgrade poetry to 1.5.0` |
-| **`ci`** | Cambios en CI/CD | `ci: add security scan to pipeline` |
-| **`perf`** | Mejora de performance | `perf(db): add index to users table` |
+| **`feat`** | New feature (for end user) | `feat(auth): implement JWT login endpoint` |
+| **`fix`** | Bug fix | `fix(ui): resolve overflow in user card` |
+| **`docs`** | Documentation changes only | `docs(arch): update threat model diagram` |
+| **`style`** | Formatting, quotes, spaces (no logic change) | `style: run prettier on all files` |
+| **`refactor`** | Reorganize code without changing behavior | `refactor(api): extract auth logic to service` |
+| **`test`** | Add or improve tests | `test(unit): add validation for email schema` |
+| **`chore`** | Build tasks, dependencies, versioning | `chore: upgrade poetry to 1.5.0` |
+| **`ci`** | CI/CD changes | `ci: add security scan to pipeline` |
+| **`perf`** | Performance improvement | `perf(db): add index to users table` |
 
-### Scope (Opcional pero Recomendado)
+### Scope (Optional but Recommended)
 
-Área del código afectada:
+Affected code area:
 
 ```bash
 feat(auth): login
@@ -113,13 +113,13 @@ feat(flutter): state management
 feat(docker): compose configuration
 ```
 
-### Ejemplos de Commits Correctos
+### Correct Commit Examples
 
 ```bash
-# ✅ GOOD: Feature con descripción clara
+# ✅ GOOD: Feature with clear description
 feat(auth): implement JWT authentication with 15min expiration
 
-# ✅ GOOD: Fix con body explicativo
+# ✅ GOOD: Fix with explanatory body
 fix(ui): resolve overflow in document card
 
 Fix was causing layout break on mobile devices.
@@ -137,32 +137,32 @@ docs(readme): add setup instructions for Flutter development
 # ✅ GOOD: Test
 test(unit): add validation tests for email schema
 
-# ❌ BAD: Falta tipo
+# ❌ BAD: Missing type
 fixed the login bug
 
-# ❌ BAD: Tipo pero sin description clara
+# ❌ BAD: Type but no clear description
 feat: changes
 
-# ❌ BAD: Demasiado genérico
+# ❌ BAD: Too generic
 fix: update
 
-# ❌ BAD: Mezclar múltiples cambios en un commit
+# ❌ BAD: Mixing multiple changes in one commit
 feat: add login, fix navigation, update docs
-# → Debería ser 3 commits separados
+# → Should be 3 separate commits
 ```
 
-### Convenciones Especiales
+### Special Conventions
 
 #### Breaking Changes
 
 ```bash
-# ❌ VIEJO (no usar)
+# ❌ OLD (don't use)
 feat(api): change user endpoint format
 
-# ✅ NUEVO (si es breaking)
+# ✅ NEW (if breaking)
 feat(api)!: change user endpoint format from /user to /users
 
-# O en footer:
+# Or in footer:
 feat(api): change response format
 
 BREAKING CHANGE: The /user endpoint has been deprecated.
@@ -170,7 +170,7 @@ Use /users instead. Old format returned user object directly,
 new format wraps in {"data": ...}.
 ```
 
-#### Revertir Commits
+#### Revert Commits
 
 ```bash
 # ✅ GOOD
@@ -181,40 +181,40 @@ This reverts commit a1b2c3d4e5f6g7h8.
 
 ---
 
-## Workflow Práctico
+## Practical Workflow
 
-### Paso 1: Crear Feature Branch
+### Step 1: Create Feature Branch
 
 ```bash
-# Asegurar estar en develop actualizado
+# Ensure being on updated develop
 git checkout develop
 git pull origin develop
 
-# Crear feature branch
+# Create feature branch
 git checkout -b feature/auth-login-jwt
 
-# Verificar rama correcta
+# Verify correct branch
 git branch -a | grep "*"
 # * feature/auth-login-jwt
 ```
 
-### Paso 2: Hacer Commits
+### Step 2: Make Commits
 
 ```bash
-# Editar archivos
+# Edit files
 # ...
 
-# Ver cambios
+# View changes
 git status
 git diff src/services/auth.py
 
-# Stage archivos
+# Stage files
 git add src/services/auth.py tests/unit/test_auth.py
 
-# Verificar staged
+# Verify staged
 git diff --staged
 
-# Commit con mensaje conventional
+# Commit with conventional message
 git commit -m "feat(auth): implement JWT login with bcrypt hashing
 
 - Create /login endpoint accepting email/password
@@ -223,23 +223,23 @@ git commit -m "feat(auth): implement JWT login with bcrypt hashing
 - Add unit tests for happy path and error cases"
 ```
 
-### Paso 3: Push a Remoto
+### Step 3: Push to Remote
 
 ```bash
-# Primer push (crear upstream)
+# First push (create upstream)
 git push -u origin feature/auth-login-jwt
 
-# Pushes subsecuentes
+# Subsequent pushes
 git push
 ```
 
-### Paso 4: Crear Pull Request
+### Step 4: Create Pull Request
 
-En GitHub:
+On GitHub:
 
-1. Click "Create PR" en banner
-2. **Base:** `develop` (no `main`)
-3. **Title:** Debe ser Conventional Commit
+1. Click "Create PR" on banner
+2. **Base:** `develop` (not `main`)
+3. **Title:** Must be Conventional Commit
    ```
    feat(auth): implement JWT login endpoint
    ```
@@ -267,72 +267,72 @@ En GitHub:
 
 ## Pull Requests (PRs)
 
-### Estructura Obligatoria
+### Mandatory Structure
 
 ```markdown
 ## 📋 Summary
-[Qué hace este PR en 2-3 líneas]
+[What this PR does in 2-3 lines]
 
 ## 🎯 Type of Change
 - [x] Feature (new user-facing capability)
-- [ ] Bugfix (solves existing issue)
+- [ ] Bugfix (fixes existing issue)
 - [ ] Refactor (reorganize without changing behavior)
 - [ ] Documentation
 - [ ] Performance improvement
 - [ ] Security hardening
 
-## ✅ Checklist (Antes de Marcar como "Ready for Review")
-- [ ] **Tests Pass:** `pytest` / `flutter test` pasan localmente
-- [ ] **Linter Clean:** `ruff check` / `flutter analyze` sin errors
-- [ ] **No Secrets:** Verificar NO hay API keys, passwords, tokens
-- [ ] **Security:** Cumple con OWASP_TOP_10.md
-- [ ] **Docs Updated:** README/CHANGELOG/code comments si aplica
-- [ ] **Conventional Commit:** Mensaje de PR sigue formato
-- [ ] **Coverage:** Tests cubren lógica nueva (>80%)
+## ✅ Checklist (Before Marking as "Ready for Review")
+- [ ] **Tests Pass:** `pytest` / `flutter test` pass locally
+- [ ] **Linter Clean:** `ruff check` / `flutter analyze` without errors
+- [ ] **No Secrets:** Verify NO API keys, passwords, tokens
+- [ ] **Security:** Complies with OWASP_TOP_10.md
+- [ ] **Docs Updated:** README/CHANGELOG/code comments if applicable
+- [ ] **Conventional Commit:** PR message follows format
+- [ ] **Coverage:** Tests cover new logic (>80%)
 
 ## 🔗 Related Issues
 Closes #HU-001
 
-Fixes #BUG-042 (si es bugfix)
+Fixes #BUG-042 (if bugfix)
 
-## 📸 Screenshots/Videos (si aplica)
-[Para cambios en UI, adjuntar screenshots]
+## 📸 Screenshots/Videos (if applicable)
+[For UI changes, attach screenshots]
 
 ## 📝 Additional Notes
-[Información técnica adicional si necesaria]
+[Additional technical information if needed]
 ```
 
-### Criterios de Aceptación
+### Acceptance Criteria
 
-Un PR puede ser merged SOLO si:
+A PR can be merged ONLY if:
 
-1. ✅ **Tests pasan** en CI/CD
-2. ✅ **Linter limpio** (ruff, flutter analyze)
-3. ✅ **Al menos 1 aprobación** de code review
-4. ✅ **Mensaje de commit es Conventional**
-5. ✅ **No conflictos** con rama base
-6. ✅ **Cumple con OWASP_TOP_10.md** (si toca código de seguridad)
+1. ✅ **Tests pass** in CI/CD
+2. ✅ **Linter clean** (ruff, flutter analyze)
+3. ✅ **At least 1 approval** from code review
+4. ✅ **Commit message is Conventional**
+5. ✅ **No conflicts** with base branch
+6. ✅ **Complies with OWASP_TOP_10.md** (if touches security code)
 
 ---
 
 ## Code Review Guidelines
 
-### Para el Autor (Crear PR)
+### For the Author (Create PR)
 
 ```markdown
 # 🚀 Self-Checklist
 
-- [ ] He entendido mi propio código
-- [ ] Explicaría este cambio a un compañero
-- [ ] No hay "hacks" o spaghetti code
-- [ ] Tests son claros y cobertura > 80%
-- [ ] Documentación está actualizada
-- [ ] Sin warnings del linter
+- [ ] I understand my own code
+- [ ] Would explain this change to a colleague
+- [ ] No "hacks" or spaghetti code
+- [ ] Tests are clear and coverage > 80%
+- [ ] Documentation is updated
+- [ ] No linter warnings
 ```
 
-### Para el Revisor (Code Review)
+### For the Reviewer (Code Review)
 
-#### ✅ Positivo: Comentarios Constructivos
+#### ✅ Positive: Constructive Comments
 
 ```
 Great solution! I especially liked the error handling approach.
@@ -340,25 +340,25 @@ Great solution! I especially liked the error handling approach.
 Suggestion: Could you add a docstring explaining the algorithm?
 ```
 
-#### ❌ Bloqueante: Rechazar si...
+#### ❌ Blocker: Reject if...
 
-1. **Seguridad:** Violación de OWASP_TOP_10.md
+1. **Security:** OWASP_TOP_10.md violation
    ```
    BLOCKER: This endpoint is missing authentication.
-   Debe usar @app.get(..., dependencies=[Depends(get_current_user)])
+   Must use @app.get(..., dependencies=[Depends(get_current_user)])
    ```
 
-2. **Tests Fallan:** CI/CD Red
+2. **Tests Fail:** CI/CD Red
    ```
    BLOCKER: 3 test failures in CI/CD. Must pass before merging.
    ```
 
-3. **Secretos Hardcodeados:**
+3. **Hardcoded Secrets:**
    ```
    BLOCKER: API key detected in code. Remove and add to .env.
    ```
 
-4. **Arquitectura Violada:**
+4. **Architecture Violated:**
    ```
    BLOCKER: Business logic in Riverpod provider.
    Move to domain/use_cases/, then wire in Riverpod.
@@ -368,9 +368,9 @@ Suggestion: Could you add a docstring explaining the algorithm?
 
 ## Git Hooks & Automation
 
-### Pre-commit Hooks (Automático en tu máquina)
+### Pre-commit Hooks (Automatic on your machine)
 
-El archivo `.pre-commit-config.yaml` en raíz ejecuta:
+The `.pre-commit-config.yaml` file in root executes:
 
 ```yaml
 repos:
@@ -404,18 +404,18 @@ repos:
         language: python
 ```
 
-### Instalación
+### Installation
 
 ```bash
-# Primero de cada desarrollador
+# First time for each developer
 pre-commit install
 pre-commit install --hook-type commit-msg
 
-# Después de cada pull
+# After each pull
 pre-commit autoupdate
 ```
 
-### Flujo en CI/CD (GitHub Actions)
+### Flow in CI/CD (GitHub Actions)
 
 ```yaml
 # .github/workflows/ci.yml
@@ -516,9 +516,9 @@ git push --force-with-lease origin feature/auth-login
 
 ---
 
-## Aliases Útiles
+## Useful Aliases
 
-Guardar en `~/.gitconfig`:
+Save in `~/.gitconfig`:
 
 ```bash
 [alias]
@@ -542,13 +542,13 @@ git upstream
 
 ---
 
-## Conclusión
+## Conclusion
 
-**El Git Workflow es la Infraestructura de Colaboración:**
+**Git Workflow is the Collaboration Infrastructure:**
 
-1. ✅ Ramas claras = responsabilidad clara
-2. ✅ Commits conventionales = historial legible
-3. ✅ PRs estructuradas = reviews efectivas
-4. ✅ Hooks automáticos = calidad garantizada
+1. ✅ Clear branches = clear responsibility
+2. ✅ Conventional commits = readable history
+3. ✅ Structured PRs = effective reviews
+4. ✅ Automatic hooks = guaranteed quality
 
-**Dogfooding Validation:** SoftArchitect se auto-valida con este workflow en cada commit.
+**Dogfooding Validation:** SoftArchitect self-validates with this workflow on each commit.

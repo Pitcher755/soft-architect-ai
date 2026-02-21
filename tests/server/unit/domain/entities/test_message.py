@@ -57,11 +57,11 @@ def test_message_content_must_not_be_empty():
 
 
 def test_message_content_max_length_5000_chars():
-    """Test that content >5000 chars raises validation error."""
+    """Test that content >30000 chars raises validation error (qwen2.5-coder:3b supports 32K tokens)."""
     # Arrange
     msg_id = uuid4()
     conv_id = uuid4()
-    long_content = "a" * 5001  # 5001 characters
+    long_content = "a" * 30001  # 30001 characters
 
     # Act & Assert
     with pytest.raises(ValueError, match="Content exceeds maximum length"):
@@ -74,11 +74,6 @@ def test_message_content_max_length_5000_chars():
         )
 
 
-@pytest.mark.skip(
-    reason="Role validation is enforced by type system (MessageRole enum). "
-    "Runtime validation is redundant as dataclass with MessageRole type annotation "
-    "prevents invalid values through Python type system."
-)
 def test_message_role_must_be_valid_enum():
     """Test that invalid role raises validation error."""
     # Arrange

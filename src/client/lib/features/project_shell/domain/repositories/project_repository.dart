@@ -23,4 +23,8 @@ abstract class ProjectRepository {
 
   /// Delete project
   Future<void> deleteProject(String projectId);
+
+  /// Rename project (updates name in database and renames physical directory)
+  /// Returns the updated project
+  Future<Project> renameProject(String projectId, String newName);
 }

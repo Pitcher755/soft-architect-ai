@@ -24,7 +24,7 @@ class Message:
     Message entity (immutable).
 
     Validation rules:
-    - content: max 5000 chars, not empty
+    - content: max 30000 chars, not empty (qwen2.5-coder:3b supports up to 32K tokens)
     - role: must be valid MessageRole enum value
     """
 
@@ -36,13 +36,17 @@ class Message:
 
     def __post_init__(self):
         """Validate fields (runs after __init__)."""
+        # Validate role (runtime check, type hints alone don't prevent invalid strings)
+        if not isinstance(self.role, MessageRole):
+            raise ValueError(
+                f"Invalid role: {self.role}. Must be MessageRole enum (USER, ASSISTANT, SYSTEM)"
+            )
+
         # Validate content
         if not self.content or len(self.content) == 0:
             raise ValueError("Content cannot be empty")
 
-        if len(self.content) > 5000:
+        if len(self.content) > 30000:
             raise ValueError(
-                f"Content exceeds maximum length (5000 chars): {len(self.content)}"
+                f"Content exceeds maximum length (30000 chars): {len(self.content)}"
             )
-
-        # Role is already validated by type system (MessageRole enum)

@@ -1,46 +1,46 @@
 # 🧠 Architecture Decision Records (ADR)
 
-Registro inmutable de decisiones arquitectónicas importantes.
-Cada decisión debe tener un ID único y un estado.
+Immutable record of important architectural decisions.
+Each decision must have a unique ID and a status.
 
-## ADR-001: Selección de {{TOPIC_1}}
+## ADR-001: Selection of {{TOPIC_1}}
 
-* **Estado:** Aceptado
-* **Fecha:** {{DATE}}
-* **Decisores:** {{USER_NAME}}, SoftArchitect AI
+* **Status:** Accepted
+* **Date:** {{DATE}}
+* **Decision Makers:** {{USER_NAME}}, SoftArchitect AI
 
-### Contexto
-Necesitábamos elegir entre la **Opción A** y la **Opción B** para resolver {{PROBLEM_CONTEXT}}.
+### Context
+We needed to choose between **Option A** and **Option B** to solve {{PROBLEM_CONTEXT}}.
 
-### Decisión
-Elegimos **{{CHOSEN_OPTION}}**.
+### Decision
+We chose **{{CHOSEN_OPTION}}**.
 
-### Consecuencias
-* ✅ (Positivo) {{PRO_ARGUMENT}}
-* ❌ (Negativo) {{CON_ARGUMENT}}
-* ⚠️ (Riesgo) {{RISK_FACTOR}}
+### Consequences
+* ✅ (Positive) {{PRO_ARGUMENT}}
+* ❌ (Negative) {{CON_ARGUMENT}}
+* ⚠️ (Risk) {{RISK_FACTOR}}
 
 ---
 
-## ADR-002: Estrategia de {{TOPIC_2}}
+## ADR-002: Strategy for {{TOPIC_2}}
 
-* **Estado:** Propuesto
-* **Fecha:** {{DATE}}
-* **Decisores:** {{USER_NAME}}, SoftArchitect AI
+* **Status:** Proposed
+* **Date:** {{DATE}}
+* **Decision Makers:** {{USER_NAME}}, SoftArchitect AI
 
-### Contexto
+### Context
 {{CONTEXT_DESCRIPTION}}
 
-### Decisión
+### Decision
 {{DECISION_STATEMENT}}
 
-### Consecuencias
-* ✅ (Positivo) {{PRO_ARGUMENT}}
-* ❌ (Negativo) {{CON_ARGUMENT}}
-* ⚠️ (Riesgo) {{RISK_FACTOR}}
+### Consequences
+* ✅ (Positive) {{PRO_ARGUMENT}}
+* ❌ (Negative) {{CON_ARGUMENT}}
+* ⚠️ (Risk) {{RISK_FACTOR}}
 
 ---
 
-**Notas:**
-* Las ADRs son inmutables una vez aceptadas.
-* Para cambiar una decisión, se crea una nueva ADR que la supersede.
+**Notes:**
+* ADRs are immutable once accepted.
+* To change a decision, create a new ADR that supersedes it.

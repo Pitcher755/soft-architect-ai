@@ -1,171 +1,297 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+import 'dart:io';
 
-import 'dart:io'; // Necesario para escribir el archivo
-
-import 'package:file_picker/file_picker.dart'; // Necesario para guardar
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Necesario para Clipboard
+import 'package:flutter/services.dart';
 import 'package:flutter_highlighter/flutter_highlighter.dart';
 import 'package:flutter_highlighter/themes/atom-one-dark.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown/markdown.dart' as md;
 
-import '../../../../gen/app_localizations.dart';
+import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
+import '../../../filesystem/presentation/providers/filesystem_providers.dart';
+import '../../infrastructure/services/project_progress_service.dart';
+import '../providers/project_providers.dart';
 
-/// Markdown preview widget displaying rendered markdown content.
-class MarkdownPreviewWidget extends StatelessWidget {
+class MarkdownPreviewWidget extends ConsumerStatefulWidget {
   const MarkdownPreviewWidget({super.key, this.content, this.filename});
 
   final String? content;
   final String? filename;
 
-  // --- LÓGICA DE COPIADO ---
-  Future<void> _handleCopy(BuildContext context) async {
-    final textToCopy = content ?? '';
-    if (textToCopy.isEmpty) return;
+  @override
+  ConsumerState<MarkdownPreviewWidget> createState() =>
+      _MarkdownPreviewWidgetState();
+}
 
-    await Clipboard.setData(ClipboardData(text: textToCopy));
+class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
+  bool _isEditing = false;
+  late TextEditingController _textController;
 
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context).contentCopied),
-          backgroundColor: const Color(0xFF238636), // Verde GitHub
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-      );
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.content ?? '');
+    // Si hay filename, leer el contenido real del archivo
+    if (widget.filename != null) {
+      _loadFileContent();
     }
   }
 
-  // --- LÓGICA DE DESCARGA (GUARDAR COMO) ---
-  Future<void> _handleDownload(BuildContext context) async {
-    final textToSave = content ?? '';
-    if (textToSave.isEmpty) return;
-
-    // 1. Determinar extensión correcta
-    final isJson = filename?.toLowerCase().endsWith('.json') ?? false;
-    final extension = isJson ? '.json' : '.md';
-
-    // 2. Preparar nombre por defecto asegurando la extensión
-    var defaultName = filename ?? 'document$extension';
-    if (!defaultName.toLowerCase().endsWith(extension)) {
-      defaultName += extension;
+  @override
+  void didUpdateWidget(MarkdownPreviewWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Si cambia el filename, recargar desde archivo
+    if (oldWidget.filename != widget.filename && widget.filename != null) {
+      _loadFileContent();
     }
+    // Si no hay filename y cambia el content
+    else if (widget.filename == null &&
+        oldWidget.content != widget.content &&
+        !_isEditing) {
+      _textController.text = widget.content ?? '';
+    }
+  }
 
+  // Cargar contenido directamente desde el archivo físico
+  Future<void> _loadFileContent() async {
     try {
-      // 3. Abrir diálogo de guardado
-      var outputFile = await FilePicker.platform.saveFile(
-        dialogTitle: 'Guardar documento',
-        fileName: defaultName,
-        // Filtramos por el tipo correcto para ayudar al OS
-        allowedExtensions: isJson ? ['json'] : ['md', 'txt'],
-        type: FileType.custom,
-      );
-
-      if (outputFile == null) {
-        // Cancelado por el usuario
-        return;
+      final file = File(widget.filename!);
+      if (await file.exists()) {
+        final content = await file.readAsString();
+        if (mounted && !_isEditing) {
+          setState(() {
+            _textController.text = content;
+          });
+        }
       }
-
-      // 4. FORZAR EXTENSIÓN: Si el OS no la puso, la ponemos nosotros
-      if (!outputFile.toLowerCase().endsWith(extension)) {
-        outputFile = '$outputFile$extension';
-      }
-
-      // 5. Escribir archivo
-      final file = File(outputFile);
-      await file.writeAsString(textToSave);
-
-      // 6. Feedback visual
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).fileSaved(outputFile)),
-            backgroundColor: const Color(0xFF1F6FEB), // Azul GitHub
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).saveError(e.toString())),
-            backgroundColor: Colors.redAccent,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+    } on Exception catch (e) {
+      debugPrint('⚠️ Error leyendo archivo: $e');
+      // Fallback a widget.content si falla la lectura
+      if (mounted && !_isEditing) {
+        setState(() {
+          _textController.text = widget.content ?? '';
+        });
       }
     }
   }
 
   @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  // --- LÓGICA DE GUARDADO DIRECTO (KILLER FEATURE) ---
+  Future<void> _saveEdits() async {
+    if (widget.filename == null) {
+      return;
+    }
+
+    try {
+      // 1. widget.filename ya trae la ruta absoluta completa
+      final file = File(widget.filename!);
+
+      // 2. Crear directorio padre si no existe
+      final parentDir = file.parent;
+      if (!parentDir.existsSync()) {
+        await parentDir.create(recursive: true);
+      }
+
+      // 3. Escribir contenido directamente con dart:io
+      await file.writeAsString(_textController.text, flush: true);
+
+      // 4. Actualizar progreso del proyecto
+      try {
+        // Extraer project root desde la ruta del archivo
+        var projectRoot = ref.read(projectRootProvider);
+        if (projectRoot == null || projectRoot.isEmpty) {
+          final projects = ref.read(projectsProvider);
+          projectRoot = projects
+              .where((p) => !p.path.startsWith('mock://'))
+              .firstOrNull
+              ?.path;
+        }
+
+        if (projectRoot != null) {
+          await ProjectProgressService.updateAfterDocumentSave(projectRoot);
+        }
+      } on Exception catch (e) {
+        debugPrint('⚠️ Error actualizando progreso: $e');
+        // No bloqueamos por error en progreso
+      }
+
+      // 5. Salir de modo edición
+      setState(() {
+        _isEditing = false;
+      });
+
+      // 6. Recargar contenido desde archivo físico (asegura persistencia)
+      await _loadFileContent();
+
+      // 7. Refrescar filesystem notifier
+      ref.invalidate(fileSystemNotifierProvider);
+      ref.read(fileSystemNotifierProvider.notifier).refresh();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Archivo actualizado correctamente'),
+            backgroundColor: Color(0xFF238636), // Verde GitHub
+          ),
+        );
+      }
+    } on Exception catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ Error al guardar: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  // --- COPIAR ---
+  Future<void> _handleCopy() async {
+    final textToCopy = _isEditing
+        ? _textController.text
+        : (widget.content ?? '');
+    if (textToCopy.isEmpty) {
+      return;
+    }
+    await Clipboard.setData(ClipboardData(text: textToCopy));
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Contenido copiado'),
+          backgroundColor: Color(0xFF238636),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final displayContent = content ?? '';
-    final isJson = filename?.toLowerCase().endsWith('.json') ?? false;
+    final isJson = widget.filename?.toLowerCase().endsWith('.json') ?? false;
 
     return Container(
-      color: const Color(0xFF0D1117),
-      child: Column(
+      color: Theme.of(context).colorScheme.surface,
+      child: Stack(
         children: [
-          // Toolbar con context para SnackBars
-          SelectionContainer.disabled(child: _buildToolbar(context)),
-          Expanded(
-            child: SelectionArea(
-              child: isJson
-                  ? _buildJsonView(displayContent)
-                  : _buildMarkdownView(displayContent),
-            ),
+          // Base layer: content fills entire area
+          Positioned.fill(
+            child: _isEditing
+                ? _buildEditorView()
+                : SelectionArea(
+                    child: isJson
+                        ? _buildJsonView(_textController.text)
+                        : _buildMarkdownView(_textController.text),
+                  ),
           ),
+          // Floating toolbar in top-right corner
+          Positioned(top: 8, right: 8, child: _buildFloatingToolbar(context)),
         ],
       ),
     );
   }
 
-  Widget _buildToolbar(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    decoration: const BoxDecoration(
-      color: Color(0xFF161B22),
-      border: Border(bottom: BorderSide(color: Color(0xFF30363D))),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+  // Floating toolbar with semi-transparent background
+  Widget _buildFloatingToolbar(BuildContext context) => Material(
+    color: Colors.transparent,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF161B22).withValues(alpha: 0.95),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFF30363D)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: SelectionContainer.disabled(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.visibility_outlined,
-              size: 16,
-              color: Color(0xFF8B949E),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              filename ?? 'Preview.md',
-              style: const TextStyle(
-                color: Color(0xFFC9D1D9),
-                fontSize: 12,
-                fontFamily: 'JetBrains Mono',
+            if (_isEditing) ...[
+              // Cancel button
+              _ToolbarButton(
+                icon: Icons.close_rounded,
+                tooltip: 'Cancelar edición',
+                color: Colors.redAccent,
+                onPressed: () {
+                  setState(() {
+                    _isEditing = false;
+                  });
+                  // Recargar contenido desde archivo (descarta cambios no guardados)
+                  if (widget.filename != null) {
+                    _loadFileContent();
+                  } else {
+                    _textController.text = widget.content ?? '';
+                  }
+                },
               ),
-            ),
+              const SizedBox(width: 4),
+              // Save button
+              SizedBox(
+                height: 32,
+                child: FilledButton.icon(
+                  onPressed: _saveEdits,
+                  icon: const Icon(Icons.save, size: 14),
+                  label: const Text('Guardar', style: TextStyle(fontSize: 12)),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFF238636),
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                ),
+              ),
+            ] else ...[
+              // Edit button
+              _ToolbarButton(
+                icon: Icons.edit_rounded,
+                tooltip: 'Editar archivo',
+                onPressed: () {
+                  setState(() {
+                    _isEditing = true;
+                  });
+                },
+              ),
+              const SizedBox(width: 4),
+              // Copy button
+              _ToolbarButton(
+                icon: Icons.copy_rounded,
+                tooltip: 'Copiar contenido',
+                onPressed: _handleCopy,
+              ),
+            ],
           ],
         ),
-        Row(
-          children: [
-            _ToolbarButton(
-              icon: Icons.copy_rounded,
-              tooltip: 'Copiar contenido',
-              onPressed: () => _handleCopy(context),
-            ),
-            _ToolbarButton(
-              icon: Icons.download_rounded,
-              tooltip: 'Guardar archivo',
-              onPressed: () => _handleDownload(context),
-            ),
-          ],
-        ),
-      ],
+      ),
+    ),
+  );
+
+  Widget _buildEditorView() => Container(
+    color: const Color(0xFF0D1117), // Fondo oscuro IDE
+    child: TextField(
+      controller: _textController,
+      maxLines: null,
+      expands: true,
+      style: const TextStyle(
+        fontFamily: 'JetBrains Mono',
+        fontSize: 14,
+        color: Color(0xFFC9D1D9),
+        height: 1.5,
+      ),
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        contentPadding: EdgeInsets.all(24),
+      ),
     ),
   );
 
@@ -221,18 +347,6 @@ class MarkdownPreviewWidget extends StatelessWidget {
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
-        blockquote: const TextStyle(
-          color: Color(0xFF8B949E),
-          fontStyle: FontStyle.italic,
-        ),
-        blockquoteDecoration: const BoxDecoration(
-          border: Border(left: BorderSide(color: Color(0xFF30363D), width: 4)),
-          color: Color(0xFF161B22),
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(4),
-            bottomRight: Radius.circular(4),
-          ),
-        ),
         code: const TextStyle(
           fontFamily: 'JetBrains Mono',
           backgroundColor: Color.fromRGBO(110, 118, 129, 0.4),
@@ -244,17 +358,6 @@ class MarkdownPreviewWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           border: Border.all(color: const Color(0xFF30363D)),
         ),
-        tableHead: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Color(0xFFE6EDF3),
-        ),
-        tableBorder: TableBorder.all(color: const Color(0xFF30363D)),
-        tableBody: const TextStyle(color: Color(0xFFC9D1D9)),
-        a: const TextStyle(
-          color: Color(0xFF58A6FF),
-          decoration: TextDecoration.none,
-        ),
-        listBullet: const TextStyle(color: Color(0xFF79C0FF)),
       ),
     );
   }
@@ -265,15 +368,16 @@ class _ToolbarButton extends StatelessWidget {
     required this.icon,
     required this.tooltip,
     required this.onPressed,
+    this.color,
   });
-
   final IconData icon;
   final String tooltip;
   final VoidCallback onPressed;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) => IconButton(
-    icon: Icon(icon, size: 16, color: const Color(0xFF8B949E)),
+    icon: Icon(icon, size: 16, color: color ?? const Color(0xFF8B949E)),
     tooltip: tooltip,
     onPressed: onPressed,
     splashRadius: 20,
@@ -285,12 +389,10 @@ class _CodeElementBuilder extends MarkdownElementBuilder {
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
     var language = '';
-
     if (element.attributes['class'] != null) {
       final lg = element.attributes['class'] as String;
       language = lg.startsWith('language-') ? lg.substring(9) : lg;
     }
-
     final codeContent = element.textContent.endsWith('\n')
         ? element.textContent.substring(0, element.textContent.length - 1)
         : element.textContent;

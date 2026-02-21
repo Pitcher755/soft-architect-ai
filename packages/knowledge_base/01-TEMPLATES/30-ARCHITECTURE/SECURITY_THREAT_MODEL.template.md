@@ -1,44 +1,44 @@
 # 🛡️ Security Threat Model (STRIDE)
 
-Análisis de riesgos de seguridad para la arquitectura de **{{PROJECT_NAME}}**.
-**Metodología:** STRIDE (Spoofing, Tampering, Repudiation, Info Disclosure, Denial of Service, Elevation of Privilege).
+Security risk analysis for the architecture of **{{PROJECT_NAME}}**.
+**Methodology:** STRIDE (Spoofing, Tampering, Repudiation, Info Disclosure, Denial of Service, Elevation of Privilege).
 
-## 1. Superficie de Ataque
-* **External Interfaces:** API Pública, Webhooks.
-* **User Inputs:** Formularios, Subida de archivos.
-* **Data Stores:** Base de datos, Logs.
+## 1. Attack Surface
+* **External Interfaces:** Public API, Webhooks.
+* **User Inputs:** Forms, File uploads.
+* **Data Stores:** Database, Logs.
 
-## 2. Matriz de Amenazas y Mitigación
+## 2. Threat and Mitigation Matrix
 
-| Amenaza (Threat) | Tipo (STRIDE) | Probabilidad | Impacto | Mitigación Implementada |
+| Threat | Type (STRIDE) | Probability | Impact | Implemented Mitigation |
 | :--- | :--- | :--- | :--- | :--- |
-| **SQL Injection** | Tampering | Media | Crítica | Uso estricto de ORM + Validación Pydantic. |
-| **XSS (Cross-Site Scripting)** | Tampering | Alta | Alta | Auto-escaping en Frontend + CSP Headers. |
-| **Robo de Token JWT** | Info Disclosure | Baja | Alta | Tokens HTTP-Only + Expiración corta (15min). |
-| **DDoS API** | Denial of Service | Media | Media | Rate Limiting (Redis) en API Gateway. |
-| **Acceso Admin no autorizado** | Elevation | Baja | Crítica | MFA obligatorio para roles Admin. |
+| **SQL Injection** | Tampering | Medium | Critical | Strict use of ORM + Pydantic validation. |
+| **XSS (Cross-Site Scripting)** | Tampering | High | High | Auto-escaping in Frontend + CSP Headers. |
+| **JWT Token Theft** | Info Disclosure | Low | High | HTTP-Only tokens + Short expiration (15min). |
+| **API DDoS** | Denial of Service | Medium | Medium | Rate Limiting (Redis) at API Gateway. |
+| **Unauthorized Admin Access** | Elevation | Low | Critical | MFA mandatory for Admin roles. |
 | **{{THREAT_1}}** | {{STRIDE_TYPE}} | {{PROBABILITY}} | {{IMPACT}} | {{MITIGATION}} |
 
-## 3. Plan de Respuesta a Incidentes
-En caso de brecha detectada:
-1. Rotar claves maestras.
-2. Notificar usuarios afectados (según GDPR).
-3. Restaurar backup limpio.
-4. Análisis post-mortem y documento de lecciones aprendidas.
+## 3. Incident Response Plan
+In case of detected breach:
+1. Rotate master keys.
+2. Notify affected users (per GDPR).
+3. Restore clean backup.
+4. Post-mortem analysis and lessons learned document.
 
-## 4. Requisitos de Seguridad por Capas
+## 4. Security Requirements by Layer
 
 ### Backend
-* Validación estricta de entrada (Pydantic).
-* Sanitización de outputs (para evitar XSS).
-* Rate limiting en endpoints críticos.
+* Strict input validation (Pydantic).
+* Output sanitization (to prevent XSS).
+* Rate limiting on critical endpoints.
 
 ### Frontend
-* CORS restrictivo.
+* Restrictive CORS.
 * CSP headers.
-* Validación de lado del cliente.
+* Client-side validation.
 
-### Base de Datos
-* Encriptación en tránsito (TLS).
-* Encriptación en reposo (si aplica).
-* Backups encriptados y probados regularmente.
+### Database
+* Encryption in transit (TLS).
+* Encryption at rest (if applicable).
+* Encrypted and regularly tested backups.

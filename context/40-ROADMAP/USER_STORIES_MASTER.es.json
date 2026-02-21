@@ -141,24 +141,127 @@
                         },
                         {
                             "hu_id": "HU-4.4",
-                            "name": "Manejo de Errores y Resilience Gates",
-                            "priority": "Medium",
-                            "estimation": "M",
-                            "branch_name": "feature/error-handling-gates",
+                            "name": "RAG/LLM Resilience Extensions (Completa HU-3.4)",
+                            "priority": "High",
+                            "estimation": "S → XL (Scope Extendido)",
+                            "status": "Completed",
+                            "branch_name": "feature/rag-llm-resilience",
+                            "completion_date": "2026-02-21",
+                            "actual_effort": "3 semanas (vs 3-4 días estimado)",
+                            "commits": 47,
+                            "files_changed": 1584,
+                            "lines_added": 452075,
+                            "lines_removed": 5921,
                             "dependencies": [
+                                "HU-3.4",
                                 "HU-4.3"
                             ],
                             "verification_criteria": [
-                                "✅ Retry automático (3x) si Ollama falla.",
-                                "✅ Mensajes de error amigables en UI (No stacktraces).",
-                                "✅ Fallback: Si RAG falla, responde con conocimiento general (graceful degradation).",
-                                "✅ Logs de error estructurados en backend."
+                                "✅ Graceful degradation: Si ChromaDB falla, chat continúa sin contexto RAG (sources=[]).",
+                                "✅ Retry automático (3x) en LLM calls con backoff exponencial (0.5s, 1s, 2s).",
+                                "⚠️ Timeout 30s en RAG search (asyncio.wait_for) - PARCIAL (implementado, necesita más tests).",
+                                "✅ Mensajes de error traducidos para DB_ERR_001, RAG_ERR_001 (ES/EN/PT).",
+                                "✅ Log WARNING (no ERROR) cuando RAG se degrada.",
+                                "✅ 100+ tests passing (EXCEDIDO: 16/16 original → 100+ real).",
+                                "✅ Cobertura: Backend ~92% (EXCEDIDO), Frontend ~88% (EXCEDIDO)."
                             ],
                             "technical_tasks": [
-                                "Implementar decorador @retry_with_backoff en Python.",
-                                "Crear ErrorMapper en Flutter para códigos HTTP.",
-                                "Diseñar Snackbar persistente para errores críticos."
-                            ]
+                                "✅ Wrap vector_store.search() en try-except con timeout 30s (orchestrator.py).",
+                                "✅ Aplicar @with_retry a ollama_client.generate() y stream_generate().",
+                                "✅ Agregar ChromaDBConnectionError (DB_ERR_001) en exceptions.py.",
+                                "✅ Agregar mensajes ES/EN/PT para DB_ERR_001, RAG_ERR_001 en error_mapper.dart.",
+                                "✅ Crear 7 tests degradation + 8 tests retry + frontend tests.",
+                                "✅ SCOPE EXTENDIDO: Fix 4 critical bugs markdown preview widget.",
+                                "✅ SCOPE EXTENDIDO: Progress indicator reactive (real-time updates).",
+                                "✅ SCOPE EXTENDIDO: Chat premium UX con document save integration.",
+                                "✅ SCOPE EXTENDIDO: Resolver 68+ Flutter analyze issues (0 warnings policy).",
+                                "✅ SCOPE EXTENDIDO: Eliminar 2 tests skipped + 1 warning (0 skipped policy).",
+                                "✅ SCOPE EXTENDIDO: Implementar estructura doc bilingüe (460 docs × 2 idiomas).",
+                                "✅ SCOPE EXTENDIDO: Traducir knowledge base a inglés (72 archivos)."
+                            ],
+                            "scope_creep_analysis": {
+                                "original_scope": "RAG/LLM resilience (4 GAPS críticos)",
+                                "extended_scope": [
+                                    "UI/UX Improvements (15 commits)",
+                                    "Testing & Quality Enforcement (12 commits)",
+                                    "Documentation Overhaul Bilingual (4 commits)",
+                                    "Knowledge Base Translation (3 commits)"
+                                ],
+                                "reasons": [
+                                    "MVP presentation deadline pressure (debe ser production-ready)",
+                                    "Hidden technical debt from Sprint 3 (68+ analyze issues, 2 skipped tests)",
+                                    "Critical UX bugs discovered during testing (markdown crash, progress frozen)",
+                                    "International TFM requirements (bilingual documentation mandatory)"
+                                ],
+                                "decision": "Monolithic PR accepted. Cannot split due to MVP deadline. Trade-off: Difficult code review vs on-time delivery.",
+                                "documentation": "doc/English|Español/03-HU-TRACKING/HU-4.4-RAG-LLM-RESILIENCE/CLOSURE_REPORT.md"
+                            },
+                            "technical_debt_identified": [
+                                {
+                                    "id": "HU-4.4.1",
+                                    "priority": "HIGH",
+                                    "title": "RAG Timeout Comprehensive Tests",
+                                    "description": "Timeout logic exists but lacks comprehensive test coverage",
+                                    "estimated_effort": "2 días",
+                                    "target_sprint": "Sprint 5"
+                                },
+                                {
+                                    "id": "HU-4.4.2",
+                                    "priority": "HIGH",
+                                    "title": "E2E Integration Tests Full Coverage",
+                                    "description": "Only basic E2E flows tested. Missing full user journeys.",
+                                    "estimated_effort": "3 días",
+                                    "target_sprint": "Sprint 5"
+                                },
+                                {
+                                    "id": "HU-4.4.3",
+                                    "priority": "HIGH",
+                                    "title": "Performance Benchmarks Under Load",
+                                    "description": "No load testing performed (10+ concurrent users, large vector DB)",
+                                    "estimated_effort": "2 días",
+                                    "target_sprint": "Sprint 5"
+                                },
+                                {
+                                    "id": "DEBT-KB-TRANSLATION",
+                                    "priority": "MEDIUM",
+                                    "title": "Knowledge Base Full Translation",
+                                    "description": "Only 72/200+ tech pack files translated",
+                                    "estimated_effort": "5 días",
+                                    "target_sprint": "Sprint 6"
+                                },
+                                {
+                                    "id": "DEBT-WEB-VARIANT",
+                                    "priority": "MEDIUM",
+                                    "title": "Flutter Web Variant Preparation",
+                                    "description": "Web target not tested (file_picker may need web alternative)",
+                                    "estimated_effort": "3 días",
+                                    "target_sprint": "Sprint 6"
+                                },
+                                {
+                                    "id": "DEBT-USER-DOCS",
+                                    "priority": "MEDIUM",
+                                    "title": "End-User Documentation Guide",
+                                    "description": "Current docs are developer-focused, no end-user guide",
+                                    "estimated_effort": "2 días",
+                                    "target_sprint": "Sprint 6"
+                                }
+                            ],
+                            "achievements": [
+                                "✅ Production-ready MVP delivered on time for presentation",
+                                "✅ 100+ tests passing (backend + frontend comprehensive coverage)",
+                                "✅ High code coverage (backend 92%, frontend 88%)",
+                                "✅ Zero errors, zero warnings, zero skipped tests policy enforced",
+                                "✅ Comprehensive bilingual documentation (920 files)",
+                                "✅ All technical debt explicitly identified and tracked",
+                                "✅ 'Ship first, perfect later' philosophy validated"
+                            ],
+                            "lessons_learned": [
+                                "Scope creep detection needed earlier (implement 'scope drift alarm' if commits > 20)",
+                                "Testing strategy should be proactive (write E2E tests BEFORE features)",
+                                "Documentation as habit, not chore (1 doc per 3 code commits)",
+                                "3-amigos session mandatory BEFORE backlog refinement (avoid unrealistic estimations)"
+                            ],
+                            "notes": "SCOPE EXTENDIDO: Historia S (3-4 días) → XL (3 semanas) debido a presión MVP presentation. Incluye implementación core + 34 commits de fixes UI/UX, quality enforcement, docs bilingual y translations. Deuda técnica explícitamente documentada para Sprint 5. Decisión correcta dadas restricciones: MVP listo para demo, 0 deuda técnica crítica, cobertura >85%. Ver CLOSURE_REPORT.md para análisis exhaustivo."
                         }
                     ]
                 }

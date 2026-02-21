@@ -2,17 +2,17 @@
 
 > **Motor:** InnoDB (Default, innodb_file_per_table)
 > **Estructura:** B-Tree (default, optimizado para range queries)
-> **Objetivo:** Queries < 50ms en tablas con 1M+ filas
-> **Filosofía:** "Índices son una inversión - cada índice tiene costo en INSERT/UPDATE"
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Goal:** Queries < 50ms en tablas con 1M+ filas
+> **Filosofía:** "Indexes son una inversión - cada índice tiene costo en INSERT/UPDATE"
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Fundamentos de Indexación](#fundamentos-de-indexación)
-2. [Tipos de Índices en MySQL](#tipos-de-índices-en-mysql)
+2. [Tipos de Indexes en MySQL](#tipos-de-índices-en-mysql)
 3. [Clustered Index (Clave Primaria)](#clustered-index-clave-primaria)
 4. [Secondary Indexes (B-Tree)](#secondary-indexes-b-tree)
 5. [Covering Index (El Truco Maestro)](#covering-index-el-truco-maestro)
@@ -62,7 +62,7 @@ CREATE INDEX idx_email ON users(email);
 Tiempo: O(log n) = ~20 comparaciones = ⏱️ 1ms
 ```
 
-### Costo de Índices
+### Costo de Indexes
 
 **Todo tiene precio:**
 
@@ -82,7 +82,7 @@ INSERT INTO users (id, name, email) VALUES (100, 'Eve', 'eve@example.com');
 
 ---
 
-## Tipos de Índices en MySQL
+## Tipos de Indexes en MySQL
 
 ### 1. **BTREE** (Defecto, recomendado)
 - Balanceado, eficiente para range queries
@@ -196,7 +196,7 @@ SELECT * FROM users WHERE email = 'alice@example.com';
 Operaciones: 2 búsquedas B-Tree = ~2ms
 ```
 
-### Múltiples Índices = Más Actualizaciones
+### Múltiples Indexes = Más Actualizaciones
 
 ```sql
 -- Supongamos esta tabla con 5 índices
@@ -514,7 +514,7 @@ CREATE TABLE orders (
 
 ## Monitoreo y Mantenimiento
 
-### 1. Ver Índices de una Tabla
+### 1. Ver Indexes de una Tabla
 
 ```sql
 -- Listar índices
@@ -531,10 +531,10 @@ WHERE TABLE_NAME = 'users' AND TABLE_SCHEMA = 'mydb';
 +-----------+-------------+------------------+------------+
 ```
 
-### 2. Encontrar Índices Nunca Usados
+### 2. Encontrar Indexes Nunca Usados
 
 ```sql
--- Índices que nunca se usan en lecturas
+-- Indexes que nunca se usan en lecturas
 SELECT OBJECT_SCHEMA, OBJECT_NAME, INDEX_NAME
 FROM performance_schema.table_io_waits_summary_by_index_usage
 WHERE COUNT_READ = 0 AND INDEX_NAME != 'PRIMARY'
@@ -544,7 +544,7 @@ ORDER BY COUNT_WRITE DESC;
 DROP INDEX idx_never_used ON users;
 ```
 
-### 3. Tamaño de Índices
+### 3. Tamaño de Indexes
 
 ```sql
 -- Ver tamaño de cada índice

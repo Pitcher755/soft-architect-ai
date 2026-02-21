@@ -38,6 +38,9 @@ abstract class ChatRepository {
   /// Retrieves chat history from storage.
   Future<List<ChatMessage>> getChatHistory(String projectId);
 
+  /// Saves a single message to chat history.
+  Future<void> saveMessage(String projectId, ChatMessage message);
+
   /// Clears chat history for a project.
   Future<void> clearChatHistory(String projectId);
 }

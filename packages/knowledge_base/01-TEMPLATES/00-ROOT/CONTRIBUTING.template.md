@@ -1,43 +1,43 @@
-# 🤝 Guía de Contribución para {{PROJECT_NAME}}
+# 🤝 Contribution Guide for {{PROJECT_NAME}}
 
-¡Gracias por querer contribuir! Para mantener la calidad y la arquitectura de este proyecto, seguimos reglas estrictas.
+Thank you for wanting to contribute! To maintain the quality and architecture of this project, we follow strict rules.
 
-## 1. Flujo de Trabajo (GitFlow)
-* **Rama Principal:** `develop` (No hacer push directo).
-* **Rama Estable:** `main` (Solo para releases).
-* **Ramas de Feature:** `feature/nombre-descriptivo`.
-* **Ramas de Fix:** `fix/nombre-del-bug`.
+## 1. Workflow (GitFlow)
+* **Main Branch:** `develop` (No direct push).
+* **Stable Branch:** `main` (Only for releases).
+* **Feature Branches:** `feature/descriptive-name`.
+* **Fix Branches:** `fix/bug-name`.
 
-### Crear una nueva feature
+### Create a new feature
 ```bash
 git checkout develop
 git checkout -b feature/{{FEATURE_NAME_EXAMPLE}}
 ```
 
-## 2. Estándares de Commit
-Usamos Conventional Commits. Mensajes en {{PRIMARY_LANGUAGE}} (o Inglés si se define en RULES).
+## 2. Commit Standards
+We use Conventional Commits. Messages in {{PRIMARY_LANGUAGE}} (or English if defined in RULES).
 
 ```
-feat: añadir endpoint de login
+feat: add login endpoint
 
-fix: corregir error en validación de email
+fix: correct email validation error
 
-docs: actualizar diagrama de arquitectura
+docs: update architecture diagram
 
-style: formato de código (ruff/prettier)
+style: code formatting (ruff/prettier)
 
-refactor: optimizar consulta SQL
+refactor: optimize SQL query
 ```
 
-## 3. Reglas de Pull Request (PR)
-* **Título:** Debe seguir Conventional Commits.
-* **Descripción:** Enlazar la User Story (ej: Closes #HU-1.2).
-* **Tests:** No se aprueba PR si baja el coverage del 80%.
-* **Docs:** Si cambias lógica, actualiza `context/`.
+## 3. Pull Request (PR) Rules
+* **Title:** Must follow Conventional Commits.
+* **Description:** Link the User Story (e.g., Closes #HU-1.2).
+* **Tests:** PR is not approved if coverage drops below 80%.
+* **Docs:** If you change logic, update `context/`.
 
-## 4. Reporte de Bugs
-Usa la plantilla de Issues proporcionada. Incluye:
+## 4. Bug Report
+Use the provided Issues template. Include:
 
-* Pasos para reproducir.
-* Comportamiento esperado vs real.
-* Logs o capturas de pantalla.
+* Steps to reproduce.
+* Expected vs actual behavior.
+* Logs or screenshots.

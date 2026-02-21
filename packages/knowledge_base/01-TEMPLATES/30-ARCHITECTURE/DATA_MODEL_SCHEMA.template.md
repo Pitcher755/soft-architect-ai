@@ -1,9 +1,9 @@
 # 🗄️ Data Model Schema
 
-Diseño de persistencia para **{{PROJECT_NAME}}**.
-**Motor:** {{DATABASE_ENGINE}}.
+Persistence design for **{{PROJECT_NAME}}**.
+**Engine:** {{DATABASE_ENGINE}}.
 
-## 1. Diagrama ER (Mermaid)
+## 1. ER Diagram (Mermaid)
 
 ```mermaid
 erDiagram
@@ -21,24 +21,24 @@ erDiagram
     }
 ```
 
-## 2. Definición de Entidades
+## 2. Entity Definitions
 
-### Entidad: **{{ENTITY_1}}** (Ej: User)
+### Entity: **{{ENTITY_1}}** (e.g., User)
 
-* **Descripción:** {{ENTITY_1_DESC}}
+* **Description:** {{ENTITY_1_DESC}}
 * **Primary Key:** `id` (UUIDv4).
-* **Índices:** `email` (Unique), `created_at` (B-Tree).
-* **Relaciones:** `{{ENTITY_2}}` (1:N).
+* **Indexes:** `email` (Unique), `created_at` (B-Tree).
+* **Relationships:** `{{ENTITY_2}}` (1:N).
 
-### Entidad: **{{ENTITY_2}}**
+### Entity: **{{ENTITY_2}}**
 
-* **Descripción:** {{ENTITY_2_DESC}}
-* **Campos Clave:**
+* **Description:** {{ENTITY_2_DESC}}
+* **Key Fields:**
     * `{{FIELD_1}}`: {{TYPE}}
     * `{{FIELD_2}}`: {{TYPE}}
 
-## 3. Flujos de Datos Críticos
+## 3. Critical Data Flows
 
-* **Ingesta:** Cómo los datos entran al sistema.
-* **Transformación:** Validación y enriquecimiento.
-* **Salida:** Cómo se exponen a través de APIs.
+* **Ingestion:** How data enters the system.
+* **Transformation:** Validation and enrichment.
+* **Output:** How data is exposed through APIs.

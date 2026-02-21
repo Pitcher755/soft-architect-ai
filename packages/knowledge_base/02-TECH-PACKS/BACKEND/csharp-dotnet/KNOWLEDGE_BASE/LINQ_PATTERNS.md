@@ -3,13 +3,13 @@
 > **LINQ:** Language Integrated Query
 > **Scope:** Colecciones en memoria + LINQ to Entities (DB)
 > **Filosofía:** Functional Programming dentro de C#
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 LINQ es la respuesta de C# a "¿cómo hago que trabajar con datos sea elegante?". La respuesta: hazlo declarativo, no imperativo.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Query vs Method Syntax](#query-vs-method-syntax)
 2. [Operadores Principales](#operadores-principales)
@@ -408,6 +408,6 @@ if (users.Any(u => u.Age >= 18)) {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ LINQ MASTERY READY
 **Responsable:** ArchitectZero AI Agent

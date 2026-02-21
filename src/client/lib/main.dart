@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'core/config/theme_config.dart';
 import 'core/database_initializer.dart';
@@ -13,9 +13,31 @@ import 'features/chat/presentation/notifiers/chat_notifier.dart';
 import 'features/project_shell/core/services/file_system_service.dart';
 import 'features/settings/presentation/providers/settings_providers.dart';
 import 'gen/app_localizations.dart';
+import 'shared/presentation/widgets/keyboard_zoom_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize window manager for desktop platforms
+  if (!kIsWeb) {
+    await windowManager.ensureInitialized();
+
+    const windowOptions = WindowOptions(
+      size: Size(1920, 1080),
+      minimumSize: Size(1024, 768),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+      fullScreen: false, // Start maximized instead
+    );
+
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.maximize(); // Maximize window on startup
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   // Initialize database for current platform (Desktop/Web/Mobile)
   await initializeSqfliteForDesktop();
@@ -55,104 +77,66 @@ class SoftArchitectApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = createAppRouter();
+    // CRITICAL: Router is static provider, never rebuilds
+    final router = ref.watch(appRouterProvider);
     final locale = ref.watch(localeProvider);
 
-    // CRITICAL: Watch ONLY theme and font size
-    // Do NOT watch globalZoom - it would cause entire app rebuild
-    final themeMode = ref.watch(themeModeProvider);
-    final fontSize = ref.watch(fontSizeProvider);
+    // Watch settings async for initial load
+    final settingsAsync = ref.watch(settingsProvider);
 
-    // Read zoom without watching (no rebuild when zoom changes)
-    // This is read fresh on every build, but that's OK for MediaQuery
-    final globalZoom = ref.read(globalZoomProvider);
-    final enableZoomShortcuts = ref.read(enableZoomShortcutsProvider);
-
-    // Apply global zoom by wrapping the app in MediaQuery
-    // IMPORTANT: Use FocusScope to capture shortcuts without triggering
-    // navigation
-    return FocusScope(
-      onKey: (node, event) {
-        if (!enableZoomShortcuts) {
-          return KeyEventResult.ignored;
-        }
-
-        final isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
-        if (!isCtrlPressed) {
-          return KeyEventResult.ignored;
-        }
-
-        // Ctrl + Shift + Plus (En/US layout: Ctrl+Shift+=)
-        if (event.logicalKey == LogicalKeyboardKey.equal &&
-            HardwareKeyboard.instance.isShiftPressed) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
-          return KeyEventResult.handled;
-        }
-
-        // Ctrl + Equal/Plus (Spanish: Ctrl+= where + is Shift+=)
-        if (event.logicalKey == LogicalKeyboardKey.equal &&
-            !HardwareKeyboard.instance.isShiftPressed) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom + 0.1).clamp(0.5, 2.0));
-          return KeyEventResult.handled;
-        }
-
-        // Ctrl + Minus (works on all layouts)
-        if (event.logicalKey == LogicalKeyboardKey.minus) {
-          ref
-              .read(settingsProvider.notifier)
-              .updateGlobalZoom((globalZoom - 0.1).clamp(0.5, 2.0));
-          return KeyEventResult.handled;
-        }
-
-        // Ctrl + 0: Reset to 100%
-        if (event.logicalKey == LogicalKeyboardKey.digit0) {
-          ref.read(settingsProvider.notifier).updateGlobalZoom(1);
-          return KeyEventResult.handled;
-        }
-
-        return KeyEventResult.ignored;
-      },
-      child: Focus(
-        canRequestFocus: true,
-        child: MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(globalZoom)),
-          child: MaterialApp.router(
-            title: 'SoftArchitect AI',
-            debugShowCheckedModeBanner: false,
-            theme: _buildThemeWithFontSize(AppTheme.lightTheme(), fontSize),
-            darkTheme: _buildThemeWithFontSize(AppTheme.darkTheme(), fontSize),
-            themeMode: themeMode,
-            routerConfig: router,
-            locale: locale,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: LocaleNotifier.supportedLocales,
+    return settingsAsync.when(
+      data: (settings) => KeyboardZoomWrapper(
+        child: MaterialApp.router(
+          title: 'SoftArchitect AI',
+          debugShowCheckedModeBanner: false,
+          theme: _buildThemeWithFontSize(
+            AppTheme.lightTheme(),
+            settings.baseFontSize,
+          ),
+          darkTheme: _buildThemeWithFontSize(
+            AppTheme.darkTheme(),
+            settings.baseFontSize,
+          ),
+          themeMode: settings.themeMode,
+          routerConfig: router,
+          locale: locale,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: LocaleNotifier.supportedLocales,
+          // Apply zoom in builder without rebuilding router
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: TextScaler.linear(settings.globalZoom)),
+            child: child!,
           ),
         ),
+      ),
+      loading: () => const MaterialApp(
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
+      ),
+      error: (_, _) => const MaterialApp(
+        home: Scaffold(body: Center(child: Text('Error loading settings'))),
       ),
     );
   }
 
-  /// Builds theme with optional font size scaling.
+  /// Builds theme with base font size in points (10-24pt).
   ///
-  /// Manually scales each TextStyle to avoid assertions on themes
-  /// without explicit fontSize definitions.
-  ThemeData _buildThemeWithFontSize(ThemeData baseTheme, double fontSize) {
-    if (fontSize == 1.0) {
+  /// Scales all text styles based on baseFontSize (default: 14pt).
+  ThemeData _buildThemeWithFontSize(ThemeData baseTheme, double baseFontSize) {
+    const defaultBaseFontSize = 20.0;
+    final scaleFactor = baseFontSize / defaultBaseFontSize;
+
+    if (scaleFactor == 1.0) {
       return baseTheme;
     }
 
-    final scaledTextTheme = _scaleTextTheme(baseTheme.textTheme, fontSize);
+    final scaledTextTheme = _scaleTextTheme(baseTheme.textTheme, scaleFactor);
     return baseTheme.copyWith(textTheme: scaledTextTheme);
   }
 

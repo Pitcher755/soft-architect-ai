@@ -4,6 +4,7 @@ Connects to local Ollama server via HTTP API.
 Default model: llama2 (configurable via environment).
 """
 
+import asyncio
 import json
 import logging
 from collections.abc import AsyncGenerator
@@ -15,7 +16,9 @@ from app.core.exceptions import (
     LLMConnectionError,
     LLMStreamError,
     LLMTimeoutError,
+    RetryExhaustedError,
 )
+from app.core.retry import with_retry
 from app.infrastructure.llm.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
@@ -27,7 +30,7 @@ class OllamaClient(BaseLLMClient):
     def __init__(
         self,
         base_url: str = "http://localhost:11434",
-        model: str = "llama2",
+        model: str = "qwen:2.5-coder-3b",
         timeout: float = 30.0,
     ):
         self.base_url = base_url
@@ -79,52 +82,100 @@ class OllamaClient(BaseLLMClient):
 
         return str(generated_text)
 
+    @with_retry(
+        max_retries=3,
+        base_delay=0.5,
+        retryable_exceptions=(httpx.RequestError, httpx.TimeoutException),
+    )
+    async def _generate_with_retry(
+        self,
+        prompt: str,
+        max_tokens: int | None = None,
+        temperature: float | None = None,
+    ) -> str:
+        """
+        Internal method: Generate LLM response with retry logic.
+
+        This method is wrapped by @with_retry and throws httpx exceptions.
+        Use public generate() method which converts to domain exceptions.
+
+        Raises:
+            httpx.RequestError: On network failures (after retries)
+            httpx.TimeoutException: On timeout (after retries)
+            RetryExhaustedError: After 3 failed retries
+        """
+        endpoint = f"{self.base_url}/api/generate"
+        payload = self._build_payload(prompt, max_tokens, temperature)
+
+        async with httpx.AsyncClient(timeout=self.timeout) as client:
+            response = await client.post(endpoint, json=payload)
+            generated_text = await self._extract_generated_text(response)
+            logger.debug(f"Ollama generated {len(generated_text)} chars")
+            return generated_text
+
     async def generate(
         self,
         prompt: str,
         max_tokens: int | None = None,
         temperature: float | None = None,
     ) -> str:
-        endpoint = f"{self.base_url}/api/generate"
-        payload = self._build_payload(prompt, max_tokens, temperature)
+        """
+        Generate LLM response (Clean Architecture wrapper).
 
+        Retry behavior (HU-4.4 GAP 2):
+        - Max 3 retries on network errors
+        - Exponential backoff: 0.5s, 1.0s, 2.0s
+        - Logs WARNING on retries, INFO on success
+
+        Args:
+            prompt: The prompt to send to LLM
+            max_tokens: Maximum tokens in response
+            temperature: LLM temperature (0.0-1.0)
+
+        Returns:
+            Generated text from LLM
+
+        Raises:
+            LLMConnectionError: Network/connection failures (after 3 retries)
+            LLMTimeoutError: Timeout errors (after 3 retries)
+        """
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.post(endpoint, json=payload)
-
-                generated_text = await self._extract_generated_text(response)
-                logger.debug(f"Ollama generated {len(generated_text)} chars")
-                return generated_text
-
-        except httpx.TimeoutException as error:
-            logger.error(f"Ollama timeout: {error}")
-            raise LLMTimeoutError(
-                message=f"Ollama request timeout after {self.timeout}s",
-                details={"timeout": self.timeout},
-            ) from error
-
-        except httpx.RequestError as error:
-            logger.error(f"Ollama connection error: {error}")
-            raise LLMConnectionError(
-                message=f"Failed to connect to Ollama at {self.base_url}",
-                details={"error": str(error)},
-            ) from error
-
+            return await self._generate_with_retry(prompt, max_tokens, temperature)
+        except RetryExhaustedError as error:
+            # Map RetryExhaustedError to domain exception based on original cause
+            if "timeout" in str(error).lower():
+                logger.error(f"Ollama timeout after retries: {error}")
+                raise LLMTimeoutError(
+                    message=f"Request timeout after {error.attempts} attempts",
+                    details={
+                        "provider": "ollama",
+                        "base_url": self.base_url,
+                        "attempts": error.attempts,
+                        "operation": "generate",
+                    },
+                ) from error
+            else:
+                logger.error(f"Ollama connection failed after retries: {error}")
+                raise LLMConnectionError(
+                    message=f"Failed to connect to Ollama after {error.attempts} attempts",
+                    details={
+                        "provider": "ollama",
+                        "base_url": self.base_url,
+                        "attempts": error.attempts,
+                        "operation": "generate",
+                    },
+                ) from error
         except (ValueError, KeyError) as error:
-            logger.error(f"Ollama invalid response: {error}")
+            logger.error(f"Ollama response parsing error: {error}")
             raise LLMConnectionError(
-                message="Ollama returned invalid JSON response",
-                details={"error": str(error)},
+                message=f"Failed to parse Ollama response: {error}",
+                details={"provider": "ollama", "base_url": self.base_url},
             ) from error
-
-        except (LLMConnectionError, LLMTimeoutError):
-            raise
-
         except Exception as error:
             logger.error(f"Ollama unexpected error: {error}")
             raise LLMConnectionError(
-                message=f"Ollama unexpected failure: {error}",
-                details={"error": str(error)},
+                message=f"Ollama unexpected error: {error}",
+                details={"provider": "ollama", "base_url": self.base_url},
             ) from error
 
     async def stream_generate(  # noqa: C901
@@ -134,11 +185,20 @@ class OllamaClient(BaseLLMClient):
         temperature: float | None = None,
     ) -> AsyncGenerator[str, None]:
         """
-        Generate streaming response from Ollama, yielding tokens progressively.
+        Stream LLM response with manual retry logic for connection phase.
 
-        Ollama streams responses in NDJSON format (one JSON object per line).
-        Each line contains: {"response": "token", "done": false}
-        Final line: {"response": "", "done": true, "total_duration": 1234567890}
+        Unlike generate(), streaming uses manual retry loop instead of decorator
+        because AsyncGenerators execute lazily and decorators can't handle them.
+
+        Retry behavior (HU-4.4 GAP 2):
+        - Max 3 retries on network errors (connection phase only)
+        - Exponential backoff: 0.5s, 1.0s, 2.0s
+        - Once stream starts, no retry (failures propagate immediately)
+        - Logs WARNING on retries, INFO on success
+
+        Ollama streams in NDJSON format (one JSON object per line):
+        - Each line: {"response": "token", "done": false}
+        - Final line: {"response": "", "done": true, "total_duration": ...}
 
         Args:
             prompt: The prompt to send to Ollama
@@ -149,74 +209,109 @@ class OllamaClient(BaseLLMClient):
             Individual tokens as strings
 
         Raises:
-            LLMConnectionError: If cannot connect to Ollama
-            LLMTimeoutError: If streaming times out
+            LLMConnectionError: If cannot connect after 3 retries
+            LLMTimeoutError: If streaming times out after 3 retries
             LLMStreamError: If stream is malformed or interrupted
         """
         endpoint = f"{self.base_url}/api/generate"
         payload = self._build_payload(prompt, max_tokens, temperature)
         payload["stream"] = True  # Enable streaming mode
 
-        try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                async with client.stream("POST", endpoint, json=payload) as response:
-                    response.raise_for_status()
+        max_retries = 3
+        base_delay = 0.5
 
-                    async for line in response.aiter_lines():
-                        if not line.strip():
-                            continue  # Skip empty lines
+        for attempt in range(max_retries):
+            try:
+                async with httpx.AsyncClient(timeout=self.timeout) as client:
+                    async with client.stream(
+                        "POST", endpoint, json=payload
+                    ) as response:
+                        response.raise_for_status()
 
-                        try:
-                            data = json.loads(line)
-                        except json.JSONDecodeError:
-                            # Log malformed line but continue streaming
-                            logger.warning(
-                                f"Malformed JSON in Ollama stream: {line[:100]}"
-                            )
-                            continue
+                        async for line in response.aiter_lines():
+                            if not line.strip():
+                                continue  # Skip empty lines
 
-                        # Check if stream is done
-                        if data.get("done", False):
-                            logger.debug(
-                                f"Ollama stream complete: {data.get('total_duration', 'N/A')}ns"
-                            )
-                            break
+                            try:
+                                data = json.loads(line)
+                            except json.JSONDecodeError:
+                                # Log malformed line but continue streaming
+                                logger.warning(
+                                    f"Malformed JSON in Ollama stream: {line[:100]}"
+                                )
+                                continue
 
-                        # Yield token if present
-                        token = data.get("response", "")
-                        if token:
-                            yield token
+                            # Check if stream is done
+                            if data.get("done", False):
+                                logger.debug(
+                                    f"Ollama stream complete: "
+                                    f"{data.get('total_duration', 'N/A')}ns"
+                                )
+                                break
 
-        except httpx.ConnectError as error:
-            logger.error(f"Ollama connection error: {error}")
-            raise LLMConnectionError(
-                message=f"Cannot connect to Ollama at {self.base_url}: {str(error)}",
-                details={"base_url": self.base_url, "error": str(error)},
-            ) from error
+                            # Yield token if present
+                            token = data.get("response", "")
+                            if token:
+                                yield token
 
-        except httpx.TimeoutException as error:
-            logger.error(f"Ollama timeout: {error}")
-            raise LLMTimeoutError(
-                message=f"Ollama streaming timeout after {self.timeout}s: {str(error)}",
-                details={"timeout": self.timeout, "error": str(error)},
-            ) from error
+                # Stream completed successfully, exit retry loop
+                logger.info(
+                    f"✅ Ollama stream succeeded on attempt {attempt + 1}/{max_retries}"
+                )
+                return
 
-        except httpx.HTTPStatusError as error:
-            logger.error(f"Ollama HTTP error: {error}")
-            raise LLMStreamError(
-                message=f"Ollama HTTP error {error.response.status_code}: {error.response.text}",
-                details={
-                    "status_code": error.response.status_code,
-                    "response_text": error.response.text[:200],
-                },
-            ) from error
+            except (httpx.RequestError, httpx.TimeoutException) as error:
+                if attempt == max_retries - 1:
+                    # Last attempt failed, raise domain exception
+                    logger.error(
+                        f"❌ Ollama stream failed after {max_retries} attempts: {error}"
+                    )
+                    if isinstance(error, httpx.TimeoutException):
+                        raise LLMTimeoutError(
+                            message=f"Streaming timeout after {max_retries} retries: {str(error)}",
+                            details={
+                                "provider": "ollama",
+                                "base_url": self.base_url,
+                                "attempts": max_retries,
+                                "timeout": self.timeout,
+                            },
+                        ) from error
+                    else:
+                        raise LLMConnectionError(
+                            message=f"Stream connection failed after {max_retries} retries: {str(error)}",
+                            details={
+                                "provider": "ollama",
+                                "base_url": self.base_url,
+                                "attempts": max_retries,
+                                "error": str(error),
+                            },
+                        ) from error
 
-        except (LLMConnectionError, LLMTimeoutError, LLMStreamError):
-            raise
+                # Calculate exponential backoff and wait
+                sleep_time = base_delay * (2**attempt)
+                logger.warning(
+                    f"⚠️ Ollama stream connection failed. "
+                    f"Retrying in {sleep_time}s ({attempt + 1}/{max_retries}): {error}"
+                )
+                await asyncio.sleep(sleep_time)
 
-        except Exception as error:
-            logger.error(f"Ollama unexpected streaming error: {error}")
-            raise LLMStreamError(
-                message=f"Unexpected error during Ollama streaming: {str(error)}",
-                details={"error": str(error)},
-            ) from error
+            except httpx.HTTPStatusError as error:
+                logger.error(f"Ollama HTTP error: {error}")
+                raise LLMStreamError(
+                    message=f"Ollama HTTP error {error.response.status_code}: "
+                    f"{error.response.text}",
+                    details={
+                        "status_code": error.response.status_code,
+                        "response_text": error.response.text[:200],
+                    },
+                ) from error
+
+            except (LLMConnectionError, LLMTimeoutError, LLMStreamError):
+                raise
+
+            except Exception as error:
+                logger.error(f"Ollama unexpected streaming error: {error}")
+                raise LLMStreamError(
+                    message=f"Unexpected error during Ollama streaming: {str(error)}",
+                    details={"error": str(error)},
+                ) from error

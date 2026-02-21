@@ -3,20 +3,20 @@
 > **Framework:** Spring Boot 3.2+
 > **Java:** 17/21 (LTS - Virutal Threads)
 > **Concepto:** Inversion of Control (IoC) & Inyección de Dependencias
-> **Fecha:** 30 de Enero de 2026
+> **Date:** 30 de Enero de 2026
 
 La magia de Spring: dejas de escribir `new Service()` y Spring se encarga de gestionar el ciclo de vida de tus objetos.
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [Estereotipos (Anotaciones)](#estereotipos-anotaciones)
 2. [Ciclo de Vida del Bean](#ciclo-de-vida-del-bean)
 3. [Inyección de Dependencias](#inyección-de-dependencias)
 4. [Scopes](#scopes)
 5. [`@Bean` vs `@Component`](#bean-vs-component)
-6. [Configuración Avanzada](#configuración-avanzada)
+6. [Configuration Avanzada](#configuración-avanzada)
 
 ---
 
@@ -33,7 +33,7 @@ Spring escanea tu código buscando estas marcas especiales para crear **Beans** 
 | **`@Repository`** | Acceso a Datos | Data Layer, JPA | ✅ Automático |
 | **`@Controller`** | Controlador MVC | Web Controllers (HTML) | ✅ Automático |
 | **`@RestController`** | API REST | REST Endpoints (JSON) | ✅ Automático |
-| **`@Configuration`** | Configuración | Definir Beans manualmente | ✅ Automático |
+| **`@Configuration`** | Configuration | Definir Beans manualmente | ✅ Automático |
 
 ### Ejemplo de Uso
 
@@ -248,7 +248,7 @@ public class PaymentConfig {
 | **Session** | Una por sesión HTTP | User context (web) | Sesión HTTP |
 | **Application** | Una por ServletContext | Shared data (web) | Aplicación |
 
-### Ejemplos
+### Examples
 
 ```java
 // ✅ GOOD: Singleton (Default, recomendado para servicios)
@@ -337,7 +337,7 @@ public class ExternalServicesConfig {
 
 ---
 
-## Configuración Avanzada
+## Configuration Avanzada
 
 ### Profiles (Ambientes)
 
@@ -438,7 +438,7 @@ public class AppConfig {
 [ ] Prototype para objetos con estado
 [ ] @RequestScope para contexto HTTP
 
-# ✅ 5. Configuración
+# ✅ 5. Configuration
 [ ] @Configuration para Beans de terceros
 [ ] @Profile para ambientes
 [ ] @ConditionalOnProperty para feature flags
@@ -452,6 +452,6 @@ public class AppConfig {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ SPRING IOC READY
 **Responsable:** ArchitectZero AI Agent

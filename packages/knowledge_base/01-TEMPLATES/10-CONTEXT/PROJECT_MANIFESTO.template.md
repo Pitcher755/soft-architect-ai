@@ -1,27 +1,27 @@
 # 📜 Project Manifesto: {{PROJECT_NAME}}
 
-> **Versión:** 0.1.0 (Inception)
-> **Fecha:** {{DATE}}
+> **Version:** 0.1.0 (Inception)
+> **Date:** {{DATE}}
 
-## 1. Visión (The Vision)
-*¿Qué estamos construyendo y para quién?*
+## 1. Vision (The Vision)
+*What are we building and for whom?*
 > {{VISION_STATEMENT}}
-> *(Ej: Una plataforma SaaS para gestionar clínicas veterinarias con IA)*
+> *(E.g.: A SaaS platform to manage veterinary clinics with AI)*
 
-## 2. La Promesa de Valor (The Promise)
-*¿Qué problema resuelve radicalmente?*
-1.  **Problema:** {{PROBLEM_1}}
-2.  **Solución:** {{SOLUTION_1}}
-3.  **Diferenciador:** {{DIFFERENTIATOR}}
+## 2. Value Promise (The Promise)
+*What problem does it radically solve?*
+1.  **Problem:** {{PROBLEM_1}}
+2.  **Solution:** {{SOLUTION_1}}
+3.  **Differentiator:** {{DIFFERENTIATOR}}
 
-## 3. Alcance del MVP (Scope)
-*Lo que SÍ haremos ahora vs lo que haremos luego.*
+## 3. MVP Scope (Scope)
+*What we WILL do now vs what we will do later.*
 
 | In Scope (MVP) | Out of Scope (Future) |
 | :--- | :--- |
 | {{FEATURE_IN_1}} | {{FEATURE_OUT_1}} |
 | {{FEATURE_IN_2}} | {{FEATURE_OUT_2}} |
 
-## 4. Criterios de Éxito (KPIs)
+## 4. Success Criteria (KPIs)
 * {{KPI_1}}
 * {{KPI_2}}

@@ -1,5 +1,6 @@
 """RAG Orchestrator - Core business logic for chat endpoint."""
 
+import asyncio
 import logging
 from collections.abc import AsyncGenerator
 from typing import Any
@@ -27,28 +28,86 @@ class RAGOrchestrator:
         self.llm_client = llm_client
 
     async def process_message(self, request: ChatRequest) -> ChatResponse:
-        """Process a chat message through the RAG pipeline."""
-        try:
-            sources = await self.vector_store.search(request.message, top_k=5)
-        except Exception as error:
-            logger.error("Vector search failed: %s", error)
-            raise RAGRetrievalError(
-                message="Knowledge base search failed",
-                details={"error": str(error)},
-            ) from error
+        """Process a chat message through the RAG pipeline.
 
+        Graceful Degradation (HU-4.4 GAP 1):
+        - If ChromaDB fails or times out, continue with sources=[]
+        - Use FALLBACK template for general LLM knowledge
+        - Log WARNING (not ERROR) as degradation is expected behavior
+
+        Args:
+            request: ChatRequest with user message
+
+        Returns:
+            ChatResponse with AI-generated response
+
+        Raises:
+            None (gracefully degrades on RAG failures)
+        """
+        sources = []  # Default empty (graceful degradation)
+
+        # RAG Retrieval with 30s timeout and exception handling
+        try:
+            sources = await asyncio.wait_for(
+                self.vector_store.search(request.message, top_k=5),
+                timeout=30.0,  # GAP 3: 30s hard limit
+            )
+            logger.info(
+                "✅ RAG retrieved %d sources",
+                len(sources),
+                extra={"sources_count": len(sources)},
+            )
+
+        except TimeoutError:
+            logger.warning(
+                "⚠️ RAG degraded: vector search timeout (30s)",
+                extra={
+                    "operation": "vector_search",
+                    "timeout_seconds": 30.0,
+                    "degradation_mode": "FALLBACK",
+                },
+            )
+
+        except ConnectionError:
+            logger.warning(
+                "⚠️ RAG degraded: ChromaDB connection failed, continuing without context",
+                extra={
+                    "operation": "vector_search",
+                    "error_type": "ConnectionError",
+                    "degradation_mode": "FALLBACK",
+                },
+            )
+
+        except Exception as error:
+            # Catch-all for any other vector store exceptions
+            logger.warning(
+                "⚠️ RAG degraded: vector search failed, continuing without context",
+                extra={
+                    "operation": "vector_search",
+                    "error_type": type(error).__name__,
+                    "degradation_mode": "FALLBACK",
+                },
+            )
+
+        # Template Selection (FALLBACK if sources empty)
         if sources:
             template_id = self.template_builder.select_template(request.project_id)
         else:
-            template_id = "FALLBACK"
-            logger.warning("No vector results - using fallback template")
+            template_id = "FALLBACK"  # Use general LLM knowledge
+            logger.info(
+                "🔄 Using FALLBACK template (RAG degraded)",
+                extra={"template": "FALLBACK", "reason": "no_sources_available"},
+            )
 
+        # ✅ Build prompt with RAG context AND chat history
         prompt = self.template_builder.build_prompt(
             query=request.message,
             context=sources,
             template_id=template_id,
+            history=request.history,  # ✅ NEW: Pass chat history
         )
 
+        # Generate LLM response (GAP 2: retry applied in llm_client)
         try:
             ai_response = await self.llm_client.generate(prompt)
         except LLMConnectionError:
@@ -65,6 +124,8 @@ class RAGOrchestrator:
     ) -> AsyncGenerator[dict[str, Any], None]:
         """Process a chat message with streaming response through the RAG pipeline.
 
+        Graceful Degradation: Same as process_message()
+
         Yields SSE-compatible events in dict format:
         - token events: {"type": "token", "data": str, "is_final": bool}
         - done events: {"type": "done", "data": {"full_response": str, "sources": list, "metadata": dict}}
@@ -77,7 +138,6 @@ class RAGOrchestrator:
             Dict events compatible with SSE format
 
         Raises:
-            RAGRetrievalError: If vector search fails
             LLMStreamError: If LLM streaming fails
         """
         sources = []
@@ -85,36 +145,33 @@ class RAGOrchestrator:
         full_response = ""
 
         try:
-            # Phase 1: Vector retrieval
+            # Phase 1: Vector retrieval with timeout and exception handling
             try:
-                sources = await self.vector_store.search(request.message, top_k=5)
-            except Exception as error:
-                logger.error("Vector search failed: %s", error)
-                yield {
-                    "type": "error",
-                    "data": {
-                        "error": "Knowledge base search failed",
-                        "code": "RAG_RETRIEVAL_ERROR",
-                        "retry": True,
-                    },
-                }
-                raise RAGRetrievalError(
-                    message="Knowledge base search failed",
-                    details={"error": str(error)},
-                ) from error
+                sources = await asyncio.wait_for(
+                    self.vector_store.search(request.message, top_k=5),
+                    timeout=30.0,
+                )
+            except (TimeoutError, ConnectionError, Exception) as error:
+                logger.warning(
+                    "⚠️ RAG degraded in streaming: %s",
+                    type(error).__name__,
+                    extra={"operation": "vector_search_stream"},
+                )
+                # Continue with empty sources (graceful degradation)
 
             # Phase 2: Template selection
             if sources:
                 template_id = self.template_builder.select_template(request.project_id)
             else:
                 template_id = "FALLBACK"
-                logger.warning("No vector results - using fallback template")
+                logger.info("🔄 Using FALLBACK template in streaming (RAG degraded)")
 
-            # Phase 3: Prompt construction
+            # ✅ Phase 3: Prompt construction with history
             prompt = self.template_builder.build_prompt(
                 query=request.message,
                 context=sources,
                 template_id=template_id,
+                history=request.history,  # ✅ NEW: Pass chat history
             )
 
             # Phase 4: Stream LLM response

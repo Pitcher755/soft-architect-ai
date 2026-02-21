@@ -87,6 +87,19 @@ class FakeProjectRepository implements ProjectRepository {
     }
     // No-op for fake implementation
   }
+
+  @override
+  Future<Project> renameProject(String projectId, String newName) async {
+    if (shouldThrowGetAll) {
+      throw exception ?? Exception('Test error');
+    }
+    // Return updated project with new name
+    final project = await getProject(projectId);
+    if (project == null) {
+      throw Exception('Project not found: $projectId');
+    }
+    return project.copyWith(name: newName);
+  }
 }
 
 void main() {

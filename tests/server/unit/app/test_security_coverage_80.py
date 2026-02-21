@@ -46,7 +46,7 @@ class TestInputSanitizerPatterns:
 
     def test_sanitizer_rejects_excessive_length(self):
         """✅ Should reject input exceeding max_length."""
-        long_input = "a" * 1001  # default max_length is 1000
+        long_input = "a" * 30001  # default max_length is 30000
 
         with pytest.raises(ValueError, match="exceeds maximum length"):
             InputSanitizer.sanitize_string(long_input)
@@ -102,16 +102,16 @@ class TestSanitizePrompt:
 
     def test_sanitize_prompt_has_higher_limit(self):
         """✅ Prompts should have higher character limit."""
-        # 5000 chars is the limit for prompts
-        long_prompt = "a" * 4999  # Just under 5000
+        # 30000 chars is the limit for prompts (qwen2.5-coder:3b supports 32K tokens)
+        long_prompt = "a" * 29999  # Just under 30000
 
         result = InputSanitizer.sanitize_prompt(long_prompt)
 
-        assert len(result) == 4999
+        assert len(result) == 29999
 
     def test_sanitize_prompt_rejects_over_limit(self):
-        """✅ Prompts over 5000 chars should be rejected."""
-        too_long_prompt = "a" * 5001
+        """✅ Prompts over 30000 chars should be rejected."""
+        too_long_prompt = "a" * 30001
 
         with pytest.raises(ValueError, match="exceeds maximum length"):
             InputSanitizer.sanitize_prompt(too_long_prompt)

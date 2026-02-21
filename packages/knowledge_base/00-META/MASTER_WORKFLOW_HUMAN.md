@@ -1,104 +1,104 @@
-# 🗺️ Master Workflow: De la Idea a la Producción
+# 🗺️ Master Workflow: From Idea to Production
 
-Este es el camino que todo proyecto en SoftArchitect debe recorrer. No hay atajos.
+This is the path every project in SoftArchitect must follow. There are no shortcuts.
 
 ```mermaid
 graph TD
-    A[💡 Idea] -->|Fase 1| B(Contexto y Gobernanza)
-    B --> C{Gate 1: Identidad}
-    C -->|Aprobado| D[📝 Requisitos]
-    C -->|Rechazado| B
+    A[💡 Idea] -->|Phase 1| B(Context and Governance)
+    B --> C{Gate 1: Identity}
+    C -->|Approved| D[📝 Requirements]
+    C -->|Rejected| B
 
-    D -->|Fase 2| E(Especificación Funcional)
-    E --> F{Gate 2: Definición}
-    F -->|Aprobado| G[🏗️ Arquitectura]
-    F -->|Rechazado| E
+    D -->|Phase 2| E(Functional Specification)
+    E --> F{Gate 2: Definition}
+    F -->|Approved| G[🏗️ Architecture]
+    F -->|Rejected| E
 
-    G -->|Fase 3| H(Diseño Técnico)
-    H --> I{Gate 3: Planos}
-    I -->|Aprobado| J[🚀 Código & Build]
-    I -->|Rechazado| G
+    G -->|Phase 3| H(Technical Design)
+    H --> I{Gate 3: Blueprints}
+    I -->|Approved| J[🚀 Code & Build]
+    I -->|Rejected| G
 
-    J -->|Fase 4| K(Construcción)
+    J -->|Phase 4| K(Construction)
     K --> L{Gate 4: Quality}
-    L -->|Aprobado| M[✅ Producción]
-    L -->|Rechazado| K
+    L -->|Approved| M[✅ Production]
+    L -->|Rejected| K
 ```
 
-## 📋 Las 4 Fases Explicadas
+## 📋 The 4 Phases Explained
 
-### **Fase 1: Gobernanza e Identidad**
-Objetivo: Definir quiénes somos y las reglas.
+### **Phase 1: Governance and Identity**
+Objective: Define who we are and the rules.
 
-**Entregables:**
-- `AGENTS.md` - Roles y responsabilidades
-- `RULES.md` - Reglas del proyecto
-- `PROJECT_MANIFESTO.md` - Propósito y promesa
-- `USER_JOURNEY_MAP.md` - Mapa de usuarios
+**Deliverables:**
+- `AGENTS.md` - Roles and responsibilities
+- `RULES.md` - Project rules
+- `PROJECT_MANIFESTO.md` - Purpose and promise
+- `USER_JOURNEY_MAP.md` - User map
 
-**Gate 1: Identidad**
-- ✅ Todos los documentos existen
-- ✅ Mínimo 500 caracteres cada uno
-- ✅ Equipos y roles claros
-
----
-
-### **Fase 2: Especificación y Seguridad**
-Objetivo: Definir qué haremos (sin código).
-
-**Entregables:**
-- `REQUIREMENTS_MASTER.md` - Requisitos funcionales completos
-- `USER_STORIES_MASTER.json` - Historias de usuario estructuradas
-- `SECURITY_PRIVACY_POLICY.md` - Política de seguridad
-
-**Gate 2: Definición**
-- ✅ JSON válido y bien formado
-- ✅ Todas las historias tienen criterios de aceptación
-- ✅ Seguridad documentada y revisada
+**Gate 1: Identity**
+- ✅ All documents exist
+- ✅ Minimum 500 characters each
+- ✅ Clear teams and roles
 
 ---
 
-### **Fase 3: Arquitectura Técnica**
-Objetivo: Definir cómo lo haremos.
+### **Phase 2: Specification and Security**
+Objective: Define what we will do (without code).
 
-**Entregables:**
-- `TECH_STACK_DECISION.md` - Stack elegido y justificación
-- `PROJECT_STRUCTURE_MAP.md` - Árbol de directorios
-- `API_INTERFACE_CONTRACT.md` - Contrato de API
-- `SECURITY_THREAT_MODEL.md` - Análisis de amenazas
+**Deliverables:**
+- `REQUIREMENTS_MASTER.md` - Complete functional requirements
+- `USER_STORIES_MASTER.json` - Structured user stories
+- `SECURITY_PRIVACY_POLICY.md` - Security policy
 
-**Gate 3: Planos**
-- ✅ Stack está en APPROVED_TECH_PACKS.json
-- ✅ Estructura respeta Clean Architecture
-- ✅ Amenazas de seguridad identificadas y mitigadas
+**Gate 2: Definition**
+- ✅ Valid and well-formed JSON
+- ✅ All stories have acceptance criteria
+- ✅ Security documented and reviewed
 
 ---
 
-### **Fase 4: Construcción (Código)**
-Objetivo: Implementar según los planos.
+### **Phase 3: Technical Architecture**
+Objective: Define how we will do it.
 
-**Solo accesible tras superar Gate 3.**
+**Deliverables:**
+- `TECH_STACK_DECISION.md` - Chosen stack and justification
+- `PROJECT_STRUCTURE_MAP.md` - Directory tree
+- `API_INTERFACE_CONTRACT.md` - API contract
+- `SECURITY_THREAT_MODEL.md` - Threat analysis
 
-**Acciones:**
-1. Scaffolding automático de estructura de carpetas
-2. Generación de Dockerfiles desde Tech Pack
-3. Implementación de código base (Starter Templates)
-4. Tests automatizados generados desde User Stories
+**Gate 3: Blueprints**
+- ✅ Stack is in APPROVED_TECH_PACKS.json
+- ✅ Structure respects Clean Architecture
+- ✅ Security threats identified and mitigated
+
+---
+
+### **Phase 4: Construction (Code)**
+Objective: Implement according to the blueprints.
+
+**Only accessible after passing Gate 3.**
+
+**Actions:**
+1. Automatic scaffolding of folder structure
+2. Dockerfile generation from Tech Pack
+3. Base code implementation (Starter Templates)
+4. Automated tests generated from User Stories
 
 **Gate 4: Quality**
 - ✅ Tests: 80%+ coverage
-- ✅ Linting: 0 errores
+- ✅ Linting: 0 errors
 - ✅ Security: Bandit 0 HIGH issues
 - ✅ Build: ✅ PASS
 
 ---
 
-## 🎯 Regla de Oro
+## 🎯 Golden Rule
 
-> **No puedes avanzar a la siguiente fase si no has superado el gate anterior.**
+> **You cannot advance to the next phase if you have not passed the previous gate.**
 
-Esto garantiza que:
-- 🔒 La seguridad está diseñada, no parchada después
-- 📐 La arquitectura está definida antes de código
-- 📋 Los requisitos están claros antes de construir
-- ✅ La calidad es medible en cada paso
+This guarantees that:
+- 🔒 Security is designed, not patched later
+- 📐 Architecture is defined before code
+- 📋 Requirements are clear before building
+- ✅ Quality is measurable at every step

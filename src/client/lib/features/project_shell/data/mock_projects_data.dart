@@ -1,4 +1,4 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
+// ignore_for_file: lines_longer_than_80_chars
 
 import 'dart:io';
 
@@ -7,12 +7,14 @@ import 'package:path/path.dart' as p;
 
 import '../../../../core/theme/app_colors.dart';
 
-/// Formatea una fecha relativa en español
+/// Formats a relative date in Spanish
 String _formatModified(DateTime dateTime) {
   final now = DateTime.now();
   final diff = now.difference(dateTime);
   if (diff.inDays == 0) {
-    if (diff.inHours == 0) return 'Hace ${diff.inMinutes}m';
+    if (diff.inHours == 0) {
+      return 'Hace ${diff.inMinutes}m';
+    }
     return 'Hace ${diff.inHours}h';
   } else if (diff.inDays == 1) {
     return 'Ayer';
@@ -22,7 +24,7 @@ String _formatModified(DateTime dateTime) {
   return '${dateTime.day}/${dateTime.month}';
 }
 
-/// Obtiene el color de fase
+/// Gets the phase color
 Color _getPhaseColor(String phase) {
   switch (phase.toLowerCase()) {
     case 'contexto':
@@ -40,8 +42,8 @@ Color _getPhaseColor(String phase) {
   }
 }
 
-/// Carga proyectos REALES del sistema de archivos
-/// Se buscan en directorios comunes de proyectos
+/// Loads REAL projects from the filesystem
+/// Searches in common project directories
 Future<List<Map<String, dynamic>>> _loadRealProjects() async {
   final projects = <Map<String, dynamic>>[];
   final homeDir = Directory.current.path;
@@ -54,11 +56,11 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
   for (final pathStr in commonPaths) {
     try {
       final dir = Directory(pathStr);
-      if (await dir.exists()) {
+      if (dir.existsSync()) {
         final entities = dir.listSync();
         for (final entity in entities) {
           if (entity is Directory) {
-            final stat = await entity.stat();
+            final stat = entity.statSync();
             final name = p.basename(entity.path);
             projects.add({
               'id': name,
@@ -73,7 +75,7 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
           }
         }
       }
-    } catch (e) {
+    } on Exception catch (e) {
       // Ignorar errores de acceso a directorios
       debugPrint('⚠️ Error loading projects from $pathStr: $e');
     }
@@ -82,8 +84,8 @@ Future<List<Map<String, dynamic>>> _loadRealProjects() async {
   return projects;
 }
 
-/// Carga proyectos: REALES (filesystem) + MOCK (Guía educativa)
-/// Retorna lista combinada de Map con proyectos listos para mostrar
+/// Loads projects: REAL (filesystem) + MOCK (Educational Guide)
+/// Returns combined list of Map with projects ready to display
 Future<List<Map<String, dynamic>>> getMockProjectsData() async {
   final allProjects = <Map<String, dynamic>>[];
 
@@ -92,7 +94,7 @@ Future<List<Map<String, dynamic>>> getMockProjectsData() async {
     final realProjects = await _loadRealProjects();
     allProjects.addAll(realProjects);
     debugPrint('✅ Loaded ${realProjects.length} real projects');
-  } catch (e) {
+  } on Exception catch (e) {
     debugPrint('❌ Error loading real projects: $e');
   }
 

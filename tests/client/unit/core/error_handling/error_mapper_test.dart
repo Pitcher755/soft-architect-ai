@@ -16,6 +16,11 @@ import 'package:softarchitect_ai/core/error_handling/error_mapper.dart';
 
 void main() {
   group('ErrorMapper', () {
+    setUp(() {
+      // Force Spanish locale for consistent testing
+      ErrorMapper.setLocale('es');
+    });
+
     test('should map SYS_001 to Spanish message', () {
       // Arrange
       const errorCode = 'SYS_001';
@@ -163,6 +168,62 @@ void main() {
 
       // Assert
       expect(isRetryable, isFalse);
+    });
+
+    // HU-4.4 GAP 4: RAG/LLM Error Codes
+    group('HU-4.4 GAP 4: RAG/LLM Error Codes', () {
+      test('should map DB_ERR_001 to Spanish message', () {
+        // Arrange
+        const errorCode = 'DB_ERR_001';
+
+        // Act
+        final result = ErrorMapper.getUserMessage(errorCode);
+
+        // Assert
+        expect(result, contains('Base de datos'));
+        expect(result, contains('no disponible'));
+        expect(result, contains('conocimiento general'));
+      });
+
+      test('should map RAG_ERR_001 to Spanish message', () {
+        // Arrange
+        const errorCode = 'RAG_ERR_001';
+
+        // Act
+        final result = ErrorMapper.getUserMessage(errorCode);
+
+        // Assert
+        expect(result, contains('contexto'));
+        expect(result, contains('falló'));
+        expect(result, contains('respuesta general'));
+      });
+
+      test('DB_ERR_001 message should indicate graceful degradation', () {
+        // Arrange
+        const errorCode = 'DB_ERR_001';
+
+        // Act
+        final result = ErrorMapper.getUserMessage(errorCode);
+
+        // Assert
+        // Should indicate system continues working
+        expect(result.toLowerCase(), contains('continuando'));
+      });
+
+      test('RAG_ERR_001 message should indicate fallback behavior', () {
+        // Arrange
+        const errorCode = 'RAG_ERR_001';
+
+        // Act
+        final result = ErrorMapper.getUserMessage(errorCode);
+
+        // Assert
+        // Should indicate fallback to general LLM
+        expect(
+          result.toLowerCase(),
+          anyOf([contains('general'), contains('fallback')]),
+        );
+      });
     });
   });
 }

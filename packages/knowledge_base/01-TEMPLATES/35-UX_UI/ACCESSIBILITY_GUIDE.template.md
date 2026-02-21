@@ -1,28 +1,28 @@
 # ♿ Accessibility Guidelines (a11y)
 
-Estándar de accesibilidad para **{{PROJECT_NAME}}**.
-**Nivel Objetivo:** WCAG 2.1 Nivel {{WCAG_LEVEL}} (AA / AAA).
+Accessibility standard for **{{PROJECT_NAME}}**.
+**Target Level:** WCAG 2.1 Level {{WCAG_LEVEL}} (AA / AAA).
 
-## 1. Contraste y Color
-* **Texto Normal:** Ratio mínimo 4.5:1.
-* **Texto Grande:** Ratio mínimo 3:1.
-* **Semántica:** No usar color como único indicador de error (usar iconos + texto).
+## 1. Contrast and Color
+* **Normal Text:** Minimum ratio 4.5:1.
+* **Large Text:** Minimum ratio 3:1.
+* **Semantics:** Do not use color as the only error indicator (use icons + text).
 
-## 2. Lectores de Pantalla (Screen Readers)
-* **Imágenes:** Todas deben tener `alt text` o ser marcadas como decorativas.
-* **Etiquetas:** Todos los Inputs deben tener `label` o `aria-label`.
-* **Foco:** El orden de tabulación debe ser lógico (Izquierda -> Derecha, Arriba -> Abajo).
+## 2. Screen Readers
+* **Images:** All must have `alt text` or be marked as decorative.
+* **Labels:** All Inputs must have `label` or `aria-label`.
+* **Focus:** Tab order should be logical (Left -> Right, Top -> Bottom).
 
-## 3. Interacción (Teclado/Gestos)
-* **Focus Visible:** El elemento activo siempre debe tener un borde visual claro.
-* **Touch Target:** Mínimo {{TOUCH_TARGET_SIZE}}px (Ej: 44px) para dedos en móviles.
-* **Navegación por Teclado:** Todos los botones y links deben ser accesibles sin ratón.
+## 3. Interaction (Keyboard/Gestures)
+* **Focus Visible:** The active element should always have a clear visual border.
+* **Touch Target:** Minimum {{TOUCH_TARGET_SIZE}}px (e.g., 44px) for fingers on mobile.
+* **Keyboard Navigation:** All buttons and links must be accessible without mouse.
 
-## 4. Pruebas de Accesibilidad
-* **Herramientas:** Lighthouse / Axe / WAVE.
-* **Frecuencia:** Al menos una vez por sprint.
-* **Criterio de Aceptación:** 0 errores críticos antes de release.
+## 4. Accessibility Testing
+* **Tools:** Lighthouse / Axe / WAVE.
+* **Frequency:** At least once per sprint.
+* **Acceptance Criteria:** 0 critical errors before release.
 
-## 5. Documentación Especial
-* **Atajos de Teclado:** Listar todos los atajos disponibles.
-* **Modo de Alto Contraste:** Disponible para usuarios con baja visión.
+## 5. Special Documentation
+* **Keyboard Shortcuts:** List all available shortcuts.
+* **High Contrast Mode:** Available for users with low vision.

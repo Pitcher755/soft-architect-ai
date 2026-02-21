@@ -1,31 +1,31 @@
 # 🤖 Jetpack Compose: Modern Declarative UI
 
-> **Paradigma:** Declarativo (UI = función del estado)
-> **Lenguaje:** Kotlin
+> **Paradigm:** Declarative (UI = function of state)
+> **Language:** Kotlin
 > **Min Android:** 5.0+ (API 21+)
-> **Prohibido:** XML layouts (`activity_main.xml`), `findViewById`, old `Fragment`
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Forbidden:** XML layouts (`activity_main.xml`), `findViewById`, old `Fragment`
+> **Status:** ✅ Established
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
-1. [La Revolución Declarativa](#la-revolución-declarativa)
-2. [Composables Básicos](#composables-básicos)
-3. [State Hoisting (Regla de Oro)](#state-hoisting-regla-de-oro)
+1. [Declarative Revolution](#declarative-revolution)
+2. [Basic Composables](#basic-composables)
+3. [State Hoisting (Golden Rule)](#state-hoisting-golden-rule)
 4. [Layouts & Modifiers](#layouts--modifiers)
 5. [Side Effects & LaunchedEffect](#side-effects--launchedeffect)
-6. [Temas & Styling](#temas--styling)
+6. [Themes & Styling](#themes--styling)
 
 ---
 
-## La Revolución Declarativa
+## Declarative Revolution
 
 ### XML → Compose
 
 ```kotlin
-// ❌ Viejo (XML + findViewById)
+// ❌ Old (XML + findViewById)
 <!-- activity_main.xml -->
 <LinearLayout>
     <EditText android:id="@+id/nameInput"/>
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// ✅ Moderno (Compose)
+// ✅ Modern (Compose)
 @Composable
 fun MyScreen() {
     var name by remember { mutableStateOf("") }
@@ -65,20 +65,20 @@ fun MyScreen() {
 }
 ```
 
-**Ventajas:**
-- ✅ Sin XML, todo en Kotlin
-- ✅ Actualización automática (recomposition)
+**Advantages:**
+- ✅ No XML, everything in Kotlin
+- ✅ Automatic updates (recomposition)
 - ✅ Type-safe
-- ✅ Preview en tiempo de compilación
+- ✅ Compile-time preview
 
 ---
 
-## Composables Básicos
+## Basic Composables
 
-### Crear un Composable
+### Create a Composable
 
 ```kotlin
-// @Composable: Función que retorna UI
+// @Composable: Function that returns UI
 @Composable
 fun GreetingCard(name: String) {
     Card(
@@ -93,7 +93,7 @@ fun GreetingCard(name: String) {
     }
 }
 
-// Usar en Activity
+// Use in Activity
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,12 +183,12 @@ fun Widgets() {
 
 ---
 
-## State Hoisting (Regla de Oro)
+## State Hoisting (Golden Rule)
 
-### ❌ Stateful (Incorrecto)
+### ❌ Stateful (Incorrect)
 
 ```kotlin
-// ❌ BAD: Composable estateful, difícil de testear/reusar
+// ❌ BAD: Stateful composable, difficult to test/reuse
 @Composable
 fun Counter() {
     var count by remember { mutableStateOf(0) }
@@ -201,13 +201,13 @@ fun Counter() {
     }
 }
 
-// Problema: ¿Cómo testear? ¿Cómo pasar el estado a otro composable?
+// Problem: How to test? How to pass state to another composable?
 ```
 
-### ✅ Stateless (Correcto)
+### ✅ Stateless (Correct)
 
 ```kotlin
-// ✅ GOOD: Composable stateless, altamente reutilizable
+// ✅ GOOD: Stateless composable, highly reusable
 @Composable
 fun Counter(count: Int, onIncrement: () -> Unit) {
     Column {
@@ -218,14 +218,14 @@ fun Counter(count: Int, onIncrement: () -> Unit) {
     }
 }
 
-// El padre gestiona el estado
+// The parent manages the state
 @Composable
 fun CounterScreen() {
     var count by remember { mutableStateOf(0) }
     Counter(count = count, onIncrement = { count++ })
 }
 
-// Reutilizable y testeable
+// Reusable and testable
 @Preview
 @Composable
 fun CounterPreview() {
@@ -233,7 +233,7 @@ fun CounterPreview() {
 }
 ```
 
-**Regla:** Los datos fluyen HACIA ABAJO, los eventos suben HACIA ARRIBA.
+**Rule:** Data flows DOWN, events go UP.
 
 ```
 Padre

@@ -8,7 +8,7 @@ Cómo estructurar una feature completa en NestJS manteniendo límites de módulo
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [The Triad: Module - Controller - Service](#the-triad-module---controller---service)
 2. [Repository Pattern](#repository-pattern)
@@ -88,7 +88,7 @@ export class UserDto {
   email: string;
   roles: string[];
   createdAt: Date;
-  // ← Nota: NO incluimos password en la respuesta
+  // ← Note: NO incluimos password en la respuesta
 }
 ```
 
@@ -581,6 +581,6 @@ export class UsersService {
 
 ---
 
-**Fecha:** 30 de Enero de 2026
+**Date:** 30 de Enero de 2026
 **Status:** ✅ MODULAR ARCHITECTURE READY
 **Responsable:** ArchitectZero AI Agent

@@ -1,28 +1,28 @@
 # 📝 Requirements Analysis & Specification
 
-Este documento es la fuente de verdad para la funcionalidad del sistema.
+This document is the source of truth for system functionality.
 
-## 1. Requisitos Funcionales (RF)
-*Lo que el sistema DEBE hacer.*
+## 1. Functional Requirements (FR)
+*What the system MUST do.*
 
-| ID | Título | Descripción | Prioridad |
+| ID | Title | Description | Priority |
 | :--- | :--- | :--- | :--- |
-| **RF-001** | {{REQ_TITLE_1}} | {{REQ_DESC_1}} | Critical |
-| **RF-002** | {{REQ_TITLE_2}} | {{REQ_DESC_2}} | High |
+| **FR-001** | {{REQ_TITLE_1}} | {{REQ_DESC_1}} | Critical |
+| **FR-002** | {{REQ_TITLE_2}} | {{REQ_DESC_2}} | High |
 
-## 2. Requisitos No Funcionales (RNF)
-*Cómo debe comportarse el sistema (Rendimiento, Seguridad).*
+## 2. Non-Functional Requirements (NFR)
+*How the system should behave (Performance, Security).*
 
-### 🔒 Seguridad
-* {{SECURITY_REQ_1}} (Ej: Autenticación OAuth2).
-* {{SECURITY_REQ_2}} (Ej: Encriptación en reposo).
+### 🔒 Security
+* {{SECURITY_REQ_1}} (E.g.: OAuth2 Authentication).
+* {{SECURITY_REQ_2}} (E.g.: Encryption at rest).
 
-### ⚡ Rendimiento
-* {{PERF_REQ_1}} (Ej: Latencia < 200ms).
+### ⚡ Performance
+* {{PERF_REQ_1}} (E.g.: Latency < 200ms).
 
-### 🏗️ Escalabilidad
-* {{SCALE_REQ_1}} (Ej: Soportar 10k usuarios concurrentes).
+### 🏗️ Scalability
+* {{SCALE_REQ_1}} (E.g.: Support 10k concurrent users).
 
-## 3. Restricciones Técnicas
-* El sistema debe desplegarse en: `{{DEPLOYMENT_TARGET}}`.
-* Presupuesto máximo de infraestructura: `{{BUDGET}}`.
+## 3. Technical Constraints
+* The system must be deployed on: `{{DEPLOYMENT_TARGET}}`.
+* Maximum infrastructure budget: `{{BUDGET}}`.

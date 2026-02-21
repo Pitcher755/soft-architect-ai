@@ -1,63 +1,178 @@
-# 📑 Índice de Documentación - SoftArchitect AI
+# � Documentación SoftArchitect AI - Portal Central
 
-> **Fecha:** 20 de Diciembre de 2024
-> **Estado:** ✅ PHASE 4 (Test Validation & Code Quality) ✅ COMPLETE
-> **Estructura:** Bilingual (ES/EN), Organizada por Categorías
+> **Selecciona tu idioma preferido abajo | Choose your preferred language below**
 
 ---
 
-## 📂 Estructura de Directorios
+<div id="español">
 
-```
-doc/
-├── 00-VISION/                    # Visión y concepto del proyecto
-│   ├── CONCEPT_WHITE_PAPER.es.md     (Documento conceptual en español)
-│   └── CONCEPT_WHITE_PAPER.en.md     (Documento conceptual en inglés)
-│
-├── 01-PROJECT_REPORT/           # Reportes, métrics y documentación técnica
-│   ├── CONTEXT_COVERAGE_REPORT.es.md     (Cobertura de contexto en español)
-│   ├── CONTEXT_COVERAGE_REPORT.en.md     (Cobertura de contexto en inglés)
-│   ├── FUNCTIONAL_TEST_REPORT.md         (Reporte de pruebas funcionales)
-│   ├── INITIAL_SETUP_LOG.es.md          (Log de instalación en español)
-│   ├── INITIAL_SETUP_LOG.en.md          (Log de instalación en inglés)
-│   ├── MEMORIA_METODOLOGICA.es.md       (Metodología en español)
-│   ├── MEMORIA_METODOLOGICA.en.md       (Metodología en inglés)
-│   ├── PROJECT_MANIFESTO.es.md          (Manifiesto en español)
-│   ├── PROJECT_MANIFESTO.en.md          (Manifiesto en inglés)
-│   ├── SIMULACION_POC.es.md            (Simulación POC en español)
-│   ├── SIMULACION_POC.en.md            (Simulación POC en inglés)
-│   ├── PHASE_4_COMPLETION_REPORT.md     (Reporte final PHASE 4 - Test Validation) ⭐ NEW
-│
-├── 02-SETUP_DEV/                 # Guías técnicas para setup y desarrollo
-│   ├── AUTOMATION.es.md          (Automatización y DevOps en español)
-│   ├── AUTOMATION.en.md          (Automatización y DevOps en inglés)
-│   ├── DOCKER_COMPOSE_GUIDE.es.md    (Guía Docker Compose en español)
-│   ├── MONOREPO_TESTING_ARCHITECTURE.es.md   (Arquitectura de Testing - ES) ⭐ NEW
-│   ├── MONOREPO_TESTING_ARCHITECTURE.en.md   (Arquitectura de Testing - EN) ⭐ NEW
-│   ├── QUICK_START_GUIDE.es.md   (Inicio rápido en español) ⭐ NEW
-│   ├── QUICK_START_GUIDE.en.md   (Inicio rápido en inglés) ⭐ NEW
-│   ├── SETUP_GUIDE.es.md         (Guía de instalación en español)
-│   ├── SETUP_GUIDE.en.md         (Guía de instalación en inglés)
-│   ├── TOOLS_AND_STACK.es.md     (Stack tecnológico en español)
-│   ├── TOOLS_AND_STACK.en.md     (Stack tecnológico en inglés)
-│   ├── TEST_COVERAGE_DASHBOARD.md    (Dashboard de cobertura de tests) ⭐ NEW
-│   └── TEST_EXECUTION_LOG.md     (Histórico de ejecuciones de tests) ⭐ NEW
-├── 03-HU-TRACKING/                # Seguimiento de Historias de Usuario
-│   ├── README.md                  (Índice maestro de HUs)
-│   ├── HU-1.1-DOCKER-SETUP/       (HU-1.1: Infraestructura Docker)
-│   │   ├── README.md
-│   │   ├── PROGRESS.md
-│   │   └── ARTIFACTS.md
-│   └── HU-1.2-BACKEND-SKELETON/   (HU-1.2: Backend FastAPI) ⭐ NEW
-│       ├── README.md
-│       ├── WORKFLOW.md
-│       ├── PROGRESS.md
-│       └── ARTIFACTS.md
-│
-│
-└── private/                      # Documentación interna (no publicada)
-    └── INTERNAL_DEV_BLUEPRINT.md (Blueprint de desarrollo interno)
-```
+## 🇪🇸 **ESPAÑOL**
+
+### 🎯 ¿Dónde Empiezo?
+
+**Si eres usuario final:**
+→ [📖 Guía Rápida del Usuario (15 min)](Español/04-USER_GUIDE/01-INICIO_RAPIDO.md)
+
+**Si eres desarrollador:**
+→ [⚙️ Guía de Instalación Técnica](Español/02-SETUP_DEV/README.md)
+
+**Si eres arquitecto/tech lead:**
+→ [🏗️ Documentación Técnica Completa](Español/00-VISION/CONCEPT_WHITE_PAPER.md)
+
+---
+
+### 📂 Estructura de Documentación
+
+#### **00-VISION** 🎨 - Visión y Conceptos
+Documentación estratégica y conceptual del proyecto.
+
+| Documento | Descripción |
+|-----------|-------------|
+| [Concept White Paper](Español/00-VISION/CONCEPT_WHITE_PAPER.es.md) | Visión conceptual del proyecto |
+| [Mi Promesa](Español/00-VISION/PROJECT_MANIFESTO.es.md) | Manifiesto y principios |
+| [¿Qué Estamos Construyendo?](Español/00-VISION/WHAT_WE_ARE_BUILDING.es.md) | Descripción clara del producto |
+| [Metodología](Español/00-VISION/MEMORIA_METODOLOGICA.es.md) | Cómo trabajamos |
+
+#### **01-PROJECT_REPORT** 📊 - Reportes y Análisis
+Reportes de implementación, testing, y sprints completados.
+
+[→ Ver todos los reportes](Español/01-PROJECT_REPORT/)
+
+#### **02-SETUP_DEV** 🔧 - Configuración y Desarrollo
+Guías de instalación, Docker, y configuración del entorno.
+
+[→ **Navegar todas las guías técnicas**](Español/02-SETUP_DEV/README.md)
+
+| Subsección | Contenido |
+|------------|-----------|
+| [01-INSTALACION](Español/02-SETUP_DEV/01-INSTALACION/) | Guías rápidas, setup, herramientas |
+| [02-DOCKER](Español/02-SETUP_DEV/02-DOCKER/) | Docker Compose, validación, auditoría |
+| [03-PRUEBAS](Español/02-SETUP_DEV/03-PRUEBAS/) | Testing, estrategias de QA |
+| [04-AUTOMATIZACION](Español/02-SETUP_DEV/04-AUTOMATIZACION/) | Scripts, CI/CD automation |
+| [05-CI-CD](Español/02-SETUP_DEV/05-CI-CD/) | Pipelines, integración continua *(próximamente)* |
+
+#### **03-HU-TRACKING** 📋 - Historias de Usuario
+Documentación de cada Historia de Usuario (HU) implementada.
+
+[→ Ver todas las HU](Español/03-HU-TRACKING/)
+
+#### **04-USER_GUIDE** 👥 - Guía del Usuario
+Documentación para usuarios finales de la aplicación.
+
+| Guía | Tiempo | Para |
+|------|--------|------|
+| [Inicio Rápido](Español/04-USER_GUIDE/01-INICIO_RAPIDO.md) | 15 min | Primeros pasos |
+| [Instalación](Español/04-USER_GUIDE/02-INSTALACION.md) | 30 min | Setup completo |
+| [Primer Proyecto](Español/04-USER_GUIDE/03-PRIMER_PROYECTO.md) | 20 min | Tu primer proyecto |
+| [Master Workflow](Español/04-USER_GUIDE/04-MASTER_WORKFLOW.md) | 45 min | Las 4 fases |
+| [Interfaz de Chat](Español/04-USER_GUIDE/05-INTERFAZ_CHAT.md) | 25 min | Usar el chat AI |
+| [Respuestas Streaming](Español/04-USER_GUIDE/06-RESPUESTAS_STREAMING.md) | 20 min | Streaming en tiempo real |
+| [Persistencia de Datos](Español/04-USER_GUIDE/07-PERSISTENCIA_DATOS.md) | 30 min | SQLite y datos |
+| [Solución de Problemas](Español/04-USER_GUIDE/08-SOLUCIÓN_DE_PROBLEMAS.md) | - | Troubleshooting |
+| [Preguntas Frecuentes](Español/04-USER_GUIDE/09-PREGUNTAS_FRECUENTES.md) | - | FAQ |
+| [Tutoriales en Video](Español/04-USER_GUIDE/10-TUTORIALES_VIDEO.md) | - | Links a videos |
+
+---
+
+</div>
+
+---
+
+<div id="english">
+
+## 🇬🇧 **ENGLISH**
+
+### 🎯 Where Do I Start?
+
+**If you're an end user:**
+→ [📖 User Quick Start Guide (15 min)](English/04-USER_GUIDE/01-QUICK_START.md)
+
+**If you're a developer:**
+→ [⚙️ Technical Installation Guide](English/02-SETUP_DEV/README.md)
+
+**If you're an architect/tech lead:**
+→ [🏗️ Complete Technical Documentation](English/00-VISION/CONCEPT_WHITE_PAPER.md)
+
+---
+
+### 📂 Documentation Structure
+
+#### **00-VISION** 🎨 - Vision & Concepts
+Strategic and conceptual project documentation.
+
+| Document | Description |
+|----------|-------------|
+| [Concept White Paper](English/00-VISION/CONCEPT_WHITE_PAPER.en.md) | Project conceptual vision |
+| [Project Manifesto](English/00-VISION/PROJECT_MANIFESTO.en.md) | Principles and promise |
+| [What We're Building](English/00-VISION/WHAT_WE_ARE_BUILDING.md) | Clear product description |
+| [Methodology](English/00-VISION/MEMORIA_METODOLOGICA.en.md) | How we work |
+
+#### **01-PROJECT_REPORT** 📊 - Reports & Analysis
+Implementation reports, testing, and completed sprints.
+
+[→ View all reports](English/01-PROJECT_REPORT/)
+
+#### **02-SETUP_DEV** 🔧 - Setup & Development
+Installation guides, Docker, and environment configuration.
+
+[→ **Navigate all technical guides**](English/02-SETUP_DEV/README.md)
+
+| Subsection | Content |
+|------------|---------|
+| [01-INSTALLATION](English/02-SETUP_DEV/01-INSTALLATION/) | Quick start, setup, tools & stack |
+| [02-DOCKER](English/02-SETUP_DEV/02-DOCKER/) | Docker Compose, validation, audit |
+| [03-TESTING](English/02-SETUP_DEV/03-TESTING/) | Testing strategies, QA guidelines |
+| [04-AUTOMATION](English/02-SETUP_DEV/04-AUTOMATION/) | Scripts, CI/CD automation |
+| [05-CI-CD](English/02-SETUP_DEV/05-CI-CD/) | Pipelines, continuous integration *(coming soon)* |
+
+#### **03-HU-TRACKING** 📋 - User Stories
+Documentation for each implemented User Story (HU).
+
+[→ View all HUs](English/03-HU-TRACKING/)
+
+#### **04-USER_GUIDE** 👥 - User Guide
+Documentation for end users of the application.
+
+| Guide | Time | For |
+|-------|------|-----|
+| [Quick Start](English/04-USER_GUIDE/01-QUICK_START.md) | 15 min | First steps |
+| [Installation](English/04-USER_GUIDE/02-INSTALLATION.md) | 30 min | Complete setup |
+| [First Project](English/04-USER_GUIDE/03-FIRST_PROJECT.md) | 20 min | Your first project |
+| [Master Workflow](English/04-USER_GUIDE/04-MASTER_WORKFLOW.md) | 45 min | All 4 phases |
+| [Chat Interface](English/04-USER_GUIDE/05-CHAT_INTERFACE.md) | 25 min | Using AI chat |
+| [Streaming Responses](English/04-USER_GUIDE/06-STREAMING_RESPONSES.md) | 20 min | Real-time streaming |
+| [Data Persistence](English/04-USER_GUIDE/07-DATA_PERSISTENCE.md) | 30 min | SQLite & data |
+| [Troubleshooting](English/04-USER_GUIDE/08-TROUBLESHOOTING.md) | - | Problem solving |
+| [FAQ](English/04-USER_GUIDE/09-FAQ.md) | - | Frequently Asked Questions |
+| [Video Tutorials](English/04-USER_GUIDE/10-VIDEO_TUTORIALS.md) | - | Video links |
+
+---
+
+</div>
+
+---
+
+## 🔄 Language Selector
+
+- [🇪🇸 **Ir a Español**](#español)
+- [🇬🇧 **Go to English**](#english)
+
+---
+
+## 📊 Estadísticas de Documentación | Documentation Statistics
+
+**Total de Documentos:** 920 (460 English + 460 Español)
+**Documentos en Español:** 460 archivos .md
+**Documentos en Inglés:** 460 archivos .md
+**Espejo Perfecto:** ✅ 1:1 mirror (estructura idéntica)
+**Última Actualización:** 19/02/2026
+**Estado:** ✅ Reorganización Bilingüe Completa
+
+---
+
+<p align="center">
+  <strong>¡Bienvenido a SoftArchitect AI! 🚀 | Welcome to SoftArchitect AI! 🚀</strong>
+</p>
 
 ---
 
@@ -66,36 +181,37 @@ doc/
 ### ✨ Para Nuevos Usuarios
 
 **Ruta Recomendada (30 minutos - COMIENZA AQUÍ):**
-1. **⭐ [WHAT_WE_ARE_BUILDING.es.md](00-VISION/WHAT_WE_ARE_BUILDING.es.md)** - Entiende exactamente QUÉ estamos construyendo
-2. Lee [CONCEPT_WHITE_PAPER.es.md](00-VISION/CONCEPT_WHITE_PAPER.es.md) - Entiende la visión detallada
-3. Lee [QUICK_START_GUIDE.es.md](02-SETUP_DEV/QUICK_START_GUIDE.es.md) - Levanta servicios
-4. Lee [FUNCTIONAL_TEST_REPORT.md](01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Verifica que todo funciona
+1. **⭐ [¿Qué Estamos Construyendo?](Español/00-VISION/WHAT_WE_ARE_BUILDING.md)** - Entiende exactamente QUÉ estamos construyendo
+2. Lee [Concept White Paper](Español/00-VISION/CONCEPT_WHITE_PAPER.md) - Entiende la visión detallada
+3. Lee [Guía de Inicio Rápido](Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md) - Levanta servicios
+4. Lee [Informe de Pruebas Funcionales](Español/01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Verifica que todo funciona
 
 ### 🏗️ Para Arquitectos & Tech Leads
 
 **Ruta Recomendada (60 minutos):**
-1. [SYSTEM_E2E_WORKFLOW.md](01-PROJECT_REPORT/SYSTEM_E2E_WORKFLOW.md) - ⭐ **COMIENZA AQUÍ** - Visualiza el flujo completo
-2. [MEMORIA_METODOLOGICA.es.md](01-PROJECT_REPORT/MEMORIA_METODOLOGICA.es.md) - Metodología
-3. [PROJECT_MANIFESTO.es.md](01-PROJECT_REPORT/PROJECT_MANIFESTO.es.md) - Principios
-4. [../../AGENTS.md](../../AGENTS.md) - Definición del agente
-5. [../../context/30-ARCHITECTURE/](../../context/30-ARCHITECTURE/) - Detalles arquitectónicos
+1. [Flujo E2E del Sistema](Español/01-PROJECT_REPORT/SYSTEM_E2E_WORKFLOW.md) - ⭐ **COMIENZA AQUÍ** - Visualiza el flujo completo
+2. [Memoria Metodológica](Español/01-PROJECT_REPORT/MEMORIA_METODOLOGICA.md) - Metodología
+3. [Manifiesto del Proyecto](Español/00-VISION/PROJECT_MANIFESTO.md) - Principios
+4. [RAG Core Config Sprint](Español/01-PROJECT_REPORT/RAG_CORE_CONFIG_SPRINT.md) - ⭐ **CHANGES SUMMARY** - Sprint RAG: ChromaDB, Modelfile, Anti-Alucinaciones
+5. [/AGENTS.md](../AGENTS.md) - Definición del agente
+6. [/context/30-ARCHITECTURE/](../context/30-ARCHITECTURE/) - Detalles arquitectónicos
 
 ### 👨‍💻 Para Desarrolladores
 
 **Ruta Recomendada (90 minutos):**
-1. [QUICK_START_GUIDE.es.md](02-SETUP_DEV/QUICK_START_GUIDE.es.md) - Setup rápido
-2. [SETUP_GUIDE.es.md](02-SETUP_DEV/SETUP_GUIDE.es.md) - Configuración detallada
-3. [TOOLS_AND_STACK.es.md](02-SETUP_DEV/TOOLS_AND_STACK.es.md) - Stack y versiones
-4. [AUTOMATION.es.md](02-SETUP_DEV/AUTOMATION.es.md) - CI/CD y scripts
-5. [FUNCTIONAL_TEST_REPORT.md](01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Testing
+1. [Guía de Inicio Rápido](Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md) - Setup rápido
+2. [Guía de Configuración](Español/02-SETUP_DEV/01-INSTALACION/GUIA_CONFIGURACION.md) - Configuración detallada
+3. [Herramientas y Stack](Español/02-SETUP_DEV/01-INSTALACION/HERRAMIENTAS_Y_STACK.md) - Stack y versiones
+4. [Automatización](Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md) - CI/CD y scripts
+5. [Informe de Pruebas Funcionales](Español/01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Testing
 
 ### 🚀 Para DevOps & Infrastructure
 
 **Ruta Recomendada (60 minutos):**
-1. [DOCKER_COMPOSE_GUIDE.es.md](02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md)
-2. [AUTOMATION.es.md](02-SETUP_DEV/AUTOMATION.es.md)
-3. [../../infrastructure/docker-compose.yml](../../infrastructure/docker-compose.yml)
-4. [../../infrastructure/validate-docker-setup.sh](../../infrastructure/validate-docker-setup.sh)
+1. [Guía de Docker Compose](Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_GUIDE.md)
+2. [Automatización](Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md)
+3. [/infrastructure/docker-compose.yml](../infrastructure/docker-compose.yml)
+4. [/infrastructure/validate-docker-setup.sh](../infrastructure/validate-docker-setup.sh)
 
 ---
 
@@ -154,7 +270,7 @@ doc/
 > **Cobertura:** 100% Lifecycle Development (Idea → Deploy → Monitor) + Universal Governance Rules
 
 **Documentación Detallada:**
-- [KNOWLEDGE_BASE_COMPLETION.md](01-PROJECT_REPORT/KNOWLEDGE_BASE_COMPLETION.md) - Reporte completo de Fases 0-6
+- [KNOWLEDGE_BASE_COMPLETION.md](Español/01-PROJECT_REPORT/05-COMPLETION-STATUS/KNOWLEDGE_BASE_COMPLETION.md) - Reporte completo de Fases 0-6
 
 **Estructura Generada:**
 ```
@@ -256,12 +372,12 @@ packages/knowledge_base/
 | Aspecto | Estado | Detalles |
 |---------|--------|----------|
 | **Cobertura Visual** | ✅ 100% | Todos los temas documentados |
-| **Bilingual (ES/EN)** | ✅ 95% | Mayoría bilingüe, algunos doc EN-only |
-| **Centralización** | ✅ 100% | Todo en `doc/` (raíz limpia) |
-| **Actualización** | ✅ 30 Ene 2026 | Última actualización (Knowledge Base Phases 0-6 ✅) |
-| **Métricas** | ✅ 33 Archivos | ~10,400+ líneas totales |
-| **HU Tracking** | ✅ 2 HUs | HU-1.1 ✅ (Complete), HU-1.2 ✅ (Phases 0-5 Complete) |
-| **Security Report** | ✅ NEW | PHASE_5_SECURITY_VALIDATION_REPORT.md agregado |
+| **Bilingual (ES/EN)** | ✅ 100% | Espejo perfecto 1:1 (460 archivos cada idioma) |
+| **Centralización** | ✅ 100% | Todo en `doc/English/` y `doc/Español/` (raíz limpia) |
+| **Actualización** | ✅ 19 Feb 2026 | Reorganización bilingüe completa ✅ |
+| **Métricas** | ✅ 920 Archivos | 460 × 2 idiomas (~20,000+ líneas totales) |
+| **Organización** | ✅ COMPLETE | 3 directorios principales (00-VISION, 01-PROJECT_REPORT con 10 categorías, 02-SETUP_DEV con 5 subsecciones, 03-HU-TRACKING con 24 HUs) |
+| **HU Tracking** | ✅ 24 HUs | Todas organizadas en subdirectorios con README bilingües |
 | **Knowledge Base** | ✅ COMPLETE | 34 archivos (4 Meta + 25 Templates + 5 Constitutional Rules) - Fases 0-6 + FASE 3 ✅ |
 
 ---
@@ -271,38 +387,39 @@ packages/knowledge_base/
 ### Por Palabra Clave
 
 **Setup & Instalación:**
-- [QUICK_START_GUIDE.es.md](02-SETUP_DEV/QUICK_START_GUIDE.es.md) - Inicio en 5 minutos
-- [SETUP_GUIDE.es.md](02-SETUP_DEV/SETUP_GUIDE.es.md) - Setup completo paso a paso
-- [DOCKER_COMPOSE_GUIDE.es.md](02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md) - Docker en detalle
+- [GUIA_INICIO_RAPIDO.md](Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md) - Inicio en 5 minutos
+- [GUIA_CONFIGURACION.md](Español/02-SETUP_DEV/01-INSTALACION/GUIA_CONFIGURACION.md) - Setup completo paso a paso
+- [DOCKER_COMPOSE_GUIDE.md](Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_GUIDE.md) - Docker en detalle
 
 **Testing & Validación:**
-- [TEST_COVERAGE_DASHBOARD.md](02-SETUP_DEV/TEST_COVERAGE_DASHBOARD.md) - Métricas actuales de cobertura ⭐ NEW
-- [TEST_EXECUTION_LOG.md](02-SETUP_DEV/TEST_EXECUTION_LOG.md) - Histórico de test runs ⭐ NEW
-- [TEST_STRATEGY_AND_ROADMAP.md](TEST_STRATEGY_AND_ROADMAP.md) - Plan para robustez production-ready ⭐ NEW
-- [FUNCTIONAL_TEST_REPORT.md](01-PROJECT_REPORT/FUNCTIONAL_TEST_REPORT.md) - Resultados de pruebas
-- [INITIAL_SETUP_LOG.es.md](01-PROJECT_REPORT/INITIAL_SETUP_LOG.es.md) - Verificación de instalación
+- [TEST_COVERAGE_DASHBOARD.md](Español/02-SETUP_DEV/03-PRUEBAS/TEST_COVERAGE_DASHBOARD.md) - Métricas actuales de cobertura ⭐
+- [TEST_EXECUTION_LOG.md](Español/02-SETUP_DEV/03-PRUEBAS/TEST_EXECUTION_LOG.md) - Histórico de test runs ⭐
+- [TEST_STRATEGY_AND_ROADMAP.md](Español/02-SETUP_DEV/03-PRUEBAS/TEST_STRATEGY_AND_ROADMAP.md) - Plan para robustez production-ready ⭐
+- [FUNCTIONAL_TEST_REPORT.md](Español/01-PROJECT_REPORT/03-TESTING/FUNCTIONAL_TEST_REPORT.md) - Resultados de pruebas
+- [INITIAL_SETUP_LOG.md](Español/01-PROJECT_REPORT/01-ARCHITECTURE/INITIAL_SETUP_LOG.md) - Verificación de instalación
 
 **Arquitectura & Diseño:**
-- [MEMORIA_METODOLOGICA.es.md](01-PROJECT_REPORT/MEMORIA_METODOLOGICA.es.md) - Diseño arquitectónico
-- [PROJECT_MANIFESTO.es.md](01-PROJECT_REPORT/PROJECT_MANIFESTO.es.md) - Principios de diseño
+- [MEMORIA_METODOLOGICA.md](Español/01-PROJECT_REPORT/10-DOCUMENTATION/MEMORIA_METODOLOGICA.md) - Diseño arquitectónico
+- [PROJECT_MANIFESTO.md](Español/00-VISION/PROJECT_MANIFESTO.md) - Principios de diseño
 
 **Automatización & DevOps:**
-- [AUTOMATION.es.md](02-SETUP_DEV/AUTOMATION.es.md) - CI/CD y scripts
-- [TOOLS_AND_STACK.es.md](02-SETUP_DEV/TOOLS_AND_STACK.es.md) - Stack técnico
+- [AUTOMATIZACION.md](Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md) - CI/CD y scripts
+- [HERRAMIENTAS_Y_STACK.md](Español/02-SETUP_DEV/01-INSTALACION/HERRAMIENTAS_Y_STACK.md) - Stack técnico
 
 **Troubleshooting:**
-- [QUICK_START_GUIDE.es.md](02-SETUP_DEV/QUICK_START_GUIDE.es.md) - Problemas comunes
-- [DOCKER_COMPOSE_GUIDE.es.md](02-SETUP_DEV/DOCKER_COMPOSE_GUIDE.es.md) - Problemas Docker
+- [GUIA_INICIO_RAPIDO.md](Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md) - Problemas comunes
+- [DOCKER_COMPOSE_GUIDE.md](Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_GUIDE.md) - Problemas Docker
 
 ---
 
 ## 📝 Notas Importantes
 
-1. **Preferencia de Idioma:** Este índice y la mayoría de guías tienen versiones en español (`.es.md`)
+1. **Estructura Bilingüe:** Toda la documentación existe en ambos idiomas (English/ y Español/) con estructura idéntica
 2. **Actualizaciones:** Consultar fecha de última modificación en cada documento
 3. **Links Internos:** Todos los links usan rutas relativas desde el directorio `doc/`
-4. **Contexto:** Para configuración global del agente, ver [../../context/](../../context/)
-5. **Reportes:** Los reportes de tests y métricas están en `01-PROJECT_REPORT/`
+4. **Contexto:** Para configuración global del agente, ver [../context/](../context/)
+5. **Reportes:** Los reportes de tests y métricas están organizados en `01-PROJECT_REPORT/` por categorías
+6. **Sin Extensiones de Idioma:** Los archivos NO usan `.en.md` ni `.es.md` - el directorio define el idioma
 
 ---
 
@@ -316,30 +433,6 @@ packages/knowledge_base/
 
 ---
 
-**Última Actualización:** 30 de Enero de 2026 (FASE 3: Reglas Transversales ✅ COMPLETA)
+**Última Actualización:** 19 de Febrero de 2026 (Reorganización Bilingüe Completa ✅)
 **Responsable:** ArchitectZero AI Agent
-**Estado:** ✅ LISTO PARA PRODUCCIÓN (Constitutional Rules Deployed)
-
----
-
-## 📊 Reportes de Testing (Nuevos)
-
-### [TEST_COVERAGE_COMPREHENSIVE_REPORT.md](./TEST_COVERAGE_COMPREHENSIVE_REPORT.md)
-- **Contenido:** Reporte integral de cobertura de tests
-- **Secciones:**
-  - 📈 Métricas de cobertura detalladas (95% RAG core)
-  - 🧪 Tests unitarios (14 tests, 100% pass)
-  - 🔗 Tests de integración E2E (5 tests con Docker)
-  - 📊 Análisis de calidad y recomendaciones
-- **Estado:** ✅ Completado
-- **Generado:** 31/01/2026
-
-### [ANALYSIS_AND_CORRECTIONS_SUMMARY.md](./ANALYSIS_AND_CORRECTIONS_SUMMARY.md)
-- **Contenido:** Resumen de análisis del proyecto y correcciones
-- **Secciones:**
-  - 🔧 Warnings identificados y resueltos (4 tipos)
-  - ✅ Correcciones implementadas (7 cambios)
-  - 🧪 Ejecución de tests (19/19 passing)
-  - 📋 Checklist de validación final
-- **Estado:** ✅ Completado
-- **Generado:** 31/01/2026
+**Estado:** ✅ ESTRUCTURA PERFECTA - Mirror 1:1 (460+460 archivos)

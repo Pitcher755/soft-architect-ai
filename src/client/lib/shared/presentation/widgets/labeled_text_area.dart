@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 
-/// Campo de texto multilínea etiquetado reutilizable
-/// Específicamente para áreas de texto con múltiples líneas
+/// Reusable labeled multiline text field widget
+/// Specifically for text areas with multiple lines
 class LabeledTextArea extends StatelessWidget {
   const LabeledTextArea({
     required this.label,

@@ -139,36 +139,52 @@ Para cada Feature, se deben crear obligatoriamente estos elementos:
 
 ```text
 doc/
-├── 00-VISION/               # Papers conceptuales y visión del proyecto
-│   ├── CONCEPT_WHITE_PAPER.es.md
-│   └── CONCEPT_WHITE_PAPER.en.md
+├── English/                 # 🇬🇧 Toda la documentación en inglés (estructura espejo)
+│   ├── 00-VISION/          # Papers conceptuales y visión del proyecto
+│   │   └── CONCEPT_WHITE_PAPER.md
+│   ├── 01-PROJECT_REPORT/  # Reportes organizados en 10 categorías
+│   │   ├── 01-ARCHITECTURE/
+│   │   ├── 02-PHASES/
+│   │   ├── 03-TESTING/
+│   │   ├── 04-CI-CD/
+│   │   ├── 05-COMPLETION-STATUS/
+│   │   ├── 06-VALIDATION/
+│   │   ├── 07-WORKFLOWS/
+│   │   ├── 08-FIXES-CORRECTIONS/
+│   │   ├── 09-GUIDES-MANUALS/
+│   │   └── 10-DOCUMENTATION/
+│   ├── 02-SETUP_DEV/       # Guías técnicas organizadas en 5 subsecciones
+│   │   ├── 01-INSTALLATION/
+│   │   ├── 02-CONFIGURATION/
+│   │   ├── 03-TESTING/
+│   │   ├── 04-AUTOMATION/
+│   │   └── 05-TROUBLESHOOTING/
+│   ├── 03-HU-TRACKING/     # 24 User Stories organizadas por ID
+│   │   ├── README.md
+│   │   └── HU-{ID}-{NAME}/ # Carpeta por cada HU
+│   │       ├── README.md
+│   │       ├── PROGRESS.md
+│   │       └── ARTIFACTS.md
+│   ├── 04-USER_GUIDE/      # Guías de usuario (10 documentos)
+│   └── private/            # Documentación interna
 │
-├── 01-PROJECT_REPORT/       # Reportes, análisis y evaluaciones
-│   ├── CONTEXT_COVERAGE_REPORT.{es,en}.md
-│   ├── FUNCTIONAL_TEST_REPORT.md
-│   ├── INITIAL_SETUP_LOG.{es,en}.md
-│   ├── MEMORIA_METODOLOGICA.{es,en}.md
-│   ├── PROJECT_MANIFESTO.{es,en}.md
-│   └── SIMULACION_POC.{es,en}.md
+├── Español/                # 🇪🇸 Toda la documentación en español (espejo perfecto)
+│   ├── 00-VISION/          # Misma estructura que English/
+│   ├── 01-PROJECT_REPORT/  # 10 categorías (espejo)
+│   ├── 02-SETUP_DEV/       # 5 subsecciones (espejo)
+│   ├── 03-HU-TRACKING/     # 24 HUs (espejo)
+│   ├── 04-USER_GUIDE/      # 10 documentos (espejo)
+│   └── private/
 │
-├── 02-SETUP_DEV/            # Guías técnicas y configuración
-│   ├── AUTOMATION.{es,en}.md
-│   ├── DOCKER_COMPOSE_GUIDE.{es,en}.md
-│   ├── QUICK_START_GUIDE.{es,en}.md
-│   ├── SETUP_GUIDE.{es,en}.md
-│   └── TOOLS_AND_STACK.{es,en}.md
+├── INDEX.md                # Portal de navegación bilingüe con selector de idioma
+├── scripts/                # Scripts de migración y sincronización
+│   ├── migration_script.py
+│   ├── organize_01_project_report.py
+│   ├── organize_03_hu_tracking.py
+│   ├── sync_mirror_bilingual.py
+│   └── remove_language_extensions.py
 │
-├── 03-HU-TRACKING/          # Seguimiento de historias de usuario (HU)
-│   ├── README.md            # Índice maestro de todas las HUs
-│   └── HU-{ID}-{NAME}/      # Carpeta por cada HU
-│       ├── README.md        # Descripción y contexto
-│       ├── PROGRESS.md      # Checklist de 6 fases
-│       └── ARTIFACTS.md     # Manifest de archivos a generar
-│
-├── private/                 # Documentación interna (no pública)
-│   └── INTERNAL_DEV_BLUEPRINT.md
-│
-└── INDEX.md                 # Índice maestro de toda la documentación
+└── _OLD_ROOT_BACKUP/       # Respaldo de estructura antigua (referencia)
 ```
 
 ### Reglas de Documentación
@@ -180,8 +196,9 @@ doc/
 
 2. **NOMBRADO:**
    - Usar UPPERCASE_SNAKE_CASE para nombres de archivo
-   - Sufijo bilingual: `.{es,en}.md` cuando sea versión traducida
-   - Sufijo en inglés cuando es universal: `.md`
+   - **SIN extensiones de idioma**: Archivos se llaman igual en ambos directorios (English/ y Español/)
+   - El idioma se define por el directorio padre, NO por el nombre del archivo
+   - Ejemplo: `English/00-VISION/CONCEPT_WHITE_PAPER.md` y `Español/00-VISION/CONCEPT_WHITE_PAPER.md`
 
 3. **CONTENIDO (Headers):**
    - Siempre incluir table de contenidos (`## 📖 Tabla de Contenidos` o `## 📋 Table of Contents`)
@@ -195,19 +212,33 @@ doc/
    - **03-HU-TRACKING/** - Seguimiento de historias de usuario (una carpeta por HU)
    - **private/** - Documentación sensible o interna
 
-5. **BILINGUAL SUPPORT:**
-   - Archivos clave deben tener versión ES + EN (`.es.md` y `.en.md`)
-   - Reportes técnicos pueden ser solo EN o solo ES si aplica
-   - Nunca mezclar idiomas en el mismo archivo
+5. **BILINGUAL SUPPORT (ESTRUCTURA ESPEJO):**
+   - **Sistema de directorios espejo**: `doc/English/` y `doc/Español/` con estructura idéntica
+   - **Paridad 1:1**: Cada documento en English/ DEBE tener su equivalente en Español/ (y viceversa)
+   - **Nombres idénticos**: Archivos tienen el mismo nombre en ambos directorios
+   - **Organización categórica**:
+     * 01-PROJECT_REPORT/ dividido en 10 categorías (01-ARCHITECTURE, 02-PHASES, etc.)
+     * 02-SETUP_DEV/ dividido en 5 subsecciones (01-INSTALLATION, 02-CONFIGURATION, etc.)
+     * 03-HU-TRACKING/ organizado en 24 carpetas HU-{ID}-{NAME}
+   - **Sincronización**: Usar scripts en `doc/scripts/` para mantener espejo perfecto
+   - **Validación**: Verificar periódicamente con `diff -r doc/English/ doc/Español/ --brief`
 
 6. **IDIOMA EN CÓDIGO Y DOCUMENTACIÓN:**
    - Todo lo que esté escrito en el código debe estar en **inglés** (comentarios, nombres de variables, DartDoc, PyDoc, etc.).
-   - En `doc/` cada documento debe existir en dos versiones: **inglés** (`.en.md`) y **español** (`.es.md`).
+   - En `doc/` cada documento debe existir en dos directorios espejo:
+     * **Inglés**: `doc/English/{CATEGORIA}/{DOCUMENTO}.md`
+     * **Español**: `doc/Español/{CATEGORIA}/{DOCUMENTO}.md`
+   - **Nunca** usar extensiones `.en.md` o `.es.md` (sistema antiguo obsoleto)
+   - El idioma se determina ÚNICAMENTE por el directorio padre (English/ o Español/)
 
 7. **LINKS INTERNOS:**
-   - Usar rutas relativas: `[file.md](file.md)` o `[file](./category/file.md)`
+   - Usar rutas relativas desde `doc/`: `[Archivo](English/00-VISION/CONCEPT_WHITE_PAPER.md)`
+   - Links bilingües deben apuntar al directorio correcto:
+     * En documentos ingleses: `[File](English/CATEGORIA/FILE.md)`
+     * En documentos españoles: `[Archivo](Español/CATEGORIA/ARCHIVO.md)`
    - Incluir tabla de contenidos al inicio para navegación interna
    - Actualizar TODO link cruzado cuando se mueve/renombra documento
+   - Usar `doc/INDEX.md` como portal maestro de navegación bilingüe
 
 8. **VERSIONADO:**
    - Incluir timestamp en metadata (top section)
@@ -217,6 +248,17 @@ doc/
 9. **VALIDACIÓN:**
    - Verificar que NO hay archivos `.md` sueltos en raíz (excepto README.md, AGENTS.md)
    - Verificar estructura con: `tree doc/ -L 2`
+   - **Validar espejo bilingüe perfecto**:
+     ```bash
+     # Verificar que ambos directorios tienen misma estructura
+     diff -r doc/English/ doc/Español/ --brief | grep -v "Binary"
+     # Resultado esperado: Solo diferencias en contenido, NO en estructura
+
+     # Contar archivos en cada idioma
+     find doc/English -name "*.md" | wc -l  # Debe ser igual a:
+     find doc/Español -name "*.md" | wc -l  # (460 archivos cada uno)
+     ```
+   - Verificar que NO existen archivos con extensiones `.en.md` o `.es.md` (sistema obsoleto)
    - Links validan automáticamente en CI/CD (futuro)
 
 10. **ESTRUCTURA BILINGÜE DE README:**
@@ -224,23 +266,57 @@ doc/
    - **Patrón:** README.md contiene bloques `<div id="english">` y `<div id="español">` con selector visual de idioma
    - **Navegación:** Incluir tabla de selección de idioma en el inicio con links a `#english` y `#español`
    - **Contenido:** Duplicar contenido completo en ambos idiomas (no usar archivos .en.md / .es.md separados para README)
-   - **Referencia:** Ver [HU-2.1 README.md](doc/03-HU-TRACKING/HU-2.1-RAG-INGESTION-LOADER/README.md) como modelo de implementación
+   - **Enlaces bilingües**: Los README deben usar la nueva estructura de directorios:
+     * `[English Doc](English/CATEGORIA/FILE.md)` para enlaces en sección inglesa
+     * `[Doc Español](Español/CATEGORIA/ARCHIVO.md)` para enlaces en sección española
+   - **Referencia:** Ver `doc/INDEX.md` como modelo maestro de implementación
    - **Beneficio:** Mejor UX, navegación unificada, fácil acceso a ambos idiomas sin cambiar de archivo
+
+11. **SCRIPTS DE MANTENIMIENTO:**
+   - **Sincronización**: `doc/scripts/sync_mirror_bilingual.py` - Sincroniza estructura English ↔ Español
+   - **Organización**: Scripts para mantener categorización (01-PROJECT_REPORT, 03-HU-TRACKING)
+   - **Migración**: Scripts para convertir estructura antigua (.en.md/.es.md) a nueva (English/Español/)
+   - **Ejecución periódica**: Correr scripts tras añadir/mover documentos para mantener espejo perfecto
 
 ### Comandos Útiles
 
 ```bash
-# Verificar estructura
-tree doc/ -L 2
+# Verificar estructura bilingüe
+tree doc/ -L 3 -I '_OLD_ROOT_BACKUP'
 
-# Contar líneas de documentación
-find doc/ -name "*.md" -exec wc -l {} + | tail -1
+# Validar espejo perfecto (CRÍTICO)
+diff -r doc/English/ doc/Español/ --brief | grep -v "Binary files"
+# Resultado esperado: Solo diferencias en contenido, estructura debe ser idéntica
 
-# Buscar archivos .md en raíz (debería estar vacío excepto README.md)
-ls -la *.md | grep -v README.md | grep -v AGENTS.md
+# Contar archivos por idioma (deben ser iguales)
+echo "English: $(find doc/English -name '*.md' | wc -l)"
+echo "Español: $(find doc/Español -name '*.md' | wc -l)"
+# Resultado esperado: 460 archivos cada uno
+
+# Contar total de líneas de documentación
+find doc/English doc/Español -name "*.md" -exec wc -l {} + | tail -1
+
+# Buscar archivos con extensiones obsoletas (debe estar vacío)
+find doc/ -name "*.en.md" -o -name "*.es.md"
+# Resultado esperado: (vacío) - Sistema obsoleto eliminado
+
+# Buscar archivos .md en raíz fuera de directorios permitidos
+find doc/ -maxdepth 1 -name "*.md" | grep -v "INDEX.md"
+# Resultado esperado: Solo INDEX.md en raíz de doc/
+
+# Validar organización de 01-PROJECT_REPORT (10 categorías)
+ls -d doc/English/01-PROJECT_REPORT/*/ | wc -l  # Debe ser 10
+ls -d doc/Español/01-PROJECT_REPORT/*/ | wc -l  # Debe ser 10
+
+# Validar organización de 03-HU-TRACKING (24 HUs)
+ls -d doc/English/03-HU-TRACKING/HU-*/ | wc -l  # Debe ser 24
+ls -d doc/Español/03-HU-TRACKING/HU-*/ | wc -l  # Debe ser 24
+
+# Sincronizar espejo bilingüe (tras añadir documentos)
+python3 doc/scripts/sync_mirror_bilingual.py
 
 # Validar Markdown sintaxis (requiere mdl)
-mdl doc/
+mdl doc/English/ doc/Español/
 ```
 
 ---

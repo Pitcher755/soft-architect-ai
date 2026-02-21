@@ -1,12 +1,12 @@
 # 📂 Project Structure Map
 
-Mapa oficial de directorios para **{{PROJECT_NAME}}**.
-**Regla:** Cualquier archivo fuera de esta estructura será considerado "Deuda Técnica" y eliminado por el linter.
+Official directory map for **{{PROJECT_NAME}}**.
+**Rule:** Any file outside this structure will be considered "Technical Debt" and removed by the linter.
 
 ```
 {{ROOT_DIR_NAME}}/
 ├── .github/workflows/     # CI/CD Pipelines
-├── context/               # Documentación Viva (Source of Truth)
+├── context/               # Living Documentation (Source of Truth)
 │   ├── 10-CONTEXT/
 │   ├── 20-REQUIREMENTS/
 │   └── 30-ARCHITECTURE/
@@ -14,10 +14,10 @@ Mapa oficial de directorios para **{{PROJECT_NAME}}**.
 ├── src/
 │   ├── server/            # Backend ({{BACKEND_FRAMEWORK}})
 │   │   ├── api/           # Controllers / Routers
-│   │   │   └── v1/        # Versionado API
+│   │   │   └── v1/        # API Versioning
 │   │   ├── core/          # Config & Security
 │   │   ├── domain/        # Business Logic (Clean Arch)
-│   │   │   ├── models/    # Entidades
+│   │   │   ├── models/    # Entities
 │   │   │   └── schemas/   # DTOs
 │   │   └── services/      # External Integrations
 │   │
@@ -26,7 +26,7 @@ Mapa oficial de directorios para **{{PROJECT_NAME}}**.
 │       ├── lib/           # Source Code
 │       │   ├── core/      # Shared logic
 │       │   ├── features/  # Vertical Slices (Auth, Chat, etc.)
-│       │   └── shared/    # Widgets reutilizables
+│       │   └── shared/    # Reusable Widgets
 │       └── test/          # Widget/Unit Tests
 └── tests/                 # E2E & Integration Tests
 ```

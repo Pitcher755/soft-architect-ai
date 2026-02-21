@@ -1,8 +1,15 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
+import '../../../filesystem/presentation/providers/filesystem_providers.dart';
+import '../../../project_shell/core/services/file_system_service.dart';
+import '../../../project_shell/infrastructure/services/project_progress_service.dart';
+import '../../../project_shell/presentation/providers/project_providers.dart';
+import '../notifiers/chat_notifier.dart';
+import 'smart_message_renderer.dart';
 
 /// Model for chat messages (use the one from domain)
 class ChatMessageUI {
@@ -20,83 +27,319 @@ class ChatMessageUI {
   final bool isStreaming;
 }
 
-/// Widget que renderiza mensajes de chat con estilo dark theme
-/// - Mensajes del usuario: burbuja alineada a la derecha
-/// - Mensajes del asistente: burbuja alineada a la izquierda sin esquina superior izquierda
-class MessageBubbleWidget extends StatelessWidget {
+class MessageBubbleWidget extends ConsumerWidget {
   const MessageBubbleWidget({
     required this.message,
     super.key,
     this.onLongPress,
+    this.messageController,
+    this.userName,
+    this.onValidate,
+    this.isValidated = false,
   });
+
   final ChatMessageUI message;
   final VoidCallback? onLongPress;
+  final TextEditingController? messageController;
+  final String? userName;
+  final VoidCallback? onValidate;
+  final bool isValidated;
 
   bool get _isUserMessage => message.role == 'user';
+  bool get _isSystemMessage => message.role == 'system';
 
   @override
-  Widget build(BuildContext context) => Align(
-    alignment: _isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
-    child: Padding(
-      padding: EdgeInsets.only(
-        top: 8,
-        bottom: 8,
-        left: _isUserMessage ? 64 : 16,
-        right: _isUserMessage ? 16 : 64,
-      ),
-      child: Stack(
-        alignment: _isUserMessage ? Alignment.topRight : Alignment.topLeft,
-        children: [
-          // Message bubble
-          Container(
-            margin: EdgeInsets.only(
-              top: 16,
-              right: _isUserMessage ? 12 : 0,
-              left: _isUserMessage ? 0 : 12,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+  Widget build(BuildContext context, WidgetRef ref) {
+    // System messages: Centered with special styling
+    if (_isSystemMessage) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: _isUserMessage
-                  ? _getUserBubbleColor()
-                  : _getAssistantBubbleColor(),
-              borderRadius: _getBorderRadius(),
+              color: AppColors.success.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: _isUserMessage ? AppColors.success : AppColors.border,
-                width: 0.5,
+                color: AppColors.success.withValues(alpha: 0.3),
               ),
             ),
-            child: GestureDetector(
-              onLongPress: onLongPress,
-              child: Column(
-                crossAxisAlignment: _isUserMessage
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Message content with blinking cursor if streaming
-                  Row(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.check_circle,
+                  color: AppColors.success,
+                  size: 18,
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    message.content,
+                    style: const TextStyle(
+                      color: AppColors.textMain,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // User messages: Right-aligned
+    if (_isUserMessage) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            bottom: 8,
+            left: 64,
+            right: 16,
+          ),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 16, right: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16, // Padding ligeramente aumentado
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: _getUserBubbleColor(),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16), // Bordes más suaves
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
+                  border: Border.all(color: AppColors.success, width: 0.5),
+                ),
+                child: GestureDetector(
+                  onLongPress: onLongPress,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Flexible(
-                        child: SelectableText(
-                          message.content,
-                          style: TextStyle(
-                            color: _isUserMessage
-                                ? AppColors.textMain
-                                : AppColors.textSecondary,
-                            fontSize: 14,
-                            height: 1.5,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: SelectableText(
+                              message.content,
+                              style: const TextStyle(
+                                color:
+                                    AppColors.textMain, // Forzamos blanco puro
+                                fontSize: 16, // Aumentamos de 14 a 16
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                          if (messageController != null)
+                            IconButton(
+                              icon: const Icon(Icons.edit, size: 16),
+                              color: AppColors.textMuted,
+                              iconSize: 16,
+                              padding: const EdgeInsets.all(4),
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                messageController!.text = message.content;
+                              },
+                              tooltip: 'Edit message',
+                            ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          _formatTime(message.timestamp),
+                          style: const TextStyle(
+                            color: AppColors.textMuted,
+                            fontSize: 12,
                           ),
                         ),
                       ),
-                      // Show blinking cursor only for streaming AI messages
-                      if (!_isUserMessage && message.isStreaming)
-                        const _BlinkingCursor(),
                     ],
                   ),
+                ),
+              ),
+              const CircleAvatar(
+                radius: 12,
+                backgroundColor: AppColors.dirContext,
+                child: Icon(Icons.person, size: 14, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 12, top: 4),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: AppColors.primary.withValues(alpha: 0.2),
+                foregroundColor: AppColors.primary,
+                child: const Icon(
+                  Icons.smart_toy_outlined,
+                  size: 25,
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onLongPress: onLongPress,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SmartMessageRenderer(
+                          rawContent: message.content,
+                          isUser: false,
+                          onSaveDocument: (path, cleanContent) async {
+                            debugPrint(
+                              '📄 Attempting to save document at: $path',
+                            );
 
-                  // Timestamp
+                            try {
+                              // 1. GET THE ROOT (WITH FAILSAFE)
+                              var projectRoot = ref.read(projectRootProvider);
+
+                              // If null, search for the most recently opened project
+                              if (projectRoot == null || projectRoot.isEmpty) {
+                                final projects = ref.read(projectsProvider);
+                                final activeProject = projects
+                                    .where((p) => !p.path.startsWith('mock://'))
+                                    .firstOrNull;
+                                if (activeProject != null) {
+                                  projectRoot = activeProject.path;
+                                } else {
+                                  throw Exception(
+                                    'No active project configured.',
+                                  );
+                                }
+                              }
+
+                              final normalizedPath = path.startsWith('/')
+                                  ? path.substring(1)
+                                  : path;
+
+                              // 2. SAVE THE FILE
+                              final fsService = FileSystemServiceImpl();
+                              await fsService.saveDocument(
+                                projectPath: projectRoot,
+                                relativePath: normalizedPath,
+                                content: cleanContent,
+                              );
+
+                              debugPrint('✅ Document saved successfully');
+
+                              // Update project progress
+                              try {
+                                await ProjectProgressService.updateAfterDocumentSave(
+                                  projectRoot,
+                                );
+                              } on Exception catch (e) {
+                                debugPrint('⚠️ Error updating progress: $e');
+                              }
+
+                              // Invalidate filesystem provider (triggers file tree refresh)
+                              ref.invalidate(fileSystemNotifierProvider);
+                              ref
+                                  .read(fileSystemNotifierProvider.notifier)
+                                  .refresh();
+
+                              // Invalidate project status provider (triggers progress bar refresh)
+                              ref.invalidate(
+                                projectStatusProvider(projectRoot),
+                              );
+
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      '✅ Document saved successfully',
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+
+                              if (onValidate != null) {
+                                onValidate!();
+                              }
+
+                              // 🤖 3. AGENT LOOP (AGENTIC LOOP)
+                              final chatNotifier = ref.read(
+                                chatNotifierProvider.notifier,
+                              );
+
+                              // Add visible system message showing validation success
+                              chatNotifier.addSystemMessage(
+                                '✅ Documento validado y guardado en `$normalizedPath`',
+                              );
+
+                              // Send hidden prompt to LLM for next step
+                              final autoPrompt =
+                                  'I have validated and saved the document '
+                                  'at `$normalizedPath`. '
+                                  'Please review the Master Workflow '
+                                  'and tell me what the next step is and '
+                                  'what document should be created now. '
+                                  'Si necesitas contexto para el siguiente '
+                                  'documento, hazme las preguntas necesarias.';
+
+                              // Send with isHidden=true so it doesn't appear as user message
+                              await chatNotifier.sendMessageStream(
+                                autoPrompt,
+                                isHidden: true,
+                              );
+                            } on Exception catch (e) {
+                              debugPrint('❌ Error guardando el documento: $e');
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Error al guardar: $e'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                        ),
+                        if (message.isStreaming) const _BlinkingCursor(),
+                      ],
+                    ),
+                  ),
+                  if (!message.isStreaming)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: _ActionButton(
+                        icon: Icons.copy,
+                        tooltip: 'Copiar al portapapeles',
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(text: message.content),
+                          );
+                        },
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(
@@ -110,53 +353,13 @@ class MessageBubbleWidget extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-
-          // Avatar in top corner
-          CircleAvatar(
-            radius: 12,
-            backgroundColor: _isUserMessage
-                ? AppColors.dirContext
-                : AppColors.dirArchitecture,
-            child: Text(
-              _isUserMessage ? 'U' : 'AI',
-              style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF0D1117),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-
-  Color _getUserBubbleColor() => AppColors.primaryLight.withValues(alpha: 0.15);
-
-  Color _getAssistantBubbleColor() =>
-      AppColors.primaryDark.withValues(alpha: 0.15);
-
-  /// Get border radius based on message role
-  /// User: sin esquina superior derecha (0,0)
-  /// AI: sin esquina superior izquierda (0,0)
-  BorderRadius _getBorderRadius() {
-    if (_isUserMessage) {
-      // User message: sharp top-right, rounded others
-      return const BorderRadius.only(
-        topLeft: Radius.circular(12),
-        bottomLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
-      );
-    } else {
-      // AI message: sharp top-left, rounded others
-      return const BorderRadius.only(
-        topRight: Radius.circular(12),
-        bottomLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
+          ],
+        ),
       );
     }
   }
+
+  Color _getUserBubbleColor() => AppColors.primaryLight.withValues(alpha: 0.15);
 
   String _formatTime(DateTime dateTime) {
     final hour = dateTime.hour.toString().padLeft(2, '0');
@@ -165,11 +368,31 @@ class MessageBubbleWidget extends StatelessWidget {
   }
 }
 
-/// Animated blinking cursor widget for streaming messages.
-/// Uses FadeTransition with AnimationController for smooth 60 FPS animation.
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+    icon: Icon(icon),
+    iconSize: 16,
+    padding: const EdgeInsets.all(4),
+    constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+    color: AppColors.textMuted,
+    hoverColor: AppColors.primary.withValues(alpha: 0.1),
+    onPressed: onPressed,
+    tooltip: tooltip,
+  );
+}
+
 class _BlinkingCursor extends StatefulWidget {
   const _BlinkingCursor();
-
   @override
   State<_BlinkingCursor> createState() => _BlinkingCursorState();
 }
@@ -184,9 +407,8 @@ class _BlinkingCursorState extends State<_BlinkingCursor>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 530), // Standard cursor blink rate
+      duration: const Duration(milliseconds: 530),
     )..repeat(reverse: true);
-
     _animation = Tween<double>(
       begin: 0,
       end: 1,

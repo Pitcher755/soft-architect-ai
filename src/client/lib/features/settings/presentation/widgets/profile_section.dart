@@ -87,11 +87,11 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                           width: 3,
                         ),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Icon(
                           Icons.person,
                           size: 50,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                     ),
@@ -104,14 +104,17 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                       avatarColors,
                       settings.avatarIndex,
                     ),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.edit,
                       size: 16,
-                      color: Color(0xFF58A6FF),
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    label: const Text(
+                    label: Text(
                       'Cambiar avatar',
-                      style: TextStyle(color: Color(0xFF58A6FF), fontSize: 12),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],
@@ -123,22 +126,20 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Nombre de usuario',
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFFE6EDF3),
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       key: const ValueKey('userName_field'),
                       controller: _nameController,
-                      style: const TextStyle(
-                        color: Color(0xFFE6EDF3),
-                        fontSize: 14,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(fontSize: 14),
                       onChanged: (value) {
                         ref
                             .read(settingsProvider.notifier)
@@ -146,25 +147,27 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                       },
                       decoration: InputDecoration(
                         hintText: 'Escribe tu nombre',
-                        hintStyle: const TextStyle(color: Color(0xFF8b949e)),
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                         filled: true,
-                        fillColor: const Color(0xFF0D1117),
+                        fillColor: Theme.of(context).colorScheme.surface,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF30363d),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF30363d),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF58A6FF),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
                             width: 2,
                           ),
                         ),
@@ -194,7 +197,9 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                       'Este nombre se mostrará en la interfaz',
                       style: TextStyle(
                         fontSize: 12,
-                        color: const Color(0xFF8b949e).withValues(alpha: 0.7),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -220,10 +225,10 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF161B22),
-        title: const Text(
+        backgroundColor: Theme.of(ctx).colorScheme.surfaceContainerHighest,
+        title: Text(
           'Elige un avatar',
-          style: TextStyle(color: Color(0xFFE6EDF3)),
+          style: Theme.of(ctx).textTheme.titleMedium,
         ),
         content: SizedBox(
           width: 300,
@@ -251,16 +256,16 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: isSelected
-                              ? Colors.white
+                              ? Theme.of(ctx).colorScheme.onPrimary
                               : colors[index].withValues(alpha: 0.3),
                           width: isSelected ? 3 : 2,
                         ),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Icon(
                           Icons.person,
                           size: 30,
-                          color: Colors.white,
+                          color: Theme.of(ctx).colorScheme.onPrimary,
                         ),
                       ),
                     ),
@@ -268,17 +273,20 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
                 }),
               ),
               const SizedBox(height: 20),
-              const Divider(color: Color(0xFF30363d)),
+              Divider(color: Theme.of(ctx).colorScheme.outline),
               const SizedBox(height: 12),
               TextButton.icon(
                 onPressed: () async {
                   Navigator.of(ctx).pop();
                   await _pickCustomAvatar(context, ref);
                 },
-                icon: const Icon(Icons.image, color: Color(0xFF58A6FF)),
-                label: const Text(
+                icon: Icon(
+                  Icons.image,
+                  color: Theme.of(ctx).colorScheme.primary,
+                ),
+                label: Text(
                   'Elegir imagen personalizada',
-                  style: TextStyle(color: Color(0xFF58A6FF)),
+                  style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
                 ),
               ),
             ],
@@ -310,7 +318,7 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(l10n.avatarUpdated),
-              backgroundColor: const Color(0xFF238636),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               duration: const Duration(seconds: 2),
             ),
           );
@@ -322,7 +330,7 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.avatarUpdateError(e.toString())),
-            backgroundColor: const Color(0xFFF85149),
+            backgroundColor: Theme.of(context).colorScheme.error,
             duration: const Duration(seconds: 3),
           ),
         );

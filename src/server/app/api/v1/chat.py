@@ -74,6 +74,9 @@ async def chat_message(
             detail="Knowledge base search failed. Please contact support.",
         ) from error
     except Exception as error:
+        import traceback
+
+        traceback.print_exc()
         raise HTTPException(
             status_code=500,
             detail="An unexpected error occurred processing your request.",

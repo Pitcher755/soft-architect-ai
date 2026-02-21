@@ -1,19 +1,19 @@
 # 🏭 Flask Application Factory Pattern
 
-> **Versión:** Flask 2.3+
+> **Version:** Flask 2.3+
 > **Patrón:** Factory Pattern para instancias de app
-> **Objetivo:** Evitar estado global, permitir múltiples instancias
-> **Estado:** ✅ Establecido
-> **Fecha:** 30/01/2026
+> **Goal:** Evitar estado global, permitir múltiples instancias
+> **Status:** ✅ Establecido
+> **Date:** 30/01/2026
 
 ---
 
-## 📖 Tabla de Contenidos
+## 📖 Table of Contents
 
 1. [El Problema: Global State](#el-problema-global-state)
 2. [La Solución: create_app()](#la-solución-createapp)
 3. [Estructura de Proyecto](#estructura-de-proyecto)
-4. [Configuración Ambiente](#configuración-ambiente)
+4. [Configuration Ambiente](#configuración-ambiente)
 5. [Inicializar Extensiones](#inicializar-extensiones)
 6. [Blueprints en Factory](#blueprints-en-factory)
 7. [Testing con Factory](#testing-con-factory)
@@ -100,7 +100,7 @@ def create_app(config_name='development'):
 **Ventajas:**
 - ✅ Múltiples instancias con diferente configuración
 - ✅ Fácil de testear
-- ✅ Despliegue flexible
+- ✅ Deployment flexible
 - ✅ Extensiones desacopladas
 
 ---
@@ -137,7 +137,7 @@ tests/
 
 ---
 
-## Configuración Ambiente
+## Configuration Ambiente
 
 ### Configuraciones por Entorno
 
@@ -176,7 +176,7 @@ class TestingConfig(Config):
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(seconds=10)  # TTL corto para tests
 ```
 
-### Cargar Configuración desde Env
+### Cargar Configuration desde Env
 
 ```python
 # .env (no commitear)
@@ -410,7 +410,7 @@ class AuthService:
         return access_token
 
 
-# Despliegue
+# Deployment
 # gunicorn wsgi:app --workers 4 --bind 0.0.0.0:5000
 ```
 
@@ -424,6 +424,6 @@ class AuthService:
 - Flexible para despliegue
 - Extensiones desacopladas
 
-⚠️ **Nota:** Flask es flexible (no lo obliga), pero factory es la mejor práctica.
+⚠️ **Note:** Flask es flexible (no lo obliga), pero factory es la mejor práctica.
 
 **Recomendación:** Siempre usar `create_app()`. 🏭✨
