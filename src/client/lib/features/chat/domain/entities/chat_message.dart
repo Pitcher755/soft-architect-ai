@@ -32,6 +32,24 @@ class ChatMessage {
   bool get isAssistant => role == MessageRole.assistant;
   bool get isComplete => !isStreaming;
 
+  /// Returns true if this message should not be displayed in the UI.
+  ///
+  /// Hidden messages are typically used for system prompts that need to be
+  /// sent to the LLM but shouldn't appear in the chat history visible to users.
+  ///
+  /// Example:
+  /// ```dart
+  /// final hiddenMessage = ChatMessage(
+  ///   id: 'msg-1',
+  ///   role: MessageRole.user,
+  ///   content: 'Internal prompt for next step',
+  ///   timestamp: DateTime.now().toIso8601String(),
+  ///   metadata: {'hidden': true},
+  /// );
+  /// assert(hiddenMessage.isHidden == true);
+  /// ```
+  bool get isHidden => metadata?['hidden'] == true;
+
   ChatMessage copyWith({
     String? id,
     MessageRole? role,

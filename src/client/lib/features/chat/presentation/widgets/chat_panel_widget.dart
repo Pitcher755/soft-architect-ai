@@ -131,6 +131,9 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                         final isValidated = chatState.validatedMessageIds
                             .contains(message.id);
                         return MessageBubbleWidget(
+                          key: ValueKey(
+                            message.id,
+                          ), // ✅ Preserva estado entre rebuilds
                           message: message,
                           messageController: _messageController,
                           userName: userName,

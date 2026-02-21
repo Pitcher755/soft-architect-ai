@@ -30,7 +30,7 @@ void main() {
       );
 
       // Should show default empty state
-      expect(find.text('Generando: Raíz'), findsOneWidget);
+      expect(find.text('Generating: Root'), findsOneWidget);
       expect(find.text('0%'), findsOneWidget);
     });
 
@@ -74,7 +74,7 @@ void main() {
 
       // Should show 0% progress
       expect(find.text('0%'), findsOneWidget);
-      expect(find.text('Generando: ${ProjectPhase.root.name}'), findsOneWidget);
+      expect(find.text('Generating: ${ProjectPhase.root.name}'), findsOneWidget);
       expect(find.text('0 / ${ProjectPhase.totalFileCount} docs'), findsOneWidget);
     });
 
@@ -104,7 +104,7 @@ void main() {
 
       // Should show 15% progress
       expect(find.text('15%'), findsOneWidget);
-      expect(find.text('Generando: Contexto'), findsOneWidget);
+      expect(find.text('Generating: Contexto'), findsOneWidget);
       expect(find.text('5 / ${ProjectPhase.totalFileCount} docs'), findsOneWidget);
     });
 
@@ -135,7 +135,7 @@ void main() {
 
       // Should show 50% progress
       expect(find.text('50%'), findsOneWidget);
-      expect(find.text('Generando: Arquitectura'), findsOneWidget);
+      expect(find.text('Generating: Arquitectura'), findsOneWidget);
       expect(
         find.text('$halfDocs / ${ProjectPhase.totalFileCount} docs'),
         findsOneWidget,
@@ -168,7 +168,7 @@ void main() {
 
       // Should show 100% progress
       expect(find.text('100%'), findsOneWidget);
-      expect(find.text('Generando: Proyecto Completado'), findsOneWidget);
+      expect(find.text('Generating: Proyecto Completado'), findsOneWidget);
       expect(
         find.text(
           '${ProjectPhase.totalFileCount} / ${ProjectPhase.totalFileCount} docs',
@@ -254,7 +254,7 @@ void main() {
 
       // Verify initial state
       expect(find.text('15%'), findsOneWidget);
-      expect(find.text('Generando: Contexto'), findsOneWidget);
+      expect(find.text('Generating: Contexto'), findsOneWidget);
 
       // Note: In real app, provider would update when file changes.
       // Here we just verify the widget responds to provider data.

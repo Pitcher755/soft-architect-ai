@@ -143,3 +143,4 @@ xxhash==3.6.0 ; python_full_version >= "3.12.3" and python_full_version < "4.0.0
 zipp==3.23.0 ; python_full_version >= "3.12.3" and python_full_version < "4.0.0"
 zstandard==0.25.0 ; python_full_version >= "3.12.3" and python_full_version < "4.0.0"
 aiosqlite==0.22.1
+groq

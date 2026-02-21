@@ -53,14 +53,23 @@ class ChatNotifier extends StateNotifier<ChatState> {
   final FileSystemService _fileSystemService;
   final Ref ref;
 
+  /// Active stream subscription for current streaming operation.
+  /// Used to cancel streaming when changing projects or disposing notifier.
+  StreamSubscription<ChatStreamEvent>? _activeStreamSubscription;
+
+  /// Project ID of the currently active stream.
+  /// Used to verify chunks belong to the correct project.
+  String? _activeStreamProjectId;
+
   /// Sets the project path for document saving.
   ///
   /// ✅ CRITICAL FIX: ALWAYS resets state and loads history from SQLite.
   ///
   /// This prevents chat state pollution between projects by:
-  /// 1. Resetting ALL state fields to initial values
-  /// 2. Loading persisted history for the specific project
-  /// 3. Never showing "ghost messages" from previous project
+  /// 1. Canceling any active streaming operation
+  /// 2. Resetting ALL state fields to initial values
+  /// 3. Loading persisted history for the specific project
+  /// 4. Never showing "ghost messages" from previous project
   ///
   /// Example:
   /// ```dart
@@ -71,6 +80,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
   /// // State is now clean with only project-b messages
   /// ```
   Future<void> setProjectPath(String path) async {
+    // ✅ STEP 0: Cancel any active streaming operation
+    await _cancelActiveStream();
+
     // ✅ STEP 1: ALWAYS reset state first (prevents pollution)
     state = ChatState.initial().copyWith(projectPath: path, isLoading: true);
 
@@ -106,8 +118,10 @@ class ChatNotifier extends StateNotifier<ChatState> {
   ///
   /// This method uses the unimplemented `generateDocument()` which throws
   /// UnimplementedError. Use [sendMessageStream] for proper SSE streaming.
-  @Deprecated('Use sendMessageStream() instead. This method calls '
-      'generateDocument() which is not implemented.')
+  @Deprecated(
+    'Use sendMessageStream() instead. This method calls '
+    'generateDocument() which is not implemented.',
+  )
   Future<void> sendMessage(String message) async {
     if (message.trim().isEmpty) {
       return;
@@ -218,24 +232,37 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   /// Sends a user message and streams the AI response using SSE.
   /// This method implements progressive token rendering with ChatStreamEvent.
-  Future<void> sendMessageStream(String message) async {
+  ///
+  /// [message] - The user message to send
+  /// [isHidden] - If true, the user message won't be added to the chat UI
+  Future<void> sendMessageStream(
+    String message, {
+    bool isHidden = false,
+  }) async {
     if (message.trim().isEmpty) {
       return;
     }
+
+    // ✅ CRITICAL: Cancel any previous active stream before starting new one
+    await _cancelActiveStream();
 
     try {
       // Clear any previous errors
       state = state.clearError();
 
-      // 1️⃣ Add user message immediately
+      // 1️⃣ Add user message immediately (unless hidden)
       final userMessage = ChatMessage(
         id: generateId(),
         role: MessageRole.user,
         content: message,
         timestamp: DateTime.now().toIso8601String(),
+        metadata: isHidden ? {'hidden': true} : null,
       );
 
-      final updatedMessages = [...state.messages, userMessage];
+      // Only add to UI if not hidden
+      final updatedMessages = isHidden
+          ? state.messages
+          : [...state.messages, userMessage];
       state = state.copyWith(messages: updatedMessages, isStreaming: true);
 
       // 2️⃣ Add empty AI message with isStreaming=true
@@ -292,73 +319,129 @@ class ChatNotifier extends StateNotifier<ChatState> {
         }
       }
 
+      // Store active stream project ID for validation
+      _activeStreamProjectId = projectId;
+
       final stream = repository.sendMessageStream(message, projectId);
 
-      await for (final event in stream) {
-        if (event is TokenEvent) {
-          // 4️⃣ Append token to AI message
-          streamBuffer.write(event.token);
-
-          final updatedAssistant = assistantMessage.copyWith(
-            content: streamBuffer.toString(),
-            isStreaming: true,
-          );
-
-          final newMessages = [
-            ...messagesWithAssistant.sublist(
-              0,
-              messagesWithAssistant.length - 1,
-            ),
-            updatedAssistant,
-          ];
-
-          state = state.copyWith(messages: newMessages, isStreaming: true);
-        } else if (event is DoneEvent) {
-          // 5️⃣ Mark message complete on DoneEvent
-          final fullResponse = event.fullResponse;
-
-          final completedAssistant = assistantMessage.copyWith(
-            content: fullResponse,
-            isStreaming: false,
-          );
-
-          final finalMessages = [
-            ...messagesWithAssistant.sublist(
-              0,
-              messagesWithAssistant.length - 1,
-            ),
-            completedAssistant,
-          ];
-
-          state = state.copyWith(messages: finalMessages, isStreaming: false);
-
-          // Save assistant message to persistence
-          if (!isGuideProject) {
-            try {
-              await _repository.saveMessage(projectId, completedAssistant);
-              debugPrint(
-                '💾 Assistant message saved to DB: ${completedAssistant.id}',
-              );
-              // ignore: avoid_catches_without_on_clauses
-            } catch (e) {
-              debugPrint('❌ Failed to save assistant message: $e');
-              // Show error to user
-              state = state.copyWith(
-                hasError: true,
-                errorMessage: 'Warning: Message not saved to history: $e',
-              );
-            }
+      // Store subscription to allow cancellation
+      _activeStreamSubscription = stream.listen(
+        (event) {
+          // ✅ CRITICAL: Verify event belongs to active project
+          if (_activeStreamProjectId != projectId) {
+            debugPrint(
+              '⚠️ Discarding stream event: project mismatch '
+              '(expected: $projectId, active: $_activeStreamProjectId)',
+            );
+            return;
           }
-        } else if (event is ErrorEvent) {
-          // 6️⃣ Handle ErrorEvent
+
+          if (event is TokenEvent) {
+            // 4️⃣ Append token to AI message
+            streamBuffer.write(event.token);
+
+            final updatedAssistant = assistantMessage.copyWith(
+              content: streamBuffer.toString(),
+              isStreaming: true,
+            );
+
+            final newMessages = [
+              ...messagesWithAssistant.sublist(
+                0,
+                messagesWithAssistant.length - 1,
+              ),
+              updatedAssistant,
+            ];
+
+            state = state.copyWith(messages: newMessages, isStreaming: true);
+          } else if (event is DoneEvent) {
+            // 5️⃣ Mark message complete on DoneEvent
+            final fullResponse = event.fullResponse;
+
+            final completedAssistant = assistantMessage.copyWith(
+              content: fullResponse,
+              isStreaming: false,
+            );
+
+            final finalMessages = [
+              ...messagesWithAssistant.sublist(
+                0,
+                messagesWithAssistant.length - 1,
+              ),
+              completedAssistant,
+            ];
+
+            // ✅ FIXED: Create proposal with document type
+            final docType = _getDocTypeForCurrentIndex();
+            final proposal = DocumentProposal(
+              id: generateId(),
+              docType: docType,
+              content: fullResponse,
+              metadata: {'doc_index': state.currentDocIndex},
+              validationState: ValidationState.pending,
+            );
+
+            state = state.copyWith(
+              messages: finalMessages,
+              currentProposal: proposal,
+              isStreaming: false,
+            );
+
+            // Save assistant message to persistence (async without await)
+            if (!isGuideProject) {
+              _repository
+                  .saveMessage(projectId, completedAssistant)
+                  .then((_) {
+                    debugPrint(
+                      '💾 Assistant message saved to DB: ${completedAssistant.id}',
+                    );
+                  })
+                  .catchError((e) {
+                    debugPrint('❌ Failed to save assistant message: $e');
+                    // Show error to user
+                    state = state.copyWith(
+                      hasError: true,
+                      errorMessage: 'Warning: Message not saved to history: $e',
+                    );
+                  });
+            }
+
+            // Clear active stream tracking
+            _activeStreamSubscription = null;
+            _activeStreamProjectId = null;
+          } else if (event is ErrorEvent) {
+            // 6️⃣ Handle ErrorEvent
+            state = state.copyWith(
+              isStreaming: false,
+              hasError: true,
+              errorMessage: event.error,
+            );
+
+            // Clear active stream tracking
+            _activeStreamSubscription = null;
+            _activeStreamProjectId = null;
+          }
+        },
+        onError: (error) {
+          debugPrint('❌ Stream error: $error');
           state = state.copyWith(
             isStreaming: false,
             hasError: true,
-            errorMessage: event.error,
+            errorMessage: error.toString(),
           );
-          return;
-        }
-      }
+          _activeStreamSubscription = null;
+          _activeStreamProjectId = null;
+        },
+        onDone: () {
+          debugPrint('✅ Stream completed');
+          _activeStreamSubscription = null;
+          _activeStreamProjectId = null;
+        },
+        cancelOnError: true,
+      );
+
+      // Wait for the subscription to complete
+      await _activeStreamSubscription?.asFuture();
     } on ProjectContextError catch (e) {
       // ✅ Show user-friendly error for missing context
       state = state.copyWith(
@@ -456,17 +539,19 @@ class ChatNotifier extends StateNotifier<ChatState> {
       ref.read(fileSystemNotifierProvider.notifier).refresh();
       debugPrint('🔄 File tree refresh triggered');
 
-      // Check if we should advance workflow BEFORE clearing proposal
+      // ✅ FIXED: Check if we should advance workflow BEFORE clearing proposal
+      // This must be done BEFORE updating state, as clearProposal will set currentProposal to null
       final shouldAdvanceWorkflow =
           messageId == null && state.currentProposal != null;
 
-      // Update state
+      // Update state (clear proposal if validating current proposal)
       state = state.copyWith(
         validatedMessageIds: newValidatedIds,
         clearProposal: messageId == null, // Only clear if validating proposal
       );
 
       // Advance workflow only if validating proposal (not individual messages)
+      // This happens AFTER clearing proposal to avoid race conditions
       if (shouldAdvanceWorkflow) {
         state = state.copyWith(currentDocIndex: state.currentDocIndex + 1);
 
@@ -667,6 +752,61 @@ class ChatNotifier extends StateNotifier<ChatState> {
       default:
         return 'Proporciona información sobre: $docType';
     }
+  }
+
+  /// Adds a system message to the chat.
+  ///
+  /// System messages are typically used for showing validation confirmations
+  /// or other system-level notifications to the user.
+  ///
+  /// Example:
+  /// ```dart
+  /// chatNotifier.addSystemMessage('✅ Document saved at /path/to/file.md');
+  /// ```
+  void addSystemMessage(String content) {
+    final systemMessage = ChatMessage(
+      id: generateId(),
+      role: MessageRole.system,
+      content: content,
+      timestamp: DateTime.now().toIso8601String(),
+    );
+
+    final updatedMessages = [...state.messages, systemMessage];
+    state = state.copyWith(messages: updatedMessages);
+  }
+
+  /// Cancels the currently active stream subscription.
+  ///
+  /// This prevents context bleed when:
+  /// - User changes to a different project
+  /// - User leaves the chat screen
+  /// - New message is sent before previous stream completes
+  Future<void> _cancelActiveStream() async {
+    if (_activeStreamSubscription != null) {
+      debugPrint('🛑 Canceling active stream subscription');
+      await _activeStreamSubscription!.cancel();
+      _activeStreamSubscription = null;
+      _activeStreamProjectId = null;
+
+      // Reset streaming state
+      if (state.isStreaming) {
+        state = state.copyWith(isStreaming: false);
+      }
+    }
+  }
+
+  /// Disposes the notifier and cleans up resources.
+  ///
+  /// ✅ CRITICAL: Cancels active stream to prevent memory leaks
+  /// and context bleeding.
+  @override
+  void dispose() {
+    debugPrint('🧹 Disposing ChatNotifier - canceling active streams');
+    // Cancel synchronously (best effort)
+    _activeStreamSubscription?.cancel();
+    _activeStreamSubscription = null;
+    _activeStreamProjectId = null;
+    super.dispose();
   }
 }
 

@@ -14,25 +14,16 @@ class SmartMessageRenderer extends StatelessWidget {
 
   final String rawContent;
   final bool isUser;
-  final void Function(String path, String content)? onSaveDocument;
+  final Future<void> Function(String path, String content)? onSaveDocument;
 
-  // ✅ RegEx a prueba de balas usando XML
+  // RegEx a prueba de balas usando XML
   static final RegExp _documentBlockRegex = RegExp(
     r'<document>\r?\n?([\s\S]*?)(?:</document>|$)',
     caseSensitive: false,
   );
 
-  /// Decodes HTML entities to fix double-escaped content from backend.
-  ///
-  /// Fixes issue where backend HTML escaping causes double-encoding:
-  /// - `&amp;lt;` → `&lt;` → `<`
-  /// - `&amp;gt;` → `&gt;` → `>`
-  /// - `&amp;quot;` → `&quot;` → `"`
-  ///
-  /// This is necessary because the backend uses `html.escape()` for XSS
-  /// prevention, but HTTP transport can cause additional encoding.
   static String _decodeHtmlEntities(String text) => text
-      .replaceAll('&amp;', '&') // Must be first to avoid double-decode
+      .replaceAll('&amp;', '&')
       .replaceAll('&lt;', '<')
       .replaceAll('&gt;', '>')
       .replaceAll('&quot;', '"')
@@ -42,7 +33,6 @@ class SmartMessageRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ✅ Decode HTML entities before processing
     final decodedContent = _decodeHtmlEntities(rawContent);
 
     if (isUser) {
@@ -58,12 +48,10 @@ class SmartMessageRenderer extends StatelessWidget {
     return _buildMixedContent(context, matches, decodedContent);
   }
 
-  /// Builds a standard markdown widget with selectable text.
   Widget _buildMarkdown(BuildContext context, String content) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    // ✅ MEJORA: Color forzado a AppColors.textMain y tamaño base aumentado a 16
     final baseStyle = theme.textTheme.bodyMedium?.copyWith(
       fontSize: 16,
       height: 1.6,
@@ -78,7 +66,7 @@ class SmartMessageRenderer extends StatelessWidget {
         listBullet: baseStyle,
         code: theme.textTheme.bodyMedium?.copyWith(
           fontFamily: 'monospace',
-          fontSize: 15, // Código un poco más grande
+          fontSize: 15,
           backgroundColor: theme.colorScheme.surfaceContainerHighest,
           color: isDark ? Colors.greenAccent.shade100 : Colors.blue.shade800,
         ),
@@ -121,7 +109,13 @@ class SmartMessageRenderer extends StatelessWidget {
 
       final documentContent = match.group(1)?.trim() ?? '';
       elements
-        ..add(_DocumentCard(content: documentContent, onSave: onSaveDocument))
+        ..add(
+          _DocumentCard(
+            key: ValueKey(documentContent.hashCode),
+            content: documentContent,
+            onSave: onSaveDocument,
+          ),
+        )
         ..add(const SizedBox(height: 12));
 
       currentIndex = match.end;
@@ -141,25 +135,64 @@ class SmartMessageRenderer extends StatelessWidget {
   }
 }
 
-class _DocumentCard extends StatelessWidget {
-  const _DocumentCard({required this.content, this.onSave});
+class _DocumentCard extends StatefulWidget {
+  const _DocumentCard({required this.content, this.onSave, super.key});
 
   final String content;
-  final void Function(String path, String cleanContent)? onSave;
+  final Future<void> Function(String path, String cleanContent)? onSave;
 
-  void _handleValidation() {
+  @override
+  State<_DocumentCard> createState() => _DocumentCardState();
+}
+
+class _DocumentCardState extends State<_DocumentCard> {
+  // 🔥 LA MEMORIA ABSOLUTA: Aquí guardamos los documentos que ya se han validado.
+  // Al ser 'static', sobrevive a cualquier reconstrucción de Flutter.
+  static final Set<int> _validatedDocs = {};
+
+  bool _isValidating = false;
+
+  // Comprueba si este documento está en la memoria absoluta
+  bool get _isAlreadyValidated =>
+      _validatedDocs.contains(widget.content.hashCode);
+
+  Future<void> _handleValidation() async {
+    if (_isValidating || _isAlreadyValidated) return;
+
+    setState(() {
+      _isValidating = true;
+    });
+
     final pathRegex = RegExp(
       r'\*\*(?:Path|Ruta):\*\*\s*`?([^\n`]+)`?',
       caseSensitive: false,
     );
-    final match = pathRegex.firstMatch(content);
+    final match = pathRegex.firstMatch(widget.content);
 
     final extractedPath =
         match?.group(1)?.trim() ?? 'context/UNSORTED/untitled.md';
-    final cleanContent = content.replaceAll(pathRegex, '').trim();
+    final cleanContent = widget.content.replaceAll(pathRegex, '').trim();
 
-    if (onSave != null) {
-      onSave!(extractedPath, cleanContent);
+    if (widget.onSave != null) {
+      try {
+        await widget.onSave!(extractedPath, cleanContent);
+
+        // ✅ AÑADIMOS A LA MEMORIA ESTÁTICA
+        _validatedDocs.add(widget.content.hashCode);
+
+        if (mounted) {
+          setState(() {
+            _isValidating = false;
+          });
+        }
+      } catch (e) {
+        if (mounted) {
+          setState(() {
+            _isValidating = false;
+          });
+        }
+        rethrow;
+      }
     }
   }
 
@@ -230,9 +263,8 @@ class _DocumentCard extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    // ✅ MEJORA: Aumentamos el tamaño de letra también dentro de la tarjeta
     final baseStyle = theme.textTheme.bodyMedium?.copyWith(
-      fontSize: 15, // Letra un poco más grande
+      fontSize: 16,
       height: 1.5,
       color: isDark ? AppColors.textMain : Colors.black87,
     );
@@ -240,14 +272,14 @@ class _DocumentCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       child: MarkdownBody(
-        data: content,
+        data: widget.content,
         selectable: true,
         styleSheet: MarkdownStyleSheet(
           p: baseStyle,
           listBullet: baseStyle,
           code: theme.textTheme.bodyMedium?.copyWith(
             fontFamily: 'monospace',
-            fontSize: 14,
+            fontSize: 16,
             backgroundColor: theme.colorScheme.surfaceContainerHighest,
             color: isDark ? Colors.greenAccent.shade100 : Colors.blue.shade800,
           ),
@@ -264,27 +296,35 @@ class _DocumentCard extends StatelessWidget {
     );
   }
 
-  Widget _buildActions(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-    child: Align(
-      alignment: Alignment.centerRight,
-      child: FilledButton.icon(
-        onPressed: () {
-          _handleValidation();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Documento enviado a validación...'),
-              duration: Duration(seconds: 2),
-            ),
-          );
-        },
-        icon: const Icon(Icons.check_circle),
-        label: const Text('Validar y Guardar'),
-        style: FilledButton.styleFrom(
-          backgroundColor: Colors.green.shade600,
-          foregroundColor: Colors.white,
+  Widget _buildActions(BuildContext context) {
+    // 🔥 Leemos de la memoria absoluta. Si ya se validó, adiós botón.
+    if (_isAlreadyValidated) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: FilledButton.icon(
+          onPressed: _isValidating ? null : _handleValidation,
+          icon: _isValidating
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+              : const Icon(Icons.check_circle),
+          label: Text(_isValidating ? 'Validando...' : 'Validar y Guardar'),
+          style: FilledButton.styleFrom(
+            backgroundColor: Colors.green.shade600,
+            foregroundColor: Colors.white,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

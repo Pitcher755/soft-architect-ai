@@ -62,8 +62,10 @@ class ChatRepositoryImpl implements ChatRepository {
     Map<String, dynamic> context,
   ) {
     // Not implemented - use sendMessageStream instead
-    throw UnimplementedError('generateDocument not yet implemented. '
-        'Use sendMessageStream() instead.');
+    throw UnimplementedError(
+      'generateDocument not yet implemented. '
+      'Use sendMessageStream() instead.',
+    );
   }
 
   @override
@@ -86,7 +88,9 @@ class ChatRepositoryImpl implements ChatRepository {
           : chatHistory;
 
       // Transform ChatMessage entities to backend format: {role, content}
+      // ✅ FILTER OUT 'system' messages - backend only accepts 'user' and 'assistant'
       historyPayload = limitedHistory
+          .where((msg) => msg.role.name != 'system') // Exclude system messages
           .map(
             (msg) => {
               'role': msg.role.name, // 'user' or 'assistant'

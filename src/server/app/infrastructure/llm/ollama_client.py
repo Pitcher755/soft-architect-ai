@@ -30,7 +30,7 @@ class OllamaClient(BaseLLMClient):
     def __init__(
         self,
         base_url: str = "http://localhost:11434",
-        model: str = "llama2",
+        model: str = "qwen:2.5-coder-3b",
         timeout: float = 30.0,
     ):
         self.base_url = base_url

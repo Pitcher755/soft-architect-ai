@@ -46,9 +46,52 @@ class MessageBubbleWidget extends ConsumerWidget {
   final bool isValidated;
 
   bool get _isUserMessage => message.role == 'user';
+  bool get _isSystemMessage => message.role == 'system';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // System messages: Centered with special styling
+    if (_isSystemMessage) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.success.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: AppColors.success.withValues(alpha: 0.3),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.check_circle,
+                  color: AppColors.success,
+                  size: 18,
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    message.content,
+                    style: const TextStyle(
+                      color: AppColors.textMain,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // User messages: Right-aligned
     if (_isUserMessage) {
       return Align(
         alignment: Alignment.centerRight,
@@ -237,6 +280,16 @@ class MessageBubbleWidget extends ConsumerWidget {
                               }
 
                               // 🤖 3. AGENT LOOP (AGENTIC LOOP)
+                              final chatNotifier = ref.read(
+                                chatNotifierProvider.notifier,
+                              );
+
+                              // Add visible system message showing validation success
+                              chatNotifier.addSystemMessage(
+                                '✅ Documento validado y guardado en `$normalizedPath`',
+                              );
+
+                              // Send hidden prompt to LLM for next step
                               final autoPrompt =
                                   'I have validated and saved the document '
                                   'at `$normalizedPath`. '
@@ -246,9 +299,11 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   'Si necesitas contexto para el siguiente '
                                   'documento, hazme las preguntas necesarias.';
 
-                              await ref
-                                  .read(chatNotifierProvider.notifier)
-                                  .sendMessageStream(autoPrompt);
+                              // Send with isHidden=true so it doesn't appear as user message
+                              await chatNotifier.sendMessageStream(
+                                autoPrompt,
+                                isHidden: true,
+                              );
                             } on Exception catch (e) {
                               debugPrint('❌ Error guardando el documento: $e');
                               if (context.mounted) {
@@ -269,33 +324,14 @@ class MessageBubbleWidget extends ConsumerWidget {
                   if (!message.isStreaming)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _ActionButton(
-                            icon: Icons.copy,
-                            tooltip: 'Copiar al portapapeles',
-                            onPressed: () {
-                              Clipboard.setData(
-                                ClipboardData(text: message.content),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 8),
-                          if (onValidate != null)
-                            _ActionButton(
-                              icon: isValidated
-                                  ? Icons.check_circle
-                                  : Icons.check_circle_outline,
-                              tooltip: isValidated
-                                  ? '✅ Documento guardado'
-                                  : 'Validar y guardar documento',
-                              onPressed: onValidate!,
-                              color: isValidated
-                                  ? AppColors.success
-                                  : AppColors.textMuted,
-                            ),
-                        ],
+                      child: _ActionButton(
+                        icon: Icons.copy,
+                        tooltip: 'Copiar al portapapeles',
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(text: message.content),
+                          );
+                        },
                       ),
                     ),
                   Padding(
@@ -331,12 +367,10 @@ class _ActionButton extends StatelessWidget {
     required this.icon,
     required this.tooltip,
     required this.onPressed,
-    this.color,
   });
   final IconData icon;
   final String tooltip;
   final VoidCallback onPressed;
-  final Color? color;
 
   @override
   Widget build(BuildContext context) => IconButton(
@@ -344,8 +378,8 @@ class _ActionButton extends StatelessWidget {
     iconSize: 16,
     padding: const EdgeInsets.all(4),
     constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-    color: color ?? AppColors.textMuted,
-    hoverColor: (color ?? AppColors.primary).withValues(alpha: 0.1),
+    color: AppColors.textMuted,
+    hoverColor: AppColors.primary.withValues(alpha: 0.1),
     onPressed: onPressed,
     tooltip: tooltip,
   );

@@ -25,6 +25,8 @@
 - [📖 Complete Documentation Index](doc/INDEX.md) - Start here for organized navigation
 - [White Paper & Vision](doc/English/00-VISION/CONCEPT_WHITE_PAPER.md)
 - [Quick Start Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/QUICK_START_GUIDE.md)
+- [Local LLM Setup Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/LOCAL_LLM_GUIDE.md) - Run AI 100% privately on your hardware
+- [Hardware Acceleration Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/HARDWARE_ACCELERATION_GUIDE.md) - GPU configuration (NVIDIA/Apple Silicon/CPU)
 - [Functional Test Report](doc/English/01-PROJECT_REPORT/03-TESTING/FUNCTIONAL_TEST_REPORT.md)
 - [Initial Setup Log](doc/English/01-PROJECT_REPORT/01-ARCHITECTURE/INITIAL_SETUP_LOG.md)
 - [Methodology & Structure](doc/English/01-PROJECT_REPORT/10-DOCUMENTATION/MEMORIA_METODOLOGICA.md)
@@ -188,6 +190,8 @@ See [tests/README.md](tests/README.md) for detailed testing documentation and st
 - [📖 Índice Completo de Documentación](doc/INDEX.md) - Comienza aquí para navegación organizada
 - [White Paper y Visión](doc/Español/00-VISION/CONCEPT_WHITE_PAPER.md)
 - [Guía Rápida de Inicio](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md)
+- [Guía de LLM Local](doc/Español/02-SETUP_DEV/01-INSTALACION/LOCAL_LLM_GUIDE.md) - Ejecuta IA 100% privada en tu hardware
+- [Guía de Aceleración Hardware](doc/Español/02-SETUP_DEV/01-INSTALACION/HARDWARE_ACCELERATION_GUIDE.md) - Configuración GPU (NVIDIA/Apple Silicon/CPU)
 - [Reporte de Pruebas Funcionales](doc/Español/01-PROJECT_REPORT/03-TESTING/FUNCTIONAL_TEST_REPORT.md)
 - [Log de Instalación Inicial](doc/Español/01-PROJECT_REPORT/01-ARCHITECTURE/INITIAL_SETUP_LOG.md)
 - [Metodología y Estructura](doc/Español/01-PROJECT_REPORT/10-DOCUMENTATION/MEMORIA_METODOLOGICA.md)
