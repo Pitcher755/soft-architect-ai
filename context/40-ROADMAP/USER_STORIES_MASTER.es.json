@@ -271,12 +271,147 @@
             "id": "S5",
             "name": "Sprint 5: Packaging, Onboarding y Calidad",
             "goal": "Empaquetar la aplicación para usuarios finales y asegurar la calidad crítica.",
-            "status": "Pending",
+            "status": "In Progress",
             "epics": [
                 {
                     "epic_id": "E5",
                     "name": "Productización",
                     "user_stories": [
+                        {
+                            "hu_id": "HU-5.0",
+                            "name": "Refinamiento del Arquitecto IA (Era Groq) y Master Workflow Completo",
+                            "priority": "Critical",
+                            "estimation": "L",
+                            "status": "In Progress",
+                            "branch_name": "feature/hu-5.0-full-workflow-refinement",
+                            "dependencies": [
+                                "HU-4.1",
+                                "HU-4.3",
+                                "HU-4.4"
+                            ],
+                            "verification_criteria": [
+                                "✅ Temperatura LLM ajustada (0.6-0.7) para creatividad proactiva sin perder coherencia.",
+                                "✅ Inyección dinámica de userName desde Flutter hasta FastAPI en System Prompt.",
+                                "✅ Anti-Manifiesto Automático: LLM hace 2-3 preguntas clave si prompt es muy corto.",
+                                "✅ Proactividad Enforceada: LLM entrega borradores completos, prohíbe placeholders [Inserta tu texto aquí].",
+                                "✅ Efecto WOW: Uso intensivo de Markdown (emojis, tree blocks, código real, tablas, paletas HEX).",
+                                "✅ Limpieza Extrema <document>: Solo contenido + ruta dentro de tags, toda conversación fuera.",
+                                "✅ Dictadura de Directorios: Todo bajo context/ excepto 00-ROOT/ en raíz.",
+                                "✅ Bloqueo por Falta de Validación: LLM se niega si no detecta 'He validado y guardado el documento en...'.",
+                                "✅ Cero Prefijos Robóticos: Prohibido 'Chat:', 'Robot:', 'Asistente:' al inicio de respuestas.",
+                                "✅ Obediencia de Plantillas: Formato original respetado (ej. JSON válido con bloques código).",
+                                "✅ Master Workflow 24 Documentos: Flujo completo desde visión hasta archivos raíz funcional.",
+                                "✅ Tests de Regresión: 15+ tests de prompts validando cada regla del system prompt.",
+                                "✅ Integración Groq: Cliente Groq probado y configurado para modo demo/homelab."
+                            ],
+                            "technical_tasks": [
+                                "Ajustar temperatura en groq_client.py (0.6 o 0.7).",
+                                "Modificar system prompt en MASTER_WORKFLOW_SYSTEM_PROMPT.md con 10 reglas estrictas.",
+                                "Añadir endpoint para inyección de userName (GET /user/profile o parámetro en /chat).",
+                                "Crear lógica detección prompt corto + generación preguntas clave (template_builder.py).",
+                                "Implementar validador de <document> tags (sanitizer de conversación fuera de tags).",
+                                "Crear middleware de validación historial (bloqueo si no encuentra 'He validado...').",
+                                "Añadir filtro anti-prefijos robóticos en post-processing LLM.",
+                                "Crear 15+ tests unitarios para cada regla del system prompt.",
+                                "Documentar flujo completo 24 documentos en MASTER_WORKFLOW.md.",
+                                "Configurar docker-compose.homelab.yml con Groq API key inyección.",
+                                "Crear script de despliegue homelab (deploy-homelab.sh).",
+                                "Actualizar knowledge base con ejemplos reales de cada documento del workflow."
+                            ],
+                            "workflow_phases": [
+                                {
+                                    "phase": "00-DISCOVERY",
+                                    "documents": 3,
+                                    "description": "Entrevista inicial, definición de alcance y tech stack"
+                                },
+                                {
+                                    "phase": "10-CONTEXT",
+                                    "documents": 5,
+                                    "description": "Visión, promesa, journey map, executive summary"
+                                },
+                                {
+                                    "phase": "20-REQUIREMENTS",
+                                    "documents": 7,
+                                    "description": "Requisitos funcionales, no funcionales, accesibilidad, seguridad"
+                                },
+                                {
+                                    "phase": "30-ARCHITECTURE",
+                                    "documents": 4,
+                                    "description": "Diagramas arquitectura, decisiones técnicas, stack tecnológico"
+                                },
+                                {
+                                    "phase": "40-ROADMAP",
+                                    "documents": 2,
+                                    "description": "User stories master, planificación sprints"
+                                },
+                                {
+                                    "phase": "50-IMPLEMENTATION",
+                                    "documents": 1,
+                                    "description": "Guía de implementación primer sprint"
+                                },
+                                {
+                                    "phase": "00-ROOT",
+                                    "documents": 2,
+                                    "description": "README.md y CONTRIBUTING.md en raíz del repositorio"
+                                }
+                            ],
+                            "system_prompt_rules": [
+                                "RULE-01: Anti-Manifiesto Automático (Preguntas si prompt < 50 chars)",
+                                "RULE-02: Proactividad Total (No placeholders, borradores completos)",
+                                "RULE-03: Efecto WOW (Markdown + emojis + tree + código + tablas)",
+                                "RULE-04: Limpieza <document> (Solo contenido puro dentro de tags)",
+                                "RULE-05: Dictadura Directorios (context/ obligatorio, excepto 00-ROOT/)",
+                                "RULE-06: Bloqueo Validación (Negarse si no detecta 'He validado...')",
+                                "RULE-07: Cero Prefijos Robóticos (Prohibido Chat:, Robot:, Asistente:)",
+                                "RULE-08: Obediencia Plantillas (Mantener formato original siempre)",
+                                "RULE-09: Inyección userName (Personalizar respuestas con nombre real)",
+                                "RULE-10: Flujo Secuencial 24 Docs (No saltar documentos, validar orden)"
+                            ],
+                            "deployment_targets": [
+                                {
+                                    "target": "homelab",
+                                    "description": "Proxmox VM con Docker + Groq Cloud API",
+                                    "requirements": [
+                                        "Docker 24.x + Docker Compose v2",
+                                        "Reverse proxy (Nginx/Traefik) con HTTPS",
+                                        "Groq API Key (variable de entorno)",
+                                        "ChromaDB persistente (volumen Docker)",
+                                        "8GB RAM mínimo, 4 vCPUs"
+                                    ]
+                                },
+                                {
+                                    "target": "demo-cloud",
+                                    "description": "Despliegue temporal para presentación TFM",
+                                    "requirements": [
+                                        "Cloud Run / Railway / Render (serverless)",
+                                        "Groq API Key en secrets",
+                                        "ChromaDB in-memory o Chroma Cloud",
+                                        "HTTPS obligatorio"
+                                    ]
+                                }
+                            ],
+                            "testing_strategy": {
+                                "unit_tests": "15+ tests para cada regla del system prompt",
+                                "integration_tests": "5 tests E2E del flujo completo 24 documentos",
+                                "manual_tests": "3 smoke tests críticos (prompt corto, validación, document tags)",
+                                "coverage_target": "Backend ≥85%, Frontend ≥80%"
+                            },
+                            "acceptance_criteria_detailed": [
+                                "✅ Entrevista inicial con <50 chars gatilla 3 preguntas clave (Target, Stack, Features).",
+                                "✅ Ningún documento entregado contiene placeholders [Inserta...] o [TODO...].",
+                                "✅ Todos los documentos generados usan emojis en headers, tree blocks para directorios.",
+                                "✅ <document> tags solo contienen contenido puro (0 frases conversacionales dentro).",
+                                "✅ Todos los archivos se guardan en context/{FASE}/ excepto README.md y CONTRIBUTING.md.",
+                                "✅ Intentar generar doc N sin validar doc N-1 muestra mensaje: 'Por favor valida el documento anterior primero'.",
+                                "✅ Ninguna respuesta del LLM empieza con 'Chat:', 'Robot:', 'IA:', 'Asistente:'.",
+                                "✅ USER_STORIES_MASTER.json generado es JSON válido parseable con jq.",
+                                "✅ System prompt inyecta correctamente {userName} desde Flutter (ej. 'Hola, Juan!').",
+                                "✅ Flujo completo 0→24 documentos ejecutable end-to-end en <15 minutos.",
+                                "✅ Despliegue homelab exitoso: docker-compose up -d && curl /health return 200.",
+                                "✅ 15 tests unitarios de system prompt rules pasando (pytest -k test_system_prompt)."
+                            ],
+                            "notes": "HU CRÍTICA PARA PRESENTACIÓN TFM. Esta historia refina el comportamiento del Arquitecto IA para entregar documentación de ingeniería profesional, coherente y completa siguiendo el Master Workflow de 24 documentos. Incluye deployment en homelab con Groq Cloud API para demostración sin dependencia de Ollama local. Se enfoca en la experiencia del usuario final (estudiantes/profesionales) generando proyectos reales listos para implementar. Target: 5-7 días de desarrollo intensivo pre-presentación."
+                        },
                         {
                             "hu_id": "HU-5.1",
                             "name": "Reescritura y Limpieza de Tests de Integración",
