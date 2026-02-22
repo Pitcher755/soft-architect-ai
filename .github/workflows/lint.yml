@@ -22,7 +22,7 @@ env:
 jobs:
   dart-lint:
     name: Flutter/Dart Linting
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v3
@@ -69,7 +69,7 @@ jobs:
 
   python-lint:
     name: Python Linting & Type Checking
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v3
@@ -112,7 +112,7 @@ jobs:
 
   english-compliance:
     name: English Compliance Audit
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v3
@@ -148,7 +148,7 @@ jobs:
 
   summary:
     name: Lint Summary
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [dart-lint, python-lint, english-compliance]
     if: always()
 
