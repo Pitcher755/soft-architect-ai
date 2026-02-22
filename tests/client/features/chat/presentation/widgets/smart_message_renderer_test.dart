@@ -242,7 +242,9 @@ Content here
       expect(validateButton, findsOneWidget);
       await tester.tap(validateButton);
       await tester.pump(); // Start async operation
-      await tester.pump(const Duration(milliseconds: 100)); // Wait for completion
+      await tester.pump(
+        const Duration(milliseconds: 100),
+      ); // Wait for completion
 
       // Assert - Button should disappear and callback called
       expect(callbackCalled, isTrue);
@@ -398,7 +400,9 @@ Still in the document?
       expect(validateButton, findsOneWidget);
       await tester.tap(validateButton);
       await tester.pump(); // Start async operation
-      await tester.pump(const Duration(milliseconds: 100)); // Wait for completion
+      await tester.pump(
+        const Duration(milliseconds: 100),
+      ); // Wait for completion
 
       // Assert callback was triggered with correct values
       expect(capturedPath, 'context/RULES.md');
@@ -476,10 +480,7 @@ Use &amp;lt;Component&amp;gt; in your code.
       expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
 
       // Content should show <Component> not &lt;Component&gt;
-      expect(
-        find.textContaining('<Component>'),
-        findsOneWidget,
-      );
+      expect(find.textContaining('<Component>'), findsOneWidget);
     });
 
     testWidgets('decodes common HTML entities in text', (

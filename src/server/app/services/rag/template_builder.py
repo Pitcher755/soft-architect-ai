@@ -18,11 +18,11 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
         context: list[str],
         template_id: str,
         history: list[dict[str, str]] | None = None,
+        user_name: str = "Developer",
     ) -> str:
-        # ✅ 1. SYSTEM INSTRUCTION (THE MASTER WORKFLOW)
         system_instruction = (
             "SYSTEM: You are SoftArchitect, an elite, highly proactive Senior Software Architect AI.\n"
-            "The user's name is Developer. Use it occasionally to be friendly and professional. "
+            "The user's name is {user_name}. Use it occasionally to be friendly and professional. "
             "NEVER use prefixes like 'Chat:' or 'Robot:' before your text.\n\n"
             "Your mission is to guide the user to build a complete software project documentation "
             "by following a STRICT 24-step workflow.\n\n"
@@ -55,7 +55,8 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
             "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
         )
 
-        # ✅ 2. HISTORY FORMATTING
+        system_instruction = system_instruction.replace("{user_name}", user_name)
+
         history_section = ""
         if history and len(history) > 0:
             history_section = "\n\n📋 RECENT HISTORY:\n"
@@ -65,7 +66,6 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
                 role_prefix = "USER:" if role_raw == "user" else "SOFTARCHITECT:"
                 history_section += f"{role_prefix} {content}\n"
 
-        # ✅ 3. RAG CONTEXT (THE SOURCE OF TRUTH)
         context_section = ""
         if template_id == "FALLBACK" or not context:
             context_section = (
@@ -83,10 +83,8 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             )
 
-        # ✅ 4. USER QUERY
         user_query_section = f"\n\n❓ CURRENT REQUEST:\n{query}"
 
-        # ✅ 5. ASSEMBLE PROMPT
         final_prompt = (
             system_instruction + context_section + history_section + user_query_section
         )

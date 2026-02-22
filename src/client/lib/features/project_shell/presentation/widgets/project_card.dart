@@ -545,16 +545,24 @@ class ProjectCard extends ConsumerWidget {
                             ),
                             if (actualProgress > 0) ...[
                               const SizedBox(height: 4),
-                              Text(
-                                'Doc ${(actualProgress.clamp(0.0, 1.0) * 100).toInt()}%',
-                                style: TextStyle(
-                                  fontSize: badgeFontSize,
-                                  fontFamily: 'Courier',
-                                  color: AppColors.textSecondary.withValues(
-                                    alpha: isMissing ? 0.5 : 1.0,
-                                  ),
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              Builder(
+                                builder: (context) {
+                                  final progressPercent =
+                                      (actualProgress.clamp(0.0, 1.0) * 100)
+                                          .toInt();
+                                  return Text(
+                                    'Doc $progressPercent%',
+                                    style: TextStyle(
+                                      fontSize: badgeFontSize,
+                                      fontFamily: 'Courier',
+                                      color:
+                                          AppColors.textSecondary.withValues(
+                                        alpha: isMissing ? 0.5 : 1.0,
+                                      ),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                             const Spacer(),

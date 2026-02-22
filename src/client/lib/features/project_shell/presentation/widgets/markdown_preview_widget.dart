@@ -57,13 +57,11 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
   Future<void> _loadFileContent() async {
     try {
       final file = File(widget.filename!);
-      if (await file.exists()) {
-        final content = await file.readAsString();
-        if (mounted && !_isEditing) {
-          setState(() {
-            _textController.text = content;
-          });
-        }
+      final content = await file.readAsString();
+      if (mounted && !_isEditing) {
+        setState(() {
+          _textController.text = content;
+        });
       }
     } on Exception catch (e) {
       debugPrint('⚠️ Error leyendo archivo: $e');
@@ -228,7 +226,8 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
                   setState(() {
                     _isEditing = false;
                   });
-                  // Recargar contenido desde archivo (descarta cambios no guardados)
+                  // Recargar contenido desde archivo (descarta cambios
+                  // no guardados)
                   if (widget.filename != null) {
                     _loadFileContent();
                   } else {

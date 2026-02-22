@@ -220,7 +220,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                               // 1. GET THE ROOT (WITH FAILSAFE)
                               var projectRoot = ref.read(projectRootProvider);
 
-                              // If null, search for the most recently opened project
+                              // If null, search for the most recently opened
+                              // project
                               if (projectRoot == null || projectRoot.isEmpty) {
                                 final projects = ref.read(projectsProvider);
                                 final activeProject = projects
@@ -239,7 +240,6 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   ? path.substring(1)
                                   : path;
 
-                              // 2. SAVE THE FILE
                               final fsService = FileSystemServiceImpl();
                               await fsService.saveDocument(
                                 projectPath: projectRoot,
@@ -249,25 +249,23 @@ class MessageBubbleWidget extends ConsumerWidget {
 
                               debugPrint('✅ Document saved successfully');
 
-                              // Update project progress
                               try {
-                                await ProjectProgressService.updateAfterDocumentSave(
+                                await ProjectProgressService
+                                    .updateAfterDocumentSave(
                                   projectRoot,
                                 );
                               } on Exception catch (e) {
                                 debugPrint('⚠️ Error updating progress: $e');
                               }
 
-                              // Invalidate filesystem provider (triggers file tree refresh)
-                              ref.invalidate(fileSystemNotifierProvider);
                               ref
-                                  .read(fileSystemNotifierProvider.notifier)
-                                  .refresh();
-
-                              // Invalidate project status provider (triggers progress bar refresh)
-                              ref.invalidate(
-                                projectStatusProvider(projectRoot),
-                              );
+                                ..invalidate(fileSystemNotifierProvider)
+                                ..read(
+                                  fileSystemNotifierProvider.notifier,
+                                ).refresh()
+                                ..invalidate(
+                                  projectStatusProvider(projectRoot),
+                                );
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -285,17 +283,13 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 onValidate!();
                               }
 
-                              // 🤖 3. AGENT LOOP (AGENTIC LOOP)
-                              final chatNotifier = ref.read(
-                                chatNotifierProvider.notifier,
-                              );
+                              ref
+                                  .read(chatNotifierProvider.notifier)
+                                  .addSystemMessage(
+                                    '✅ Documento validado y guardado en '
+                                    '`$normalizedPath`',
+                                  );
 
-                              // Add visible system message showing validation success
-                              chatNotifier.addSystemMessage(
-                                '✅ Documento validado y guardado en `$normalizedPath`',
-                              );
-
-                              // Send hidden prompt to LLM for next step
                               final autoPrompt =
                                   'I have validated and saved the document '
                                   'at `$normalizedPath`. '
@@ -305,11 +299,12 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   'Si necesitas contexto para el siguiente '
                                   'documento, hazme las preguntas necesarias.';
 
-                              // Send with isHidden=true so it doesn't appear as user message
-                              await chatNotifier.sendMessageStream(
-                                autoPrompt,
-                                isHidden: true,
-                              );
+                              await ref
+                                  .read(chatNotifierProvider.notifier)
+                                  .sendMessageStream(
+                                    autoPrompt,
+                                    isHidden: true,
+                                  );
                             } on Exception catch (e) {
                               debugPrint('❌ Error guardando el documento: $e');
                               if (context.mounted) {

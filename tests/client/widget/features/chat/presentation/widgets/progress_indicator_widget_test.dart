@@ -10,9 +10,7 @@ import 'package:softarchitect_ai/features/project_shell/presentation/providers/p
 Widget createTestApp(Widget child, {List<Override>? overrides}) {
   return ProviderScope(
     overrides: overrides ?? [],
-    child: MaterialApp(
-      home: Scaffold(body: child),
-    ),
+    child: MaterialApp(home: Scaffold(body: child)),
   );
 }
 
@@ -24,9 +22,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestApp(
-          const ProgressIndicatorWidget(projectPath: null),
-        ),
+        createTestApp(const ProgressIndicatorWidget(projectPath: null)),
       );
 
       // Should show default empty state
@@ -61,9 +57,9 @@ void main() {
         createTestApp(
           const ProgressIndicatorWidget(projectPath: testProjectPath),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -74,8 +70,14 @@ void main() {
 
       // Should show 0% progress
       expect(find.text('0%'), findsOneWidget);
-      expect(find.text('Generating: ${ProjectPhase.root.name}'), findsOneWidget);
-      expect(find.text('0 / ${ProjectPhase.totalFileCount} docs'), findsOneWidget);
+      expect(
+        find.text('Generating: ${ProjectPhase.root.name}'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('0 / ${ProjectPhase.totalFileCount} docs'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('should display 15% progress when 5 documents created', (
@@ -92,9 +94,9 @@ void main() {
         createTestApp(
           const ProgressIndicatorWidget(projectPath: testProjectPath),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -105,7 +107,10 @@ void main() {
       // Should show 15% progress
       expect(find.text('15%'), findsOneWidget);
       expect(find.text('Generating: Contexto'), findsOneWidget);
-      expect(find.text('5 / ${ProjectPhase.totalFileCount} docs'), findsOneWidget);
+      expect(
+        find.text('5 / ${ProjectPhase.totalFileCount} docs'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('should display 50% progress when half documents created', (
@@ -123,9 +128,9 @@ void main() {
         createTestApp(
           const ProgressIndicatorWidget(projectPath: testProjectPath),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -156,9 +161,9 @@ void main() {
         createTestApp(
           const ProgressIndicatorWidget(projectPath: testProjectPath),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -184,9 +189,9 @@ void main() {
         createTestApp(
           const ProgressIndicatorWidget(projectPath: testProjectPath),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => throw Exception('File read error'),
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => throw Exception('File read error')),
           ],
         ),
       );
@@ -213,9 +218,9 @@ void main() {
         createTestApp(
           const ProgressIndicatorWidget(projectPath: testProjectPath),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => mockProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => mockProgress),
           ],
         ),
       );
@@ -242,9 +247,9 @@ void main() {
         createTestApp(
           const ProgressIndicatorWidget(projectPath: testProjectPath),
           overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => initialProgress,
-            ),
+            projectStatusProvider(
+              testProjectPath,
+            ).overrideWith((ref) async => initialProgress),
           ],
         ),
       );
@@ -260,84 +265,94 @@ void main() {
       // Here we just verify the widget responds to provider data.
     });
 
-    testWidgets('should reactively update when filesystem changes trigger provider refresh', (
-      WidgetTester tester,
-    ) async {
-      // Create a notifier to control the progress state
-      final progressNotifier = ValueNotifier<ProjectProgress>(
-        ProjectProgress(
-          documentosCreados: 5,
-          faseActual: 'Contexto',
-          porcentajeCompletado: 15.6,
-          lastUpdated: DateTime.now(),
-        ),
-      );
+    testWidgets(
+      'should reactively update when filesystem changes trigger provider refresh',
+      (WidgetTester tester) async {
+        // Create a notifier to control the progress state
+        final progressNotifier = ValueNotifier<ProjectProgress>(
+          ProjectProgress(
+            documentosCreados: 5,
+            faseActual: 'Contexto',
+            porcentajeCompletado: 15.6,
+            lastUpdated: DateTime.now(),
+          ),
+        );
 
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            projectStatusProvider(testProjectPath).overrideWith(
-              (ref) async => progressNotifier.value,
-            ),
-          ],
-          child: const MaterialApp(
-            home: Scaffold(
-              body: ProgressIndicatorWidget(projectPath: testProjectPath),
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              projectStatusProvider(
+                testProjectPath,
+              ).overrideWith((ref) async => progressNotifier.value),
+            ],
+            child: const MaterialApp(
+              home: Scaffold(
+                body: ProgressIndicatorWidget(projectPath: testProjectPath),
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      await tester.pump(); // Trigger first frame
-      await tester.pump(); // Let FutureProvider resolve
+        await tester.pump(); // Trigger first frame
+        await tester.pump(); // Let FutureProvider resolve
 
-      // Verify initial state (5 docs, 15%)
-      expect(find.text('15%'), findsOneWidget);
-      expect(find.text('Generating: Contexto'), findsOneWidget);
-      expect(find.text('5 / ${ProjectPhase.totalFileCount} docs'), findsOneWidget);
+        // Verify initial state (5 docs, 15%)
+        expect(find.text('15%'), findsOneWidget);
+        expect(find.text('Generating: Contexto'), findsOneWidget);
+        expect(
+          find.text('5 / ${ProjectPhase.totalFileCount} docs'),
+          findsOneWidget,
+        );
 
-      // Simulate filesystem change: new file created (6 docs now, 18%)
-      progressNotifier.value = ProjectProgress(
-        documentosCreados: 6,
-        faseActual: 'Contexto',
-        porcentajeCompletado: 18.75,
-        lastUpdated: DateTime.now(),
-      );
+        // Simulate filesystem change: new file created (6 docs now, 18%)
+        progressNotifier.value = ProjectProgress(
+          documentosCreados: 6,
+          faseActual: 'Contexto',
+          porcentajeCompletado: 18.75,
+          lastUpdated: DateTime.now(),
+        );
 
-      // Get container and invalidate the provider (simulates filesystem change)
-      final container = ProviderScope.containerOf(
-        tester.element(find.byType(ProgressIndicatorWidget)),
-      );
-      container.invalidate(projectStatusProvider(testProjectPath));
+        // Get container and invalidate the provider (simulates filesystem change)
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(ProgressIndicatorWidget)),
+        );
+        container.invalidate(projectStatusProvider(testProjectPath));
 
-      await tester.pump(); // Trigger rebuild
-      await tester.pump(); // Let FutureProvider resolve
+        await tester.pump(); // Trigger rebuild
+        await tester.pump(); // Let FutureProvider resolve
 
-      // Verify updated state (6 docs, 18%)
-      expect(find.text('18%'), findsOneWidget);
-      expect(find.text('Generating: Contexto'), findsOneWidget);
-      expect(find.text('6 / ${ProjectPhase.totalFileCount} docs'), findsOneWidget);
+        // Verify updated state (6 docs, 18%)
+        expect(find.text('18%'), findsOneWidget);
+        expect(find.text('Generating: Contexto'), findsOneWidget);
+        expect(
+          find.text('6 / ${ProjectPhase.totalFileCount} docs'),
+          findsOneWidget,
+        );
 
-      // Simulate another file created (7 docs now, 21%)
-      progressNotifier.value = ProjectProgress(
-        documentosCreados: 7,
-        faseActual: 'Contexto',
-        porcentajeCompletado: 21.88,
-        lastUpdated: DateTime.now(),
-      );
+        // Simulate another file created (7 docs now, 21%)
+        progressNotifier.value = ProjectProgress(
+          documentosCreados: 7,
+          faseActual: 'Contexto',
+          porcentajeCompletado: 21.88,
+          lastUpdated: DateTime.now(),
+        );
 
-      // Invalidate provider again
-      container.invalidate(projectStatusProvider(testProjectPath));
+        // Invalidate provider again
+        container.invalidate(projectStatusProvider(testProjectPath));
 
-      await tester.pump(); // Trigger rebuild
-      await tester.pump(); // Let FutureProvider resolve
+        await tester.pump(); // Trigger rebuild
+        await tester.pump(); // Let FutureProvider resolve
 
-      // Verify final state (7 docs, 21%)
-      expect(find.text('21%'), findsOneWidget);
-      expect(find.text('7 / ${ProjectPhase.totalFileCount} docs'), findsOneWidget);
+        // Verify final state (7 docs, 21%)
+        expect(find.text('21%'), findsOneWidget);
+        expect(
+          find.text('7 / ${ProjectPhase.totalFileCount} docs'),
+          findsOneWidget,
+        );
 
-      // Clean up
-      progressNotifier.dispose();
-    });
+        // Clean up
+        progressNotifier.dispose();
+      },
+    );
   });
 }

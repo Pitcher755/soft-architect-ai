@@ -828,7 +828,13 @@ void main() {
   group('Context Bleed Prevention & Stream Management', () {
     test('should cancel active stream when changing projects', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
-      fakeRepository.generatedTokens = ['Long', ' ', 'streaming', ' ', 'response'];
+      fakeRepository.generatedTokens = [
+        'Long',
+        ' ',
+        'streaming',
+        ' ',
+        'response',
+      ];
 
       // Start streaming for project A
       await notifier.setProjectPath('/tmp/project-a');
@@ -866,31 +872,38 @@ void main() {
       expect(() => container.dispose(), returnsNormally);
     });
 
-    test('should discard stream events from different project', () async {
-      final notifier = container.read(chatNotifierProvider.notifier);
-      fakeRepository.generatedTokens = ['Token1', ' ', 'Token2'];
+    test(
+      'should discard stream events from different project',
+      () async {
+        final notifier = container.read(chatNotifierProvider.notifier);
+        fakeRepository.generatedTokens = ['Token1', ' ', 'Token2'];
 
-      // Set project A
-      await notifier.setProjectPath('/tmp/project-a');
+        // Set project A
+        await notifier.setProjectPath('/tmp/project-a');
 
-      // Start streaming
-      final streamFuture = notifier.sendMessageStream('Test message');
+        // Start streaming
+        final streamFuture = notifier.sendMessageStream('Test message');
 
-      // Immediately change to project B (simulates rapid project switching)
-      await Future<void>.delayed(const Duration(milliseconds: 10));
-      await notifier.setProjectPath('/tmp/project-b');
+        // Immediately change to project B (simulates rapid project switching)
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+        await notifier.setProjectPath('/tmp/project-b');
 
-      // Wait for original stream to complete
-      await streamFuture.timeout(const Duration(seconds: 5), onTimeout: () {
-        // Stream should be cancelled, timeout is expected
-      });
-      await Future<void>.delayed(const Duration(milliseconds: 200));
+        // Wait for original stream to complete
+        await streamFuture.timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            // Stream should be cancelled, timeout is expected
+          },
+        );
+        await Future<void>.delayed(const Duration(milliseconds: 200));
 
-      // Verify project B state is clean (no messages from project A)
-      final state = container.read(chatNotifierProvider);
-      expect(state.projectPath, '/tmp/project-b');
-      expect(state.messages, isEmpty);
-    }, timeout: const Timeout(Duration(seconds: 10)));
+        // Verify project B state is clean (no messages from project A)
+        final state = container.read(chatNotifierProvider);
+        expect(state.projectPath, '/tmp/project-b');
+        expect(state.messages, isEmpty);
+      },
+      timeout: const Timeout(Duration(seconds: 10)),
+    );
 
     test('should send hidden message without adding to UI', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
@@ -899,10 +912,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       // Send hidden message
-      await notifier.sendMessageStream(
-        'Hidden prompt for LLM',
-        isHidden: true,
-      );
+      await notifier.sendMessageStream('Hidden prompt for LLM', isHidden: true);
 
       // Wait for streaming to complete
       await Future<void>.delayed(const Duration(milliseconds: 200));
@@ -910,10 +920,7 @@ void main() {
       final state = container.read(chatNotifierProvider);
 
       // Should only have AI response, NOT the hidden user message
-      expect(
-        state.messages.where((m) => m.role == MessageRole.user),
-        isEmpty,
-      );
+      expect(state.messages.where((m) => m.role == MessageRole.user), isEmpty);
       expect(
         state.messages.where((m) => m.role == MessageRole.assistant),
         isNotEmpty,
@@ -930,10 +937,7 @@ void main() {
 
       expect(state.messages.length, 1);
       expect(state.messages.first.role, MessageRole.system);
-      expect(
-        state.messages.first.content,
-        contains('Document validated'),
-      );
+      expect(state.messages.first.content, contains('Document validated'));
     });
 
     test('should handle isHidden flag in ChatMessage entity', () {
@@ -979,8 +983,9 @@ void main() {
       state = container.read(chatNotifierProvider);
 
       // Should have messages from second stream, first stream canceled
-      final userMessages =
-          state.messages.where((m) => m.role == MessageRole.user).toList();
+      final userMessages = state.messages
+          .where((m) => m.role == MessageRole.user)
+          .toList();
       expect(userMessages.length, 2);
       expect(userMessages.last.content, 'Second message');
     });

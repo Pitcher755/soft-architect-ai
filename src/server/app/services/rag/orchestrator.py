@@ -27,6 +27,86 @@ class RAGOrchestrator:
         self.template_builder = template_builder
         self.llm_client = llm_client
 
+    def _check_validation_blocker(self, history: list[dict[str, str]]) -> str | None:
+        """
+        RULE-06: Validation Blocker - Enforce document validation before next step.
+
+        Checks if LLM generated a <document> tag without subsequent user validation.
+        This prevents users from proceeding to the next workflow step without
+        validating the current document, saving LLM tokens and enforcing workflow discipline.
+
+        Logic:
+        1. Search history for assistant messages containing '<document>' tag
+        2. For each document found, check if a subsequent user message contains
+           the validation phrase: "He validado y guardado el documento"
+        3. If an unvalidated document is found, return blocking message
+        4. Otherwise, return None (OK to proceed with LLM call)
+
+        Args:
+            history: Chat history with role + content dicts
+
+        Returns:
+            str: Blocking message if validation missing
+            None: If all documents validated or no documents in history
+
+        Example blocking scenario:
+            Assistant: "Here's the document... <document>...</document>"
+            User: "Show me the next step"  # Missing validation!
+            → Returns blocking message, prevents LLM call
+        """
+        if not history or len(history) == 0:
+            return None  # No history, no blocking
+
+        # Track indices of assistant messages with <document> tags
+        document_indices: list[int] = []
+
+        for idx, msg in enumerate(history):
+            content = msg.get("content", "")
+            # Check for both raw <document> and escaped &lt;document&gt; (sanitized version)
+            has_document_tag = ("<document>" in content) or (
+                "&lt;document&gt;" in content
+            )
+
+            if msg.get("role") == "assistant" and has_document_tag:
+                document_indices.append(idx)
+
+        if not document_indices:
+            return None  # No documents in history, no blocking
+
+        # Check if the LAST document has been validated
+        # (Users must validate sequentially, so we only check the most recent)
+        last_doc_index = document_indices[-1]
+
+        # Search for validation message in messages AFTER the last document
+        for msg in history[last_doc_index + 1 :]:
+            if msg.get(
+                "role"
+            ) == "user" and "He validado y guardado el documento" in msg.get(
+                "content", ""
+            ):
+                return None  # Validation found, OK to proceed
+
+        # No validation message found after last document
+        blocking_message = (
+            "⚠️ **Bloqueo de Seguridad Activado (RULE-06)**\n\n"
+            "Detecté que generé un documento en un mensaje anterior, pero aún no has "
+            "pulsado el botón verde **'Validar y Guardar'**.\n\n"
+            "**Por favor:**\n"
+            "1. Revisa el documento propuesto en el mensaje anterior\n"
+            "2. Haz scroll hacia arriba si no lo ves\n"
+            "3. Pulsa el botón verde '✅ Validar y Guardar'\n"
+            "4. Una vez guardado, podrás continuar al siguiente paso\n\n"
+            "Este bloqueo existe para mantener el orden del Master Workflow y evitar "
+            "generar documentos sin validar los anteriores. 🚀"
+        )
+
+        logger.info(
+            "🚨 RULE-06 BLOCKER TRIGGERED: Unvalidated document found at index %d",
+            last_doc_index,
+        )
+
+        return blocking_message
+
     async def process_message(self, request: ChatRequest) -> ChatResponse:
         """Process a chat message through the RAG pipeline.
 
@@ -89,25 +169,36 @@ class RAGOrchestrator:
                 },
             )
 
-        # Template Selection (FALLBACK if sources empty)
+        blocking_message = self._check_validation_blocker(request.history)
+        if blocking_message is not None:
+            logger.info("🚨 Validation blocker triggered, returning early")
+            return ChatResponse(
+                ai_response=blocking_message,
+                template_used="VALIDATION_BLOCKED",
+                sources=[],
+                metadata={
+                    "blocked": True,
+                    "reason": "unvalidated_document",
+                    "rule": "RULE-06",
+                },
+            )
+
         if sources:
             template_id = self.template_builder.select_template(request.project_id)
         else:
-            template_id = "FALLBACK"  # Use general LLM knowledge
+            template_id = "FALLBACK"
             logger.info(
                 "🔄 Using FALLBACK template (RAG degraded)",
                 extra={"template": "FALLBACK", "reason": "no_sources_available"},
             )
 
-        # ✅ Build prompt with RAG context AND chat history
         prompt = self.template_builder.build_prompt(
             query=request.message,
             context=sources,
             template_id=template_id,
-            history=request.history,  # ✅ NEW: Pass chat history
+            history=request.history,
+            user_name=request.user_name,
         )
-
-        # Generate LLM response (GAP 2: retry applied in llm_client)
         try:
             ai_response = await self.llm_client.generate(prompt)
         except LLMConnectionError:
@@ -166,12 +257,40 @@ class RAGOrchestrator:
                 template_id = "FALLBACK"
                 logger.info("🔄 Using FALLBACK template in streaming (RAG degraded)")
 
-            # ✅ Phase 3: Prompt construction with history
+            # ✅ HU-5.0 RULE-06: Check validation blocker BEFORE prompt construction
+            blocking_message = self._check_validation_blocker(request.history)
+            if blocking_message is not None:
+                # Stream blocking message as single event + done (no LLM call)
+                logger.info(
+                    "🚨 Validation blocker triggered in streaming, yielding blocking message"
+                )
+                yield {
+                    "type": "token",
+                    "data": blocking_message,
+                    "is_final": True,
+                }
+                yield {
+                    "type": "done",
+                    "data": {
+                        "full_response": blocking_message,
+                        "sources": [],
+                        "metadata": {
+                            "blocked": True,
+                            "reason": "unvalidated_document",
+                            "rule": "RULE-06",
+                            "template_used": "VALIDATION_BLOCKED",
+                        },
+                    },
+                }
+                return  # Early exit, no LLM call
+
+            # ✅ Phase 3: Prompt construction with history AND user_name (HU-5.0 RULE-09)
             prompt = self.template_builder.build_prompt(
                 query=request.message,
                 context=sources,
                 template_id=template_id,
                 history=request.history,  # ✅ NEW: Pass chat history
+                user_name=request.user_name,  # ✅ HU-5.0: Personalization
             )
 
             # Phase 4: Stream LLM response

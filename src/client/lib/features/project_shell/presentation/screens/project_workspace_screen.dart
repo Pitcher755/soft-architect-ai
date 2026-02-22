@@ -35,10 +35,10 @@ class _ProjectWorkspaceScreenState
   /// Refreshes workspace data by invalidating providers
   void _refreshWorkspace() {
     // Invalidate file system provider to re-scan directories
-    ref.invalidate(fileSystemNotifierProvider);
-
-    // Invalidate projects provider to reload from database
-    ref.invalidate(projectsProvider);
+    ref
+      ..invalidate(fileSystemNotifierProvider)
+      // Invalidate projects provider to reload from database
+      ..invalidate(projectsProvider);
 
     // Show user feedback
     if (mounted) {

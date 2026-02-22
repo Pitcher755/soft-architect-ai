@@ -37,6 +37,14 @@ class ChatRequest(BaseModel):
         json_schema_extra={"examples": ["7c9e6679-7425-40de-944b-e07fc1f90ae7"]},
     )
 
+    # ✅ HU-5.0: User name for prompt personalization (RULE-09)
+    user_name: str = Field(
+        default="Developer",
+        max_length=100,
+        description="User's name for LLM prompt personalization (injected into system instruction)",
+        json_schema_extra={"examples": ["Developer", "Juan", "María", "Alex"]},
+    )
+
     # ✅ NEW: Chat history for conversational context
     history: list[dict[str, str]] = Field(
         default_factory=list,

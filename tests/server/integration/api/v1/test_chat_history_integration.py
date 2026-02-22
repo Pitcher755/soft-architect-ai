@@ -9,7 +9,6 @@ from httpx import ASGITransport, AsyncClient
 from app.api.dependencies import get_rag_orchestrator, verify_api_key
 from app.api.v1 import router as api_v1_router
 
-
 # Create test app with v1 router (includes /api/v1 prefix)
 from fastapi import FastAPI
 

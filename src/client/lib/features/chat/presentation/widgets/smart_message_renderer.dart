@@ -146,18 +146,17 @@ class _DocumentCard extends StatefulWidget {
 }
 
 class _DocumentCardState extends State<_DocumentCard> {
-  // 🔥 LA MEMORIA ABSOLUTA: Aquí guardamos los documentos que ya se han validado.
-  // Al ser 'static', sobrevive a cualquier reconstrucción de Flutter.
   static final Set<int> _validatedDocs = {};
 
   bool _isValidating = false;
 
-  // Comprueba si este documento está en la memoria absoluta
   bool get _isAlreadyValidated =>
       _validatedDocs.contains(widget.content.hashCode);
 
   Future<void> _handleValidation() async {
-    if (_isValidating || _isAlreadyValidated) return;
+    if (_isValidating || _isAlreadyValidated) {
+      return;
+    }
 
     setState(() {
       _isValidating = true;
@@ -176,6 +175,18 @@ class _DocumentCardState extends State<_DocumentCard> {
     if (widget.onSave != null) {
       try {
         await widget.onSave!(extractedPath, cleanContent);
+
+        // ✅ HU-5.0: Show green success SnackBar (visual feedback)
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('✅ Documento validado y guardado con éxito'),
+              backgroundColor: Colors.green.shade600,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
 
         // ✅ AÑADIMOS A LA MEMORIA ESTÁTICA
         _validatedDocs.add(widget.content.hashCode);

@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import AsyncGenerator
 
 import pytest
+from fastapi.testclient import TestClient
 
 # Get the project root (three levels up from this file)
 # File: /path/to/soft-architect-ai/tests/python/conftest.py
@@ -39,6 +40,28 @@ for idx, path in enumerate(paths_to_configure):
 # print(f"\n🔍 PYTEST CONFTEST EXECUTED")
 # for p in paths_to_configure:
 #     print(f"   ✓ {p}")
+
+
+# ========================================================================
+# FASTAPI TEST CLIENT FIXTURE (for smoke tests)
+# ========================================================================
+
+
+@pytest.fixture
+def client():
+    """
+    FastAPI TestClient fixture for smoke tests.
+
+    Provides a test client for making HTTP requests to the API.
+    Used primarily by smoke tests that verify API endpoints.
+
+    Returns:
+        TestClient: Configured FastAPI test client instance.
+    """
+    from app.main import app
+
+    with TestClient(app) as test_client:
+        yield test_client
 
 
 # ========================================================================

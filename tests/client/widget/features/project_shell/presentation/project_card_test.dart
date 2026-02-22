@@ -91,7 +91,11 @@ void main() {
       // Find all Tooltips and verify one has the path
       final tooltips = tester.widgetList<Tooltip>(find.byType(Tooltip));
       final hasPathTooltip = tooltips.any((tooltip) => tooltip.message == path);
-      expect(hasPathTooltip, isTrue, reason: 'Should find tooltip with path: $path');
+      expect(
+        hasPathTooltip,
+        isTrue,
+        reason: 'Should find tooltip with path: $path',
+      );
     });
   });
 }
