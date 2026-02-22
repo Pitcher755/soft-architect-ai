@@ -555,8 +555,7 @@ class ProjectCard extends ConsumerWidget {
                                     style: TextStyle(
                                       fontSize: badgeFontSize,
                                       fontFamily: 'Courier',
-                                      color:
-                                          AppColors.textSecondary.withValues(
+                                      color: AppColors.textSecondary.withValues(
                                         alpha: isMissing ? 0.5 : 1.0,
                                       ),
                                       fontWeight: FontWeight.w500,

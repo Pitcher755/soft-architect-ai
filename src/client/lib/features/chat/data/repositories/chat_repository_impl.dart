@@ -86,15 +86,9 @@ class ChatRepositoryImpl implements ChatRepository {
 
       historyPayload = limitedHistory
           .where((msg) => msg.role.name != 'system')
-          .map(
-            (msg) => {
-              'role': msg.role.name,
-              'content': msg.content,
-            },
-          )
+          .map((msg) => {'role': msg.role.name, 'content': msg.content})
           .toList();
-    } on Exception catch (_) {
-    }
+    } on Exception catch (_) {}
 
     final body = {
       'message': message,
