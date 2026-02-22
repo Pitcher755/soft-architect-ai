@@ -16,21 +16,31 @@ class WorkspaceHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Column(
       children: [
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              '🎯 ${l10n.workspaceSectionTitle}',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFE6EDF3),
-                letterSpacing: -0.5,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              l10n.workspaceSubtitle,
-              style: const TextStyle(fontSize: 12, color: Color(0xFF8b949e)),
+            Image.asset('assets/images/Logo1.png', height: 75),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.workspaceSectionTitle,
+                  style: const TextStyle(
+                    fontSize: 27,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFE6EDF3),
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.workspaceSubtitle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF8b949e),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
