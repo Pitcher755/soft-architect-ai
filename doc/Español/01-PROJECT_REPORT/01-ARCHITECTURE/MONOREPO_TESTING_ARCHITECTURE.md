@@ -189,7 +189,7 @@ cd ../..
 ```yaml
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Ejecutar Todos los Tests
         run: ./run_tests.sh all

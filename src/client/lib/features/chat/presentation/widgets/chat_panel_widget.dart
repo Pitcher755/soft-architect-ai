@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,7 +38,6 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
   late TextEditingController _messageController;
   late ScrollController _scrollController;
 
-  /// Initializes the chat input controller and scroll controller.
   @override
   void initState() {
     super.initState();
@@ -48,7 +45,6 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     _scrollController = ScrollController();
   }
 
-  /// Disposes the chat input and scroll controllers.
   @override
   void dispose() {
     _messageController.dispose();
@@ -61,11 +57,10 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
   void didUpdateWidget(covariant ChatPanelWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Auto-scroll will be handled by listening to state changes
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
-          0, // reverse: true means 0 is the bottom
+          0,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
@@ -82,13 +77,20 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     isStreaming: message.isStreaming,
   );
 
-  /// Builds the chat panel layout including
-  /// error banner, messages, and input area.
   @override
   Widget build(BuildContext context) {
-    // Watch chat state from Riverpod provider
     final chatState = ref.watch(chatNotifierProvider);
-    final messages = chatState.messages.map(_toUIMessage).toList();
+
+    // Ocultamos los mensajes silenciosos del usuario al cargar de SQLite
+    final messages = chatState.messages
+        .where(
+          (m) =>
+              !(m.role == MessageRole.user &&
+                  m.content.trim().startsWith('He validado y guardado')),
+        )
+        .map(_toUIMessage)
+        .toList();
+
     final proposal = chatState.currentProposal;
     final showError = chatState.hasError;
     final errorMessage = chatState.errorMessage ?? '';
@@ -98,11 +100,8 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
       color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
-          // Error banner with readable messages
           if (showError)
             ErrorBannerWidget(message: _getReadableErrorMessage(errorMessage)),
-
-          // Chat messages area wrapped in SelectionArea for text selection
           Expanded(
             child: messages.isEmpty
                 ? _buildEmptyState()
@@ -113,7 +112,6 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                       padding: const EdgeInsets.all(16),
                       itemCount: messages.length + (proposal != null ? 1 : 0),
                       itemBuilder: (context, index) {
-                        // Proposal card at top
                         if (index == messages.length && proposal != null) {
                           return ProposalCardWidget(
                             proposal: proposal,
@@ -123,25 +121,27 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                           );
                         }
 
-                        // Messages
                         final message = messages[messages.length - 1 - index];
                         final chatNotifier = ref.read(
                           chatNotifierProvider.notifier,
                         );
+
                         final isValidated = chatState.validatedMessageIds
                             .contains(message.id);
+
+                        // Evaluamos la condición para mejorar la legibilidad
+                        final isAssistantDoc =
+                            message.role == 'assistant' &&
+                            message.content.startsWith('#') &&
+                            !message.isStreaming;
+
                         return MessageBubbleWidget(
-                          key: ValueKey(
-                            message.id,
-                          ), // ✅ Preserva estado entre rebuilds
+                          key: ValueKey(message.id),
                           message: message,
                           messageController: _messageController,
                           userName: userName,
                           isValidated: isValidated,
-                          onValidate:
-                              message.role == 'assistant' &&
-                                  message.content.startsWith('#') &&
-                                  !message.isStreaming
+                          onValidate: isAssistantDoc
                               ? () => chatNotifier.validateProposal(message.id)
                               : null,
                         );
@@ -149,32 +149,31 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                     ),
                   ),
           ),
-
-          // Input area using professional chat input widget
           ChatInputWidget(
             controller: _messageController,
             onSend: (text) {
               ref.read(chatNotifierProvider.notifier).sendMessageStream(text);
             },
-            hintText: 'Proporciona retroalimentación o contexto adicional...',
+            hintText: 'Proporciona retroalimentación o contexto...',
           ),
         ],
       ),
     );
   }
 
-  /// Converts raw error messages into user-friendly messages.
   String _getReadableErrorMessage(String rawError) {
     final lowerError = rawError.toLowerCase();
 
     if (lowerError.contains('connection refused') ||
         lowerError.contains('failed host lookup') ||
         lowerError.contains('network unreachable')) {
-      return '⚠️ No se puede conectar con el servidor. ¿Está Docker encendido?';
+      return '⚠️ No se puede conectar con el servidor. '
+          '¿Está Docker encendido?';
     }
 
     if (lowerError.contains('http 400') || lowerError.contains('bad request')) {
-      return '⚠️ Error de configuración de IA. Verifica las variables de entorno.';
+      return '⚠️ Error de configuración de IA. '
+          'Verifica las variables de entorno.';
     }
 
     if (lowerError.contains('http 401') ||
@@ -187,7 +186,8 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     }
 
     if (lowerError.contains('http 404') || lowerError.contains('not found')) {
-      return '⚠️ Servicio no encontrado. Verifica la configuración del servidor.';
+      return '⚠️ Servicio no encontrado. '
+          'Verifica la configuración del servidor.';
     }
 
     if (lowerError.contains('http 500') ||
@@ -204,8 +204,6 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
       return '⚠️ Has excedido el límite de peticiones. Espera un momento.';
     }
 
-    // Si no coincide con ningún patrón conocido, devolver el mensaje original
-    // pero truncado si es muy largo
     if (rawError.length > 100) {
       return '⚠️ ${rawError.substring(0, 97)}...';
     }
@@ -213,14 +211,18 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     return rawError;
   }
 
-  /// Builds the empty state widget for the chat panel.
   Widget _buildEmptyState() {
     final title = widget.isGuideProject
         ? '📚 Asistente de Documentación'
         : '🎯 SoftArchitect AI Chat';
+
     final subtitle = widget.isGuideProject
-        ? '¡Bienvenido! Este es tu manual de instrucciones de SoftArchitect.\n¿No encuentras lo que buscas en los documentos? ¡Pregúntame lo que necesites!'
-        : 'Dime cuál es tu idea para este proyecto y le daremos forma.\nJuntos documentaremos todo el proceso.';
+        ? '¡Bienvenido! Este es tu manual de instrucciones de SoftArchitect.\n'
+              '¿No encuentras lo que buscas en los documentos? '
+              '¡Pregúntame lo que necesites!'
+        : 'Dime cuál es tu idea para este proyecto y le daremos forma.\n'
+              'Juntos documentaremos todo el proceso.';
+
     final icon = widget.isGuideProject
         ? Icons.help_outline
         : Icons.chat_outlined;

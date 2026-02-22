@@ -136,3 +136,4 @@ infrastructure/chroma_data/*.sqlite3-shm
 
 # Temporales
 hoja_ruta.md
+presentation/slides.pdf

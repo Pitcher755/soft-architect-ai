@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoftArchitect AI | De la Idea a la Arquitectura</title>
+
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#0B101E',
+                        surface: '#111827',
+                        electric: '#3B82F6',
+                        phaseContext: '#FBBF24',
+                        phaseReq: '#34D399',
+                        phaseArch: '#2DD4BF',
+                        phaseUX: '#F472B6',
+                        phasePlan: '#A78BFA',
+                        phaseRoot: '#94A3B8',
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .glow-filter {
+            filter: blur(80px);
+            opacity: 0.2;
+        }
+
+        .dark .glow-filter {
+            opacity: 0.15;
+        }
+
+        .card-border {
+            border: 1px solid #E2E8F0;
+        }
+
+        .dark .card-border {
+            border: 1px solid #334155;
+        }
+
+        .ambilight-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ambilight-glow {
+            position: absolute;
+            inset: 0;
+            filter: blur(25px);
+            opacity: 0.3;
+            z-index: -1;
+            transform: scale(0.95);
+        }
+
+        .dark .ambilight-glow {
+            opacity: 0.4;
+        }
+
+        @keyframes bounce-slow {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        .animate-scroll {
+            animation: bounce-slow 2s infinite;
+        }
+
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark .lightbox-modal {
+            background-color: rgba(11, 16, 30, 0.95);
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-nav,
+        .lightbox-close {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #E2E8F0;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10000;
+        }
+
+        .dark .lightbox-nav,
+        .dark .lightbox-close {
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid #334155;
+        }
+
+        .lightbox-nav {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3B82F6;
+        }
+
+        .dark .lightbox-nav:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        .lightbox-close {
+            top: 20px;
+            right: 20px;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #EF4444;
+        }
+
+        .dark .lightbox-close:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .screenshot.border-blue {
+            border-color: #3B82F6 !important;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4), 0 0 24px rgba(59, 130, 246, 0.2);
+        }
+
+        .screenshot.border-purple {
+            border-color: #8B5CF6 !important;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.4), 0 0 24px rgba(139, 92, 246, 0.2);
+        }
+
+        .screenshot.border-orange {
+            border-color: #F97316 !important;
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.4), 0 0 24px rgba(249, 115, 22, 0.2);
+        }
+
+        .screenshot.border-pink {
+            border-color: #EC4899 !important;
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.4), 0 0 24px rgba(236, 72, 153, 0.2);
+        }
+
+        .screenshot.border-violet {
+            border-color: #7C3AED !important;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.4), 0 0 24px rgba(124, 58, 237, 0.2);
+        }
+
+        .screenshot.border-cyan {
+            border-color: #06B6D4 !important;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4), 0 0 24px rgba(6, 182, 212, 0.2);
+        }
+
+        .dark .screenshot.border-blue {
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.6), 0 0 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .dark .screenshot.border-purple {
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.6), 0 0 24px rgba(139, 92, 246, 0.3);
+        }
+
+        .dark .screenshot.border-orange {
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.6), 0 0 24px rgba(249, 115, 22, 0.3);
+        }
+
+        .dark .screenshot.border-pink {
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.6), 0 0 24px rgba(236, 72, 153, 0.3);
+        }
+
+        .dark .screenshot.border-violet {
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.6), 0 0 24px rgba(124, 58, 237, 0.3);
+        }
+
+        .dark .screenshot.border-cyan {
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.6), 0 0 24px rgba(6, 182, 212, 0.3);
+        }
+
+        .lightbox-image.color-blue {
+            border: 2px solid #3B82F6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .lightbox-image.color-purple {
+            border: 2px solid #8B5CF6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+
+        .lightbox-image.color-orange {
+            border: 2px solid #F97316;
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
+        }
+
+        .lightbox-image.color-pink {
+            border: 2px solid #EC4899;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+        }
+
+        .lightbox-image.color-violet {
+            border: 2px solid #7C3AED;
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
+        }
+
+        .lightbox-image.color-cyan {
+            border: 2px solid #06B6D4;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        .screenshot:hover {
+            cursor: pointer;
+            transform: translateY(-4px);
+            transition: transform 0.3s ease;
+        }
+
+        .screenshot .ambilight-glow {
+            filter: blur(40px);
+            opacity: 0.4;
+        }
+
+        .dark .screenshot .ambilight-glow {
+            opacity: 0.6;
+        }
+
+        .screenshot:hover .ambilight-glow {
+            opacity: 0.6;
+        }
+
+        .dark .screenshot:hover .ambilight-glow {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body
+    class="antialiased bg-slate-50 dark:bg-midnight text-slate-900 dark:text-[#F8FAFC] transition-colors duration-300">
+
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div id="hero-glow" class="absolute -top-24 -left-24 w-96 h-96 bg-electric glow-filter"></div>
+    </div>
+
+    <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 z-10">
+        <nav class="absolute top-8 flex justify-between w-full max-w-6xl px-6 items-center">
+            <div class="flex items-center gap-3">
+                <img src="assets/Logo.png" alt="Logo" class="w-20 h-20 md:w-32 md:h-32 object-contain">
+                <span class="font-bold text-xl tracking-tighter uppercase">SOFTARCHITECT <span
+                        class="text-electric">AI</span></span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" type="button"
+                    class="text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full text-sm p-2 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                            fill-rule="evenodd" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <a href="#demo"
+                    class="text-sm font-semibold border border-slate-300 dark:border-slate-700 px-4 py-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition">Ver
+                    Demo</a>
+            </div>
+        </nav>
+
+        <div
+            class="text-electric font-semibold tracking-widest uppercase mb-4 text-sm bg-blue-500/10 px-4 py-1 rounded-full border border-blue-500/20">
+            Trabajo de Fin de Máster</div>
+        <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold text-center leading-tight">
+            Diseña software <br><span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-electric to-phaseArch">sin fricción.</span>
+        </h1>
+        <p id="hero-slogan"
+            class="mt-6 text-lg md:text-2xl text-slate-600 dark:text-slate-400 text-center max-w-3xl font-light">
+            Tu Arquitecto de Software Local: De una idea vaga a la arquitectura completa antes de escribir la primera
+            línea de código.
+        </p>
+        <div class="mt-10 flex flex-col items-center gap-12">
+            <div class="flex gap-4">
+                <a href="#master-workflow"
+                    class="bg-electric text-white hover:bg-blue-600 px-8 py-4 rounded-lg font-bold transition-all shadow-lg shadow-blue-500/20">Descubrir
+                    Workflow</a>
+                <a href="https://github.com/Pitcher755/soft-architect-ai" target="_blank"
+                    class="bg-white dark:bg-surface border border-slate-300 dark:border-slate-700 px-8 py-4 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition">GitHub
+                    Repo</a>
+            </div>
+            <div class="animate-scroll flex flex-col items-center gap-2 opacity-40 dark:opacity-30 mt-8">
+                <span class="text-xs tracking-widest uppercase text-slate-500 dark:text-slate-400">Scroll</span>
+                <div class="w-px h-12 bg-gradient-to-b from-electric to-transparent"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 relative z-10 max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-12">
+            <div
+                class="reveal-left p-8 rounded-2xl bg-white dark:bg-red-500/5 border border-red-200 dark:border-red-500/20 shadow-[0_0_30px_rgba(239,68,68,0.05)]">
+                <h3
+                    class="text-red-500 dark:text-red-400 font-bold mb-4 uppercase tracking-widest text-sm flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                    El Abismo del Diseño
+                </h3>
+                <p class="text-2xl font-semibold text-slate-900 dark:text-white">El lienzo en blanco detiene la
+                    innovación.</p>
+                <ul class="mt-6 space-y-4 text-slate-600 dark:text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <span class="text-red-500 mt-1">✗</span>
+                        <div><strong class="text-slate-800 dark:text-slate-300">Parálisis de definición:</strong> El 60%
+                            de los proyectos de software sufren severos retrasos en la fase de concepción inicial.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-red-500 mt-1">✗</span>
+                        <div><strong class="text-slate-800 dark:text-slate-300">Desconexión técnica:</strong>
+                            Documentación estática e historias de usuario que rara vez reflejan la realidad de la
+                            arquitectura.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-red-500 mt-1">✗</span>
+                        <div><strong class="text-slate-800 dark:text-slate-300">Privacidad Comprometida:</strong> Usar
+                            IAs en la nube (OpenAI/Anthropic) expone propiedad intelectual corporativa y bases de datos
+                            sensibles.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div
+                class="reveal-right p-8 rounded-2xl bg-white dark:bg-phaseReq/5 border border-emerald-200 dark:border-phaseReq/20 shadow-[0_0_30px_rgba(52,211,153,0.05)]">
+                <h3
+                    class="text-emerald-600 dark:text-phaseReq font-bold mb-4 uppercase tracking-widest text-sm flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    La Solución: SoftArchitect
+                </h3>
+                <p class="text-2xl font-semibold text-slate-900 dark:text-white">IA Local que orquesta el diseño.</p>
+                <ul class="mt-6 space-y-4 text-slate-600 dark:text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <span class="text-emerald-500 dark:text-phaseReq mt-1">✓</span>
+                        <div><strong class="text-slate-800 dark:text-slate-300">Diseño dirigido por IA:</strong> Una
+                            plataforma híbrida diseñada para arquitectos. Orquestación paso a paso mediante prompts en
+                            cadena.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-emerald-500 dark:text-phaseReq mt-1">✓</span>
+                        <div><strong class="text-slate-800 dark:text-slate-300">Privacidad 100% Local:</strong> Un LLM
+                            ejecutándose íntegramente en el hardware o infraestructura del usuario. Los datos nunca
+                            salen de tu red.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-emerald-500 dark:text-phaseReq mt-1">✓</span>
+                        <div><strong class="text-slate-800 dark:text-slate-300">Salida Estandarizada:</strong>
+                            Generación automatizada de 24 documentos técnicos (C4, Historias JSON, Flujos UI) listos
+                            para desarrollo.</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section
+        class="py-24 bg-slate-100/50 dark:bg-surface/50 relative overflow-hidden border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold mb-4">Arquitectura Técnica Híbrida</h2>
+                <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">Una combinación de rendimiento nativo en
+                    cliente y potencia de cálculo asíncrona en el servidor.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-around gap-8">
+                <div
+                    class="arch-node w-72 bg-white dark:bg-surface card-border rounded-xl flex flex-col items-center text-center p-8 relative overflow-hidden">
+                    <div class="absolute top-0 w-full h-1 bg-blue-500"></div>
+                    <div
+                        class="w-16 h-16 bg-blue-100 dark:bg-blue-500/20 rounded-xl mb-6 flex items-center justify-center border border-blue-200 dark:border-blue-500/50">
+                        <svg class="w-8 h-8 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Frontend Flutter</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Aplicación Desktop (Linux/Web) con Riverpod.
+                        Velocidad nativa, gestión de caché y renderizado UI ultra fluido.</p>
+                </div>
+
+                <div class="hidden md:flex flex-col items-center justify-center">
+                    <div class="h-px w-16 bg-slate-300 dark:bg-slate-600 mb-1"></div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-widest">SSE / REST</span>
+                </div>
+
+                <div
+                    class="arch-node w-72 bg-white dark:bg-surface card-border rounded-xl flex flex-col items-center text-center p-8 relative overflow-hidden shadow-[0_0_40px_-10px_rgba(45,212,191,0.15)] dark:shadow-[0_0_40px_-10px_rgba(45,212,191,0.3)]">
+                    <div class="absolute top-0 w-full h-1 bg-phaseArch"></div>
+                    <div
+                        class="w-16 h-16 bg-teal-50 dark:bg-phaseArch/20 rounded-xl mb-6 flex items-center justify-center border border-teal-200 dark:border-phaseArch/50">
+                        <svg class="w-8 h-8 text-teal-600 dark:text-phaseArch" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01">
+                            </path>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Python FastAPI</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Orquestador de lógica. Gestión de estado,
+                        streaming de tokens en tiempo real y ejecución asíncrona.</p>
+                </div>
+
+                <div class="hidden md:flex flex-col items-center justify-center">
+                    <div class="h-px w-16 bg-slate-300 dark:bg-slate-600 mb-1"></div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-widest">LangChain</span>
+                </div>
+
+                <div
+                    class="arch-node w-72 bg-white dark:bg-surface card-border rounded-xl flex flex-col items-center text-center p-8 relative overflow-hidden">
+                    <div class="absolute top-0 w-full h-1 bg-phasePlan"></div>
+                    <div
+                        class="w-16 h-16 bg-purple-50 dark:bg-phasePlan/20 rounded-xl mb-6 flex items-center justify-center border border-purple-200 dark:border-phasePlan/50">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-phasePlan" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-xl mb-2 text-slate-900 dark:text-white">Motor AI & RAG</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400"><strong
+                            class="text-slate-800 dark:text-slate-300">Llama 3 (8B/70B):</strong> Razonamiento
+                        avanzado.<br><strong class="text-slate-800 dark:text-slate-300">ChromaDB:</strong> Base de datos
+                        vectorial para inyección de contexto histórico.</p>
+                </div>
+            </div>
+
+            <div
+                class="mt-20 max-w-4xl mx-auto bg-gradient-to-r from-white to-slate-50 dark:from-surface dark:to-midnight border border-slate-200 dark:border-slate-700 rounded-2xl p-8 reveal-up relative overflow-hidden shadow-xl shadow-slate-200/50 dark:shadow-none">
+                <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-electric glow-filter opacity-10 dark:opacity-30">
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold mb-3 text-slate-900 dark:text-white flex items-center gap-2">
+                            <span class="text-electric">⚡</span> El Corazón del Sistema: RAG
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">El modelo de lenguaje no parte de cero.
+                            Utiliza <strong class="text-slate-900 dark:text-white">Retrieval-Augmented Generation
+                                (RAG)</strong> para acceder a una base de conocimiento especializada.</p>
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-2">
+                            <li class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-electric"></div>
+                                <span>Inyección estricta de plantillas en el prompt.</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-electric"></div>
+                                <span>Arquitectura Limpia forzada (Hexagonal, Microservicios).</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-electric"></div>
+                                <span><strong class="text-slate-800 dark:text-slate-300">Resultado:</strong> Cero
+                                    alucinaciones. Adherencia total a los estándares de la industria del
+                                    software.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 relative z-10 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-extrabold mb-4 text-center">Interfaz de Usuario</h2>
+        <p class="text-slate-600 dark:text-slate-400 text-center mb-16 max-w-2xl mx-auto">Un entorno de desarrollo
+            familiar con previsualización en tiempo real de Markdown, diagramas Mermaid y explorador de archivos
+            integrado.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="screenshot reveal-up ambilight-wrapper group border-blue" data-index="0">
+                <img src="assets/screenshots/screen1.png" class="ambilight-glow" alt="">
+                <img src="assets/screenshots/screen1.png" class="rounded-lg border border-blue shadow-2xl relative z-10"
+                    alt="Vista del Proyecto 1">
+            </div>
+            <div class="screenshot reveal-up ambilight-wrapper group border-purple" data-index="1">
+                <img src="assets/screenshots/screen2.png" class="ambilight-glow" alt="">
+                <img src="assets/screenshots/screen2.png"
+                    class="rounded-lg border border-purple shadow-2xl relative z-10" alt="Vista del Proyecto 2">
+            </div>
+            <div class="screenshot reveal-up ambilight-wrapper group border-orange" data-index="2">
+                <img src="assets/screenshots/screen3.png" class="ambilight-glow" alt="">
+                <img src="assets/screenshots/screen3.png"
+                    class="rounded-lg border border-orange shadow-2xl relative z-10" alt="Vista del Proyecto 3">
+            </div>
+            <div class="screenshot reveal-up ambilight-wrapper group border-pink" data-index="3">
+                <img src="assets/screenshots/screen4.png" class="ambilight-glow" alt="">
+                <img src="assets/screenshots/screen4.png" class="rounded-lg border border-pink shadow-2xl relative z-10"
+                    alt="Vista del Proyecto 4">
+            </div>
+            <div class="screenshot reveal-up ambilight-wrapper group border-violet" data-index="4">
+                <img src="assets/screenshots/screen5.png" class="ambilight-glow" alt="">
+                <img src="assets/screenshots/screen5.png"
+                    class="rounded-lg border border-violet shadow-2xl relative z-10" alt="Vista del Proyecto 5">
+            </div>
+            <div class="screenshot reveal-up ambilight-wrapper group border-cyan" data-index="5">
+                <img src="assets/screenshots/screen6.png" class="ambilight-glow" alt="">
+                <img src="assets/screenshots/screen6.png" class="rounded-lg border border-cyan shadow-2xl relative z-10"
+                    alt="Vista del Proyecto 6">
+            </div>
+        </div>
+    </section>
+
+    <section id="master-workflow" class="py-32 px-6 max-w-5xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-extrabold mb-4">El Workflow</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-lg">La IA guía al usuario a través de 6 hitos
+                fundamentales para construir la documentación.</p>
+        </div>
+
+        <div class="space-y-6">
+            <div class="phase-card group p-8 rounded-2xl bg-white dark:bg-surface card-border relative overflow-hidden transition-all duration-500 hover:border-phaseContext cursor-pointer"
+                data-active-border="border-phaseContext">
+                <div
+                    class="absolute -right-20 -top-20 w-40 h-40 bg-phaseContext glow-filter group-hover:opacity-40 transition-opacity">
+                </div>
+                <div class="flex items-start gap-6 relative z-10">
+                    <span class="text-phaseContext font-black text-4xl mt-1">01</span>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">10-CONTEXT</h4>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Definición de objetivos, visión de negocio,
+                            lenguaje del dominio y viaje del usuario.</p>
+                    </div>
+                </div>
+                <div class="phase-content h-0 opacity-0 overflow-hidden relative z-10">
+                    <div class="pt-6">
+                        <div class="h-px w-full bg-slate-200 dark:bg-slate-800 mb-6"></div>
+                        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseContext shadow-[0_0_8px_#FBBF24]"></span>
+                                <span class="truncate">PROJECT_MANIFESTO.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseContext shadow-[0_0_8px_#FBBF24]"></span>
+                                <span class="truncate">DOMAIN_LANGUAGE.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseContext shadow-[0_0_8px_#FBBF24]"></span>
+                                <span class="truncate">USER_JOURNEY_MAP.md</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-card group p-8 rounded-2xl bg-white dark:bg-surface card-border relative overflow-hidden transition-all duration-500 hover:border-phaseReq cursor-pointer"
+                data-active-border="border-phaseReq">
+                <div
+                    class="absolute -right-20 -top-20 w-40 h-40 bg-phaseReq glow-filter group-hover:opacity-40 transition-opacity">
+                </div>
+                <div class="flex items-start gap-6 relative z-10">
+                    <span class="text-phaseReq font-black text-4xl mt-1">02</span>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">20-REQUIREMENTS</h4>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Especificaciones técnicas, historias de
+                            usuario estructuradas en JSON y políticas de seguridad.</p>
+                    </div>
+                </div>
+                <div class="phase-content h-0 opacity-0 overflow-hidden relative z-10">
+                    <div class="pt-6">
+                        <div class="h-px w-full bg-slate-200 dark:bg-slate-800 mb-6"></div>
+                        <ul class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseReq shadow-[0_0_8px_#34D399]"></span>
+                                <span class="truncate">REQUIREMENTS_MASTER.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseReq shadow-[0_0_8px_#34D399]"></span>
+                                <span class="truncate">USER_STORIES_MASTER.json</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseReq shadow-[0_0_8px_#34D399]"></span>
+                                <span class="truncate">SECURITY_PRIVACY_POLICY.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseReq shadow-[0_0_8px_#34D399]"></span>
+                                <span class="truncate">COMPLIANCE_MATRIX.md</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-card group p-8 rounded-2xl bg-white dark:bg-surface card-border relative overflow-hidden transition-all duration-500 hover:border-phaseArch cursor-pointer"
+                data-active-border="border-phaseArch">
+                <div
+                    class="absolute -right-20 -top-20 w-40 h-40 bg-phaseArch glow-filter group-hover:opacity-40 transition-opacity">
+                </div>
+                <div class="flex items-start gap-6 relative z-10">
+                    <span class="text-phaseArch font-black text-4xl mt-1">03</span>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">30-ARCHITECTURE</h4>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Estructura del sistema, diagrama de
+                            directorios (`tree`), modelo de datos y contratos de APIs.</p>
+                    </div>
+                </div>
+                <div class="phase-content h-0 opacity-0 overflow-hidden relative z-10">
+                    <div class="pt-6">
+                        <div class="h-px w-full bg-slate-200 dark:bg-slate-800 mb-6"></div>
+                        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></span>
+                                <span class="truncate">TECH_STACK_DECISION.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></span>
+                                <span class="truncate">PROJECT_STRUCTURE_MAP.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></span>
+                                <span class="truncate">DATA_MODEL_SCHEMA.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></span>
+                                <span class="truncate">API_INTERFACE_CONTRACT.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></span>
+                                <span class="truncate">SECURITY_THREAT_MODEL.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></span>
+                                <span class="truncate">ARCH_DECISION_RECORDS.md</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-card group p-8 rounded-2xl bg-white dark:bg-surface card-border relative overflow-hidden transition-all duration-500 hover:border-phaseUX cursor-pointer"
+                data-active-border="border-phaseUX">
+                <div
+                    class="absolute -right-20 -top-20 w-40 h-40 bg-phaseUX glow-filter group-hover:opacity-40 transition-opacity">
+                </div>
+                <div class="flex items-start gap-6 relative z-10">
+                    <span class="text-phaseUX font-black text-4xl mt-1">04</span>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">35-UX_UI</h4>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Diseño visual, paletas de colores (HEX),
+                            flujos de usuario y guías de accesibilidad.</p>
+                    </div>
+                </div>
+                <div class="phase-content h-0 opacity-0 overflow-hidden relative z-10">
+                    <div class="pt-6">
+                        <div class="h-px w-full bg-slate-200 dark:bg-slate-800 mb-6"></div>
+                        <ul class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseUX shadow-[0_0_8px_#F472B6]"></span>
+                                <span class="truncate">DESIGN_SYSTEM.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseUX shadow-[0_0_8px_#F472B6]"></span>
+                                <span class="truncate">UI_WIREFRAMES_FLOW.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseUX shadow-[0_0_8px_#F472B6]"></span>
+                                <span class="truncate">ACCESSIBILITY_GUIDE.md</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-card group p-8 rounded-2xl bg-white dark:bg-surface card-border relative overflow-hidden transition-all duration-500 hover:border-phasePlan cursor-pointer"
+                data-active-border="border-phasePlan">
+                <div
+                    class="absolute -right-20 -top-20 w-40 h-40 bg-phasePlan glow-filter group-hover:opacity-40 transition-opacity">
+                </div>
+                <div class="flex items-start gap-6 relative z-10">
+                    <span class="text-phasePlan font-black text-4xl mt-1">05</span>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">40-PLANNING</h4>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Planificación de Sprints, estrategia de
+                            CI/CD, infraestructura y DevOps.</p>
+                    </div>
+                </div>
+                <div class="phase-content h-0 opacity-0 overflow-hidden relative z-10">
+                    <div class="pt-6">
+                        <div class="h-px w-full bg-slate-200 dark:bg-slate-800 mb-6"></div>
+                        <ul class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phasePlan shadow-[0_0_8px_#A78BFA]"></span>
+                                <span class="truncate">ROADMAP_PHASES.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phasePlan shadow-[0_0_8px_#A78BFA]"></span>
+                                <span class="truncate">DEPLOYMENT_INFRASTRUCTURE.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phasePlan shadow-[0_0_8px_#A78BFA]"></span>
+                                <span class="truncate">CI_CD_PIPELINE.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phasePlan shadow-[0_0_8px_#A78BFA]"></span>
+                                <span class="truncate">TESTING_STRATEGY.md</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-card group p-8 rounded-2xl bg-white dark:bg-surface card-border relative overflow-hidden transition-all duration-500 hover:border-phaseRoot cursor-pointer"
+                data-active-border="border-phaseRoot">
+                <div
+                    class="absolute -right-20 -top-20 w-40 h-40 bg-phaseRoot glow-filter group-hover:opacity-40 transition-opacity">
+                </div>
+                <div class="flex items-start gap-6 relative z-10">
+                    <span class="text-phaseRoot font-black text-4xl mt-1">06</span>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">00-ROOT</h4>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Generación de archivos núcleo del repositorio
+                            y orquestación final.</p>
+                    </div>
+                </div>
+                <div class="phase-content h-0 opacity-0 overflow-hidden relative z-10">
+                    <div class="pt-6">
+                        <div class="h-px w-full bg-slate-200 dark:bg-slate-800 mb-6"></div>
+                        <ul class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseRoot shadow-[0_0_8px_#94A3B8]"></span>
+                                <span class="truncate">RULES.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseRoot shadow-[0_0_8px_#94A3B8]"></span>
+                                <span class="truncate">CONTRIBUTING.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseRoot shadow-[0_0_8px_#94A3B8]"></span>
+                                <span class="truncate">AGENTS.md</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-midnight px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+                                <span
+                                    class="w-2 h-2 rounded-full flex-shrink-0 bg-phaseRoot shadow-[0_0_8px_#94A3B8]"></span>
+                                <span class="truncate">README.md</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div
+            class="mt-12 p-8 rounded-2xl bg-slate-100 dark:bg-midnight border border-slate-200 dark:border-slate-800 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="workflow-stat">
+                <div class="text-3xl font-black text-electric mb-1">24</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">Documentos</div>
+            </div>
+            <div class="workflow-stat">
+                <div class="text-3xl font-black text-phaseReq mb-1">&lt;15m</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">Tiempo de Setup</div>
+            </div>
+            <div class="workflow-stat border-l border-slate-200 dark:border-slate-800">
+                <div class="text-3xl font-black text-phaseArch mb-1">100%</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">Offline</div>
+            </div>
+            <div class="workflow-stat border-l border-slate-200 dark:border-slate-800">
+                <div class="text-3xl font-black text-phasePlan mb-1">LLM</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">Orquestado</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="py-32 bg-slate-200 dark:bg-black relative">
+        <div
+            class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-200/50 via-slate-200 to-slate-200 dark:from-blue-900/20 dark:via-black dark:to-black pointer-events-none">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+            <div
+                class="inline-block bg-blue-100 dark:bg-blue-500/10 border border-blue-300 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 px-4 py-1 rounded-full text-sm font-bold mb-6">
+                Demostración en vídeo</div>
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-slate-900 dark:text-white">El Arquitecto en Acción
+            </h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-12 text-lg max-w-2xl mx-auto">Vemos un proceso de generación
+                completo (0 a 100) simulando la arquitectura para un sistema de E-commerce.</p>
+
+            <div
+                class="relative rounded-3xl overflow-hidden border-4 border-slate-300 dark:border-slate-800 shadow-[0_0_50px_rgba(59,130,246,0.1)] dark:shadow-[0_0_50px_rgba(59,130,246,0.15)]">
+                <video class="w-full aspect-video object-cover" controls
+                    poster="https://via.placeholder.com/1920x1080/0B101E/FFFFFF?text=SoftArchitect+Demo+Preview">
+                    <source src="assets/workflow-demo.mp4" type="video/mp4">
+                    Tu navegador no soporta el formato de vídeo.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 max-w-6xl mx-auto">
+        <h2 class="text-4xl font-extrabold mb-16 text-center">Conclusiones y Siguientes Pasos</h2>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div
+                class="reveal-left bg-white dark:bg-surface border border-slate-200 dark:border-slate-700 p-8 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-none">
+                <div
+                    class="w-12 h-12 bg-blue-100 dark:bg-electric/20 rounded-full flex items-center justify-center mb-6">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-electric" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Estado Actual (MVP)</h3>
+                <p class="text-slate-600 dark:text-slate-400 mb-6">El producto es plenamente funcional y ha demostrado
+                    su viabilidad técnica durante el desarrollo del TFM.</p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                        <div class="w-2 h-2 rounded-full bg-electric"></div>
+                        Generación secuencial de 24 documentos.
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                        <div class="w-2 h-2 rounded-full bg-electric"></div>
+                        Persistencia local en base de datos SQLite.
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                        <div class="w-2 h-2 rounded-full bg-electric"></div>
+                        Compatibilidad con arquitecturas Clean y Microservicios.
+                    </li>
+                </ul>
+            </div>
+
+            <div
+                class="reveal-right bg-white dark:bg-surface border border-slate-200 dark:border-slate-700 p-8 rounded-2xl relative overflow-hidden shadow-lg shadow-slate-200/50 dark:shadow-none">
+                <div
+                    class="absolute -right-10 -bottom-10 w-40 h-40 bg-phaseArch glow-filter opacity-10 dark:opacity-20">
+                </div>
+                <div
+                    class="w-12 h-12 bg-teal-50 dark:bg-phaseArch/20 rounded-full flex items-center justify-center mb-6 relative z-10">
+                    <svg class="w-6 h-6 text-teal-600 dark:text-phaseArch" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 relative z-10 text-slate-900 dark:text-white">Roadmap y Backlog</h3>
+                <p class="text-slate-600 dark:text-slate-400 mb-6 relative z-10">El sistema tiene un margen de evolución
+                    masivo para convertirse en una herramienta indispensable.</p>
+                <ul class="space-y-3 relative z-10">
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                        <div
+                            class="w-2 h-2 rounded-full border border-teal-500 dark:border-phaseArch bg-teal-500 dark:bg-transparent">
+                        </div>
+                        <strong>Scaffolding Automático:</strong> Exportación directa a código real.
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                        <div
+                            class="w-2 h-2 rounded-full border border-teal-500 dark:border-phaseArch bg-teal-500 dark:bg-transparent">
+                        </div>
+                        <strong>Sincronización Ágil:</strong> Integración de historias con Jira / GitHub Issues.
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                        <div
+                            class="w-2 h-2 rounded-full border border-teal-500 dark:border-phaseArch bg-teal-500 dark:bg-transparent">
+                        </div>
+                        <strong>Modelos Multimodales:</strong> Capacidad para interpretar bocetos UI hechos a mano.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" class="lightbox-modal">
+        <div class="lightbox-close" onclick="closeLightbox()"><svg class="w-6 h-6 text-slate-800 dark:text-white"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg></div>
+        <div class="lightbox-nav lightbox-prev" onclick="changeImage(-1)"><svg
+                class="w-6 h-6 text-slate-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg></div>
+        <div class="lightbox-content"><img id="lightbox-image" class="lightbox-image" src="" alt=""></div>
+        <div class="lightbox-nav lightbox-next" onclick="changeImage(1)"><svg
+                class="w-6 h-6 text-slate-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg></div>
+    </div>
+
+    <footer
+        class="py-16 border-t border-slate-200 dark:border-slate-800 text-center bg-slate-100 dark:bg-surface transition-colors duration-300">
+        <div class="text-xl font-bold mb-2 text-slate-900 dark:text-white">¿Preguntas?</div>
+        <p class="text-slate-500 dark:text-slate-400 italic mb-8">"Orquestando el diseño de software con Inteligencia
+            Artificial."</p>
+        <p class="text-slate-600 dark:text-slate-500 mb-6 text-sm">Trabajo de Fin de Máster - Desarrollado por Javier
+            Fernández</p>
+        <div class="flex justify-center gap-8 font-semibold">
+            <a href="https://github.com/Pitcher755/soft-architect-ai"
+                class="text-slate-600 hover:text-electric dark:text-slate-300 dark:hover:text-electric transition">GitHub
+                Repo</a>
+            <a href="backlog.html"
+                class="text-slate-600 hover:text-electric dark:text-slate-300 dark:hover:text-electric transition">Backlog
+                Completo</a>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("#hero-title", { opacity: 0, y: 50, duration: 1.5, ease: "power4.out" });
+        gsap.from("#hero-slogan", { opacity: 0, y: 30, duration: 1.5, delay: 0.5, ease: "power4.out" });
+
+        gsap.to("#hero-glow", { scrollTrigger: { scrub: 1 }, x: 400, y: 200, scale: 1.5 });
+
+        gsap.from(".reveal-up", { scrollTrigger: { trigger: ".reveal-up", start: "top 85%" }, opacity: 0, y: 50, stagger: 0.2, duration: 1 });
+        gsap.from(".reveal-left", { scrollTrigger: { trigger: ".reveal-left", start: "top 80%" }, opacity: 0, x: -100, duration: 1 });
+        gsap.from(".reveal-right", { scrollTrigger: { trigger: ".reveal-right", start: "top 80%" }, opacity: 0, x: 100, duration: 1 });
+
+        gsap.from(".arch-node", { scrollTrigger: { trigger: ".arch-node", start: "top 85%" }, opacity: 0, scale: 0.8, stagger: 0.2, duration: 1, ease: "back.out(1.7)" });
+
+        // Lightbox
+        const screenshots = [
+            'assets/screenshots/screen1.png', 'assets/screenshots/screen2.png', 'assets/screenshots/screen3.png',
+            'assets/screenshots/screen4.png', 'assets/screenshots/screen5.png', 'assets/screenshots/screen6.png'
+        ];
+        const colorClasses = ['color-blue', 'color-purple', 'color-orange', 'color-pink', 'color-violet', 'color-cyan'];
+        let currentImageIndex = 0;
+
+        document.querySelectorAll('.screenshot').forEach((screenshot, index) => {
+            screenshot.addEventListener('click', () => openLightbox(index));
+        });
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            colorClasses.forEach(cls => lightboxImage.classList.remove(cls));
+            lightboxImage.classList.add(colorClasses[currentImageIndex]);
+            lightboxImage.src = screenshots[currentImageIndex];
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = screenshots.length - 1;
+            if (currentImageIndex >= screenshots.length) currentImageIndex = 0;
+            const lightboxImage = document.getElementById('lightbox-image');
+            colorClasses.forEach(cls => lightboxImage.classList.remove(cls));
+            lightboxImage.classList.add(colorClasses[currentImageIndex]);
+            lightboxImage.src = screenshots[currentImageIndex];
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') changeImage(-1);
+            if (e.key === 'ArrowRight') changeImage(1);
+        });
+
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+
+        // Theme Toggle Logic
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (document.documentElement.classList.contains('dark')) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // Auto-play accordion with visibility guard
+        const phaseCards = document.querySelectorAll('.phase-card');
+        let isUserInteracting = false;
+        let isSectionVisible = false;
+        let sequenceStarted = false;
+        let sequenceTimeout;
+
+        function openCard(index) {
+            const card = phaseCards[index];
+            if (!card) return Promise.resolve();
+            const content = card.querySelector('.phase-content');
+            const activeBorderClass = card.getAttribute('data-active-border');
+            card.classList.add(activeBorderClass);
+            card.style.borderColor = "inherit";
+            const glow = card.querySelector('.glow-filter');
+            gsap.to(glow, { opacity: 0.5, scale: 1.2, duration: 0.5 });
+            return gsap.to(content, { height: "auto", opacity: 1, duration: 0.5, ease: "power2.out" });
+        }
+
+        function closeCard(index) {
+            const card = phaseCards[index];
+            if (!card) return Promise.resolve();
+            const content = card.querySelector('.phase-content');
+            const activeBorderClass = card.getAttribute('data-active-border');
+            card.classList.remove(activeBorderClass);
+            card.style.borderColor = "";
+            const glow = card.querySelector('.glow-filter');
+
+            const isDark = document.documentElement.classList.contains('dark');
+            gsap.to(glow, { opacity: isDark ? 0.15 : 0.2, scale: 1, duration: 0.3 });
+
+            return gsap.to(content, { height: 0, opacity: 0, duration: 0.3, ease: "power2.inOut" });
+        }
+
+        async function playSequence() {
+            if (isUserInteracting) return;
+
+            await openCard(0);
+
+            for (let i = 1; i < phaseCards.length; i++) {
+                await new Promise(resolve => { sequenceTimeout = setTimeout(resolve, 3500); });
+                if (isUserInteracting || !isSectionVisible) return;
+
+                await closeCard(i - 1);
+                if (isUserInteracting || !isSectionVisible) return;
+
+                await new Promise(resolve => setTimeout(resolve, 150));
+                if (isUserInteracting || !isSectionVisible) return;
+
+                await openCard(i);
+            }
+        }
+
+        ScrollTrigger.create({
+            trigger: "#master-workflow",
+            start: "top 60%",
+            end: "bottom 20%",
+            onEnter: () => {
+                isSectionVisible = true;
+                if (!isUserInteracting && !sequenceStarted) {
+                    sequenceStarted = true;
+                    playSequence();
+                }
+            },
+            onLeave: () => { isSectionVisible = false; },
+            onEnterBack: () => { isSectionVisible = true; },
+            onLeaveBack: () => { isSectionVisible = false; }
+        });
+
+        phaseCards.forEach((card, index) => {
+            card.addEventListener('click', async () => {
+                isUserInteracting = true;
+                clearTimeout(sequenceTimeout);
+
+                const content = card.querySelector('.phase-content');
+                const isOpen = gsap.getProperty(content, "height") > 0;
+
+                phaseCards.forEach((c, i) => {
+                    if (i !== index && gsap.getProperty(c.querySelector('.phase-content'), "height") > 0) {
+                        closeCard(i);
+                    }
+                });
+
+                if (isOpen) {
+                    closeCard(index);
+                } else {
+                    setTimeout(() => openCard(index), 300);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

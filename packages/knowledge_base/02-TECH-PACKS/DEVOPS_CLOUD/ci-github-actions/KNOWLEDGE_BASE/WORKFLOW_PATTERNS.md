@@ -47,7 +47,7 @@ on:
 # Qué hacer
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - name: Run tests
@@ -182,7 +182,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 
@@ -315,7 +315,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 
@@ -334,7 +334,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
@@ -418,7 +418,7 @@ jobs:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
       url: https://${{ github.ref == 'refs/heads/main' && 'app.com' || 'staging.app.com' }}
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment-secrets:
       DEPLOY_KEY: ${{ secrets.DEPLOY_KEY_PROD || secrets.DEPLOY_KEY_STAGING }}
 
@@ -449,7 +449,7 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         python-version: ["3.11", "3.12"]
@@ -492,7 +492,7 @@ jobs:
 
   build:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: github.event_name == 'push'
 
     outputs:
@@ -523,7 +523,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: github.ref == 'refs/heads/main'
 
     steps:
