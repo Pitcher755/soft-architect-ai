@@ -8,7 +8,7 @@ void main() {
     test('contains all expected phases and total file count', () {
       expect(ProjectPhase.all.length, 7);
       expect(ProjectPhase.totalFileCount, 25);
-      expect(ProjectPhase.root.order, 0);
+      expect(ProjectPhase.root.order, 5);
       expect(ProjectPhase.meta.order, 6);
     });
 
@@ -19,8 +19,8 @@ void main() {
     });
 
     test('getByOrder returns correct phase and null when not found', () {
-      expect(ProjectPhase.getByOrder(0), ProjectPhase.root);
-      expect(ProjectPhase.getByOrder(3), ProjectPhase.architecture);
+      expect(ProjectPhase.getByOrder(0), ProjectPhase.context);
+      expect(ProjectPhase.getByOrder(3), ProjectPhase.uiUx);
       expect(ProjectPhase.getByOrder(999), isNull);
     });
 

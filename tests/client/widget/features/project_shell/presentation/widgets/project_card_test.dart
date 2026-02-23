@@ -27,7 +27,7 @@ void main() {
     ) async {
       final mockProgress = ProjectProgress(
         documentosCreados: 0,
-        faseActual: ProjectPhase.root.name,
+        faseActual: ProjectPhase.context.name,
         porcentajeCompletado: 0,
         lastUpdated: DateTime.now(),
       );
@@ -56,8 +56,8 @@ void main() {
 
       // Badge not shown when progress is 0% (actualProgress > 0 condition)
       expect(find.textContaining('Doc'), findsNothing);
-      // Should show root phase
-      expect(find.text(ProjectPhase.root.name), findsOneWidget);
+      // Should show context phase (initial phase)
+      expect(find.text(ProjectPhase.context.name), findsOneWidget);
     });
 
     testWidgets('should display 15% progress badge when 5 documents created', (

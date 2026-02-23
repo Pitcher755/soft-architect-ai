@@ -195,7 +195,7 @@ void main() {
       );
 
       expect(progress.documentosCreados, 0);
-      expect(progress.faseActual, 'Raíz'); // Primera fase con 0 documentos
+      expect(progress.faseActual, 'Contexto'); // Primera fase con 0 documentos
       expect(progress.porcentajeCompletado, 0.0);
     });
 
@@ -408,7 +408,7 @@ void main() {
       );
 
       expect(progress.documentosCreados, 0);
-      expect(progress.faseActual, 'Raíz'); // Primera fase con 0 documentos
+      expect(progress.faseActual, 'Contexto'); // Primera fase con 0 documentos
       expect(progress.porcentajeCompletado, 0.0);
       expect(progress.lastUpdated, isA<DateTime>());
     });
