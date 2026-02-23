@@ -1,0 +1,41 @@
+name: Deploy Presentation to GitHub Pages
+
+on:
+  # Se ejecutará cuando hagas push a main o develop (ajusta tu rama si es otra)
+  push:
+    branches: ["main", "develop", "feature/hu-5.0-full-workflow-refinement"]
+  # Permite ejecutarlo a mano desde la pestaña Actions
+  workflow_dispatch:
+
+# Permisos necesarios para que GitHub Actions pueda publicar la web
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest  # Esto corre gratis en la nube de GitHub, no gasta tu PC
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact (Solo la carpeta presentation)
+        uses: actions/upload-pages-artifact@v3
+        with:
+
+          path: './presentation'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
