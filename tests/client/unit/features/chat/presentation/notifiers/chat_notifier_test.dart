@@ -84,27 +84,34 @@ class FakeChatRepository implements ChatRepository {
   }
 
   @override
-  Stream<ChatStreamEvent> sendMessageStream(
-    String message,
-    String projectId,
-  ) {
+  Stream<ChatStreamEvent> sendMessageStream(String message, String projectId) {
     if (shouldFail) {
-      return Stream.value(ErrorEvent(
-        error: errorMessage,
-        code: 'TEST_ERROR',
-        shouldRetry: false,
-      ));
+      return Stream.value(
+        ErrorEvent(error: errorMessage, code: 'TEST_ERROR', shouldRetry: false),
+      );
     }
-    final events = <ChatStreamEvent>[];
-    for (final token in generatedTokens) {
-      events.add(TokenEvent(token: token, isFinal: false));
-    }
-    events.add(DoneEvent(
-      fullResponse: generatedTokens.join(''),
-      sources: [],
-      metadata: {},
-    ));
-    return Stream.fromIterable(events);
+
+    // Create async stream with delays to simulate real network behavior.
+    // This allows tests to observe intermediate streaming states.
+    return Stream<ChatStreamEvent>.multi((controller) {
+      Future<void> emitEvents() async {
+        for (final token in generatedTokens) {
+          controller.add(TokenEvent(token: token, isFinal: false));
+          // Delay between tokens to simulate network latency
+          await Future<void>.delayed(const Duration(milliseconds: 50));
+        }
+        controller.add(
+          DoneEvent(
+            fullResponse: generatedTokens.join(''),
+            sources: [],
+            metadata: {},
+          ),
+        );
+        controller.close();
+      }
+
+      emitEvents();
+    });
   }
 
   @override
