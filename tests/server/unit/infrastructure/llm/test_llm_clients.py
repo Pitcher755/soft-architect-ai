@@ -46,8 +46,11 @@ class TestOllamaClient:
         mock_sleep.assert_not_called()
 
     @pytest.mark.asyncio
+    @patch("asyncio.sleep", new_callable=AsyncMock)
     @patch("httpx.AsyncClient.post")
-    async def test_ollama_connection_error_raises_domain_exception(self, mock_post):
+    async def test_ollama_connection_error_raises_domain_exception(
+        self, mock_post, mock_sleep
+    ):
         """Network failure: Should raise LLMConnectionError."""
         mock_post.side_effect = Exception("Connection refused")
 
@@ -59,8 +62,9 @@ class TestOllamaClient:
         assert "Ollama" in str(exc_info.value)
 
     @pytest.mark.asyncio
+    @patch("asyncio.sleep", new_callable=AsyncMock)
     @patch("httpx.AsyncClient.post")
-    async def test_ollama_timeout_raises_domain_exception(self, mock_post):
+    async def test_ollama_timeout_raises_domain_exception(self, mock_post, mock_sleep):
         """Timeout: Should raise LLMTimeoutError."""
         import httpx
 
@@ -74,8 +78,9 @@ class TestOllamaClient:
         assert "timeout" in str(exc_info.value).lower()
 
     @pytest.mark.asyncio
+    @patch("asyncio.sleep", new_callable=AsyncMock)
     @patch("httpx.AsyncClient.post")
-    async def test_ollama_invalid_json_raises_exception(self, mock_post):
+    async def test_ollama_invalid_json_raises_exception(self, mock_post, mock_sleep):
         """Malformed response: Should raise LLMConnectionError."""
         mock_response = AsyncMock()
         mock_response.status_code = 200
@@ -88,8 +93,11 @@ class TestOllamaClient:
             await client.generate("Test prompt")
 
     @pytest.mark.asyncio
+    @patch("asyncio.sleep", new_callable=AsyncMock)
     @patch("httpx.AsyncClient.post")
-    async def test_ollama_non_200_status_raises_connection_error(self, mock_post):
+    async def test_ollama_non_200_status_raises_connection_error(
+        self, mock_post, mock_sleep
+    ):
         """Non-200 status should map to LLMConnectionError."""
         mock_response = AsyncMock()
         mock_response.status_code = 500
@@ -104,8 +112,11 @@ class TestOllamaClient:
         assert "status 500" in str(exc_info.value)
 
     @pytest.mark.asyncio
+    @patch("asyncio.sleep", new_callable=AsyncMock)
     @patch("httpx.AsyncClient.post")
-    async def test_ollama_empty_response_raises_connection_error(self, mock_post):
+    async def test_ollama_empty_response_raises_connection_error(
+        self, mock_post, mock_sleep
+    ):
         """Empty response body should map to LLMConnectionError."""
         mock_response = AsyncMock()
         mock_response.status_code = 200
@@ -118,8 +129,11 @@ class TestOllamaClient:
             await client.generate("Test prompt")
 
     @pytest.mark.asyncio
+    @patch("asyncio.sleep", new_callable=AsyncMock)
     @patch("httpx.AsyncClient.post")
-    async def test_ollama_request_error_raises_connection_error(self, mock_post):
+    async def test_ollama_request_error_raises_connection_error(
+        self, mock_post, mock_sleep
+    ):
         """RequestError should map to LLMConnectionError."""
         import httpx
 
@@ -130,8 +144,9 @@ class TestOllamaClient:
             await client.generate("Test prompt")
 
     @pytest.mark.asyncio
+    @patch("asyncio.sleep", new_callable=AsyncMock)
     @patch("httpx.AsyncClient.post")
-    async def test_ollama_generate_sends_options(self, mock_post):
+    async def test_ollama_generate_sends_options(self, mock_post, mock_sleep):
         """Should include num_predict and temperature in options payload."""
         mock_response = AsyncMock()
         mock_response.status_code = 200
