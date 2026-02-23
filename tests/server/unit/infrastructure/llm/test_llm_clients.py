@@ -21,19 +21,29 @@ class TestOllamaClient:
     """Test Ollama local LLM client."""
 
     @pytest.mark.asyncio
-    @patch("httpx.AsyncClient.post")
-    async def test_ollama_generate_success(self, mock_post):
+    @patch("asyncio.sleep", new_callable=AsyncMock)  # Mock retry delays
+    @patch("httpx.AsyncClient")
+    async def test_ollama_generate_success(self, mock_client_class, mock_sleep):
         """Happy path: Ollama returns valid response."""
+        # Mock the response
         mock_response = AsyncMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"response": "Mocked AI Response"}
-        mock_post.return_value = mock_response
+
+        # Mock the AsyncClient instance and its post method
+        mock_client_instance = AsyncMock()
+        mock_client_instance.post = AsyncMock(return_value=mock_response)
+        mock_client_instance.__aenter__.return_value = mock_client_instance
+        mock_client_instance.__aexit__.return_value = AsyncMock()
+        mock_client_class.return_value = mock_client_instance
 
         client = OllamaClient(base_url="http://localhost:11434")
         response = await client.generate("Test prompt")
 
         assert response == "Mocked AI Response"
-        mock_post.assert_called_once()
+        mock_client_instance.post.assert_called_once()
+        # Verify sleep was NOT called (no retries on success)
+        mock_sleep.assert_not_called()
 
     @pytest.mark.asyncio
     @patch("httpx.AsyncClient.post")

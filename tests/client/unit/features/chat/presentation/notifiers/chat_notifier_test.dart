@@ -76,36 +76,30 @@ class FakeChatRepository implements ChatRepository {
     String docType,
     String userInput,
     Map<String, dynamic> context,
-  ) async* {
+  ) {
     if (shouldFail) {
-      throw Exception(errorMessage);
+      return Stream.error(Exception(errorMessage));
     }
-    for (final token in generatedTokens) {
-      yield token;
-    }
+    return Stream.fromIterable(generatedTokens);
   }
 
   @override
   Stream<ChatStreamEvent> sendMessageStream(
     String message,
     String projectId,
-  ) async* {
+  ) {
     if (shouldFail) {
-      await Future.microtask(() {}); // Separate events in Event Loop
-      yield ErrorEvent(
+      return Stream.value(ErrorEvent(
         error: errorMessage,
         code: 'TEST_ERROR',
         shouldRetry: false,
-      );
-      return;
+      ));
     }
-    // Use microtask to separate events without real delays (instant tests)
+    final events = <ChatStreamEvent>[];
     for (final token in generatedTokens) {
-      await Future.microtask(() {}); // Separate events without blocking
-      yield TokenEvent(token: token, isFinal: false);
+      events.add(TokenEvent(token: token, isFinal: false));
     }
-    await Future.microtask(() {}); // Ensure DoneEvent is cleanly emitted
-    yield DoneEvent(
+    events.add(DoneEvent(
       fullResponse: generatedTokens.join(''),
       sources: [],
       metadata: {},
@@ -976,8 +970,14 @@ void main() {
 
       // Start second stream (should cancel first)
       fakeRepository.generatedTokens = ['Second', ' ', 'response'];
-      await notifier.sendMessageStream('Second message');
+      notifier.sendMessageStream('Second message');
+      await Future<void>.delayed(const Duration(milliseconds: 50));
 
+      // FIX: Verify isStreaming is true immediately after starting second stream
+      state = container.read(chatNotifierProvider);
+      expect(state.isStreaming, true);
+
+      // Wait for second stream to complete
       await Future<void>.delayed(const Duration(milliseconds: 200));
 
       state = container.read(chatNotifierProvider);

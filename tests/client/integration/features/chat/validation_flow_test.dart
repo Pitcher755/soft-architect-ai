@@ -74,39 +74,35 @@ class FakeChatRepository implements ChatRepository {
     String docType,
     String userInput,
     Map<String, dynamic> context,
-  ) async* {
+  ) {
     if (shouldFail) {
-      throw Exception(errorMessage);
+      return Stream.error(Exception(errorMessage));
     }
-    for (final token in generatedTokens) {
-      yield token;
-    }
+    return Stream.fromIterable(generatedTokens);
   }
 
   @override
   Stream<ChatStreamEvent> sendMessageStream(
     String message,
     String projectId,
-  ) async* {
+  ) {
     if (shouldFail) {
-      await Future.microtask(() {}); // Separate events in Event Loop
-      yield ErrorEvent(
+      return Stream.value(ErrorEvent(
         error: errorMessage,
         code: 'TEST_ERROR',
         shouldRetry: false,
-      );
-      return;
+      ));
     }
+    final events = <ChatStreamEvent>[];
     for (final token in generatedTokens) {
-      await Future.microtask(() {}); // Separate events without real delay
-      yield TokenEvent(token: token, isFinal: false);
+      events.add(TokenEvent(token: token, isFinal: false));
     }
-    await Future.microtask(() {}); // Ensure DoneEvent is separate
-    yield DoneEvent(
+    events.add(DoneEvent(
       fullResponse: generatedTokens.join(''),
       sources: [],
       metadata: {},
-    );
+    ));
+    return Stream.fromIterable(events);
   }
 
   @override
@@ -246,7 +242,8 @@ void main() {
 
       // Validate document
       await notifier.validateProposal(assistantMessage.id);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Verify file was saved to section folder (not root)
       expect(fakeFileSystemService.savedFiles, isNotEmpty);
@@ -287,18 +284,20 @@ void main() {
         (m) => m.role == MessageRole.assistant,
       );
       await notifier.validateProposal(assistantMessage.id);
-      await tester.pumpAndSettle();
-      // Wait additional time for validation callbacks to complete
-      await tester.pump(const Duration(milliseconds: 100));
+      // FIX: Use pump() instead of pumpAndSettle() to avoid timeout with cursor animation
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       final firstContent =
           fakeFileSystemService.savedFiles['$projectPath/README.md'];
       expect(firstContent, contains('Version 1'));
 
       // Generate and validate second version (same document)
-      // Wait to ensure first validation cycle completes fully
-      await tester.pump(const Duration(milliseconds: 200));
+      // CRITICAL: Wait for internal silent validation stream to complete before next operation
+      // validateProposal triggers sendMessageStream internally, need to wait for it to finish
+      await tester.pump(const Duration(seconds: 1));
       await Future.microtask(() {});
+      await tester.pump(const Duration(milliseconds: 100));
 
       fakeRepository.generatedTokens = [
         '# README\n\n',
@@ -307,16 +306,16 @@ void main() {
       await notifier.sendMessageStream('Generate v2');
       // Stream active: use pump() instead of pumpAndSettle()
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 500));
 
       state = container.read(chatNotifierProvider);
       assistantMessage = state.messages.lastWhere(
         (m) => m.role == MessageRole.assistant,
       );
       await notifier.validateProposal(assistantMessage.id);
-      await tester.pumpAndSettle();
-      // Wait additional time for validation callbacks to complete
-      await tester.pump(const Duration(milliseconds: 100));
+      // FIX: Use pump() instead of pumpAndSettle() to avoid timeout with cursor animation
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Verify file was replaced (not duplicated)
       final secondContent =
@@ -332,7 +331,8 @@ void main() {
 
       // Wait for any pending futures to complete before tearDown
       await tester.pump(const Duration(milliseconds: 50));
-    }, skip: true);
+      await Future.microtask(() {}); // Ensure all microtasks complete
+    });
 
     // TODO: Fix "Cannot close sink while adding stream" error
     // This test performs two sequential validateProposal() calls which suffers
@@ -376,7 +376,8 @@ void main() {
 
         // Validate only README
         await notifier.validateProposal(readmeMessage.id);
-        await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
 
         state = container.read(chatNotifierProvider);
         expect(state.validatedMessageIds.contains(readmeMessage.id), true);
@@ -384,7 +385,8 @@ void main() {
 
         // Validate MANIFESTO
         await notifier.validateProposal(manifestoMessage.id);
-        await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
 
         state = container.read(chatNotifierProvider);
         expect(state.validatedMessageIds.contains(readmeMessage.id), true);
@@ -433,7 +435,8 @@ void main() {
 
       // Attempt validation
       await notifier.validateProposal(assistantMessage.id);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Verify error state
       state = container.read(chatNotifierProvider);
@@ -469,7 +472,8 @@ void main() {
         (m) => m.role == MessageRole.assistant,
       );
       await notifier.validateProposal(assistantMessage.id);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Verify initial validation
       state = container.read(chatNotifierProvider);
