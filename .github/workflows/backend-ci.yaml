@@ -11,7 +11,7 @@ on:
       - 'utils/**'
       - 'src/server/**'
       - 'main.py'
-      - 'requirements.txt'
+      - 'src/server/requirements.txt'
       - 'tests/**'
       - 'src/client/**'
       - 'pubspec.yaml'
@@ -25,7 +25,7 @@ on:
       - 'utils/**'
       - 'src/server/**'
       - 'main.py'
-      - 'requirements.txt'
+      - 'src/server/requirements.txt'
       - 'tests/**'
       - 'src/client/**'
       - 'pubspec.yaml'
@@ -50,7 +50,7 @@ jobs:
           cache: 'pip'
       - run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt ruff black mypy httpx
+          pip install -r src/server/requirements.txt ruff black mypy httpx
       - run: black --check . || true
         continue-on-error: true
       - run: ruff check . || true
@@ -70,7 +70,7 @@ jobs:
           cache: 'pip'
       - run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pytest pytest-cov pytest-asyncio pytest-timeout httpx
+          pip install -r src/server/requirements.txt pytest pytest-cov pytest-asyncio pytest-timeout httpx
       - name: Run Backend Unit Tests
         run: pytest tests/python/unit/ -v --cov=services --cov=core --cov-report=xml --timeout=10
       - name: Run Backend Integration Tests
@@ -92,7 +92,7 @@ jobs:
           cache: 'pip'
       - run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt bandit safety httpx
+          pip install -r src/server/requirements.txt bandit safety httpx
       - run: bandit -r src/server/ || true
       - run: safety check --json || true
         continue-on-error: true
@@ -109,6 +109,6 @@ jobs:
           cache: 'pip'
       - run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt httpx
+          pip install -r src/server/requirements.txt httpx
       - run: python -c "from main import app; print('✅ FastAPI app loaded')"
       - run: python -c "from main import app; schema = app.openapi(); print('✅ OpenAPI schema valid')"

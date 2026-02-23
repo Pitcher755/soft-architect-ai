@@ -47,7 +47,7 @@ jobs:
               - 'utils/**'
               - 'src/server/**'
               - 'main.py'
-              - 'requirements.txt'
+              - 'src/server/requirements.txt'
               - 'tests/**'
               - 'pyrightconfig.json'
             frontend:

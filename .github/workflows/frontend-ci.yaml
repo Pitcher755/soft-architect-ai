@@ -36,5 +36,5 @@ jobs:
       - run: cd src/client && flutter clean
       - run: cd src/client && flutter pub get
       - run: cd src/client && flutter analyze
-      - run: cd tests && flutter test test --coverage 2>/dev/null || echo "No tests found"
+      - run: cd tests && flutter test client --coverage 2>/dev/null || echo "No tests found"
       - run: cd src/client && dart format --set-exit-if-changed . || true
