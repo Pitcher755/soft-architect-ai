@@ -250,8 +250,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                               debugPrint('✅ Document saved successfully');
 
                               try {
-                                await ProjectProgressService
-                                    .updateAfterDocumentSave(
+                                // ignore: lines_longer_than_80_chars
+                                await ProjectProgressService.updateAfterDocumentSave(
                                   projectRoot,
                                 );
                               } on Exception catch (e) {
