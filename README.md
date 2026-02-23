@@ -54,18 +54,14 @@
 - [Detailed Setup Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/SETUP_GUIDE.md)
 - [Technology Stack](doc/English/02-SETUP_DEV/01-INSTALLATION/TOOLS_AND_STACK.md)
 - [Automation & DevOps](doc/English/02-SETUP_DEV/04-AUTOMATION/AUTOMATION.md)
-- **⭐ NEW:** [Knowledge Base Completion Report](doc/English/01-PROJECT_REPORT/05-COMPLETION-STATUS/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
-- **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
-- **✅ VERIFIED:** [Pre-Push Validation Report (2026-02-12)](doc/English/01-PROJECT_REPORT/06-VALIDATION/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 gates passed
-- **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/English/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
-- **🚧 IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/English/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests stabilized, coverage uplift in progress
-- **📊 TEST STATUS:** Client Flutter full suite green + Server app coverage gate ≥80% passing
 
 #### 📖 Vision
 
-SoftArchitect AI is not another "code chat". It is an assisted development platform that guides developers through a **Strict Engineering Workflow** (Requirements → Architecture → Code → Deploy).
+SoftArchitect AI is not just another "code chat". It's your **Shadow Software Architect**.
 
-It acts as an intelligent **Quality Gate** that ensures compliance with best practices (SOLID, Clean Architecture, OWASP) before writing a single line of code, using **RAG (Retrieval-Augmented Generation)** on an academic and practical knowledge base.
+It's an assisted work environment that guides the most critical and often overlooked phase of development: **project conception**. Through a **Guided Architectural Workflow** (Context → Requirements → Architecture → UX/UI → Planning), the platform acts as a **preventive Quality Gate**.
+
+By leveraging **RAG (Retrieval-Augmented Generation)** over a curated knowledge base, it ensures your application design complies with SOLID principles, Clean Architecture, and security guidelines (OWASP) before writing the first line of code. Its mission is clear: **transform abstract ideas into development-ready technical specifications, cutting technical debt at the root**.
 
 #### ⚡ Quick Start (5 minutes)
 
@@ -293,18 +289,14 @@ curl http://localhost:8000/api/v1/knowledge/status
 - [Guía de Instalación Detallada](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_CONFIGURACION.md)
 - [Stack Tecnológico](doc/Español/02-SETUP_DEV/01-INSTALACION/HERRAMIENTAS_Y_STACK.md)
 - [Automatización y DevOps](doc/Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md)
-- **⭐ NUEVO:** [Reporte de Knowledge Base Completada](doc/Español/01-PROJECT_REPORT/05-COMPLETION-STATUS/KNOWLEDGE_BASE_COMPLETION.md) - Fases 0-6 (29 archivos, 934 líneas)
-- **⭐ NUEVO:** [Reglas Constitucionales](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 archivos, 3,742 líneas)
-- **✅ VERIFICADO:** [Reporte de Validación Pre-Push (2026-02-12)](doc/Español/01-PROJECT_REPORT/06-VALIDATION/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 compuertas aprobadas
-- **🚀 COMPLETADO:** [HU-3.1: Implementación Shell UI del Proyecto](doc/Español/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - Todas 4 Fases + Seguridad ✅
-- **🚧 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/Español/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests estabilizados, cobertura en subida
-- **📊 ESTADO TESTS:** Cliente Flutter suite completa en verde + Server app con gate de cobertura ≥80% aprobado
 
 #### 📖 Visión
 
-SoftArchitect AI no es otro "chat de código". Es una plataforma de desarrollo asistido que guía a los desarrolladores a través de un **Workflow de Ingeniería Estricto** (Requirements → Architecture → Code → Deploy).
+SoftArchitect AI no es un "chat de código" más. Es tu **Arquitecto de Software en la sombra**.
 
-Actúa como un **Quality Gate** inteligente que asegura el cumplimiento de buenas prácticas (SOLID, Clean Architecture, OWASP) antes de escribir una sola línea de código, utilizando **RAG (Retrieval-Augmented Generation)** sobre una base de conocimiento académica y práctica.
+Es un entorno de trabajo asistido que guía la fase más crítica y olvidada del desarrollo: **la concepción del proyecto**. A través de un **Workflow Arquitectónico Guiado** (Contexto → Requisitos → Arquitectura → UX/UI → Planificación), la plataforma actúa como un **Quality Gate preventivo**.
+
+Mediante el uso de **RAG (Retrieval-Augmented Generation)** sobre una base de conocimiento curada, garantiza que el diseño de tu aplicación cumpla con los principios SOLID, Clean Architecture y directrices de seguridad (OWASP) antes de escribir la primera línea de código. Su objetivo es claro: **transformar ideas abstractas en especificaciones técnicas listas para desarrollo, cortando la deuda técnica de raíz**.
 
 #### ⚡ Inicio Rápido (5 minutos)
 
