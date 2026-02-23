@@ -343,7 +343,6 @@ class ChatNotifier extends StateNotifier<ChatState> {
               completedAssistant,
             ];
 
-            // ✅ Only create proposal for visible messages (not hidden validation messages)
             DocumentProposal? proposal;
             if (!isHidden) {
               final docType = _getDocTypeForCurrentIndex();
