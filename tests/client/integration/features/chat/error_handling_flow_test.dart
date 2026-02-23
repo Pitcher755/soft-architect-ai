@@ -51,6 +51,9 @@ void main() {
 
       // Verify snackbar displayed (no icon check since styling may vary)
       expect(find.byType(SnackBar), findsOneWidget);
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
 
     testWidgets('should persist critical error snackbar (no auto-hide)', (
@@ -86,6 +89,9 @@ void main() {
 
       // Error should still be visible (no auto-hide for errors)
       expect(find.byType(SnackBar), findsOneWidget);
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
 
     testWidgets('should support retry with retryable errors', (
@@ -121,6 +127,9 @@ void main() {
       // Trigger retry
       await tester.tap(find.text('🔄 Reintentar'));
       await tester.pump();
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
 
     testWidgets('should not show retry button for non-retryable errors', (
@@ -152,6 +161,9 @@ void main() {
       // Assert: No retry button for user validation errors
       expect(isRetryable, isFalse);
       expect(find.text('🔄 Reintentar'), findsNothing);
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
 
     testWidgets('should show success feedback after recovery', (
@@ -186,6 +198,9 @@ void main() {
       // Verify success color (typically green)
       final snackbar = find.byType(SnackBar);
       expect(snackbar, findsOneWidget);
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
 
     test('should map all validation error codes correctly', () {
