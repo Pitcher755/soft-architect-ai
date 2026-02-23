@@ -183,7 +183,8 @@ void main() {
 
       // 5. User clicks validate button
       await notifier.validateProposal(assistantMessage.id);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // 6. Verify file was saved to correct location (README → root)
       expect(fakeFileSystemService.savedFiles, isNotEmpty);
@@ -295,7 +296,7 @@ void main() {
       // Generate and validate second version (same document)
       // CRITICAL: Wait for internal silent validation stream to complete before next operation
       // validateProposal triggers sendMessageStream internally, need to wait for it to finish
-      await tester.pump(const Duration(seconds: 1));
+      await tester.pump(const Duration(milliseconds: 500));
       await Future.microtask(() {});
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -306,7 +307,7 @@ void main() {
       await notifier.sendMessageStream('Generate v2');
       // Stream active: use pump() instead of pumpAndSettle()
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 100));
 
       state = container.read(chatNotifierProvider);
       assistantMessage = state.messages.lastWhere(
