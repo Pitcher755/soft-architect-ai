@@ -191,13 +191,9 @@ void main() {
 
   group('DatabaseHelper', () {
     late DatabaseHelper helper;
-    late String testDbPath;
 
     setUp(() async {
       helper = DatabaseHelper();
-
-      // Use in-memory database for testing
-      testDbPath = inMemoryDatabasePath;
 
       // Reset database before each test
       try {
