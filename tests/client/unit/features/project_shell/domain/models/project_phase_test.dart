@@ -1,7 +1,7 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:softarchitect_ai/features/project_shell/domain/models/project_phase.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/core/theme/app_colors.dart';
+import 'package:softarchitect_ai/features/project_shell/domain/models/project_phase.dart';
 
 void main() {
   group('ProjectPhase', () {

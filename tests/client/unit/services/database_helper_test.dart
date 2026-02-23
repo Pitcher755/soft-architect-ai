@@ -1,7 +1,6 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:softarchitect_ai/services/database_helper.dart'
-    show DatabaseHelper, DatabaseException, ProjectModel;
+    show DatabaseException, ProjectModel;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' hide DatabaseException;
 
 // Helper functions for in-memory database testing
@@ -21,7 +20,11 @@ Future<ProjectModel?> _getProjectById(Database db, String id) async {
 }
 
 Future<ProjectModel?> _getProjectByPath(Database db, String path) async {
-  final results = await db.query('projects', where: 'path = ?', whereArgs: [path]);
+  final results = await db.query(
+    'projects',
+    where: 'path = ?',
+    whereArgs: [path],
+  );
   if (results.isEmpty) return null;
   return ProjectModel.fromMap(results.first);
 }
@@ -313,7 +316,6 @@ void main() {
       });
 
       test('creates projects table with correct schema', () async {
-
         // Query table info
         final result = await db.rawQuery("PRAGMA table_info('projects')");
 
@@ -588,10 +590,7 @@ void main() {
           'is_streaming': 0,
         });
 
-        final deletedCount = await _deleteChatMessages(
-          db,
-          'test-project-id',
-        );
+        final deletedCount = await _deleteChatMessages(db, 'test-project-id');
 
         expect(deletedCount, equals(2));
 

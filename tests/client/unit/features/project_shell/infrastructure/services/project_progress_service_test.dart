@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project_progress.dart';
 import 'package:softarchitect_ai/features/project_shell/infrastructure/services/project_progress_service.dart';
 
