@@ -91,7 +91,7 @@ class FakeChatRepository implements ChatRepository {
     String projectId,
   ) async* {
     if (shouldFail) {
-      await Future.delayed(const Duration(milliseconds: 30));
+      await Future.microtask(() {}); // Separate events in Event Loop
       yield ErrorEvent(
         error: errorMessage,
         code: 'TEST_ERROR',
@@ -99,12 +99,12 @@ class FakeChatRepository implements ChatRepository {
       );
       return;
     }
-    // Add realistic streaming delays (50ms between tokens)
+    // Use microtask to separate events without real delays (instant tests)
     for (final token in generatedTokens) {
-      await Future.delayed(const Duration(milliseconds: 50));
+      await Future.microtask(() {}); // Separate events without blocking
       yield TokenEvent(token: token, isFinal: false);
     }
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.microtask(() {}); // Ensure DoneEvent is cleanly emitted
     yield DoneEvent(
       fullResponse: generatedTokens.join(''),
       sources: [],

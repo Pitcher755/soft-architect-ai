@@ -89,7 +89,7 @@ class FakeChatRepository implements ChatRepository {
     String projectId,
   ) async* {
     if (shouldFail) {
-      await Future.delayed(const Duration(milliseconds: 30));
+      await Future.microtask(() {}); // Separate events in Event Loop
       yield ErrorEvent(
         error: errorMessage,
         code: 'TEST_ERROR',
@@ -98,10 +98,10 @@ class FakeChatRepository implements ChatRepository {
       return;
     }
     for (final token in generatedTokens) {
-      await Future.delayed(const Duration(milliseconds: 50));
+      await Future.microtask(() {}); // Separate events without real delay
       yield TokenEvent(token: token, isFinal: false);
     }
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.microtask(() {}); // Ensure DoneEvent is separate
     yield DoneEvent(
       fullResponse: generatedTokens.join(''),
       sources: [],
@@ -171,7 +171,9 @@ void main() {
 
       // Send message and wait for streaming to complete
       await notifier.sendMessageStream('Generate README');
-      await tester.pumpAndSettle();
+      // Stream is active: don't use pumpAndSettle (infinite animation)
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       // 3. Verify document was generated
       final stateAfterGeneration = container.read(chatNotifierProvider);
@@ -232,7 +234,9 @@ void main() {
       ];
 
       await notifier.sendMessageStream('Generate manifesto');
-      await tester.pumpAndSettle();
+      // Stream active: use pump() instead of pumpAndSettle()
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       final stateAfterGeneration = container.read(chatNotifierProvider);
       final assistantMessage = stateAfterGeneration.messages.lastWhere(
@@ -264,7 +268,9 @@ void main() {
       // Generate and validate first version
       fakeRepository.generatedTokens = ['# README\n\n', 'Version 1 content'];
       await notifier.sendMessageStream('Generate v1');
-      await tester.pumpAndSettle();
+      // Stream active: use pump() instead of pumpAndSettle()
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       var state = container.read(chatNotifierProvider);
       var assistantMessage = state.messages.lastWhere(
@@ -283,7 +289,9 @@ void main() {
         'Version 2 content (updated)',
       ];
       await notifier.sendMessageStream('Generate v2');
-      await tester.pumpAndSettle();
+      // Stream active: use pump() instead of pumpAndSettle()
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       state = container.read(chatNotifierProvider);
       assistantMessage = state.messages.lastWhere(
@@ -315,7 +323,9 @@ void main() {
         // Generate README
         fakeRepository.generatedTokens = ['# README\n\n', 'First doc'];
         await notifier.sendMessageStream('Generate README');
-        await tester.pumpAndSettle();
+        // Stream active: use pump() instead of pumpAndSettle()
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
         var state = container.read(chatNotifierProvider);
         final readmeMessage = state.messages.lastWhere(
@@ -328,7 +338,9 @@ void main() {
           'Second doc',
         ];
         await notifier.sendMessageStream('Generate manifesto');
-        await tester.pumpAndSettle();
+        // Stream active: use pump() instead of pumpAndSettle()
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
         state = container.read(chatNotifierProvider);
         final manifestoMessage = state.messages.lastWhere(
@@ -366,7 +378,9 @@ void main() {
       // Generate document
       fakeRepository.generatedTokens = ['# TEST DOC\n\n', 'Content'];
       await notifier.sendMessageStream('Generate doc');
-      await tester.pumpAndSettle();
+      // Stream active: use pump() instead of pumpAndSettle()
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       var state = container.read(chatNotifierProvider);
       final assistantMessage = state.messages.lastWhere(
@@ -402,7 +416,9 @@ void main() {
       // Generate and validate document
       fakeRepository.generatedTokens = ['# README\n\n', 'Persistent test'];
       await notifier.sendMessageStream('Generate README');
-      await tester.pumpAndSettle();
+      // Stream active: use pump() instead of pumpAndSettle()
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       var state = container.read(chatNotifierProvider);
       final assistantMessage = state.messages.lastWhere(
