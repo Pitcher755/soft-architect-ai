@@ -103,7 +103,8 @@ class FakeChatRepository implements ChatRepository {
       fullResponse: generatedTokens.join(''),
       sources: [],
       metadata: {},
-    );
+    ));
+    return Stream.fromIterable(events);
   }
 
   @override
