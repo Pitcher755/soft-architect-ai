@@ -343,19 +343,22 @@ class ChatNotifier extends StateNotifier<ChatState> {
               completedAssistant,
             ];
 
-            // ✅ FIXED: Create proposal with document type
-            final docType = _getDocTypeForCurrentIndex();
-            final proposal = DocumentProposal(
-              id: generateId(),
-              docType: docType,
-              content: fullResponse,
-              metadata: {'doc_index': state.currentDocIndex},
-              validationState: ValidationState.pending,
-            );
+            // ✅ Only create proposal for visible messages (not hidden validation messages)
+            DocumentProposal? proposal;
+            if (!isHidden) {
+              final docType = _getDocTypeForCurrentIndex();
+              proposal = DocumentProposal(
+                id: generateId(),
+                docType: docType,
+                content: fullResponse,
+                metadata: {'doc_index': state.currentDocIndex},
+                validationState: ValidationState.pending,
+              );
+            }
 
             state = state.copyWith(
               messages: finalMessages,
-              currentProposal: proposal,
+              currentProposal: isHidden ? state.currentProposal : proposal,
               isStreaming: false,
             );
 
@@ -379,9 +382,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
                   });
             }
 
-            // Clear active stream tracking
-            _activeStreamSubscription = null;
-            _activeStreamProjectId = null;
+            // DO NOT clear here - let onDone handle cleanup
           } else if (event is ErrorEvent) {
             // 6️⃣ Handle ErrorEvent
             state = state.copyWith(
@@ -390,9 +391,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
               errorMessage: event.error,
             );
 
-            // Clear active stream tracking
-            _activeStreamSubscription = null;
-            _activeStreamProjectId = null;
+            // DO NOT clear here - let onError handle cleanup
           }
         },
         onError: (error) {
@@ -402,19 +401,24 @@ class ChatNotifier extends StateNotifier<ChatState> {
             hasError: true,
             errorMessage: error.toString(),
           );
+          // Clear active stream tracking on error
           _activeStreamSubscription = null;
           _activeStreamProjectId = null;
         },
         onDone: () {
           debugPrint('✅ Stream completed');
+          // Clear active stream tracking when done
           _activeStreamSubscription = null;
           _activeStreamProjectId = null;
         },
         cancelOnError: true,
       );
 
-      // Wait for the subscription to complete
-      await _activeStreamSubscription?.asFuture();
+      // ✅ CRITICAL: Save local reference before onDone clears it
+      final subscriptionToAwait = _activeStreamSubscription;
+
+      // Wait for stream to complete before returning
+      await subscriptionToAwait?.asFuture();
     } on ProjectContextError catch (e) {
       // ✅ Show user-friendly error for missing context
       state = state.copyWith(
