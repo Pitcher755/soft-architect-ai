@@ -256,7 +256,6 @@ void main() {
       await tester.pump(const Duration(milliseconds: 50));
     });
 
-    // TODO: Fix "Cannot close sink while adding stream" error
     // This test performs TWO sequential validation cycles which triggers
     // a race condition where the second sendMessageStream starts before
     // the first validation's internal silent validation stream completes.
@@ -328,7 +327,6 @@ void main() {
       },
     );
 
-    // TODO: Fix "Cannot close sink while adding stream" error
     // This test performs two sequential validateProposal() calls which suffers
     // from the same race condition as "Replace existing file" test.
     // The issue: second validation starts before first validation's internal
