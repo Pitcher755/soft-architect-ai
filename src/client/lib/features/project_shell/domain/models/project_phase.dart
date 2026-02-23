@@ -58,7 +58,7 @@ class ProjectPhase {
     icon: Icons.home_outlined,
     color: AppColors.dirRoot,
     fileCount: 4,
-    order: 5,  // MOVED TO END: Phase 6 in generation order
+    order: 5, // MOVED TO END: Phase 6 in generation order
   );
 
   /// Context phase - business context and scope (Phase 1: Starting point)
@@ -68,7 +68,7 @@ class ProjectPhase {
     icon: Icons.settings_outlined,
     color: AppColors.dirContext,
     fileCount: 3,
-    order: 0,  // Phase 1 in generation order
+    order: 0, // Phase 1 in generation order
   );
 
   /// Requirements phase - functional and non-functional requirements (Phase 2)
@@ -78,7 +78,7 @@ class ProjectPhase {
     icon: Icons.checklist_rtl,
     color: AppColors.dirRequirements,
     fileCount: 4,
-    order: 1,  // Phase 2 in generation order
+    order: 1, // Phase 2 in generation order
   );
 
   /// Architecture phase - system architecture and design (Phase 3)
@@ -88,7 +88,7 @@ class ProjectPhase {
     icon: Icons.account_tree_outlined,
     color: AppColors.dirArchitecture,
     fileCount: 6,
-    order: 2,  // Phase 3 in generation order
+    order: 2, // Phase 3 in generation order
   );
 
   /// UI/UX phase - user interface and experience design (Phase 4)
@@ -98,7 +98,7 @@ class ProjectPhase {
     icon: Icons.palette_outlined,
     color: AppColors.dirUiUx,
     fileCount: 3,
-    order: 3,  // Phase 4 in generation order
+    order: 3, // Phase 4 in generation order
   );
 
   /// Planning phase - project roadmap and milestones (Phase 5)
@@ -108,7 +108,7 @@ class ProjectPhase {
     icon: Icons.calendar_today_outlined,
     color: AppColors.dirPlanning,
     fileCount: 4,
-    order: 4,  // Phase 5 in generation order
+    order: 4, // Phase 5 in generation order
   );
 
   /// Meta phase - project metadata and documentation
@@ -128,13 +128,13 @@ class ProjectPhase {
   /// All available phases in RAG-optimized generation order
   /// ROOT moved to end (Phase 6) to prevent LLM hallucinations
   static const List<ProjectPhase> all = [
-    context,      // Phase 1: Starting point (PROJECT_MANIFESTO, DOMAIN_LANGUAGE, USER_JOURNEY_MAP)
+    context, // Phase 1: Starting point (PROJECT_MANIFESTO, DOMAIN_LANGUAGE, USER_JOURNEY_MAP)
     requirements, // Phase 2: What to build (USER_STORIES, REQUIREMENTS, SECURITY, COMPLIANCE)
     architecture, // Phase 3: How to build (TECH_STACK, DATA_MODEL, STRUCTURE, API, THREATS, ADRS)
-    uiUx,         // Phase 4: User experience (DESIGN_SYSTEM, WIREFRAMES, ACCESSIBILITY)
-    planning,     // Phase 5: Operations (ROADMAP, TESTING, CI_CD, DEPLOYMENT)
-    root,         // Phase 6: Synthesis (RULES, CONTRIBUTING, AGENTS, README) - LAST with full context
-    meta,         // Phase 7: Metadata (unchanged)
+    uiUx, // Phase 4: User experience (DESIGN_SYSTEM, WIREFRAMES, ACCESSIBILITY)
+    planning, // Phase 5: Operations (ROADMAP, TESTING, CI_CD, DEPLOYMENT)
+    root, // Phase 6: Synthesis (RULES, CONTRIBUTING, AGENTS, README) - LAST with full context
+    meta, // Phase 7: Metadata (unchanged)
   ];
 
   /// Total number of expected files across all phases

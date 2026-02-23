@@ -250,7 +250,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                               debugPrint('✅ Document saved successfully');
 
                               try {
-                                await ProjectProgressService.updateAfterDocumentSave(
+                                await ProjectProgressService
+                                    .updateAfterDocumentSave(
                                   projectRoot,
                                 );
                               } on Exception catch (e) {
