@@ -19,13 +19,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r src/server/requirements.txt
           pip install pytest pytest-benchmark httpx
 
       - name: Run performance benchmarks
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/src/server
-          pytest tests/python/integration/test_streaming_flow.py --benchmark-only
+          pytest tests/server/integration/test_streaming_flow.py --benchmark-only
 
   frontend-performance:
     runs-on: self-hosted
@@ -40,4 +40,4 @@ jobs:
       - name: Run integration tests
         run: |
           cd tests
-          flutter test test/integration/features/chat/streaming_flow_test.dart
+          flutter test client/integration/features/chat/streaming_flow_test.dart

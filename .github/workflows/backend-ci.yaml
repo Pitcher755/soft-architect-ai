@@ -72,9 +72,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r src/server/requirements.txt pytest pytest-cov pytest-asyncio pytest-timeout httpx
       - name: Run Backend Unit Tests
-        run: pytest tests/python/unit/ -v --cov=services --cov=core --cov-report=xml --timeout=10
+        run: pytest tests/server/unit/ -v --cov=services --cov=core --cov-report=xml --timeout=10
       - name: Run Backend Integration Tests
-        run: pytest tests/python/integration/ -v --timeout=15
+        run: pytest tests/server/integration/ -v --timeout=15
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v3
         with:

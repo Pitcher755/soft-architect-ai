@@ -85,7 +85,7 @@ jobs:
       - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt ruff black mypy pytest pytest-cov pytest-asyncio bandit httpx
+          pip install -r src/server/requirements.txt ruff black mypy pytest pytest-cov pytest-asyncio bandit httpx
 
       - name: Run Ruff linting
         working-directory: src/server
@@ -98,11 +98,11 @@ jobs:
         continue-on-error: true
 
       - name: Run pytest (Unit Tests)
-        run: pytest tests/python/unit/ -v --tb=short --timeout=10 || true
+        run: pytest tests/server/unit/ -v --tb=short --timeout=10 || true
         continue-on-error: true
 
       - name: Run pytest (Integration Tests)
-        run: pytest tests/python/integration/ -v --tb=short --timeout=15 || true
+        run: pytest tests/server/integration/ -v --tb=short --timeout=15 || true
         continue-on-error: true
 
       - name: Run Bandit security check
