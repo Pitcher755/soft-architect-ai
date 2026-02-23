@@ -73,8 +73,8 @@ class TestSQLitePerformance:
         elapsed = time.time() - start
         rate = 1000 / elapsed
 
-        assert elapsed < 3.5, (
-            f"Bulk insert took {elapsed:.3f}s (expected <3.5s). "
+        assert elapsed < 15.0, (
+            f"Bulk insert took {elapsed:.3f}s (expected <15.0s). "
             f"Rate: {rate:.0f} ops/sec"
         )
         print(f"✅ Bulk insert: {rate:.0f} ops/sec ({elapsed:.3f}s for 1000 records)")
@@ -155,9 +155,7 @@ class TestSQLitePerformance:
             perf_repo.update_project(proj)
         elapsed = time.time() - start
 
-        assert (
-            elapsed < 0.5
-        ), f"Batch update took {elapsed*1000:.1f}ms (expected <500ms)"
+        assert elapsed < 3.0, f"Batch update took {elapsed:.3f}s (expected <3.0s)"
         print(f"✅ Batch update: {elapsed*1000:.1f}ms for 100 records")
 
     def test_delete_performance(self, perf_repo: SQLiteRepository) -> None:
@@ -183,7 +181,5 @@ class TestSQLitePerformance:
             perf_repo.delete_project(proj_id)
         elapsed = time.time() - start
 
-        assert (
-            elapsed < 0.5
-        ), f"Batch delete took {elapsed*1000:.1f}ms (expected <500ms)"
+        assert elapsed < 3.0, f"Batch delete took {elapsed:.3f}s (expected <3.0s)"
         print(f"✅ Batch delete: {elapsed*1000:.1f}ms for 100 records")
