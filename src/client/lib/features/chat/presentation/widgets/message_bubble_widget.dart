@@ -319,6 +319,11 @@ class MessageBubbleWidget extends ConsumerWidget {
                               }
                             }
                           },
+                          onSendChatMessage: (refineMessage) async {
+                            await ref
+                                .read(chatNotifierProvider.notifier)
+                                .sendMessageStream(refineMessage);
+                          },
                         ),
                         if (message.isStreaming) const _BlinkingCursor(),
                       ],

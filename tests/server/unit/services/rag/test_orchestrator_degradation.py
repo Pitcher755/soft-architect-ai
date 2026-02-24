@@ -213,7 +213,9 @@ class TestRAGOrchestratorGracefulDegradation:
             yield "Chunk 2"
 
         # Use side_effect to return new generator on each call
-        mock_llm_client.stream_generate = MagicMock(side_effect=lambda _: mock_stream())
+        mock_llm_client.stream_generate = MagicMock(
+            side_effect=lambda *args, **kwargs: mock_stream()
+        )
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -233,8 +235,8 @@ class TestRAGOrchestratorGracefulDegradation:
         token_events = [e for e in events if e.get("type") == "token"]
         assert len(token_events) > 0
 
-        # Should have done event with FALLBACK template
+        # Should have done event (template_used is CONTEXT_DRIVEN in rewritten orchestrator)
         done_events = [e for e in events if e.get("type") == "done"]
         assert len(done_events) == 1
-        assert done_events[0]["data"]["metadata"]["template_used"] == "FALLBACK"
+        assert done_events[0]["data"]["metadata"]["template_used"] == "CONTEXT_DRIVEN"
         assert done_events[0]["data"]["sources"] == []

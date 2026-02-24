@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
 import '../../../../core/theme/app_colors.dart'; // Importante para usar AppColors
@@ -9,12 +10,14 @@ class SmartMessageRenderer extends StatelessWidget {
     required this.rawContent,
     required this.isUser,
     this.onSaveDocument,
+    this.onSendChatMessage,
     super.key,
   });
 
   final String rawContent;
   final bool isUser;
   final Future<void> Function(String path, String content)? onSaveDocument;
+  final Future<void> Function(String message)? onSendChatMessage;
 
   // RegEx a prueba de balas usando XML
   static final RegExp _documentBlockRegex = RegExp(
@@ -114,6 +117,7 @@ class SmartMessageRenderer extends StatelessWidget {
             key: ValueKey(documentContent.hashCode),
             content: documentContent,
             onSave: onSaveDocument,
+            onSendChatMessage: onSendChatMessage,
           ),
         )
         ..add(const SizedBox(height: 12));
@@ -136,10 +140,16 @@ class SmartMessageRenderer extends StatelessWidget {
 }
 
 class _DocumentCard extends StatefulWidget {
-  const _DocumentCard({required this.content, this.onSave, super.key});
+  const _DocumentCard({
+    required this.content,
+    this.onSave,
+    this.onSendChatMessage,
+    super.key,
+  });
 
   final String content;
   final Future<void> Function(String path, String cleanContent)? onSave;
+  final Future<void> Function(String message)? onSendChatMessage;
 
   @override
   State<_DocumentCard> createState() => _DocumentCardState();
@@ -147,11 +157,31 @@ class _DocumentCard extends StatefulWidget {
 
 class _DocumentCardState extends State<_DocumentCard> {
   static final Set<int> _validatedDocs = {};
+  static final Set<int> _dismissedDocs = {};
 
   bool _isValidating = false;
+  bool _isRefining = false;
+  bool _isValidatedLocally = false;
+  bool _isDismissedLocally = false;
 
   bool get _isAlreadyValidated =>
-      _validatedDocs.contains(widget.content.hashCode);
+      _isValidatedLocally || _validatedDocs.contains(widget.content.hashCode);
+
+  bool get _isDismissed =>
+      _isDismissedLocally || _dismissedDocs.contains(widget.content.hashCode);
+
+  static final RegExp _pathRegex = RegExp(
+    r'\*\*(?:Path|Ruta):\*\*\s*`?([^\n`]+)`?',
+    caseSensitive: false,
+  );
+
+  String _extractPath() {
+    final match = _pathRegex.firstMatch(widget.content);
+    return match?.group(1)?.trim() ?? 'context/UNSORTED/untitled.md';
+  }
+
+  String _extractCleanContent() =>
+      widget.content.replaceAll(_pathRegex, '').trim();
 
   Future<void> _handleValidation() async {
     if (_isValidating || _isAlreadyValidated) {
@@ -162,15 +192,8 @@ class _DocumentCardState extends State<_DocumentCard> {
       _isValidating = true;
     });
 
-    final pathRegex = RegExp(
-      r'\*\*(?:Path|Ruta):\*\*\s*`?([^\n`]+)`?',
-      caseSensitive: false,
-    );
-    final match = pathRegex.firstMatch(widget.content);
-
-    final extractedPath =
-        match?.group(1)?.trim() ?? 'context/UNSORTED/untitled.md';
-    final cleanContent = widget.content.replaceAll(pathRegex, '').trim();
+    final extractedPath = _extractPath();
+    final cleanContent = _extractCleanContent();
 
     if (widget.onSave != null) {
       try {
@@ -194,6 +217,7 @@ class _DocumentCardState extends State<_DocumentCard> {
         if (mounted) {
           setState(() {
             _isValidating = false;
+            _isValidatedLocally = true;
           });
         }
       } catch (e) {
@@ -207,24 +231,60 @@ class _DocumentCardState extends State<_DocumentCard> {
     }
   }
 
+  Future<void> _handleRefine() async {
+    if (_isRefining || _isAlreadyValidated || _isDismissed) {
+      return;
+    }
+
+    final extractedPath = _extractPath();
+    final refineMessage = 'Deseo refinar el documento en $extractedPath: ';
+
+    if (widget.onSendChatMessage == null) {
+      return;
+    }
+
+    setState(() {
+      _isRefining = true;
+    });
+
+    try {
+      await widget.onSendChatMessage!(refineMessage);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRefining = false;
+        });
+      }
+    }
+  }
+
+  void _handleReject() {
+    if (_isAlreadyValidated || _isDismissed) {
+      return;
+    }
+
+    setState(() {
+      _dismissedDocs.add(widget.content.hashCode);
+      _isDismissedLocally = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    if (_isDismissed) {
+      return const SizedBox.shrink();
+    }
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: colorScheme.surface,
-        border: Border.all(
-          color: colorScheme.primary.withValues(alpha: 0.5),
-          width: 2,
-        ),
+        color: AppColors.primaryDark.withValues(alpha: 0.15),
+        border: Border.all(color: AppColors.border),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.1),
-            blurRadius: 12,
+            color: Colors.black.withValues(alpha: 0.25),
+            blurRadius: 8,
             offset: const Offset(0, 4),
           ),
         ],
@@ -233,42 +293,55 @@ class _DocumentCardState extends State<_DocumentCard> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildHeader(context),
-          _buildContent(context),
+          Container(
+            constraints: const BoxConstraints(maxHeight: 700),
+            child: _buildContent(context),
+          ),
           _buildActions(context),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: colorScheme.primaryContainer.withValues(alpha: 0.3),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.plumbing_rounded, size: 20, color: colorScheme.primary),
-          const SizedBox(width: 8),
-          Text(
-            'DOCUMENTO GENERADO',
-            style: theme.textTheme.labelLarge?.copyWith(
-              color: colorScheme.primary,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
+  Widget _buildHeader(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      border: const Border(bottom: BorderSide(color: AppColors.border)),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            const Icon(Icons.lightbulb_outline, color: Colors.amber, size: 16),
+            const SizedBox(width: 8),
+            Text(
+              'DOCUMENTO GENERADO',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: AppColors.textMain,
+                fontWeight: FontWeight.w700,
+              ),
             ),
+          ],
+        ),
+        InkWell(
+          onTap: () => Clipboard.setData(ClipboardData(text: widget.content)),
+          child: const Row(
+            children: [
+              Icon(Icons.copy, size: 14, color: AppColors.textSecondary),
+              SizedBox(width: 4),
+              Text(
+                'Copiar',
+                style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 
   Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
@@ -281,61 +354,105 @@ class _DocumentCardState extends State<_DocumentCard> {
     );
 
     return Container(
-      padding: const EdgeInsets.all(16),
-      child: MarkdownBody(
-        data: widget.content,
-        selectable: true,
-        styleSheet: MarkdownStyleSheet(
-          p: baseStyle,
-          listBullet: baseStyle,
-          code: theme.textTheme.bodyMedium?.copyWith(
-            fontFamily: 'monospace',
-            fontSize: 16,
-            backgroundColor: theme.colorScheme.surfaceContainerHighest,
-            color: isDark ? Colors.greenAccent.shade100 : Colors.blue.shade800,
-          ),
-          h1: theme.textTheme.titleLarge?.copyWith(
-            color: baseStyle?.color,
-            fontWeight: FontWeight.bold,
-          ),
-          h2: theme.textTheme.titleMedium?.copyWith(
-            color: baseStyle?.color,
-            fontWeight: FontWeight.bold,
+      color: AppColors.mainBg,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: MarkdownBody(
+          data: widget.content,
+          selectable: true,
+          styleSheet: MarkdownStyleSheet(
+            p: baseStyle,
+            listBullet: baseStyle,
+            code: theme.textTheme.bodyMedium?.copyWith(
+              fontFamily: 'monospace',
+              fontSize: 16,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              color: isDark
+                  ? Colors.greenAccent.shade100
+                  : Colors.blue.shade800,
+            ),
+            h1: theme.textTheme.titleLarge?.copyWith(
+              color: baseStyle?.color,
+              fontWeight: FontWeight.bold,
+            ),
+            h2: theme.textTheme.titleMedium?.copyWith(
+              color: baseStyle?.color,
+              fontWeight: FontWeight.bold,
+            ),
+            strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildActions(BuildContext context) {
-    // 🔥 Leemos de la memoria absoluta. Si ya se validó, adiós botón.
-    if (_isAlreadyValidated) {
-      return const SizedBox.shrink();
-    }
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: FilledButton.icon(
-          onPressed: _isValidating ? null : _handleValidation,
-          icon: _isValidating
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                )
-              : const Icon(Icons.check_circle),
-          label: Text(_isValidating ? 'Validando...' : 'Validar y Guardar'),
-          style: FilledButton.styleFrom(
-            backgroundColor: Colors.green.shade600,
-            foregroundColor: Colors.white,
+  Widget _buildActions(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(12),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton.icon(
+          key: const Key('proposal_reject_button'),
+          onPressed: _isValidating || _isRefining ? null : _handleReject,
+          icon: const Icon(Icons.close, size: 16),
+          label: const Text('Rechazar'),
+          style: TextButton.styleFrom(
+            foregroundColor: AppColors.error,
+            backgroundColor: AppColors.error.withValues(alpha: 0.1),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
         ),
-      ),
-    );
-  }
+        Row(
+          children: [
+            OutlinedButton.icon(
+              key: const Key('proposal_refine_button'),
+              onPressed: _isValidating || _isRefining ? null : _handleRefine,
+              icon: _isRefining
+                  ? const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.edit, size: 16),
+              label: Text(_isRefining ? 'Refinando...' : 'Refinar'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.textMain,
+                side: const BorderSide(color: AppColors.border),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            FilledButton.icon(
+              key: const Key('proposal_validate_button'),
+              onPressed: _isValidating || _isRefining
+                  ? null
+                  : _handleValidation,
+              icon: _isValidating
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Icon(Icons.check_circle, size: 16),
+              label: Text(_isValidating ? 'Validando...' : 'Validar y Guardar'),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.success,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

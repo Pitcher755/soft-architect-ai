@@ -5,6 +5,7 @@ import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../filesystem/presentation/providers/filesystem_providers.dart';
 import '../../../project_shell/core/services/file_system_service.dart';
 import '../../../project_shell/infrastructure/services/project_progress_service.dart';
+import '../notifiers/chat_notifier.dart';
 import 'smart_message_renderer.dart';
 
 /// Optimized widget for rendering streaming messages.
@@ -93,6 +94,11 @@ class StreamingMessageWidget extends ConsumerWidget {
                       );
                     }
                   }
+                },
+                onSendChatMessage: (refineMessage) async {
+                  await ref
+                      .read(chatNotifierProvider.notifier)
+                      .sendMessageStream(refineMessage);
                 },
               ),
             ),

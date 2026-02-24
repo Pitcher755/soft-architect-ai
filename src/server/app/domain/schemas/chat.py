@@ -71,6 +71,22 @@ class ChatRequest(BaseModel):
         },
     )
 
+    # ✅ Optional extra metadata passed from the client (e.g. doc_type, phase)
+    metadata: dict[str, str] | None = Field(
+        default=None,
+        description=(
+            "Optional key-value metadata from the client. "
+            "Supported keys: 'doc_type' (e.g. 'PROJECT_MANIFESTO') to force "
+            "dual-channel RAG to retrieve the matching master template/example."
+        ),
+        json_schema_extra={
+            "examples": [
+                {"doc_type": "PROJECT_MANIFESTO"},
+                {"doc_type": "TECH_STACK_DECISION", "phase": "3"},
+            ]
+        },
+    )
+
     @field_validator("message")
     @classmethod
     def sanitize_message(cls, v: str) -> str:

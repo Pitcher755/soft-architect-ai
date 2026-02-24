@@ -114,11 +114,13 @@ src/
 
       // Should find document card header
       expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
-      expect(find.byIcon(Icons.plumbing_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.lightbulb_outline), findsOneWidget);
 
       // Should find validate button
       expect(find.text('Validar y Guardar'), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
+      expect(find.text('Refinar'), findsOneWidget);
+      expect(find.text('Rechazar'), findsOneWidget);
 
       // Should find document content
       expect(find.textContaining('PROJECT_STRUCTURE_MAP.md'), findsOneWidget);
@@ -197,12 +199,14 @@ Content here
 
       // Assert - Find visual components
       // Header with icon
-      expect(find.byIcon(Icons.plumbing_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.lightbulb_outline), findsOneWidget);
       expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
 
       // Validate button text and icon should exist
       expect(find.text('Validar y Guardar'), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
+      expect(find.byKey(const Key('proposal_refine_button')), findsOneWidget);
+      expect(find.byKey(const Key('proposal_reject_button')), findsOneWidget);
 
       // Container with proper decoration
       final containers = find.byType(Container);
@@ -246,9 +250,9 @@ Content here
         const Duration(milliseconds: 100),
       ); // Wait for completion
 
-      // Assert - Button should disappear and callback called
+      // Assert - Callback should execute and card remains visible
       expect(callbackCalled, isTrue);
-      expect(find.text('Validar y Guardar'), findsNothing);
+      expect(find.text('Validar y Guardar'), findsOneWidget);
     });
 
     testWidgets('markdown content supports text selection', (
@@ -410,8 +414,8 @@ Still in the document?
       expect(capturedContent, contains('# Project Rules'));
       expect(capturedContent, contains('- Rule 1'));
 
-      // Button should disappear after validation
-      expect(find.text('Validar y Guardar'), findsNothing);
+      // Card remains visible after validation
+      expect(find.text('Validar y Guardar'), findsOneWidget);
     });
 
     testWidgets('uses fallback path when no path found', (
@@ -512,7 +516,7 @@ Check if x &gt; 5 &amp; y &lt; 10.
       expect(find.textContaining('x > 5 & y < 10'), findsOneWidget);
     });
 
-    testWidgets('validate button disappears after being pressed (one-shot)', (
+    testWidgets('validate action executes successfully (one-shot)', (
       WidgetTester tester,
     ) async {
       // Arrange
@@ -562,10 +566,73 @@ This is a test document.
       // Complete async operations
       await tester.pumpAndSettle();
 
-      // Assert - Button should disappear after being pressed (one-shot)
-      expect(find.text('Validar y Guardar'), findsNothing);
+      // Assert - Validation completed and card still visible
+      expect(find.text('Validar y Guardar'), findsOneWidget);
       expect(find.text('Validando...'), findsNothing);
       expect(saveCallbackExecuted, isTrue);
+    });
+
+    testWidgets('refine button sends predefined message with document path', (
+      WidgetTester tester,
+    ) async {
+      const testContent = '''
+<document>
+**Path:** `context/10-BUSINESS_AND_SCOPE/EXECUTIVE_SUMMARY_MVP.md`
+# Executive Summary
+</document>
+''';
+
+      String? capturedRefineMessage;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: testContent,
+              isUser: false,
+              onSendChatMessage: (message) async {
+                capturedRefineMessage = message;
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('proposal_refine_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        capturedRefineMessage,
+        'Deseo refinar el documento en '
+        'context/10-BUSINESS_AND_SCOPE/EXECUTIVE_SUMMARY_MVP.md: ',
+      );
+    });
+
+    testWidgets('reject button hides the document card locally', (
+      WidgetTester tester,
+    ) async {
+      const testContent = '''
+<document>
+# Documento a rechazar
+</document>
+''';
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('proposal_reject_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('DOCUMENTO GENERADO'), findsNothing);
+      expect(find.text('Validar y Guardar'), findsNothing);
     });
   });
 }

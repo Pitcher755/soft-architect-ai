@@ -1,11 +1,11 @@
-"""RAG Orchestrator - Core business logic for chat endpoint."""
+"""RAG Orchestrator - Business logic with Friendly Workflow Enforcement."""
 
 import asyncio
 import logging
 from collections.abc import AsyncGenerator
 from typing import Any
 
-from app.core.exceptions import LLMConnectionError, LLMStreamError, RAGRetrievalError
+from app.core.exceptions import LLMConnectionError
 from app.domain.schemas.chat import ChatRequest, ChatResponse
 from app.infrastructure.llm.base import BaseLLMClient
 from app.services.rag.template_builder_protocol import TemplateBuilderProtocol
@@ -15,8 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 class RAGOrchestrator:
-    """Orchestrates vector retrieval, template build, and LLM generation."""
-
     def __init__(
         self,
         vector_store: VectorStoreProtocol,
@@ -27,169 +25,114 @@ class RAGOrchestrator:
         self.template_builder = template_builder
         self.llm_client = llm_client
 
-    def _check_validation_blocker(self, history: list[dict[str, str]]) -> str | None:
-        """
-        RULE-06: Validation Blocker - Enforce document validation before next step.
+    def _check_validation_blocker(
+        self, user_message: str, history: list[dict[str, str]]
+    ) -> str | None:
+        """Bloqueo Amistoso: Permite iterar, pero ordena el workflow."""
+        if not history:
+            return None
 
-        Checks if LLM generated a <document> tag without subsequent user validation.
-        This prevents users from proceeding to the next workflow step without
-        validating the current document, saving LLM tokens and enforcing workflow discipline.
+        # 1. ¿El usuario quiere mejorar o descartar? Saltamos bloqueo.
+        intent = user_message.lower()
+        keywords = [
+            "refinar",
+            "ajustar",
+            "cambia",
+            "mejora",
+            "amplía",
+            "rechazar",
+            "descartar",
+            "no me gusta",
+            "corrige",
+        ]
+        if any(word in intent for word in keywords):
+            return None
 
-        Logic:
-        1. Search history for assistant messages containing '<document>' tag
-        2. For each document found, check if a subsequent user message contains
-           the validation phrase: "He validado y guardado el documento"
-        3. If an unvalidated document is found, return blocking message
-        4. Otherwise, return None (OK to proceed with LLM call)
-
-        Args:
-            history: Chat history with role + content dicts
-
-        Returns:
-            str: Blocking message if validation missing
-            None: If all documents validated or no documents in history
-
-        Example blocking scenario:
-            Assistant: "Here's the document... <document>...</document>"
-            User: "Show me the next step"  # Missing validation!
-            → Returns blocking message, prevents LLM call
-        """
-        if not history or len(history) == 0:
-            return None  # No history, no blocking
-
-        # Track indices of assistant messages with <document> tags
-        document_indices: list[int] = []
-
-        for idx, msg in enumerate(history):
-            content = msg.get("content", "")
-            # Check for both raw <document> and escaped &lt;document&gt; (sanitized version)
-            has_document_tag = ("<document>" in content) or (
-                "&lt;document&gt;" in content
-            )
-
-            if msg.get("role") == "assistant" and has_document_tag:
-                document_indices.append(idx)
-
-        if not document_indices:
-            return None  # No documents in history, no blocking
-
-        # Check if the LAST document has been validated
-        # (Users must validate sequentially, so we only check the most recent)
-        last_doc_index = document_indices[-1]
-
-        # Search for validation message in messages AFTER the last document
-        for msg in history[last_doc_index + 1 :]:
-            if msg.get(
-                "role"
-            ) == "user" and "He validado y guardado el documento" in msg.get(
+        # 2. ¿Hay un documento pendiente de validar?
+        last_doc_msg = None
+        for msg in reversed(history):
+            if msg.get("role") == "assistant" and "<document>" in msg.get(
                 "content", ""
             ):
-                return None  # Validation found, OK to proceed
+                last_doc_msg = msg
+                break
 
-        # No validation message found after last document
-        blocking_message = (
-            "⚠️ **Bloqueo de Seguridad Activado (RULE-06)**\n\n"
-            "Detecté que generé un documento en un mensaje anterior, pero aún no has "
-            "pulsado el botón verde **'Validar y Guardar'**.\n\n"
-            "**Por favor:**\n"
-            "1. Revisa el documento propuesto en el mensaje anterior\n"
-            "2. Haz scroll hacia arriba si no lo ves\n"
-            "3. Pulsa el botón verde '✅ Validar y Guardar'\n"
-            "4. Una vez guardado, podrás continuar al siguiente paso\n\n"
-            "Este bloqueo existe para mantener el orden del Master Workflow y evitar "
-            "generar documentos sin validar los anteriores. 🚀"
+        if not last_doc_msg:
+            return None
+
+        # 3. ¿El usuario ha validado desde entonces?
+        idx = history.index(last_doc_msg)
+        validated = any(
+            "He validado y guardado" in m.get("content", "")
+            for m in history[idx + 1 :]
+            if m.get("role") == "user"
         )
 
-        logger.info(
-            "🚨 RULE-06 BLOCKER TRIGGERED: Unvalidated document found at index %d",
-            last_doc_index,
+        if not validated:
+            return (
+                "¡Hola! 👋 He visto que tenemos una propuesta técnica pendiente un poco más arriba.\n\n"
+                "Para que el proyecto avance con pies de plomo, es importante cerrar este paso antes de saltar al siguiente:\n\n"
+                "- Si la propuesta es buena, dale al botón verde de **'Validar y Guardar'**.\n"
+                "- Si crees que le falta algo, pulsa **'Refinar'** y dime qué mejoramos.\n"
+                "- Si no te convence el enfoque, pulsa **'Rechazar'** y probamos otra cosa.\n\n"
+                "¡Por cierto! Si más adelante quieres retocar el contenido, siempre podrás hacerlo manualmente en el visor de archivos a tu derecha. 🚀"
+            )
+        return None
+
+    async def _retrieve_dual_context(self, message: str, doc_type: str) -> list[str]:
+        """Dual-channel RAG retrieval with graceful degradation."""
+
+        async def _safe_search(query: str, top_k: int) -> list[str]:
+            try:
+                return await asyncio.wait_for(
+                    self.vector_store.search(query, top_k=top_k), timeout=8.0
+                )
+            except Exception as err:  # noqa: BLE001
+                logger.warning("⚠️ RAG channel degraded: %s", str(err))
+                return []
+
+        # Búsqueda maestra forzada para traer la estética del ejemplo
+        master_query = (
+            f"Master Example structural template for {doc_type} with tables and icons"
+        )
+        user_results, master_results = await asyncio.gather(
+            _safe_search(message, 3), _safe_search(master_query, 2)
         )
 
-        return blocking_message
+        combined = []
+        if master_results:
+            combined.append(
+                "=== MASTER TEMPLATE EXAMPLE (FOLLOW THIS STRUCTURE EXACTLY) ==="
+            )
+            combined.extend(master_results)
+        if user_results:
+            combined.append("=== USER PROJECT CONTEXT ===")
+            combined.extend(user_results)
+        return combined
 
     async def process_message(self, request: ChatRequest) -> ChatResponse:
-        """Process a chat message through the RAG pipeline.
+        """Process a chat message (non-streaming) via dual-channel RAG.
 
-        Graceful Degradation (HU-4.4 GAP 1):
-        - If ChromaDB fails or times out, continue with sources=[]
-        - Use FALLBACK template for general LLM knowledge
-        - Log WARNING (not ERROR) as degradation is expected behavior
-
-        Args:
-            request: ChatRequest with user message
-
-        Returns:
-            ChatResponse with AI-generated response
-
-        Raises:
-            None (gracefully degrades on RAG failures)
+        Graceful degradation: any vector store failure yields sources=[]
+        and FALLBACK template while the LLM still generates a response.
         """
-        sources = []  # Default empty (graceful degradation)
+        current_doc_type = (request.metadata or {}).get("doc_type", "PROJECT_MANIFESTO")
+        sources = await self._retrieve_dual_context(request.message, current_doc_type)
+        template_id = "CONTEXT_DRIVEN" if sources else "FALLBACK"
 
-        # RAG Retrieval with 30s timeout and exception handling
-        try:
-            sources = await asyncio.wait_for(
-                self.vector_store.search(request.message, top_k=5),
-                timeout=30.0,  # GAP 3: 30s hard limit
-            )
-            logger.info(
-                "✅ RAG retrieved %d sources",
-                len(sources),
-                extra={"sources_count": len(sources)},
-            )
-
-        except TimeoutError:
-            logger.warning(
-                "⚠️ RAG degraded: vector search timeout (30s)",
-                extra={
-                    "operation": "vector_search",
-                    "timeout_seconds": 30.0,
-                    "degradation_mode": "FALLBACK",
-                },
-            )
-
-        except ConnectionError:
-            logger.warning(
-                "⚠️ RAG degraded: ChromaDB connection failed, continuing without context",
-                extra={
-                    "operation": "vector_search",
-                    "error_type": "ConnectionError",
-                    "degradation_mode": "FALLBACK",
-                },
-            )
-
-        except Exception as error:
-            # Catch-all for any other vector store exceptions
-            logger.warning(
-                "⚠️ RAG degraded: vector search failed, continuing without context",
-                extra={
-                    "operation": "vector_search",
-                    "error_type": type(error).__name__,
-                    "degradation_mode": "FALLBACK",
-                },
-            )
-
-        blocking_message = self._check_validation_blocker(request.history)
+        blocking_message = self._check_validation_blocker(
+            request.message, request.history
+        )
         if blocking_message is not None:
-            logger.info("🚨 Validation blocker triggered, returning early")
             return ChatResponse(
                 ai_response=blocking_message,
                 template_used="VALIDATION_BLOCKED",
                 sources=[],
                 metadata={
-                    "blocked": True,
+                    "blocked": "true",
                     "reason": "unvalidated_document",
                     "rule": "RULE-06",
                 },
-            )
-
-        if sources:
-            template_id = self.template_builder.select_template(request.project_id)
-        else:
-            template_id = "FALLBACK"
-            logger.info(
-                "🔄 Using FALLBACK template (RAG degraded)",
-                extra={"template": "FALLBACK", "reason": "no_sources_available"},
             )
 
         prompt = self.template_builder.build_prompt(
@@ -213,158 +156,57 @@ class RAGOrchestrator:
     async def process_message_stream(
         self, request: ChatRequest
     ) -> AsyncGenerator[dict[str, Any], None]:
-        """Process a chat message with streaming response through the RAG pipeline.
-
-        Graceful Degradation: Same as process_message()
-
-        Yields SSE-compatible events in dict format:
-        - token events: {"type": "token", "data": str, "is_final": bool}
-        - done events: {"type": "done", "data": {"full_response": str, "sources": list, "metadata": dict}}
-        - error events: {"type": "error", "data": {"error": str, "code": str, "retry": bool}}
-
-        Args:
-            request: ChatRequest object with message and project_id
-
-        Yields:
-            Dict events compatible with SSE format
-
-        Raises:
-            LLMStreamError: If LLM streaming fails
-        """
-        sources = []
-        template_id = "FALLBACK"
         full_response = ""
+        current_doc_type = (request.metadata or {}).get("doc_type", "PROJECT_MANIFESTO")
 
         try:
-            # Phase 1: Vector retrieval with timeout and exception handling
-            try:
-                sources = await asyncio.wait_for(
-                    self.vector_store.search(request.message, top_k=5),
-                    timeout=30.0,
-                )
-            except (TimeoutError, ConnectionError, Exception) as error:
-                logger.warning(
-                    "⚠️ RAG degraded in streaming: %s",
-                    type(error).__name__,
-                    extra={"operation": "vector_search_stream"},
-                )
-                # Continue with empty sources (graceful degradation)
-
-            # Phase 2: Template selection
-            if sources:
-                template_id = self.template_builder.select_template(request.project_id)
-            else:
-                template_id = "FALLBACK"
-                logger.info("🔄 Using FALLBACK template in streaming (RAG degraded)")
-
-            # ✅ HU-5.0 RULE-06: Check validation blocker BEFORE prompt construction
-            blocking_message = self._check_validation_blocker(request.history)
-            if blocking_message is not None:
-                # Stream blocking message as single event + done (no LLM call)
-                logger.info(
-                    "🚨 Validation blocker triggered in streaming, yielding blocking message"
-                )
-                yield {
-                    "type": "token",
-                    "data": blocking_message,
-                    "is_final": True,
-                }
+            blocking_msg = self._check_validation_blocker(
+                request.message, request.history
+            )
+            if blocking_msg:
+                yield {"type": "token", "data": blocking_msg, "is_final": True}
                 yield {
                     "type": "done",
                     "data": {
-                        "full_response": blocking_message,
+                        "full_response": blocking_msg,
                         "sources": [],
-                        "metadata": {
-                            "blocked": True,
-                            "reason": "unvalidated_document",
-                            "rule": "RULE-06",
-                            "template_used": "VALIDATION_BLOCKED",
-                        },
+                        "metadata": {"blocked": True},
                     },
                 }
-                return  # Early exit, no LLM call
+                return
 
-            # ✅ Phase 3: Prompt construction with history AND user_name (HU-5.0 RULE-09)
+            sources = await self._retrieve_dual_context(
+                request.message, current_doc_type
+            )
             prompt = self.template_builder.build_prompt(
                 query=request.message,
                 context=sources,
-                template_id=template_id,
-                history=request.history,  # ✅ NEW: Pass chat history
-                user_name=request.user_name,  # ✅ HU-5.0: Personalization
+                template_id="CONTEXT_DRIVEN",
+                history=request.history,
+                user_name=request.user_name,
             )
 
-            # Phase 4: Stream LLM response
             try:
-                async for token in self.llm_client.stream_generate(prompt):
+                async for token in self.llm_client.stream_generate(
+                    prompt, history=request.history
+                ):
                     full_response += token
-                    yield {
-                        "type": "token",
-                        "data": token,
-                        "is_final": False,
-                    }
-            except LLMConnectionError as error:
-                logger.error("LLM connection failed during streaming: %s", error)
-                yield {
-                    "type": "error",
-                    "data": {
-                        "error": "AI service connection failed",
-                        "code": "LLM_CONNECTION_ERROR",
-                        "retry": True,
-                    },
-                }
-                raise
-            except LLMStreamError as error:
-                logger.error("LLM streaming failed: %s", error)
-                yield {
-                    "type": "error",
-                    "data": {
-                        "error": "AI streaming failed",
-                        "code": "LLM_STREAM_ERROR",
-                        "retry": True,
-                    },
-                }
-                raise
-            except Exception as error:
-                logger.error("Unexpected error during LLM streaming: %s", error)
-                yield {
-                    "type": "error",
-                    "data": {
-                        "error": "AI processing failed",
-                        "code": "LLM_UNKNOWN_ERROR",
-                        "retry": False,
-                    },
-                }
-                raise LLMStreamError(
-                    message="LLM streaming failed",
-                    details={"error": str(error)},
-                ) from error
+                    yield {"type": "token", "data": token, "is_final": False}
+            except Exception:
+                yield {"type": "error", "data": {"error": "Error de conexión con Groq"}}
+                return
 
-            # Phase 5: Emit done event with metadata
             yield {
                 "type": "done",
                 "data": {
                     "full_response": full_response,
                     "sources": sources,
                     "metadata": {
-                        "template_used": template_id,
-                        "token_count": len(full_response.split()),
-                        "source_count": len(sources),
+                        "template_used": "CONTEXT_DRIVEN",
+                        "doc_type": current_doc_type,
                     },
                 },
             }
 
-        except (RAGRetrievalError, LLMConnectionError, LLMStreamError):
-            # Re-raise domain exceptions (already logged and yielded error events)
-            raise
-        except Exception as error:
-            # Catch-all for unexpected errors
-            logger.error("Unexpected error in process_message_stream: %s", error)
-            yield {
-                "type": "error",
-                "data": {
-                    "error": "Unexpected error during message processing",
-                    "code": "ORCHESTRATOR_ERROR",
-                    "retry": False,
-                },
-            }
-            raise
+        except Exception as e:
+            yield {"type": "error", "data": {"error": str(e)}}

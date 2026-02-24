@@ -9,6 +9,7 @@ import json
 import logging
 from collections.abc import AsyncGenerator
 from inspect import isawaitable
+from typing import Any
 
 import httpx
 
@@ -118,6 +119,7 @@ class OllamaClient(BaseLLMClient):
         prompt: str,
         max_tokens: int | None = None,
         temperature: float | None = None,
+        **kwargs: Any,
     ) -> str:
         """
         Generate LLM response (Clean Architecture wrapper).
@@ -183,6 +185,7 @@ class OllamaClient(BaseLLMClient):
         prompt: str,
         max_tokens: int | None = None,
         temperature: float | None = None,
+        **kwargs: Any,
     ) -> AsyncGenerator[str, None]:
         """
         Stream LLM response with manual retry logic for connection phase.

@@ -7,7 +7,6 @@ import '../notifiers/chat_notifier.dart';
 import '../widgets/chat_input_widget.dart';
 import '../widgets/error_banner_widget.dart';
 import '../widgets/message_bubble_widget.dart';
-import '../widgets/proposal_card_widget.dart';
 
 /// Chat panel widget displaying the chat interface for the project shell.
 ///
@@ -91,7 +90,6 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
         .map(_toUIMessage)
         .toList();
 
-    final proposal = chatState.currentProposal;
     final showError = chatState.hasError;
     final errorMessage = chatState.errorMessage ?? '';
     final userName = ref.watch(userNameProvider);
@@ -100,6 +98,37 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
       color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+            alignment: Alignment.centerRight,
+            child: OutlinedButton.icon(
+              onPressed: () async {
+                final notifier = ref.read(chatNotifierProvider.notifier);
+                final projectPath = chatState.projectPath;
+                // Capture messenger before async gap to satisfy
+                // use_build_context_synchronously lint rule.
+                final messenger = ScaffoldMessenger.of(context);
+
+                if (projectPath != null && projectPath.isNotEmpty) {
+                  await notifier.setProjectPath(projectPath);
+                } else {
+                  notifier.resetForNewProject(totalDocs: chatState.totalDocs);
+                }
+
+                if (mounted) {
+                  messenger.showSnackBar(
+                    const SnackBar(
+                      content: Text('🔄 Workflow reseteado correctamente'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.restart_alt_rounded, size: 18),
+              label: const Text('Reset Workflow'),
+            ),
+          ),
           if (showError)
             ErrorBannerWidget(message: _getReadableErrorMessage(errorMessage)),
           Expanded(
@@ -110,17 +139,8 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                       controller: _scrollController,
                       reverse: true,
                       padding: const EdgeInsets.all(16),
-                      itemCount: messages.length + (proposal != null ? 1 : 0),
+                      itemCount: messages.length,
                       itemBuilder: (context, index) {
-                        if (index == messages.length && proposal != null) {
-                          return ProposalCardWidget(
-                            proposal: proposal,
-                            onValidate: () {},
-                            onRefine: () {},
-                            onReject: () {},
-                          );
-                        }
-
                         final message = messages[messages.length - 1 - index];
                         final chatNotifier = ref.read(
                           chatNotifierProvider.notifier,

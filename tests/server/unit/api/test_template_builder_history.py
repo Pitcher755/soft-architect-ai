@@ -24,11 +24,11 @@ class TestMVPTemplateBuilderWithHistory:
         )
 
         # Assertions
-        assert "📋 RECENT HISTORY:" in prompt
-        assert "USER: What is TDD?" in prompt
+        assert "📋 MEMORIA DE DECISIONES:" in prompt
+        assert "USUARIO: What is TDD?" in prompt
         assert "SOFTARCHITECT: TDD is Test-Driven Development" in prompt
-        assert "USER: Show me an example." in prompt
-        assert "❓ CURRENT REQUEST:\nHow do I test this?" in prompt
+        assert "USUARIO: Show me an example." in prompt
+        assert "❓ SOLICITUD ACTUAL DEL CLIENTE: How do I test this?" in prompt
 
     def test_build_prompt_works_without_history(self) -> None:
         """No history: Should work gracefully without history section."""
@@ -43,7 +43,7 @@ class TestMVPTemplateBuilderWithHistory:
 
         # Should NOT include history section
         assert "Conversation History:" not in prompt
-        assert "❓ CURRENT REQUEST:\nTest query" in prompt
+        assert "❓ SOLICITUD ACTUAL DEL CLIENTE: Test query" in prompt
 
     def test_build_prompt_with_empty_history_list(self) -> None:
         """Empty history: Should handle empty list gracefully."""
@@ -74,10 +74,10 @@ class TestMVPTemplateBuilderWithHistory:
         )
 
         # Assertions
-        assert "📋 RECENT HISTORY:" in prompt
-        assert "USER: Previous question" in prompt
+        assert "📋 MEMORIA DE DECISIONES:" in prompt
+        assert "USUARIO: Previous question" in prompt
         assert "SOFTARCHITECT: Previous answer" in prompt
-        assert "No templates found in the knowledge base" in prompt
+        assert "Base de conocimientos no disponible" in prompt
 
     def test_build_prompt_capitalizes_roles(self) -> None:
         """Role formatting: Should capitalize role names in output."""
@@ -94,7 +94,7 @@ class TestMVPTemplateBuilderWithHistory:
         )
 
         # Roles should be in uppercase
-        assert "USER: Question" in prompt
+        assert "USUARIO: Question" in prompt
         assert "SOFTARCHITECT: Answer" in prompt
 
     def test_build_prompt_context_driven_with_history(self) -> None:
@@ -109,12 +109,12 @@ class TestMVPTemplateBuilderWithHistory:
         )
 
         # Should include all sections
-        assert "📋 RECENT HISTORY:" in prompt
-        assert "USER: Previous query" in prompt
-        assert "📚 CONTEXT AND TEMPLATES" in prompt
+        assert "📋 MEMORIA DE DECISIONES:" in prompt
+        assert "USUARIO: Previous query" in prompt
+        assert "📚 GUÍA SAGRADA Y CONTEXTO:" in prompt
         assert "RAG snippet 1" in prompt
         assert "RAG snippet 2" in prompt
-        assert "❓ CURRENT REQUEST:\nCurrent query" in prompt
+        assert "❓ SOLICITUD ACTUAL DEL CLIENTE: Current query" in prompt
 
     def test_select_template_returns_context_driven(self) -> None:
         """Template selection: Should return CONTEXT_DRIVEN for any project."""

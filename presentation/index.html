@@ -888,21 +888,36 @@
             class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-200/50 via-slate-200 to-slate-200 dark:from-blue-900/20 dark:via-black dark:to-black pointer-events-none">
         </div>
         <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
-            <div
-                class="inline-block bg-blue-100 dark:bg-blue-500/10 border border-blue-300 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 px-4 py-1 rounded-full text-sm font-bold mb-6">
-                Demostración en vídeo</div>
-            <h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-slate-900 dark:text-white">El Arquitecto en Acción
-            </h2>
-            <p class="text-slate-600 dark:text-slate-400 mb-12 text-lg max-w-2xl mx-auto">Vemos un proceso de generación
-                completo (0 a 100) simulando la arquitectura para un sistema de E-commerce.</p>
+            <div class="flex flex-col items-center mb-8">
+                <div
+                    class="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-500/10 border border-amber-300 dark:border-amber-500/30 text-amber-700 dark:text-amber-400 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                    Prototipo Alpha - En Refinamiento
+                </div>
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-slate-900 dark:text-white">El Arquitecto en Acción</h2>
+                <p class="text-slate-600 dark:text-slate-400 mb-2 text-lg max-w-2xl mx-auto">Visualización del proceso de orquestación local.</p>
+            </div>
 
             <div
-                class="relative rounded-3xl overflow-hidden border-4 border-slate-300 dark:border-slate-800 shadow-[0_0_50px_rgba(59,130,246,0.1)] dark:shadow-[0_0_50px_rgba(59,130,246,0.15)]">
+                class="relative rounded-3xl overflow-hidden border-4 border-slate-300 dark:border-slate-800 shadow-[0_0_50px_rgba(59,130,246,0.1)] dark:shadow-[0_0_50px_rgba(59,130,246,0.15)] group">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-20 pointer-events-none"></div>
+
                 <video class="w-full aspect-video object-cover" controls
                     poster="https://via.placeholder.com/1920x1080/0B101E/FFFFFF?text=SoftArchitect+Demo+Preview">
                     <source src="assets/workflow-demo.mp4" type="video/mp4">
                     Tu navegador no soporta el formato de vídeo.
                 </video>
+            </div>
+
+            <div class="mt-8 max-w-3xl mx-auto p-6 rounded-2xl bg-white/50 dark:bg-surface/30 border border-slate-200 dark:border-slate-800 backdrop-blur-sm">
+                <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed italic">
+                    "Este metraje corresponde a una versión preliminar centrada en la **validación del flujo secuencial**.
+                    Actualmente estamos refinando la **densidad técnica de los prompts** y la persistencia jerárquica para que cada documento
+                    alcance el nivel de detalle Senior mostrado en los ejemplos de la documentación oficial."
+                </p>
             </div>
         </div>
     </section>
