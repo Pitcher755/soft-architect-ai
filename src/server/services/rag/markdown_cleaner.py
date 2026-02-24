@@ -38,7 +38,7 @@ class MarkdownCleaner:
         Returns:
             Cleaned text.
         """
-        if not text or not isinstance(text, str):
+        if not text:
             return ""
 
         # Step 1: Remove HTML comments and tags
