@@ -3,7 +3,8 @@
 <!-- TEMPLATE GUIDE: This document identifies security threats and mitigations.
      - Use STRIDE framework (Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation)
      - For each threat: Describe → Assess risk → Define mitigation
-     Generation Order: 18/24 | Phase: 3-Architecture | Duration: ~40 mins
+     Generation Order: 12/24 | Phase: 3-Architecture | Prerequisites: PROJECT_STRUCTURE_MAP.md
+     Duration: ~40 mins
      Remove this guide before committing. -->
 
 > **System:** {{SYSTEM_NAME}}

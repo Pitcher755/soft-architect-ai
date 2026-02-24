@@ -17,9 +17,16 @@ WHY THIS MATTERS:
 - New developers onboard faster (clear expectations)
 
 WHEN TO CREATE:
-- **Generation Order:** 3/24
-- **Prerequisites:** AGENTS.md (who enforces), CONTRIBUTING.md (PR flow)
+- **Generation Order:** 21/24 (FIRST of ROOT/META documents)
+- **Phase:** 6 - ROOT / META
+- **Prerequisites:** TECH_STACK_DECISION.md (all architecture decisions complete)
 - **Duration:** ~25 minutes
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the ROOT directory (/) as RULES.md
+   NEVER save inside context/ or 00-ROOT/ subdirectory
+   Correct path: /RULES.md
+   Incorrect path: /context/00-ROOT/RULES.md or /context/RULES.md
 
 INSTRUCTIONS:
 1. Replace {{PLACEHOLDERS}} with your values

@@ -4,8 +4,8 @@
      - Functional = WHAT the system does
      - Non-Functional = HOW WELL it performs (performance, security, scalability)
      - Constraints = LIMITATIONS (budget, tech stack, regulations)
-     Generation Order: 11/24 | Phase: 2-Requirements | Duration: ~50 mins
-     Prerequisites: USER_STORIES_MASTER.json, DOMAIN_LANGUAGE.md
+     Generation Order: 4/24 | Phase: 2-Requirements | Duration: ~50 mins
+     Prerequisites: USER_JOURNEY_MAP.md (context complete)
      Remove this guide before committing. -->
 
 > **Version:** {{VERSION}}

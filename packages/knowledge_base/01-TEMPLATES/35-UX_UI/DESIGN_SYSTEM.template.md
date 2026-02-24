@@ -3,7 +3,8 @@
 <!-- TEMPLATE GUIDE: This document is your visual language (colors, typography, spacing, components).
      - Ensures consistency across all screens
      - Speeds up development (reusable components)
-     Generation Order: 21/24 | Phase: 4-UX/UI | Duration: ~35 mins
+     Generation Order: 14/24 | Phase: 4-UX/UI | Prerequisites: ARCH_DECISION_RECORDS.md
+     Duration: ~35 mins
      Remove this guide before committing. -->
 
 > **Design System:** {{SYSTEM_NAME}}

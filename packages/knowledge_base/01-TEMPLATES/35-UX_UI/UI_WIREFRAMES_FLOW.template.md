@@ -4,7 +4,8 @@
      - Wireframes (low-fidelity sketches)
      - User flows (screen transitions)
      - Navigation structure
-     Generation Order: 22/24 | Phase: 4-UX/UI | Duration: ~30 mins
+     Generation Order: 15/24 | Phase: 4-UX/UI | Prerequisites: DESIGN_SYSTEM.md (design system established)
+     Duration: ~30 mins
      Remove this guide before committing. -->
 
 > **Project:** {{PROJECT_NAME}}

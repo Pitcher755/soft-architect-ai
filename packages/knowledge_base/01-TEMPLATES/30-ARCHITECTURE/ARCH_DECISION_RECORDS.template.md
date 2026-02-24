@@ -4,7 +4,8 @@
      - Each decision gets a numbered ADR (ADR-001, ADR-002...)
      - NEVER delete ADRs (they're historical record)
      - Use template: Context → Decision → Consequences
-     Generation Order: 15/24 | Phase: 3-Architecture | Duration: ~35 mins
+     Generation Order: 13/24 | Phase: 3-Architecture | Prerequisites: SECURITY_THREAT_MODEL.md
+     Duration: ~35 mins
      Remove this guide before committing. -->
 
 > **Project:** {{PROJECT_NAME}}

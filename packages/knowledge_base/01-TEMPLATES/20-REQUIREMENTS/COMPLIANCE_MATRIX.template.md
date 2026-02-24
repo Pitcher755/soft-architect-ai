@@ -7,8 +7,14 @@
 
 PURPOSE:
 The Compliance Matrix is YOUR LEGAL SHIELD. It answers:
-- What laws/regulations apply to us? (GDPR, CCPA, HIPAA)
-- Are we compliant? (Status tracking)
+- What laws/regulations apply to us? (GDPR, CCPA, HIPAA)- Do we comply? (80% ✅ / 20% ⚠️ / 0% ❌)
+- What's our plan to reach 100%?
+
+WHEN TO CREATE:
+- **Generation Order:** 7/24 (LAST of Requirements Phase)
+- **Phase:** 2 - Requirements
+- **Prerequisites:** SECURITY_PRIVACY_POLICY.md (security requirements finalized)
+- **Duration:** ~35 minutes- Are we compliant? (Status tracking)
 - How do we prove it? (Audit trail)
 
 WHY THIS MATTERS:

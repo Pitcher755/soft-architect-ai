@@ -4,7 +4,8 @@
      - Defines all API endpoints, methods, request/response schemas
      - Prevents breaking changes (versioning strategy)
      - Enables parallel frontend/backend development
-     Generation Order: 14/24 | Phase: 3-Architecture | Duration: ~40 mins
+     Generation Order: 10/24 | Phase: 3-Architecture | Prerequisites: DATA_MODEL_SCHEMA.md
+     Duration: ~40 mins
      Remove this guide before committing. -->
 
 > **API Version:** {{API_VERSION}}

@@ -11,6 +11,12 @@ Your README is the FIRST thing developers see. It should answer in <60 seconds:
 - Why does it exist?
 - How do I get started in <5 minutes?
 
+WHEN TO CREATE:
+- **Generation Order:** 24/24 (FINAL document in Master Workflow)
+- **Phase:** 6 - ROOT / META
+- **Prerequisites:** All other documents complete (23/23 prior steps)
+- **Duration:** ~30 minutes
+
 BEST PRACTICES:
 ✅ Keep "Quick Start" under 10 commands
 ✅ Add real screenshots (not placeholders)
@@ -23,6 +29,12 @@ INSTRUCTIONS:
 3. Add screenshot to /doc/screenshots/
 4. Remove TEMPLATE GUIDE section before committing
 5. Keep version updated (semantic versioning)
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the ROOT directory (/) as README.md
+   NEVER save inside context/ or 00-ROOT/ subdirectory
+   Correct path: /README.md
+   Incorrect path: /context/00-ROOT/README.md or /context/README.md
 
 RELATED DOCS:
 - AGENTS.md (team structure)

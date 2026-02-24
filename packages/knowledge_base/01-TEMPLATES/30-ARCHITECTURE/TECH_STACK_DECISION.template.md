@@ -3,7 +3,8 @@
 <!-- TEMPLATE GUIDE: This document explains WHAT technologies you're using and WHY.
      - For each tech: Name, Purpose, Alternatives Considered, Why Chosen
      - Links to ADRs for deep dives
-     Generation Order: 19/24 | Phase: 3-Architecture | Duration: ~35 mins
+     Generation Order: 8/24 | Phase: 3-Architecture | Prerequisites: COMPLIANCE_MATRIX.md
+     Duration: ~35 mins
      Remove this guide before committing. -->
 
 > **Project:** {{PROJECT_NAME}}

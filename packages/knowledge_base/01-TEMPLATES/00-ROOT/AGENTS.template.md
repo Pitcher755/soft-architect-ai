@@ -17,9 +17,16 @@ WHY THIS MATTERS:
 - Essential for multi-agent AI systems (prevents conflicting directives)
 
 WHEN TO CREATE:
-- **Generation Order:** 1/24 (FIRST document in Master Workflow)
-- **Prerequisites:** None
+- **Generation Order:** 23/24 (THIRD-TO-LAST document in Master Workflow)
+- **Phase:** 6 - ROOT / META
+- **Prerequisites:** RULES.md (defines standards), CONTRIBUTING.md (defines processes)
 - **Duration:** ~15 minutes
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the ROOT directory (/) as AGENTS.md
+   NEVER save inside context/ or 00-ROOT/ subdirectory
+   Correct path: /AGENTS.md
+   Incorrect path: /context/00-ROOT/AGENTS.md or /context/AGENTS.md
 
 INSTRUCTIONS:
 1. Replace all {{PLACEHOLDERS}} with your actual values

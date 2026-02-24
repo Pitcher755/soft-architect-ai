@@ -18,9 +18,16 @@ WHY THIS MATTERS:
 - Welcomes new contributors smoothly
 
 WHEN TO CREATE:
-- **Generation Order:** 4/24
-- **Prerequisites:** AGENTS.md (roles), RULES.md (standards)
+- **Generation Order:** 22/24 (SECOND of ROOT/META documents)
+- **Phase:** 6 - ROOT / META
+- **Prerequisites:** RULES.md (standards defined), AGENTS.md (team roles established)
 - **Duration:** ~30 minutes
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the ROOT directory (/) as CONTRIBUTING.md
+   NEVER save inside 00-ROOT/ subdirectory
+   Correct path: /context/CONTRIBUTING.md
+   Incorrect path: /context/00-ROOT/CONTRIBUTING.md
 
 INSTRUCTIONS:
 1. Replace {{PLACEHOLDERS}} with your values

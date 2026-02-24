@@ -4,7 +4,8 @@
      - Entity-Relationship Diagrams (ERD)
      - Table schemas (columns, types, constraints)
      - Relationships (1:1, 1:N, N:M)
-     Generation Order: 16/24 | Phase: 3-Architecture | Duration: ~45 mins
+     Generation Order: 9/24 | Phase: 3-Architecture | Prerequisites: TECH_STACK_DECISION.md
+     Duration: ~45 mins
      Remove this guide before committing. -->
 
 > **Database:** {{DATABASE_TYPE}}  <!-- e.g., PostgreSQL, MongoDB, SQLite -->

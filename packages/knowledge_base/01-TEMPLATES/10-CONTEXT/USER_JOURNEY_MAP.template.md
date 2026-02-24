@@ -20,9 +20,9 @@ WHY THIS MATTERS:
 - Produces empathy (developers see real human impact)
 
 WHEN TO CREATE:
-- **Generation Order:** 7/24
+- **Generation Order:** 3/24 (THIRD document in Master Workflow)
 - **Phase:** 1 - Context
-- **Prerequisites:** PROJECT_MANIFESTO.md (defines personas), DOMAIN_LANGUAGE.md
+- **Prerequisites:** DOMAIN_LANGUAGE.md (terminology established), PROJECT_MANIFESTO.md (personas defined)
 - **Duration:** ~45 minutes
 
 INSTRUCTIONS:

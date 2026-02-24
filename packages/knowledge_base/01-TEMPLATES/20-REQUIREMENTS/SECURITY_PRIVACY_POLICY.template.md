@@ -3,8 +3,8 @@
 <!-- TEMPLATE GUIDE: This document defines HOW the system protects data and users.
      - Security = Prevent attacks (authentication, encryption, input validation)
      - Privacy = Respect user data (GDPR, minimal collection, right to delete)
-     Generation Order: 12/24 | Phase: 2-Requirements | Duration: ~45 mins
-     Prerequisites: REQUIREMENTS_MASTER.md, DOMAIN_LANGUAGE.md
+     Generation Order: 6/24 | Phase: 2-Requirements | Duration: ~45 mins
+     Prerequisites: REQUIREMENTS_MASTER.md (requirements defined)
      Remove this guide before committing. -->
 
 > **Classification:** {{DATA_CLASSIFICATION}}  <!-- Public, Internal, Confidential, Restricted -->

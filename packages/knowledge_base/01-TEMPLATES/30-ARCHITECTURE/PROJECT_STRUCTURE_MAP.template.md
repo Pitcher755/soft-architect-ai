@@ -4,7 +4,8 @@
      - Show where code lives (directory structure)
      - Explain purpose of each folder
      - Define file naming conventions
-     Generation Order: 17/24 | Phase: 3-Architecture | Duration: ~30 mins
+     Generation Order: 11/24 | Phase: 3-Architecture | Prerequisites: API_INTERFACE_CONTRACT.md
+     Duration: ~30 mins
      Remove this guide before committing. -->
 
 > **Project:** {{PROJECT_NAME}}

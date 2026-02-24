@@ -19,9 +19,9 @@ WHY THIS MATTERS:
 - Stakeholders can review and approve BEFORE coding starts
 
 WHEN TO CREATE:
-- **Generation Order:** 6/24
+- **Generation Order:** 1/24 (FIRST document in Master Workflow)
 - **Phase:** 1 - Context
-- **Prerequisites:** AGENTS.md, README.md, DOMAIN_LANGUAGE.md
+- **Prerequisites:** None (this is the first step)
 - **Duration:** ~40 minutes
 
 INSTRUCTIONS:

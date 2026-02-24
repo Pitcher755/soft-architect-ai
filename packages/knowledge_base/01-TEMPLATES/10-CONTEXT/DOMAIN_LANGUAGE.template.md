@@ -19,9 +19,9 @@ WHY THIS MATTERS:
 - SoftArchitect AI uses this to generate consistent naming
 
 WHEN TO CREATE:
-- **Generation Order:** 5/24
+- **Generation Order:** 2/24 (SECOND document in Master Workflow)
 - **Phase:** 1 - Context
-- **Prerequisites:** AGENTS.md, README.md, RULES.md, PROJECT_MANIFESTO.md
+- **Prerequisites:** PROJECT_MANIFESTO.md (project vision established)
 - **Duration:** ~35 minutes
 
 INSTRUCTIONS:
