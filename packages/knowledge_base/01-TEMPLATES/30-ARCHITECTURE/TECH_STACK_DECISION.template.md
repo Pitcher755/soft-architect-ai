@@ -1,11 +1,32 @@
 # 🛠️ Tech Stack Decision
 
-<!-- TEMPLATE GUIDE: This document explains WHAT technologies you're using and WHY.
-     - For each tech: Name, Purpose, Alternatives Considered, Why Chosen
-     - Links to ADRs for deep dives
-     Generation Order: 8/24 | Phase: 3-Architecture | Prerequisites: COMPLIANCE_MATRIX.md
-     Duration: ~35 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document explains WHAT technologies are being used and WHY. It provides a
+justification for the Frontend, Backend, Database, AI/ML, and Infrastructure
+choices, including alternatives considered and rejected.
+
+WHEN TO CREATE:
+- **Generation Order:** 8/24 (Phase 3 - ARCHITECTURE)
+- **Phase:** 3 - ARCHITECTURE
+- **Prerequisites:** 20-REQUIREMENTS/COMPLIANCE_MATRIX.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** The technologies chosen MUST align with the constraints defined in PROJECT_MANIFESTO.md (e.g., if "Local-First" is a requirement, do not choose cloud-only databases).
+✅ **BE ANALYTICAL:** For every technology, provide at least two alternatives and a logical reason why they were rejected (Cost, Learning Curve, Performance, etc.).
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **MERMAID DIAGRAMS:** Do NOT use double curly braces {{ }} inside Mermaid diagrams.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 30-ARCHITECTURE directory.
+   Filename MUST be: TECH_STACK_DECISION.md
+   Correct path: /context/30-ARCHITECTURE/TECH_STACK_DECISION.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Project:** {{PROJECT_NAME}}
 > **Last Updated:** {{DATE}}

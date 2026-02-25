@@ -1,12 +1,34 @@
 # 📝 Requirements Master Document
 
-<!-- TEMPLATE GUIDE: This document is the SINGLE SOURCE OF TRUTH for ALL system requirements.
-     - Functional = WHAT the system does
-     - Non-Functional = HOW WELL it performs (performance, security, scalability)
-     - Constraints = LIMITATIONS (budget, tech stack, regulations)
-     Generation Order: 4/24 | Phase: 2-Requirements | Duration: ~50 mins
-     Prerequisites: USER_JOURNEY_MAP.md (context complete)
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document is the SINGLE SOURCE OF TRUTH for ALL system requirements.
+It translates the business vision (Phase 1) into actionable technical specifications.
+- Functional = WHAT the system does (features)
+- Non-Functional = HOW WELL it performs (performance, security, scalability)
+- Constraints = LIMITATIONS (budget, tech stack, regulations)
+
+WHEN TO CREATE:
+- **Generation Order:** 4/24 (FIRST document of the Requirements Phase)
+- **Phase:** 2 - REQUIREMENTS
+- **Prerequisites:** Phase 1 (Context) must be fully complete (Manifesto, Domain Language, Journey Map).
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Base the requirements STRICTLY on the MVP scope defined in the PROJECT_MANIFESTO.md. Do not invent out-of-scope features.
+✅ **BE MEASURABLE:** Non-Functional Requirements must have specific, testable targets (e.g., "<200ms", "AES-256", "WCAG 2.1 AA"). Do not use vague terms like "fast" or "secure".
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 20-REQUIREMENTS directory.
+   Filename MUST be: REQUIREMENTS_MASTER.md
+   Correct path: /context/20-REQUIREMENTS/REQUIREMENTS_MASTER.md
+   Incorrect path: /context/REQUIREMENTS_MASTER.md or /REQUIREMENTS_MASTER.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Version:** {{VERSION}}
 > **Date:** {{DATE}}

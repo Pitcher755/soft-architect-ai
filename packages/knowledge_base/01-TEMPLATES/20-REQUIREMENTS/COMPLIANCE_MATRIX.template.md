@@ -7,54 +7,27 @@
 
 PURPOSE:
 The Compliance Matrix is YOUR LEGAL SHIELD. It answers:
-- What laws/regulations apply to us? (GDPR, CCPA, HIPAA)- Do we comply? (80% ✅ / 20% ⚠️ / 0% ❌)
-- What's our plan to reach 100%?
+- What laws/regulations apply to us? (GDPR, CCPA, HIPAA, etc.)
+- Do we currently comply? (Status tracking)
+- How do we prove it? (Audit trail and implementations)
 
 WHEN TO CREATE:
-- **Generation Order:** 7/24 (LAST of Requirements Phase)
-- **Phase:** 2 - Requirements
-- **Prerequisites:** SECURITY_PRIVACY_POLICY.md (security requirements finalized)
-- **Duration:** ~35 minutes- Are we compliant? (Status tracking)
-- How do we prove it? (Audit trail)
+- **Generation Order:** 7/24 (LAST document of the Requirements Phase)
+- **Phase:** 2 - REQUIREMENTS
+- **Prerequisites:** 20-REQUIREMENTS/SECURITY_PRIVACY_POLICY.md
 
-WHY THIS MATTERS:
-- Prevents lawsuits (GDPR fines up to €20M or 4% revenue!)
-- Protects brand reputation (data breaches = trust lost)
-- Enables sales (B2B customers ask "Are you SOC 2 compliant?")
-- Unblocks deployments (EU market requires GDPR compliance)
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Only mark regulations as "Applies = Yes" if the project's context explicitly demands it (e.g., healthcare context -> HIPAA). Do not gold-plate or over-complicate unnecessarily.
+✅ **BE SPECIFIC:** When explaining HOW we comply, link it to specific architectural or software features (e.g., "AES-256 Encryption", "Data export endpoint").
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
 
-WHEN TO CREATE:
-- **Generation Order:** 13/24
-- **Phase:** 2 - Requirements
-- **Prerequisites:** SECURITY_PRIVACY_POLICY.md, REQUIREMENTS_MASTER.md
-- **Duration:** ~40 minutes (initial), review before each major release
-
-INSTRUCTIONS:
-1. Check which regulations ACTUALLY apply (don't gold-plate!)
-2. For each reg, define HOW you comply (implementation measure)
-3. Track compliance status (🔴 Not Started, 🟡 In Progress, 🟢 Compliant)
-4. Get legal sign-off BEFORE v1.0 launch
-5. Review quarterly (laws change!)
-6. Remove TEMPLATE GUIDE before committing
-
-CRITICAL RULES:
-❌ NEVER claim compliance without proof (audit logs, tests)
-❌ NEVER copy-paste generic compliance (customize to YOUR app)
-❌ NEVER ignore applicable regulations ("We'll fix it later")
-✅ ALWAYS consult lawyer for high-risk domains (healthcare, finance)
-✅ ALWAYS document WHY a regulation doesn't apply
-✅ ALWAYS test compliance features (deletion endpoints, data exports)
-
-BEST PRACTICES:
-- Start with "Does this reg apply?" checklist
-- Link to implementation (e.g., GDPR → data_export_handler.py)
-- Add audit evidence (screenshots, test results)
-- Update after each major feature (new data collection = review!)
-
-RELATED DOCS:
-- SECURITY_PRIVACY_POLICY.md (implements compliance controls)
-- DATA_MODEL_SCHEMA.md (shows what PII is stored)
-- API_INTERFACE_CONTRACT.md (deletion/export endpoints)
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 20-REQUIREMENTS directory.
+   Filename MUST be: COMPLIANCE_MATRIX.md
+   Correct path: /context/20-REQUIREMENTS/COMPLIANCE_MATRIX.md
+   Incorrect path: /context/COMPLIANCE_MATRIX.md or /COMPLIANCE_MATRIX.md
 ════════════════════════════════════════════════════════════════════════════════
 -->
 

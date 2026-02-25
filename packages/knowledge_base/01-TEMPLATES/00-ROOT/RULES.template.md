@@ -6,49 +6,30 @@
 ════════════════════════════════════════════════════════════════════════════════
 
 PURPOSE:
-Rules define "HOW" work gets done (coding, git, reviews). This document prevents:
-- Merge conflicts (inconsistent formatting)
-- Code debt (no standards)
-- Security issues (unenforced gates)
-
-WHY THIS MATTERS:
-- Reduces PR review time by 60%
-- CI/CD auto-enforces rules (fails if violated)
-- New developers onboard faster (clear expectations)
+Rules define "HOW" work gets done (coding standards, testing, reviews). This document acts as the absolute law for both human developers and AI agents, preventing merge conflicts, technical debt, and security vulnerabilities.
 
 WHEN TO CREATE:
 - **Generation Order:** 21/24 (FIRST of ROOT/META documents)
 - **Phase:** 6 - ROOT / META
-- **Prerequisites:** TECH_STACK_DECISION.md (all architecture decisions complete)
-- **Duration:** ~25 minutes
+- **Prerequisites:** TECH_STACK_DECISION.md and TESTING_STRATEGY.md
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **BE EXPLICIT:** Do not use vague terms like "write clean code". Specify EXACT naming conventions (e.g., snake_case, PascalCase) based on the chosen languages.
+✅ **NO HALLUCINATIONS:** Ensure the code examples use the exact languages and frameworks defined in Phase 3.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual data.
+✅ **MERMAID DIAGRAMS:** If you generate any Mermaid diagrams, do NOT use curly braces {} inside them. Replace uppercase placeholders directly with text to avoid rendering errors.
+✅ **SELF-DESTRUCT:** Remove this entire TEMPLATE GUIDE block before outputting.
 
 ⚠️ **CRITICAL ROUTING:**
-   This file MUST be saved in the ROOT directory (/) as RULES.md
-   NEVER save inside context/ or 00-ROOT/ subdirectory
+   This file MUST be saved in the ROOT directory (/) of the project.
+   Filename MUST be: RULES.md
    Correct path: /RULES.md
-   Incorrect path: /context/00-ROOT/RULES.md or /context/RULES.md
-
-INSTRUCTIONS:
-1. Replace {{PLACEHOLDERS}} with your values
-2. Customize rules per language/framework
-3. Add new sections if project needs (e.g., "Mobile-Specific Rules")
-4. Sync to .editorconfig, .pylintrc, analysis_options.yaml
-5. Remove TEMPLATE GUIDE before committing
-
-ANTI-PATTERNS:
-❌ 100+ rules (no one follows)
-❌ Vague ("code should be clean")
-❌ Unenforced (rules without CI)
-
-BEST PRACTICES:
-✅ 10-20 critical rules only
-✅ Specific with examples
-✅ Auto-check in CI/CD
+   Incorrect path: /context/RULES.md or /context/00-ROOT/RULES.md
 
 RELATED DOCS:
-- CONTRIBUTING.md (PR workflow)
-- CI_CD_PIPELINE.md (auto-enforcement)
-- AGENTS.md (who approves exceptions)
+- /CONTRIBUTING.md (PR workflow)
+- /context/40-PLANNING/CI_CD_PIPELINE.md (Auto-enforcement of these rules)
+- /AGENTS.md (Who approves rule exceptions)
 ════════════════════════════════════════════════════════════════════════════════
 -->
 

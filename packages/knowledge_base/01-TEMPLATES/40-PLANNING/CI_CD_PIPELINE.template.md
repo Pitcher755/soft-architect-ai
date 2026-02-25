@@ -1,10 +1,30 @@
 # 🚀 CI/CD Pipeline
 
-<!-- TEMPLATE GUIDE: This document defines automated testing, building, and deployment.
-     - CI = Continuous Integration (merge → test → build)
-     - CD = Continuous Deployment (build → deploy to prod)
-     Generation Order: 23/24 | Phase: 5-Planning | Duration: ~40 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document defines the automated pipeline for testing, building, and deploying the application. It establishes the quality gates (linting, tests, security scans) that code must pass before reaching production.
+
+WHEN TO CREATE:
+- **Generation Order:** 19/24 (Phase 5 - PLANNING)
+- **Phase:** 5 - PLANNING
+- **Prerequisites:** 40-PLANNING/TESTING_STRATEGY.md and 40-PLANNING/DEPLOYMENT_INFRASTRUCTURE.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Use the specific tools and languages defined in TECH_STACK_DECISION.md. If the stack is Python/FastAPI, provide Ruff/Pytest examples. If Flutter, provide Flutter Analyze/Test examples.
+✅ **SECURITY FIRST:** Ensure a dedicated section for Secrets Management, emphasizing that secrets should NEVER be committed to the repository.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **MERMAID DIAGRAMS:** Do NOT use double curly braces {{ }} inside Mermaid diagrams. Replace uppercase placeholders directly with text.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 40-PLANNING directory.
+   Filename MUST be: CI_CD_PIPELINE.md
+   Correct path: /context/40-PLANNING/CI_CD_PIPELINE.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **CI/CD Tool:** {{CI_CD_TOOL}}  <!-- e.g., GitHub Actions, GitLab CI, Jenkins -->
 > **Repository:** {{REPO_URL}}

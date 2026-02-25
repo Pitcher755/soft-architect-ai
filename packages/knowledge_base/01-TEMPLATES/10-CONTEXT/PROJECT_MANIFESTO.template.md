@@ -12,44 +12,22 @@ The Project Manifesto is YOUR PROJECT'S NORTH STAR. It answers:
 - WHAT'S IN/OUT of scope? (MVP)
 - HOW do we measure success? (KPIs)
 
-WHY THIS MATTERS:
-- Prevents scope creep (40% of failed projects!)
-- Aligns team on shared vision (no "I thought we were building X")
-- Provides decision filter ("Does this feature align with vision?")
-- Stakeholders can review and approve BEFORE coding starts
-
 WHEN TO CREATE:
 - **Generation Order:** 1/24 (FIRST document in Master Workflow)
-- **Phase:** 1 - Context
-- **Prerequisites:** None (this is the first step)
-- **Duration:** ~40 minutes
+- **Phase:** 1 - CONTEXT
+- **Prerequisites:** None (this is the genesis step)
 
-INSTRUCTIONS:
-1. Fill {{PLACEHOLDERS}} with YOUR project's values
-2. Keep Vision emotional (inspire people!)
-3. Keep mvp Scope realistic (<3 months of work)
-4. Make KPIs MEASURABLE (not "increase user happiness")
-5. Get stakeholder sign-off before committing
-6. Remove TEMPLATE GUIDE before committing
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Never write vague vision statements. Define exactly WHO benefits and WHAT the MVP scope is based on the user's prompt/transcript.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () to understand the expected tone and format, but DO NOT copy the examples literally unless they match the user's project.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block (from the first ════ to the last) from the final generated output.
 
-CRITICAL RULES:
-❌ NEVER write vague vision ("Make the world better")
-❌ NEVER skip MVP scope (leads to feature creep)
-❌ NEVER create unmeasurable KPIs ("Be successful")
-✅ ALWAYS define WHO benefits (target persona)
-✅ ALWAYS distinguish MVP vs Future scope
-✅ ALWAYS attach success metrics
-
-BEST PRACTICES:
-- Use storytelling in Vision (paint the picture)
-- Keep Differentiator focused (1-3 unique points)
-- Be honest about what's OUT of scope
-- Make KPIs achievable in 3-6 months
-
-RELATED DOCS:
-- USER_JOURNEY_MAP.md (how users experience the vision)
-- REQUIREMENTS_MASTER.md (detailed features from MVP scope)
-- ROADMAP_PHASES.md (timeline to deliver MVP)
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 10-CONTEXT directory.
+   Filename MUST be: PROJECT_MANIFESTO.md
+   Correct path: /context/10-CONTEXT/PROJECT_MANIFESTO.md
+   Incorrect path: /context/PROJECT_MANIFESTO.md or /PROJECT_MANIFESTO.md
 ════════════════════════════════════════════════════════════════════════════════
 -->
 

@@ -1,14 +1,32 @@
 # 🛡️ Security Threat Model
 
-<!-- TEMPLATE GUIDE: This document identifies security threats and mitigations.
-     - Use STRIDE framework (Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation)
-     - For each threat: Describe → Assess risk → Define mitigation
-     Generation Order: 12/24 | Phase: 3-Architecture | Prerequisites: PROJECT_STRUCTURE_MAP.md
-     Duration: ~40 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
 
+PURPOSE:
+This document identifies potential security threats using the STRIDE framework and defines specific technical mitigations. It acts as a proactive defense plan for the system's architecture.
+
+WHEN TO CREATE:
+- **Generation Order:** 12/24 (Phase 3 - ARCHITECTURE)
+- **Phase:** 3 - ARCHITECTURE
+- **Prerequisites:** 30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** The threats must be REALISTIC based on the chosen Tech Stack (e.g., if using Python/FastAPI, mention specific SQL Injection or Pydantic validation risks).
+✅ **STRIDE FRAMEWORK:** Strictly follow the 6 categories (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege).
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **MERMAID DIAGRAMS:** Do NOT use double curly braces {{ }} inside Mermaid diagrams. Use uppercase placeholders directly.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 30-ARCHITECTURE directory.
+   Filename MUST be: SECURITY_THREAT_MODEL.md
+   Correct path: /context/30-ARCHITECTURE/SECURITY_THREAT_MODEL.md
+   Incorrect path: /context/SECURITY_THREAT_MODEL.md or /SECURITY_THREAT_MODEL.md
+════════════════════════════════════════════════════════════════════════════════ -->
 > **System:** {{SYSTEM_NAME}}
-> **Classification:** {{CLASSIFICATION}}  <!-- Public, Internal, Confidential -->
+> **Classification:** {{CLASSIFICATION}}
 > **Last Review:** {{DATE}}
 > **Next Review:** {{NEXT_REVIEW}}
 
@@ -17,240 +35,109 @@
 ## 📖 Table of Contents
 
 - [Threat Modeling Approach](#threat-modeling-approach)
+- [Data Flow Diagram](#data-flow-diagram)
 - [System Assets](#system-assets)
 - [Threat Catalog (STRIDE)](#threat-catalog-stride)
-- [Risk Assessment](#risk-assessment)
+- [Risk Assessment Matrix](#risk-assessment-matrix)
 
 ---
 
 ## 🎯 Threat Modeling Approach
 
-**Framework:** {{FRAMEWORK}}  <!-- e.g., STRIDE, PASTA, OCTAVE -->
+**Framework:** STRIDE (Spoofing, Tampering, Repudiation, Info Disclosure, Denial of Service, Elevation of Privilege).
 
-**STRIDE Categories:**
+---
 
-| Category | Description | Example |
-|----------|-------------|---------|
-| **S**poofing | Attacker impersonates user/system | Stolen JWT tokens |
-| **T**ampering | Attacker modifies data | SQL injection |
-| **R**epudiation | Attacker denies action | No audit logs |
-| **I**nfo Disclosure | Attacker accesses sensitive data | Database leak |
-| **D**enial of Service | Attacker crashes system | Rate limit bypass |
-| **E**levation of Privilege | Attacker gains admin access | IDOR vulnerability |
+## 🔍 Data Flow Diagram
+
+The following diagram visualizes the trust boundaries and data movement where threats are most likely to occur.
+
+```mermaid
+graph LR
+    User((User)) -- HTTPS --> API[API Gateway]
+    subgraph Trust Boundary: Server
+        API -- Authz --> App[Backend Service]
+        App -- Query --> DB[(Database)]
+        App -- Vector --> VDB[(Vector Store)]
+    end
+    App -- Prompts --> AI[AI Inference Engine]
+
+```
 
 ---
 
 ## 🏦 System Assets
 
-**What we're protecting:**
-
 | Asset | Value | Loss Impact | Threat Actors |
-|-------|-------|-------------|---------------|
+| --- | --- | --- | --- |
 | {{ASSET_1}} | {{VALUE_1}} | {{IMPACT_1}} | {{ACTORS_1}} |
 | {{ASSET_2}} | {{VALUE_2}} | {{IMPACT_2}} | {{ACTORS_2}} |
-
-<!-- EXAMPLE:
-
-| Asset | Value | Loss Impact | Threat Actors |
-|-------|-------|-------------|---------------|
-| User credentials | High | Account takeover → reputational damage | Script kiddies, competitors |
-| Project source code | Medium | IP theft → competitive loss | Competitors, nation-states |
-| RAG knowledge base | Medium | Data poisoning → bad outputs | Malicious users |
-| API endpoints | Low | Abuse → infrastructure cost | Bots, scrapers |
--->
 
 ---
 
 ## 🚨 Threat Catalog (STRIDE)
 
-### S1: Spoofing - Stolen Authentication Tokens
+### S1: Spoofing - Impersonation
 
-**Threat:** Attacker steals JWT token and impersonates user.
-
-**Attack Vector:**
-
-1. Attacker performs XSS attack on client
-2. Steals `localStorage` JWT token
-3. Uses token to access API as victim
-
-**Risk:** {{RISK_S1}}  <!-- High, Medium, Low -->
-**Likelihood:** {{LIKELIHOOD_S1}}  <!-- High, Medium, Low -->
-**Impact:** {{IMPACT_S1}}  <!-- High, Medium, Low -->
-
+**Threat:** {{S1_THREAT}}
 **Mitigation:**
 
-- ✅ Use `httpOnly` cookies instead of localStorage
-- ✅ Implement CSRF tokens
-- ✅ Short token expiry (30 minutes)
-- ✅ Refresh token rotation
-- ✅ Monitor for suspicious token usage
+* ✅ {{S1_MITIGATION_1}}
+* ✅ {{S1_MITIGATION_2}}
 
-**Status:** {{STATUS_S1}}  <!-- ✅ Implemented, 🚧 In Progress, ❌ Not Implemented -->
+### T1: Tampering - Data Modification
 
----
-
-### T1: Tampering - SQL Injection
-
-**Threat:** Attacker injects SQL code to modify/delete data.
-
-**Attack Vector:**
-
-```python
-# Vulnerable code
-user_input = request.args.get("name")
-db.execute(f"SELECT * FROM users WHERE name = '{user_input}'")
-# Input: "'; DROP TABLE users;--"
-```
-
-**Risk:** High
-**Likelihood:** Medium
-**Impact:** High
-
+**Threat:** {{T1_THREAT}}
 **Mitigation:**
 
-- ✅ Use parameterized queries (ORM)
-- ✅ Input validation (whitelist)
-- ✅ Least privilege database user
-- ✅ Web Application Firewall (WAF)
+* ✅ {{T1_MITIGATION_1}}
 
-**Status:** ✅ Implemented
+### R1: Repudiation - Denial of Action
 
----
-
-### R1: Repudiation - No Audit Logs
-
-**Threat:** User performs malicious action and claims "I didn't do it."
-
-**Attack Vector:** Delete project → No proof of who deleted it
-
-**Risk:** Medium
-**Likelihood:** Low
-**Impact:** Medium
-
+**Threat:** {{R1_THREAT}}
 **Mitigation:**
 
-- ✅ Audit log every critical action (create, update, delete)
-- ✅ Log: User ID, Timestamp, Action, Resource ID, IP Address
-- ✅ Immutable logs (append-only, S3 + versioning)
-- ✅ Tamper detection (log signing)
+* ✅ {{R1_MITIGATION_1}}
 
-**Status:** {{STATUS_R1}}
+### I1: Info Disclosure - Data Leakage
 
----
-
-### I1: Info Disclosure - Database Credentials Leaked
-
-**Threat:** Attacker finds `.env` file in Git history or exposed server.
-
-**Attack Vector:**
-
-1. Developer commits `.env` to Git
-2. Attacker scrapes GitHub for "DATABASE_PASSWORD="
-3. Connects to production database
-
-**Risk:** Critical
-**Likelihood:** Medium
-**Impact:** Critical
-
+**Threat:** {{I1_THREAT}}
 **Mitigation:**
 
-- ✅ `.env` in `.gitignore`
-- ✅ Pre-commit hook to detect secrets (TruffleHog)
-- ✅ Secrets in vault (AWS Secrets Manager, HashiCorp Vault)
-- ✅ Rotate credentials quarterly
-- ✅ Git history rewrite if leaked
+* ✅ {{I1_MITIGATION_1}}
 
-**Status:** ✅ Implemented
+### D1: Denial of Service - System Exhaustion
 
----
-
-### D1: Denial of Service - Rate Limit Bypass
-
-**Threat:** Attacker floods API with requests to crash server.
-
-**Attack Vector:** 10,000 requests/second to `/api/rag/query` → RAM exhaustion
-
-**Risk:** Medium
-**Likelihood:** High
-**Impact:** Medium
-
+**Threat:** {{D1_THREAT}}
 **Mitigation:**
 
-- ✅ Rate limiting (100 req/min per IP)
-- ✅ CAPTCHA for anonymous endpoints
-- ✅ CDN with DDoS protection (Cloudflare)
-- ✅ Autoscaling (horizontal scaling)
-- ✅ Circuit breaker pattern
+* ✅ {{D1_MITIGATION_1}}
 
-**Status:** {{STATUS_D1}}
+### E1: Elevation of Privilege - Unauthorized Access
 
----
-
-### E1: Elevation of Privilege - IDOR Vulnerability
-
-**Threat:** Attacker accesses other users' resources by guessing IDs.
-
-**Attack Vector:**
-
-```http
-GET /api/projects/123  # User's own project
-GET /api/projects/124  # Attacker guesses next ID → sees other user's project!
-```
-
-**Risk:** High
-**Likelihood:** High
-**Impact:** High
-
+**Threat:** {{E1_THREAT}}
 **Mitigation:**
 
-- ✅ Authorization check on EVERY endpoint
-  ```python
-  if project.owner_id != current_user.id:
-      raise ForbiddenError()
-  ```
-- ✅ Use UUIDs instead of sequential IDs
-- ✅ Automated tests for authz failures
-- ✅ Code review checklist: "Is authz checked?"
-
-**Status:** {{STATUS_E1}}
+* ✅ {{E1_MITIGATION_1}}
 
 ---
 
 ## 📊 Risk Assessment Matrix
 
-| Threat ID | Category | Risk | Likelihood | Impact | Mitigation Status |
-|-----------|----------|------|------------|--------|-------------------|
-| S1 | Spoofing | High | Medium | High | ✅ Implemented |
-| T1 | Tampering | High | Medium | High | ✅ Implemented |
-| R1 | Repudiation | Medium | Low | Medium | 🚧 In Progress |
-| I1 | Info Disclosure | Critical | Medium | Critical | ✅ Implemented |
-| D1 | Denial of Service | Medium | High | Medium | 🚧 In Progress |
-| E1 | Elevation | High | High | High | ✅ Implemented |
-
-**Risk Levels:**
-
-- **Critical:** Drop everything, fix now
-- **High:** Fix before release
-- **Medium:** Fix in next sprint
-- **Low:** Backlog
+| Threat ID | Category | Risk | Likelihood | Impact | Status |
+| --- | --- | --- | --- | --- | --- |
+| S1 | Spoofing | {{RISK_S1}} | {{LIKE_S1}} | {{IMP_S1}} | {{STAT_S1}} |
+| T1 | Tampering | {{RISK_T1}} | {{LIKE_T1}} | {{IMP_T1}} | {{STAT_T1}} |
+| R1 | Repudiation | {{RISK_R1}} | {{LIKE_R1}} | {{IMP_R1}} | {{STAT_R1}} |
+| I1 | Info Disclosure | {{RISK_I1}} | {{LIKE_I1}} | {{IMP_I1}} | {{STAT_I1}} |
+| D1 | Denial of Service | {{RISK_D1}} | {{LIKE_D1}} | {{IMP_D1}} | {{STAT_D1}} |
+| E1 | Elevation | {{RISK_E1}} | {{LIKE_E1}} | {{IMP_E1}} | {{STAT_E1}} |
 
 ---
 
-## 🔄 Review Schedule
-
-**Frequency:** {{REVIEW_FREQUENCY}}  <!-- e.g., "Quarterly" OR "After major releases" -->
-
-**Trigger Events:**
-
-- New feature launch
-- Security incident
-- Third-party library vulnerability (Dependabot alert)
-- Penetration test findings
-
----
-
-## 🔗 Related Documents
+## 🔗 Related Documents (Internal Paths)
 
 - [SECURITY_PRIVACY_POLICY.md](../20-REQUIREMENTS/SECURITY_PRIVACY_POLICY.md) - Security rules
 - [COMPLIANCE_MATRIX.md](../20-REQUIREMENTS/COMPLIANCE_MATRIX.md) - Legal requirements
 - [API_INTERFACE_CONTRACT.md](API_INTERFACE_CONTRACT.md) - API security
+- [ARCH_DECISION_RECORDS.md](ARCH_DECISION_RECORDS.md) - Security architecture decisions

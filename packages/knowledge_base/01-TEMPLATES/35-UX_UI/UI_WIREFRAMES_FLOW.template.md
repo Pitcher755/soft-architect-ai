@@ -1,12 +1,30 @@
 # 🖼️ UI Wireframes & User Flow
 
-<!-- TEMPLATE GUIDE: This document shows HOW users move through the app (screen-by-screen).
-     - Wireframes (low-fidelity sketches)
-     - User flows (screen transitions)
-     - Navigation structure
-     Generation Order: 15/24 | Phase: 4-UX/UI | Prerequisites: DESIGN_SYSTEM.md (design system established)
-     Duration: ~30 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document defines the application's navigation architecture and the step-by-step logic of user interactions. It uses low-fidelity wireframes and flowcharts to describe how screens are connected and how different states (loading, error, empty) are handled.
+
+WHEN TO CREATE:
+- **Generation Order:** 15/24 (Phase 4 - UX/UI)
+- **Phase:** 4 - UX/UI
+- **Prerequisites:** 35-UX_UI/DESIGN_SYSTEM.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** The flow MUST follow the stages defined in the USER_JOURNEY_MAP.md. Do not add complex navigation that wasn't planned in the core scope.
+✅ **STATE MANAGEMENT:** You MUST describe the UI for Empty, Loading, and Error states to ensure a complete UX specification.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **MERMAID DIAGRAMS:** Do NOT use double curly braces {{ }} inside Mermaid diagrams. Replace uppercase placeholders directly with labels.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 35-UX_UI directory.
+   Filename MUST be: UI_WIREFRAMES_FLOW.md
+   Correct path: /context/35-UX_UI/UI_WIREFRAMES_FLOW.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Project:** {{PROJECT_NAME}}
 > **Design Tool:** {{DESIGN_TOOL}}  <!-- e.g., Figma, Sketch, Balsamiq -->

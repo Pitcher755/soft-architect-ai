@@ -1,4 +1,22 @@
 {
+    "_TEMPLATE_GUIDE": [
+        "════════════════════════════════════════════════════════════════════════════════",
+        "PURPOSE: This document contains the entire Product Backlog (Epics, Sprints, User Stories) in JSON.",
+        "WHEN TO CREATE: Generation Order: 5/24 | Phase: 2 - REQUIREMENTS",
+        "PREREQUISITES: 20-REQUIREMENTS/REQUIREMENTS_MASTER.md",
+        "",
+        "BEST PRACTICES & AI INSTRUCTIONS:",
+        "1. SELF-DESTRUCT: You MUST remove this entire '_TEMPLATE_GUIDE' key and its array from your final output.",
+        "2. PURE JSON: Output ONLY valid JSON. Do not wrap it in Markdown blocks (like ```json), just the raw JSON.",
+        "3. NO HALLUCINATIONS: Base Epics and Stories strictly on REQUIREMENTS_MASTER.md.",
+        "4. FORMAT: Always use 'Como [Rol], quiero [Acción], para [Beneficio]'.",
+        "5. ACCEPTANCE: Must be testable. Use Positive (✅) and Negative (❌) scenarios.",
+        "",
+        "CRITICAL ROUTING:",
+        "- MUST be saved in: /context/20-REQUIREMENTS/",
+        "- Filename MUST be: USER_STORIES_MASTER.json",
+        "════════════════════════════════════════════════════════════════════════════════"
+    ],
     "project_name": "{{PROJECT_NAME}}",
     "version": "0.1.0",
     "sprints": [

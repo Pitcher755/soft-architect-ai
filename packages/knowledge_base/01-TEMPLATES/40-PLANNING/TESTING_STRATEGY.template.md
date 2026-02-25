@@ -1,11 +1,29 @@
 # 🧪 Testing Strategy
 
-<!-- TEMPLATE GUIDE: This document defines HOW we validate code quality.
-     - Testing pyramid (unit > integration > E2E)
-     - Coverage targets per layer
-     - Test automation approach
-     Generation Order: 7/24 | Phase: 5-Planning | Duration: ~35 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document defines the testing strategy, types of tests (Unit, Integration, E2E), coverage targets, and execution methods. It ensures code quality and prevents regressions through an automated validation framework.
+
+WHEN TO CREATE:
+- **Generation Order:** 20/24 (Phase 5 - PLANNING)
+- **Phase:** 5 - PLANNING
+- **Prerequisites:** 20-REQUIREMENTS/REQUIREMENTS_MASTER.md (for acceptance criteria) and 30-ARCHITECTURE/TECH_STACK_DECISION.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** The testing tools and code examples MUST match the Tech Stack. If using Python, use pytest; if using Flutter, use flutter_test.
+✅ **REALISTIC TARGETS:** Aim for a total coverage of ≥80%. While 100% in domain logic is ideal, be realistic about UI coverage.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 40-PLANNING directory.
+   Filename MUST be: TESTING_STRATEGY.md
+   Correct path: /context/40-PLANNING/TESTING_STRATEGY.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Project:** {{PROJECT_NAME}}
 > **Coverage Target:** {{COVERAGE_TARGET}}  <!-- e.g., "≥80%" -->

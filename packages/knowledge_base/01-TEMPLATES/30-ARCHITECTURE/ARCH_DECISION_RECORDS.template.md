@@ -1,12 +1,32 @@
 # 📜 Architecture Decision Records (ADRs)
 
-<!-- TEMPLATE GUIDE: ADRs document WHY you made architectural choices.
-     - Each decision gets a numbered ADR (ADR-001, ADR-002...)
-     - NEVER delete ADRs (they're historical record)
-     - Use template: Context → Decision → Consequences
-     Generation Order: 13/24 | Phase: 3-Architecture | Prerequisites: SECURITY_THREAT_MODEL.md
-     Duration: ~35 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+ADRs document WHY you made specific architectural choices. They provide historical context for future developers so they don't question or revert critical decisions.
+- Each decision gets a numbered ADR (ADR-001, ADR-002...)
+- Use the standard template: Context → Decision → Consequences
+
+WHEN TO CREATE:
+- **Generation Order:** 13/24 (Phase 3 - ARCHITECTURE)
+- **Phase:** 3 - ARCHITECTURE
+- **Prerequisites:** 30-ARCHITECTURE/SECURITY_THREAT_MODEL.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Generate ADRs ONLY for the major architectural decisions already established in TECH_STACK_DECISION.md and the requirements. Do not invent new frameworks or tools here.
+✅ **BE OBJECTIVE:** Clearly list the negative consequences (drawbacks) of every decision. No technology is perfect.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 30-ARCHITECTURE directory.
+   Filename MUST be: ARCH_DECISION_RECORDS.md
+   Correct path: /context/30-ARCHITECTURE/ARCH_DECISION_RECORDS.md
+   Incorrect path: /context/ARCH_DECISION_RECORDS.md or /ARCH_DECISION_RECORDS.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Project:** {{PROJECT_NAME}}
 > **Maintainer:** {{ARCHITECT}}

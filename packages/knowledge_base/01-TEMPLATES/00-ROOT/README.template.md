@@ -2,11 +2,12 @@
 
 <!--
 ════════════════════════════════════════════════════════════════════════════════
-📘 TEMPLATE GUIDE: How to Fill Out This README
+📘 TEMPLATE GUIDE: How to Fill Out This Document
 ════════════════════════════════════════════════════════════════════════════════
 
 PURPOSE:
-Your README is the FIRST thing developers see. It should answer in <60 seconds:
+Your README is the FIRST thing developers see. It acts as the landing page and
+executive summary of the entire project ecosystem. It must answer in <60 seconds:
 - What is this project?
 - Why does it exist?
 - How do I get started in <5 minutes?
@@ -14,37 +15,32 @@ Your README is the FIRST thing developers see. It should answer in <60 seconds:
 WHEN TO CREATE:
 - **Generation Order:** 24/24 (FINAL document in Master Workflow)
 - **Phase:** 6 - ROOT / META
-- **Prerequisites:** All other documents complete (23/23 prior steps)
-- **Duration:** ~30 minutes
+- **Prerequisites:** All other 23 documents MUST be complete.
 
-BEST PRACTICES:
-✅ Keep "Quick Start" under 10 commands
-✅ Add real screenshots (not placeholders)
-✅ Link to detailed docs (don't make 2000-line README)
-✅ Update badges automatically via CI/CD
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Extract the exact architecture, stack, and features from the previously generated documents. Do not invent features or tools.
+✅ **KEEP IT CONCISE:** Link to detailed docs instead of writing a 2000-line README.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual data.
+✅ **KEEP PATHS INTACT:** Do not modify the internal links; they are mapped to the 24-document ecosystem.
+✅ **SELF-DESTRUCT:** Remove this entire TEMPLATE GUIDE comment block before outputting.
 
 INSTRUCTIONS:
-1. Replace ALL {{PLACEHOLDERS}} with your actual values
-2. Test badge URLs before publishing (shields.io validator)
-3. Add screenshot to /doc/screenshots/
-4. Remove TEMPLATE GUIDE section before committing
-5. Keep version updated (semantic versioning)
+1. Replace ALL {{PLACEHOLDERS}} with actual values.
+2. Test badge URLs before publishing.
+3. Add a real screenshot.
+4. Keep version updated (semantic versioning).
+5. Remove TEMPLATE GUIDE section before committing.
+6. MERMAID DIAGRAMS: Do NOT use curly braces {} inside Mermaid diagrams. Replace uppercase placeholders like FRONTEND_FRAMEWORK with actual tech names directly.
 
 ⚠️ **CRITICAL ROUTING:**
-   This file MUST be saved in the ROOT directory (/) as README.md
-   NEVER save inside context/ or 00-ROOT/ subdirectory
+   This file MUST be saved in the ROOT directory (/) of the project.
+   Filename MUST be: README.md
    Correct path: /README.md
-   Incorrect path: /context/00-ROOT/README.md or /context/README.md
-
-RELATED DOCS:
-- AGENTS.md (team structure)
-- CONTRIBUTING.md (collaboration rules)
-- TECH_STACK_DECISION.md (why technology chosen)
+   Incorrect path: /context/README.md or /context/00-ROOT/README.md
 ════════════════════════════════════════════════════════════════════════════════
 -->
-
-> **{{TAGLINE}}**  <!-- e.g., "Privacy-First AI Assistant for Software Architecture" -->
-> **{{VALUE_PROPOSITION}}**  <!-- e.g., "Build better software faster with RAG-powered guidance" -->
+> **{{TAGLINE}}**
+> **{{VALUE_PROPOSITION}}**
 
 [![License](https://img.shields.io/badge/License-{{LICENSE}}-blue.svg)](LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/{{GITHUB_ORG}}/{{REPO_NAME}}/ci.yml?branch=main)](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/actions)
@@ -52,7 +48,7 @@ RELATED DOCS:
 [![Version](https://img.shields.io/github/v/release/{{GITHUB_ORG}}/{{REPO_NAME}})](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/releases)
 [![Stars](https://img.shields.io/github/stars/{{GITHUB_ORG}}/{{REPO_NAME}}?style=social)](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}})
 
-![Demo](doc/screenshots/hero-screenshot.png)  <!-- REPLACE with YOUR screenshot -->
+![Demo](doc/screenshots/hero-screenshot.png)
 
 ---
 
@@ -77,13 +73,10 @@ RELATED DOCS:
 ## 🌟 About
 
 **{{PROJECT_NAME}}** is {{PROJECT_DESCRIPTION}}.
-<!-- e.g., "a local-first AI assistant that helps developers architect software projects" -->
 
 **Problem:** {{PROBLEM_STATEMENT}}
-<!-- e.g., "Developers waste 40% of time searching documentation" -->
 
 **Solution:** {{SOLUTION_STATEMENT}}
-<!-- e.g., "Generate 24 project documents locally in 1 hour using RAG" -->
 
 ---
 
@@ -92,19 +85,18 @@ RELATED DOCS:
 **Origin Story:**
 
 {{ORIGIN_STORY}}
-<!-- e.g., "After the 10th client asked 'Why no docs?' I built this to make documentation instant" -->
 
 **Target Users:**
-- {{PERSONA_1}}  <!-- e.g., "Solo developers building side projects" -->
-- {{PERSONA_2}}  <!-- e.g., "Startups needing fast MVP documentation" -->
-- {{PERSONA_3}}  <!-- e.g., "Enterprise teams enforcing doc standards" -->
+- {{PERSONA_1}}
+- {{PERSONA_2}}
+- {{PERSONA_3}}
 
 **Success Metrics:**
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| Doc Generation Time | <1 hour | {{CURRENT_TIME}} <!-- e.g., "45 min" --> |
-| User Rating | >4.5/5 | {{CURRENT_RATING}} <!-- e.g., "4.7/5" --> |
+| Doc Generation Time | <1 hour | {{CURRENT_TIME}} |
+| User Rating | >4.5/5 | {{CURRENT_RATING}} |
 | Privacy Incidents | 0 | 0 |
 | Active Users | {{USER_TARGET}} | {{CURRENT_USERS}} |
 
@@ -119,14 +111,10 @@ RELATED DOCS:
 | **{{FEATURE_3}}** | {{FEATURE_3_DESC}} | 🚧 Beta |
 | **{{FEATURE_4}}** | {{FEATURE_4_DESC}} | 📅 Planned |
 
-<!-- EXAMPLE:
-| **24-Doc Workflow** | Generate README, ADRs, API specs in 1 hour | ✅ Live |
--->
-
 **Non-Functional Highlights:**
-- **⚡ Fast:** {{LATENCY}}  <!-- e.g., "UI <200ms, RAG <2s" -->
-- **🔒 Private:** {{PRIVACY}}  <!-- e.g., "100% local, zero telemetry" -->
-- **📴 Offline:** {{OFFLINE}}  <!-- e.g., "Works without internet (Ollama)" -->
+- **⚡ Fast:** {{LATENCY}}
+- **🔒 Private:** {{PRIVACY}}
+- **📴 Offline:** {{OFFLINE}}
 
 ---
 
@@ -134,21 +122,21 @@ RELATED DOCS:
 
 ```mermaid
 graph TB
-    subgraph "Client ({{FRONTEND_FRAMEWORK}})"
+    subgraph "Client (FRONTEND_FRAMEWORK)"
         UI[UI Layer]
         Domain[Domain Layer]
         Data[Data Layer]
     end
 
-    subgraph "Server ({{BACKEND_FRAMEWORK}})"
+    subgraph "Server (BACKEND_FRAMEWORK)"
         API[REST API]
         Services[Service Layer]
         Core[Core Layer]
     end
 
     subgraph "Infrastructure"
-        DB[({{DATABASE}})]
-        Cache[({{CACHE}})]
+        DB[(DATABASE_TECH)]
+        Cache[(CACHE_TECH)]
     end
 
     UI --> Domain
@@ -161,12 +149,13 @@ graph TB
 ```
 
 **Principles:**
+
 1. **Clean Architecture:** Domain independent of frameworks
 2. **Local-First:** No external APIs required
 3. **Hexagonal:** External systems isolated
 4. **Event-Driven:** Domain events for communication
 
-See [ARCH_DECISION_RECORDS.md](context/ARCH_DECISION_RECORDS.md) for details.
+See [ARCH_DECISION_RECORDS.md](https://www.google.com/search?q=context/30-ARCHITECTURE/ARCH_DECISION_RECORDS.md) for details.
 
 ---
 
@@ -175,7 +164,7 @@ See [ARCH_DECISION_RECORDS.md](context/ARCH_DECISION_RECORDS.md) for details.
 ### Backend
 
 | Tech | Version | Purpose | Why |
-|------|---------|---------|-----|
+| --- | --- | --- | --- |
 | **{{BACKEND_LANG}}** | {{BACKEND_VER}} | Runtime | {{BACKEND_REASON}} |
 | **{{BACKEND_FRAMEWORK}}** | {{FRAMEWORK_VER}} | Web framework | {{FRAMEWORK_REASON}} |
 | **{{VECTOR_DB}}** | {{VECTOR_VER}} | Vector search | {{VECTOR_REASON}} |
@@ -183,17 +172,17 @@ See [ARCH_DECISION_RECORDS.md](context/ARCH_DECISION_RECORDS.md) for details.
 ### Frontend
 
 | Tech | Version | Purpose | Why |
-|------|---------|---------|-----|
+| --- | --- | --- | --- |
 | **{{FRONTEND_LANG}}** | {{FRONTEND_VER}} | UI language | {{FRONTEND_REASON}} |
 | **{{FRONTEND_FRAMEWORK}}** | {{FRONTEND_FRAMEWORK_VER}} | UI framework | {{FRONTEND_FRAMEWORK_REASON}} |
 
 ### Infrastructure
 
-- **Docker** 24.0+ - Containerization
-- **GitHub Actions** - CI/CD
-- **{{DATABASE}}** - Persistence
+* **Docker** 24.0+ - Containerization
+* **GitHub Actions** - CI/CD
+* **{{DATABASE}}** - Persistence
 
-See [TECH_STACK_DECISION.md](context/TECH_STACK_DECISION.md) for rationale.
+See [TECH_STACK_DECISION.md](https://www.google.com/search?q=context/30-ARCHITECTURE/TECH_STACK_DECISION.md) for rationale.
 
 ---
 
@@ -201,10 +190,10 @@ See [TECH_STACK_DECISION.md](context/TECH_STACK_DECISION.md) for rationale.
 
 ### Prerequisites
 
-- **Docker Desktop** 24.0+ ([Install](https://docker.com/products/docker-desktop/))
-- **{{BACKEND_LANG}}** {{BACKEND_VER}}+ ([Install]({{BACKEND_INSTALL_URL}}))
-- **{{FRONTEND_FRAMEWORK}}** {{FRONTEND_VER}}+ ([Install]({{FRONTEND_INSTALL_URL}}))
-- **Git** 2.40+
+* **Docker Desktop** 24.0+ ([Install](https://docker.com/products/docker-desktop/))
+* **{{BACKEND_LANG}}** {{BACKEND_VER}}+ ([Install](https://www.google.com/search?q=%7B%7BBACKEND_INSTALL_URL%7D%7D))
+* **{{FRONTEND_FRAMEWORK}}** {{FRONTEND_VER}}+ ([Install](https://www.google.com/search?q=%7B%7BFRONTEND_INSTALL_URL%7D%7D))
+* **Git** 2.40+
 
 ### Installation (5 Minutes)
 
@@ -226,13 +215,15 @@ uvicorn main:app --reload --port 8080
 cd ../client
 flutter pub get
 flutter run -d {{TARGET_PLATFORM}}  # linux, macos, windows
+
 ```
 
 **Expected Output:**
-- Backend: `Uvicorn running on http://0.0.0.0:8080`
-- Frontend: App launches with home screen
 
-**Issues?** See [Troubleshooting](#troubleshooting).
+* Backend: `Uvicorn running on http://0.0.0.0:8080`
+* Frontend: App launches with home screen
+
+**Issues?** See [Troubleshooting](https://www.google.com/search?q=%23troubleshooting).
 
 ---
 
@@ -255,6 +246,7 @@ flutter run -d {{TARGET_PLATFORM}}  # linux, macos, windows
 ├── tests/                   # Unit, integration, E2E tests
 ├── context/                 # Source of truth (RULES, AGENTS)
 └── scripts/                 # DevOps automation
+
 ```
 
 ---
@@ -262,11 +254,14 @@ flutter run -d {{TARGET_PLATFORM}}  # linux, macos, windows
 ## 🔄 Development
 
 **Branching (Gitflow):**
+
 ```
 main → develop → feature/xyz
+
 ```
 
 **Workflow:**
+
 1. `git checkout -b feature/my-feature develop`
 2. Make changes + commit
 3. Push + open PR to `develop`
@@ -275,12 +270,13 @@ main → develop → feature/xyz
 6. Weekly release to `main`
 
 **PR Requirements:**
-- ✅ All tests pass
-- ✅ Coverage ≥85%
-- ✅ No lint errors
-- ✅ 1+ approver
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+* ✅ All tests pass
+* ✅ Coverage ≥85%
+* ✅ No lint errors
+* ✅ 1+ approver
+
+See [CONTRIBUTING.md](https://www.google.com/search?q=CONTRIBUTING.md) for details.
 
 ---
 
@@ -295,16 +291,18 @@ flutter test --coverage
 
 # Integration
 pytest tests/integration/ -v
+
 ```
 
 **Coverage Targets:**
-- Domain: 100%
-- Services: ≥90%
-- API: ≥85%
-- UI: ≥80%
-- **Overall: ≥85%**
 
-See [TESTING_STRATEGY.md](context/TESTING_STRATEGY.md).
+* Domain: 100%
+* Services: ≥90%
+* API: ≥85%
+* UI: ≥80%
+* **Overall: ≥85%**
+
+See [TESTING_STRATEGY.md](https://www.google.com/search?q=context/40-PLANNING/TESTING_STRATEGY.md).
 
 ---
 
@@ -319,78 +317,90 @@ docker compose -f infrastructure/docker-compose.prod.yml up -d
 
 # Verify
 curl http://localhost:8080/health
+
 ```
 
 **Automated:** Push to `main` → GitHub Actions builds release
 
-See [CI_CD_PIPELINE.md](context/CI_CD_PIPELINE.md).
+See [CI_CD_PIPELINE.md](https://www.google.com/search?q=context/40-PLANNING/CI_CD_PIPELINE.md).
 
 ---
 
 ## 🤝 Contributing
 
-Contributions welcome! Read [CONTRIBUTING.md](CONTRIBUTING.md) for:
-- Code of Conduct
-- PR process
-- Coding standards
-- Commit format
+Contributions welcome! Read [CONTRIBUTING.md](https://www.google.com/search?q=CONTRIBUTING.md) for:
+
+* Code of Conduct
+* PR process
+* Coding standards
+* Commit format
 
 **Quick Checklist:**
-- [ ] Code formatted
-- [ ] Tests added (≥85% coverage)
-- [ ] PR description explains WHY
-- [ ] Linked to issue
+
+* [ ] Code formatted
+* [ ] Tests added (≥85% coverage)
+* [ ] PR description explains WHY
+* [ ] Linked to issue
 
 ---
 
 ## 🐛 Troubleshooting
 
 ### Docker Compose Fails
+
 ```
 ERROR: Service 'chromadb' failed to build
+
 ```
+
 **Fix:** Update Docker Desktop to ≥24.0
 
 ### Backend Import Error
+
 ```
 ModuleNotFoundError: No module named 'langchain'
+
 ```
+
 **Fix:** `pip install -r requirements.txt --force-reinstall`
 
 ### Flutter Build Error
+
 ```
 Error: Target URI doesn't exist
+
 ```
+
 **Fix:** `flutter clean && flutter pub get`
 
-**More?** [Discussions](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/discussions)
+**More?** [Discussions](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/discussions)
 
 ---
 
 ## 👥 Team
 
 | Role | Name | Contact |
-|------|------|---------|
-| Lead Architect | {{LEAD_NAME}} | [@{{LEAD_GITHUB}}](https://github.com/{{LEAD_GITHUB}}) |
+| --- | --- | --- |
+| Lead Architect | {{LEAD_NAME}} | [@{{LEAD_GITHUB}}](https://www.google.com/search?q=https://github.com/%7B%7BLEAD_GITHUB%7D%7D) |
 | Product Owner | {{PO_NAME}} | {{PO_EMAIL}} |
-| Backend Dev | {{BACKEND_NAME}} | [@{{BACKEND_GITHUB}}](https://github.com/{{BACKEND_GITHUB}}) |
+| Backend Dev | {{BACKEND_NAME}} | [@{{BACKEND_GITHUB}}](https://www.google.com/search?q=https://github.com/%7B%7BBACKEND_GITHUB%7D%7D) |
 
-See [AGENTS.md](AGENTS.md) for full team structure.
+See [AGENTS.md](https://www.google.com/search?q=AGENTS.md) for full team structure.
 
 ---
 
 ## 📄 License
 
-**{{LICENSE_TYPE}}** License - See [LICENSE](LICENSE)
+**{{https://www.google.com/search?q=LICENSE_TYPE}}** License - See [LICENSE](https://www.google.com/search?q=LICENSE)
 
 ---
 
 ## 🔗 Links
 
 - [Documentation](doc/INDEX.md)
-- [Architecture](context/ARCH_DECISION_RECORDS.md)
-- [Roadmap](context/ROADMAP_PHASES.md)
-- [Security](SECURITY.md)
+- [Architecture](context/30-ARCHITECTURE/ARCH_DECISION_RECORDS.md)
+- [Roadmap](context/40-PLANNING/ROADMAP_PHASES.md)
+- [Security Threat Model](context/30-ARCHITECTURE/SECURITY_THREAT_MODEL.md)
 
 ---
 

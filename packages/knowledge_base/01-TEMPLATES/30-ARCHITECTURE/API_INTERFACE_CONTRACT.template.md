@@ -1,12 +1,31 @@
 # 📡 API Interface Contract
 
-<!-- TEMPLATE GUIDE: This document is THE CONTRACT between clients and servers.
-     - Defines all API endpoints, methods, request/response schemas
-     - Prevents breaking changes (versioning strategy)
-     - Enables parallel frontend/backend development
-     Generation Order: 10/24 | Phase: 3-Architecture | Prerequisites: DATA_MODEL_SCHEMA.md
-     Duration: ~40 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document is THE CONTRACT between clients (Frontend/Mobile) and servers (Backend).
+It defines all API endpoints, methods, and request/response schemas. It prevents breaking changes and allows parallel development.
+
+WHEN TO CREATE:
+- **Generation Order:** 10/24 (Phase 3 - ARCHITECTURE)
+- **Phase:** 3 - ARCHITECTURE
+- **Prerequisites:** 30-ARCHITECTURE/DATA_MODEL_SCHEMA.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Only document endpoints that are strictly necessary for the User Stories defined in the REQUIREMENTS Phase. Do not invent unnecessary CRUD operations.
+✅ **BE PRECISE:** Always specify exact HTTP methods, path parameters (e.g., /users/{id}), and expected HTTP Status Codes for both success and error states.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 30-ARCHITECTURE directory.
+   Filename MUST be: API_INTERFACE_CONTRACT.md
+   Correct path: /context/30-ARCHITECTURE/API_INTERFACE_CONTRACT.md
+   Incorrect path: /context/API_INTERFACE_CONTRACT.md or /API_INTERFACE_CONTRACT.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **API Version:** {{API_VERSION}}
 > **Base URL:** {{BASE_URL}}

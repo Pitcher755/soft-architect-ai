@@ -1,11 +1,32 @@
 # 🏗️ Deployment & Infrastructure
 
-<!-- TEMPLATE GUIDE: This document defines WHERE and HOW the app runs in production.
-     - Infrastructure as Code (IaC)
-     - Server specifications
-     - Monitoring and alerting
-     Generation Order: 24/24 | Phase: 5-Planning | Duration: ~35 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document defines the production environment, hardware/cloud specifications,
+network security, and disaster recovery plans. It ensures the application is
+scalable, observable, and resilient.
+
+WHEN TO CREATE:
+- **Generation Order:** 18/24 (The FINAL document of the Master Workflow)
+- **Phase:** 5 - PLANNING
+- **Prerequisites:** 30-ARCHITECTURE/TECH_STACK_DECISION.md and 40-PLANNING/CI_CD_PIPELINE.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** The infrastructure MUST be consistent with the Tech Stack. If the stack is "Local-First", the infrastructure should focus on "Self-Hosted" or "On-Premise" specs. If cloud-based, use specific provider services (AWS, GCP, etc.).
+✅ **RELIABILITY FIRST:** Always define clear Backup, Recovery (RTO/RPO), and Monitoring strategies.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **MERMAID DIAGRAMS:** Do NOT use double curly braces {{ }} inside Mermaid diagrams.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 40-PLANNING directory.
+   Filename MUST be: DEPLOYMENT_INFRASTRUCTURE.md
+   Correct path: /context/40-PLANNING/DEPLOYMENT_INFRASTRUCTURE.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Cloud Provider:** {{CLOUD_PROVIDER}}  <!-- e.g., AWS, GCP, Azure, Self-Hosted -->
 > **Region:** {{REGION}}

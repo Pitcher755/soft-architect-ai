@@ -7,53 +7,25 @@
 
 PURPOSE:
 The User Journey Map visualizes YOUR USER'S EXPERIENCE from first encounter to
-loyal advocate. It reveals:
-- Where users get frustrated (friction points)
-- Where they feel delighted (aha moments)
-- What touchpoints matter (web, app, email)
-- What opportunities exist (feature gaps)
-
-WHY THIS MATTERS:
-- Identifies critical pain points BEFORE coding (saves 30% dev time)
-- Aligns product/design/engineering on shared user understanding
-- Highlights where to invest UX effort (80/20 rule)
-- Produces empathy (developers see real human impact)
+loyal advocate. It reveals friction points, aha moments, and system opportunities.
 
 WHEN TO CREATE:
 - **Generation Order:** 3/24 (THIRD document in Master Workflow)
-- **Phase:** 1 - Context
-- **Prerequisites:** DOMAIN_LANGUAGE.md (terminology established), PROJECT_MANIFESTO.md (personas defined)
-- **Duration:** ~45 minutes
+- **Phase:** 1 - CONTEXT
+- **Prerequisites:** DOMAIN_LANGUAGE.md and PROJECT_MANIFESTO.md MUST be complete.
 
-INSTRUCTIONS:
-1. Choose PRIMARY persona (the one who benefits MOST)
-2. Map 5-7 journey stages (Discovery → Retention)
-3. For each stage, define:
-   - User action (what they DO)
-   - Touchpoint (WHERE it happens)
-   - Emotion (how they FEEL)
-   - System opportunity (what WE can improve)
-4. Identify THE "Aha Moment" (when value clicks)
-5. Remove TEMPLATE GUIDE before committing
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Base the journey STRICTLY on the Target Personas defined in the PROJECT_MANIFESTO.md. Do not invent ideal/unrealistic scenarios.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual data.
+✅ **MERMAID DIAGRAMS:** Do NOT use curly braces {} inside Mermaid diagrams. Use uppercase placeholder names directly (e.g., PERSONA_NAME).
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
 
-CRITICAL RULES:
-❌ NEVER map ideal fantasy journey (be realistic!)
-❌ NEVER skip emotions (they drive behavior)
-❌ NEVER forget edge cases (error states, failures)
-✅ ALWAYS validate with REAL users (interviews, surveys)
-✅ ALWAYS include negative emotions (frustration, confusion)
-✅ ALWAYS link opportunities to features (actionable!)
-
-BEST PRACTICES:
-- Use Mermaid timeline diagram for visualization
-- Add quotes from real users ("I was so frustrated when...")
-- Include edge cases in separate section
-- Iterate as you learn more about users
-
-RELATED DOCS:
-- PROJECT_MANIFESTO.md (persona definitions)
-- UI_WIREFRAMES_FLOW.md (implements journey visually)
-- REQUIREMENTS_MASTER.md (features address opportunities)
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 10-CONTEXT directory.
+   Filename MUST be: USER_JOURNEY_MAP.md
+   Correct path: /context/10-CONTEXT/USER_JOURNEY_MAP.md
+   Incorrect path: /context/USER_JOURNEY_MAP.md or /USER_JOURNEY_MAP.md
 ════════════════════════════════════════════════════════════════════════════════
 -->
 

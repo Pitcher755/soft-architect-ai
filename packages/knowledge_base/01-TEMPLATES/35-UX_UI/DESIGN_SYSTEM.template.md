@@ -1,11 +1,29 @@
 # 🎨 Design System
 
-<!-- TEMPLATE GUIDE: This document is your visual language (colors, typography, spacing, components).
-     - Ensures consistency across all screens
-     - Speeds up development (reusable components)
-     Generation Order: 14/24 | Phase: 4-UX/UI | Prerequisites: ARCH_DECISION_RECORDS.md
-     Duration: ~35 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document establishes the project's visual language (colors, typography, spacing, and components). It ensures UI consistency, accessibility compliance, and speeds up development through reusable patterns.
+
+WHEN TO CREATE:
+- **Generation Order:** 14/24 (Phase 4 - UX/UI)
+- **Phase:** 4 - UX/UI
+- **Prerequisites:** 30-ARCHITECTURE/ARCH_DECISION_RECORDS.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Colors and typography must follow the personality defined in PROJECT_MANIFESTO.md. If the project is "Professional/Enterprise", use sober tones; if "Indie/Creative", use more vibrant scales.
+✅ **ACCESSIBILITY FIRST:** Ensure the color palette includes contrast ratios (AA/AAA) as per WCAG 2.1 standards.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 35-UX_UI directory.
+   Filename MUST be: DESIGN_SYSTEM.md
+   Correct path: /context/35-UX_UI/DESIGN_SYSTEM.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Design System:** {{SYSTEM_NAME}}
 > **Version:** {{VERSION}}

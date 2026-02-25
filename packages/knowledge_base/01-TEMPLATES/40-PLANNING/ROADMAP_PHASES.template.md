@@ -1,11 +1,37 @@
 # 🗓️ Roadmap & Phases
 
-<!-- TEMPLATE GUIDE: This document shows the project timeline (past, present, future).
-     - Phases (MVP, v1.0, v2.0...)
-     - Milestones with dates
-     - Feature prioritization
-     Generation Order: 6/24 | Phase: 5-Planning | Duration: ~30 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document visualizes the project's evolution over time. It breaks down the
+development into logical phases (MVP, Beta, v1.0, etc.), defines key milestones,
+and prioritizes features using frameworks like MoSCoW.
+
+WHEN TO CREATE:
+- **Generation Order:** 17/24 (Phase 5 - PLANNING)
+- **Phase:** 5 - PLANNING
+- **Prerequisites:** 10-CONTEXT/PROJECT_MANIFESTO.md (for MVP scope) and
+  20-REQUIREMENTS/REQUIREMENTS_MASTER.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** The dates and phases must be realistic based on the
+   complexity of the project. A typical MVP development phase usually spans
+   2 to 4 months.
+✅ **STRATEGIC PRIORITIZATION:** Use the MoSCoW method to ensure the "Must Haves"
+   align perfectly with the MVP definition in the Manifesto.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **MERMAID DIAGRAMS:** Do NOT use double curly braces {{ }} inside Mermaid
+   diagrams. Ensure the dates in the Gantt chart follow the YYYY-MM-DD format.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block
+   before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 40-PLANNING directory.
+   Filename MUST be: ROADMAP_PHASES.md
+   Correct path: /context/40-PLANNING/ROADMAP_PHASES.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Project:** {{PROJECT_NAME}}
 > **Current Phase:** {{CURRENT_PHASE}}

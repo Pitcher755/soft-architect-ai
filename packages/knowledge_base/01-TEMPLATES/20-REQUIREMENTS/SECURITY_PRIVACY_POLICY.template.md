@@ -1,11 +1,32 @@
 # 🔒 Security & Privacy Policy
 
-<!-- TEMPLATE GUIDE: This document defines HOW the system protects data and users.
-     - Security = Prevent attacks (authentication, encryption, input validation)
-     - Privacy = Respect user data (GDPR, minimal collection, right to delete)
-     Generation Order: 6/24 | Phase: 2-Requirements | Duration: ~45 mins
-     Prerequisites: REQUIREMENTS_MASTER.md (requirements defined)
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document defines HOW the system protects data and users.
+- Security = Prevent attacks (authentication, encryption, input validation)
+- Privacy = Respect user data (minimal collection, right to delete, GDPR)
+
+WHEN TO CREATE:
+- **Generation Order:** 6/24 (Phase 2 - REQUIREMENTS)
+- **Phase:** 2 - REQUIREMENTS
+- **Prerequisites:** REQUIREMENTS_MASTER.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Base the security requirements on the actual tech stack and architecture. Do not invent non-existent encryption methods or roles.
+✅ **BE REALISTIC:** If the project is a simple local app, do not hallucinate complex enterprise MFA strategies. Scale the security to the project's real context.
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 20-REQUIREMENTS directory.
+   Filename MUST be: SECURITY_PRIVACY_POLICY.md
+   Correct path: /context/20-REQUIREMENTS/SECURITY_PRIVACY_POLICY.md
+   Incorrect path: /context/SECURITY_PRIVACY_POLICY.md or /SECURITY_PRIVACY_POLICY.md
+════════════════════════════════════════════════════════════════════════════════-->
 
 > **Classification:** {{DATA_CLASSIFICATION}}  <!-- Public, Internal, Confidential, Restricted -->
 > **Owner:** {{SECURITY_OFFICER}}

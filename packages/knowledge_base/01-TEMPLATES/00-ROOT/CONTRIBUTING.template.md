@@ -6,51 +6,25 @@
 ════════════════════════════════════════════════════════════════════════════════
 
 PURPOSE:
-CONTRIBUTING.md answers: "How do I submit code/docs/bugs?"
-This prevents:
-- Rejected PRs (wrong format)
-- Contributor frustration (unclear process)
-- Unmergeable code (missing tests)
-
-WHY THIS MATTERS:
-- Reduces maintainer workload by 50%
-- Increases PR acceptance rate
-- Welcomes new contributors smoothly
+This document defines the rules of collaboration, PR processes, and branching
+strategies (GitFlow) for the project. It acts as the manual for human contributors.
 
 WHEN TO CREATE:
-- **Generation Order:** 22/24 (SECOND of ROOT/META documents)
+- **Generation Order:** 22/24 (Phase 6 - ROOT / META)
 - **Phase:** 6 - ROOT / META
-- **Prerequisites:** RULES.md (standards defined), AGENTS.md (team roles established)
-- **Duration:** ~30 minutes
+- **Prerequisites:** All architectural and planning documents.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Stick strictly to standard GitFlow and Conventional Commits. Do not invent new PR rules unless explicitly mentioned in the context.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual data from the project context (languages, frameworks, repo URLs).
+✅ **KEEP PATHS INTACT:** Do not modify the internal links at the bottom of the document; they are already mapped to the 24-document ecosystem.
+✅ **SELF-DESTRUCT:** Remove this entire TEMPLATE GUIDE comment block before outputting.
 
 ⚠️ **CRITICAL ROUTING:**
-   This file MUST be saved in the ROOT directory (/) as CONTRIBUTING.md
-   NEVER save inside 00-ROOT/ subdirectory
-   Correct path: /context/CONTRIBUTING.md
-   Incorrect path: /context/00-ROOT/CONTRIBUTING.md
-
-INSTRUCTIONS:
-1. Replace {{PLACEHOLDERS}} with your values
-2. Add Code of Conduct (adapt from Contributor Covenant)
-3. Link to RULES.md for detailed standards
-4. Test setup instructions on clean machine
-5. Remove TEMPLATE GUIDE before committing
-
-BEST PRACTICES:
-✅ Quick Start (<10 commands)
-✅ Visual PR workflow (Mermaid)
-✅ Label meanings table
-✅ Response time expectations
-
-ANTI-PATTERNS:
-❌ "Read the code to understand"
-❌ No issue templates
-❌ Vague style guide ("be consistent")
-
-RELATED DOCS:
-- RULES.md (coding standards)
-- AGENTS.md (who reviews)
-- README.md (project overview)
+   This file MUST be saved in the ROOT directory (/) of the project.
+   Filename MUST be: CONTRIBUTING.md
+   Correct path: /CONTRIBUTING.md
+   Incorrect path: /context/CONTRIBUTING.md
 ════════════════════════════════════════════════════════════════════════════════
 -->
 
@@ -113,20 +87,18 @@ RELATED DOCS:
 
 **Recommended:**
 - {{IDE}} with extensions: {{EXTENSIONS}}
-  <!-- e.g., VS Code with Python, Dart -->
-
-### First-Time Setup (10 Minutes)
+  ### First-Time Setup (10 Minutes)
 
 ```bash
 # 1. Fork the repo on GitHub
-# Click "Fork" at https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}
+# Click "Fork" at [https://github.com/](https://github.com/){{GITHUB_ORG}}/{{REPO_NAME}}
 
 # 2. Clone YOUR fork
-git clone https://github.com/YOUR_USERNAME/{{REPO_NAME}}.git
+git clone [https://github.com/YOUR_USERNAME/](https://github.com/YOUR_USERNAME/){{REPO_NAME}}.git
 cd {{REPO_NAME}}
 
 # 3. Add upstream remote
-git remote add upstream https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}.git
+git remote add upstream [https://github.com/](https://github.com/){{GITHUB_ORG}}/{{REPO_NAME}}.git
 
 # 4. Install dependencies
 cd src/server && pip install -r requirements.txt
@@ -142,9 +114,10 @@ cd ../src/server && pytest ../../tests/server/
 
 # 7. Create feature branch
 git checkout -b feature/my-contribution develop
+
 ```
 
-**Troubleshooting?** See [README.md](README.md#troubleshooting)
+**Troubleshooting?** See [README.md](https://www.google.com/search?q=README.md%23troubleshooting)
 
 ---
 
@@ -162,21 +135,26 @@ CHROMA_HOST={{CHROMA_HOST}}    # e.g., http://localhost:8000
 # Optional
 LOG_LEVEL=DEBUG
 OLLAMA_BASE_URL=http://localhost:11434
+
 ```
 
 ### Running Locally
 
 **Backend:**
+
 ```bash
 cd src/server
 uvicorn main:app --reload --port 8080
 # Visit http://localhost:8080/docs (OpenAPI)
+
 ```
 
 **Frontend:**
+
 ```bash
 cd src/client
 flutter run -d {{TARGET_PLATFORM}}  # linux, macos, windows
+
 ```
 
 ### Pre-Commit Hooks (Recommended)
@@ -190,6 +168,7 @@ chmod +x .git/hooks/pre-commit
 # ✓ Formatting
 # ✓ Linting
 # ✓ Tests
+
 ```
 
 ---
@@ -199,7 +178,7 @@ chmod +x .git/hooks/pre-commit
 ### Types of Contributions
 
 | Type | Description | Ideal For |
-|------|-------------|-----------|
+| --- | --- | --- |
 | 🐛 **Bug Fixes** | Fix reported issues | First-time contributors |
 | ✨ **Features** | Implement from roadmap | Experienced developers |
 | 📚 **Docs** | Improve guides, fix typos | All levels |
@@ -210,14 +189,16 @@ chmod +x .git/hooks/pre-commit
 ### Finding Work
 
 **Good First Issues:**
-- Label: `good-first-issue` ([View](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/labels/good-first-issue))
-- Estimated time: <4 hours
-- Guided by maintainers
+
+* Label: `good-first-issue` ([View](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/labels/good-first-issue))
+* Estimated time: <4 hours
+* Guided by maintainers
 
 **Help Wanted:**
-- Label: `help-wanted` ([View](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/labels/help-wanted))
-- Estimated time: 1-3 days
-- Community-driven
+
+* Label: `help-wanted` ([View](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/labels/help-wanted))
+* Estimated time: 1-3 days
+* Community-driven
 
 ---
 
@@ -248,11 +229,13 @@ graph LR
     style O fill:#90EE90
     style K fill:#FFB347
     style N fill:#FFB347
+
 ```
 
 ### PR Checklist
 
 **Before Opening:**
+
 ```markdown
 ☐ Tests added/updated (coverage ≥{{COVERAGE_TARGET}}%)
 ☐ Code formatted ({{BACKEND_FORMATTER}}, {{FRONTEND_FORMATTER}})
@@ -262,6 +245,7 @@ graph LR
 ☐ PR linked to issue (#123)
 ☐ Screenshots added (if UI changed)
 ☐ No merge conflicts with develop
+
 ```
 
 ### PR Title Format
@@ -276,14 +260,13 @@ Examples:
 
 ❌ updated stuff
 ❌ Fixed bug
+
 ```
 
 ### PR Description Template
 
 ```markdown
 ## 🎯 Purpose
-<!-- Link to issue: Closes #123 -->
-
 ## 🔨 Changes
 - Changed X to Y because Z
 - Added validation for user input
@@ -295,16 +278,13 @@ Examples:
 - [ ] Coverage: 92% → 94%
 
 ## 📸 Screenshots
-<!-- Before/after (if UI) -->
-
 ## ⚠️ Breaking Changes
-<!-- None / List migration steps -->
-
 ## 📝 Checklist
 - [ ] Tests pass locally
 - [ ] Code formatted
 - [ ] Docs updated
 - [ ] No merge conflicts
+
 ```
 
 ---
@@ -314,6 +294,7 @@ Examples:
 ### For Contributors
 
 **Receiving Feedback:**
+
 1. **Don't take it personally** — critique is about code, not you
 2. **Ask questions** if feedback is unclear
 3. **Iterate quickly** — respond within 24 hours
@@ -327,16 +308,19 @@ Reviewer: "Extract this to a separate function"
 
 ❌ BAD RESPONSE:
 "I don't think so" (no explanation)
+
 ```
 
 ### For Reviewers
 
 **Review Time SLA:**
-- **Hotfix:** <2 hours
-- **Normal PR:** <4 hours
-- **Large PR (>500 lines):** <8 hours
+
+* **Hotfix:** <2 hours
+* **Normal PR:** <4 hours
+* **Large PR (>500 lines):** <8 hours
 
 **Review Checklist:**
+
 ```markdown
 ☐ Logic correct (no off-by-one, null handling)
 ☐ Tests cover edge cases
@@ -344,9 +328,11 @@ Reviewer: "Extract this to a separate function"
 ☐ Performance acceptable (no N+1 queries)
 ☐ Style matches RULES.md
 ☐ Docs updated (if public API changed)
+
 ```
 
 **Feedback Tone:**
+
 ```
 ✅ CONSTRUCTIVE:
 "Consider extracting `validate_user()` for readability.
@@ -354,6 +340,7 @@ This would also simplify testing. WDYT?"
 
 ❌ DESTRUCTIVE:
 "This is terrible code."
+
 ```
 
 ---
@@ -383,9 +370,11 @@ If applicable, add screenshots.
 - Browser (if web): [e.g., Chrome 120]
 
 **Logs**
-```
+```text
 Paste error logs here
+
 ```
+
 ```
 
 ### Feature Request Template
@@ -402,12 +391,13 @@ What else did you think about?
 
 **Additional Context**
 Mockups, examples, links.
+
 ```
 
 ### Label Meanings
 
 | Label | Meaning | Response Time |
-|-------|---------|---------------|
+| --- | --- | --- |
 | `bug` | Something broken | <2 days |
 | `enhancement` | New feature | <1 week |
 | `good-first-issue` | Easy for newcomers | <1 day |
@@ -423,14 +413,16 @@ Mockups, examples, links.
 ### What to Document
 
 **High Value:**
-- Tutorials (step-by-step guides)
-- Architecture decisions (why chose X over Y)
-- Troubleshooting (common errors + fixes)
-- API examples (code snippets)
+
+* Tutorials (step-by-step guides)
+* Architecture decisions (why chose X over Y)
+* Troubleshooting (common errors + fixes)
+* API examples (code snippets)
 
 **Low Value:**
-- Repeating code comments
-- Obvious information ("click Run to run")
+
+* Repeating code comments
+* Obvious information ("click Run to run")
 
 ### Documentation Standards
 
@@ -440,12 +432,14 @@ Mockups, examples, links.
 **Language:** English (primary), Spanish (secondary)
 
 **Checklist:**
+
 ```markdown
 ☐ Table of contents at top
 ☐ Code examples tested (not pseudo-code)
 ☐ Screenshots current (not outdated)
 ☐ Links valid (no 404s)
 ☐ Spelling checked
+
 ```
 
 ---
@@ -455,10 +449,11 @@ Mockups, examples, links.
 ### Test Requirements
 
 **All PRs Must:**
-- ✅ Add tests for new code
-- ✅ Update tests if changing behavior
-- ✅ Maintain coverage ≥{{COVERAGE_TARGET}}%
-- ❌ NO decreasing coverage
+
+* ✅ Add tests for new code
+* ✅ Update tests if changing behavior
+* ✅ Maintain coverage ≥{{COVERAGE_TARGET}}%
+* ❌ NO decreasing coverage
 
 ### Running Tests
 
@@ -474,11 +469,12 @@ flutter test --coverage
 
 # Specific file
 pytest tests/server/test_auth.py -v
+
 ```
 
 ### Writing Good Tests
 
-```{{BACKEND_LANG}}
+```{{backend_lang}}
 # ✅ CORRECT: Descriptive name, covers edge case
 def test_login_with_expired_token_returns_401(self):
     """User with expired JWT gets 401 Unauthorized."""
@@ -491,6 +487,7 @@ def test_login_with_expired_token_returns_401(self):
 def test_login(self):
     response = client.post("/login")
     assert response.status_code == 200  # Why 200? What's tested?
+
 ```
 
 ---
@@ -500,7 +497,7 @@ def test_login(self):
 ### Communication Channels
 
 | Channel | Purpose | Response Time |
-|---------|---------|---------------|
+| --- | --- | --- |
 | **GitHub Issues** | Bug reports, features | <48 hours |
 | **GitHub Discussions** | Questions, ideas | <3 days |
 | **{{SLACK_CHANNEL}}** | Real-time chat | <24 hours |
@@ -509,17 +506,19 @@ def test_login(self):
 ### Getting Help
 
 **Stuck? Ask in this order:**
-1. Check [README.md](README.md#troubleshooting)
-2. Search [closed issues](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/issues?q=is%3Aissue+is%3Aclosed)
+
+1. Check [README.md](https://www.google.com/search?q=README.md%23troubleshooting)
+2. Search [closed issues](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/issues%3Fq%3Dis%253Aissue%2Bis%253Aclosed)
 3. Ask in Discussions
 4. Tag `@{{MAINTAINER}}` if urgent
 
 ### Recognition
 
 **Contributors Celebrated:**
-- Listed in [README.md](README.md#team)
-- Mentioned in release notes
-- Invited to contributor calls
+
+* Listed in [README.md](https://www.google.com/search?q=README.md%23team)
+* Mentioned in release notes
+* Invited to contributor calls
 
 ---
 
@@ -540,6 +539,7 @@ def test_login(self):
 10. ☐ Open PR with template filled
 11. ☐ Respond to feedback
 12. ☐ Celebrate merge! 🎉
+
 ```
 
 ---
@@ -547,18 +547,20 @@ def test_login(self):
 ## 🎓 Resources
 
 **Learn More:**
-- [Architecture Overview](context/ARCH_DECISION_RECORDS.md)
-- [Master Workflow](packages/knowledge_base/02-TECH-PACKS/MASTER_WORKFLOW_EXAMPLES/GENERATION_ORDER.md)
-- [Testing Strategy](context/TESTING_STRATEGY.md)
-- [Security Policy](context/SECURITY_PRIVACY_POLICY.md)
+
+* [Architecture Overview](https://www.google.com/search?q=context/30-ARCHITECTURE/ARCH_DECISION_RECORDS.md)
+* [Master Workflow](https://www.google.com/search?q=context/00-META/MASTER_WORKFLOW_0-100.md)
+* [Testing Strategy](https://www.google.com/search?q=context/40-PLANNING/TESTING_STRATEGY.md)
+* [Security Policy](https://www.google.com/search?q=context/20-REQUIREMENTS/SECURITY_PRIVACY_POLICY.md)
 
 ---
 
 ## 📞 Contact
 
 **Maintainers:**
-- {{LEAD_NAME}} — [@{{LEAD_GITHUB}}](https://github.com/{{LEAD_GITHUB}}) — {{LEAD_EMAIL}}
-- {{MAINTAINER_2}} — [@{{MAINTAINER_2_GITHUB}}](https://github.com/{{MAINTAINER_2_GITHUB}})
+
+* {{LEAD_NAME}} — [@{{LEAD_GITHUB}}](https://www.google.com/search?q=https://github.com/%7B%7BLEAD_GITHUB%7D%7D) — {{LEAD_EMAIL}}
+* {{MAINTAINER_2}} — [@{{MAINTAINER_2_GITHUB}}](https://www.google.com/search?q=https://github.com/%7B%7BMAINTAINER_2_GITHUB%7D%7D)
 
 **Security Issues:** {{SECURITY_EMAIL}} (GPG key: {{GPG_KEY_ID}})
 
@@ -572,9 +574,9 @@ def test_login(self):
 ## 🔄 Version History
 
 | Version | Date | Changes | Author |
-|---------|------|---------|--------|
+| --- | --- | --- | --- |
 | v1.0 | {{DATE}} | Initial version | {{AUTHOR}} |
 
 ---
 
-**Questions?** Open a [Discussion](https://github.com/{{GITHUB_ORG}}/{{REPO_NAME}}/discussions)
+**Questions?** Open a [Discussion](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/discussions)

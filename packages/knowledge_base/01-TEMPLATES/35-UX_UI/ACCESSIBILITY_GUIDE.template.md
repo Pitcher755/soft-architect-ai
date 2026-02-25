@@ -1,10 +1,35 @@
 # ♿ Accessibility Guide (WCAG 2.1 AA)
 
-<!-- TEMPLATE GUIDE: This document ensures the app is usable by EVERYONE.
-     - WCAG 2.1 Level AA compliance (legal requirement in many countries)
-     - Covers: Keyboard nav, screen readers, color contrast, focus management
-     Generation Order: 20/24 | Phase: 4-UX/UI | Duration: ~30 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document ensures the application is usable by everyone, including people with
+visual, auditory, motor, or cognitive disabilities. It targets WCAG 2.1 Level AA
+compliance as a baseline.
+
+WHEN TO CREATE:
+- **Generation Order:** 16/24 (Phase 4 - UX/UI)
+- **Phase:** 4 - UX/UI
+- **Prerequisites:** 35-UX_UI/DESIGN_SYSTEM.md MUST be complete to ensure
+  colors and typography meet standards.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** When providing code examples, use the specific
+   framework defined in TECH_STACK_DECISION.md (e.g., if using Flutter, use
+   Semantics widgets; if using React, use aria-labels).
+✅ **BE SPECIFIC:** Define clear focus management strategies, especially for
+   modals and complex forms.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block
+   before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 35-UX_UI directory.
+   Filename MUST be: ACCESSIBILITY_GUIDE.md
+   Correct path: /context/35-UX_UI/ACCESSIBILITY_GUIDE.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Standard:** {{STANDARD}}  <!-- e.g., WCAG 2.1 AA -->
 > **Target Compliance:** {{COMPLIANCE_DATE}}

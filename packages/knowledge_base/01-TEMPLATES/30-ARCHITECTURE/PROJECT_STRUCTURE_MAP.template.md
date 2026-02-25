@@ -1,12 +1,31 @@
 # 🗂️ Project Structure Map
 
-<!-- TEMPLATE GUIDE: This document is the FILE TREE + ARCHITECTURE GUIDE.
-     - Show where code lives (directory structure)
-     - Explain purpose of each folder
-     - Define file naming conventions
-     Generation Order: 11/24 | Phase: 3-Architecture | Prerequisites: API_INTERFACE_CONTRACT.md
-     Duration: ~30 mins
-     Remove this guide before committing. -->
+<!-- ════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
+
+PURPOSE:
+This document is the FILE TREE + ARCHITECTURE GUIDE. It acts as the definitive map showing where code lives, explaining the purpose of each folder, and defining strict file naming conventions.
+
+WHEN TO CREATE:
+- **Generation Order:** 11/24 (Phase 3 - ARCHITECTURE)
+- **Phase:** 3 - ARCHITECTURE
+- **Prerequisites:** 30-ARCHITECTURE/API_INTERFACE_CONTRACT.md MUST be complete.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** The directory structure MUST perfectly reflect the architecture pattern chosen in TECH_STACK_DECISION.md. Do not invent unnecessary folders.
+✅ **BE EXPLICIT:** Clearly state what is FORBIDDEN in each layer (e.g., "No UI code in the Domain layer").
+✅ **USE EXAMPLES AS GUIDES:** Read the hidden HTML comments () for context, but do not copy them verbatim.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual project data.
+✅ **MERMAID DIAGRAMS:** Do NOT use curly braces {} inside Mermaid diagrams.
+✅ **SELF-DESTRUCT:** You MUST remove this entire TEMPLATE GUIDE comment block before outputting the final Markdown.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the 30-ARCHITECTURE directory.
+   Filename MUST be: PROJECT_STRUCTURE_MAP.md
+   Correct path: /context/30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md
+   Incorrect path: /context/PROJECT_STRUCTURE_MAP.md or /PROJECT_STRUCTURE_MAP.md
+════════════════════════════════════════════════════════════════════════════════ -->
 
 > **Project:** {{PROJECT_NAME}}
 > **Architecture:** {{ARCHITECTURE_PATTERN}}  <!-- e.g., Clean Architecture, Hexagonal, Modular Monolith -->
