@@ -1,4 +1,4 @@
-"""Sequential Orchestrator - Optimized for Detail and Aesthetics."""
+"""Sequential Orchestrator - Optimized for Detail, Density, and Routing."""
 
 import logging
 from collections.abc import AsyncGenerator
@@ -29,7 +29,7 @@ class SequentialOrchestrator:
             # Recuperamos el contexto dual (ejemplo maestro + info usuario)
             rag_context = await self._retrieve_context(user_input, doc_type)
 
-            # Construimos el prompt inyectando la orden de 'estética senior'
+            # Construimos el prompt inyectando la orden de 'estética senior' y reglas críticas
             prompt = self._build_prompt(template, user_input, rag_context, context)
 
             token_stream = await self.llm_client.stream_generate(
@@ -42,8 +42,12 @@ class SequentialOrchestrator:
             raise LLMError(code="SEQ_GEN_ERR", message=str(e)) from e
 
     async def _retrieve_context(self, query: str, doc_type: str) -> str:
-        """Recuperación doble: prioriza el ejemplo MD entero."""
-        master_query = f"Complete Markdown Master Example for {doc_type} with rich tables and emoji"
+        """Recuperación doble: prioriza el ejemplo MD denso."""
+        # ⚡ DOCTRINA ZERO LAZY WRITING: Query agresiva para traer contenido real y no plantillas vacías.
+        master_query = (
+            f"Complete detailed Markdown Master Example for {doc_type} "
+            f"filled with realistic technical data, deep architectural context, and zero placeholders"
+        )
 
         try:
             user_results = self.vector_store.query(query_texts=[query], n_results=3)
@@ -57,7 +61,7 @@ class SequentialOrchestrator:
             sections = []
             if master_docs:
                 sections.append(
-                    f"=== MASTER TEMPLATE EXAMPLE (MANDATORY STYLE GUIDE) ===\n{master_docs}"
+                    f"=== MASTER TEMPLATE EXAMPLE (MANDATORY STYLE AND DENSITY GUIDE) ===\n{master_docs}"
                 )
             if user_docs:
                 sections.append(f"=== USER PROJECT CONTEXT ===\n{user_docs}")
@@ -83,10 +87,15 @@ class SequentialOrchestrator:
     ) -> str:
         history = context.get("chat_history", "")
 
-        # El truco final: Añadimos un recordatorio de excelencia visual al final del prompt
+        # El truco final: Añadimos un recordatorio de excelencia visual y las reglas inquebrantables
         extra_instruction = (
             "\n\n⚡ RECUERDA ARQUITECTO: Debes imitar el estilo visual, el uso intensivo de iconos y la "
             "profundidad técnica del EJEMPLO MAESTRO proporcionado. Crea tablas y usa Markdown avanzado."
+            "\n\n⚡ INSTRUCCIÓN CRÍTICA DE ÚLTIMA HORA: Rellena TODO el documento clonando la densidad del Master Example. "
+            "Está ESTRICTAMENTE PROHIBIDO usar llaves {{ }} o texto genérico.\n"
+            "Ajusta el **Path** correctamente en la primera línea del documento: si el documento pertenece a la "
+            "Fase 6 (README.md, AGENTS.md, RULES.md, CONTRIBUTING.md) va directo en la RAÍZ (ej: **Path:** `README.md`), "
+            "si es de otra fase va dentro de su carpeta correspondiente (ej: **Path:** `context/10-CONTEXT/PROJECT_MANIFESTO.md`)."
         )
 
         return template.content.format(

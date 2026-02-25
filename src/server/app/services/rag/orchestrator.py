@@ -91,10 +91,12 @@ class RAGOrchestrator:
                 logger.warning("⚠️ RAG channel degraded: %s", str(err))
                 return []
 
-        # Búsqueda maestra forzada para traer la estética del ejemplo
+        # ⚡ DOCTRINA ZERO LAZY WRITING: Forzamos la búsqueda de EJEMPLOS reales (densos), no de plantillas vacías.
         master_query = (
-            f"Master Example structural template for {doc_type} with tables and icons"
+            f"Complete detailed Markdown technical specification and full example for {doc_type} "
+            f"including real data, architectural decisions, dense technical content, and zero empty placeholders"
         )
+
         user_results, master_results = await asyncio.gather(
             _safe_search(message, 3), _safe_search(master_query, 2)
         )
@@ -102,7 +104,7 @@ class RAGOrchestrator:
         combined = []
         if master_results:
             combined.append(
-                "=== MASTER TEMPLATE EXAMPLE (FOLLOW THIS STRUCTURE EXACTLY) ==="
+                "=== MASTER TEMPLATE EXAMPLE (FOLLOW THIS DENSITY AND STRUCTURE EXACTLY) ==="
             )
             combined.extend(master_results)
         if user_results:
@@ -111,11 +113,7 @@ class RAGOrchestrator:
         return combined
 
     async def process_message(self, request: ChatRequest) -> ChatResponse:
-        """Process a chat message (non-streaming) via dual-channel RAG.
-
-        Graceful degradation: any vector store failure yields sources=[]
-        and FALLBACK template while the LLM still generates a response.
-        """
+        """Process a chat message (non-streaming) via dual-channel RAG."""
         current_doc_type = (request.metadata or {}).get("doc_type", "PROJECT_MANIFESTO")
         sources = await self._retrieve_dual_context(request.message, current_doc_type)
         template_id = "CONTEXT_DRIVEN" if sources else "FALLBACK"
@@ -135,12 +133,15 @@ class RAGOrchestrator:
                 },
             )
 
+        # Inyectamos el user_name de la request o caemos a "Developer"
+        user_name = getattr(request, "user_name", "Developer")
+
         prompt = self.template_builder.build_prompt(
             query=request.message,
             context=sources,
             template_id=template_id,
             history=request.history,
-            user_name=request.user_name,
+            user_name=user_name,
         )
         try:
             ai_response = await self.llm_client.generate(prompt)
@@ -178,12 +179,16 @@ class RAGOrchestrator:
             sources = await self._retrieve_dual_context(
                 request.message, current_doc_type
             )
+
+            # Inyectamos el user_name para el stream
+            user_name = getattr(request, "user_name", "Developer")
+
             prompt = self.template_builder.build_prompt(
                 query=request.message,
                 context=sources,
                 template_id="CONTEXT_DRIVEN",
                 history=request.history,
-                user_name=request.user_name,
+                user_name=user_name,
             )
 
             try:

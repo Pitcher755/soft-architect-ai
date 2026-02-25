@@ -6,11 +6,11 @@ This is a PURE domain entity with ZERO infrastructure dependencies.
 
 from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID
 
 
-class MessageRole(str, Enum):
+class MessageRole(StrEnum):
     """Message role enum."""
 
     USER = "USER"
