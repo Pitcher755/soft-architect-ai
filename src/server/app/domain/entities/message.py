@@ -36,8 +36,9 @@ class Message:
 
     def __post_init__(self):
         """Validate fields (runs after __init__)."""
-        # Validate role (runtime check: type hints don't prevent callers passing raw strings)
-        if not isinstance(self.role, MessageRole):  # pyright: ignore[reportUnnecessaryIsInstance]
+        # Validate role using type() to avoid Pyright's reportUnnecessaryIsInstance.
+        # Runtime guard: callers may pass raw strings despite type hints.
+        if type(self.role) is not MessageRole:
             raise ValueError(
                 f"Invalid role: {self.role}. Must be MessageRole enum (USER, ASSISTANT, SYSTEM)"
             )
