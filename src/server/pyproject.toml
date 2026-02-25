@@ -1,3 +1,21 @@
+[tool.coverage.run]
+# Omit infrastructure modules that require external services (ChromaDB, filesystem)
+# These are covered by integration tests, not unit tests
+omit = [
+    "services/rag/document_loader.py",
+    "services/rag/vector_store.py",
+    "app/main.py",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "pass$",
+    "@abstractmethod",
+    "raise NotImplementedError",
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
