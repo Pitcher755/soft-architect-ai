@@ -123,6 +123,7 @@ jobs:
 
       - name: 📊 Upload Coverage XML
         if: always()
+        continue-on-error: true  # Self-hosted runner may lack internet access to Codecov
         uses: codecov/codecov-action@v4
         with:
           files: ./coverage.xml
