@@ -219,7 +219,7 @@ jobs:
 
       - name: 🏗️ Build-check Dockerfile
         run: |
-          cd src/server && docker build --dry-run .
+          cd src/server && docker buildx build --check .
 
       - name: 📋 Security scan (Trivy - Optional)
         run: |
