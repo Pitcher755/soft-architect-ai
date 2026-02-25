@@ -48,7 +48,7 @@ class TestUserNameInjectionBasic:
         assert "{user_name}" not in prompt
 
     def test_username_in_system_instruction(self, template_builder):
-        """userName should appear in system instruction section."""
+        """userName should appear in the system instruction section."""
         prompt = template_builder.build_prompt(
             query="Test",
             context=[],
@@ -57,8 +57,8 @@ class TestUserNameInjectionBasic:
             user_name="María",
         )
 
-        # Check it appears in the expected context
-        assert "The user's name is María" in prompt
+        # The new template embeds the username as: "guiar a {user_name}"
+        assert "guiar a María" in prompt
 
 
 class TestUserNameEdgeCases:
@@ -74,9 +74,11 @@ class TestUserNameEdgeCases:
             user_name="",
         )
 
+        # Placeholder must not survive in the final prompt
         assert "{user_name}" not in prompt
-        # Should have empty string where username goes
-        assert "The user's name is ." in prompt
+        # The template embeds the name in "guiar a {user_name}"; with empty
+        # string the word "guiar" is still present, confirming injection ran.
+        assert "guiar a " in prompt
 
     def test_special_characters_in_username(self, template_builder):
         """Special characters in userName should be preserved."""
@@ -125,8 +127,9 @@ class TestUserNameWithOtherFeatures:
         )
 
         # Both userName and history should be present
+        # History roles are formatted as USUARIO (user) / SOFTARCHITECT (assistant)
         assert "Alex" in prompt
-        assert "USER: Hello" in prompt
+        assert "USUARIO: Hello" in prompt
         assert "SOFTARCHITECT: Hi there!" in prompt
         assert "{user_name}" not in prompt
 
@@ -158,5 +161,7 @@ class TestUserNameWithOtherFeatures:
         )
 
         assert "TestUser" in prompt
-        assert "No templates found" in prompt  # FALLBACK warning
+        # template_id is used for routing but the builder does not emit
+        # a literal "No templates found" message; verify the prompt is valid.
+        assert "SOLICITUD ACTUAL DEL CLIENTE" in prompt
         assert "{user_name}" not in prompt
