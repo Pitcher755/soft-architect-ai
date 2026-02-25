@@ -30,6 +30,9 @@ void main() {
       }
 
       expect(find.byType(StreamingMessageWidget), findsOneWidget);
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
 
     testWidgets('auto-scrolls without perceptible pauses', (tester) async {
@@ -60,6 +63,9 @@ void main() {
         scrollController.position.pixels,
         equals(scrollController.position.maxScrollExtent),
       );
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
 
     testWidgets('keeps memory growth bounded with circular buffer', (
@@ -77,6 +83,9 @@ void main() {
       );
 
       expect(initialMemory, isNotNull);
+
+      // Wait for any pending futures to complete before tearDown
+      await tester.pump(const Duration(milliseconds: 50));
     });
   });
 }

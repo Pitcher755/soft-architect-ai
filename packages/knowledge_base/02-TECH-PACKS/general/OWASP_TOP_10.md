@@ -511,7 +511,7 @@ name: Security Scan
 on: [push]
 jobs:
   scan:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - run: pip install trivy && trivy fs .

@@ -33,8 +33,9 @@ class VectorStoreService:
         Returns:
             Query results dictionary
         """
-        # TDD RED: Placeholder implementation
-        raise NotImplementedError("TDD RED: Test first!")
+        # TDD RED: Stub implementation for smoke tests
+        # Returns empty results (no documents found)
+        return {"docs": [], "metadatas": [], "distances": []}
 
     def health_check(self) -> int:
         """Return a stub heartbeat value in milliseconds."""

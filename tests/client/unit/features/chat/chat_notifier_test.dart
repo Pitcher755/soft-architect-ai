@@ -30,15 +30,18 @@ class FakeChatRepository implements ChatRepository {
   Stream<ChatStreamEvent> sendMessageStream(
     String projectPath,
     String message,
-  ) async* {
-    yield TokenEvent(token: 'Fake', isFinal: false);
-    yield TokenEvent(token: ' streaming', isFinal: false);
-    yield TokenEvent(token: ' response', isFinal: true);
-    yield DoneEvent(
-      fullResponse: 'Fake streaming response',
-      sources: const [],
-      metadata: const {},
-    );
+  ) {
+    final events = <ChatStreamEvent>[
+      TokenEvent(token: 'Fake', isFinal: false),
+      TokenEvent(token: ' streaming', isFinal: false),
+      TokenEvent(token: ' response', isFinal: true),
+      DoneEvent(
+        fullResponse: 'Fake streaming response',
+        sources: const [],
+        metadata: const {},
+      ),
+    ];
+    return Stream.fromIterable(events);
   }
 
   @override
@@ -56,8 +59,8 @@ class FakeChatRepository implements ChatRepository {
     String docType,
     String userInput,
     Map<String, dynamic> context,
-  ) async* {
-    yield 'Fake document content';
+  ) {
+    return Stream.value('Fake document content');
   }
 }
 

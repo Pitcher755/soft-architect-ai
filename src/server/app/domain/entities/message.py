@@ -6,11 +6,11 @@ This is a PURE domain entity with ZERO infrastructure dependencies.
 
 from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from uuid import UUID
 
 
-class MessageRole(str, Enum):
+class MessageRole(StrEnum):
     """Message role enum."""
 
     USER = "USER"
@@ -36,8 +36,9 @@ class Message:
 
     def __post_init__(self):
         """Validate fields (runs after __init__)."""
-        # Validate role (runtime check, type hints alone don't prevent invalid strings)
-        if not isinstance(self.role, MessageRole):
+        # Validate role using type() to avoid Pyright's reportUnnecessaryIsInstance.
+        # Runtime guard: callers may pass raw strings despite type hints.
+        if type(self.role) is not MessageRole:
             raise ValueError(
                 f"Invalid role: {self.role}. Must be MessageRole enum (USER, ASSISTANT, SYSTEM)"
             )

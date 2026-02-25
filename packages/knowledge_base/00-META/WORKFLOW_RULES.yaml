@@ -1,6 +1,6 @@
 # Reglas del Master Workflow para el Motor RAG
-# Versión: 2.0
-# Objetivo: Definir las puertas de calidad (Quality Gates) que no se pueden saltar.
+# Versión: 3.0
+# Objetivo: Definir las 6 puertas de calidad (Quality Gates) secuenciales que no se pueden saltar.
 
 workflow_config:
   strict_mode: true
@@ -8,47 +8,81 @@ workflow_config:
 
 phases:
   - id: "10_context"
-    name: "Fase 1: Gobernanza e Identidad"
-    description: "Definición del propósito, roles y reglas del juego."
+    name: "Fase 1: Contexto"
+    description: "Definición de la visión global, objetivos y vocabulario del dominio."
     order: 1
     required_artifacts:
-      - "00-ROOT/AGENTS.md"
-      - "00-ROOT/RULES.md"
       - "10-CONTEXT/PROJECT_MANIFESTO.md"
+      - "10-CONTEXT/DOMAIN_LANGUAGE.md"
       - "10-CONTEXT/USER_JOURNEY_MAP.md"
     validation_rules:
       - "must_exist"
       - "min_length_500_chars"
 
   - id: "20_requirements"
-    name: "Fase 2: Especificación y Seguridad"
-    description: "Definición funcional y política de seguridad."
+    name: "Fase 2: Requisitos"
+    description: "Definición funcional, épicas, historias de usuario y políticas de seguridad."
     order: 2
     depends_on: ["10_context"]
     required_artifacts:
       - "20-REQUIREMENTS/REQUIREMENTS_MASTER.md"
       - "20-REQUIREMENTS/USER_STORIES_MASTER.json"
       - "20-REQUIREMENTS/SECURITY_PRIVACY_POLICY.md"
+      - "20-REQUIREMENTS/COMPLIANCE_MATRIX.md"
     validation_rules:
       - "json_schema_valid"
       - "security_check_passed"
 
   - id: "30_architecture"
     name: "Fase 3: Arquitectura Técnica"
-    description: "Selección de stack y diseño de sistemas."
+    description: "Selección del stack tecnológico, modelos de datos y diseño del sistema."
     order: 3
     depends_on: ["20_requirements"]
     required_artifacts:
       - "30-ARCHITECTURE/TECH_STACK_DECISION.md"
-      - "30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
+      - "30-ARCHITECTURE/DATA_MODEL_SCHEMA.md"
       - "30-ARCHITECTURE/API_INTERFACE_CONTRACT.md"
+      - "30-ARCHITECTURE/PROJECT_STRUCTURE_MAP.md"
       - "30-ARCHITECTURE/SECURITY_THREAT_MODEL.md"
+      - "30-ARCHITECTURE/ARCH_DECISION_RECORDS.md"
+    validation_rules:
+      - "architecture_approved"
 
-  - id: "40_planning"
-    name: "Fase 4: Planificación y Calidad"
-    description: "Hoja de ruta y estrategia de testing."
+  - id: "35_ux_ui"
+    name: "Fase 4: UX/UI"
+    description: "Establecimiento de la capa visual, flujos de interacción y accesibilidad."
     order: 4
     depends_on: ["30_architecture"]
     required_artifacts:
+      - "35-UX_UI/DESIGN_SYSTEM.md"
+      - "35-UX_UI/UI_WIREFRAMES_FLOW.md"
+      - "35-UX_UI/ACCESSIBILITY_GUIDE.md"
+    validation_rules:
+      - "design_system_defined"
+
+  - id: "40_planning"
+    name: "Fase 5: Planificación y Operativa"
+    description: "Estrategia de entrega, infraestructura en la nube y pipelines CI/CD."
+    order: 5
+    depends_on: ["35_ux_ui"]
+    required_artifacts:
       - "40-PLANNING/ROADMAP_PHASES.md"
+      - "40-PLANNING/DEPLOYMENT_INFRASTRUCTURE.md"
+      - "40-PLANNING/CI_CD_PIPELINE.md"
       - "40-PLANNING/TESTING_STRATEGY.md"
+    validation_rules:
+      - "infrastructure_mapped"
+
+  - id: "00_root"
+    name: "Fase 6: ROOT / META"
+    description: "Archivos maestros de orquestación. Deben generarse al final y guardarse en la RAÍZ del proyecto."
+    order: 6
+    depends_on: ["40_planning"]
+    required_artifacts:
+      - "RULES.md"
+      - "CONTRIBUTING.md"
+      - "AGENTS.md"
+      - "README.md"
+    validation_rules:
+      - "root_path_strict"
+      - "agents_context_linked"

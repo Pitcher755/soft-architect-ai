@@ -1,22 +1,43 @@
+<div align="center">
+
 # 🏗️ SoftArchitect AI
 
+### **Your Virtual Senior Architect, On-Demand**
+**Democratizing Elite Software Engineering Through Contextual AI**
+
+[![Status](https://img.shields.io/badge/Status-Pre--Alpha-orange)]()
+[![Tests](https://img.shields.io/badge/Tests-1286%20Passing-success)]()
+[![Coverage](https://img.shields.io/badge/Coverage-%E2%89%A580%25-brightgreen)]()
+[![Stack](https://img.shields.io/badge/Stack-Flutter%20%7C%20Python%20%7C%20RAG-blue)]()
+[![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local--First-green)]()
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+---
+
+### 📊 Project Stats
+
+| Metric | Value | Metric | Value |
+|--------|-------|--------|-------|
+| 📝 **Documentation** | 460+ files | 🧪 **Tests** | 893 Flutter + 393 Python |
+| 🎯 **Test Coverage** | ≥80% | 📚 **Knowledge Base** | 29 files, 934 lines |
+| 🏛️ **Architecture** | Clean + Hexagonal | 🔐 **Security Gates** | 16/16 passing |
+| 🚀 **Features** | 24 User Stories | ⚡ **Deployment** | <2min Docker |
+
+### 🎬 Presentations & Demos
+
+📊 **[View Slides (GitHub Pages)](https://pitcher755.github.io/soft-architect-ai/)** | � [Markdown Source](presentation/slides.md)
+
+---
+
 **🌍 Languages:** [🇬🇧 English](#english) | [🇪🇸 Español](#español)
+
+</div>
 
 ---
 
 <a name="english"></a>
 
 ## 🇬🇧 English Version
-
-### 🏗️ SoftArchitect AI
-
-> **Your Virtual Senior Architect (On-Demand).**
-> Democratizing high-level software engineering through Contextual Artificial Intelligence.
-
-[![Status](https://img.shields.io/badge/Status-Pre--Alpha-orange)]()
-[![Stack](https://img.shields.io/badge/Stack-Flutter%20%7C%20Python%20%7C%20RAG-blue)]()
-[![Privacy](https://img.shields.io/badge/Privacy-Local--First-green)]()
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ### 🇬🇧 English Version
 
@@ -33,18 +54,14 @@
 - [Detailed Setup Guide](doc/English/02-SETUP_DEV/01-INSTALLATION/SETUP_GUIDE.md)
 - [Technology Stack](doc/English/02-SETUP_DEV/01-INSTALLATION/TOOLS_AND_STACK.md)
 - [Automation & DevOps](doc/English/02-SETUP_DEV/04-AUTOMATION/AUTOMATION.md)
-- **⭐ NEW:** [Knowledge Base Completion Report](doc/English/01-PROJECT_REPORT/05-COMPLETION-STATUS/KNOWLEDGE_BASE_COMPLETION.md) - Phases 0-6 (29 files, 934 lines)
-- **⭐ NEW:** [Constitutional Rules](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 files, 3,742 lines)
-- **✅ VERIFIED:** [Pre-Push Validation Report (2026-02-12)](doc/English/01-PROJECT_REPORT/06-VALIDATION/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 gates passed
-- **🚀 COMPLETED:** [HU-3.1: Project Shell UI](doc/English/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - All 4 Phases + Security ✅
-- **🚧 IN PROGRESS:** [HU-3.7: Settings UI Completion](doc/English/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests stabilized, coverage uplift in progress
-- **📊 TEST STATUS:** Client Flutter full suite green + Server app coverage gate ≥80% passing
 
 #### 📖 Vision
 
-SoftArchitect AI is not another "code chat". It is an assisted development platform that guides developers through a **Strict Engineering Workflow** (Requirements → Architecture → Code → Deploy).
+SoftArchitect AI is not just another "code chat". It's your **Shadow Software Architect**.
 
-It acts as an intelligent **Quality Gate** that ensures compliance with best practices (SOLID, Clean Architecture, OWASP) before writing a single line of code, using **RAG (Retrieval-Augmented Generation)** on an academic and practical knowledge base.
+It's an assisted work environment that guides the most critical and often overlooked phase of development: **project conception**. Through a **Guided Architectural Workflow** (Context → Requirements → Architecture → UX/UI → Planning), the platform acts as a **preventive Quality Gate**.
+
+By leveraging **RAG (Retrieval-Augmented Generation)** over a curated knowledge base, it ensures your application design complies with SOLID principles, Clean Architecture, and security guidelines (OWASP) before writing the first line of code. Its mission is clear: **transform abstract ideas into development-ready technical specifications, cutting technical debt at the root**.
 
 #### ⚡ Quick Start (5 minutes)
 
@@ -169,21 +186,95 @@ scripts/testing/run_tests.sh all --coverage
 
 See [tests/README.md](tests/README.md) for detailed testing documentation and structure.
 
----
+#### 🚀 Deployment & Production
+
+##### Docker Deployment (Recommended)
+
+Deploy all services with a single command:
+
+```bash
+# Start all services (API, ChromaDB, Ollama)
+./scripts/devops/start_stack.sh
+
+# Services will be available at:
+# - API: http://localhost:8000
+# - API Docs: http://localhost:8000/docs
+# - ChromaDB Admin: http://localhost:8001
+# - Ollama: http://localhost:11434
+```
+
+##### Knowledge Base Ingestion
+
+Before first use, ingest the technical knowledge base:
+
+```bash
+# 1. Ensure services are running
+docker ps  # Should show sa_api, sa_chromadb, sa_ollama
+
+# 2. Ingest knowledge base (Tech Packs + Templates)
+curl -X POST http://localhost:8000/api/v1/knowledge/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"path": "packages/knowledge_base"}'
+
+# 3. Verify ingestion
+curl http://localhost:8000/api/v1/knowledge/status
+
+# Expected response:
+# {
+#   "status": "ready",
+#   "documents": 29,
+#   "vectors": 934,
+#   "collections": ["tech-packs", "templates", "examples"]
+# }
+```
+
+##### Production Checklist
+
+- [ ] Configure `.env` with production settings
+- [ ] Enable HTTPS with reverse proxy (Nginx/Traefik)
+- [ ] Set `LLM_PROVIDER=cloud` for better performance
+- [ ] Configure backup strategy for `infrastructure/data/`
+- [ ] Set up monitoring (logs in `infrastructure/logs/`)
+- [ ] Review [Security Hardening Policy](context/SECURITY_HARDENING_POLICY.en.md)
+
+**Deployment Guides:**
+- [📖 Docker Deployment Log](doc/English/02-SETUP_DEV/02-DOCKER/DOCKER_SETUP_LOG.md)
+- [🔧 Hardware Acceleration](doc/English/02-SETUP_DEV/01-INSTALLATION/HARDWARE_ACCELERATION_GUIDE.md)
+- [🐳 Docker Compose Guide](doc/English/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_UPDATE_SUMMARY.md)
+
 
 <a name="español"></a>
 
+<div align="center">
+
 ## 🇪🇸 Versión en Español
 
-### 🏗️ SoftArchitect AI
-
-> **Tu Arquitecto Senior Virtual (On-Demand).**
-> Democratizando la ingeniería de software de alto nivel mediante Inteligencia Artificial Contextual.
+### **Tu Arquitecto Senior Virtual, On-Demand**
+**Democratizando la Ingeniería de Software de Elite a través de IA Contextual**
 
 [![Estado](https://img.shields.io/badge/Estado-Pre--Alpha-orange)]()
+[![Tests](https://img.shields.io/badge/Tests-1286%20Pasando-success)]()
+[![Cobertura](https://img.shields.io/badge/Cobertura-%E2%89%A580%25-brightgreen)]()
 [![Stack](https://img.shields.io/badge/Stack-Flutter%20%7C%20Python%20%7C%20RAG-blue)]()
-[![Privacidad](https://img.shields.io/badge/Privacidad-Local--First-green)]()
+[![Privacidad](https://img.shields.io/badge/Privacidad-100%25%20Local--First-green)]()
 [![License: GPL v3](https://img.shields.io/badge/Licencia-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+---
+
+### 📊 Estadísticas del Proyecto
+
+| Métrica | Valor | Métrica | Valor |
+|---------|-------|---------|-------|
+| 📝 **Documentación** | 460+ archivos | 🧪 **Tests** | 893 Flutter + 393 Python |
+| 🎯 **Cobertura Tests** | ≥80% | 📚 **Base de Conocimiento** | 29 archivos, 934 líneas |
+| 🏛️ **Arquitectura** | Clean + Hexagonal | 🔐 **Gates de Seguridad** | 16/16 aprobados |
+| 🚀 **Funcionalidades** | 24 Historias de Usuario | ⚡ **Despliegue** | <2min Docker |
+
+### 🎬 Presentaciones y Demos
+
+📊 **[Ver Slides (GitHub Pages)](https://pitcher755.github.io/soft-architect-ai/)** | � [Código Markdown](presentation/slides.md)
+
+</div>
 
 #### 📚 Documentación Clave
 
@@ -198,18 +289,14 @@ See [tests/README.md](tests/README.md) for detailed testing documentation and st
 - [Guía de Instalación Detallada](doc/Español/02-SETUP_DEV/01-INSTALACION/GUIA_CONFIGURACION.md)
 - [Stack Tecnológico](doc/Español/02-SETUP_DEV/01-INSTALACION/HERRAMIENTAS_Y_STACK.md)
 - [Automatización y DevOps](doc/Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md)
-- **⭐ NUEVO:** [Reporte de Knowledge Base Completada](doc/Español/01-PROJECT_REPORT/05-COMPLETION-STATUS/KNOWLEDGE_BASE_COMPLETION.md) - Fases 0-6 (29 archivos, 934 líneas)
-- **⭐ NUEVO:** [Reglas Constitucionales](packages/knowledge_base/02-TECH-PACKS/) - FASE 3 (5 archivos, 3,742 líneas)
-- **✅ VERIFICADO:** [Reporte de Validación Pre-Push (2026-02-12)](doc/Español/01-PROJECT_REPORT/06-VALIDATION/PRE_PUSH_VALIDATION_2026-02-12.md) - 16/16 compuertas aprobadas
-- **🚀 COMPLETADO:** [HU-3.1: Implementación Shell UI del Proyecto](doc/Español/03-HU-TRACKING/HU-3.1-PROJECT-SHELL-UI-IMPLEMENTATION/README.md) - Todas 4 Fases + Seguridad ✅
-- **🚧 EN PROGRESO:** [HU-3.7: Completitud UI de Settings](doc/Español/03-HU-TRACKING/HU-3.7-SETTINGS-UI-COMPLETION/README.md) - tests estabilizados, cobertura en subida
-- **📊 ESTADO TESTS:** Cliente Flutter suite completa en verde + Server app con gate de cobertura ≥80% aprobado
 
 #### 📖 Visión
 
-SoftArchitect AI no es otro "chat de código". Es una plataforma de desarrollo asistido que guía a los desarrolladores a través de un **Workflow de Ingeniería Estricto** (Requirements → Architecture → Code → Deploy).
+SoftArchitect AI no es un "chat de código" más. Es tu **Arquitecto de Software en la sombra**.
 
-Actúa como un **Quality Gate** inteligente que asegura el cumplimiento de buenas prácticas (SOLID, Clean Architecture, OWASP) antes de escribir una sola línea de código, utilizando **RAG (Retrieval-Augmented Generation)** sobre una base de conocimiento académica y práctica.
+Es un entorno de trabajo asistido que guía la fase más crítica y olvidada del desarrollo: **la concepción del proyecto**. A través de un **Workflow Arquitectónico Guiado** (Contexto → Requisitos → Arquitectura → UX/UI → Planificación), la plataforma actúa como un **Quality Gate preventivo**.
+
+Mediante el uso de **RAG (Retrieval-Augmented Generation)** sobre una base de conocimiento curada, garantiza que el diseño de tu aplicación cumpla con los principios SOLID, Clean Architecture y directrices de seguridad (OWASP) antes de escribir la primera línea de código. Su objetivo es claro: **transformar ideas abstractas en especificaciones técnicas listas para desarrollo, cortando la deuda técnica de raíz**.
 
 #### ⚡ Inicio Rápido (5 minutos)
 
@@ -334,6 +421,62 @@ scripts/testing/run_tests.sh all --coverage
 
 Consulta [tests/README.md](tests/README.md) para documentación detallada sobre testing y estructura.
 
+#### 🚀 Despliegue y Producción
+
+##### Despliegue con Docker (Recomendado)
+
+Despliega todos los servicios con un solo comando:
+
+```bash
+# Levantar todos los servicios (API, ChromaDB, Ollama)
+./scripts/devops/start_stack.sh
+
+# Los servicios estarán disponibles en:
+# - API: http://localhost:8000
+# - Documentación API: http://localhost:8000/docs
+# - ChromaDB Admin: http://localhost:8001
+# - Ollama: http://localhost:11434
+```
+
+##### Ingesta de Base de Conocimiento
+
+Antes del primer uso, ingesta la base de conocimiento técnico:
+
+```bash
+# 1. Asegurarse de que los servicios están corriendo
+docker ps  # Debe mostrar sa_api, sa_chromadb, sa_ollama
+
+# 2. Ingestar base de conocimiento (Tech Packs + Templates)
+curl -X POST http://localhost:8000/api/v1/knowledge/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"path": "packages/knowledge_base"}'
+
+# 3. Verificar ingesta
+curl http://localhost:8000/api/v1/knowledge/status
+
+# Respuesta esperada:
+# {
+#   "status": "ready",
+#   "documents": 29,
+#   "vectors": 934,
+#   "collections": ["tech-packs", "templates", "examples"]
+# }
+```
+
+##### Checklist de Producción
+
+- [ ] Configurar `.env` con ajustes de producción
+- [ ] Habilitar HTTPS con proxy reverso (Nginx/Traefik)
+- [ ] Configurar `LLM_PROVIDER=cloud` para mejor rendimiento
+- [ ] Configurar estrategia de backup para `infrastructure/data/`
+- [ ] Configurar monitoreo (logs en `infrastructure/logs/`)
+- [ ] Revisar [Política de Seguridad](context/SECURITY_HARDENING_POLICY.es.md)
+
+**Guías de Despliegue:**
+- [📖 Log de Despliegue Docker](doc/Español/02-SETUP_DEV/02-DOCKER/DOCKER_SETUP_LOG.md)
+- [🔧 Aceleración Hardware](doc/Español/02-SETUP_DEV/01-INSTALACION/HARDWARE_ACCELERATION_GUIDE.md)
+- [🐳 Guía Docker Compose](doc/Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_UPDATE_SUMMARY.md)
+
 ---
 
-**Master's Thesis Project - Master's Degree in Development with AI**
+**Proyecto de Tesis de Máster - Máster en Desarrollo con IA**

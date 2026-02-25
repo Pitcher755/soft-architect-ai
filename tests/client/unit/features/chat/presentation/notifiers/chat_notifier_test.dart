@@ -76,40 +76,42 @@ class FakeChatRepository implements ChatRepository {
     String docType,
     String userInput,
     Map<String, dynamic> context,
-  ) async* {
+  ) {
     if (shouldFail) {
-      throw Exception(errorMessage);
+      return Stream.error(Exception(errorMessage));
     }
-    for (final token in generatedTokens) {
-      yield token;
-    }
+    return Stream.fromIterable(generatedTokens);
   }
 
   @override
-  Stream<ChatStreamEvent> sendMessageStream(
-    String message,
-    String projectId,
-  ) async* {
+  Stream<ChatStreamEvent> sendMessageStream(String message, String projectId) {
     if (shouldFail) {
-      await Future.delayed(const Duration(milliseconds: 30));
-      yield ErrorEvent(
-        error: errorMessage,
-        code: 'TEST_ERROR',
-        shouldRetry: false,
+      return Stream.value(
+        ErrorEvent(error: errorMessage, code: 'TEST_ERROR', shouldRetry: false),
       );
-      return;
     }
-    // Add realistic streaming delays (50ms between tokens)
-    for (final token in generatedTokens) {
-      await Future.delayed(const Duration(milliseconds: 50));
-      yield TokenEvent(token: token, isFinal: false);
-    }
-    await Future.delayed(const Duration(milliseconds: 50));
-    yield DoneEvent(
-      fullResponse: generatedTokens.join(''),
-      sources: [],
-      metadata: {},
-    );
+
+    // Create async stream with delays to simulate real network behavior.
+    // This allows tests to observe intermediate streaming states.
+    return Stream<ChatStreamEvent>.multi((controller) {
+      Future<void> emitEvents() async {
+        for (final token in generatedTokens) {
+          controller.add(TokenEvent(token: token, isFinal: false));
+          // Delay between tokens to simulate network latency
+          await Future<void>.delayed(const Duration(milliseconds: 50));
+        }
+        controller.add(
+          DoneEvent(
+            fullResponse: generatedTokens.join(''),
+            sources: [],
+            metadata: {},
+          ),
+        );
+        controller.close();
+      }
+
+      emitEvents();
+    });
   }
 
   @override
@@ -828,7 +830,13 @@ void main() {
   group('Context Bleed Prevention & Stream Management', () {
     test('should cancel active stream when changing projects', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
-      fakeRepository.generatedTokens = ['Long', ' ', 'streaming', ' ', 'response'];
+      fakeRepository.generatedTokens = [
+        'Long',
+        ' ',
+        'streaming',
+        ' ',
+        'response',
+      ];
 
       // Start streaming for project A
       await notifier.setProjectPath('/tmp/project-a');
@@ -866,31 +874,38 @@ void main() {
       expect(() => container.dispose(), returnsNormally);
     });
 
-    test('should discard stream events from different project', () async {
-      final notifier = container.read(chatNotifierProvider.notifier);
-      fakeRepository.generatedTokens = ['Token1', ' ', 'Token2'];
+    test(
+      'should discard stream events from different project',
+      () async {
+        final notifier = container.read(chatNotifierProvider.notifier);
+        fakeRepository.generatedTokens = ['Token1', ' ', 'Token2'];
 
-      // Set project A
-      await notifier.setProjectPath('/tmp/project-a');
+        // Set project A
+        await notifier.setProjectPath('/tmp/project-a');
 
-      // Start streaming
-      final streamFuture = notifier.sendMessageStream('Test message');
+        // Start streaming
+        final streamFuture = notifier.sendMessageStream('Test message');
 
-      // Immediately change to project B (simulates rapid project switching)
-      await Future<void>.delayed(const Duration(milliseconds: 10));
-      await notifier.setProjectPath('/tmp/project-b');
+        // Immediately change to project B (simulates rapid project switching)
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+        await notifier.setProjectPath('/tmp/project-b');
 
-      // Wait for original stream to complete
-      await streamFuture.timeout(const Duration(seconds: 5), onTimeout: () {
-        // Stream should be cancelled, timeout is expected
-      });
-      await Future<void>.delayed(const Duration(milliseconds: 200));
+        // Wait for original stream to complete
+        await streamFuture.timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            // Stream should be cancelled, timeout is expected
+          },
+        );
+        await Future<void>.delayed(const Duration(milliseconds: 200));
 
-      // Verify project B state is clean (no messages from project A)
-      final state = container.read(chatNotifierProvider);
-      expect(state.projectPath, '/tmp/project-b');
-      expect(state.messages, isEmpty);
-    }, timeout: const Timeout(Duration(seconds: 10)));
+        // Verify project B state is clean (no messages from project A)
+        final state = container.read(chatNotifierProvider);
+        expect(state.projectPath, '/tmp/project-b');
+        expect(state.messages, isEmpty);
+      },
+      timeout: const Timeout(Duration(seconds: 10)),
+    );
 
     test('should send hidden message without adding to UI', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
@@ -899,10 +914,7 @@ void main() {
       await notifier.setProjectPath('/tmp/test_project');
 
       // Send hidden message
-      await notifier.sendMessageStream(
-        'Hidden prompt for LLM',
-        isHidden: true,
-      );
+      await notifier.sendMessageStream('Hidden prompt for LLM', isHidden: true);
 
       // Wait for streaming to complete
       await Future<void>.delayed(const Duration(milliseconds: 200));
@@ -910,10 +922,7 @@ void main() {
       final state = container.read(chatNotifierProvider);
 
       // Should only have AI response, NOT the hidden user message
-      expect(
-        state.messages.where((m) => m.role == MessageRole.user),
-        isEmpty,
-      );
+      expect(state.messages.where((m) => m.role == MessageRole.user), isEmpty);
       expect(
         state.messages.where((m) => m.role == MessageRole.assistant),
         isNotEmpty,
@@ -930,10 +939,7 @@ void main() {
 
       expect(state.messages.length, 1);
       expect(state.messages.first.role, MessageRole.system);
-      expect(
-        state.messages.first.content,
-        contains('Document validated'),
-      );
+      expect(state.messages.first.content, contains('Document validated'));
     });
 
     test('should handle isHidden flag in ChatMessage entity', () {
@@ -972,15 +978,22 @@ void main() {
 
       // Start second stream (should cancel first)
       fakeRepository.generatedTokens = ['Second', ' ', 'response'];
-      await notifier.sendMessageStream('Second message');
+      notifier.sendMessageStream('Second message');
+      await Future<void>.delayed(const Duration(milliseconds: 50));
 
+      // FIX: Verify isStreaming is true immediately after starting second stream
+      state = container.read(chatNotifierProvider);
+      expect(state.isStreaming, true);
+
+      // Wait for second stream to complete
       await Future<void>.delayed(const Duration(milliseconds: 200));
 
       state = container.read(chatNotifierProvider);
 
       // Should have messages from second stream, first stream canceled
-      final userMessages =
-          state.messages.where((m) => m.role == MessageRole.user).toList();
+      final userMessages = state.messages
+          .where((m) => m.role == MessageRole.user)
+          .toList();
       expect(userMessages.length, 2);
       expect(userMessages.last.content, 'Second message');
     });

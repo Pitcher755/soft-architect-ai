@@ -425,7 +425,7 @@ on: [push, pull_request]
 
 jobs:
   validate-commits:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
         with:
@@ -436,14 +436,14 @@ jobs:
           npx commitlint --from origin/develop --to HEAD
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - run: pytest tests/
       - run: flutter test
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - run: ruff check src/

@@ -1,0 +1,681 @@
+{
+    "meta": {
+        "project": "SoftArchitect AI",
+        "version": "1.0.0",
+        "created_date": "2026-02-10",
+        "last_updated": "2026-02-23",
+        "total_stories": 24,
+        "epic_count": 6,
+        "status": "approved_for_development"
+    },
+    "epics": [
+        {
+            "epic_id": "EPIC-001",
+            "title": "Project Workspace Management",
+            "description": "Enable users to create, open, and manage multiple projects with isolated contexts",
+            "business_value": "Foundation for multi-project workflows, enables context isolation",
+            "acceptance_criteria": [
+                "User can create unlimited projects",
+                "Each project has isolated chat history and documents",
+                "Projects persist across app restarts",
+                "Progress tracking visible on project cards"
+            ],
+            "priority": "Must Have",
+            "estimated_story_points": 21,
+            "stories": [
+                {
+                    "story_id": "HU-1.1",
+                    "title": "Create New Project",
+                    "user_story": "As a developer, I want to create a new project by providing a name and root directory, so I can start organizing my work immediately.",
+                    "acceptance_criteria": [
+                        "Modal dialog with fields: Project Name (required), Root Directory (file picker), Description (optional)",
+                        "System validates: name not empty, directory exists and is writable, no duplicate names",
+                        "On success, create: SQLite database in root, context/ folder, initial chat message",
+                        "Project card appears with 'Phase 0 - 0% complete' status",
+                        "User navigated to Chat UI automatically"
+                    ],
+                    "tasks": [
+                        "Design new project modal UI (Flutter)",
+                        "Implement file picker integration (file_picker package)",
+                        "Create project creation service with validation logic",
+                        "Generate deterministic UUID (UUIDv5 from path)",
+                        "Store metadata in projects.db (SQLite)",
+                        "Add unit tests for validation edge cases",
+                        "Add widget tests for modal UI"
+                    ],
+                    "story_points": 8,
+                    "priority": "Must Have",
+                    "sprint": 1,
+                    "status": "completed",
+                    "dependencies": [],
+                    "technical_notes": "Use file_picker ^6.0.0 for native file dialog. UUID generation: uuid.v5(NAMESPACE_DNS, projectPath)"
+                },
+                {
+                    "story_id": "HU-1.2",
+                    "title": "Open Existing Project",
+                    "user_story": "As a developer, I want to reopen a previously created project so I can continue where I left off.",
+                    "acceptance_criteria": [
+                        "Workspace screen displays all projects as cards (max 20 recent)",
+                        "Each card shows: Name, Root Path, Last Modified, Phase Progress (e.g., 'Phase 2 - 40%')",
+                        "Clicking card loads: chat history, generated documents, project settings",
+                        "Error handling: if database corrupted, show 'Recreate or restore backup?' dialog",
+                        "Support keyboard navigation: Arrow keys to select, Enter to open"
+                    ],
+                    "tasks": [
+                        "Design project card widget with progress indicator",
+                        "Implement project list query from projects.db",
+                        "Add file watcher for context/ folder changes",
+                        "Implement chat history loading from project_data.db",
+                        "Handle corrupted database gracefully",
+                        "Add keyboard navigation handlers",
+                        "Add integration tests for project loading"
+                    ],
+                    "story_points": 5,
+                    "priority": "Must Have",
+                    "sprint": 1,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-1.1"
+                    ],
+                    "technical_notes": "Use watch package for file system monitoring. Cache progress in SQLite to avoid repeated scans."
+                },
+                {
+                    "story_id": "HU-1.3",
+                    "title": "Delete Project Metadata",
+                    "user_story": "As a developer, I want to delete a project I no longer need, so my workspace stays clean.",
+                    "acceptance_criteria": [
+                        "Long-press or right-click on project card reveals 'Delete Project' option",
+                        "Confirmation dialog warns: 'This will delete metadata. Files in [path] will NOT be deleted. Continue?'",
+                        "On confirmation, remove entry from projects.db",
+                        "Do NOT delete files in root directory (user controls this manually)",
+                        "Project card disappears with fade-out animation"
+                    ],
+                    "tasks": [
+                        "Add context menu to project card widget",
+                        "Implement deletion service (metadata only)",
+                        "Design confirmation dialog with clear warning",
+                        "Add fade-out animation",
+                        "Add unit tests for deletion logic"
+                    ],
+                    "story_points": 3,
+                    "priority": "Should Have",
+                    "sprint": 2,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-1.2"
+                    ],
+                    "technical_notes": "Use showDialog with WillPopScope to prevent accidental dismissal during deletion."
+                },
+                {
+                    "story_id": "HU-1.4",
+                    "title": "Project Progress Tracking",
+                    "user_story": "As a developer, I want to see my project's completion percentage so I know how much documentation is ready.",
+                    "acceptance_criteria": [
+                        "Progress bar shows: (documents_completed / 24) * 100%",
+                        "Color coding: Red (0-30%), Yellow (31-70%), Green (71-100%)",
+                        "Tooltip on hover lists missing documents",
+                        "Progress updates in real-time when new document generated"
+                    ],
+                    "tasks": [
+                        "Implement document existence checker (file system)",
+                        "Calculate completion percentage service",
+                        "Design progress bar widget with color states",
+                        "Add tooltip with missing documents list",
+                        "Cache progress in SQLite for performance",
+                        "Add unit tests for progress calculation"
+                    ],
+                    "story_points": 5,
+                    "priority": "Must Have",
+                    "sprint": 2,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-1.1",
+                        "HU-3.1"
+                    ],
+                    "technical_notes": "File system checks: context/VISION.md.exists() == true → +4.16%"
+                }
+            ]
+        },
+        {
+            "epic_id": "EPIC-002",
+            "title": "AI Chat Interface",
+            "description": "Conversational UI for asking questions and receiving AI-generated responses",
+            "business_value": "Core user interaction point, enables natural language project management",
+            "acceptance_criteria": [
+                "User can send messages and receive streaming AI responses",
+                "Chat history persists per project",
+                "Markdown rendering with syntax highlighting",
+                "Error handling for network/LLM failures"
+            ],
+            "priority": "Must Have",
+            "estimated_story_points": 34,
+            "stories": [
+                {
+                    "story_id": "HU-2.1",
+                    "title": "Send Message to AI",
+                    "user_story": "As a developer, I want to type questions and receive AI responses so I can get instant guidance.",
+                    "acceptance_criteria": [
+                        "Chat panel has text input at bottom with send button",
+                        "Support multiline input (Shift+Enter for new line, Enter to send)",
+                        "User message appears immediately with avatar + timestamp",
+                        "Loading indicator while AI processes",
+                        "AI response streams token-by-token (not all-at-once)",
+                        "Messages persist to SQLite (chat_messages table)",
+                        "Handle errors: Ollama offline → 'Switch to Groq?', Timeout → 'Retry?'"
+                    ],
+                    "tasks": [
+                        "Design chat UI (input box, message bubbles, timestamps)",
+                        "Implement chat notifier with Riverpod",
+                        "Integrate with FastAPI /api/v1/chat/stream endpoint",
+                        "Implement SSE stream handling",
+                        "Add message persistence to SQLite",
+                        "Implement error handling and recovery UI",
+                        "Add unit tests for chat notifier",
+                        "Add widget tests for chat UI"
+                    ],
+                    "story_points": 13,
+                    "priority": "Must Have",
+                    "sprint": 1,
+                    "status": "completed",
+                    "dependencies": [],
+                    "technical_notes": "Use http package with StreamedResponse for SSE. Backend: FastAPI EventSourceResponse."
+                },
+                {
+                    "story_id": "HU-2.2",
+                    "title": "View Chat History",
+                    "user_story": "As a developer, I want to scroll through past messages so I can recall previous decisions.",
+                    "acceptance_criteria": [
+                        "Chat panel displays all messages for current project, sorted by timestamp",
+                        "Auto-scroll to bottom when new message arrives",
+                        "Limit displayed messages to last 100 (load more on scroll-up)",
+                        "System messages (e.g., 'Document saved') have distinct styling (gray background)"
+                    ],
+                    "tasks": [
+                        "Implement infinite scroll with pagination",
+                        "Add auto-scroll behavior",
+                        "Design system message styling",
+                        "Query chat history from SQLite",
+                        "Add unit tests for history loading"
+                    ],
+                    "story_points": 5,
+                    "priority": "Must Have",
+                    "sprint": 1,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-2.1"
+                    ],
+                    "technical_notes": "Use ListView.builder with reverse: true for bottom-up scrolling."
+                },
+                {
+                    "story_id": "HU-2.3",
+                    "title": "Markdown Rendering in Chat",
+                    "user_story": "As a developer, I want code blocks and tables to render properly so responses are readable.",
+                    "acceptance_criteria": [
+                        "Support: code blocks with syntax highlighting, tables, bold/italic, links, lists",
+                        "Inline code uses monospace font with gray background",
+                        "File paths render as clickable links (e.g., context/VISION.md opens preview)"
+                    ],
+                    "tasks": [
+                        "Integrate flutter_markdown package",
+                        "Configure syntax highlighter (flutter_highlight)",
+                        "Implement custom link handler for file paths",
+                        "Add widget tests for Markdown rendering"
+                    ],
+                    "story_points": 8,
+                    "priority": "Must Have",
+                    "sprint": 2,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-2.1"
+                    ],
+                    "technical_notes": "Use flutter_markdown ^0.6.18 with flutter_highlight for code blocks."
+                },
+                {
+                    "story_id": "HU-2.4",
+                    "title": "Copy Code Blocks",
+                    "user_story": "As a developer, I want to copy code snippets with one click so I don't have to manually select text.",
+                    "acceptance_criteria": [
+                        "Code blocks have 'Copy' button in top-right corner",
+                        "On click, button changes to 'Copied ✓' for 2 seconds",
+                        "Code copied to clipboard without formatting artifacts"
+                    ],
+                    "tasks": [
+                        "Add copy button to code block widget",
+                        "Integrate clipboard package",
+                        "Implement button state animation",
+                        "Add unit tests for clipboard functionality"
+                    ],
+                    "story_points": 3,
+                    "priority": "Should Have",
+                    "sprint": 3,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-2.3"
+                    ],
+                    "technical_notes": "Use clipboard ^0.1.3 package. Extract plain text from code block."
+                },
+                {
+                    "story_id": "HU-2.5",
+                    "title": "Cancel Streaming Response",
+                    "user_story": "As a developer, I want to stop a long-running AI response so I can rephrase my question.",
+                    "acceptance_criteria": [
+                        "While streaming, show 'Stop Generating' button",
+                        "On click, cancel SSE stream and display partial response with '[Cancelled]' indicator",
+                        "Allow sending new message immediately"
+                    ],
+                    "tasks": [
+                        "Add cancel button to chat UI",
+                        "Implement stream cancellation logic",
+                        "Handle partial response display",
+                        "Add unit tests for cancellation"
+                    ],
+                    "story_points": 5,
+                    "priority": "Could Have",
+                    "sprint": 4,
+                    "status": "pending",
+                    "dependencies": [
+                        "HU-2.1"
+                    ],
+                    "technical_notes": "Call StreamSubscription.cancel() to abort SSE stream."
+                }
+            ]
+        },
+        {
+            "epic_id": "EPIC-003",
+            "title": "Automated Document Generation",
+            "description": "AI-powered generation of 24 project documents from interview responses",
+            "business_value": "Core value proposition: eliminate manual documentation work",
+            "acceptance_criteria": [
+                "Generate Vision, Tech Stack, API Contract, Database Schema, Sprint Plan, etc.",
+                "No placeholders (all fields filled with real data)",
+                "Documents saved to correct paths (context/ folder)",
+                "User can review and approve before saving"
+            ],
+            "priority": "Must Have",
+            "estimated_story_points": 55,
+            "stories": [
+                {
+                    "story_id": "HU-3.1",
+                    "title": "Generate Vision Document",
+                    "user_story": "As a developer, I want the AI to create a Vision document from my interview answers so I have a clear project direction.",
+                    "acceptance_criteria": [
+                        "User triggers generation via chat prompt: 'Create Vision Document'",
+                        "AI uses interview responses + project context to generate document",
+                        "Document includes: Problem Statement, Solution Overview, Target Users, Success Criteria, Risks",
+                        "Saved to context/VISION.md with ISO 8601 timestamp",
+                        "AI responds: '✅ Vision Document created. [View File](context/VISION.md)'",
+                        "No placeholders like 'TODO' or '[Your Company Name]'"
+                    ],
+                    "tasks": [
+                        "Create Vision generation prompt template",
+                        "Implement document generation service (Python backend)",
+                        "Integrate with LangChain for RAG context injection",
+                        "Add file system save logic",
+                        "Add validation: check for placeholders",
+                        "Add unit tests for generation logic",
+                        "Add integration tests for full generation flow"
+                    ],
+                    "story_points": 13,
+                    "priority": "Must Have",
+                    "sprint": 2,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-2.1",
+                        "HU-5.1"
+                    ],
+                    "technical_notes": "Template path: knowledge_base/01-TEMPLATES/10-CONTEXT/VISION.template.md"
+                },
+                {
+                    "story_id": "HU-3.2",
+                    "title": "Generate Tech Stack Document",
+                    "user_story": "As a developer, I want AI to recommend and justify a tech stack so I don't have to research frameworks for days.",
+                    "acceptance_criteria": [
+                        "Document includes: Recommended stack, Alternatives with pros/cons, Justification, Learning resources",
+                        "Stack recommendation aligns with project constraints (e.g., offline-first → no cloud-only services)",
+                        "Saved to context/TECH_STACK.md"
+                    ],
+                    "tasks": [
+                        "Create Tech Stack generation prompt",
+                        "Implement framework comparison scoring algorithm",
+                        "Query RAG for tech pack comparisons",
+                        "Add unit tests for stack recommendation logic"
+                    ],
+                    "story_points": 13,
+                    "priority": "Must Have",
+                    "sprint": 3,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-3.1",
+                        "HU-5.1"
+                    ],
+                    "technical_notes": "Scoring: Rate each stack against requirements (privacy, performance, dev experience)."
+                },
+                {
+                    "story_id": "HU-3.3",
+                    "title": "Generate API Contract",
+                    "user_story": "As a developer, I want an OpenAPI specification generated so I can start implementing endpoints immediately.",
+                    "acceptance_criteria": [
+                        "Document contains: OpenAPI 3.1.0 spec (YAML), All endpoints with schemas, Auth methods, Error codes",
+                        "Endpoints match use cases from Functional Requirements",
+                        "Saved to context/API_CONTRACT.yaml + context/API_CONTRACT.md (human-readable)"
+                    ],
+                    "tasks": [
+                        "Create API Contract generation prompt",
+                        "Extract endpoints from FR document (regex)",
+                        "Generate Pydantic schemas for FastAPI",
+                        "Convert to YAML + Markdown formats",
+                        "Add unit tests for schema generation"
+                    ],
+                    "story_points": 13,
+                    "priority": "Must Have",
+                    "sprint": 3,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-3.2"
+                    ],
+                    "technical_notes": "Use openapi-pydantic for schema validation."
+                },
+                {
+                    "story_id": "HU-3.4",
+                    "title": "Generate Database Schema",
+                    "user_story": "As a developer, I want ER diagrams and SQL migration scripts so I can set up the database correctly.",
+                    "acceptance_criteria": [
+                        "Document includes: ER diagram (Mermaid), Table definitions (SQL), Indexes, Relationships, Sample data",
+                        "Schema matches API Contract (e.g., Project model → projects table)",
+                        "Saved to context/DATABASE_SCHEMA.md"
+                    ],
+                    "tasks": [
+                        "Create Database Schema generation prompt",
+                        "Generate Mermaid ER diagram syntax",
+                        "Generate SQL CREATE TABLE statements",
+                        "Add foreign key constraints",
+                        "Add sample INSERT statements",
+                        "Validate schema matches API models",
+                        "Add unit tests for schema generation"
+                    ],
+                    "story_points": 13,
+                    "priority": "Must Have",
+                    "sprint": 4,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-3.3"
+                    ],
+                    "technical_notes": "Use Mermaid erDiagram syntax for visual representation."
+                },
+                {
+                    "story_id": "HU-3.5",
+                    "title": "Document Review & Approval Flow",
+                    "user_story": "As a developer, I want the AI to ask me to review generated docs so I can approve or request changes before saving.",
+                    "acceptance_criteria": [
+                        "After generation, AI displays preview with buttons: [Approve] [Request Changes]",
+                        "On 'Approve', save to file system and mark as complete",
+                        "On 'Request Changes', user types feedback, AI regenerates with adjustments",
+                        "Validation loop repeats max 3 times (prevent infinite revisions)"
+                    ],
+                    "tasks": [
+                        "Design document preview widget",
+                        "Implement approval/rejection flow",
+                        "Add feedback input dialog",
+                        "Implement regeneration with feedback",
+                        "Add loop counter (max 3 iterations)",
+                        "Store draft in memory until approved",
+                        "Add unit tests for approval flow"
+                    ],
+                    "story_points": 8,
+                    "priority": "Must Have",
+                    "sprint": 4,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-3.1"
+                    ],
+                    "technical_notes": "Show diff when regenerating (highlight changes with differ package)."
+                }
+            ]
+        },
+        {
+            "epic_id": "EPIC-004",
+            "title": "Workflow Orchestration",
+            "description": "Enforce phase-based progression with validation rules",
+            "business_value": "Prevents skipping critical steps, ensures documentation completeness",
+            "acceptance_criteria": [
+                "Block progression to Phase N without completing Phase N-1",
+                "Display clear blocker messages with missing document list",
+                "Track completion status per phase"
+            ],
+            "priority": "Must Have",
+            "estimated_story_points": 21,
+            "stories": [
+                {
+                    "story_id": "HU-4.1",
+                    "title": "Phase Prerequisite Enforcement",
+                    "user_story": "As a developer, I want the AI to block me from generating Sprint Plans before Architecture is complete, so I don't skip critical steps.",
+                    "acceptance_criteria": [
+                        "Before generating Phase N document, AI checks if Phase N-1 prerequisites are met",
+                        "If missing, AI displays blocker message with missing document list and 'Would you like to generate these now?' prompt",
+                        "Provide 'Override' button for advanced users (with warning)",
+                        "Track phase completion in project_metadata table"
+                    ],
+                    "tasks": [
+                        "Implement phase validation middleware (Python)",
+                        "Create validation blocker prompt template",
+                        "Add prerequisite checker service",
+                        "Store phase state in SQLite",
+                        "Add override confirmation dialog",
+                        "Add unit tests for validation logic",
+                        "Add integration tests for blocker flow"
+                    ],
+                    "story_points": 13,
+                    "priority": "Must Have",
+                    "sprint": 3,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-3.1"
+                    ],
+                    "technical_notes": "Implement as middleware: _check_validation_blocker() before document generation."
+                },
+                {
+                    "story_id": "HU-4.2",
+                    "title": "Workflow Roadmap Visualization",
+                    "user_story": "As a developer, I want to see a visual roadmap of all phases so I know what's coming next.",
+                    "acceptance_criteria": [
+                        "Sidebar shows phases 0-6 as progress timeline",
+                        "Completed phases: green checkmark, Current: highlighted, Future: grayed out",
+                        "Clicking phase expands document list",
+                        "Clicking document name navigates to preview"
+                    ],
+                    "tasks": [
+                        "Design phase timeline widget",
+                        "Implement phase status indicators",
+                        "Add expand/collapse animation",
+                        "Add navigation handlers",
+                        "Add widget tests for timeline"
+                    ],
+                    "story_points": 8,
+                    "priority": "Should Have",
+                    "sprint": 5,
+                    "status": "pending",
+                    "dependencies": [
+                        "HU-4.1"
+                    ],
+                    "technical_notes": "Use ExpansionTile widget for collapsible phase sections."
+                }
+            ]
+        },
+        {
+            "epic_id": "EPIC-005",
+            "title": "Knowledge Base (RAG)",
+            "description": "Vector database for retrieving domain-specific knowledge",
+            "business_value": "Enables AI to provide accurate, context-aware responses with tech-specific best practices",
+            "acceptance_criteria": [
+                "Tech packs ingested on first launch",
+                "Query returns top 5 most relevant chunks",
+                "Sub-1 second retrieval latency"
+            ],
+            "priority": "Must Have",
+            "estimated_story_points": 34,
+            "stories": [
+                {
+                    "story_id": "HU-5.1",
+                    "title": "Ingest Tech Packs",
+                    "user_story": "As a first-time user, I want the app to automatically load tech knowledge bases so RAG works out-of-the-box.",
+                    "acceptance_criteria": [
+                        "On first launch, system ingests all files in packages/knowledge_base/02-TECH-PACKS/",
+                        "Documents chunked (500 tokens per chunk, 50 token overlap) and embedded using all-MiniLM-L6-v2",
+                        "Embeddings stored in ChromaDB collection: tech_knowledge",
+                        "Progress bar shows: 'Indexing knowledge base... 142/200 documents'",
+                        "Ingestion runs in background (non-blocking)"
+                    ],
+                    "tasks": [
+                        "Implement document chunking service (LangChain)",
+                        "Integrate ChromaDB client (Python)",
+                        "Add embedding generation (all-MiniLM-L6-v2)",
+                        "Implement progress tracking",
+                        "Add background job queue",
+                        "Cache embeddings (avoid re-computation)",
+                        "Add unit tests for chunking logic",
+                        "Add integration tests for ingestion flow"
+                    ],
+                    "story_points": 21,
+                    "priority": "Must Have",
+                    "sprint": 1,
+                    "status": "completed",
+                    "dependencies": [],
+                    "technical_notes": "Use LangChain RecursiveCharacterTextSplitter. Cache in ~/.soft-architect-ai/embeddings_cache/"
+                },
+                {
+                    "story_id": "HU-5.2",
+                    "title": "Query Knowledge Base",
+                    "user_story": "As a developer asking about FastAPI best practices, I want the AI to retrieve relevant examples from tech packs.",
+                    "acceptance_criteria": [
+                        "When user sends message, backend performs vector search: embed query, retrieve top 5 chunks, inject into LLM prompt",
+                        "AI responses cite sources: 'According to FastAPI Tech Pack, you should...'",
+                        "If no relevant context (similarity < 0.6), fallback to LLM general knowledge"
+                    ],
+                    "tasks": [
+                        "Implement vector search service (ChromaDB)",
+                        "Add source citation formatting",
+                        "Tune similarity threshold (0.6 default)",
+                        "Implement fallback logic",
+                        "Add unit tests for search ranking"
+                    ],
+                    "story_points": 13,
+                    "priority": "Must Have",
+                    "sprint": 2,
+                    "status": "completed",
+                    "dependencies": [
+                        "HU-5.1"
+                    ],
+                    "technical_notes": "Cosine similarity threshold: 0.6 (configurable). Max context: 4000 tokens."
+                }
+            ]
+        },
+        {
+            "epic_id": "EPIC-006",
+            "title": "Settings & Configuration",
+            "description": "User preferences for LLM provider, themes, telemetry",
+            "business_value": "Enables customization and privacy control",
+            "acceptance_criteria": [
+                "User can switch between Ollama (local) and Groq (cloud)",
+                "Theme selection (dark/light)",
+                "Telemetry opt-in/opt-out"
+            ],
+            "priority": "Should Have",
+            "estimated_story_points": 13,
+            "stories": [
+                {
+                    "story_id": "HU-6.1",
+                    "title": "Select LLM Provider",
+                    "user_story": "As a developer, I want to choose between local Ollama and cloud Groq so I can balance privacy vs. speed.",
+                    "acceptance_criteria": [
+                        "Settings page has dropdown: 'LLM Provider' (Ollama Local / Groq Cloud)",
+                        "If Ollama: show model dropdown (Llama 3.3 70B, Mistral 7B, DeepSeek Coder)",
+                        "If Groq: require API key input (masked text field)",
+                        "Test connection button: 'Verify LLM is reachable'",
+                        "Settings saved to ~/.soft-architect-ai/config.json"
+                    ],
+                    "tasks": [
+                        "Design settings UI (Flutter)",
+                        "Implement LLM provider switcher",
+                        "Add API key input with validation",
+                        "Implement connection test",
+                        "Store config in JSON file",
+                        "Add unit tests for config management"
+                    ],
+                    "story_points": 8,
+                    "priority": "Must Have",
+                    "sprint": 2,
+                    "status": "completed",
+                    "dependencies": [],
+                    "technical_notes": "Store API key encrypted using flutter_secure_storage."
+                },
+                {
+                    "story_id": "HU-6.2",
+                    "title": "Configure Telemetry",
+                    "user_story": "As a privacy-conscious developer, I want to opt out of anonymous usage tracking.",
+                    "acceptance_criteria": [
+                        "First-launch modal: 'Help improve SoftArchitect AI? [Allow] [No Thanks]'",
+                        "If allowed, collect: app version, OS version, crash reports, feature usage counts",
+                        "NO collection of: project names, code snippets, prompts/responses, file paths",
+                        "Can revoke consent anytime in Settings"
+                    ],
+                    "tasks": [
+                        "Design first-launch consent modal",
+                        "Implement telemetry toggle in settings",
+                        "Add anonymous ID generation",
+                        "Integrate Sentry (crash reporting)",
+                        "Add usage analytics service",
+                        "Add unit tests for telemetry logic"
+                    ],
+                    "story_points": 5,
+                    "priority": "Should Have",
+                    "sprint": 3,
+                    "status": "completed",
+                    "dependencies": [],
+                    "technical_notes": "Use Sentry for crash reports. Telemetry endpoint: https://telemetry.softarchitect.ai/events"
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "total_epics": 6,
+        "total_stories": 24,
+        "total_story_points": 178,
+        "sprint_distribution": {
+            "sprint_1": {
+                "stories": 4,
+                "points": 31,
+                "focus": "Foundation (Projects + Chat + RAG Basics)"
+            },
+            "sprint_2": {
+                "stories": 6,
+                "points": 52,
+                "focus": "Document Generation + Settings"
+            },
+            "sprint_3": {
+                "stories": 6,
+                "points": 50,
+                "focus": "Advanced Docs + Workflow Logic"
+            },
+            "sprint_4": {
+                "stories": 5,
+                "points": 34,
+                "focus": "Database Schema + Review Flow"
+            },
+            "sprint_5": {
+                "stories": 3,
+                "points": 11,
+                "focus": "UX Polish + Roadmap Viz"
+            }
+        },
+        "priority_breakdown": {
+            "must_have": 18,
+            "should_have": 4,
+            "could_have": 2
+        },
+        "status_breakdown": {
+            "completed": 20,
+            "in_progress": 2,
+            "pending": 2
+        }
+    }
+}

@@ -68,11 +68,10 @@ flutter:
   generate: true
   uses-material-design: true
 
-  # Uncomment and configure when needed:
-  # assets:
-  #   - assets/images/
-  #   - assets/data/
-  #
+  assets:
+    - assets/images/
+  # - assets/data/
+
   # fonts:
   #   - family: CustomFont
   #     fonts:

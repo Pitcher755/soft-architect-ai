@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backlog y Roadmap | SoftArchitect AI</title>
+
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#0B101E',
+                        surface: '#111827',
+                        electric: '#3B82F6',
+                        phaseContext: '#FBBF24',
+                        phaseReq: '#34D399',
+                        phaseArch: '#2DD4BF',
+                        phaseUX: '#F472B6',
+                        phasePlan: '#A78BFA',
+                        phaseRoot: '#94A3B8',
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .glow-filter {
+            filter: blur(80px);
+            opacity: 0.2;
+        }
+
+        .dark .glow-filter {
+            opacity: 0.15;
+        }
+
+        .card-border {
+            border: 1px solid #E2E8F0;
+        }
+
+        .dark .card-border {
+            border: 1px solid #334155;
+        }
+    </style>
+</head>
+
+<body
+    class="antialiased bg-slate-50 dark:bg-midnight text-slate-900 dark:text-[#F8FAFC] transition-colors duration-300">
+
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <div
+            class="absolute -top-40 -right-40 w-96 h-96 bg-phasePlan glow-filter opacity-20 dark:opacity-10 rounded-full">
+        </div>
+        <div
+            class="absolute top-[40%] -left-40 w-96 h-96 bg-electric glow-filter opacity-20 dark:opacity-10 rounded-full">
+        </div>
+    </div>
+
+    <nav
+        class="relative z-10 w-full max-w-5xl mx-auto px-6 py-8 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
+        <a href="index.html" class="flex items-center gap-3 group hover:opacity-80 transition-opacity">
+            <img src="assets/Logo.png" alt="Logo"
+                class="w-12 h-12 object-contain group-hover:scale-105 transition-transform">
+            <span class="font-bold text-lg tracking-tighter uppercase hidden sm:block">SOFTARCHITECT <span
+                    class="text-electric">AI</span></span>
+        </a>
+
+        <div class="flex items-center gap-4">
+            <button id="theme-toggle" type="button"
+                class="text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full text-sm p-2 transition-colors">
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+            <a href="index.html"
+                class="text-sm font-semibold border border-slate-300 dark:border-slate-700 px-4 py-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Volver
+            </a>
+        </div>
+    </nav>
+
+    <header class="relative z-10 w-full max-w-4xl mx-auto px-6 py-16 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">Backlog de Mejoras <br><span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-phasePlan to-electric">& Deuda Técnica</span>
+        </h1>
+        <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            Este documento recoge las mejoras arquitectónicas, visuales y de experiencia de usuario planificadas para
+            las siguientes iteraciones de SoftArchitect, una vez superada la fase de MVP.
+        </p>
+    </header>
+
+    <main class="relative z-10 w-full max-w-4xl mx-auto px-6 pb-32 space-y-8">
+
+        <div
+            class="bg-white dark:bg-surface card-border rounded-2xl p-8 relative overflow-hidden shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-phasePlan transition-colors">
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-phasePlan"></div>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
+                <span class="text-2xl">🤖</span> 1. Core AI y Arquitectura (Backend)
+            </h2>
+            <ul class="space-y-5 text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phasePlan shadow-[0_0_8px_#A78BFA]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Inyección Dinámica del FileTree:</strong> Pasar
+                        el árbol real de archivos del disco duro en el campo <code
+                            class="bg-slate-100 dark:bg-midnight px-1.5 py-0.5 rounded text-sm text-phasePlan">project_context</code>
+                        del endpoint `/chat/stream` en cada petición. Esto permitirá que la IA audite y conozca el
+                        estado real del proyecto sin depender exclusivamente del historial del chat.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phasePlan shadow-[0_0_8px_#A78BFA]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Máquina de Estados Robusta:</strong> Actualmente
+                        el "Master Workflow" recae enteramente en el System Prompt del LLM. En el futuro, el backend
+                        implementará un autómata (State Machine) que controle de forma estricta en qué fase está el
+                        usuario.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phasePlan shadow-[0_0_8px_#A78BFA]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Enjambre de Agentes (Multi-Agent):</strong>
+                        Evolucionar a un sistema coordinado: un <em>Agente PM</em> (requerimientos), un <em>Agente
+                            DevOps</em> (infraestructura) y un <em>Agente Software Engineer</em> (arquitectura).</div>
+                </li>
+            </ul>
+        </div>
+
+        <div
+            class="bg-white dark:bg-surface card-border rounded-2xl p-8 relative overflow-hidden shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-phaseUX transition-colors">
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-phaseUX"></div>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
+                <span class="text-2xl">🖥️</span> 2. Experiencia de Usuario (UX) y Frontend
+            </h2>
+            <ul class="space-y-5 text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseUX shadow-[0_0_8px_#F472B6]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Botón de Integración con IDE:</strong> Añadir
+                        una acción rápida en la barra lateral para abrir el directorio directamente en el IDE preferido.
+                        Se mostrará dinámicamente el icono del IDE seleccionado en ajustes.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseUX shadow-[0_0_8px_#F472B6]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Traducción de Errores:</strong> Refinar la capa
+                        de red para ocultar excepciones técnicas (ej. <code
+                            class="bg-slate-100 dark:bg-midnight px-1.5 py-0.5 rounded text-sm text-phaseUX">SocketException</code>)
+                        y mostrar mensajes amigables y accionables.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseUX shadow-[0_0_8px_#F472B6]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Streaming Seguro de JSON:</strong> Implementar
+                        un buffer en el cliente para evitar que la UI intente renderizar un JSON incompleto durante el
+                        streaming, esperando al <code
+                            class="bg-slate-100 dark:bg-midnight px-1.5 py-0.5 rounded text-sm text-phaseUX">DoneEvent</code>.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseUX shadow-[0_0_8px_#F472B6]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Guía de Inicio Rápido (Quick Start):</strong> Un
+                        modal interactivo tipo onboarding de alta prioridad.</div>
+                </li>
+            </ul>
+        </div>
+
+        <div
+            class="bg-white dark:bg-surface card-border rounded-2xl p-8 relative overflow-hidden shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-phaseContext transition-colors">
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-phaseContext"></div>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
+                <span class="text-2xl">🌍</span> 3. Configuración, i18n y Personalización
+            </h2>
+            <ul class="space-y-5 text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseContext shadow-[0_0_8px_#FBBF24]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Internacionalización Completa (i18n):</strong>
+                        Finalizar el paquete <code
+                            class="bg-slate-100 dark:bg-midnight px-1.5 py-0.5 rounded text-sm text-phaseContext">l10n</code>.
+                        Asegurar que el 100% de la UI cambie dinámicamente entre Inglés y Español.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseContext shadow-[0_0_8px_#FBBF24]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Corrección del Light Mode:</strong> Revisar la
+                        paleta de colores para garantizar que todos los bloques de código y tarjetas se rendericen con
+                        contraste perfecto en modo claro.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseContext shadow-[0_0_8px_#FBBF24]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Completar Ajustes:</strong> Dar funcionalidad
+                        real a las opciones de configuración que actúan como placeholders (rutas de almacenamiento
+                        personalizadas).</div>
+                </li>
+            </ul>
+        </div>
+
+        <div
+            class="bg-white dark:bg-surface card-border rounded-2xl p-8 relative overflow-hidden shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-phaseReq transition-colors">
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-phaseReq"></div>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
+                <span class="text-2xl">💾</span> 4. Persistencia y Documentación
+            </h2>
+            <ul class="space-y-5 text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseReq shadow-[0_0_8px_#34D399]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Persistencia Avanzada en SQLite:</strong>
+                        Mejorar cómo se guardan las propuestas de documentos para que el estado de validación persista
+                        impecablemente entre reinicios.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseReq shadow-[0_0_8px_#34D399]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Documentación Bilingüe:</strong> Traducir la
+                        documentación interna del repositorio (README, Guías de Arquitectura) para que esté disponible
+                        en EN/ES.</div>
+                </li>
+            </ul>
+        </div>
+
+        <div
+            class="bg-white dark:bg-surface card-border rounded-2xl p-8 relative overflow-hidden shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-phaseArch transition-colors">
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-phaseArch"></div>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
+                <span class="text-2xl">🔄</span> 5. Evolución y Mantenimiento del Proyecto
+            </h2>
+            <ul class="space-y-5 text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Actualización Viva de Documentos:</strong>
+                        Capacidad de la IA para "volver atrás" y actualizar documentos. Si en la fase 5 se añade una
+                        feature, recalcular el Manifesto y Arquitectura para mantener coherencia.</div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 bg-phaseArch shadow-[0_0_8px_#2DD4BF]"></div>
+                    <div><strong class="text-slate-900 dark:text-white">Auditoría de Inconsistencias:</strong> Lectura
+                        proactiva del directorio para reportar conflictos (ej. "Pides OAuth2, pero en el Diagrama no hay
+                        servicio de Identidad").</div>
+                </li>
+            </ul>
+        </div>
+
+    </main>
+
+    <footer
+        class="py-12 border-t border-slate-200 dark:border-slate-800 text-center bg-slate-100 dark:bg-surface transition-colors duration-300">
+        <p class="text-slate-600 dark:text-slate-500 mb-2 text-sm">Trabajo de Fin de Máster - Desarrollado por Javier
+            Fernández</p>
+    </footer>
+
+    <script>
+        // Lógica del botón de Tema
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (document.documentElement.classList.contains('dark')) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+
+</html>

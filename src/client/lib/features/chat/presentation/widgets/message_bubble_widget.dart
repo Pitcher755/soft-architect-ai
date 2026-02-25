@@ -1,3 +1,7 @@
+// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io
+// ignore_for_file: avoid_catches_without_on_clauses, cascade_invocations
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +24,7 @@ class ChatMessageUI {
     required this.timestamp,
     this.isStreaming = false,
   });
+
   final String id;
   final String role;
   final String content;
@@ -108,13 +113,13 @@ class MessageBubbleWidget extends ConsumerWidget {
               Container(
                 margin: const EdgeInsets.only(top: 16, right: 12),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16, // Padding ligeramente aumentado
+                  horizontal: 16,
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
                   color: _getUserBubbleColor(),
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16), // Bordes más suaves
+                    topLeft: Radius.circular(16),
                     bottomLeft: Radius.circular(16),
                     bottomRight: Radius.circular(16),
                   ),
@@ -134,9 +139,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                             child: SelectableText(
                               message.content,
                               style: const TextStyle(
-                                color:
-                                    AppColors.textMain, // Forzamos blanco puro
-                                fontSize: 16, // Aumentamos de 14 a 16
+                                color: AppColors.textMain,
+                                fontSize: 16,
                                 height: 1.5,
                               ),
                             ),
@@ -217,15 +221,14 @@ class MessageBubbleWidget extends ConsumerWidget {
                             );
 
                             try {
-                              // 1. GET THE ROOT (WITH FAILSAFE)
                               var projectRoot = ref.read(projectRootProvider);
 
-                              // If null, search for the most recently opened project
                               if (projectRoot == null || projectRoot.isEmpty) {
                                 final projects = ref.read(projectsProvider);
                                 final activeProject = projects
                                     .where((p) => !p.path.startsWith('mock://'))
                                     .firstOrNull;
+
                                 if (activeProject != null) {
                                   projectRoot = activeProject.path;
                                 } else {
@@ -239,7 +242,6 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   ? path.substring(1)
                                   : path;
 
-                              // 2. SAVE THE FILE
                               final fsService = FileSystemServiceImpl();
                               await fsService.saveDocument(
                                 projectPath: projectRoot,
@@ -249,7 +251,6 @@ class MessageBubbleWidget extends ConsumerWidget {
 
                               debugPrint('✅ Document saved successfully');
 
-                              // Update project progress
                               try {
                                 await ProjectProgressService.updateAfterDocumentSave(
                                   projectRoot,
@@ -258,16 +259,14 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 debugPrint('⚠️ Error updating progress: $e');
                               }
 
-                              // Invalidate filesystem provider (triggers file tree refresh)
-                              ref.invalidate(fileSystemNotifierProvider);
                               ref
-                                  .read(fileSystemNotifierProvider.notifier)
-                                  .refresh();
-
-                              // Invalidate project status provider (triggers progress bar refresh)
-                              ref.invalidate(
-                                projectStatusProvider(projectRoot),
-                              );
+                                ..invalidate(fileSystemNotifierProvider)
+                                ..read(
+                                  fileSystemNotifierProvider.notifier,
+                                ).refresh()
+                                ..invalidate(
+                                  projectStatusProvider(projectRoot),
+                                );
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -285,17 +284,13 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 onValidate!();
                               }
 
-                              // 🤖 3. AGENT LOOP (AGENTIC LOOP)
-                              final chatNotifier = ref.read(
-                                chatNotifierProvider.notifier,
-                              );
+                              ref
+                                  .read(chatNotifierProvider.notifier)
+                                  .addSystemMessage(
+                                    '✅ Documento validado y guardado en '
+                                    '`$normalizedPath`',
+                                  );
 
-                              // Add visible system message showing validation success
-                              chatNotifier.addSystemMessage(
-                                '✅ Documento validado y guardado en `$normalizedPath`',
-                              );
-
-                              // Send hidden prompt to LLM for next step
                               final autoPrompt =
                                   'I have validated and saved the document '
                                   'at `$normalizedPath`. '
@@ -303,13 +298,15 @@ class MessageBubbleWidget extends ConsumerWidget {
                                   'and tell me what the next step is and '
                                   'what document should be created now. '
                                   'Si necesitas contexto para el siguiente '
-                                  'documento, hazme las preguntas necesarias.';
+                                  'documento, hazme las preguntas '
+                                  'necesarias.';
 
-                              // Send with isHidden=true so it doesn't appear as user message
-                              await chatNotifier.sendMessageStream(
-                                autoPrompt,
-                                isHidden: true,
-                              );
+                              await ref
+                                  .read(chatNotifierProvider.notifier)
+                                  .sendMessageStream(
+                                    autoPrompt,
+                                    isHidden: true,
+                                  );
                             } on Exception catch (e) {
                               debugPrint('❌ Error guardando el documento: $e');
                               if (context.mounted) {
@@ -321,6 +318,11 @@ class MessageBubbleWidget extends ConsumerWidget {
                                 );
                               }
                             }
+                          },
+                          onSendChatMessage: (refineMessage) async {
+                            await ref
+                                .read(chatNotifierProvider.notifier)
+                                .sendMessageStream(refineMessage);
                           },
                         ),
                         if (message.isStreaming) const _BlinkingCursor(),
@@ -374,6 +376,7 @@ class _ActionButton extends StatelessWidget {
     required this.tooltip,
     required this.onPressed,
   });
+
   final IconData icon;
   final String tooltip;
   final VoidCallback onPressed;
@@ -393,6 +396,7 @@ class _ActionButton extends StatelessWidget {
 
 class _BlinkingCursor extends StatefulWidget {
   const _BlinkingCursor();
+
   @override
   State<_BlinkingCursor> createState() => _BlinkingCursorState();
 }
@@ -409,6 +413,7 @@ class _BlinkingCursorState extends State<_BlinkingCursor>
       vsync: this,
       duration: const Duration(milliseconds: 530),
     )..repeat(reverse: true);
+
     _animation = Tween<double>(
       begin: 0,
       end: 1,

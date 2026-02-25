@@ -290,7 +290,7 @@ on:
 
 jobs:
   backend-tests:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -318,7 +318,7 @@ jobs:
           files: ./src/server/coverage.xml
 
   frontend-tests:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -346,7 +346,7 @@ jobs:
           files: ./src/client/coverage/lcov.info
 
   security:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 

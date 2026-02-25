@@ -20,15 +20,33 @@ from app.infrastructure.persistence.transaction_manager import (
 def temp_db():
     """Create a temporary SQLite database file that persists across connections.
 
-    ✅ KEY FIX: Use file-based DB instead of :memory: so all connections see same tables.
-    :memory: creates isolated databases per connection, breaking transactions.
+    ✅ KEY FIX: Use file-based DB with WAL mode to prevent deadlocks.
+    - WAL (Write-Ahead Logging) allows concurrent reads during writes
+    - Short timeout (1 second) prevents long waits on locks
+    - Explicit PRAGMA settings for optimal test performance
     """
     fd, db_path = tempfile.mkstemp(suffix=".db")
     os.close(fd)
+
+    # Configure database for concurrent access (prevents deadlocks)
+    conn = sqlite3.connect(db_path, timeout=1.0)
+    conn.execute("PRAGMA journal_mode=WAL")  # Enable Write-Ahead Logging
+    conn.execute("PRAGMA busy_timeout=1000")  # 1 second timeout on locks
+    conn.execute("PRAGMA synchronous=NORMAL")  # Faster writes
+    conn.close()
+
     yield db_path
+
     # Cleanup
     try:
         os.unlink(db_path)
+        # Also remove WAL files if they exist
+        wal_path = db_path + "-wal"
+        shm_path = db_path + "-shm"
+        if os.path.exists(wal_path):
+            os.unlink(wal_path)
+        if os.path.exists(shm_path):
+            os.unlink(shm_path)
     except OSError:
         pass
 
@@ -43,26 +61,22 @@ def tx_manager(temp_db):
 def initialized_db(tx_manager):
     """Create a test database with schema."""
     with tx_manager.transaction() as conn:
-        conn.execute(
-            """
+        conn.execute("""
             CREATE TABLE projects (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
                 path TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
-            """
-        )
-        conn.execute(
-            """
+            """)
+        conn.execute("""
             CREATE TABLE project_metadata (
                 id INTEGER PRIMARY KEY,
                 project_id INTEGER NOT NULL UNIQUE,
                 last_modified TIMESTAMP,
                 FOREIGN KEY(project_id) REFERENCES projects(id)
             )
-            """
-        )
+            """)
     return tx_manager
 
 
@@ -70,25 +84,35 @@ class TestTransactionCommit:
     """Tests for successful transaction commits."""
 
     def test_transaction_commits_on_success(self, tx_manager):
-        """Verify that transaction commits when no exception occurs."""
+        """Verify that transaction commits when no exception occurs.
+
+        ✅ FIX: Explicitly close connections to prevent deadlocks.
+        """
+        # First transaction: create table and insert
         with tx_manager.transaction() as conn:
             conn.execute("CREATE TABLE test (id INTEGER)")
             conn.execute("INSERT INTO test VALUES (1)")
+        # Connection automatically closed by context manager
 
-        # Verify persisted
+        # Second transaction: verify persisted (no deadlock)
         with tx_manager.transaction() as conn:
             result = conn.execute("SELECT * FROM test").fetchone()
             assert result == (1,)
 
     def test_insert_commit(self, initialized_db):
-        """Test INSERT operation commits successfully."""
+        """Test INSERT operation commits successfully.
+
+        ✅ FIX: Ensure connection closes between transactions.
+        """
+        # First transaction: insert data
         with initialized_db.transaction() as conn:
             conn.execute(
                 "INSERT INTO projects (name, path) VALUES (?, ?)",
                 ("proj1", "/tmp/proj1"),
             )
+        # Connection closed here
 
-        # Verify persisted
+        # Second transaction: verify persisted (no deadlock)
         with initialized_db.transaction() as conn:
             result = conn.execute(
                 "SELECT name, path FROM projects WHERE name=?", ("proj1",)

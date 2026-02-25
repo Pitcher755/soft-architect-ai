@@ -139,7 +139,7 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -172,7 +172,7 @@ on: [push, pull_request]
 
 jobs:
   security:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -202,7 +202,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       sqlite:
         image: sqlite:latest
@@ -241,7 +241,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v3
@@ -279,7 +279,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v3
@@ -317,7 +317,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     environment:
@@ -349,7 +349,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Lint & Format
     steps:
       - uses: actions/checkout@v3
@@ -362,7 +362,7 @@ jobs:
       - run: mypy api/ core/ domain/ services/ --strict
 
   security:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Security Scanning
     steps:
       - uses: actions/checkout@v3
@@ -374,7 +374,7 @@ jobs:
       - run: safety check
 
   test_python:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Python Unit Tests
     needs: [lint, security]
     steps:
@@ -387,7 +387,7 @@ jobs:
       - uses: codecov/codecov-action@v3
 
   test_flutter:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Flutter Unit Tests
     needs: [lint]
     steps:
@@ -400,7 +400,7 @@ jobs:
       - uses: codecov/codecov-action@v3
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Build Docker Image
     needs: [test_python, test_flutter]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

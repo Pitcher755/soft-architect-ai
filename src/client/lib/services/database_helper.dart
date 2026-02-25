@@ -171,6 +171,7 @@ class DatabaseHelper {
           name TEXT NOT NULL,
           path TEXT NOT NULL UNIQUE,
           created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
           last_opened TEXT
         )
       ''');
@@ -203,6 +204,11 @@ class DatabaseHelper {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // ✅ NEW: Migration for existing databases (v1 → v2)
     if (oldVersion < 2) {
+      // Add updated_at column to projects table
+      await db.execute('''
+        ALTER TABLE $_projectsTable ADD COLUMN updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+      ''');
+
       // Add chat_messages table
       await db.execute('''
         CREATE TABLE IF NOT EXISTS $_chatMessagesTable (

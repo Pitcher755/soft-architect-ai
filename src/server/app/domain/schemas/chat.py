@@ -26,7 +26,10 @@ class ChatRequest(BaseModel):
     message: str = Field(
         ...,
         max_length=32000,  # Dynamic limit applied in validator
-        description=f"User message (max {settings.CHAT_MAX_MESSAGE_LENGTH} chars, configurable via CHAT_MAX_MESSAGE_LENGTH)",
+        description=(
+            f"User message (max {settings.CHAT_MAX_MESSAGE_LENGTH} chars, "
+            "configurable via CHAT_MAX_MESSAGE_LENGTH)"
+        ),
         json_schema_extra={
             "examples": ["How do I implement authentication in Flutter?"]
         },
@@ -37,10 +40,23 @@ class ChatRequest(BaseModel):
         json_schema_extra={"examples": ["7c9e6679-7425-40de-944b-e07fc1f90ae7"]},
     )
 
+    # ✅ HU-5.0: User name for prompt personalization (RULE-09)
+    user_name: str = Field(
+        default="Developer",
+        max_length=100,
+        description=(
+            "User's name for LLM prompt personalization "
+            "(injected into system instruction)"
+        ),
+        json_schema_extra={"examples": ["Developer", "Juan", "María", "Alex"]},
+    )
+
     # ✅ NEW: Chat history for conversational context
     history: list[dict[str, str]] = Field(
         default_factory=list,
-        description="Chat context history (last N messages for LLM context window)",
+        description=(
+            "Chat context history " "(last N messages for LLM context window)"
+        ),
         json_schema_extra={
             "examples": [
                 [
@@ -49,8 +65,24 @@ class ChatRequest(BaseModel):
                         "role": "assistant",
                         "content": "Clean Architecture is a software design...",
                     },
-                    {"role": "user", "content": "How do I implement it in Flutter?"},
+                    {"role": "user", "content": "How do I implement it?"},
                 ]
+            ]
+        },
+    )
+
+    # ✅ Optional extra metadata passed from the client (e.g. doc_type, phase)
+    metadata: dict[str, str] | None = Field(
+        default=None,
+        description=(
+            "Optional key-value metadata from the client. "
+            "Supported keys: 'doc_type' (e.g. 'PROJECT_MANIFESTO') to force "
+            "dual-channel RAG to retrieve the matching master template/example."
+        ),
+        json_schema_extra={
+            "examples": [
+                {"doc_type": "PROJECT_MANIFESTO"},
+                {"doc_type": "TECH_STACK_DECISION", "phase": "3"},
             ]
         },
     )
@@ -61,36 +93,20 @@ class ChatRequest(BaseModel):
         """Sanitize user input and enforce dynamic length limit."""
         if len(v) > settings.CHAT_MAX_MESSAGE_LENGTH:
             raise ValueError(
-                f"Message exceeds maximum length of {settings.CHAT_MAX_MESSAGE_LENGTH} characters "
-                f"(got {len(v)}). Adjust CHAT_MAX_MESSAGE_LENGTH env var if needed."
+                f"Message exceeds maximum length of "
+                f"{settings.CHAT_MAX_MESSAGE_LENGTH} characters (got {len(v)}). "
+                "Adjust CHAT_MAX_MESSAGE_LENGTH env var if needed."
             )
         return InputSanitizer.sanitize_message(v)
 
     @field_validator("history")
     @classmethod
     def validate_history(cls, v: list[dict[str, str]]) -> list[dict[str, str]]:
-        """
-        Validate chat history structure and limit size.
-
-        Rules:
-        - Max N messages (configurable via CHAT_MAX_HISTORY_MESSAGES)
-        - Each message must have 'role' and 'content'
-        - Role must be 'user' or 'assistant'
-        - Content max M chars per message (configurable via CHAT_MAX_MESSAGE_LENGTH)
-
-        Args:
-            v: List of chat messages
-
-        Returns:
-            Validated and sanitized chat history
-
-        Raises:
-            ValueError: If validation fails
-        """
-        max_messages = settings.CHAT_MAX_HISTORY_MESSAGES
-        if len(v) > max_messages:
+        """Validate chat history structure and limit size."""
+        max_msgs = settings.CHAT_MAX_HISTORY_MESSAGES
+        if len(v) > max_msgs:
             raise ValueError(
-                f"Chat history exceeds maximum length ({max_messages} messages). "
+                f"Chat history exceeds maximum length ({max_msgs} messages). "
                 "Adjust CHAT_MAX_HISTORY_MESSAGES env var if needed."
             )
 
@@ -99,7 +115,7 @@ class ChatRequest(BaseModel):
 
         for i, msg in enumerate(v):
             # Validate structure (runtime check for untrusted data)
-            if not isinstance(msg, dict):  # pyright: ignore[reportUnnecessaryIsInstance]
+            if not isinstance(msg, dict):  # pyright: ignore
                 raise ValueError(f"Message {i} must be a dictionary")
 
             if "role" not in msg or "content" not in msg:
@@ -115,19 +131,17 @@ class ChatRequest(BaseModel):
 
             # Validate and sanitize content
             content = msg["content"]
-            if not isinstance(content, str):  # pyright: ignore[reportUnnecessaryIsInstance]
+            if not isinstance(content, str):  # pyright: ignore
                 raise ValueError(f"Message {i} content must be a string")
 
             max_length = settings.CHAT_MAX_MESSAGE_LENGTH
             if len(content) > max_length:
                 raise ValueError(
-                    f"Message {i} content exceeds {max_length} characters (got {len(content)}). "
-                    "Adjust CHAT_MAX_MESSAGE_LENGTH env var if needed."
+                    f"Message {i} content exceeds {max_length} characters "
+                    f"(got {len(content)}). Adjust CHAT_MAX_MESSAGE_LENGTH."
                 )
 
-            # Sanitize content (XSS prevention)
             sanitized_content = InputSanitizer.sanitize_message(content)
-
             sanitized_history.append({"role": role, "content": sanitized_content})
 
         return sanitized_history
@@ -136,10 +150,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     """AI-generated response with metadata."""
 
-    ai_response: str = Field(
-        ...,
-        description="Generated AI response text",
-    )
+    ai_response: str = Field(..., description="Generated AI response text")
     template_used: str = Field(
         ...,
         description="Template identifier that was used for this response",

@@ -655,7 +655,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Type Check (Pyright)
         run: python -m pyright src/server/services src/server/core

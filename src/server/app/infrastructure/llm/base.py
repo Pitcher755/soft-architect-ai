@@ -6,6 +6,7 @@ Allows seamless switching between Ollama, Groq, or future providers.
 
 from abc import ABC, abstractmethod
 from collections.abc import AsyncGenerator
+from typing import Any
 
 
 class BaseLLMClient(ABC):
@@ -17,6 +18,7 @@ class BaseLLMClient(ABC):
         prompt: str,
         max_tokens: int | None = None,
         temperature: float | None = None,
+        **kwargs: Any,
     ) -> str:
         """Generate a response from the underlying LLM.
 
@@ -40,6 +42,7 @@ class BaseLLMClient(ABC):
         prompt: str,
         max_tokens: int | None = None,
         temperature: float | None = None,
+        **kwargs: Any,
     ) -> AsyncGenerator[str, None]:
         """
         Generate a streaming response from the LLM, yielding tokens progressively.

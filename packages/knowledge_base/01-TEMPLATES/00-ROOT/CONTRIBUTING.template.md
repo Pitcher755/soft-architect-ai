@@ -1,43 +1,582 @@
-# 🤝 Contribution Guide for {{PROJECT_NAME}}
+# 🤝 Contributing to {{PROJECT_NAME}}
 
-Thank you for wanting to contribute! To maintain the quality and architecture of this project, we follow strict rules.
+<!--
+════════════════════════════════════════════════════════════════════════════════
+📘 TEMPLATE GUIDE: How to Fill Out This Document
+════════════════════════════════════════════════════════════════════════════════
 
-## 1. Workflow (GitFlow)
-* **Main Branch:** `develop` (No direct push).
-* **Stable Branch:** `main` (Only for releases).
-* **Feature Branches:** `feature/descriptive-name`.
-* **Fix Branches:** `fix/bug-name`.
+PURPOSE:
+This document defines the rules of collaboration, PR processes, and branching
+strategies (GitFlow) for the project. It acts as the manual for human contributors.
 
-### Create a new feature
+WHEN TO CREATE:
+- **Generation Order:** 22/24 (Phase 6 - ROOT / META)
+- **Phase:** 6 - ROOT / META
+- **Prerequisites:** All architectural and planning documents.
+
+BEST PRACTICES & AI INSTRUCTIONS:
+✅ **NO HALLUCINATIONS:** Stick strictly to standard GitFlow and Conventional Commits. Do not invent new PR rules unless explicitly mentioned in the context.
+✅ **REPLACE VARIABLES:** Swap all {{PLACEHOLDERS}} with actual data from the project context (languages, frameworks, repo URLs).
+✅ **KEEP PATHS INTACT:** Do not modify the internal links at the bottom of the document; they are already mapped to the 24-document ecosystem.
+✅ **SELF-DESTRUCT:** Remove this entire TEMPLATE GUIDE comment block before outputting.
+
+⚠️ **CRITICAL ROUTING:**
+   This file MUST be saved in the ROOT directory (/) of the project.
+   Filename MUST be: CONTRIBUTING.md
+   Correct path: /CONTRIBUTING.md
+   Incorrect path: /context/CONTRIBUTING.md
+════════════════════════════════════════════════════════════════════════════════
+-->
+
+> **Thank you for contributing to {{PROJECT_NAME}}!** 🎉
+> **Every contribution matters** — from typo fixes to feature implementations.
+
+---
+
+## 📖 Table of Contents
+
+- [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Development Setup](#development-setup)
+- [How to Contribute](#how-to-contribute)
+- [Pull Request Process](#pull-request-process)
+- [Code Review Guidelines](#code-review-guidelines)
+- [Issue Reporting](#issue-reporting)
+- [Documentation Contributions](#documentation-contributions)
+- [Testing Guidelines](#testing-guidelines)
+- [Community](#community)
+
+---
+
+## 📜 Code of Conduct
+
+**We enforce a positive environment:**
+
+### Our Standards
+
+**Expected Behavior:**
+- ✅ Use welcoming language
+- ✅ Respect differing viewpoints
+- ✅ Accept constructive criticism
+- ✅ Focus on what's best for the community
+
+**Unacceptable Behavior:**
+- ❌ Harassment, trolling, insults
+- ❌ Publishing others' private info
+- ❌ Spam or self-promotion
+- ❌ Unethical/illegal activity
+
+**Enforcement:**
+1st violation: Warning
+2nd violation: Temporary ban (30 days)
+3rd violation: Permanent ban
+
+**Report:** Email {{CONDUCT_EMAIL}} (confidential)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+**Required:**
+- {{BACKEND_LANG}} {{BACKEND_VER}}+ ([Install]({{BACKEND_INSTALL_URL}}))
+- {{FRONTEND_FRAMEWORK}} {{FRONTEND_VER}}+ ([Install]({{FRONTEND_INSTALL_URL}}))
+- Docker Desktop 24.0+ ([Install](https://docker.com/products/docker-desktop/))
+- Git 2.40+
+
+**Recommended:**
+- {{IDE}} with extensions: {{EXTENSIONS}}
+  ### First-Time Setup (10 Minutes)
+
 ```bash
-git checkout develop
-git checkout -b feature/{{FEATURE_NAME_EXAMPLE}}
+# 1. Fork the repo on GitHub
+# Click "Fork" at [https://github.com/](https://github.com/){{GITHUB_ORG}}/{{REPO_NAME}}
+
+# 2. Clone YOUR fork
+git clone [https://github.com/YOUR_USERNAME/](https://github.com/YOUR_USERNAME/){{REPO_NAME}}.git
+cd {{REPO_NAME}}
+
+# 3. Add upstream remote
+git remote add upstream [https://github.com/](https://github.com/){{GITHUB_ORG}}/{{REPO_NAME}}.git
+
+# 4. Install dependencies
+cd src/server && pip install -r requirements.txt
+cd ../client && flutter pub get
+
+# 5. Start infrastructure
+cd ../../infrastructure
+docker compose up -d
+
+# 6. Run tests (verify setup)
+cd ../tests && flutter test client/
+cd ../src/server && pytest ../../tests/server/
+
+# 7. Create feature branch
+git checkout -b feature/my-contribution develop
+
 ```
 
-## 2. Commit Standards
-We use Conventional Commits. Messages in {{PRIMARY_LANGUAGE}} (or English if defined in RULES).
+**Troubleshooting?** See [README.md](https://www.google.com/search?q=README.md%23troubleshooting)
+
+---
+
+## 🛠️ Development Setup
+
+### Environment Variables
+
+Create `.env` in `src/server/`:
+
+```bash
+# Required
+DATABASE_URL={{DATABASE_URL}}  # e.g., postgresql://user:pass@localhost:5432/db
+CHROMA_HOST={{CHROMA_HOST}}    # e.g., http://localhost:8000
+
+# Optional
+LOG_LEVEL=DEBUG
+OLLAMA_BASE_URL=http://localhost:11434
 
 ```
-feat: add login endpoint
 
-fix: correct email validation error
+### Running Locally
 
-docs: update architecture diagram
+**Backend:**
 
-style: code formatting (ruff/prettier)
+```bash
+cd src/server
+uvicorn main:app --reload --port 8080
+# Visit http://localhost:8080/docs (OpenAPI)
 
-refactor: optimize SQL query
 ```
 
-## 3. Pull Request (PR) Rules
-* **Title:** Must follow Conventional Commits.
-* **Description:** Link the User Story (e.g., Closes #HU-1.2).
-* **Tests:** PR is not approved if coverage drops below 80%.
-* **Docs:** If you change logic, update `context/`.
+**Frontend:**
 
-## 4. Bug Report
-Use the provided Issues template. Include:
+```bash
+cd src/client
+flutter run -d {{TARGET_PLATFORM}}  # linux, macos, windows
 
-* Steps to reproduce.
-* Expected vs actual behavior.
-* Logs or screenshots.
+```
+
+### Pre-Commit Hooks (Recommended)
+
+```bash
+# Install hooks
+cp scripts/pre-commit.sh .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+
+# Now every commit auto-checks:
+# ✓ Formatting
+# ✓ Linting
+# ✓ Tests
+
+```
+
+---
+
+## 🎯 How to Contribute
+
+### Types of Contributions
+
+| Type | Description | Ideal For |
+| --- | --- | --- |
+| 🐛 **Bug Fixes** | Fix reported issues | First-time contributors |
+| ✨ **Features** | Implement from roadmap | Experienced developers |
+| 📚 **Docs** | Improve guides, fix typos | All levels |
+| 🧪 **Tests** | Add missing test coverage | QA engineers |
+| 🎨 **UI/UX** | Design improvements | Designers |
+| ♿ **Accessibility** | Screen reader, keyboard nav | Accessibility experts |
+
+### Finding Work
+
+**Good First Issues:**
+
+* Label: `good-first-issue` ([View](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/labels/good-first-issue))
+* Estimated time: <4 hours
+* Guided by maintainers
+
+**Help Wanted:**
+
+* Label: `help-wanted` ([View](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/labels/help-wanted))
+* Estimated time: 1-3 days
+* Community-driven
+
+---
+
+## 🔀 Pull Request Process
+
+### PR Workflow
+
+```mermaid
+graph LR
+    A[Fork Repo] --> B[Create Branch]
+    B --> C[Write Code]
+    C --> D[Write Tests]
+    D --> E[Run Locally]
+    E --> F{Tests Pass?}
+    F -->|No| C
+    F -->|Yes| G[Commit]
+    G --> H[Push to Fork]
+    H --> I[Open PR]
+    I --> J[CI Checks]
+    J --> K{CI Pass?}
+    K -->|No| L[Fix Issues]
+    L --> G
+    K -->|Yes| M[Code Review]
+    M --> N{Approved?}
+    N -->|Changes Requested| C
+    N -->|Approved| O[Merge to Develop]
+
+    style O fill:#90EE90
+    style K fill:#FFB347
+    style N fill:#FFB347
+
+```
+
+### PR Checklist
+
+**Before Opening:**
+
+```markdown
+☐ Tests added/updated (coverage ≥{{COVERAGE_TARGET}}%)
+☐ Code formatted ({{BACKEND_FORMATTER}}, {{FRONTEND_FORMATTER}})
+☐ No linting errors
+☐ Documentation updated (if API/behavior changed)
+☐ Commit messages follow convention (feat/fix/docs)
+☐ PR linked to issue (#123)
+☐ Screenshots added (if UI changed)
+☐ No merge conflicts with develop
+
+```
+
+### PR Title Format
+
+```
+<type>(<scope>): <description>
+
+Examples:
+✅ feat(auth): add OAuth login
+✅ fix(api): handle null user response
+✅ docs(readme): update install instructions
+
+❌ updated stuff
+❌ Fixed bug
+
+```
+
+### PR Description Template
+
+```markdown
+## 🎯 Purpose
+## 🔨 Changes
+- Changed X to Y because Z
+- Added validation for user input
+- Refactored `calculate_total()` for readability
+
+## 🧪 Testing
+- [ ] Unit tests added (`test_login_success`, `test_login_invalid`)
+- [ ] Manual testing: Logged in with OAuth, verified token storage
+- [ ] Coverage: 92% → 94%
+
+## 📸 Screenshots
+## ⚠️ Breaking Changes
+## 📝 Checklist
+- [ ] Tests pass locally
+- [ ] Code formatted
+- [ ] Docs updated
+- [ ] No merge conflicts
+
+```
+
+---
+
+## 👀 Code Review Guidelines
+
+### For Contributors
+
+**Receiving Feedback:**
+
+1. **Don't take it personally** — critique is about code, not you
+2. **Ask questions** if feedback is unclear
+3. **Iterate quickly** — respond within 24 hours
+4. **Mark conversations resolved** once addressed
+
+```
+Reviewer: "Extract this to a separate function"
+
+✅ GOOD RESPONSE:
+"Done! Extracted to `validate_email()` in commit abc123"
+
+❌ BAD RESPONSE:
+"I don't think so" (no explanation)
+
+```
+
+### For Reviewers
+
+**Review Time SLA:**
+
+* **Hotfix:** <2 hours
+* **Normal PR:** <4 hours
+* **Large PR (>500 lines):** <8 hours
+
+**Review Checklist:**
+
+```markdown
+☐ Logic correct (no off-by-one, null handling)
+☐ Tests cover edge cases
+☐ No security issues (SQL injection, XSS)
+☐ Performance acceptable (no N+1 queries)
+☐ Style matches RULES.md
+☐ Docs updated (if public API changed)
+
+```
+
+**Feedback Tone:**
+
+```
+✅ CONSTRUCTIVE:
+"Consider extracting `validate_user()` for readability.
+This would also simplify testing. WDYT?"
+
+❌ DESTRUCTIVE:
+"This is terrible code."
+
+```
+
+---
+
+## 🐛 Issue Reporting
+
+### Bug Report Template
+
+```markdown
+**Describe the Bug**
+A clear description of what the bug is.
+
+**To Reproduce**
+1. Go to '...'
+2. Click on '...'
+3. See error
+
+**Expected Behavior**
+What should have happened.
+
+**Screenshots**
+If applicable, add screenshots.
+
+**Environment:**
+- OS: [e.g., Ubuntu 22.04]
+- Version: [e.g., v1.2.3]
+- Browser (if web): [e.g., Chrome 120]
+
+**Logs**
+```text
+Paste error logs here
+
+```
+
+```
+
+### Feature Request Template
+
+```markdown
+**Problem Statement**
+Describe the problem: "I'm frustrated when..."
+
+**Proposed Solution**
+Describe your idea.
+
+**Alternatives Considered**
+What else did you think about?
+
+**Additional Context**
+Mockups, examples, links.
+
+```
+
+### Label Meanings
+
+| Label | Meaning | Response Time |
+| --- | --- | --- |
+| `bug` | Something broken | <2 days |
+| `enhancement` | New feature | <1 week |
+| `good-first-issue` | Easy for newcomers | <1 day |
+| `help-wanted` | Community can tackle | <3 days |
+| `security` | Security vulnerability | <4 hours |
+| `documentation` | Docs improvements | <3 days |
+| `wontfix` | Not planned | Closed with explanation |
+
+---
+
+## 📚 Documentation Contributions
+
+### What to Document
+
+**High Value:**
+
+* Tutorials (step-by-step guides)
+* Architecture decisions (why chose X over Y)
+* Troubleshooting (common errors + fixes)
+* API examples (code snippets)
+
+**Low Value:**
+
+* Repeating code comments
+* Obvious information ("click Run to run")
+
+### Documentation Standards
+
+**File Naming:** `UPPERCASE_SNAKE_CASE.md`
+**Location:** `doc/02-SETUP_DEV/` or `doc/04-USER_GUIDE/`
+**Format:** Markdown with Mermaid diagrams
+**Language:** English (primary), Spanish (secondary)
+
+**Checklist:**
+
+```markdown
+☐ Table of contents at top
+☐ Code examples tested (not pseudo-code)
+☐ Screenshots current (not outdated)
+☐ Links valid (no 404s)
+☐ Spelling checked
+
+```
+
+---
+
+## 🧪 Testing Guidelines
+
+### Test Requirements
+
+**All PRs Must:**
+
+* ✅ Add tests for new code
+* ✅ Update tests if changing behavior
+* ✅ Maintain coverage ≥{{COVERAGE_TARGET}}%
+* ❌ NO decreasing coverage
+
+### Running Tests
+
+```bash
+# All tests
+./scripts/testing/run_tests.sh all --coverage
+
+# Backend only
+pytest tests/server/ --cov=src/server --cov-report=term
+
+# Frontend only
+flutter test --coverage
+
+# Specific file
+pytest tests/server/test_auth.py -v
+
+```
+
+### Writing Good Tests
+
+```{{backend_lang}}
+# ✅ CORRECT: Descriptive name, covers edge case
+def test_login_with_expired_token_returns_401(self):
+    """User with expired JWT gets 401 Unauthorized."""
+    token = generate_expired_token()
+    response = client.post("/login", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 401
+    assert "expired" in response.json()["error"]
+
+# ❌ WRONG: Vague name, no assertion message
+def test_login(self):
+    response = client.post("/login")
+    assert response.status_code == 200  # Why 200? What's tested?
+
+```
+
+---
+
+## 💬 Community
+
+### Communication Channels
+
+| Channel | Purpose | Response Time |
+| --- | --- | --- |
+| **GitHub Issues** | Bug reports, features | <48 hours |
+| **GitHub Discussions** | Questions, ideas | <3 days |
+| **{{SLACK_CHANNEL}}** | Real-time chat | <24 hours |
+| **{{EMAIL}}** | Security vulnerabilities | <4 hours |
+
+### Getting Help
+
+**Stuck? Ask in this order:**
+
+1. Check [README.md](https://www.google.com/search?q=README.md%23troubleshooting)
+2. Search [closed issues](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/issues%3Fq%3Dis%253Aissue%2Bis%253Aclosed)
+3. Ask in Discussions
+4. Tag `@{{MAINTAINER}}` if urgent
+
+### Recognition
+
+**Contributors Celebrated:**
+
+* Listed in [README.md](https://www.google.com/search?q=README.md%23team)
+* Mentioned in release notes
+* Invited to contributor calls
+
+---
+
+## 🏆 First PR Checklist
+
+**Your First Contribution:**
+
+```markdown
+1. ☐ Read Code of Conduct
+2. ☐ Read RULES.md (coding standards)
+3. ☐ Setup local environment (tests pass)
+4. ☐ Find "good-first-issue"
+5. ☐ Comment "I'd like to work on this"
+6. ☐ Wait for maintainer approval
+7. ☐ Create branch (feature/issue-123-fix-bug)
+8. ☐ Write code + tests
+9. ☐ Run pre-commit checks
+10. ☐ Open PR with template filled
+11. ☐ Respond to feedback
+12. ☐ Celebrate merge! 🎉
+
+```
+
+---
+
+## 🎓 Resources
+
+**Learn More:**
+
+* [Architecture Overview](https://www.google.com/search?q=context/30-ARCHITECTURE/ARCH_DECISION_RECORDS.md)
+* [Master Workflow](https://www.google.com/search?q=context/00-META/MASTER_WORKFLOW_0-100.md)
+* [Testing Strategy](https://www.google.com/search?q=context/40-PLANNING/TESTING_STRATEGY.md)
+* [Security Policy](https://www.google.com/search?q=context/20-REQUIREMENTS/SECURITY_PRIVACY_POLICY.md)
+
+---
+
+## 📞 Contact
+
+**Maintainers:**
+
+* {{LEAD_NAME}} — [@{{LEAD_GITHUB}}](https://www.google.com/search?q=https://github.com/%7B%7BLEAD_GITHUB%7D%7D) — {{LEAD_EMAIL}}
+* {{MAINTAINER_2}} — [@{{MAINTAINER_2_GITHUB}}](https://www.google.com/search?q=https://github.com/%7B%7BMAINTAINER_2_GITHUB%7D%7D)
+
+**Security Issues:** {{SECURITY_EMAIL}} (GPG key: {{GPG_KEY_ID}})
+
+---
+
+> **Thank you for making {{PROJECT_NAME}} better!** ❤️
+> **Every contribution, no matter how small, is valued.**
+
+---
+
+## 🔄 Version History
+
+| Version | Date | Changes | Author |
+| --- | --- | --- | --- |
+| v1.0 | {{DATE}} | Initial version | {{AUTHOR}} |
+
+---
+
+**Questions?** Open a [Discussion](https://www.google.com/search?q=https://github.com/%7B%7BGITHUB_ORG%7D%7D/%7B%7BREPO_NAME%7D%7D/discussions)

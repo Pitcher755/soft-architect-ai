@@ -2108,7 +2108,7 @@ on:
 
 jobs:
   backend-performance:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -2134,7 +2134,7 @@ jobs:
           python -c "import json; data=json.load(open('.benchmarks/Linux-CPython-3.12/0001_*.json')); assert data['benchmarks'][0]['stats']['mean'] < 0.2"
 
   frontend-performance:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 

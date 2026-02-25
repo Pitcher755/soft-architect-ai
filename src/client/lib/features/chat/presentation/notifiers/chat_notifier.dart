@@ -63,45 +63,24 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   /// Sets the project path for document saving.
   ///
-  /// ✅ CRITICAL FIX: ALWAYS resets state and loads history from SQLite.
-  ///
-  /// This prevents chat state pollution between projects by:
-  /// 1. Canceling any active streaming operation
-  /// 2. Resetting ALL state fields to initial values
-  /// 3. Loading persisted history for the specific project
-  /// 4. Never showing "ghost messages" from previous project
-  ///
-  /// Example:
-  /// ```dart
-  /// await chatNotifier.setProjectPath('/home/user/project-a');
-  /// // State is now clean with only project-a messages
-  ///
-  /// await chatNotifier.setProjectPath('/home/user/project-b');
-  /// // State is now clean with only project-b messages
-  /// ```
+  /// Resets state and loads persisted history from SQLite to prevent
+  /// chat state pollution between projects.
   Future<void> setProjectPath(String path) async {
-    // ✅ STEP 0: Cancel any active streaming operation
     await _cancelActiveStream();
 
-    // ✅ STEP 1: ALWAYS reset state first (prevents pollution)
     state = ChatState.initial().copyWith(projectPath: path, isLoading: true);
-
-    // ✅ STEP 2: Generate deterministic UUID for this project
     final projectId = UuidGenerator.fromString(path);
 
     // ignore: avoid_print
     print('📂 Loading history for project: $path (ID: $projectId)');
 
-    // ✅ STEP 3: Load chat history from SQLite
     try {
       debugPrint('🔍 Fetching chat history from DB...');
       final history = await _repository.getChatHistory(projectId);
       debugPrint('📖 Loaded ${history.length} messages from DB');
 
-      // ✅ STEP 4: Update state with loaded messages
       state = state.copyWith(messages: history, isLoading: false);
-      // ignore: avoid_catches_without_on_clauses
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       debugPrint('🔥 Stack trace: $stackTrace');
       // On error, keep empty state but log the issue
       // ignore: avoid_print
@@ -243,14 +222,11 @@ class ChatNotifier extends StateNotifier<ChatState> {
       return;
     }
 
-    // ✅ CRITICAL: Cancel any previous active stream before starting new one
     await _cancelActiveStream();
 
     try {
-      // Clear any previous errors
       state = state.clearError();
 
-      // 1️⃣ Add user message immediately (unless hidden)
       final userMessage = ChatMessage(
         id: generateId(),
         role: MessageRole.user,
@@ -259,13 +235,11 @@ class ChatNotifier extends StateNotifier<ChatState> {
         metadata: isHidden ? {'hidden': true} : null,
       );
 
-      // Only add to UI if not hidden
       final updatedMessages = isHidden
           ? state.messages
           : [...state.messages, userMessage];
       state = state.copyWith(messages: updatedMessages, isStreaming: true);
 
-      // 2️⃣ Add empty AI message with isStreaming=true
       final assistantMessage = ChatMessage(
         id: generateId(),
         role: MessageRole.assistant,
@@ -280,10 +254,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
         isStreaming: true,
       );
 
-      // 3️⃣ Stream tokens from repository
       final streamBuffer = StringBuffer();
 
-      // ✅ CRITICAL: Guard against missing project context
+      // Guard against missing project context
       final projectPath = state.projectPath;
       if (projectPath == null) {
         throw ProjectContextError(
@@ -355,7 +328,6 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
             state = state.copyWith(messages: newMessages, isStreaming: true);
           } else if (event is DoneEvent) {
-            // 5️⃣ Mark message complete on DoneEvent
             final fullResponse = event.fullResponse;
 
             final completedAssistant = assistantMessage.copyWith(
@@ -371,19 +343,21 @@ class ChatNotifier extends StateNotifier<ChatState> {
               completedAssistant,
             ];
 
-            // ✅ FIXED: Create proposal with document type
-            final docType = _getDocTypeForCurrentIndex();
-            final proposal = DocumentProposal(
-              id: generateId(),
-              docType: docType,
-              content: fullResponse,
-              metadata: {'doc_index': state.currentDocIndex},
-              validationState: ValidationState.pending,
-            );
+            DocumentProposal? proposal;
+            if (!isHidden) {
+              final docType = _getDocTypeForCurrentIndex();
+              proposal = DocumentProposal(
+                id: generateId(),
+                docType: docType,
+                content: fullResponse,
+                metadata: {'doc_index': state.currentDocIndex},
+                validationState: ValidationState.pending,
+              );
+            }
 
             state = state.copyWith(
               messages: finalMessages,
-              currentProposal: proposal,
+              currentProposal: isHidden ? state.currentProposal : proposal,
               isStreaming: false,
             );
 
@@ -393,7 +367,8 @@ class ChatNotifier extends StateNotifier<ChatState> {
                   .saveMessage(projectId, completedAssistant)
                   .then((_) {
                     debugPrint(
-                      '💾 Assistant message saved to DB: ${completedAssistant.id}',
+                      '💾 Assistant message saved to DB: '
+                      '${completedAssistant.id}',
                     );
                   })
                   .catchError((e) {
@@ -406,9 +381,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
                   });
             }
 
-            // Clear active stream tracking
-            _activeStreamSubscription = null;
-            _activeStreamProjectId = null;
+            // DO NOT clear here - let onDone handle cleanup
           } else if (event is ErrorEvent) {
             // 6️⃣ Handle ErrorEvent
             state = state.copyWith(
@@ -417,9 +390,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
               errorMessage: event.error,
             );
 
-            // Clear active stream tracking
-            _activeStreamSubscription = null;
-            _activeStreamProjectId = null;
+            // DO NOT clear here - let onError handle cleanup
           }
         },
         onError: (error) {
@@ -429,19 +400,24 @@ class ChatNotifier extends StateNotifier<ChatState> {
             hasError: true,
             errorMessage: error.toString(),
           );
+          // Clear active stream tracking on error
           _activeStreamSubscription = null;
           _activeStreamProjectId = null;
         },
         onDone: () {
           debugPrint('✅ Stream completed');
+          // Clear active stream tracking when done
           _activeStreamSubscription = null;
           _activeStreamProjectId = null;
         },
         cancelOnError: true,
       );
 
-      // Wait for the subscription to complete
-      await _activeStreamSubscription?.asFuture();
+      // ✅ CRITICAL: Save local reference before onDone clears it
+      final subscriptionToAwait = _activeStreamSubscription;
+
+      // Wait for stream to complete before returning
+      await subscriptionToAwait?.asFuture();
     } on ProjectContextError catch (e) {
       // ✅ Show user-friendly error for missing context
       state = state.copyWith(
@@ -539,26 +515,26 @@ class ChatNotifier extends StateNotifier<ChatState> {
       ref.read(fileSystemNotifierProvider.notifier).refresh();
       debugPrint('🔄 File tree refresh triggered');
 
-      // ✅ FIXED: Check if we should advance workflow BEFORE clearing proposal
-      // This must be done BEFORE updating state, as clearProposal will set currentProposal to null
       final shouldAdvanceWorkflow =
           messageId == null && state.currentProposal != null;
+      final savedDocumentPath = relativePath;
 
-      // Update state (clear proposal if validating current proposal)
       state = state.copyWith(
         validatedMessageIds: newValidatedIds,
-        clearProposal: messageId == null, // Only clear if validating proposal
+        clearProposal: messageId == null,
       );
 
-      // Advance workflow only if validating proposal (not individual messages)
-      // This happens AFTER clearing proposal to avoid race conditions
       if (shouldAdvanceWorkflow) {
         state = state.copyWith(currentDocIndex: state.currentDocIndex + 1);
 
-        // Trigger next question if not complete
         if (!state.isComplete) {
-          await _triggerNextQuestion();
-          debugPrint('🎯 Next question triggered');
+          debugPrint('🤖 Sending silent validation message to backend');
+          await sendMessageStream(
+            'He validado y guardado el documento en $savedDocumentPath. '
+            '¿Cuál es el siguiente paso del Master Workflow?',
+            isHidden: true,
+          );
+          debugPrint('✅ Silent validation message sent');
         } else {
           debugPrint('🎉 All documents completed!');
         }
@@ -654,20 +630,20 @@ class ChatNotifier extends StateNotifier<ChatState> {
     await sendMessage(lastUserMessage);
   }
 
-  /// Triggers the next question automatically based on doc type.
-  Future<void> _triggerNextQuestion() async {
-    final nextDocType = _getDocTypeForCurrentIndex();
-    final question = _getQuestionForDocType(nextDocType);
-
-    final systemMessage = ChatMessage(
-      id: generateId(),
-      role: MessageRole.system,
-      content: question,
-      timestamp: DateTime.now().toIso8601String(),
-    );
-
-    state = state.copyWith(messages: [...state.messages, systemMessage]);
-  }
+  // /// Triggers the next question automatically based on doc type.
+  // Future<void> _triggerNextQuestion() async {
+  //   final nextDocType = _getDocTypeForCurrentIndex();
+  //   final question = _getQuestionForDocType(nextDocType);
+  //
+  //   final systemMessage = ChatMessage(
+  //     id: generateId(),
+  //     role: MessageRole.system,
+  //     content: question,
+  //     timestamp: DateTime.now().toIso8601String(),
+  //   );
+  //
+  //   state = state.copyWith(messages: [...state.messages, systemMessage]);
+  // }
 
   /// Maps current doc index to document type.
   String _getDocTypeForCurrentIndex() {
@@ -734,25 +710,29 @@ class ChatNotifier extends StateNotifier<ChatState> {
     return '10-CONTEXT';
   }
 
-  /// Generates contextual question for next document.
-  String _getQuestionForDocType(String docType) {
-    switch (docType) {
-      case 'PROJECT_MANIFESTO':
-        return '¿Cuál es el propósito y valores principales del proyecto?';
-      case 'VISION_PROMISE':
-        return '¿Cuál es la visión y promesa al usuario final?';
-      case 'USER_JOURNEY':
-        return '¿Cuál es el viaje del usuario a través del producto?';
-      case 'FUNCTIONAL_REQUIREMENTS':
-        return '¿Cuáles son los requisitos funcionales detallados?';
-      case 'TECHNICAL_REQUIREMENTS':
-        return '¿Cuáles son los requisitos técnicos y constraints?';
-      case 'ARCHITECTURE_OVERVIEW':
-        return '¿Cuál es la arquitectura técnica del sistema?';
-      default:
-        return 'Proporciona información sobre: $docType';
-    }
-  }
+  // ❌ DEPRECATED (HU-5.0): Replaced by backend-driven workflow questions.
+  // The LLM now generates questions automatically after validation.
+  // This method is kept commented for reference but should NOT be used.
+  //
+  // /// Generates contextual question for next document.
+  // String _getQuestionForDocType(String docType) {
+  //   switch (docType) {
+  //     case 'PROJECT_MANIFESTO':
+  //       return '¿Cuál es el propósito y valores principales del proyecto?';
+  //     case 'VISION_PROMISE':
+  //       return '¿Cuál es la visión y promesa al usuario final?';
+  //     case 'USER_JOURNEY':
+  //       return '¿Cuál es el viaje del usuario a través del producto?';
+  //     case 'FUNCTIONAL_REQUIREMENTS':
+  //       return '¿Cuáles son los requisitos funcionales detallados?';
+  //     case 'TECHNICAL_REQUIREMENTS':
+  //       return '¿Cuáles son los requisitos técnicos y constraints?';
+  //     case 'ARCHITECTURE_OVERVIEW':
+  //       return '¿Cuál es la arquitectura técnica del sistema?';
+  //     default:
+  //       return 'Proporciona información sobre: $docType';
+  //   }
+  // }
 
   /// Adds a system message to the chat.
   ///

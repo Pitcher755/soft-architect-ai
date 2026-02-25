@@ -75,38 +75,27 @@ class ChatRepositoryImpl implements ChatRepository {
   ) async* {
     final url = '$baseUrl/api/v1/chat/stream';
 
-    // ✅ Load chat history from SQLite to provide conversational context
     var historyPayload = <Map<String, String>>[];
     try {
       final chatHistory = await getChatHistory(projectId);
 
-      // Limit to last 100 messages (50 user + 50 assistant pairs)
-      // to prevent token overflow while ensuring sufficient context
       const maxHistoryMessages = 100;
       final limitedHistory = chatHistory.length > maxHistoryMessages
           ? chatHistory.sublist(chatHistory.length - maxHistoryMessages)
           : chatHistory;
 
-      // Transform ChatMessage entities to backend format: {role, content}
-      // ✅ FILTER OUT 'system' messages - backend only accepts 'user' and 'assistant'
       historyPayload = limitedHistory
-          .where((msg) => msg.role.name != 'system') // Exclude system messages
-          .map(
-            (msg) => {
-              'role': msg.role.name, // 'user' or 'assistant'
-              'content': msg.content,
-            },
-          )
+          .where((msg) => msg.role.name != 'system')
+          .map((msg) => {'role': msg.role.name, 'content': msg.content})
           .toList();
-    } on Exception catch (_) {
-      // Continue without history if loading fails (graceful degradation)
-    }
+    } on Exception catch (_) {}
 
     final body = {
       'message': message,
       'project_id': projectId,
-      'conversation_id': _generateConversationId(), // Generate UUID
-      'history': historyPayload, // ✅ NEW: Include chat history
+      'conversation_id': _generateConversationId(),
+      'history': historyPayload,
+      'user_name': 'Developer',
     };
     final headers = {'X-API-Key': apiKey};
 

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project_progress.dart';
 import 'package:softarchitect_ai/features/project_shell/infrastructure/services/project_progress_service.dart';
 
@@ -21,10 +20,7 @@ void main() {
       expect(progress.documentosCreados, 10);
       expect(progress.faseActual, 'Fase 1: Contexto');
       expect(progress.porcentajeCompletado, 31.25);
-      expect(
-        progress.lastUpdated,
-        DateTime.parse('2026-02-20T12:30:00.000Z'),
-      );
+      expect(progress.lastUpdated, DateTime.parse('2026-02-20T12:30:00.000Z'));
     });
 
     test('fromJson should use defaults for missing fields', () {
@@ -124,9 +120,15 @@ void main() {
       await contextDir.create(recursive: true);
 
       // Crear archivos .md
-      await File(p.join(contextDir.path, 'documento1.md')).writeAsString('# Doc 1');
-      await File(p.join(contextDir.path, 'documento2.md')).writeAsString('# Doc 2');
-      await File(p.join(contextDir.path, 'documento3.md')).writeAsString('# Doc 3');
+      await File(
+        p.join(contextDir.path, 'documento1.md'),
+      ).writeAsString('# Doc 1');
+      await File(
+        p.join(contextDir.path, 'documento2.md'),
+      ).writeAsString('# Doc 2');
+      await File(
+        p.join(contextDir.path, 'documento3.md'),
+      ).writeAsString('# Doc 3');
 
       // Calcular progreso
       final progress = await ProjectProgressService.calculateProgress(
@@ -144,9 +146,15 @@ void main() {
       await contextDir.create(recursive: true);
 
       // Crear archivos .md
-      await File(p.join(contextDir.path, 'documento1.md')).writeAsString('# Doc 1');
-      await File(p.join(contextDir.path, 'README.md')).writeAsString('# README');
-      await File(p.join(contextDir.path, 'readme.md')).writeAsString('# readme');
+      await File(
+        p.join(contextDir.path, 'documento1.md'),
+      ).writeAsString('# Doc 1');
+      await File(
+        p.join(contextDir.path, 'README.md'),
+      ).writeAsString('# README');
+      await File(
+        p.join(contextDir.path, 'readme.md'),
+      ).writeAsString('# readme');
 
       final progress = await ProjectProgressService.calculateProgress(
         projectRoot,
@@ -161,9 +169,15 @@ void main() {
       await contextDir.create(recursive: true);
 
       // Crear archivos .md
-      await File(p.join(contextDir.path, 'documento1.md')).writeAsString('# Doc 1');
-      await File(p.join(contextDir.path, 'untitled.md')).writeAsString('# Untitled');
-      await File(p.join(contextDir.path, 'Untitled-1.md')).writeAsString('# Untitled 1');
+      await File(
+        p.join(contextDir.path, 'documento1.md'),
+      ).writeAsString('# Doc 1');
+      await File(
+        p.join(contextDir.path, 'untitled.md'),
+      ).writeAsString('# Untitled');
+      await File(
+        p.join(contextDir.path, 'Untitled-1.md'),
+      ).writeAsString('# Untitled 1');
 
       final progress = await ProjectProgressService.calculateProgress(
         projectRoot,
@@ -180,7 +194,7 @@ void main() {
       );
 
       expect(progress.documentosCreados, 0);
-      expect(progress.faseActual, 'Raíz'); // Primera fase con 0 documentos
+      expect(progress.faseActual, 'Contexto'); // Primera fase con 0 documentos
       expect(progress.porcentajeCompletado, 0.0);
     });
 
@@ -330,7 +344,9 @@ void main() {
 
       // Crear 1 documento (debería estar en Fase 0 o Fase 1)
       await File(p.join(contextDir.path, 'doc1.md')).writeAsString('# Doc 1');
-      var progress = await ProjectProgressService.calculateProgress(projectRoot);
+      var progress = await ProjectProgressService.calculateProgress(
+        projectRoot,
+      );
       final phase1 = progress.faseActual;
 
       // Crear más documentos
@@ -352,7 +368,9 @@ void main() {
 
       // Test con diferentes cantidades de documentos
       for (var i = 0; i < 5; i++) {
-        await File(p.join(contextDir.path, 'doc$i.md')).writeAsString('# Doc $i');
+        await File(
+          p.join(contextDir.path, 'doc$i.md'),
+        ).writeAsString('# Doc $i');
         final progress = await ProjectProgressService.calculateProgress(
           projectRoot,
         );
@@ -368,7 +386,9 @@ void main() {
 
       // Crear archivos de diferentes tipos
       await File(p.join(contextDir.path, 'doc1.md')).writeAsString('# Doc 1');
-      await File(p.join(contextDir.path, 'doc2.txt')).writeAsString('Text file');
+      await File(
+        p.join(contextDir.path, 'doc2.txt'),
+      ).writeAsString('Text file');
       await File(p.join(contextDir.path, 'doc3.pdf')).writeAsBytes([1, 2, 3]);
       await File(p.join(contextDir.path, 'doc4.docx')).writeAsBytes([4, 5, 6]);
 
@@ -387,7 +407,7 @@ void main() {
       );
 
       expect(progress.documentosCreados, 0);
-      expect(progress.faseActual, 'Raíz'); // Primera fase con 0 documentos
+      expect(progress.faseActual, 'Contexto'); // Primera fase con 0 documentos
       expect(progress.porcentajeCompletado, 0.0);
       expect(progress.lastUpdated, isA<DateTime>());
     });

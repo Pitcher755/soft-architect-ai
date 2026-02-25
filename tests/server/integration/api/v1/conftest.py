@@ -14,7 +14,6 @@ from sqlalchemy.ext.asyncio import (
 )
 
 # Import models to register with Base BEFORE creating tables
-from app.infrastructure.persistence.models import ConversationModel, MessageModel  # noqa: F401
 from app.infrastructure.persistence.database import Base, get_db_session
 from app.main import app
 

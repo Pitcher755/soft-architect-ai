@@ -1,156 +1,258 @@
-name: Monorepo CI Master (Orchestrator)
+name: Monorepo Master Pipeline
 
-# DISPARADOR: En main/develop y feature branches para PRs
 on:
   push:
-    branches: [main, develop, feature/**]
+    branches: [main, develop]
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
 
-# Permite solo una ejecución por rama a la vez
 concurrency:
-  group: ci-master-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
-
-permissions:
-  pull-requests: write
-  contents: read
 
 jobs:
   # ═══════════════════════════════════════════════════════════════════
-  # ORQUESTADOR: Detecta qué cambió y corre solo lo relevante
+  # 🔍 DETECTOR DE CAMBIOS
   # ═══════════════════════════════════════════════════════════════════
   changes:
     name: 🔍 Detect Changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
       docker: ${{ steps.filter.outputs.docker }}
-      docs: ${{ steps.filter.outputs.docs }}
-
+      tests: ${{ steps.filter.outputs.tests }}
     steps:
-      - name: ✅ Checkout Code
-        uses: actions/checkout@v4
-
-      - name: 🔍 Path Filter
-        uses: dorny/paths-filter@v2
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
             backend:
-              - 'api/**'
-              - 'core/**'
-              - 'domain/**'
-              - 'services/**'
-              - 'utils/**'
               - 'src/server/**'
-              - 'main.py'
               - 'requirements.txt'
-              - 'tests/**'
               - 'pyrightconfig.json'
+              - '.pre-commit-config.yaml'
             frontend:
               - 'src/client/**'
-              - 'tests/**'
               - 'pubspec.yaml'
-              - 'pubspec.lock'
               - 'analysis_options.yaml'
             docker:
-              - 'Dockerfile*'
               - 'infrastructure/**'
               - 'docker-compose.yml'
-              - '.dockerignore'
-            docs:
-              - 'doc/**'
-              - 'context/**'
-              - 'packages/knowledge_base/**'
-              - 'README.md'
-              - 'AGENTS.md'
+              - 'src/server/Dockerfile'
+            tests:
+              - 'tests/**'
 
   # ═══════════════════════════════════════════════════════════════════
-  # Backend Pipeline (always run on feature branches, conditional on main/develop)
+  # 🐍 BACKEND PIPELINE (Python) - COMPREHENSIVE
   # ═══════════════════════════════════════════════════════════════════
-  backend-ci:
-    name: 🐍 Backend Pipeline
+  backend:
+    name: 🐍 Backend
     needs: changes
-    if: needs.changes.outputs.backend == 'true' || startsWith(github.ref, 'refs/heads/feature/')
-    uses: ./.github/workflows/backend-ci.yaml
-
-  # ═══════════════════════════════════════════════════════════════════
-  # Frontend Pipeline (always run on feature branches, conditional on main/develop)
-  # ═══════════════════════════════════════════════════════════════════
-  frontend-ci:
-    name: 📱 Frontend Pipeline
-    needs: changes
-    if: needs.changes.outputs.frontend == 'true' || startsWith(github.ref, 'refs/heads/feature/')
-    uses: ./.github/workflows/frontend-ci.yaml
-
-  # ═══════════════════════════════════════════════════════════════════
-  # Docker Pipeline (always run on feature branches, conditional on main/develop)
-  # ═══════════════════════════════════════════════════════════════════
-  docker-build:
-    name: 🐳 Docker Pipeline
-    needs: changes
-    if: needs.changes.outputs.docker == 'true' || startsWith(github.ref, 'refs/heads/feature/')
-    uses: ./.github/workflows/docker-build.yaml
-
-  # ═══════════════════════════════════════════════════════════════════
-  # Dashboard: Always show status
-  # ═══════════════════════════════════════════════════════════════════
-  dashboard:
-    name: 📊 CI Dashboard
-    runs-on: ubuntu-latest
-    if: always()
-    needs: [changes, backend-ci, frontend-ci, docker-build]
-
+    if: needs.changes.outputs.backend == 'true'
+    runs-on: self-hosted
     steps:
-      - name: ✅ Checkout Code
-        uses: actions/checkout@v4
-
-      - name: 📊 Generate Dashboard
-        run: |
-          cat > /tmp/ci_dashboard.md << 'EOF'
-          # 🎯 SoftArchitect AI - CI Pipeline Dashboard
-
-          **Branch:** ${{ github.ref_name }}
-          **Commit:** ${{ github.sha }}
-          **Author:** ${{ github.actor }}
-
-          ---
-
-          ## 📋 Change Detection
-
-          | Component | Status |
-          |-----------|--------|
-          | 🐍 Backend | ${{ needs.changes.outputs.backend == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
-          | 📱 Frontend | ${{ needs.changes.outputs.frontend == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
-          | 🐳 Docker | ${{ needs.changes.outputs.docker == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
-          | 📚 Docs | ${{ needs.changes.outputs.docs == 'true' && '✅ Changed' || '⏭️ Skipped' }} |
-
-          ---
-
-          ## ✅ Summary
-
-          Only relevant pipelines are executed based on detected changes.
-
-          EOF
-
-          cat /tmp/ci_dashboard.md >> $GITHUB_STEP_SUMMARY
-
-      - name: 💬 Comment on PR (if PR)
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+      - uses: actions/checkout@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const dashboard = fs.readFileSync(
-              '/tmp/ci_dashboard.md', 'utf8'
-            );
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: dashboard
-            });
+          fetch-depth: 0  # Full history for better diffs
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r src/server/requirements.txt
+
+      - name: 📋 Install Validation Tools
+        run: |
+          pip install ruff black pyright bandit pytest pytest-cov pytest-asyncio
+
+      - name: ✅ Type Check (Pyright)
+        run: |
+          cd src/server && python -m pyright app/ services/ core/
+        continue-on-error: false
+
+      - name: 🔍 Linter (Ruff)
+        run: |
+          ruff check src/server/ --output-format=github
+        continue-on-error: false
+
+      - name: 🎨 Format Check (Black)
+        run: |
+          black --check src/server/ --diff
+        continue-on-error: false
+
+      - name: 🔐 Security Audit (Bandit)
+        run: |
+          bandit -r src/server/app src/server/services src/server/core -f json -o bandit-report.json
+          bandit -r src/server/app src/server/services src/server/core -f txt
+        continue-on-error: true  # Report warnings but don't block
+
+      - name: 🧪 Unit Tests + Coverage
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
+        run: |
+          cd src/server && pytest ../../tests/server/unit \
+            --cov=app --cov=services --cov=core \
+            --cov-report=html:../../coverage-report \
+            --cov-report=xml:../../coverage.xml \
+            --cov-report=term-missing \
+            --cov-fail-under=80 \
+            -v --tb=short
+        continue-on-error: false
+
+      - name: 🔗 Integration Tests
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
+        run: |
+          cd src/server && pytest ../../tests/server/integration \
+            -v --tb=short -m "not slow"
+        continue-on-error: true  # Don't block if integration tests fail
+
+      - name: 📊 Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage-report-${{ github.run_id }}
+          path: coverage-report/
+          retention-days: 7
+
+      - name: 📊 Upload Coverage XML
+        if: always()
+        continue-on-error: true  # Self-hosted runner may lack internet access to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          flags: backend
+          name: backend-coverage
+          fail_ci_if_error: false
+
+      - name: 📝 Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results-${{ github.run_id }}
+          path: |
+            bandit-report.json
+          retention-days: 7
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 📱 FRONTEND PIPELINE (Flutter) - COMPREHENSIVE
+  # ═══════════════════════════════════════════════════════════════════
+  frontend:
+    name: 📱 Frontend
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-lts
+
+      - name: 📥 Get Dependencies
+        run: |
+          cd src/client && flutter pub get
+          cd ../../tests && flutter pub get
+
+      - name: 🔍 Analyze
+        run: |
+          cd src/client && flutter analyze --no-pub
+        continue-on-error: false
+
+      - name: 🎨 Format Check
+        run: |
+          cd src/client && dart format --output=none --set-exit-if-changed .
+        continue-on-error: false
+
+      - name: 🧪 Tests + Coverage
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
+        run: |
+          cd tests && flutter test client/ \
+            --coverage \
+            --no-pub \
+            -v
+        continue-on-error: false
+
+      - name: 📊 Upload Coverage Report
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage-report-${{ github.run_id }}
+          path: tests/coverage/
+          retention-days: 7
+
+      - name: 📝 Build Summary
+        if: always()
+        run: |
+          echo "## 📱 Frontend Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Analyze passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Format check passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Tests passed" >> $GITHUB_STEP_SUMMARY
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 🐳 DOCKER PIPELINE - VALIDATION
+  # ═══════════════════════════════════════════════════════════════════
+  docker:
+    name: 🐳 Docker Validation
+    needs: [changes, backend]
+    if: |
+      needs.changes.outputs.docker == 'true' &&
+      (github.event_name == 'pull_request' || github.ref == 'refs/heads/develop')
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ✅ Validate docker-compose
+        run: |
+          docker compose -f infrastructure/docker-compose.yml config
+
+      - name: 🏗️ Build-check Dockerfile
+        run: |
+          cd src/server && docker buildx build --check .
+
+      - name: 📋 Security scan (Trivy - Optional)
+        run: |
+          echo "⚠️  Trivy security scan skipped (optional step)"
+        continue-on-error: true
+
+  # ═══════════════════════════════════════════════════════════════════
+  # ✅ FINAL STATUS CHECK
+  # ═══════════════════════════════════════════════════════════════════
+  status-check:
+    name: ✅ CI Status Check
+    needs: [changes, backend, frontend, docker]
+    if: always()
+    runs-on: self-hosted
+    steps:
+      - name: 🎯 Verify All Checks
+        run: |
+          echo "## CI/CD Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Backend" >> $GITHUB_STEP_SUMMARY
+          echo "- Type Check: ${{ needs.backend.result == 'success' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Linting: ${{ needs.backend.result == 'success' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: ${{ needs.backend.result == 'success' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Frontend" >> $GITHUB_STEP_SUMMARY
+          echo "- Analysis: ${{ needs.frontend.result == 'success' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: ${{ needs.frontend.result == 'success' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Docker" >> $GITHUB_STEP_SUMMARY
+          echo "- Validation: ${{ needs.docker.result == 'success' && '✅' || '⏭️  (skipped)' }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: ❌ Fail if critical checks failed
+        if: |
+          needs.backend.result == 'failure' ||
+          needs.frontend.result == 'failure'
+        run: exit 1

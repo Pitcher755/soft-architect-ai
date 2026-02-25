@@ -741,7 +741,7 @@ on:
 jobs:
   # --- JOB 1: BACKEND (Python) ---
   backend-quality:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./apps/api-server
@@ -771,7 +771,7 @@ jobs:
 
   # --- JOB 2: FRONTEND (Flutter) ---
   frontend-quality:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./apps/client-desktop
@@ -798,7 +798,7 @@ jobs:
   # --- JOB 3: SECURITY SCAN (Docker) ---
   security-scan:
     needs: [backend-quality] # Only scan if code passes tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 

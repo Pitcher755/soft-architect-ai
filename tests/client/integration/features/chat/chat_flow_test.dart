@@ -19,7 +19,7 @@ void main() {
     // Expected flow:
     // 1. Click "Nuevo Proyecto" button
     // 2. Enter chat prompt
-    // 3. Receive streaming response with ProposalCardWidget
+    // 3. Receive streaming response with SmartMessageRenderer document card
     // 4. Click action buttons (Validar, Refinar, Rechazar)
     // 5. Verify success/error messages
 

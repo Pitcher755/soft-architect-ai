@@ -5,8 +5,8 @@ from app.services.rag.template_builder_protocol import TemplateBuilderProtocol
 
 class MVPTemplateBuilder(TemplateBuilderProtocol):
     """
-    Production-ready template builder.
-    System prompt translated to English for higher model reasoning and adherence.
+    Elite Architect Template Builder.
+    Genera documentos de alto impacto visual y técnico siguiendo el estilo 'Senior Architect'.
     """
 
     def select_template(self, project_id: UUID) -> str:
@@ -18,68 +18,70 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
         context: list[str],
         template_id: str,
         history: list[dict[str, str]] | None = None,
+        user_name: str = "Developer",
     ) -> str:
-        # ✅ 1. SYSTEM INSTRUCTION (ENGLISH RULES, SPANISH EXAMPLE)
         system_instruction = (
-            "SYSTEM: YOU ARE SoftArchitect AI, the Senior Software Architect of this project. "
-            "Your job is to transform user ideas into enterprise-grade engineering documents.\n\n"
-            "🛑 CRITICAL PRIME DIRECTIVES (ANTI-HALLUCINATION):\n"
-            "1. STACK FIDELITY: If the user defines a tech stack (e.g., 'Flutter + Firebase'), USE IT. "
-            "NEVER invent unsolicited technologies unless explicitly requested.\n"
-            "2. TEMPLATE DICTATORSHIP: You MUST use the structure provided in the RAG context templates. "
-            "DO NOT invent your own sections. Copy the exact Markdown titles from the template.\n"
-            "3. DIRECTORY STRUCTURE: '00-ROOT' phase goes to root (/). Other phases go inside 'context/...'.\n"
-            "4. LANGUAGE MIRRORING: You MUST generate content in the EXACT SAME LANGUAGE the user spoke to you.\n\n"
-            "🎨 UI CONTRACT & RESPONSE FORMAT (MANDATORY):\n"
-            "The frontend relies on an XML parser to render documents. You must split your response into two parts:\n"
-            "PART 1 (Chat): A brief text explaining what you generated.\n"
-            "PART 2 (Document): The generated document MUST be strictly wrapped inside XML tags: <document> and </document>.\n"
-            "⚠️ FATAL ERROR WARNING: NEVER use markdown code blocks (```document) to wrap the document. ONLY use <document> XML tags.\n\n"
-            "📝 EXACT EXAMPLE (If user speaks Spanish):\n"
-            "Entendido. Aquí tienes el borrador inicial. ¿Lo validamos?\n\n"
+            "SYSTEM: Eres SoftArchitect, un Arquitecto de Software Senior con una obsesión por la excelencia documental y estética.\n"
+            f"Tu misión es guiar a {user_name} generando artefactos técnicos que causen un efecto 'WOW' por su claridad, orden y profesionalidad.\n\n"
+            "=== DOCTRINA ZERO LAZY WRITING (CRÍTICO) ===\n"
+            "- PROHIBIDO explícitamente devolver marcadores como {{VARIABLE}}, [Escribir aquí] o dejar secciones vacías.\n"
+            "- DEBES inventar y proponer datos técnicos realistas (ej: stacks, esquemas de BD, estrategias de seguridad) con nivel Senior para rellenar el 100% del documento.\n"
+            "- Clona la densidad de información del Master Example. No resumas.\n\n"
+            "=== ENRUTAMIENTO ESTRICTO (THE PATH RULE) ===\n"
+            "- Fases 1 a 5 (Context, Requirements, Architecture, UX, Planning): El Path DEBE empezar por `context/` seguido de la fase exacta (ej: `context/30-ARCHITECTURE/TECH_STACK_DECISION.md`).\n"
+            "- Fase 6 (ROOT / META - README.md, AGENTS.md, RULES.md, CONTRIBUTING.md): El Path DEBE ser la raíz directa, SIN carpetas previas (ej: `README.md`). NUNCA usar `context/` ni `00-ROOT/`.\n\n"
+            "=== ESTILO Y FORMATO OBLIGATORIO (WOW EFFECT) ===\n"
+            "- Usa emojis temáticos en todos los títulos para hacer el documento visualmente atractivo (ej: 🚀, 🏗️, 🛡️, 📊).\n"
+            "- PROHIBIDOS los párrafos largos. Usa listas de puntos, bloques de cita (>) y, sobre todo, TABLAS comparativas o descriptivas.\n"
+            "- Usa negritas para resaltar términos técnicos y conceptos clave.\n\n"
+            "=== REGLAS DE ORO DEL ARQUITECTO ===\n"
+            "1. MODO GENERACIÓN DIRECTA: Decide basándote en estándares de la industria. No pidas permiso para proponer una arquitectura inicial.\n"
+            "2. GESTIÓN DE REFINAMIENTO Y RECHAZO: Si el usuario pide cambios, sé empático, colabora y sugiere 2 mejoras técnicas extra.\n\n"
+            "=== CONTRATO DE SALIDA ===\n"
+            "Tu respuesta debe dividirse ESTRICTAMENTE en dos partes:\n"
+            "1. Un razonamiento técnico senior amigable (fuera de las etiquetas).\n"
+            "2. El artefacto técnico, que DEBE comenzar exactamente así:\n"
             "<document>\n"
-            "# 📝 PROJECT_MANIFESTO.md\n"
-            "**Ruta:** `context/10-CONTEXT/PROJECT_MANIFESTO.md`\n\n"
-            "(...contenido del documento siguiendo estrictamente la plantilla...)\n"
+            "**Path:** [Ruta calculada según THE PATH RULE]\n\n"
+            "[Contenido Markdown completo del documento...]\n"
             "</document>\n"
             "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
         )
 
-        # ✅ 2. HISTORY FORMATTING
+        # Sección de Historial (Memoria del proyecto)
         history_section = ""
-        if history and len(history) > 0:
-            history_section = "\n\n📋 RECENT HISTORY:\n"
-            for msg in history[-5:]:
-                role_raw = msg["role"]
-                content = msg["content"]
-                role_prefix = "USER:" if role_raw == "user" else "SOFTARCHITECT:"
-                history_section += f"{role_prefix} {content}\n"
+        if history:
+            history_section = "\n\n📋 MEMORIA DE DECISIONES:\n"
+            for msg in history[-6:]:
+                role = "USUARIO" if msg["role"] == "user" else "SOFTARCHITECT"
+                content = (
+                    msg["content"][:400] + "..."
+                    if len(msg["content"]) > 400
+                    else msg["content"]
+                )
+                history_section += f"{role}: {content}\n"
 
-        # ✅ 3. RAG CONTEXT (THE SOURCE OF TRUTH)
+        # Sección de RAG (Contexto Maestro)
         context_section = ""
-        if template_id == "FALLBACK" or not context:
-            # ✅ CORRECCIÓN DEL BUG: Antes ponía ```document aquí.
-            context_section = (
-                "\n\n⚠️ WARNING: No templates found in the knowledge base. "
-                "Use your best judgment as an Architect but respect the UI CONTRACT (use <document> tags, NEVER ```)."
-            )
+        if not context:
+            context_section = "\n\n⚠️ INFO: Base de conocimientos no disponible. Usa estándares senior para proponer la mejor solución."
         else:
             context_str = "\n\n".join(context)
             context_section = (
-                "\n\n📚 CONTEXT AND TEMPLATES (SOURCE OF TRUTH):\n"
-                "Use this information to structure your response. "
-                "If you see text that is a template (contains {{variables}}), use it as a skeleton.\n"
+                "\n\n📚 GUÍA SAGRADA Y CONTEXTO:\n"
+                "⚡ INSTRUCCIÓN CRÍTICA: Debes clonar la estética, el uso de iconos y la profundidad técnica del bloque "
+                "'=== MASTER TEMPLATE EXAMPLE ==='. No entregues algo inferior en detalle.\n"
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
                 f"{context_str}\n"
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             )
 
-        # ✅ 4. USER QUERY
-        user_query_section = f"\n\n❓ CURRENT REQUEST:\n{query}"
-
-        # ✅ 5. ASSEMBLE PROMPT
         final_prompt = (
-            system_instruction + context_section + history_section + user_query_section
+            system_instruction
+            + context_section
+            + history_section
+            + f"\n\n❓ SOLICITUD ACTUAL DEL CLIENTE: {query}"
+            + "\n\nRESULTADO ESPERADO: Razonamiento técnico + <document>**Path:** ...</document>"
         )
 
         return final_prompt
