@@ -15,7 +15,7 @@ from uuid import uuid4
 
 import pytest
 
-from app.domain.schemas.chat import ChatRequest, ChatResponse
+from app.domain.schemas.chat_schema import ChatRequest, ChatResponse
 from app.services.rag.orchestrator import RAGOrchestrator
 
 
@@ -47,12 +47,17 @@ class TestRAGOrchestratorGracefulDegradation:
 
     @pytest.fixture
     def orchestrator(self, mock_vector_store, mock_template_builder, mock_llm_client):
-        """Create orchestrator with mocked dependencies."""
-        return RAGOrchestrator(
-            vector_store=mock_vector_store,
-            template_builder=mock_template_builder,
-            llm_client=mock_llm_client,
-        )
+        """Create orchestrator with mocked dependencies (WorkflowInjector isolated)."""
+        with patch(
+            "app.services.rag.orchestrator.WorkflowInjector"
+        ) as mock_injector_cls:
+            mock_injector_cls.return_value.get_injected_prompt.return_value = ""
+            orch = RAGOrchestrator(
+                vector_store=mock_vector_store,
+                template_builder=mock_template_builder,
+                llm_client=mock_llm_client,
+            )
+        return orch
 
     @pytest.mark.asyncio
     async def test_orchestrator_continues_when_chromadb_fails(

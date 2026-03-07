@@ -1,12 +1,12 @@
 """Unit tests for RAG Orchestrator (core business logic)."""
 
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 
 import pytest
 
 from app.core.exceptions import LLMConnectionError
-from app.domain.schemas.chat import ChatRequest, ChatResponse
+from app.domain.schemas.chat_schema import ChatRequest, ChatResponse
 from app.services.rag.orchestrator import RAGOrchestrator
 
 
@@ -85,11 +85,15 @@ class TestRAGOrchestrator:
             "System: No context available. Answer generically."
         )
 
-        orchestrator = RAGOrchestrator(
-            vector_store=mock_vector_store,
-            template_builder=mock_template_builder,
-            llm_client=mock_llm_client,
-        )
+        with patch(
+            "app.services.rag.orchestrator.WorkflowInjector"
+        ) as mock_injector_cls:
+            mock_injector_cls.return_value.get_injected_prompt.return_value = ""
+            orchestrator = RAGOrchestrator(
+                vector_store=mock_vector_store,
+                template_builder=mock_template_builder,
+                llm_client=mock_llm_client,
+            )
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -143,11 +147,15 @@ class TestRAGOrchestrator:
         """
         mock_vector_store.search.side_effect = Exception("ChromaDB connection failed")
 
-        orchestrator = RAGOrchestrator(
-            vector_store=mock_vector_store,
-            template_builder=mock_template_builder,
-            llm_client=mock_llm_client,
-        )
+        with patch(
+            "app.services.rag.orchestrator.WorkflowInjector"
+        ) as mock_injector_cls:
+            mock_injector_cls.return_value.get_injected_prompt.return_value = ""
+            orchestrator = RAGOrchestrator(
+                vector_store=mock_vector_store,
+                template_builder=mock_template_builder,
+                llm_client=mock_llm_client,
+            )
 
         request = ChatRequest(
             conversation_id=uuid4(),

@@ -8,6 +8,7 @@ import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown/markdown.dart' as md;
 
+import '../../../../shared/presentation/widgets/mermaid_view.dart'; // 👈 IMPORT DEL VISOR MERMAID
 import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../filesystem/presentation/providers/filesystem_providers.dart';
 import '../../infrastructure/services/project_progress_service.dart';
@@ -326,7 +327,9 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
       data: content,
       padding: const EdgeInsets.all(24),
       extensionSet: md.ExtensionSet.gitHubFlavored,
-      builders: {'code': _CodeElementBuilder()},
+      builders: {
+        'code': _CodeElementBuilder(),
+      }, // 👈 MANTENEMOS TU BUILDER HÍBRIDO
       styleSheet: MarkdownStyleSheet.fromTheme(safeTheme).copyWith(
         p: const TextStyle(color: Color(0xFFC9D1D9), fontSize: 14, height: 1.6),
         h1: const TextStyle(
@@ -384,6 +387,8 @@ class _ToolbarButton extends StatelessWidget {
   );
 }
 
+/// Markdown code-block builder that routes Mermaid diagrams to [MermaidView]
+/// and all other languages to [HighlightView] for syntax colouring.
 class _CodeElementBuilder extends MarkdownElementBuilder {
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
@@ -396,6 +401,12 @@ class _CodeElementBuilder extends MarkdownElementBuilder {
         ? element.textContent.substring(0, element.textContent.length - 1)
         : element.textContent;
 
+    // Mermaid diagrams are rendered via mermaid.ink.
+    if (language == 'mermaid') {
+      return MermaidView(code: codeContent);
+    }
+
+    // All other languages use flutter_highlighter for syntax colouring.
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 4),

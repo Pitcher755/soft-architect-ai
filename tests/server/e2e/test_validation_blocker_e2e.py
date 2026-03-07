@@ -60,7 +60,7 @@ class TestValidationBlockerE2E:
         )
 
         # Prepare history with unvalidated document
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -119,7 +119,7 @@ class TestValidationBlockerE2E:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -186,7 +186,7 @@ class TestValidationBlockerE2E:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -249,7 +249,7 @@ class TestValidationBlockerMultipleDocuments:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -310,7 +310,7 @@ class TestValidationBlockerMultipleDocuments:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),

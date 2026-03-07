@@ -9,7 +9,6 @@ Coverage target: ≥90% of services/rag/markdown_cleaner.py
 
 from services.rag.markdown_cleaner import MarkdownCleaner
 
-
 # ---------------------------------------------------------------------------
 # MarkdownCleaner.clean  (full pipeline)
 # ---------------------------------------------------------------------------

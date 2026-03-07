@@ -29,8 +29,10 @@ class FakeChatRepository implements ChatRepository {
   @override
   Stream<ChatStreamEvent> sendMessageStream(
     String projectPath,
-    String message,
-  ) {
+    String message, {
+    String? docType,
+    String? userName,
+  }) {
     final events = <ChatStreamEvent>[
       TokenEvent(token: 'Fake', isFinal: false),
       TokenEvent(token: ' streaming', isFinal: false),

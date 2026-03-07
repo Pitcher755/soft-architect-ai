@@ -82,7 +82,12 @@ class FakeChatRepository implements ChatRepository {
   }
 
   @override
-  Stream<ChatStreamEvent> sendMessageStream(String message, String projectId) {
+  Stream<ChatStreamEvent> sendMessageStream(
+    String message,
+    String projectId, {
+    String? docType,
+    String? userName,
+  }) {
     if (shouldFail) {
       return Stream.value(
         ErrorEvent(error: errorMessage, code: 'TEST_ERROR', shouldRetry: false),

@@ -1,18 +1,11 @@
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
+
 /// Abstract service for FileSystem operations.
 /// Abstracts platform differences and enables testing via mocks.
 abstract class FileSystemService {
   /// Saves a document to disk at the specified path.
-  ///
-  /// Parameters:
-  ///   - projectPath: Root project path (e.g., '/home/user/project')
-  ///   - relativePath: Path relative to project root (e.g., '10-CONTEXT/PROJECT_MANIFESTO.md')
-  ///   - content: Document content to write
-  ///
-  /// Throws:
-  ///   - [FileSystemException] if directory creation fails
-  ///   - [FileSystemException] if file write fails
   Future<void> saveDocument({
     required String projectPath,
     required String relativePath,
@@ -20,8 +13,6 @@ abstract class FileSystemService {
   });
 
   /// Reads a document from disk.
-  ///
-  /// Returns null if file doesn't exist.
   Future<String?> readDocument({
     required String projectPath,
     required String relativePath,
@@ -52,15 +43,22 @@ class FileSystemServiceImpl implements FileSystemService {
     required String content,
   }) async {
     try {
-      final fullPath = '$projectPath/$relativePath';
+      // 1. Limpiamos la barra inicial si viene en el relativePath
+      final cleanRelativePath = relativePath.startsWith('/')
+          ? relativePath.substring(1)
+          : relativePath;
+
+      // 2. Unimos de forma segura para cualquier sistema operativo
+      final fullPath = p.join(projectPath, cleanRelativePath);
       final file = File(fullPath);
 
-      // Ensure parent directory exists
-      // ignore: avoid_slow_async_io
-      await file.parent.create(recursive: true);
+      // 3. 🎯 LA MAGIA: Nos aseguramos de que toda la cadena de carpetas exista
+      final directory = file.parent;
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
 
-      // Write content
-      // ignore: avoid_slow_async_io
+      // 4. Escribimos el contenido
       await file.writeAsString(content, flush: true);
     } catch (e) {
       throw FileSystemException('Failed to save document: $e');
@@ -73,15 +71,16 @@ class FileSystemServiceImpl implements FileSystemService {
     required String relativePath,
   }) async {
     try {
-      final fullPath = '$projectPath/$relativePath';
+      final cleanRelativePath = relativePath.startsWith('/')
+          ? relativePath.substring(1)
+          : relativePath;
+      final fullPath = p.join(projectPath, cleanRelativePath);
       final file = File(fullPath);
 
-      // ignore: avoid_slow_async_io
       if (!await file.exists()) {
         return null;
       }
 
-      // ignore: avoid_slow_async_io
       return file.readAsString();
     } catch (e) {
       throw FileSystemException('Failed to read document: $e');
@@ -93,9 +92,11 @@ class FileSystemServiceImpl implements FileSystemService {
     required String projectPath,
     required String relativePath,
   }) async {
-    final fullPath = '$projectPath/$relativePath';
+    final cleanRelativePath = relativePath.startsWith('/')
+        ? relativePath.substring(1)
+        : relativePath;
+    final fullPath = p.join(projectPath, cleanRelativePath);
     final file = File(fullPath);
-    // ignore: avoid_slow_async_io
     return file.exists();
   }
 
@@ -105,10 +106,12 @@ class FileSystemServiceImpl implements FileSystemService {
     required String relativePath,
   }) async {
     try {
-      final fullPath = '$projectPath/$relativePath';
+      final cleanRelativePath = relativePath.startsWith('/')
+          ? relativePath.substring(1)
+          : relativePath;
+      final fullPath = p.join(projectPath, cleanRelativePath);
       final file = File(fullPath);
 
-      // ignore: avoid_slow_async_io
       if (await file.exists()) {
         await file.delete();
       }
@@ -130,8 +133,7 @@ class FileSystemServiceImpl implements FileSystemService {
 
     for (final dir in directories) {
       try {
-        // ignore: avoid_slow_async_io
-        await Directory('$projectPath/$dir').create(recursive: true);
+        await Directory(p.join(projectPath, dir)).create(recursive: true);
       } catch (e) {
         throw FileSystemException('Failed to create directory $dir: $e');
       }

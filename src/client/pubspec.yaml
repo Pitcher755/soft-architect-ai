@@ -70,7 +70,8 @@ flutter:
 
   assets:
     - assets/images/
-  # - assets/data/
+    - assets/html/mermaid.min.js
+    - assets/html/mermaid_renderer.html
 
   # fonts:
   #   - family: CustomFont

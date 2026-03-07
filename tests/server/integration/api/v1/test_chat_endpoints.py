@@ -10,7 +10,7 @@ from httpx import ASGITransport, AsyncClient
 
 from app.api.dependencies import get_rag_orchestrator
 from app.core.exceptions import LLMConnectionError, RAGRetrievalError
-from app.domain.schemas.chat import ChatResponse
+from app.domain.schemas.chat_schema import ChatResponse
 from app.main import app
 
 

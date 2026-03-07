@@ -10,7 +10,7 @@ from uuid import uuid4
 
 from app.services.rag.orchestrator import RAGOrchestrator
 from app.services.rag.template_builder import MVPTemplateBuilder
-from app.domain.schemas.chat import ChatRequest
+from app.domain.schemas.chat_schema import ChatRequest
 
 
 class TestPlaceholderDetectionE2E:

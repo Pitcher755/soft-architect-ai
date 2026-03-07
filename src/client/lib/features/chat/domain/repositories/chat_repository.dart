@@ -30,7 +30,12 @@ abstract class ChatRepository {
   ///   }
   /// }
   /// ```
-  Stream<ChatStreamEvent> sendMessageStream(String message, String projectId);
+  Stream<ChatStreamEvent> sendMessageStream(
+    String message,
+    String projectId, {
+    String? docType, // 👈 EL METADATA VITAL PARA LA MÁQUINA DE ESTADOS
+    String? userName,
+  });
 
   /// Saves a document proposal to persistent storage.
   Future<void> saveProposal(DocumentProposal proposal);

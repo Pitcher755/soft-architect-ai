@@ -29,6 +29,9 @@ services:
       - CHAT_MAX_HISTORY_MESSAGES=${CHAT_MAX_HISTORY_MESSAGES:-20}
       - CHAT_MAX_MESSAGE_LENGTH=${CHAT_MAX_MESSAGE_LENGTH:-5000}
 
+      # Knowledge Base Path (Docker volume mount)
+      - KNOWLEDGE_BASE_PATH=/app/knowledge_base
+
     volumes:
       - ./data/logs:/app/logs
       - ../src/server/app:/app/app

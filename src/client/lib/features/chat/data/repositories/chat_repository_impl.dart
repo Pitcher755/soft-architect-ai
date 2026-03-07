@@ -10,26 +10,6 @@ import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';
 
-/// Implementation of [ChatRepository] using SSE for streaming
-/// and SQLite for persistence.
-///
-/// This implementation connects to the backend API via
-/// Server-Sent Events to stream AI-generated responses
-/// token-by-token, and persists chat history to local
-/// SQLite database for session recovery.
-///
-/// Example usage:
-/// ```dart
-/// final repository = ChatRepositoryImpl(
-///   baseUrl: 'http://localhost:8000',
-///   apiKey: 'your-api-key',
-/// );
-///
-/// await for (final event in
-///     repository.sendMessageStream(message, projectId)) {
-///   // Handle streaming events
-/// }
-/// ```
 class ChatRepositoryImpl implements ChatRepository {
   ChatRepositoryImpl({
     required this.baseUrl,
@@ -44,16 +24,11 @@ class ChatRepositoryImpl implements ChatRepository {
   final SseClient sseClient;
   Database? _database;
 
-  /// Lazy initialization of database
   Future<Database> get database async {
     _database ??= await DatabaseHelper().database;
     return _database!;
   }
 
-  /// **DEPRECATED:** Not implemented. Use [sendMessageStream] instead.
-  ///
-  /// This method throws [UnimplementedError]. For document generation,
-  /// use [sendMessageStream] which provides SSE streaming functionality.
   @override
   @Deprecated('Not implemented. Use sendMessageStream() instead.')
   Stream<String> generateDocument(
@@ -61,18 +36,16 @@ class ChatRepositoryImpl implements ChatRepository {
     String userInput,
     Map<String, dynamic> context,
   ) {
-    // Not implemented - use sendMessageStream instead
-    throw UnimplementedError(
-      'generateDocument not yet implemented. '
-      'Use sendMessageStream() instead.',
-    );
+    throw UnimplementedError('Use sendMessageStream() instead.');
   }
 
   @override
   Stream<ChatStreamEvent> sendMessageStream(
     String message,
-    String projectId,
-  ) async* {
+    String projectId, {
+    String? docType, // Optional doc_type parameter for workflow routing
+    String? userName,
+  }) async* {
     final url = '$baseUrl/api/v1/chat/stream';
 
     var historyPayload = <Map<String, String>>[];
@@ -95,18 +68,20 @@ class ChatRepositoryImpl implements ChatRepository {
       'project_id': projectId,
       'conversation_id': _generateConversationId(),
       'history': historyPayload,
-      'user_name': 'Developer',
+      'user_name': userName ?? 'Developer',
+      // doc_type at root level, as expected by FastAPI
+      'doc_type': docType ?? 'PROJECT_MANIFESTO',
+      'metadata': {},
     };
     final headers = {'X-API-Key': apiKey};
 
     try {
       yield* sseClient.connect(url, body, headers: headers);
     } on SseException catch (e) {
-      // Transform SSE exception into error event stream
       yield ErrorEvent(
         error: e.message,
         code: 'CONNECTION_ERROR',
-        shouldRetry: e.statusCode != 401, // Don't retry auth errors
+        shouldRetry: e.statusCode != 401,
       );
     }
   }
@@ -115,8 +90,6 @@ class ChatRepositoryImpl implements ChatRepository {
   Future<void> saveProposal(DocumentProposal proposal) async {
     try {
       final db = await database;
-
-      // Save proposal as special chat message with metadata
       final proposalMessage = ChatMessage(
         id: proposal.id,
         role: MessageRole.assistant,
@@ -132,23 +105,20 @@ class ChatRepositoryImpl implements ChatRepository {
 
       await db.insert('chat_messages', {
         'id': proposalMessage.id,
-        'project_id': 'proposal', // Special project ID for proposals
+        'project_id': 'proposal',
         'role': proposalMessage.role.name,
         'content': proposalMessage.content,
         'timestamp': proposalMessage.timestamp,
         'is_streaming': 0,
         'metadata': jsonEncode(proposalMessage.metadata ?? {}),
       }, conflictAlgorithm: ConflictAlgorithm.replace);
-    } on Exception catch (_) {
-      // Log error but don't throw - proposal saving is not critical
-    }
+    } on Exception catch (_) {}
   }
 
   @override
   Future<List<ChatMessage>> getChatHistory(String projectId) async {
     try {
       final db = await database;
-
       final List<Map<String, dynamic>> maps = await db.query(
         'chat_messages',
         where: 'project_id = ?',
@@ -156,7 +126,7 @@ class ChatRepositoryImpl implements ChatRepository {
         orderBy: 'timestamp ASC',
       );
 
-      final messages = maps.map((map) {
+      return maps.map((map) {
         final metadata = map['metadata'] as String?;
         return ChatMessage(
           id: map['id'] as String,
@@ -172,9 +142,8 @@ class ChatRepositoryImpl implements ChatRepository {
               : null,
         );
       }).toList();
-      return messages;
     } on Exception catch (_) {
-      rethrow; // Re-throw to propagate error to UI
+      rethrow;
     }
   }
 
@@ -188,18 +157,14 @@ class ChatRepositoryImpl implements ChatRepository {
         whereArgs: [projectId],
       );
     } on Exception catch (_) {
-      rethrow; // Re-throw to propagate error
+      rethrow;
     }
   }
 
-  /// Save a single message to chat history.
-  ///
-  /// This method saves the message directly to SQLite.
   @override
   Future<void> saveMessage(String projectId, ChatMessage message) async {
     try {
       final db = await database;
-
       await db.insert('chat_messages', {
         'id': message.id,
         'project_id': projectId,
@@ -210,10 +175,9 @@ class ChatRepositoryImpl implements ChatRepository {
         'metadata': jsonEncode(message.metadata ?? {}),
       }, conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
-      rethrow; // Re-throw to propagate error
+      rethrow;
     }
   }
 
-  /// Generate a UUID v4 for conversation_id (RFC 4122 compliant).
   String _generateConversationId() => UuidGenerator.v4();
 }

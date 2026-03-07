@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
-import '../../../../core/theme/app_colors.dart'; // Importante para usar AppColors
+import '../../../../core/theme/app_colors.dart';
+import '../../../../shared/presentation/widgets/markdown_builders/mermaid_builder.dart';
 
 /// Intelligent message renderer for chat interface.
 class SmartMessageRenderer extends StatelessWidget {
@@ -19,7 +20,7 @@ class SmartMessageRenderer extends StatelessWidget {
   final Future<void> Function(String path, String content)? onSaveDocument;
   final Future<void> Function(String message)? onSendChatMessage;
 
-  // RegEx a prueba de balas usando XML
+  // RegEx for legacy XML format
   static final RegExp _documentBlockRegex = RegExp(
     r'<document>\r?\n?([\s\S]*?)(?:</document>|$)',
     caseSensitive: false,
@@ -42,13 +43,96 @@ class SmartMessageRenderer extends StatelessWidget {
       return _buildMarkdown(context, decodedContent);
     }
 
+    // 1. BACKWARD COMPATIBILITY WITH LEGACY XML FORMAT
     final matches = _documentBlockRegex.allMatches(decodedContent);
-
-    if (matches.isEmpty) {
-      return _buildMarkdown(context, decodedContent);
+    if (matches.isNotEmpty) {
+      return _buildMixedContent(context, matches, decodedContent);
     }
 
-    return _buildMixedContent(context, matches, decodedContent);
+    // 2. NEW "OPERATION RAILS" FORMAT (With brackets or Path keyword)
+    if (_isRailOperationDocument(decodedContent)) {
+      return _buildRailMixedContent(context, decodedContent);
+    }
+
+    // 3. IF NO DOCUMENT DETECTED, IT'S JUST A CHAT MESSAGE
+    return _buildMarkdown(context, decodedContent);
+  }
+
+  /// Detects if the text is from Operation Rails format.
+  bool _isRailOperationDocument(String content) =>
+      content.contains('**Path:**') ||
+      content.contains('Path:') ||
+      content.contains('**File:**') ||
+      content.contains('[document]');
+
+  /// Splits content between reasoning and document, building the appropriate widgets.
+  Widget _buildRailMixedContent(BuildContext context, String content) {
+    final elements = <Widget>[];
+    var reasoningText = '';
+    var documentText = content;
+
+    // Si el LLM usó la etiqueta [document], cortamos por ahí
+    if (content.contains('[document]')) {
+      final parts = content.split('[document]');
+      reasoningText = parts.first.trim();
+      documentText = parts.length > 1 ? parts[1].trim() : '';
+
+      // Limpiamos la etiqueta [Razonamiento] si la puso
+      if (reasoningText.startsWith('[Razonamiento]')) {
+        reasoningText = reasoningText.replaceFirst('[Razonamiento]', '').trim();
+      }
+    } else {
+      // If no [document] tag but has Path keyword, attempt to infer where document starts
+      final pathIndex = content.indexOf('**Path:**');
+      final altPathIndex = content.indexOf('Path:');
+
+      final startIndex = pathIndex != -1
+          ? pathIndex
+          : (altPathIndex != -1 ? altPathIndex : -1);
+
+      if (startIndex > 0) {
+        reasoningText = content.substring(0, startIndex).trim();
+        documentText = content.substring(startIndex).trim();
+      }
+    }
+
+    // 1. Render reasoning (if present) as a normal message
+    if (reasoningText.isNotEmpty) {
+      elements.add(_buildMarkdown(context, reasoningText));
+      elements.add(const SizedBox(height: 12));
+    }
+
+    // 2. Render document (if present) inside its Card
+    if (documentText.isNotEmpty) {
+      final cleanDocument = _cleanRailDocument(documentText);
+      elements.add(
+        _DocumentCard(
+          key: ValueKey(cleanDocument.hashCode),
+          content: cleanDocument,
+          onSave: onSaveDocument,
+          onSendChatMessage: onSendChatMessage,
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: elements,
+    );
+  }
+
+  /// Cleans code blocks or extra tags from the document.
+  String _cleanRailDocument(String content) {
+    var result = content;
+
+    // If LLM wrapped document in a markdown code block, remove it
+    if (result.trim().startsWith('```markdown')) {
+      result = result.replaceFirst('```markdown', '').trim();
+      if (result.trim().endsWith('```')) {
+        result = result.substring(0, result.lastIndexOf('```')).trim();
+      }
+    }
+    return result.trim();
   }
 
   Widget _buildMarkdown(BuildContext context, String content) {
@@ -64,6 +148,7 @@ class SmartMessageRenderer extends StatelessWidget {
     return MarkdownBody(
       data: content,
       selectable: true,
+      builders: {'code': MermaidBuilder()},
       styleSheet: MarkdownStyleSheet(
         p: baseStyle,
         listBullet: baseStyle,
@@ -199,7 +284,6 @@ class _DocumentCardState extends State<_DocumentCard> {
       try {
         await widget.onSave!(extractedPath, cleanContent);
 
-        // ✅ HU-5.0: Show green success SnackBar (visual feedback)
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -211,7 +295,6 @@ class _DocumentCardState extends State<_DocumentCard> {
           );
         }
 
-        // ✅ AÑADIMOS A LA MEMORIA ESTÁTICA
         _validatedDocs.add(widget.content.hashCode);
 
         if (mounted) {
@@ -360,6 +443,7 @@ class _DocumentCardState extends State<_DocumentCard> {
         child: MarkdownBody(
           data: widget.content,
           selectable: true,
+          builders: {'code': MermaidBuilder()},
           styleSheet: MarkdownStyleSheet(
             p: baseStyle,
             listBullet: baseStyle,
