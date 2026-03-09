@@ -50,9 +50,7 @@ def _make_service(
     mock_chroma.HttpClient.return_value = mock_client
     mock_client.heartbeat.return_value = heartbeat_value
     mock_client.get_or_create_collection.return_value = mock_collection
-    service = VectorStoreService(
-        host="localhost", port=8000, collection_name=collection_name
-    )
+    service = VectorStoreService(host="localhost", port=8000, collection_name=collection_name)
     return service, mock_client, mock_collection
 
 
@@ -155,9 +153,7 @@ class TestVectorStoreServiceInit:
         mock_chroma.HttpClient.assert_called_once_with(host="localhost", port=8000)
 
     @patch("services.rag.vector_store.chromadb")
-    def test_raises_connection_error_on_zero_heartbeat(
-        self, mock_chroma: MagicMock
-    ) -> None:
+    def test_raises_connection_error_on_zero_heartbeat(self, mock_chroma: MagicMock) -> None:
         """Raises ConnectionError/ChromaConnectionError when heartbeat is 0."""
         mock_client = MagicMock()
         mock_chroma.HttpClient.return_value = mock_client
@@ -169,9 +165,7 @@ class TestVectorStoreServiceInit:
             VectorStoreService(host="localhost", port=8000)
 
     @patch("services.rag.vector_store.chromadb")
-    def test_raises_connection_error_on_http_client_exception(
-        self, mock_chroma: MagicMock
-    ) -> None:
+    def test_raises_connection_error_on_http_client_exception(self, mock_chroma: MagicMock) -> None:
         """Raises appropriate exception when HttpClient itself raises."""
         mock_chroma.HttpClient.side_effect = Exception("Connection refused")
 
@@ -185,9 +179,7 @@ class TestVectorStoreServiceInit:
         # The call includes the collection name (possibly with extra kwargs)
         client.get_or_create_collection.assert_called_once()
         call_args = client.get_or_create_collection.call_args
-        passed_name = (
-            call_args.args[0] if call_args.args else call_args.kwargs.get("name")
-        )
+        passed_name = call_args.args[0] if call_args.args else call_args.kwargs.get("name")
         assert passed_name == "my_kb"
 
 
@@ -284,9 +276,7 @@ class TestIngest:
 
     @patch("services.rag.vector_store.chromadb")
     @patch("services.rag.vector_store.time.sleep")
-    def test_empty_list_returns_zero(
-        self, mock_sleep: MagicMock, mock_chroma: MagicMock
-    ) -> None:
+    def test_empty_list_returns_zero(self, mock_sleep: MagicMock, mock_chroma: MagicMock) -> None:
         """Ingesting an empty list returns 0 without calling upsert."""
         svc, _, mock_col = _make_service(mock_chroma)
         result = svc.ingest([])
@@ -358,9 +348,7 @@ class TestQuery:
         mock_col.query.assert_called_once()
 
     @patch("services.rag.vector_store.chromadb")
-    def test_raises_database_read_error_on_failure(
-        self, mock_chroma: MagicMock
-    ) -> None:
+    def test_raises_database_read_error_on_failure(self, mock_chroma: MagicMock) -> None:
         """DatabaseReadError (or base Exception) is raised when query fails."""
         svc, _, mock_col = _make_service(mock_chroma)
         mock_col.query.side_effect = Exception("query boom")
@@ -400,9 +388,7 @@ class TestClearCollection:
         assert mock_client.get_or_create_collection.call_count == 2
 
     @patch("services.rag.vector_store.chromadb")
-    def test_raises_database_write_error_on_failure(
-        self, mock_chroma: MagicMock
-    ) -> None:
+    def test_raises_database_write_error_on_failure(self, mock_chroma: MagicMock) -> None:
         """Raises DatabaseWriteError (or Exception) when delete_collection fails."""
         svc, mock_client, _ = _make_service(mock_chroma)
         mock_client.delete_collection.side_effect = Exception("delete fail")
@@ -428,9 +414,7 @@ class TestHealthCheck:
         assert result is True
 
     @patch("services.rag.vector_store.chromadb")
-    def test_raises_or_returns_false_on_heartbeat_failure(
-        self, mock_chroma: MagicMock
-    ) -> None:
+    def test_raises_or_returns_false_on_heartbeat_failure(self, mock_chroma: MagicMock) -> None:
         """health_check raises ChromaConnectionError (or returns False) on failure."""
         svc, mock_client, _ = _make_service(mock_chroma)
         mock_client.heartbeat.side_effect = Exception("timeout")
@@ -442,9 +426,7 @@ class TestHealthCheck:
             pass  # Either behaviour is acceptable
 
     @patch("services.rag.vector_store.chromadb")
-    def test_returns_false_on_zero_heartbeat_after_init(
-        self, mock_chroma: MagicMock
-    ) -> None:
+    def test_returns_false_on_zero_heartbeat_after_init(self, mock_chroma: MagicMock) -> None:
         """health_check returns False / raises when heartbeat → 0 post-init."""
         svc, mock_client, _ = _make_service(mock_chroma)
         mock_client.heartbeat.return_value = 0
@@ -476,9 +458,7 @@ class TestGetCollectionStats:
         assert any("count" in key.lower() or v == 42 for key, v in result.items())
 
     @patch("services.rag.vector_store.chromadb")
-    def test_raises_database_read_error_on_failure(
-        self, mock_chroma: MagicMock
-    ) -> None:
+    def test_raises_database_read_error_on_failure(self, mock_chroma: MagicMock) -> None:
         """Raises DatabaseReadError (or Exception) when collection.count fails."""
         svc, _, mock_col = _make_service(mock_chroma)
         mock_col.count.side_effect = Exception("count bork")

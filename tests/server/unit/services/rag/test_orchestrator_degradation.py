@@ -48,9 +48,7 @@ class TestRAGOrchestratorGracefulDegradation:
     @pytest.fixture
     def orchestrator(self, mock_vector_store, mock_template_builder, mock_llm_client):
         """Create orchestrator with mocked dependencies (WorkflowInjector isolated)."""
-        with patch(
-            "app.services.rag.orchestrator.WorkflowInjector"
-        ) as mock_injector_cls:
+        with patch("app.services.rag.orchestrator.WorkflowInjector") as mock_injector_cls:
             mock_injector_cls.return_value.get_injected_prompt.return_value = ""
             orch = RAGOrchestrator(
                 vector_store=mock_vector_store,

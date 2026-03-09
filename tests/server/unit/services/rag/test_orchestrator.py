@@ -26,9 +26,7 @@ class TestRAGOrchestrator:
         mock = MagicMock()
         mock.select_template.return_value = "20-PLANNING"
         mock.build_prompt.return_value = (
-            "System: You are an AI assistant.\n\n"
-            "Context: Doc1, Doc2\n\n"
-            "User: How to test?"
+            "System: You are an AI assistant.\n\n" "Context: Doc1, Doc2\n\n" "User: How to test?"
         )
         return mock
 
@@ -85,9 +83,7 @@ class TestRAGOrchestrator:
             "System: No context available. Answer generically."
         )
 
-        with patch(
-            "app.services.rag.orchestrator.WorkflowInjector"
-        ) as mock_injector_cls:
+        with patch("app.services.rag.orchestrator.WorkflowInjector") as mock_injector_cls:
             mock_injector_cls.return_value.get_injected_prompt.return_value = ""
             orchestrator = RAGOrchestrator(
                 vector_store=mock_vector_store,
@@ -147,9 +143,7 @@ class TestRAGOrchestrator:
         """
         mock_vector_store.search.side_effect = Exception("ChromaDB connection failed")
 
-        with patch(
-            "app.services.rag.orchestrator.WorkflowInjector"
-        ) as mock_injector_cls:
+        with patch("app.services.rag.orchestrator.WorkflowInjector") as mock_injector_cls:
             mock_injector_cls.return_value.get_injected_prompt.return_value = ""
             orchestrator = RAGOrchestrator(
                 vector_store=mock_vector_store,

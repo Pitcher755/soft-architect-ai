@@ -119,12 +119,13 @@ class SequentialOrchestrator:
 
         critical_rules = (
             "\n\n<critical_rules>\n"
-            f"1. GENERATE ONLY THE FINAL DOCUMENT [{doc_type}] for user {user_name}.\n"
-            "2. DO NOT output `<template>`, `<example>`, or ```markdown blocks wrapping the whole response.\n"
+            f"1. YOUR ONLY TASK is to output the final, populated [{doc_type}] document for the user's project.\n"
+            "2. NEVER output the `<template>` or `<example>` blocks in your response. They are just reference material for you.\n"
             "3. Start your response EXACTLY with this line: **Path:** context/YOUR_PATH_HERE\n"
-            "4. Immediately after the Path line, output the raw markdown content.\n"
-            "5. Replace all {{PLACEHOLDERS}} with project data.\n"
-            "6. Respond in the same language the user is speaking.\n"
+            "4. Immediately after the Path line, output the raw markdown content of the generated document.\n"
+            "5. Replace all {{PLACEHOLDERS}} with specific, realistic data based on the user's project idea.\n"
+            "6. You MUST respond in the same language the user is speaking (e.g., if the user speaks Spanish, translate all headers and content to Spanish).\n"
+            "7. DO NOT wrap your entire response in ```markdown tags. Just output the text directly.\n"
             "</critical_rules>\n"
         )
 

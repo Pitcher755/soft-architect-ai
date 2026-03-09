@@ -65,7 +65,8 @@ class SmartMessageRenderer extends StatelessWidget {
       content.contains('**File:**') ||
       content.contains('[document]');
 
-  /// Splits content between reasoning and document, building the appropriate widgets.
+  /// Splits content between reasoning and document,
+  /// building the appropriate widgets.
   Widget _buildRailMixedContent(BuildContext context, String content) {
     final elements = <Widget>[];
     var reasoningText = '';
@@ -82,7 +83,8 @@ class SmartMessageRenderer extends StatelessWidget {
         reasoningText = reasoningText.replaceFirst('[Razonamiento]', '').trim();
       }
     } else {
-      // If no [document] tag but has Path keyword, attempt to infer where document starts
+      // If no [document] tag but has Path keyword,
+      // attempt to infer where document starts
       final pathIndex = content.indexOf('**Path:**');
       final altPathIndex = content.indexOf('Path:');
 
@@ -98,8 +100,9 @@ class SmartMessageRenderer extends StatelessWidget {
 
     // 1. Render reasoning (if present) as a normal message
     if (reasoningText.isNotEmpty) {
-      elements.add(_buildMarkdown(context, reasoningText));
-      elements.add(const SizedBox(height: 12));
+      elements
+        ..add(_buildMarkdown(context, reasoningText))
+        ..add(const SizedBox(height: 12));
     }
 
     // 2. Render document (if present) inside its Card

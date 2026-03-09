@@ -54,6 +54,7 @@ class FileSystemServiceImpl implements FileSystemService {
 
       // 3. 🎯 LA MAGIA: Nos aseguramos de que toda la cadena de carpetas exista
       final directory = file.parent;
+      // ignore: avoid_slow_async_io - Necessary for desktop file operations
       if (!await directory.exists()) {
         await directory.create(recursive: true);
       }
@@ -77,6 +78,7 @@ class FileSystemServiceImpl implements FileSystemService {
       final fullPath = p.join(projectPath, cleanRelativePath);
       final file = File(fullPath);
 
+      // ignore: avoid_slow_async_io - Desktop file check required
       if (!await file.exists()) {
         return null;
       }
@@ -97,6 +99,7 @@ class FileSystemServiceImpl implements FileSystemService {
         : relativePath;
     final fullPath = p.join(projectPath, cleanRelativePath);
     final file = File(fullPath);
+    // ignore: avoid_slow_async_io - Desktop file existence check
     return file.exists();
   }
 
@@ -112,6 +115,7 @@ class FileSystemServiceImpl implements FileSystemService {
       final fullPath = p.join(projectPath, cleanRelativePath);
       final file = File(fullPath);
 
+      // ignore: avoid_slow_async_io - Desktop file deletion safety check
       if (await file.exists()) {
         await file.delete();
       }

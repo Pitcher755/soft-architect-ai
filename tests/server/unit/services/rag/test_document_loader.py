@@ -67,9 +67,7 @@ class TestDocumentLoaderInit:
         loader = DocumentLoader(knowledge_base_dir=kb_dir, validate_security=False)
         assert loader.knowledge_base_dir == kb_dir.resolve()
 
-    def test_init_with_missing_directory_raises_value_error(
-        self, tmp_path: Path
-    ) -> None:
+    def test_init_with_missing_directory_raises_value_error(self, tmp_path: Path) -> None:
         """Constructor raises ValueError when directory does not exist."""
         missing = tmp_path / "does_not_exist"
         with pytest.raises(ValueError, match="Knowledge base directory not found"):
@@ -102,9 +100,7 @@ class TestDocumentLoaderInit:
         loader = DocumentLoader(knowledge_base_dir=kb_dir, validate_security=True)
         assert loader.validate_security is True
 
-    def test_security_validation_raises_for_unreadable_directory(
-        self, kb_dir: Path
-    ) -> None:
+    def test_security_validation_raises_for_unreadable_directory(self, kb_dir: Path) -> None:
         """_validate_security raises when directory is not readable."""
         with patch("os.access", return_value=False):
             with pytest.raises(ValueError, match="not readable"):
@@ -144,9 +140,7 @@ class TestFindMarkdownFiles:
         found = list(loader._find_markdown_files())
         assert not any(p.suffix != ".md" for p in found)
 
-    def test_recurses_into_subdirectories(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_recurses_into_subdirectories(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Yields files from nested subdirectories."""
         sub = kb_dir / "sub"
         sub.mkdir()
@@ -154,9 +148,7 @@ class TestFindMarkdownFiles:
         found = list(loader._find_markdown_files())
         assert any(p.name == "nested.md" for p in found)
 
-    def test_skips_hidden_directories(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_skips_hidden_directories(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Does not descend into hidden directories."""
         hidden_dir = kb_dir / ".hidden_dir"
         hidden_dir.mkdir()
@@ -185,9 +177,7 @@ class TestFindMarkdownFiles:
 class TestValidateFilePath:
     """Tests for _validate_file_path security checks."""
 
-    def test_raises_when_file_outside_kb(
-        self, loader: DocumentLoader, tmp_path: Path
-    ) -> None:
+    def test_raises_when_file_outside_kb(self, loader: DocumentLoader, tmp_path: Path) -> None:
         """Raises ValueError when file is outside the knowledge base."""
         outside = tmp_path.parent / "outside.md"
         outside.write_text("# Outside", encoding="utf-8")
@@ -220,9 +210,7 @@ class TestExtractTitle:
         title = loader._extract_title(p)
         assert "My Document" in title
 
-    def test_stops_at_first_non_header_line(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_stops_at_first_non_header_line(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Does not return title from a buried H1."""
         p = _write_md(kb_dir, "buried.md", "Intro text\n\n# Buried Title\n")
         title = loader._extract_title(p)
@@ -238,9 +226,7 @@ class TestExtractTitle:
 class TestExtractTags:
     """Tests for _extract_tags."""
 
-    def test_includes_top_level_category(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_includes_top_level_category(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Top-level folder name is included as a tag."""
         category = kb_dir / "01-TECH"
         category.mkdir()
@@ -267,9 +253,7 @@ class TestExtractTags:
 class TestExtractMetadata:
     """Tests for _extract_metadata."""
 
-    def test_returns_document_metadata_instance(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_returns_document_metadata_instance(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Returns a DocumentMetadata dataclass."""
         p = _write_md(kb_dir, "meta_test.md", "# Meta\n\nContent.")
         meta = loader._extract_metadata(p)
@@ -283,9 +267,7 @@ class TestExtractMetadata:
         assert meta.size_bytes > 0
         assert meta.depth >= 1
 
-    def test_metadata_category_from_subfolder(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_metadata_category_from_subfolder(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Category is set from top-level subfolder."""
         cat = kb_dir / "02-ARCH"
         cat.mkdir()
@@ -310,9 +292,7 @@ class TestSplitByHeader:
         assert "Section A" in sections[0]
         assert "Section B" in sections[1]
 
-    def test_returns_whole_content_when_no_matching_header(
-        self, loader: DocumentLoader
-    ) -> None:
+    def test_returns_whole_content_when_no_matching_header(self, loader: DocumentLoader) -> None:
         """Returns single-element list when no header matches."""
         content = "No headers here at all."
         sections = loader._split_by_header(content, level=2)
@@ -488,9 +468,7 @@ class TestLoadDocument:
         self, loader: DocumentLoader, kb_dir: Path
     ) -> None:
         """Returns a list (possibly empty) for a valid .md file."""
-        p = _write_md(
-            kb_dir, "valid.md", "# Valid\n\nThis is a comprehensive markdown document."
-        )
+        p = _write_md(kb_dir, "valid.md", "# Valid\n\nThis is a comprehensive markdown document.")
         result = loader.load_document(p)
         assert isinstance(result, list)
 
@@ -501,16 +479,12 @@ class TestLoadDocument:
         with pytest.raises(ValueError, match="File must be .md"):
             loader.load_document(txt)
 
-    def test_raises_for_missing_file(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_raises_for_missing_file(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Raises ValueError when file does not exist."""
         with pytest.raises(ValueError, match="File not found"):
             loader.load_document(kb_dir / "ghost.md")
 
-    def test_raises_for_oversized_file(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_raises_for_oversized_file(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Raises ValueError when file exceeds 10 MB."""
         p = _write_md(kb_dir, "big.md", "content")
         with patch("pathlib.Path.stat") as mock_stat:
@@ -540,13 +514,9 @@ class TestLoadDocument:
         with pytest.raises((ValueError, UnicodeDecodeError)):
             loader.load_document(p)
 
-    def test_load_document_validates_path_when_security_enabled(
-        self, kb_dir: Path
-    ) -> None:
+    def test_load_document_validates_path_when_security_enabled(self, kb_dir: Path) -> None:
         """load_document calls _validate_file_path when security is on."""
-        secure_loader = DocumentLoader(
-            knowledge_base_dir=kb_dir, validate_security=True
-        )
+        secure_loader = DocumentLoader(knowledge_base_dir=kb_dir, validate_security=True)
         # File inside kb_dir should pass validation
         p = _write_md(kb_dir, "secure.md", "# Secure\n\nContent here.")
         result = secure_loader.load_document(p)
@@ -561,9 +531,7 @@ class TestLoadDocument:
 class TestLoadAllDocuments:
     """Tests for load_all_documents generator."""
 
-    def test_yields_chunks_from_all_files(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_yields_chunks_from_all_files(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Generator yields chunks from all .md files."""
         loader.min_chunk_size = 5
         _write_md(kb_dir, "a.md", "# A\n\nContent for document A.")
@@ -572,9 +540,7 @@ class TestLoadAllDocuments:
         assert len(chunks) >= 0  # may vary by min_chunk_size
         assert all(isinstance(c, DocumentChunk) for c in chunks)
 
-    def test_skips_files_that_fail_to_load(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_skips_files_that_fail_to_load(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Errors on individual files are swallowed; generator continues."""
         _write_md(kb_dir, "good.md", "# Good\n\nGood content here.")
         # Patch load_document to raise on the first call, succeed on second
@@ -593,9 +559,7 @@ class TestLoadAllDocuments:
         chunks = list(loader.load_all_documents())
         assert isinstance(chunks, list)
 
-    def test_yields_nothing_for_empty_directory(
-        self, loader: DocumentLoader, kb_dir: Path
-    ) -> None:
+    def test_yields_nothing_for_empty_directory(self, loader: DocumentLoader, kb_dir: Path) -> None:
         """Empty knowledge base yields no chunks."""
         chunks = list(loader.load_all_documents())
         assert chunks == []
