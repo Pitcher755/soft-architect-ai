@@ -43,12 +43,12 @@ class TestGetInjectedPromptKnownDocType:
 
     @pytest.fixture
     def injector_with_mocked_files(self) -> WorkflowInjector:
-        """Return a WorkflowInjector whose _read_file is mocked."""
+        """Return a WorkflowInjector whose _read_with_fallback is mocked."""
         injector = WorkflowInjector()
-        injector._read_file = MagicMock(  # type: ignore[method-assign]
-            side_effect=lambda path: (
+        injector._read_with_fallback = MagicMock(  # type: ignore[method-assign]
+            side_effect=lambda direct_path, file_name: (
                 "# Template content for testing"
-                if "template" in str(path).lower()
+                if "template" in file_name.lower()
                 else "# Example content for testing"
             )
         )
@@ -65,16 +65,16 @@ class TestGetInjectedPromptKnownDocType:
     def test_prompt_contains_template_section_marker(
         self, injector_with_mocked_files: WorkflowInjector
     ) -> None:
-        """The result must include the MANDATORY STRUCTURE section header."""
+        """The result must include the <template> XML tag."""
         result = injector_with_mocked_files.get_injected_prompt("PROJECT_MANIFESTO")
-        assert "MANDATORY STRUCTURE" in result
+        assert "<template>" in result
 
     def test_prompt_contains_example_section_marker(
         self, injector_with_mocked_files: WorkflowInjector
     ) -> None:
-        """The result must include the MASTER EXAMPLE section header."""
+        """The result must include the <example> XML tag."""
         result = injector_with_mocked_files.get_injected_prompt("PROJECT_MANIFESTO")
-        assert "MASTER EXAMPLE" in result
+        assert "<example>" in result
 
     def test_prompt_contains_template_file_content(
         self, injector_with_mocked_files: WorkflowInjector
@@ -93,9 +93,9 @@ class TestGetInjectedPromptKnownDocType:
     def test_readme_prompt_contains_closing_instruction(
         self, injector_with_mocked_files: WorkflowInjector
     ) -> None:
-        """README doc_type must append the PROJECT CLOSING INSTRUCTION block."""
+        """README doc_type must append the <project_closing_instruction> block."""
         result = injector_with_mocked_files.get_injected_prompt("README")
-        assert "PROJECT CLOSING INSTRUCTION" in result
+        assert "<project_closing_instruction>" in result
         assert "LAST document" in result
 
     def test_non_readme_prompt_has_no_closing_instruction(
@@ -103,51 +103,54 @@ class TestGetInjectedPromptKnownDocType:
     ) -> None:
         """Non-README doc_types must NOT include the closing instruction block."""
         result = injector_with_mocked_files.get_injected_prompt("PROJECT_MANIFESTO")
-        assert "PROJECT CLOSING INSTRUCTION" not in result
+        assert "<project_closing_instruction>" not in result
 
-    def test_read_file_called_twice_per_invocation(
+    def test_read_with_fallback_called_twice_per_invocation(
         self, injector_with_mocked_files: WorkflowInjector
     ) -> None:
-        """_read_file must be called exactly twice: once for template, once for example."""
+        """_read_with_fallback must be called exactly twice: once for template, once for example."""
         injector_with_mocked_files.get_injected_prompt("PROJECT_MANIFESTO")
-        assert injector_with_mocked_files._read_file.call_count == 2  # type: ignore[attr-defined]
+        assert injector_with_mocked_files._read_with_fallback.call_count == 2  # type: ignore[attr-defined]
 
 
-class TestReadFile:
-    """Tests for the _read_file helper method."""
+class TestReadWithFallback:
+    """Tests for the _read_with_fallback helper method."""
 
     def test_returns_file_content_when_file_exists(self, tmp_path: Path) -> None:
-        """_read_file must return the exact file contents for an existing file."""
+        """_read_with_fallback must return the exact file contents for an existing file."""
         test_file = tmp_path / "sample.md"
         test_file.write_text("Hello, workflow!", encoding="utf-8")
 
         injector = WorkflowInjector()
-        result = injector._read_file(test_file)
+        result = injector._read_with_fallback(test_file, "sample.md")
         assert result == "Hello, workflow!"
 
     def test_returns_empty_string_when_file_not_found(self, tmp_path: Path) -> None:
-        """_read_file must return '' for a path that does not exist."""
+        """_read_with_fallback must return '' when file not found in direct path or fallback."""
         non_existent = tmp_path / "does_not_exist.md"
         injector = WorkflowInjector()
-        result = injector._read_file(non_existent)
+        # Mock knowledge_base_path to tmp_path to avoid searching system
+        injector.knowledge_base_path = tmp_path
+        result = injector._read_with_fallback(non_existent, "does_not_exist.md")
         assert result == ""
 
     def test_returns_empty_string_on_os_error(self, tmp_path: Path) -> None:
-        """_read_file must return '' when an OSError is raised during reading."""
+        """_read_with_fallback must return '' when an OSError is raised during reading."""
         test_file = tmp_path / "locked.md"
         test_file.write_text("content", encoding="utf-8")
 
         injector = WorkflowInjector()
+        injector.knowledge_base_path = tmp_path
         with patch("builtins.open", side_effect=OSError("Permission denied")):
-            result = injector._read_file(test_file)
+            result = injector._read_with_fallback(test_file, "locked.md")
         assert result == ""
 
     def test_reads_utf8_content_correctly(self, tmp_path: Path) -> None:
-        """_read_file must handle UTF-8 encoded content (including non-ASCII)."""
+        """_read_with_fallback must handle UTF-8 encoded content (including non-ASCII)."""
         test_file = tmp_path / "utf8.md"
         unicode_content = "# Título del proyecto — versión β"
         test_file.write_text(unicode_content, encoding="utf-8")
 
         injector = WorkflowInjector()
-        result = injector._read_file(test_file)
+        result = injector._read_with_fallback(test_file, "utf8.md")
         assert result == unicode_content

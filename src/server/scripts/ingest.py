@@ -14,7 +14,7 @@ Supported formats:
 
 Usage:
     python src/server/scripts/ingest.py
-    python src/server/scripts/ingest.py --knowledge-base packages/knowledge_base
+    python src/server/scripts/ingest.py --knowledge-base /app/knowledge_base/02-TECH-PACKS
     python src/server/scripts/ingest.py --host chromadb --port 8000
     python src/server/scripts/ingest.py --clear  # Clear collection before ingestion
 
@@ -87,10 +87,21 @@ def load_multiformat_documents(  # noqa: C901
         files = list(kb_path.rglob(pattern))
         all_files.extend([(f, file_type) for f in files])
 
-    logger.info(f"Found {len(all_files)} documents in {kb_path}")
+    logger.info(f"Found {len(all_files)} total files in {kb_path}. Applying filters...")
 
     for file_path, file_type in all_files:
         try:
+            path_str = str(file_path)
+
+            # 🎯 FILTER: Skip templates and workflow examples to avoid semantic contamination
+            # We only want pure technical knowledge (Tech Packs) in the Vector Store.
+            if (
+                "01-TEMPLATES" in path_str
+                or "03-EXAMPLES" in path_str
+                or "MASTER_WORKFLOW_EXAMPLES" in path_str
+            ):
+                continue
+
             content = None
             metadata_extra = {"file_type": file_type}
 
@@ -145,7 +156,7 @@ def load_multiformat_documents(  # noqa: C901
             logger.error(f"Failed to load {file_path}: {e}")
             continue
 
-    logger.info(f"✅ Successfully loaded {len(documents)} documents")
+    logger.info(f"✅ Successfully loaded {len(documents)} filtered knowledge documents")
     return documents
 
 
@@ -172,11 +183,11 @@ def main():
         help=f"ChromaDB server port (default: {default_port})",
     )
 
-    # ✅ CORRECCIÓN 3: Usar la ruta absoluta dentro del contenedor por defecto
+    # ✅ CORRECCIÓN 3: Apuntamos directamente al subdirectorio TECH_PACKS por defecto
     parser.add_argument(
         "--knowledge-base",
-        default="/app/knowledge_base",
-        help="Path to knowledge base directory (default: /app/knowledge_base)",
+        default="/app/knowledge_base/02-TECH-PACKS",
+        help="Path to knowledge base directory (default: /app/knowledge_base/02-TECH-PACKS)",
     )
 
     parser.add_argument(

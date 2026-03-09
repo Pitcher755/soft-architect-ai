@@ -1,7 +1,8 @@
 """Workflow Injector Service.
 
-Reads template and example files directly from disk using the MASTER_WORKFLOW registry,
-building deterministic prompts for the LLM without relying on vector search.
+Reads template and example files directly from disk using the MASTER_WORKFLOW registry.
+Prioritizes direct path access for performance, with a recursive fallback for resilience.
+Builds deterministic prompts using XML tags for better LLM comprehension.
 """
 
 import logging
@@ -13,75 +14,123 @@ logger = logging.getLogger(__name__)
 
 
 class WorkflowInjector:
+    """Injects deterministic templates and examples into LLM prompts."""
+
     def __init__(self) -> None:
-        """Initialize WorkflowInjector with Docker container knowledge base path."""
+        """Initialize WorkflowInjector with the Docker container knowledge base path."""
         self.knowledge_base_path = Path("/app/knowledge_base")
-        logger.info(
-            "WorkflowInjector knowledge_base_path: %s", self.knowledge_base_path
-        )
+        logger.info("WorkflowInjector initialized with path: %s", self.knowledge_base_path)
 
     def get_injected_prompt(self, doc_type: str) -> str:
-        """Build a deterministic injection block for the given doc_type."""
+        """Build a deterministic injection block for the given document type."""
         step = get_step_by_type(doc_type)
 
         if not step:
-            logger.error(
-                "doc_type '%s' is not registered in MASTER_WORKFLOW.", doc_type
-            )
+            logger.error("Document type '%s' is not registered in MASTER_WORKFLOW.", doc_type)
             return ""
 
-        # Strip registry prefix to avoid duplication in final path
-        clean_template_path = step.template_path.replace(
-            "packages/knowledge_base/", "", 1
-        )
-        clean_example_path = step.example_path.replace(
-            "packages/knowledge_base/", "", 1
-        )
+        template_name = Path(step.template_path).name
+        example_name = Path(step.example_path).name
 
-        template_full_path = self.knowledge_base_path / clean_template_path
-        example_full_path = self.knowledge_base_path / clean_example_path
+        direct_template_path = (
+            self.knowledge_base_path
+            / "01-TEMPLATES"
+            / self._get_template_subfolder(doc_type)
+            / template_name
+        )
+        direct_example_path = self.knowledge_base_path / "MASTER_WORKFLOW_EXAMPLES" / example_name
 
-        template_content = self._read_file(template_full_path)
-        example_content = self._read_file(example_full_path)
+        template_content = self._read_with_fallback(direct_template_path, template_name)
+        example_content = self._read_with_fallback(direct_example_path, example_name)
 
         if not template_content:
-            logger.warning("Template not found. Path: %s", template_full_path)
+            logger.error("Template not found for: %s", template_name)
         if not example_content:
-            logger.warning("Example not found. Path: %s", example_full_path)
+            logger.warning("Example not found for: %s", example_name)
 
         injection = (
-            "=== MANDATORY STRUCTURE (TEMPLATE) ===\n"
-            "Fill in this exact template. Do not omit or rename any section.\n"
-            f"{template_content}\n\n"
-            "=== MASTER EXAMPLE (DENSITY AND STYLE REFERENCE) ===\n"
-            "Use this example to understand the expected technical depth."
-            " Mirror its level of detail.\n"
+            "<system_instructions>\n"
+            "You are SoftArchitect AI, a strict Principal Software Engineer.\n"
+            "Your ONLY task is to generate the final document. DO NOT output your thought process.\n"
+            "DO NOT repeat the template or the example in your output. Just output the final result.\n"
+            "Translate all headers and text to the user's language.\n"
+            "</system_instructions>\n\n"
+            "<template>\n"
+            f"{template_content}\n"
+            "</template>\n\n"
+            "<example>\n"
             f"{example_content}\n"
+            "</example>\n"
         )
 
         if doc_type == "README":
             injection += (
-                "\n=== PROJECT CLOSING INSTRUCTION ===\n"
+                "\n<project_closing_instruction>\n"
                 "This is the LAST document of the Master Workflow.\n"
-                "After closing the </document> tag, you MUST include "
+                "After closing the document, you MUST include "
                 "the following celebration message:\n\n"
                 "Congratulations! All architecture documents are ready. "
-                "You can now open your IDE and start coding."
+                "You can now open your IDE and start coding.\n"
+                "</project_closing_instruction>\n"
             )
 
-        logger.info(
-            "Injector prepared document: %s (Step %d)", doc_type, step.step_number
-        )
+        logger.info("Injector prepared document: %s (Step %d)", doc_type, step.step_number)
         return injection
 
-    def _read_file(self, file_path: Path) -> str:
-        """Read a text file safely, returning an empty string on any failure."""
-        if not file_path.exists():
-            logger.error("File not found on disk: %s", file_path)
-            return ""
-        try:
-            with open(file_path, encoding="utf-8") as f:
-                return f.read()
-        except OSError as e:
-            logger.error("Error reading %s: %s", file_path, e)
-            return ""
+    def _get_template_subfolder(self, doc_type: str) -> str:
+        """Map doc_type to its subfolder in 01-TEMPLATES for direct access."""
+        if doc_type in ["PROJECT_MANIFESTO", "DOMAIN_LANGUAGE", "USER_JOURNEY_MAP"]:
+            return "10-CONTEXT"
+        if doc_type in [
+            "REQUIREMENTS_MASTER",
+            "USER_STORIES_MASTER",
+            "SECURITY_PRIVACY_POLICY",
+            "COMPLIANCE_MATRIX",
+        ]:
+            return "20-REQUIREMENTS"
+        if doc_type in [
+            "TECH_STACK_DECISION",
+            "DATA_MODEL_SCHEMA",
+            "API_INTERFACE_CONTRACT",
+            "PROJECT_STRUCTURE_MAP",
+            "SECURITY_THREAT_MODEL",
+            "ARCH_DECISION_RECORDS",
+        ]:
+            return "30-ARCHITECTURE"
+        if doc_type in ["DESIGN_SYSTEM", "UI_WIREFRAMES_FLOW", "ACCESSIBILITY_GUIDE"]:
+            return "35-UX_UI"
+        if doc_type in [
+            "ROADMAP_PHASES",
+            "DEPLOYMENT_INFRASTRUCTURE",
+            "CI_CD_PIPELINE",
+            "TESTING_STRATEGY",
+        ]:
+            return "40-PLANNING"
+        if doc_type in ["RULES", "CONTRIBUTING", "AGENTS", "README"]:
+            return "00-ROOT"
+        return ""
+
+    def _read_with_fallback(self, direct_path: Path, file_name: str) -> str:
+        """Attempt to read file from direct path, fallback to recursive search."""
+        if direct_path.exists():
+            try:
+                with open(direct_path, encoding="utf-8") as f:
+                    return f.read()
+            except OSError as e:
+                logger.error("Error reading direct path %s: %s", direct_path, e)
+
+        logger.warning(
+            "File not found at %s, triggering recursive fallback search for %s",
+            direct_path,
+            file_name,
+        )
+
+        for file_path in self.knowledge_base_path.rglob(file_name):
+            try:
+                with open(file_path, encoding="utf-8") as f:
+                    logger.info("Fallback successful. Found at: %s", file_path)
+                    return f.read()
+            except OSError as e:
+                logger.error("Error reading %s during fallback: %s", file_path, e)
+
+        return ""
