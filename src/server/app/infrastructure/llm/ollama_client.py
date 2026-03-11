@@ -226,9 +226,7 @@ class OllamaClient(BaseLLMClient):
         for attempt in range(max_retries):
             try:
                 async with httpx.AsyncClient(timeout=self.timeout) as client:
-                    async with client.stream(
-                        "POST", endpoint, json=payload
-                    ) as response:
+                    async with client.stream("POST", endpoint, json=payload) as response:
                         response.raise_for_status()
 
                         async for line in response.aiter_lines():
@@ -239,9 +237,7 @@ class OllamaClient(BaseLLMClient):
                                 data = json.loads(line)
                             except json.JSONDecodeError:
                                 # Log malformed line but continue streaming
-                                logger.warning(
-                                    f"Malformed JSON in Ollama stream: {line[:100]}"
-                                )
+                                logger.warning(f"Malformed JSON in Ollama stream: {line[:100]}")
                                 continue
 
                             # Check if stream is done
@@ -258,17 +254,13 @@ class OllamaClient(BaseLLMClient):
                                 yield token
 
                 # Stream completed successfully, exit retry loop
-                logger.info(
-                    f"✅ Ollama stream succeeded on attempt {attempt + 1}/{max_retries}"
-                )
+                logger.info(f"✅ Ollama stream succeeded on attempt {attempt + 1}/{max_retries}")
                 return
 
             except (httpx.RequestError, httpx.TimeoutException) as error:
                 if attempt == max_retries - 1:
                     # Last attempt failed, raise domain exception
-                    logger.error(
-                        f"❌ Ollama stream failed after {max_retries} attempts: {error}"
-                    )
+                    logger.error(f"❌ Ollama stream failed after {max_retries} attempts: {error}")
                     if isinstance(error, httpx.TimeoutException):
                         raise LLMTimeoutError(
                             message=f"Streaming timeout after {max_retries} retries: {str(error)}",

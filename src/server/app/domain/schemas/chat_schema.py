@@ -9,7 +9,7 @@ Security considerations:
 from datetime import UTC, datetime
 from uuid import UUID
 
-from pydantic import BaseModel, Field, field_validator, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.core.config import settings
 from app.domain.utils.sanitizer import InputSanitizer
@@ -17,9 +17,9 @@ from app.domain.utils.sanitizer import InputSanitizer
 
 class ChatRequest(BaseModel):
     """Incoming chat message request."""
-    
+
     # 🎯 FIX: Permite que Flutter envíe campos extra (id, timestamp, etc) sin explotar
-    model_config = ConfigDict(extra='ignore')
+    model_config = ConfigDict(extra="ignore")
 
     conversation_id: UUID = Field(
         ...,
@@ -33,9 +33,7 @@ class ChatRequest(BaseModel):
             f"User message (max {settings.CHAT_MAX_MESSAGE_LENGTH} chars, "
             "configurable via CHAT_MAX_MESSAGE_LENGTH)"
         ),
-        json_schema_extra={
-            "examples": ["How do I implement authentication in Flutter?"]
-        },
+        json_schema_extra={"examples": ["How do I implement authentication in Flutter?"]},
     )
     project_id: UUID = Field(
         ...,
@@ -47,8 +45,7 @@ class ChatRequest(BaseModel):
         default="Developer",
         max_length=100,
         description=(
-            "User's name for LLM prompt personalization "
-            "(injected into system instruction)"
+            "User's name for LLM prompt personalization " "(injected into system instruction)"
         ),
         json_schema_extra={"examples": ["Developer", "Juan", "María", "Alex"]},
     )
@@ -87,9 +84,7 @@ class ChatRequest(BaseModel):
     def validate_history(cls, v: list[dict[str, str]]) -> list[dict[str, str]]:
         max_msgs = settings.CHAT_MAX_HISTORY_MESSAGES
         if len(v) > max_msgs:
-            raise ValueError(
-                f"Chat history exceeds maximum length ({max_msgs} messages)."
-            )
+            raise ValueError(f"Chat history exceeds maximum length ({max_msgs} messages).")
 
         # 🎯 FIX CRÍTICO: Añadimos "system" a los roles válidos para que no de error 422
         valid_roles = {"user", "assistant", "system"}
@@ -112,9 +107,7 @@ class ChatRequest(BaseModel):
 
             # Validate individual message length
             if len(content) > max_msg_length:
-                raise ValueError(
-                    f"Message {i} content exceeds {max_msg_length} characters."
-                )
+                raise ValueError(f"Message {i} content exceeds {max_msg_length} characters.")
 
             sanitized_content = InputSanitizer.sanitize_message(content)
             sanitized_history.append({"role": role, "content": sanitized_content})
@@ -124,21 +117,20 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     """AI-generated response with metadata."""
-    model_config = ConfigDict(extra='ignore')
+
+    model_config = ConfigDict(extra="ignore")
 
     ai_response: str = Field(..., description="Generated AI response text")
     template_used: str = Field(
         ..., description="Template identifier that was used for this response"
     )
-    sources: list[str] = Field(
-        default_factory=list, description="Knowledge base sources used"
-    )
+    sources: list[str] = Field(default_factory=list, description="Knowledge base sources used")
     timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     metadata: dict | None = Field(default=None)
 
 
 class RAGContext(BaseModel):
-    model_config = ConfigDict(extra='ignore')
+    model_config = ConfigDict(extra="ignore")
     query: str
     project_phase: str
     retrieved_docs: list[str]

@@ -19,9 +19,7 @@ class ConversationRepository(Protocol):
     - SQLAlchemyConversationRepository (infrastructure layer)
     """
 
-    async def create_conversation(
-        self, project_id: UUID, title: str | None = None
-    ) -> Conversation:
+    async def create_conversation(self, project_id: UUID, title: str | None = None) -> Conversation:
         """
         Create new conversation.
 
@@ -88,9 +86,7 @@ class ConversationRepository(Protocol):
         """
         ...
 
-    async def get_last_n_messages(
-        self, conversation_id: UUID, n: int = 10
-    ) -> list[Message]:
+    async def get_last_n_messages(self, conversation_id: UUID, n: int = 10) -> list[Message]:
         """
         Get last N messages from conversation (context window).
 

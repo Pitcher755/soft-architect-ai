@@ -9,7 +9,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.api.dependencies import get_rag_orchestrator, verify_api_key
 from app.core.exceptions import (
@@ -30,8 +30,9 @@ orchestrator = None
 
 class ChatMessage(BaseModel):
     """Represents a single chat message."""
+
     # 🎯 FIX: Ignora campos extra (id, timestamp, metadata) enviados por Flutter
-    model_config = ConfigDict(extra='ignore')
+    model_config = ConfigDict(extra="ignore")
 
     role: str = Field(..., description="Role: user, assistant, or system")
     content: str = Field(..., description="Message content")
@@ -39,8 +40,9 @@ class ChatMessage(BaseModel):
 
 class GenerateRequest(BaseModel):
     """Request model for document generation."""
+
     # 🎯 FIX: También permitimos flexibilidad en la petición general
-    model_config = ConfigDict(extra='ignore')
+    model_config = ConfigDict(extra="ignore")
 
     message: str = Field(..., description="User message/requirements")
     doc_type: str = Field(..., description="Document type (e.g., PROJECT_MANIFESTO)")

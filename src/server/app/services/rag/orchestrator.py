@@ -25,9 +25,7 @@ class RAGOrchestrator:
         self.vector_store = vector_store
         self.template_builder = template_builder
         self.llm_client = llm_client
-        self.workflow_injector = (
-            WorkflowInjector()
-        )  # 👈 NUEVO: Instanciamos el Inyector
+        self.workflow_injector = WorkflowInjector()  # 👈 NUEVO: Instanciamos el Inyector
 
     def _check_validation_blocker(
         self, user_message: str, history: list[dict[str, str]]
@@ -98,9 +96,7 @@ class RAGOrchestrator:
         if hardcoded_prompt:
             combined.append(hardcoded_prompt)
         else:
-            logger.warning(
-                "No injection available for %s; LLM will receive no template.", doc_type
-            )
+            logger.warning("No injection available for %s; LLM will receive no template.", doc_type)
 
         # 2. Probabilistic ChromaDB search for user's prior project context
         async def _safe_search(query: str, top_k: int) -> list[str]:
@@ -125,9 +121,7 @@ class RAGOrchestrator:
         sources = await self._retrieve_dual_context(request.message, current_doc_type)
         template_id = "CONTEXT_DRIVEN" if sources else "FALLBACK"
 
-        blocking_message = self._check_validation_blocker(
-            request.message, request.history
-        )
+        blocking_message = self._check_validation_blocker(request.message, request.history)
         if blocking_message is not None:
             return ChatResponse(
                 ai_response=blocking_message,
@@ -168,9 +162,7 @@ class RAGOrchestrator:
         current_doc_type = (request.metadata or {}).get("doc_type", "PROJECT_MANIFESTO")
 
         try:
-            blocking_msg = self._check_validation_blocker(
-                request.message, request.history
-            )
+            blocking_msg = self._check_validation_blocker(request.message, request.history)
             if blocking_msg:
                 yield {"type": "token", "data": blocking_msg, "is_final": True}
                 yield {
@@ -183,9 +175,7 @@ class RAGOrchestrator:
                 }
                 return
 
-            sources = await self._retrieve_dual_context(
-                request.message, current_doc_type
-            )
+            sources = await self._retrieve_dual_context(request.message, current_doc_type)
 
             # Inyectamos el user_name para el stream
             user_name = getattr(request, "user_name", "Developer")
@@ -199,9 +189,7 @@ class RAGOrchestrator:
             )
 
             try:
-                async for token in self.llm_client.stream_generate(
-                    prompt, history=request.history
-                ):
+                async for token in self.llm_client.stream_generate(prompt, history=request.history):
                     full_response += token
                     yield {"type": "token", "data": token, "is_final": False}
             except Exception:

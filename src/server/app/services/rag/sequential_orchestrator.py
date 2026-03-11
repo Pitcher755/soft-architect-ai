@@ -45,9 +45,7 @@ class SequentialOrchestrator:
 
             rag_context = await self._retrieve_user_context(user_input)
 
-            prompt = self._build_prompt(
-                injection_block, user_input, rag_context, context, doc_type
-            )
+            prompt = self._build_prompt(injection_block, user_input, rag_context, context, doc_type)
 
             # Stream tokens from LLM (history already injected in prompt)
             async for token in self.llm_client.stream_generate(prompt, history=[]):
@@ -108,9 +106,7 @@ class SequentialOrchestrator:
 
                 # Truncate oversized assistant documents to save tokens
                 if role == "assistant" and (
-                    "**Path:**" in content
-                    or "Path:" in content
-                    or "[document]" in content
+                    "**Path:**" in content or "Path:" in content or "[document]" in content
                 ):
                     content = "[Previous document generated and saved successfully. Omitted from memory to save context]"
                 elif len(content) > 1000:
@@ -142,9 +138,7 @@ class SequentialOrchestrator:
         sections.append(critical_rules)
 
         if history_text:
-            sections.append(
-                f"<conversation_history>\n{history_text}\n</conversation_history>"
-            )
+            sections.append(f"<conversation_history>\n{history_text}\n</conversation_history>")
 
         sections.append(f"<user_input>\n{user_input}\n</user_input>")
 

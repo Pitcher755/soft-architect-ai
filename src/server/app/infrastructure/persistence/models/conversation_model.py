@@ -21,17 +21,13 @@ class ConversationModel(Base):
 
     __tablename__ = "conversations"
 
-    id = Column(
-        PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False
-    )
+    id = Column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False)
 
     project_id = Column(PG_UUID(as_uuid=True), nullable=False)
 
     title = Column(String(255), nullable=True)
 
-    created_at = Column(
-        DateTime(timezone=True), nullable=False, default=lambda: datetime.now(UTC)
-    )
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(UTC))
 
     updated_at = Column(
         DateTime(timezone=True),

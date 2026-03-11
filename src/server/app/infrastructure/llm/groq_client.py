@@ -41,9 +41,7 @@ class GroqClient(BaseLLMClient):
         history: list[dict[str, str]] | None = None,
     ) -> list[dict[str, str]]:
         """Prepara la lista de mensajes incluyendo el System Prompt y el historial."""
-        messages: list[dict[str, str]] = [
-            {"role": "system", "content": ARCHITECT_SYSTEM_PROMPT}
-        ]
+        messages: list[dict[str, str]] = [{"role": "system", "content": ARCHITECT_SYSTEM_PROMPT}]
         if history:
             messages.extend(history)
         messages.append({"role": "user", "content": prompt})

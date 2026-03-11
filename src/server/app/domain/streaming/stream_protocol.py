@@ -83,9 +83,7 @@ class DoneMessage(StreamMessage):
 
     def to_dict(self) -> dict[str, Any]:
         payload = super().to_dict()
-        payload.update(
-            {"total_tokens": self.total_tokens, "latency_ms": self.latency_ms}
-        )
+        payload.update({"total_tokens": self.total_tokens, "latency_ms": self.latency_ms})
         return payload
 
 

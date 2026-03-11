@@ -53,9 +53,7 @@ class ValidationError(PersistenceError):
             field_name: Name of field that failed validation
         """
         self.field_name = field_name
-        code = (
-            f"VALIDATION_001_{field_name.upper()}" if field_name else "VALIDATION_001"
-        )
+        code = f"VALIDATION_001_{field_name.upper()}" if field_name else "VALIDATION_001"
         super().__init__(message, code)
 
 

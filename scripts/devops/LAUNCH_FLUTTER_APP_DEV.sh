@@ -6,7 +6,8 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CLIENT_DIR="$SCRIPT_DIR/src/client"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+CLIENT_DIR="$PROJECT_ROOT/src/client"
 
 echo "🚀 HU-3.3 Widget Integration - Launching Flutter App"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -15,6 +16,12 @@ echo ""
 # Check if Flutter is installed
 if ! command -v flutter &> /dev/null; then
     echo "❌ Flutter no está instalado o no está en el PATH"
+    exit 1
+fi
+
+# Verify client directory exists
+if [ ! -d "$CLIENT_DIR" ]; then
+    echo "❌ ERROR: Client directory not found at $CLIENT_DIR"
     exit 1
 fi
 

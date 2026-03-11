@@ -30,7 +30,7 @@ class ProjectProgressService {
 
     try {
       final contextDir = Directory(p.join(projectPath, 'context'));
-      if (!await contextDir.exists()) {
+      if (!contextDir.existsSync()) {
         return 0;
       }
 
@@ -41,7 +41,8 @@ class ProjectProgressService {
       )) {
         if (entity is File) {
           final path = entity.path.toLowerCase();
-          // 🎯 FIX: Ahora permitimos tanto .md como .json para que el paso 5 cuente
+          // 🎯 FIX: Ahora permitimos tanto .md como .json
+          // para que el paso 5 cuente
           if (path.endsWith('.md') || path.endsWith('.json')) {
             final filename = p.basename(path);
             if (!filename.contains('readme') &&
@@ -52,7 +53,9 @@ class ProjectProgressService {
         }
       }
       return count;
-    } catch (e) {
+    } on FileSystemException {
+      return 0;
+    } on Exception {
       return 0;
     }
   }

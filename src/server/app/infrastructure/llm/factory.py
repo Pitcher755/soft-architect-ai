@@ -7,9 +7,9 @@ import logging
 import os
 
 from app.infrastructure.llm.base import BaseLLMClient
+from app.infrastructure.llm.gemini_client import GeminiClient
 from app.infrastructure.llm.groq_client import GroqClient
 from app.infrastructure.llm.ollama_client import OllamaClient
-from app.infrastructure.llm.gemini_client import GeminiClient
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ def get_llm_client(mode: str | None = None) -> BaseLLMClient:
         api_key = os.getenv("GEMINI_API_KEY", "")
         if not api_key:
             logger.warning("GEMINI_API_KEY not set - Gemini client will fail")
-            
+
         model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
         logger.info(f"Creating Gemini client, model={model}")
         return GeminiClient(api_key=api_key, model=model)

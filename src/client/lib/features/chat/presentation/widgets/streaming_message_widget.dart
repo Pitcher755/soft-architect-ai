@@ -34,8 +34,10 @@ class StreamingMessageWidget extends ConsumerWidget {
               child: SmartMessageRenderer(
                 rawContent: text,
                 isUser: false,
-                // 🎯 CAMBIO: Ahora delegamos toda la magia (rutas, guardado y avance) al ChatNotifier.
-                // Ya no hay que adivinar la ruta ni inyectar servicios manualmente aquí.
+                // 🎯 CAMBIO: Ahora delegamos toda la magia
+                // (rutas, guardado y avance) al ChatNotifier.
+                // Ya no hay que adivinar la ruta ni inyectar
+                // servicios manualmente aquí.
                 onSaveDocument: () async {
                   await ref
                       .read(chatNotifierProvider.notifier)

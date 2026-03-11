@@ -27,9 +27,7 @@ class ConversationService:
         """Initialize with repository."""
         self.repository = repository
 
-    async def create_conversation(
-        self, project_id: UUID, title: str | None = None
-    ) -> Conversation:
+    async def create_conversation(self, project_id: UUID, title: str | None = None) -> Conversation:
         """Create new conversation."""
         return await self.repository.create_conversation(project_id, title)
 

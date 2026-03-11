@@ -143,13 +143,25 @@ if [ "$WITH_COVERAGE" = "true" ] || [ "$MODE" = "all" ]; then
   print_header "📊 Coverage Summary"
 
   print_step "Python coverage (src/server/app)"
-  tests/venv/bin/python -m pytest tests/server/ --cov=src/server/app --cov-report=term --cov-report=json:/tmp/python_cov.json --tb=no -q >/tmp/python_cov.log 2>&1
+  
+  # Clean previous Python coverage
+  rm -rf coverage_html/
+  mkdir -p coverage_html/
+  
+  # Generate coverage with HTML report in canonical location
+  tests/venv/bin/python -m pytest tests/server/ \
+    --cov=src/server/app \
+    --cov-report=term \
+    --cov-report=html:coverage_html/ \
+    --cov-report=json:coverage_html/coverage.json \
+    --tb=no -q >/tmp/python_cov.log 2>&1
   py_cov_exit=$?
+  
   if [ $py_cov_exit -eq 0 ] || [ $py_cov_exit -eq 1 ]; then
     PYTHON_COV=$(tests/venv/bin/python - <<'PY'
 import json
 from pathlib import Path
-p=Path('/tmp/python_cov.json')
+p=Path('coverage_html/coverage.json')
 if p.exists():
     d=json.loads(p.read_text(encoding='utf-8'))
     v=d.get('totals',{}).get('percent_covered')
@@ -158,19 +170,26 @@ else:
     print("N/A")
 PY
 )
-    print_ok "Python coverage: ${PYTHON_COV}%"
+    print_ok "Python coverage: ${PYTHON_COV}% (HTML report: coverage_html/index.html)"
   else
     print_fail "Python coverage execution failed"
   fi
 
   print_step "Flutter coverage (tests/client)"
-  rm -f src/client/coverage/lcov.info
+  
+  # Clean previous Flutter coverage
+  rm -rf coverage/
+  
+  # Generate coverage from PROJECT_ROOT
   (cd src/client && flutter test ../../tests/client/ --coverage >/tmp/flutter_cov.log 2>&1)
   fl_cov_exit=$?
+  
+  # Move to canonical location if generated successfully
   if [ $fl_cov_exit -eq 0 ] && [ -f "src/client/coverage/lcov.info" ]; then
-    FLUTTER_COV=$(awk -F: '/^LF:/{lf+=$2} /^LH:/{lh+=$2} END{if(lf>0) printf "%.1f", (lh/lf)*100; else print "N/A"}' src/client/coverage/lcov.info)
+    mv src/client/coverage ./coverage
+    FLUTTER_COV=$(awk -F: '/^LF:/{lf+=$2} /^LH:/{lh+=$2} END{if(lf>0) printf "%.1f", (lh/lf)*100; else print "N/A"}' coverage/lcov.info)
     FLUTTER_COV=${FLUTTER_COV:-N/A}
-    print_ok "Flutter coverage: ${FLUTTER_COV}%"
+    print_ok "Flutter coverage: ${FLUTTER_COV}% (lcov.info: coverage/lcov.info)"
   else
     print_fail "Flutter coverage execution failed"
   fi

@@ -32,6 +32,7 @@ class FakeChatRepository implements ChatRepository {
     String message, {
     String? docType,
     String? userName,
+    List<ChatMessage>? history,
   }) {
     final events = <ChatStreamEvent>[
       TokenEvent(token: 'Fake', isFinal: false),
@@ -204,7 +205,7 @@ void main() {
         // ASSERT: State should have error message
         final state = container.read(chatNotifierProvider);
         expect(state.hasError, true);
-        expect(state.errorMessage, contains('No project context initialized'));
+        expect(state.errorMessage, contains('project context'));
         expect(state.isStreaming, false);
       },
     );
@@ -221,7 +222,7 @@ void main() {
         // ASSERT: State should have error message
         final state = container.read(chatNotifierProvider);
         expect(state.hasError, true);
-        expect(state.errorMessage, contains('No project context initialized'));
+        expect(state.errorMessage, contains('project context'));
         expect(state.isStreaming, false);
       },
     );

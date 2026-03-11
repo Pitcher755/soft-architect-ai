@@ -36,9 +36,7 @@ def get_conversation_service(
     return ConversationService(repository)
 
 
-@router.post(
-    "/", response_model=ConversationResponse, status_code=status.HTTP_201_CREATED
-)
+@router.post("/", response_model=ConversationResponse, status_code=status.HTTP_201_CREATED)
 async def create_conversation(
     payload: ConversationCreate,
     service: ConversationService = Depends(get_conversation_service),
@@ -75,9 +73,7 @@ async def list_conversations(
     service: ConversationService = Depends(get_conversation_service),
 ):
     """List conversations with pagination."""
-    conversations = await service.list_conversations(
-        project_id=project_id, skip=skip, limit=limit
-    )
+    conversations = await service.list_conversations(project_id=project_id, skip=skip, limit=limit)
 
     return ConversationList(
         conversations=[ConversationResponse.model_validate(c) for c in conversations],

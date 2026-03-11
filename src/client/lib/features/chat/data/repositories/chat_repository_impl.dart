@@ -57,7 +57,8 @@ class ChatRepositoryImpl implements ChatRepository {
           .map((msg) => {'role': msg.role.name, 'content': msg.content})
           .toList();
     } else {
-      // Fallback: Si no hay historial, cargamos de DB y filtramos roles incompatibles
+      // Fallback: Si no hay historial, cargamos de DB
+      // y filtramos roles incompatibles
       try {
         final chatHistory = await getChatHistory(projectId);
         const maxHistoryMessages = 50;

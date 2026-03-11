@@ -16,6 +16,10 @@ import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';
 import 'streaming_state.dart';
 
+/// Custom exception thrown when project context is missing or invalid.
+///
+/// This error indicates that an operation requiring project context
+/// was attempted without a valid project path being set.
 class ProjectContextError implements Exception {
   ProjectContextError(this.message);
   final String message;
@@ -23,6 +27,9 @@ class ProjectContextError implements Exception {
   String toString() => 'ProjectContextError: $message';
 }
 
+/// Generates a unique identifier using UUID v4.
+///
+/// Returns a string representation of a randomly generated UUID.
 String generateId() => UuidGenerator.v4();
 
 const String _backendBaseUrl = String.fromEnvironment(
@@ -34,6 +41,16 @@ const String _backendApiKey = String.fromEnvironment(
   defaultValue: 'dev_test_key_12345',
 );
 
+/// Manages chat state and orchestrates AI-powered document generation workflow.
+///
+/// This notifier handles:
+/// - Message streaming from AI backend
+/// - Document validation and workflow progression
+/// - Project context management
+/// - Chat history persistence
+///
+/// The workflow progresses through 24 mandatory documents following the
+/// Master Workflow 0-100 structure.
 class ChatNotifier extends StateNotifier<ChatState> {
   ChatNotifier({
     required ChatRepository repository,
@@ -57,7 +74,12 @@ class ChatNotifier extends StateNotifier<ChatState> {
   // ═══════════════════════════════════════════════════════════════════════════
   // 1. INITIALIZATION & STATE MANAGEMENT
   // ═══════════════════════════════════════════════════════════════════════════
-
+  /// Initializes a new project session and loads chat history.
+  ///
+  /// Cancels any active streams, resets state, and loads workflow progress
+  /// from the project's `.softarchitect/status.json` file.
+  ///
+  /// [path] - Absolute path to the project directory.
   Future<void> setProjectPath(String path) async {
     await _cancelActiveStream();
 
@@ -101,7 +123,14 @@ class ChatNotifier extends StateNotifier<ChatState> {
   // ═══════════════════════════════════════════════════════════════════════════
   // 2. CORE CHAT & STREAMING LOGIC
   // ═══════════════════════════════════════════════════════════════════════════
-
+  /// Sends a message to the AI backend and streams the response.
+  ///
+  /// Creates user and assistant messages, streams tokens from the backend,
+  /// and generates a [DocumentProposal] when complete.
+  ///
+  /// [message] - The user's input text.
+  /// [isHidden] - If true, the message is not added to visible chat history
+  /// (used for silent validation workflows).
   Future<void> sendMessageStream(
     String message, {
     bool isHidden = false,
@@ -264,7 +293,17 @@ class ChatNotifier extends StateNotifier<ChatState> {
   // ═══════════════════════════════════════════════════════════════════════════
   // 3. DOCUMENT VALIDATION & WORKFLOW ENGINE
   // ═══════════════════════════════════════════════════════════════════════════
-
+  /// Validates a document proposal and saves it to the project filesystem.
+  ///
+  /// This method:
+  /// 1. Cleans the document content (removes markdown fences, metadata)
+  /// 2. Determines the document type based on current workflow index
+  /// 3. Saves the file to the appropriate context/section folder
+  /// 4. Updates workflow progress (advances to next document)
+  /// 5. Refreshes the filesystem notifier
+  ///
+  /// [messageId] - Optional message ID to validate a specific message.
+  /// If null, validates the current proposal.
   Future<void> validateProposal([String? messageId]) async {
     if (_isValidating) {
       return;
@@ -280,7 +319,11 @@ class ChatNotifier extends StateNotifier<ChatState> {
       final docType = _getDocTypeForIndex(state.currentDocIndex);
 
       if (messageId != null) {
-        content = state.messages.firstWhere((m) => m.id == messageId).content;
+        final message = state.messages.firstWhere(
+          (m) => m.id == messageId,
+          orElse: () => throw Exception('Message not found'),
+        );
+        content = message.content;
       } else {
         if (state.currentProposal == null) {
           throw Exception('No proposal');
@@ -288,9 +331,13 @@ class ChatNotifier extends StateNotifier<ChatState> {
         content = state.currentProposal!.content;
       }
 
-      // 🎯 LIMPIEZA CIRUJANA: Solo aquí quitamos las marcas para el archivo real
+      // 🎯 LIMPIEZA CIRUJANA: Solo aquí quitamos las marcas
+      // para el archivo real
       final cleanedContent = _cleanDocumentContent(content);
-      final relativePath = _getFilePathForDocType(docType, cleanedContent);
+      final relativePath = _getFilePathForDocType(
+        docType,
+        cleanedContent,
+      );
 
       await _fileSystemService.saveDocument(
         projectPath: projectPath,
@@ -298,23 +345,48 @@ class ChatNotifier extends StateNotifier<ChatState> {
         content: cleanedContent,
       );
 
-      addSystemMessage('✅ Documento validado y guardado en `$relativePath`');
+      addSystemMessage(
+        '✅ Documento validado y guardado en `$relativePath`',
+      );
       ref.read(fileSystemNotifierProvider.notifier).refresh();
 
-      final nextIndex = state.currentDocIndex + 1;
-      if (!projectPath.startsWith('mock://')) {
-        await ProjectProgressService.updateAfterDocumentSave(projectPath);
-      }
+      // Marcar mensaje como validado (si hay messageId específico)
+      final updatedValidatedIds = messageId != null
+          ? {...state.validatedMessageIds, messageId}
+          : state.validatedMessageIds;
 
-      state = state.copyWith(clearProposal: true, currentDocIndex: nextIndex);
+      // Only advance workflow when validating current proposal
+      // (not a specific message)
+      if (messageId == null) {
+        final nextIndex = state.currentDocIndex + 1;
+        if (!projectPath.startsWith('mock://')) {
+          await ProjectProgressService.updateAfterDocumentSave(
+            projectPath,
+          );
+        }
 
-      if (nextIndex <= state.totalDocs) {
-        await sendMessageStream(
-          'He validado el documento anterior. Por favor, genera ahora: ${_getDocTypeForIndex(nextIndex)}',
-          isHidden: true,
+        state = state.copyWith(
+          clearProposal: true,
+          currentDocIndex: nextIndex,
+          validatedMessageIds: updatedValidatedIds,
+        );
+
+        if (nextIndex <= state.totalDocs) {
+          final nextDoc = _getDocTypeForIndex(nextIndex);
+          await sendMessageStream(
+            'He validado el documento anterior. '
+            'Por favor, genera ahora: $nextDoc',
+            isHidden: true,
+          );
+        }
+      } else {
+        // Solo limpiar el proposal sin avanzar el workflow
+        state = state.copyWith(
+          clearProposal: true,
+          validatedMessageIds: updatedValidatedIds,
         );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       state = state.copyWith(hasError: true, errorMessage: 'Error saving: $e');
     } finally {
       _isValidating = false;
@@ -324,7 +396,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
   // ═══════════════════════════════════════════════════════════════════════════
   // 4. STRING UTILITIES & PATH ROUTING
   // ═══════════════════════════════════════════════════════════════════════════
-
+  /// Removes markdown fences, metadata tags, and duplicate path labels.
   String _cleanDocumentContent(String rawContent) {
     var clean = rawContent;
     if (clean.contains('[document]')) {
@@ -407,10 +479,13 @@ class ChatNotifier extends StateNotifier<ChatState> {
     return '$docType.md';
   }
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // 5. HELPER ACTIONS (NUEVO: resetForNewProject añadido)
-  // ════════════════════════════════════════════════════════════════════════════
+  // ══════════════════════════════════════════════════════════════
+  // 5. HELPER ACTIONS
+  // ══════════════════════════════════════════════════════════════
 
+  /// Adds a system message to the chat history.
+  ///
+  /// System messages are used for workflow notifications and context updates.
   void addSystemMessage(String content) {
     state = state.copyWith(
       messages: [
@@ -425,12 +500,19 @@ class ChatNotifier extends StateNotifier<ChatState> {
     );
   }
 
+  /// Resets the notifier state for a new project session.
+  ///
+  /// [totalDocs] - Total number of documents in the workflow (default: 24).
   void resetForNewProject({int totalDocs = 24}) {
     state = ChatState(totalDocs: totalDocs);
   }
 
+  /// Rejects the current document proposal and clears it from state.
   void rejectProposal() => state = state.copyWith(clearProposal: true);
 
+  /// Retries sending the last user message.
+  ///
+  /// Resends the most recent user message to the AI backend.
   Future<void> retryLastMessage() async {
     if (state.messages.length < 2) {
       return;
@@ -461,6 +543,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
 // 6. PROVIDERS
 // ════════════════════════════════════════════════════════════════════════════
 
+/// Mock implementation of [ChatRepository] for guide/tutorial flows.
+///
+/// Returns canned responses without making real API calls.
 class _MockChatRepository implements ChatRepository {
   @override
   Stream<String> generateDocument(

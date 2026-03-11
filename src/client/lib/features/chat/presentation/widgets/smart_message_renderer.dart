@@ -103,13 +103,16 @@ class SmartMessageRenderer extends StatelessWidget {
     }
 
     if (reasoningText.isNotEmpty) {
-      elements.add(_buildMarkdown(context, reasoningText));
-      elements.add(const SizedBox(height: 12));
+      elements
+        ..add(_buildMarkdown(context, reasoningText))
+        ..add(const SizedBox(height: 12));
     }
 
     if (documentText.isNotEmpty) {
-      // 🎯 MODIFICACIÓN: NO limpiamos el documento aquí para mantener los bloques ```json
-      // Así el componente de Markdown puede renderizarlo con formato y colores.
+      // 🎯 MODIFICACIÓN: NO limpiamos el documento aquí
+      // para mantener los bloques ```json
+      // Así el componente de Markdown puede renderizarlo
+      // con formato y colores.
       elements.add(
         _DocumentCard(
           key: ValueKey(documentText.hashCode),
@@ -140,21 +143,23 @@ class SmartMessageRenderer extends StatelessWidget {
             .substring(currentIndex, match.start)
             .trim();
         if (textBefore.isNotEmpty) {
-          elements.add(_buildMarkdown(context, textBefore));
-          elements.add(const SizedBox(height: 12));
+          elements
+            ..add(_buildMarkdown(context, textBefore))
+            ..add(const SizedBox(height: 12));
         }
       }
 
       final documentContent = match.group(1)?.trim() ?? '';
-      elements.add(
-        _DocumentCard(
-          key: ValueKey(documentContent.hashCode),
-          content: documentContent,
-          onSave: onSaveDocument,
-          onSendChatMessage: onSendChatMessage,
-        ),
-      );
-      elements.add(const SizedBox(height: 12));
+      elements
+        ..add(
+          _DocumentCard(
+            key: ValueKey(documentContent.hashCode),
+            content: documentContent,
+            onSave: onSaveDocument,
+            onSendChatMessage: onSendChatMessage,
+          ),
+        )
+        ..add(const SizedBox(height: 12));
       currentIndex = match.end;
     }
 
@@ -373,9 +378,10 @@ class _DocumentCardState extends State<_DocumentCard> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    // 🎯 MEJORA: Usamos MarkdownBody SIEMPRE, incluso para el JSON.
-    // Si el contenido tiene ```json, MarkdownBody lo indentará y coloreará automáticamente.
-    // Si no los tiene, lo envolveremos visualmente para el renderizado.
+    // 🎯 MEJORA: Usamos MarkdownBody SIEMPRE, incluso para JSON.
+    // Si el contenido tiene ```json, MarkdownBody lo indentará
+    // y coloreará automáticamente.
+    // Si no los tiene, lo envolveremos visualmente.
     var displayData = widget.content.trim();
     if (!displayData.contains('```') &&
         (displayData.startsWith('{') || displayData.startsWith('['))) {

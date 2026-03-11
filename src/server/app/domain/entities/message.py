@@ -48,6 +48,4 @@ class Message:
             raise ValueError("Content cannot be empty")
 
         if len(self.content) > 30000:
-            raise ValueError(
-                f"Content exceeds maximum length (30000 chars): {len(self.content)}"
-            )
+            raise ValueError(f"Content exceeds maximum length (30000 chars): {len(self.content)}")

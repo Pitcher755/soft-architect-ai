@@ -31,9 +31,7 @@ class SQLAlchemyConversationRepository:
         """Initialize with async session."""
         self.session = session
 
-    async def create_conversation(
-        self, project_id: UUID, title: str | None = None
-    ) -> Conversation:
+    async def create_conversation(self, project_id: UUID, title: str | None = None) -> Conversation:
         """Create new conversation."""
         # Create SQLAlchemy model
         model = ConversationModel(project_id=project_id, title=title)
@@ -96,9 +94,7 @@ class SQLAlchemyConversationRepository:
 
         return self._message_model_to_entity(model)
 
-    async def get_last_n_messages(
-        self, conversation_id: UUID, n: int = 10
-    ) -> list[Message]:
+    async def get_last_n_messages(self, conversation_id: UUID, n: int = 10) -> list[Message]:
         """Get last N messages from conversation."""
         stmt = (
             select(MessageModel)

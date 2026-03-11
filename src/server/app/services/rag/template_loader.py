@@ -79,8 +79,7 @@ class TemplateLoader:
         if templates_path is None:
             # Default to knowledge base templates directory
             templates_path = (
-                Path(__file__).parent.parent.parent.parent
-                / "packages/knowledge_base/03-TEMPLATES"
+                Path(__file__).parent.parent.parent.parent / "packages/knowledge_base/03-TEMPLATES"
             )
         else:
             templates_path = Path(templates_path)

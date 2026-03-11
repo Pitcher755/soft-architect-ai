@@ -1,20 +1,16 @@
 import logging
-import asyncio
 from collections.abc import AsyncGenerator
 from typing import Any
 
 import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from google.api_core.exceptions import GoogleAPIError
+from google.generativeai.types import HarmBlockThreshold, HarmCategory
 
-from app.core.exceptions import (
-    LLMConnectionError,
-    LLMStreamError,
-    LLMTimeoutError,
-)
+from app.core.exceptions import LLMConnectionError, LLMStreamError
 from app.infrastructure.llm.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
+
 
 class GeminiClient(BaseLLMClient):
     """Google Gemini LLM client."""
@@ -22,10 +18,10 @@ class GeminiClient(BaseLLMClient):
     def __init__(self, api_key: str, model: str = "gemini-1.5-flash"):
         if not api_key:
             raise ValueError("GEMINI_API_KEY is required")
-        
+
         genai.configure(api_key=api_key)
         self.model_name = model
-        
+
         # Opcional: Desactivar los filtros de seguridad si te bloquean código
         self.safety_settings = {
             HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
@@ -33,11 +29,13 @@ class GeminiClient(BaseLLMClient):
             HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
             HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
         }
-        
+
         self.model = genai.GenerativeModel(self.model_name)
         logger.info(f"Initialized Gemini client, model={model}")
 
-    def _build_config(self, max_tokens: int | None, temperature: float | None) -> genai.GenerationConfig:
+    def _build_config(
+        self, max_tokens: int | None, temperature: float | None
+    ) -> genai.GenerationConfig:
         config_args = {}
         if max_tokens is not None:
             config_args["max_output_tokens"] = max_tokens
@@ -55,12 +53,10 @@ class GeminiClient(BaseLLMClient):
         try:
             config = self._build_config(max_tokens, temperature)
             response = await self.model.generate_content_async(
-                prompt,
-                generation_config=config,
-                safety_settings=self.safety_settings
+                prompt, generation_config=config, safety_settings=self.safety_settings
             )
             return response.text
-            
+
         except GoogleAPIError as error:
             logger.error(f"Gemini API error: {error}")
             raise LLMConnectionError(
@@ -81,16 +77,13 @@ class GeminiClient(BaseLLMClient):
         temperature: float | None = None,
         **kwargs: Any,
     ) -> AsyncGenerator[str, None]:
-        
+
         try:
             config = self._build_config(max_tokens, temperature)
             response = await self.model.generate_content_async(
-                prompt,
-                generation_config=config,
-                safety_settings=self.safety_settings,
-                stream=True
+                prompt, generation_config=config, safety_settings=self.safety_settings, stream=True
             )
-            
+
             async for chunk in response:
                 if chunk.text:
                     yield chunk.text
