@@ -2,7 +2,7 @@ import logging
 from collections.abc import AsyncGenerator
 from typing import Any
 
-import google.generativeai as genai
+import google.generativeai as genai  # type: ignore[reportPrivateImportUsage]
 from google.api_core.exceptions import GoogleAPIError
 from google.generativeai.types import HarmBlockThreshold, HarmCategory
 
@@ -19,7 +19,7 @@ class GeminiClient(BaseLLMClient):
         if not api_key:
             raise ValueError("GEMINI_API_KEY is required")
 
-        genai.configure(api_key=api_key)
+        genai.configure(api_key=api_key)  # type: ignore[reportPrivateImportUsage]
         self.model_name = model
 
         # Opcional: Desactivar los filtros de seguridad si te bloquean código
@@ -30,18 +30,20 @@ class GeminiClient(BaseLLMClient):
             HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
         }
 
-        self.model = genai.GenerativeModel(self.model_name)
+        self.model = genai.GenerativeModel(  # type: ignore[reportPrivateImportUsage]
+            self.model_name
+        )
         logger.info(f"Initialized Gemini client, model={model}")
 
     def _build_config(
         self, max_tokens: int | None, temperature: float | None
-    ) -> genai.GenerationConfig:
+    ) -> genai.GenerationConfig:  # type: ignore[reportPrivateImportUsage]
         config_args = {}
         if max_tokens is not None:
             config_args["max_output_tokens"] = max_tokens
         if temperature is not None:
             config_args["temperature"] = temperature
-        return genai.GenerationConfig(**config_args)
+        return genai.GenerationConfig(**config_args)  # type: ignore[reportPrivateImportUsage]
 
     async def generate(
         self,
@@ -81,7 +83,10 @@ class GeminiClient(BaseLLMClient):
         try:
             config = self._build_config(max_tokens, temperature)
             response = await self.model.generate_content_async(
-                prompt, generation_config=config, safety_settings=self.safety_settings, stream=True
+                prompt,
+                generation_config=config,
+                safety_settings=self.safety_settings,
+                stream=True,
             )
 
             async for chunk in response:

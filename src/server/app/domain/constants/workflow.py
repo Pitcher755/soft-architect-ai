@@ -234,4 +234,6 @@ def get_next_step(current_doc_type: str) -> WorkflowStep | None:
         return None
 
     next_number = current_step.step_number + 1
-    return next((step for step in MASTER_WORKFLOW if step.step_number == next_number), None)
+    return next(
+        (step for step in MASTER_WORKFLOW if step.step_number == next_number), None
+    )

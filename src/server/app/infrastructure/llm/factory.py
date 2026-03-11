@@ -44,4 +44,6 @@ def get_llm_client(mode: str | None = None) -> BaseLLMClient:
         logger.info(f"Creating Gemini client, model={model}")
         return GeminiClient(api_key=api_key, model=model)
 
-    raise ValueError(f"Invalid LLM mode: {selected_mode}. Supported: ollama, groq, gemini")
+    raise ValueError(
+        f"Invalid LLM mode: {selected_mode}. Supported: ollama, groq, gemini"
+    )

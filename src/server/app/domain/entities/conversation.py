@@ -32,7 +32,9 @@ class Conversation:
         """Validate fields."""
         # Validate title length
         if self.title is not None and len(self.title) > 255:
-            raise ValueError(f"Title exceeds maximum length (255 chars): {len(self.title)}")
+            raise ValueError(
+                f"Title exceeds maximum length (255 chars): {len(self.title)}"
+            )
 
     def add_message(self, message: Message) -> None:
         """Add message to conversation and update timestamp."""

@@ -56,7 +56,8 @@ def retry_with_backoff(max_retries: int = 3, base_delay: float = 1.0):
                     if attempt < max_retries - 1:
                         delay = base_delay * (2**attempt)
                         logger.warning(
-                            f"Attempt {attempt + 1} failed: {e}. " f"Retrying in {delay}s..."
+                            f"Attempt {attempt + 1} failed: {e}. "
+                            f"Retrying in {delay}s..."
                         )
                         time.sleep(delay)
 
@@ -200,7 +201,9 @@ class VectorStoreService:
 
             for doc in documents:
                 # Generate deterministic ID
-                doc_id = self._generate_id(doc.page_content, doc.metadata.get("source", "unknown"))
+                doc_id = self._generate_id(
+                    doc.page_content, doc.metadata.get("source", "unknown")
+                )
                 ids.append(doc_id)
                 texts.append(doc.page_content)
 
@@ -233,7 +236,9 @@ class VectorStoreService:
             DatabaseReadError: If query operation fails
         """
         try:
-            results = self.collection.query(query_texts=[query_text], n_results=n_results)
+            results = self.collection.query(
+                query_texts=[query_text], n_results=n_results
+            )
             # Safely access documents list (ChromaDB returns nested structure)
             docs = results.get("documents", [[]])
             if docs and len(docs) > 0:
@@ -271,7 +276,9 @@ class VectorStoreService:
 
         except Exception as e:
             logger.error(f"❌ Clear failed: {e}")
-            raise DatabaseWriteError(operation="delete_collection", reason=str(e)) from e
+            raise DatabaseWriteError(
+                operation="delete_collection", reason=str(e)
+            ) from e
 
     def health_check(self) -> bool:
         """

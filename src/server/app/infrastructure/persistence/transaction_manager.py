@@ -105,7 +105,9 @@ class TransactionManager:
             conn.close()
             self.logger.debug("Database connection closed")
 
-    def execute_transaction(self, operations: list[tuple[str, tuple]]) -> list[tuple | None]:
+    def execute_transaction(
+        self, operations: list[tuple[str, tuple]]
+    ) -> list[tuple | None]:
         """Execute multiple SQL statements within a single transaction.
 
         All operations succeed together or all fail together (atomicity).

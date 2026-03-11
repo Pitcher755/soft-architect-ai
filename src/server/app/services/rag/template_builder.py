@@ -56,7 +56,9 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
             for msg in history[-6:]:
                 role = "USUARIO" if msg["role"] == "user" else "SOFTARCHITECT"
                 content = (
-                    msg["content"][:400] + "..." if len(msg["content"]) > 400 else msg["content"]
+                    msg["content"][:400] + "..."
+                    if len(msg["content"]) > 400
+                    else msg["content"]
                 )
                 history_section += f"{role}: {content}\n"
 

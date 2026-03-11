@@ -147,7 +147,9 @@ class SQLiteRepository:
                 logger.info(f"✅ Created project: {project.name} (ID: {project.id})")
         except sqlite3.IntegrityError as e:
             if "UNIQUE constraint failed" in str(e):
-                raise DuplicateError(f"Project with name '{project.name}' already exists") from e
+                raise DuplicateError(
+                    f"Project with name '{project.name}' already exists"
+                ) from e
             raise TransactionError(f"Integrity constraint violated: {e}") from e
         except sqlite3.Error as e:
             raise TransactionError(f"Failed to create project: {e}") from e
@@ -171,7 +173,9 @@ class SQLiteRepository:
         """
         try:
             with self.tx_manager.transaction() as conn:
-                row = conn.execute("SELECT * FROM projects WHERE id = ?", (project_id,)).fetchone()
+                row = conn.execute(
+                    "SELECT * FROM projects WHERE id = ?", (project_id,)
+                ).fetchone()
 
                 if not row:
                     return None
@@ -196,7 +200,9 @@ class SQLiteRepository:
         """
         try:
             with self.tx_manager.transaction() as conn:
-                row = conn.execute("SELECT * FROM projects WHERE name = ?", (name,)).fetchone()
+                row = conn.execute(
+                    "SELECT * FROM projects WHERE name = ?", (name,)
+                ).fetchone()
 
                 if not row:
                     return None
@@ -216,7 +222,9 @@ class SQLiteRepository:
         """
         try:
             with self.tx_manager.transaction() as conn:
-                rows = conn.execute("SELECT * FROM projects ORDER BY created_at DESC").fetchall()
+                rows = conn.execute(
+                    "SELECT * FROM projects ORDER BY created_at DESC"
+                ).fetchall()
 
                 return [self._row_to_project(row) for row in rows]
         except sqlite3.Error as e:
@@ -369,11 +377,15 @@ class SQLiteRepository:
 
         # Ensure name is reasonable length
         if len(project.name) > 255:
-            raise ValidationError("Project name must be <= 255 characters", field_name="name")
+            raise ValidationError(
+                "Project name must be <= 255 characters", field_name="name"
+            )
 
         # Ensure path is reasonable length
         if len(project.path) > 4096:
-            raise ValidationError("Project path must be <= 4096 characters", field_name="path")
+            raise ValidationError(
+                "Project path must be <= 4096 characters", field_name="path"
+            )
 
     @staticmethod
     def _project_exists_by_id(conn: Any, project_id: str) -> bool:
@@ -386,7 +398,9 @@ class SQLiteRepository:
         Returns:
             True if project exists, False otherwise
         """
-        row = conn.execute("SELECT id FROM projects WHERE id = ?", (project_id,)).fetchone()
+        row = conn.execute(
+            "SELECT id FROM projects WHERE id = ?", (project_id,)
+        ).fetchone()
         return row is not None
 
     @staticmethod

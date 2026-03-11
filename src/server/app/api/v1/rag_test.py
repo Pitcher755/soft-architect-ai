@@ -25,7 +25,9 @@ class QueryRequest(BaseModel):
     limit: int = Field(default=3, ge=1, le=10, description="Max results to return")
 
     model_config = {
-        "json_schema_extra": {"example": {"question": "How do I set up Docker?", "limit": 3}}
+        "json_schema_extra": {
+            "example": {"question": "How do I set up Docker?", "limit": 3}
+        }
     }
 
 
@@ -110,7 +112,9 @@ async def test_rag_retrieval(body: QueryRequest) -> QueryResponse:
                 path_value = meta.get("source", "unknown")
 
                 # Type-safe conversions
-                source_str = str(source_value) if source_value is not None else "unknown"
+                source_str = (
+                    str(source_value) if source_value is not None else "unknown"
+                )
                 path_str = str(path_value) if path_value is not None else "unknown"
 
                 formatted_results.append(
