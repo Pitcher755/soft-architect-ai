@@ -43,25 +43,34 @@ class ChatRepositoryImpl implements ChatRepository {
   Stream<ChatStreamEvent> sendMessageStream(
     String message,
     String projectId, {
-    String? docType, // Optional doc_type parameter for workflow routing
+    String? docType,
     String? userName,
+    List<ChatMessage>? history, // 🎯 Recibimos el historial filtrado
   }) async* {
     final url = '$baseUrl/api/v1/chat/stream';
 
     var historyPayload = <Map<String, String>>[];
-    try {
-      final chatHistory = await getChatHistory(projectId);
 
-      const maxHistoryMessages = 100;
-      final limitedHistory = chatHistory.length > maxHistoryMessages
-          ? chatHistory.sublist(chatHistory.length - maxHistoryMessages)
-          : chatHistory;
-
-      historyPayload = limitedHistory
-          .where((msg) => msg.role.name != 'system')
+    // 🎯 Priorizamos el historial enviado (ya filtrado por el Notifier)
+    if (history != null) {
+      historyPayload = history
           .map((msg) => {'role': msg.role.name, 'content': msg.content})
           .toList();
-    } on Exception catch (_) {}
+    } else {
+      // Fallback: Si no hay historial, cargamos de DB y filtramos roles incompatibles
+      try {
+        final chatHistory = await getChatHistory(projectId);
+        const maxHistoryMessages = 50;
+        final limitedHistory = chatHistory.length > maxHistoryMessages
+            ? chatHistory.sublist(chatHistory.length - maxHistoryMessages)
+            : chatHistory;
+
+        historyPayload = limitedHistory
+            .where((msg) => msg.role != MessageRole.system)
+            .map((msg) => {'role': msg.role.name, 'content': msg.content})
+            .toList();
+      } on Exception catch (_) {}
+    }
 
     final body = {
       'message': message,
@@ -69,7 +78,6 @@ class ChatRepositoryImpl implements ChatRepository {
       'conversation_id': _generateConversationId(),
       'history': historyPayload,
       'user_name': userName ?? 'Developer',
-      // doc_type at root level, as expected by FastAPI
       'doc_type': docType ?? 'PROJECT_MANIFESTO',
       'metadata': {},
     };
