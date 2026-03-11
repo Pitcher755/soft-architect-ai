@@ -9,7 +9,7 @@ Security considerations:
 from datetime import UTC, datetime
 from uuid import UUID
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 from app.core.config import settings
 from app.domain.utils.sanitizer import InputSanitizer
@@ -17,6 +17,9 @@ from app.domain.utils.sanitizer import InputSanitizer
 
 class ChatRequest(BaseModel):
     """Incoming chat message request."""
+    
+    # 🎯 FIX: Permite que Flutter envíe campos extra (id, timestamp, etc) sin explotar
+    model_config = ConfigDict(extra='ignore')
 
     conversation_id: UUID = Field(
         ...,
@@ -88,7 +91,9 @@ class ChatRequest(BaseModel):
                 f"Chat history exceeds maximum length ({max_msgs} messages)."
             )
 
-        valid_roles = {"user", "assistant"}
+        # 🎯 FIX CRÍTICO: Añadimos "system" a los roles válidos para que no de error 422
+        valid_roles = {"user", "assistant", "system"}
+        max_msg_length = settings.CHAT_MAX_MESSAGE_LENGTH
         sanitized_history = []
 
         for i, msg in enumerate(v):
@@ -105,6 +110,12 @@ class ChatRequest(BaseModel):
             if not isinstance(content, str):
                 raise ValueError(f"Message {i} content must be a string")
 
+            # Validate individual message length
+            if len(content) > max_msg_length:
+                raise ValueError(
+                    f"Message {i} content exceeds {max_msg_length} characters."
+                )
+
             sanitized_content = InputSanitizer.sanitize_message(content)
             sanitized_history.append({"role": role, "content": sanitized_content})
 
@@ -113,6 +124,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     """AI-generated response with metadata."""
+    model_config = ConfigDict(extra='ignore')
 
     ai_response: str = Field(..., description="Generated AI response text")
     template_used: str = Field(
@@ -126,6 +138,7 @@ class ChatResponse(BaseModel):
 
 
 class RAGContext(BaseModel):
+    model_config = ConfigDict(extra='ignore')
     query: str
     project_phase: str
     retrieved_docs: list[str]

@@ -9,11 +9,14 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 from app.api.dependencies import get_rag_orchestrator, verify_api_key
 from app.core.exceptions import (
     LLMConnectionError,
+    LLMError,
+    RAGError,
+    RAGRetrievalError,
 )
 from app.domain.schemas.chat_schema import ChatRequest, ChatResponse
 from app.services.rag.sequential_orchestrator import SequentialOrchestrator
@@ -27,6 +30,8 @@ orchestrator = None
 
 class ChatMessage(BaseModel):
     """Represents a single chat message."""
+    # 🎯 FIX: Ignora campos extra (id, timestamp, metadata) enviados por Flutter
+    model_config = ConfigDict(extra='ignore')
 
     role: str = Field(..., description="Role: user, assistant, or system")
     content: str = Field(..., description="Message content")
@@ -34,6 +39,8 @@ class ChatMessage(BaseModel):
 
 class GenerateRequest(BaseModel):
     """Request model for document generation."""
+    # 🎯 FIX: También permitimos flexibilidad en la petición general
+    model_config = ConfigDict(extra='ignore')
 
     message: str = Field(..., description="User message/requirements")
     doc_type: str = Field(..., description="Document type (e.g., PROJECT_MANIFESTO)")
@@ -81,6 +88,8 @@ async def chat_message_stream(
 
         except LLMConnectionError:
             yield f"event: error\ndata: {json.dumps({'error': 'AI Engine is unreachable', 'code': 'LLM_CONNECTION_ERROR', 'retry': True})}\n\n"
+        except RAGRetrievalError:
+            yield f"event: error\ndata: {json.dumps({'error': 'Knowledge base search failed', 'code': 'RAG_RETRIEVAL_ERROR', 'retry': False})}\n\n"
         except Exception as e:
             yield f"event: error\ndata: {json.dumps({'error': str(e), 'code': 'STREAM_ERROR', 'retry': False})}\n\n"
 
@@ -116,6 +125,10 @@ async def _stream_generator(
         ):
             yield f"event: token\ndata: {json.dumps({'token': token, 'index': 0})}\n\n"
         yield f"event: done\ndata: {json.dumps({'total_tokens': 0, 'duration_ms': 0})}\n\n"
+    except RAGError as e:
+        yield f"event: error\ndata: {json.dumps({'code': e.code, 'message': e.message})}\n\n"
+    except LLMError as e:
+        yield f"event: error\ndata: {json.dumps({'code': e.code, 'message': e.message})}\n\n"
     except Exception as e:
         yield f"event: error\ndata: {json.dumps({'code': 'ERR', 'message': str(e)})}\n\n"
 
