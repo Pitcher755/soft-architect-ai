@@ -24,6 +24,8 @@ services:
       - LLM_PROVIDER=${LLM_PROVIDER:-local}
       - GROQ_API_KEY=${GROQ_API_KEY}
       - GROQ_MODEL=${GROQ_MODEL}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL}
 
       # Chat Memory Configuration (NEW)
       - CHAT_MAX_HISTORY_MESSAGES=${CHAT_MAX_HISTORY_MESSAGES:-20}
