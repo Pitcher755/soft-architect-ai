@@ -153,7 +153,7 @@ class TestUserNamePersonalizationE2E:
         mock_vector_store = AsyncMock()
         mock_vector_store.search = AsyncMock(return_value=[])
 
-        async def mock_stream(prompt):  # Accept prompt argument
+        async def mock_stream(prompt, history=None):  # Accept prompt and history
             """Mock streaming response."""
             tokens = ["Hello", " ", "StreamUser", "!"]
             for token in tokens:
@@ -227,7 +227,7 @@ class TestUserNameWithOtherFeatures:
         generated_prompt = mock_llm_client.generate.call_args[0][0]
 
         assert "HistoryUser" in generated_prompt
-        assert "USER: Previous question" in generated_prompt
+        assert "USUARIO: Previous question" in generated_prompt
         assert "SOFTARCHITECT: Previous answer" in generated_prompt
 
     @pytest.mark.asyncio
@@ -298,7 +298,8 @@ class TestUserNameWithOtherFeatures:
 
         # Assert: Should return blocking message
         assert response.template_used == "VALIDATION_BLOCKED"
-        assert "Bloqueo de Seguridad" in response.ai_response
+        assert "propuesta técnica pendiente" in response.ai_response
+        assert "Validar y Guardar" in response.ai_response
 
         # LLM should NOT have been called, so userName injection never happens
         # (This is expected behavior - blocker runs BEFORE template building)

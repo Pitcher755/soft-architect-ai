@@ -598,7 +598,8 @@ void main() {
       final savedPath = fakeFileSystemService.lastSavedPath;
       expect(savedPath, 'context/10-CONTEXT/DOMAIN_LANGUAGE.md');
 
-      final fullPath = '/tmp/test_project/context/10-CONTEXT/DOMAIN_LANGUAGE.md';
+      final fullPath =
+          '/tmp/test_project/context/10-CONTEXT/DOMAIN_LANGUAGE.md';
       expect(fakeFileSystemService.savedFiles.containsKey(fullPath), true);
     });
 
@@ -683,17 +684,26 @@ void main() {
         await notifier.setProjectPath('/tmp/test_project');
 
         // Generate and validate first version (DOMAIN_LANGUAGE index 2)
-        fakeRepository.generatedTokens = ['# DOMAIN LANGUAGE\n\n', 'Version', ' ', '1'];
+        fakeRepository.generatedTokens = [
+          '# DOMAIN LANGUAGE\n\n',
+          'Version',
+          ' ',
+          '1',
+        ];
         await notifier.sendMessageStream('Generate domain language v1');
         await Future<void>.delayed(const Duration(milliseconds: 250));
         await notifier.validateProposal();
 
         final firstContent = fakeFileSystemService.lastSavedContent;
         expect(firstContent, contains('Version 1'));
-        final firstPath = fakeFileSystemService.lastSavedPath;
 
         // Generate and validate second version (USER_JOURNEY_MAP index 3)
-        fakeRepository.generatedTokens = ['# USER JOURNEY MAP\n\n', 'Version', ' ', '2'];
+        fakeRepository.generatedTokens = [
+          '# USER JOURNEY MAP\n\n',
+          'Version',
+          ' ',
+          '2',
+        ];
         await notifier.sendMessageStream('Generate journey map v2');
         await Future<void>.delayed(const Duration(milliseconds: 250));
         await notifier.validateProposal();
@@ -703,7 +713,10 @@ void main() {
         expect(secondContent, isNot(contains('Version 1')));
 
         // Verify both documents were saved (different types due to progress)
-        expect(fakeFileSystemService.savedFiles.keys.length, greaterThanOrEqualTo(2));
+        expect(
+          fakeFileSystemService.savedFiles.keys.length,
+          greaterThanOrEqualTo(2),
+        );
       },
     );
 
@@ -816,7 +829,10 @@ void main() {
 
       final state = container.read(chatNotifierProvider);
       expect(state.hasError, true);
-      expect(state.errorMessage, contains('Error saving')); // Generic error message
+      expect(
+        state.errorMessage,
+        contains('Error saving'),
+      ); // Generic error message
     });
 
     test('should return error when no proposal to validate', () async {

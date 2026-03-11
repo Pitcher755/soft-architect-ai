@@ -262,8 +262,11 @@ class TestWorkflowValidationEnforcement:
 
         # Assert: Validation blocker triggered
         assert response.template_used == "VALIDATION_BLOCKED"
-        assert "Bloqueo de Seguridad" in response.ai_response
-        assert "RULE-06" in response.ai_response
+        assert "propuesta técnica pendiente" in response.ai_response
+        assert "Validar y Guardar" in response.ai_response
+
+        # Assert: Metadata indicates blocking
+        assert response.metadata["rule"] == "RULE-06"
 
         # Assert: LLM was NOT called (token savings)
         mock_llm_client.generate.assert_not_called()

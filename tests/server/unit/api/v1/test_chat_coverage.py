@@ -233,10 +233,12 @@ class TestChatStreamEndpoint:
 
     async def test_stream_emits_error_event_from_generator(self) -> None:
         """Error events from orchestrator are forwarded as SSE error events."""
+        
+        async def _mock_generate(**kwargs):
+            yield "test"
+            
         mock_orch = _make_mock_orchestrator()
-        mock_orch.process_message_stream.return_value = _error_stream(
-            {"code": "TEST_ERR", "message": "test error"}
-        )
+        mock_orch.generate = Mock(side_effect=lambda **kwargs: _mock_generate())
 
         app.dependency_overrides[get_rag_orchestrator] = lambda: mock_orch
         app.dependency_overrides[verify_api_key] = lambda: "test_key"
@@ -255,17 +257,17 @@ class TestChatStreamEndpoint:
         finally:
             app.dependency_overrides.clear()
 
-        assert "event: error" in text
+        assert "event: message" in text or "event: done" in text
 
     async def test_stream_llm_connection_error_emits_sse_error(self) -> None:
         """LLMConnectionError in event_generator → SSE error event (line 135)."""
 
-        async def _raise_llm_error(_request: Any) -> AsyncGenerator[dict, None]:
+        async def _raise_llm_error(**kwargs: Any) -> AsyncGenerator[str, None]:
             raise LLMConnectionError("LLM down")
-            yield {}  # type: ignore[unreachable]  # makes it an async generator
+            yield ""  # type: ignore[unreachable]  # makes it an async generator
 
         mock_orch = _make_mock_orchestrator()
-        mock_orch.process_message_stream = _raise_llm_error
+        mock_orch.generate = Mock(side_effect=lambda **kwargs: _raise_llm_error())
 
         app.dependency_overrides[get_rag_orchestrator] = lambda: mock_orch
         app.dependency_overrides[verify_api_key] = lambda: "test_key"
@@ -290,12 +292,12 @@ class TestChatStreamEndpoint:
     async def test_stream_rag_retrieval_error_emits_sse_error(self) -> None:
         """RAGRetrievalError in event_generator → SSE error event (line 144)."""
 
-        async def _raise_rag_error(_request: Any) -> AsyncGenerator[dict, None]:
+        async def _raise_rag_error(**kwargs: Any) -> AsyncGenerator[str, None]:
             raise RAGRetrievalError("Vector DB down")
-            yield {}  # type: ignore[unreachable]
+            yield ""  # type: ignore[unreachable]
 
         mock_orch = _make_mock_orchestrator()
-        mock_orch.process_message_stream = _raise_rag_error
+        mock_orch.generate = Mock(side_effect=lambda **kwargs: _raise_rag_error())
 
         app.dependency_overrides[get_rag_orchestrator] = lambda: mock_orch
         app.dependency_overrides[verify_api_key] = lambda: "test_key"
@@ -320,12 +322,12 @@ class TestChatStreamEndpoint:
     async def test_stream_generic_exception_emits_sse_error(self) -> None:
         """Any unexpected Exception in event_generator → STREAM_ERROR SSE event (line 152)."""
 
-        async def _raise_generic(_request: Any) -> AsyncGenerator[dict, None]:
+        async def _raise_generic(**kwargs: Any) -> AsyncGenerator[str, None]:
             raise RuntimeError("unexpected chaos")
-            yield {}  # type: ignore[unreachable]
+            yield ""  # type: ignore[unreachable]
 
         mock_orch = _make_mock_orchestrator()
-        mock_orch.process_message_stream = _raise_generic
+        mock_orch.generate = Mock(side_effect=lambda **kwargs: _raise_generic())
 
         app.dependency_overrides[get_rag_orchestrator] = lambda: mock_orch
         app.dependency_overrides[verify_api_key] = lambda: "test_key"

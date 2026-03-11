@@ -33,12 +33,16 @@ class TestValidationBlockerEmptyHistory:
 
     def test_none_history_returns_none(self, orchestrator_instance):
         """Empty history should allow LLM call (no blocking)."""
-        result = orchestrator_instance._check_validation_blocker(None)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Let's start the workflow", history=None
+        )
         assert result is None
 
     def test_empty_list_returns_none(self, orchestrator_instance):
         """Empty list should allow LLM call (no blocking)."""
-        result = orchestrator_instance._check_validation_blocker([])
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Let's start the workflow", history=[]
+        )
         assert result is None
 
 
@@ -51,7 +55,9 @@ class TestValidationBlockerNoDocuments:
             {"role": "user", "content": "Hello"},
             {"role": "user", "content": "How are you?"},
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Create a document", history=history
+        )
         assert result is None
 
     def test_assistant_messages_without_document_tag_returns_none(
@@ -62,7 +68,9 @@ class TestValidationBlockerNoDocuments:
             {"role": "user", "content": "Create a document"},
             {"role": "assistant", "content": "Sure, here's the content without tags."},
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="What's next?", history=history
+        )
         assert result is None
 
 
@@ -83,7 +91,9 @@ class TestValidationBlockerValidatedDocument:
             },
             {"role": "user", "content": "What's next?"},
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="What's next?", history=history
+        )
         assert result is None
 
     def test_multiple_documents_all_validated_returns_none(self, orchestrator_instance):
@@ -103,7 +113,9 @@ class TestValidationBlockerValidatedDocument:
             },
             {"role": "user", "content": "Next?"},
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Next?", history=history
+        )
         assert result is None
 
 
@@ -122,12 +134,14 @@ class TestValidationBlockerUnvalidatedDocument:
             },
             {"role": "user", "content": "Show me the next step"},
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Show me the next step", history=history
+        )
 
         assert result is not None
         assert isinstance(result, str)
-        assert "Bloqueo de Seguridad" in result
-        assert "RULE-06" in result
+        assert "propuesta técnica pendiente" in result
+        assert "botón verde" in result
         assert "Validar y Guardar" in result
 
     def test_blocking_message_contains_instructions(self, orchestrator_instance):
@@ -136,13 +150,15 @@ class TestValidationBlockerUnvalidatedDocument:
             {"role": "assistant", "content": "<document>Test</document>"},
             {"role": "user", "content": "Next?"},
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Next?", history=history
+        )
 
         assert result is not None
         # Check for key instructions
         assert "botón verde" in result
-        assert "scroll" in result
-        assert "Master Workflow" in result
+        assert "Refinar" in result
+        assert "Rechazar" in result
 
     def test_multiple_documents_last_unvalidated_blocks(self, orchestrator_instance):
         """If last document is unvalidated, should block even if previous validated."""
@@ -156,10 +172,12 @@ class TestValidationBlockerUnvalidatedDocument:
             {"role": "assistant", "content": "<document>Doc 2</document>"},
             {"role": "user", "content": "What's next?"},  # Missing validation!
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="What's next?", history=history
+        )
 
         assert result is not None
-        assert "Bloqueo de Seguridad" in result
+        assert "propuesta técnica pendiente" in result
 
 
 class TestValidationBlockerEdgeCases:
@@ -171,7 +189,9 @@ class TestValidationBlockerEdgeCases:
             {"role": "user", "content": "Here's my <document> tag"},
             {"role": "assistant", "content": "OK, got it."},
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="What should I do next?", history=history
+        )
         assert result is None
 
     def test_partial_validation_phrase_does_not_unblock(self, orchestrator_instance):
@@ -183,7 +203,9 @@ class TestValidationBlockerEdgeCases:
                 "content": "He validado el documento",
             },  # Missing "y guardado"
         ]
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Continue with next step", history=history
+        )
         assert result is not None
 
     def test_case_sensitive_validation_phrase(self, orchestrator_instance):
@@ -196,7 +218,9 @@ class TestValidationBlockerEdgeCases:
             },  # All caps
         ]
         # Current implementation is case-sensitive, so this SHOULD block
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Proceed to next phase", history=history
+        )
         assert result is not None  # Blocked because exact phrase not found
 
     def test_malformed_history_missing_role_key(self, orchestrator_instance):
@@ -206,7 +230,9 @@ class TestValidationBlockerEdgeCases:
             {"role": "assistant", "content": "<document>Doc</document>"},
         ]
         # Should handle gracefully (get() returns None for missing keys)
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="What's the status?", history=history
+        )
         assert result is not None  # Should still detect unvalidated document
 
     def test_malformed_history_missing_content_key(self, orchestrator_instance):
@@ -216,5 +242,7 @@ class TestValidationBlockerEdgeCases:
             {"role": "assistant", "content": "<document>Doc</document>"},
         ]
         # Should handle gracefully (get() returns empty string for missing keys)
-        result = orchestrator_instance._check_validation_blocker(history)
+        result = orchestrator_instance._check_validation_blocker(
+            user_message="Check document status", history=history
+        )
         assert result is not None  # Should still detect unvalidated document
