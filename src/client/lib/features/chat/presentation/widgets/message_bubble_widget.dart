@@ -7,11 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
-import '../../../filesystem/presentation/providers/filesystem_providers.dart';
-import '../../../project_shell/core/services/file_system_service.dart';
-import '../../../project_shell/infrastructure/services/project_progress_service.dart';
-import '../../../project_shell/presentation/providers/project_providers.dart';
 import '../notifiers/chat_notifier.dart';
 import 'smart_message_renderer.dart';
 
@@ -215,108 +210,13 @@ class MessageBubbleWidget extends ConsumerWidget {
                         SmartMessageRenderer(
                           rawContent: message.content,
                           isUser: false,
-                          onSaveDocument: (path, cleanContent) async {
-                            debugPrint(
-                              '📄 Attempting to save document at: $path',
-                            );
-
-                            try {
-                              var projectRoot = ref.read(projectRootProvider);
-
-                              if (projectRoot == null || projectRoot.isEmpty) {
-                                final projects = ref.read(projectsProvider);
-                                final activeProject = projects
-                                    .where((p) => !p.path.startsWith('mock://'))
-                                    .firstOrNull;
-
-                                if (activeProject != null) {
-                                  projectRoot = activeProject.path;
-                                } else {
-                                  throw Exception(
-                                    'No active project configured.',
-                                  );
-                                }
-                              }
-
-                              final normalizedPath = path.startsWith('/')
-                                  ? path.substring(1)
-                                  : path;
-
-                              final fsService = FileSystemServiceImpl();
-                              await fsService.saveDocument(
-                                projectPath: projectRoot,
-                                relativePath: normalizedPath,
-                                content: cleanContent,
-                              );
-
-                              debugPrint('✅ Document saved successfully');
-
-                              try {
-                                await ProjectProgressService.updateAfterDocumentSave(
-                                  projectRoot,
-                                );
-                              } on Exception catch (e) {
-                                debugPrint('⚠️ Error updating progress: $e');
-                              }
-
-                              ref
-                                ..invalidate(fileSystemNotifierProvider)
-                                ..read(
-                                  fileSystemNotifierProvider.notifier,
-                                ).refresh()
-                                ..invalidate(
-                                  projectStatusProvider(projectRoot),
-                                );
-
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      '✅ Document saved successfully',
-                                    ),
-                                    backgroundColor: Colors.green,
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              }
-
-                              if (onValidate != null) {
-                                onValidate!();
-                              }
-
-                              ref
-                                  .read(chatNotifierProvider.notifier)
-                                  .addSystemMessage(
-                                    '✅ Documento validado y guardado en '
-                                    '`$normalizedPath`',
-                                  );
-
-                              final autoPrompt =
-                                  'I have validated and saved the document '
-                                  'at `$normalizedPath`. '
-                                  'Please review the Master Workflow '
-                                  'and tell me what the next step is and '
-                                  'what document should be created now. '
-                                  'Si necesitas contexto para el siguiente '
-                                  'documento, hazme las preguntas '
-                                  'necesarias.';
-
-                              await ref
-                                  .read(chatNotifierProvider.notifier)
-                                  .sendMessageStream(
-                                    autoPrompt,
-                                    isHidden: true,
-                                  );
-                            } on Exception catch (e) {
-                              debugPrint('❌ Error guardando el documento: $e');
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Error al guardar: $e'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              }
+                          // 🎯 CAMBIO: Toda la lógica farragosa se reemplaza por estas líneas
+                          onSaveDocument: () async {
+                            await ref
+                                .read(chatNotifierProvider.notifier)
+                                .validateProposal(message.id);
+                            if (onValidate != null) {
+                              onValidate!();
                             }
                           },
                           onSendChatMessage: (refineMessage) async {

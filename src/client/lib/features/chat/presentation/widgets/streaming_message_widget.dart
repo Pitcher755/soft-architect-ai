@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
-import '../../../filesystem/presentation/providers/filesystem_providers.dart';
-import '../../../project_shell/core/services/file_system_service.dart';
-import '../../../project_shell/infrastructure/services/project_progress_service.dart';
 import '../notifiers/chat_notifier.dart';
 import 'smart_message_renderer.dart';
 
@@ -38,62 +34,12 @@ class StreamingMessageWidget extends ConsumerWidget {
               child: SmartMessageRenderer(
                 rawContent: text,
                 isUser: false,
-                onSaveDocument: (path, cleanContent) async {
-                  debugPrint(
-                    '📄 Attempting to save streaming document at: $path',
-                  );
-
-                  try {
-                    final projectRoot = ref.read(projectRootProvider);
-                    if (projectRoot == null) {
-                      throw Exception(
-                        'Project root not configured. '
-                        'Open a project first.',
-                      );
-                    }
-
-                    final normalizedPath = path.startsWith('/')
-                        ? path.substring(1)
-                        : path;
-
-                    final fsService = FileSystemServiceImpl();
-                    await fsService.saveDocument(
-                      projectPath: projectRoot,
-                      relativePath: normalizedPath,
-                      content: cleanContent,
-                    );
-
-                    // Update project progress
-                    try {
-                      await ProjectProgressService.updateAfterDocumentSave(
-                        projectRoot,
-                      );
-                    } on Exception catch (e) {
-                      debugPrint('⚠️ Error updating progress: $e');
-                    }
-
-                    ref.invalidate(fileSystemNotifierProvider);
-                    ref.read(fileSystemNotifierProvider.notifier).refresh();
-
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('✅ Document saved successfully'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                    }
-                  } on Exception catch (e) {
-                    debugPrint('❌ Error saving the document: $e');
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error saving: $e'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  }
+                // 🎯 CAMBIO: Ahora delegamos toda la magia (rutas, guardado y avance) al ChatNotifier.
+                // Ya no hay que adivinar la ruta ni inyectar servicios manualmente aquí.
+                onSaveDocument: () async {
+                  await ref
+                      .read(chatNotifierProvider.notifier)
+                      .validateProposal();
                 },
                 onSendChatMessage: (refineMessage) async {
                   await ref
