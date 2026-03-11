@@ -19,14 +19,18 @@ class WorkflowInjector:
     def __init__(self) -> None:
         """Initialize WorkflowInjector with the Docker container knowledge base path."""
         self.knowledge_base_path = Path("/app/knowledge_base")
-        logger.info("WorkflowInjector initialized with path: %s", self.knowledge_base_path)
+        logger.info(
+            "WorkflowInjector initialized with path: %s", self.knowledge_base_path
+        )
 
     def get_injected_prompt(self, doc_type: str) -> str:
         """Build a deterministic injection block for the given document type."""
         step = get_step_by_type(doc_type)
 
         if not step:
-            logger.error("Document type '%s' is not registered in MASTER_WORKFLOW.", doc_type)
+            logger.error(
+                "Document type '%s' is not registered in MASTER_WORKFLOW.", doc_type
+            )
             return ""
 
         template_name = Path(step.template_path).name
@@ -38,7 +42,9 @@ class WorkflowInjector:
             / self._get_template_subfolder(doc_type)
             / template_name
         )
-        direct_example_path = self.knowledge_base_path / "MASTER_WORKFLOW_EXAMPLES" / example_name
+        direct_example_path = (
+            self.knowledge_base_path / "MASTER_WORKFLOW_EXAMPLES" / example_name
+        )
 
         template_content = self._read_with_fallback(direct_template_path, template_name)
         example_content = self._read_with_fallback(direct_example_path, example_name)
@@ -74,7 +80,9 @@ class WorkflowInjector:
                 "</project_closing_instruction>\n"
             )
 
-        logger.info("Injector prepared document: %s (Step %d)", doc_type, step.step_number)
+        logger.info(
+            "Injector prepared document: %s (Step %d)", doc_type, step.step_number
+        )
         return injection
 
     def _get_template_subfolder(self, doc_type: str) -> str:

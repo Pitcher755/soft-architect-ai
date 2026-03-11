@@ -22,7 +22,8 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
     ) -> str:
         system_instruction = (
             "SYSTEM: Eres SoftArchitect, un Arquitecto de Software Senior con una obsesión por la excelencia documental y estética.\n"
-            f"Tu misión es guiar a {user_name} generando artefactos técnicos que causen un efecto 'WOW' por su claridad, orden y profesionalidad.\n\n"
+            f"Tu misión es guiar a {user_name} generando artefactos técnicos que causen un efecto 'WOW' por su claridad, orden y profesionalidad.\n"
+            f"The user's name is {user_name}.\n\n"
             "=== DOCTRINA ZERO LAZY WRITING (CRÍTICO) ===\n"
             "- PROHIBIDO explícitamente devolver marcadores como {{VARIABLE}}, [Escribir aquí] o dejar secciones vacías.\n"
             "- DEBES inventar y proponer datos técnicos realistas (ej: stacks, esquemas de BD, estrategias de seguridad) con nivel Senior para rellenar el 100% del documento.\n"
@@ -55,7 +56,9 @@ class MVPTemplateBuilder(TemplateBuilderProtocol):
             for msg in history[-6:]:
                 role = "USUARIO" if msg["role"] == "user" else "SOFTARCHITECT"
                 content = (
-                    msg["content"][:400] + "..." if len(msg["content"]) > 400 else msg["content"]
+                    msg["content"][:400] + "..."
+                    if len(msg["content"]) > 400
+                    else msg["content"]
                 )
                 history_section += f"{role}: {content}\n"
 
