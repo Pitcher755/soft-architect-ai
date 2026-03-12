@@ -355,35 +355,27 @@ class ChatNotifier extends StateNotifier<ChatState> {
           ? {...state.validatedMessageIds, messageId}
           : state.validatedMessageIds;
 
-      // Only advance workflow when validating current proposal
-      // (not a specific message)
-      if (messageId == null) {
-        final nextIndex = state.currentDocIndex + 1;
-        if (!projectPath.startsWith('mock://')) {
-          await ProjectProgressService.updateAfterDocumentSave(
-            projectPath,
-          );
-        }
-
-        state = state.copyWith(
-          clearProposal: true,
-          currentDocIndex: nextIndex,
-          validatedMessageIds: updatedValidatedIds,
+      // 🎯 FIX: SIEMPRE avanzar el workflow tras validación exitosa
+      // (sin importar si messageId es nulo o no)
+      final nextIndex = state.currentDocIndex + 1;
+      if (!projectPath.startsWith('mock://')) {
+        await ProjectProgressService.updateAfterDocumentSave(
+          projectPath,
         );
+      }
 
-        if (nextIndex <= state.totalDocs) {
-          final nextDoc = _getDocTypeForIndex(nextIndex);
-          await sendMessageStream(
-            'He validado el documento anterior. '
-            'Por favor, genera ahora: $nextDoc',
-            isHidden: true,
-          );
-        }
-      } else {
-        // Solo limpiar el proposal sin avanzar el workflow
-        state = state.copyWith(
-          clearProposal: true,
-          validatedMessageIds: updatedValidatedIds,
+      state = state.copyWith(
+        clearProposal: true,
+        currentDocIndex: nextIndex,
+        validatedMessageIds: updatedValidatedIds,
+      );
+
+      if (nextIndex <= state.totalDocs) {
+        final nextDoc = _getDocTypeForIndex(nextIndex);
+        await sendMessageStream(
+          'He validado el documento anterior. '
+          'Por favor, genera ahora: $nextDoc',
+          isHidden: true,
         );
       }
     } on Exception catch (e) {
