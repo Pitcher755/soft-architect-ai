@@ -350,8 +350,8 @@ class ChatNotifier extends StateNotifier<ChatState> {
           ? {...state.validatedMessageIds, messageId}
           : state.validatedMessageIds;
 
-      // 🎯 FIX: SIEMPRE avanzar el workflow tras validación exitosa
-      // (sin importar si messageId es nulo o no)
+      // 🎯 FIX (Tarea 0.5): SIEMPRE avanzar el workflow tras validación exitosa
+      // ANTI-REGRESIÓN: NO bloquear el avance basándose en la presencia/ausencia de messageId
       final nextIndex = state.currentDocIndex + 1;
       if (!projectPath.startsWith('mock://')) {
         await ProjectProgressService.updateAfterDocumentSave(projectPath);

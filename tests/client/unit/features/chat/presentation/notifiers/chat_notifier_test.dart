@@ -814,7 +814,7 @@ void main() {
     });
 
     test(
-      'should not advance workflow when validating specific message',
+      'should ALSO advance workflow when validating specific message (Tarea 0.5)',
       () async {
         final notifier = container.read(chatNotifierProvider.notifier);
         await notifier.setProjectPath('/tmp/test_project');
@@ -829,11 +829,12 @@ void main() {
           (m) => m.role == MessageRole.assistant,
         );
 
-        // Validate specific message (not current proposal)
+        // Validate specific message with messageId provided
         await notifier.validateProposal(assistantMessage.id);
 
         final stateAfterValidation = container.read(chatNotifierProvider);
-        expect(stateAfterValidation.currentDocIndex, indexBefore); // No change
+        // 🎯 Tarea 0.5: SIEMPRE avanzar, sin importar si messageId es null o no
+        expect(stateAfterValidation.currentDocIndex, indexBefore + 1);
       },
     );
 
