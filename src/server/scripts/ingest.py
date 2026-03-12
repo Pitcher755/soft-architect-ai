@@ -148,7 +148,9 @@ def load_multiformat_documents(  # noqa: C901
                 },
             )
             documents.append(doc)
-            logger.debug(f"Loaded: {file_path.name} ({len(content)} chars, type={file_type})")
+            logger.debug(
+                f"Loaded: {file_path.name} ({len(content)} chars, type={file_type})"
+            )
 
         except Exception as e:
             logger.error(f"Failed to load {file_path}: {e}")

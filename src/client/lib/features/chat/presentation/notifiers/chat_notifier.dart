@@ -334,10 +334,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
       // 🎯 LIMPIEZA CIRUJANA: Solo aquí quitamos las marcas
       // para el archivo real
       final cleanedContent = _cleanDocumentContent(content);
-      final relativePath = _getFilePathForDocType(
-        docType,
-        cleanedContent,
-      );
+      final relativePath = _getFilePathForDocType(docType, cleanedContent);
 
       await _fileSystemService.saveDocument(
         projectPath: projectPath,
@@ -345,9 +342,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
         content: cleanedContent,
       );
 
-      addSystemMessage(
-        '✅ Documento validado y guardado en `$relativePath`',
-      );
+      addSystemMessage('✅ Documento validado y guardado en `$relativePath`');
       ref.read(fileSystemNotifierProvider.notifier).refresh();
 
       // Marcar mensaje como validado (si hay messageId específico)
@@ -359,9 +354,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
       // (sin importar si messageId es nulo o no)
       final nextIndex = state.currentDocIndex + 1;
       if (!projectPath.startsWith('mock://')) {
-        await ProjectProgressService.updateAfterDocumentSave(
-          projectPath,
-        );
+        await ProjectProgressService.updateAfterDocumentSave(projectPath);
       }
 
       state = state.copyWith(
