@@ -56,7 +56,7 @@ class QueryResponse(BaseModel):
     summary="Test RAG retrieval",
     description="Temporary endpoint to validate RAG vector retrieval integration.",
 )
-async def test_rag_retrieval(body: QueryRequest) -> QueryResponse:
+async def rag_retrieval_endpoint(body: QueryRequest) -> QueryResponse:
     """
     Test RAG retrieval pipeline.
 
