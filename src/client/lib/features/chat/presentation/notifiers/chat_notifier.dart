@@ -353,15 +353,20 @@ class ChatNotifier extends StateNotifier<ChatState> {
       // 🎯 FIX (Tarea 0.5): SIEMPRE avanzar el workflow tras validación exitosa
       // ANTI-REGRESIÓN: NO bloquear el avance basándose en la presencia/ausencia de messageId
       final nextIndex = state.currentDocIndex + 1;
-      if (!projectPath.startsWith('mock://')) {
-        await ProjectProgressService.updateAfterDocumentSave(projectPath);
-      }
 
+      // ✅ CRITICAL FIX: Update validatedMessageIds BEFORE potential exception
+      // This ensures the message is marked as validated even if
+      // ProjectProgressService.updateAfterDocumentSave fails
       state = state.copyWith(
         clearProposal: true,
         currentDocIndex: nextIndex,
         validatedMessageIds: updatedValidatedIds,
       );
+
+      // Update project progress (might throw exception)
+      if (!projectPath.startsWith('mock://')) {
+        await ProjectProgressService.updateAfterDocumentSave(projectPath);
+      }
 
       if (nextIndex <= state.totalDocs) {
         final nextDoc = _getDocTypeForIndex(nextIndex);

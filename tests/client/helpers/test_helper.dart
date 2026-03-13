@@ -4,11 +4,28 @@ import 'package:softarchitect_ai/features/project_shell/data/data_sources/sqlite
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+/// Flag to ensure sqflite is initialized only once across all tests
+///
+/// ✅ FIX: Prevents "You are changing sqflite default factory" warning
+/// by initializing the factory only on first call.
+bool _isSqfliteInitialized = false;
+
+/// Initialize sqflite FFI for testing (call once in setUpAll)
+///
+/// ✅ SAFE: Uses flag to prevent multiple initializations
+/// which would trigger sqflite warnings.
+void initSqfliteForTest() {
+  if (!_isSqfliteInitialized) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+    _isSqfliteInitialized = true;
+  }
+}
+
 /// Helper para inicializar SQLite en memoria para tests
 Future<sqflite.Database> initTestDatabase() async {
-  // Inicializar sqflite para tests
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+  // ✅ CRITICAL FIX: Initialize sqflite only once to avoid warnings
+  initSqfliteForTest();
 
   // En tests, usar base de datos en memoria
   final db = await sqflite.openDatabase(
