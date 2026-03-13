@@ -97,10 +97,10 @@ jobs:
       - name: 🧪 Unit Tests + Coverage
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
         run: |
-          cd src/server && pytest ../../tests/server/unit \
-            --cov=app --cov=services --cov=core \
-            --cov-report=html:../../coverage-report \
-            --cov-report=xml:../../coverage.xml \
+          pytest tests/server/unit \
+            --cov=src/server/app --cov=src/server/services --cov=src/server/core \
+            --cov-report=html:coverage-report \
+            --cov-report=xml:coverage.xml \
             --cov-report=term-missing \
             --cov-fail-under=80 \
             -v --tb=short
@@ -109,7 +109,7 @@ jobs:
       - name: 🔗 Integration Tests
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
         run: |
-          cd src/server && pytest ../../tests/server/integration \
+          pytest tests/server/integration \
             -v --tb=short -m "not slow"
         continue-on-error: true  # Don't block if integration tests fail
 
