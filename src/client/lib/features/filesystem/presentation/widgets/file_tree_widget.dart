@@ -1,14 +1,16 @@
 // ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../project_shell/data/mock_data.dart';
 import '../../domain/entities/file_node.dart';
 import '../../infrastructure/services/file_tree_service.dart';
+import '../notifiers/file_system_notifier.dart';
 import 'file_tree_node.dart';
 
-class FileTreeWidget extends StatefulWidget {
+class FileTreeWidget extends ConsumerStatefulWidget {
   const FileTreeWidget({
     required this.onFileSelected,
     this.rootNode,
@@ -21,10 +23,12 @@ class FileTreeWidget extends StatefulWidget {
   final String? projectPath; // For Real (optional)
 
   @override
-  State<FileTreeWidget> createState() => _FileTreeWidgetState();
+  ConsumerState<FileTreeWidget> createState() => _FileTreeWidgetState();
 }
 
-class _FileTreeWidgetState extends State<FileTreeWidget> {
+class _FileTreeWidgetState extends ConsumerState<FileTreeWidget> {
+  // Track last refresh counter to detect changes
+  int _lastRefreshCounter = 0;
   FileNode? _activeRootNode;
   FileNode? _selectedNode;
   final Set<String> _expandedFolders = {};
@@ -44,6 +48,15 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
     super.didUpdateWidget(oldWidget);
     // If the project path changes, reload
     if (oldWidget.projectPath != widget.projectPath) {
+      _loadData();
+    }
+
+    // ✅ AUTO-REFRESH: Reload tree when fileSystemNotifierProvider.refresh() is called
+    final currentRefreshCounter = ref
+        .read(fileSystemNotifierProvider)
+        .refreshCounter;
+    if (currentRefreshCounter != _lastRefreshCounter) {
+      _lastRefreshCounter = currentRefreshCounter;
       _loadData();
     }
   }
@@ -99,83 +112,99 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => Container(
-    decoration: const BoxDecoration(
-      color: AppColors.surfaceLight,
-      border: Border(right: BorderSide(color: AppColors.border)),
-    ),
-    child: Column(
-      children: [
-        // Header: EXPLORER
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: AppColors.border)),
-          ),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.folder_outlined,
-                color: AppColors.textSecondary,
-                size: 16,
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                'EXPLORER',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const Spacer(),
-              // Botón de refrescar real
-              IconButton(
-                icon: _isLoading
-                    ? const SizedBox(
-                        width: 12,
-                        height: 12,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.refresh),
-                color: AppColors.textSecondary,
-                iconSize: 16,
-                tooltip: 'Recargar',
-                onPressed: _isLoading ? null : _loadData,
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-              ),
-            ],
-          ),
-        ),
+  Widget build(BuildContext context) {
+    // ✅ AUTO-REFRESH: Watch refresh counter to rebuild tree automatically
+    final refreshCounter = ref.watch(
+      fileSystemNotifierProvider.select((state) => state.refreshCounter),
+    );
 
-        // Contenido del Árbol
-        Expanded(
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _errorMessage != null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      _errorMessage!,
-                      style: const TextStyle(
-                        color: AppColors.error,
-                        fontSize: 11,
+    // Reload tree if refresh counter changed (file saved/created)
+    if (refreshCounter != _lastRefreshCounter) {
+      _lastRefreshCounter = refreshCounter;
+      // Schedule reload after build to avoid calling setState during build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _loadData();
+      });
+    }
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.surfaceLight,
+        border: Border(right: BorderSide(color: AppColors.border)),
+      ),
+      child: Column(
+        children: [
+          // Header: EXPLORER
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.border)),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.folder_outlined,
+                  color: AppColors.textSecondary,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'EXPLORER',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const Spacer(),
+                // Botón de refrescar real
+                IconButton(
+                  icon: _isLoading
+                      ? const SizedBox(
+                          width: 12,
+                          height: 12,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.refresh),
+                  color: AppColors.textSecondary,
+                  iconSize: 16,
+                  tooltip: 'Recargar',
+                  onPressed: _isLoading ? null : _loadData,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ],
+            ),
+          ),
+
+          // Contenido del Árbol
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _errorMessage != null
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        _errorMessage!,
+                        style: const TextStyle(
+                          color: AppColors.error,
+                          fontSize: 11,
+                        ),
                       ),
                     ),
+                  )
+                : _activeRootNode == null
+                ? const SizedBox()
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: _buildFileTree(_activeRootNode!, 0),
                   ),
-                )
-              : _activeRootNode == null
-              ? const SizedBox()
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: _buildFileTree(_activeRootNode!, 0),
-                ),
-        ),
-      ],
-    ),
-  );
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildFileTree(FileNode node, int depth) {
     final isFolder = node.isDirectory;

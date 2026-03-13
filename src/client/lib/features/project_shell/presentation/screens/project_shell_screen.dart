@@ -239,7 +239,10 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
         width: math.max(_markdownPanelWidth, _minMarkdownWidth),
         child: MarkdownPreviewWidget(
           content: _fileContent,
-          filename: _selectedNode?.name,
+          // Only pass filename if selected node is a FILE (not directory)
+          filename: _selectedNode != null && !_selectedNode!.isDirectory
+              ? _selectedNode!.path
+              : null,
         ),
       ),
     ),
