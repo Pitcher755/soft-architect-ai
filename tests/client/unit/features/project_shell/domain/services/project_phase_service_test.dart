@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:softarchitect_ai/features/project_shell/core/constants/project_structure_constants.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/entities/project.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/models/project_phase.dart';
 import 'package:softarchitect_ai/features/project_shell/domain/services/project_phase_service.dart';
-import 'package:softarchitect_ai/features/project_shell/core/constants/project_structure_constants.dart';
 
 class FakeProjectFileScanner {
   FakeProjectFileScanner(this.files);
@@ -70,10 +70,10 @@ void main() {
       expect(scanner.lastPath, '/tmp/test_project');
       expect(result.docsCompleted, 2);
       expect(result.currentPhase, 0);
-      expect(result.progress, closeTo(2 / 25, 0.0001));
+      expect(result.progress, closeTo(2 / 24, 0.0001));
     });
 
-    test('instance calculator computes deterministic doc N/25', () {
+    test('instance calculator computes deterministic doc N/24', () {
       final scanner = FakeProjectFileScanner(const []);
       final service = ProjectPhaseService(fileScanner: scanner.getProjectFiles);
 
@@ -84,7 +84,7 @@ void main() {
       ]);
 
       expect(result.docsCompleted, 3);
-      expect(result.progress, closeTo(3 / 25, 0.0001));
+      expect(result.progress, closeTo(3 / 24, 0.0001));
       expect(result.currentPhase, 0);
     });
 
@@ -99,10 +99,10 @@ void main() {
 
       expect(result.currentPhase, 1);
       expect(result.docsCompleted, 5);
-      expect(result.progress, closeTo(5 / 25, 0.0001));
+      expect(result.progress, closeTo(5 / 24, 0.0001));
     });
 
-    test('counts optional root docs for Doc N/25 progress', () {
+    test('counts optional root docs for Doc N/24 progress', () {
       final result = ProjectPhaseService.calculateProgressFromFiles(const [
         'AGENTS.md',
         'README.md',
@@ -112,7 +112,7 @@ void main() {
 
       expect(result.currentPhase, 0);
       expect(result.docsCompleted, 4);
-      expect(result.progress, closeTo(4 / 25, 0.0001));
+      expect(result.progress, closeTo(4 / 24, 0.0001));
     });
 
     test('detects context phase from real filesystem', () async {

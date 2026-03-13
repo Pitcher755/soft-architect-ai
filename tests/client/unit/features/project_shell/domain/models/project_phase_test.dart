@@ -6,10 +6,9 @@ import 'package:softarchitect_ai/features/project_shell/domain/models/project_ph
 void main() {
   group('ProjectPhase', () {
     test('contains all expected phases and total file count', () {
-      expect(ProjectPhase.all.length, 7);
-      expect(ProjectPhase.totalFileCount, 25);
+      expect(ProjectPhase.all.length, 6);
+      expect(ProjectPhase.totalFileCount, 24);
       expect(ProjectPhase.root.order, 5);
-      expect(ProjectPhase.meta.order, 6);
     });
 
     test('getById returns correct phase and null when not found', () {

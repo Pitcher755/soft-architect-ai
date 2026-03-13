@@ -76,22 +76,33 @@ class ProjectPhaseService {
   final ProjectFileScanner _fileScanner;
   static final ProjectPhaseService _defaultInstance = ProjectPhaseService();
 
+  /// Returns the display name for a given phase index.
+  ///
+  /// Phase indices (0-5):
+  /// - 0: Contexto (Context)
+  /// - 1: Requisitos (Requirements)
+  /// - 2: Arquitectura (Architecture)
+  /// - 3: UI/UX
+  /// - 4: Planificación (Planning)
+  /// - 5: Raíz (Root - final synthesis phase)
+  ///
+  /// Returns 'Contexto' for invalid indices (default).
   static String getPhaseNameFromIndex(int phaseIndex) {
     switch (phaseIndex) {
-      case 6:
-        return 'Meta';
-      case 5:
-        return 'Planificación';
-      case 4:
-        return 'UI/UX';
-      case 3:
-        return 'Arquitectura';
-      case 2:
-        return 'Requisitos';
-      case 1:
+      case 0:
         return 'Contexto';
-      default:
+      case 1:
+        return 'Requisitos';
+      case 2:
+        return 'Arquitectura';
+      case 3:
+        return 'UI/UX';
+      case 4:
+        return 'Planificación';
+      case 5:
         return 'Raíz';
+      default:
+        return 'Contexto';
     }
   }
 
@@ -190,13 +201,13 @@ class ProjectPhaseService {
   /// to determine phase.
   ///
   /// Phase detection logic:
-  /// - Root: Only base files present
-  /// - Context: context/ directory exists
-  /// - Requirements: doc/20-REQUIREMENTS_AND_SPEC/ exists
-  /// - Architecture: doc/30-ARCHITECTURE/ or src/ exists
-  /// - UI/UX: UI design files detected
-  /// - Planning: doc/40-ROADMAP/ or infrastructure/ exists
-  /// - Meta: tests/, .github/ or advanced project structure
+  /// - Context: context/10-CONTEXT/ files present (Phase 1)
+  /// - Requirements: context/20-REQUIREMENTS/ files present (Phase 2)
+  /// - Architecture: context/30-ARCHITECTURE/ files present (Phase 3)
+  /// - UI/UX: context/35-UX_UI/ files present (Phase 4)
+  /// - Planning: context/40-PLANNING/ files present (Phase 5)
+  /// - Root: Root synthesis files (RULES.md, CONTRIBUTING.md,
+  ///   AGENTS.md, README.md) - Phase 6 (FINAL)
   static ProjectPhase getProjectPhase(Project project) {
     // Special case: Guide project always in quick start
     if (project.id == 'guide-softarchitect-01') {
@@ -253,7 +264,7 @@ class ProjectPhaseService {
       }
     }
 
-    return 'Meta';
+    return 'Raíz';
   }
 
   /// Gets the number of documents completed in the current phase.
@@ -308,20 +319,20 @@ class ProjectPhaseService {
 
   static ProjectPhase _mapPhaseIndexToModel(int phaseIndex) {
     switch (phaseIndex) {
-      case 6:
-        return ProjectPhase.meta;
-      case 5:
-        return ProjectPhase.planning;
-      case 4:
-        return ProjectPhase.uiUx;
-      case 3:
-        return ProjectPhase.architecture;
-      case 2:
-        return ProjectPhase.requirements;
+      case 0:
+        return ProjectPhase.root;
       case 1:
         return ProjectPhase.context;
+      case 2:
+        return ProjectPhase.requirements;
+      case 3:
+        return ProjectPhase.architecture;
+      case 4:
+        return ProjectPhase.uiUx;
+      case 5:
+        return ProjectPhase.planning;
       default:
-        return ProjectPhase.root;
+        return ProjectPhase.context;
     }
   }
 }
