@@ -15,7 +15,7 @@ Version: 0.1.0 (Phase 1 - RED)
 from uuid import uuid4
 
 import pytest
-from app.domain.schemas.chat import ChatRequest, ChatResponse, RAGContext
+from app.domain.schemas.chat_schema import ChatRequest, ChatResponse, RAGContext
 
 
 class TestChatRequestValidation:

@@ -49,18 +49,18 @@ class TestBuildPromptSystemInstruction:
         )
 
         assert "SoftArchitect" in prompt
-        assert "Senior Software Architect AI" in prompt
+        assert "Arquitecto de Software Senior" in prompt
 
     def test_system_instruction_contains_24_step_workflow(self, builder):
-        """System instruction should mention 24-step workflow."""
+        """System instruction should mention workflow guidance."""
         prompt = builder.build_prompt(
             query="Test",
             context=[],
             template_id="CONTEXT_DRIVEN",
         )
 
-        assert "24" in prompt
-        assert "STRICT" in prompt or "strict" in prompt
+        assert "DOCTRINA ZERO LAZY WRITING" in prompt
+        assert "ESTRICTO" in prompt or "strict" in prompt
 
     def test_system_instruction_contains_all_rules(self, builder):
         """System instruction should contain all 5 core rules."""
@@ -72,11 +72,11 @@ class TestBuildPromptSystemInstruction:
 
         # Check for rule keywords
         rule_keywords = [
-            "ANTI-INTERVIEW",
-            "VISUAL EXCELLENCE",
-            "DIRECTORY",
+            "DOCTRINA ZERO LAZY WRITING",
+            "ENRUTAMIENTO ESTRICTO",
+            "ESTILO Y FORMATO OBLIGATORIO",
             "<document>",
-            "VALIDATION BLOCKER",
+            "CONTRATO DE SALIDA",
         ]
 
         for keyword in rule_keywords:
@@ -90,9 +90,8 @@ class TestBuildPromptSystemInstruction:
             template_id="CONTEXT_DRIVEN",
         )
 
-        assert "Phase 1:" in prompt
-        assert "Phase 2:" in prompt
-        assert "Phase 6:" in prompt
+        assert "Fases 1 a 5" in prompt
+        assert "Fase 6" in prompt
 
 
 class TestBuildPromptHistoryFormatting:
@@ -135,13 +134,13 @@ class TestBuildPromptHistoryFormatting:
             history=history,
         )
 
-        assert "📋 RECENT HISTORY:" in prompt
-        assert "USER: Hello" in prompt
+        assert "📋 MEMORIA DE DECISIONES:" in prompt
+        assert "USUARIO: Hello" in prompt
         assert "SOFTARCHITECT: Hi there!" in prompt
-        assert "USER: How are you?" in prompt
+        assert "USUARIO: How are you?" in prompt
 
     def test_history_limits_to_last_5_messages(self, builder):
-        """History should only include last 5 messages."""
+        """History should only include last 6 messages."""
         history = [{"role": "user", "content": f"Message {i}"} for i in range(10)]
 
         prompt = builder.build_prompt(
@@ -151,12 +150,12 @@ class TestBuildPromptHistoryFormatting:
             history=history,
         )
 
-        # Should have last 5 messages (5-9)
-        assert "Message 5" in prompt
+        # Should have last 6 messages (4-9)
+        assert "Message 4" in prompt
         assert "Message 9" in prompt
         # Should NOT have first messages
         assert "Message 0" not in prompt
-        assert "Message 4" not in prompt
+        assert "Message 3" not in prompt
 
 
 class TestBuildPromptContextSection:
@@ -170,8 +169,8 @@ class TestBuildPromptContextSection:
             template_id="FALLBACK",
         )
 
-        assert "⚠️ WARNING" in prompt
-        assert "No templates found" in prompt
+        assert "⚠️ INFO" in prompt
+        assert "Base de conocimientos no disponible" in prompt
 
     def test_empty_context_with_normal_template_shows_warning(self, builder):
         """Empty context with any template shows warning."""
@@ -182,7 +181,7 @@ class TestBuildPromptContextSection:
         )
 
         # Should still show warning if context is empty
-        assert "⚠️ WARNING" in prompt
+        assert "⚠️ INFO" in prompt
 
     def test_context_section_includes_all_snippets(self, builder):
         """Context section should include all provided snippets."""
@@ -198,7 +197,7 @@ class TestBuildPromptContextSection:
             template_id="CONTEXT_DRIVEN",
         )
 
-        assert "📚 CONTEXT AND TEMPLATES" in prompt
+        assert "📚 GUÍA SAGRADA Y CONTEXTO:" in prompt
         for snippet in context:
             assert snippet in prompt
 
@@ -227,7 +226,7 @@ class TestBuildPromptQuerySection:
             template_id="CONTEXT_DRIVEN",
         )
 
-        assert "❓ CURRENT REQUEST:" in prompt
+        assert "❓ SOLICITUD ACTUAL DEL CLIENTE:" in prompt
         assert "What is Clean Architecture?" in prompt
 
     def test_query_section_handles_multiline_query(self, builder):
@@ -263,9 +262,9 @@ class TestBuildPromptCompleteAssembly:
 
         # Find section positions
         system_pos = prompt.find("SYSTEM:")
-        context_pos = prompt.find("📚 CONTEXT")
-        history_pos = prompt.find("📋 RECENT HISTORY")
-        query_pos = prompt.find("❓ CURRENT REQUEST")
+        context_pos = prompt.find("📚 GUÍA SAGRADA")
+        history_pos = prompt.find("📋 MEMORIA DE DECISIONES")
+        query_pos = prompt.find("❓ SOLICITUD ACTUAL")
 
         # System should be first
         assert system_pos < context_pos
@@ -294,5 +293,5 @@ class TestBuildPromptCompleteAssembly:
         assert "SoftArchitect" in prompt  # System instruction
         assert "FullTestUser" in prompt  # userName
         assert "Knowledge base snippet" in prompt  # Context
-        assert "USER: Hello" in prompt  # History
+        assert "USUARIO: Hello" in prompt  # History
         assert "Test query" in prompt  # Query

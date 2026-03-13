@@ -25,7 +25,9 @@
 
 ### 🎬 Presentations & Demos
 
-📊 **[Presentation web (GitHub Pages)](https://pitcher755.github.io/soft-architect-ai/)** | � [Slides PDF](presentation/slides.pdf)
+
+📊 **[Presentation Web (GitHub Pages)](https://pitcher755.github.io/soft-architect-ai/)** | � [Slides PDF](presentation/slides.pdf)
+
 
 ---
 
@@ -272,7 +274,9 @@ curl http://localhost:8000/api/v1/knowledge/status
 
 ### 🎬 Presentaciones y Demos
 
-📊 **[Presentación web (GitHub Pages)](https://pitcher755.github.io/soft-architect-ai/)** | � [Slides PDF](presentation/slides.pdf)
+
+📊 **[Presentación Web (GitHub Pages)](https://pitcher755.github.io/soft-architect-ai/)** | � [Slides PDF](presentation/slides.pdf)
+
 
 </div>
 

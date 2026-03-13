@@ -1,0 +1,6 @@
+# ChromaDB data files (runtime generated)
+chroma_data/
+chroma_data/**
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

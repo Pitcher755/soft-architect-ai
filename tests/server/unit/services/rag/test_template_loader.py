@@ -63,9 +63,7 @@ class TestTemplateLoader:
         template = template_loader.load("PROJECT_MANIFESTO")
 
         # Act
-        rendered = template.render(
-            project_name="TestProject", user_input="This is a test app"
-        )
+        rendered = template.render(project_name="TestProject", user_input="This is a test app")
 
         # Assert
         assert "TestProject" in rendered
@@ -127,9 +125,7 @@ class TestTemplateLoader:
         # Extra params should not appear in output
         assert "should be ignored" not in rendered
 
-    def test_template_render_with_missing_required_variable_raises_error(
-        self, template_loader
-    ):
+    def test_template_render_with_missing_required_variable_raises_error(self, template_loader):
         """Test that missing required variables raise an error."""
         # Arrange
         template = template_loader.load("PROJECT_MANIFESTO")
@@ -172,9 +168,7 @@ class TestTemplateLoader:
         multiline_input = "Line 1\nLine 2\nLine 3"
 
         # Act
-        rendered = template.render(
-            project_name="TestProject", user_input=multiline_input
-        )
+        rendered = template.render(project_name="TestProject", user_input=multiline_input)
 
         # Assert
         assert "Line 1" in rendered

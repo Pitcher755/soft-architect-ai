@@ -232,9 +232,10 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
   }
 
   Widget _buildEmptyState() {
+    // 🎯 Títulos limpios, sin emojis
     final title = widget.isGuideProject
-        ? '📚 Asistente de Documentación'
-        : '🎯 SoftArchitect AI Chat';
+        ? 'Asistente de Documentación'
+        : 'SoftArchitect AI Chat';
 
     final subtitle = widget.isGuideProject
         ? '¡Bienvenido! Este es tu manual de instrucciones de SoftArchitect.\n'
@@ -243,19 +244,17 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
         : 'Dime cuál es tu idea para este proyecto y le daremos forma.\n'
               'Juntos documentaremos todo el proceso.';
 
-    final icon = widget.isGuideProject
-        ? Icons.help_outline
-        : Icons.chat_outlined;
+    // 🎯 Seleccionamos el path de la imagen correspondiente
+    final imagePath = widget.isGuideProject
+        ? 'assets/images/Logo1.png'
+        : 'assets/images/Logo2.png';
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 64,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+          // Renderizamos el logo
+          Image.asset(imagePath, width: 80, height: 80),
           const SizedBox(height: 24),
           Text(title, style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 8),

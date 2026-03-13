@@ -33,7 +33,7 @@ void main() {
       expect(find.text('User Question'), findsOneWidget);
       expect(find.byType(SelectableText), findsWidgets);
       // Should NOT find document card components for user messages
-      expect(find.text('DOCUMENTO GENERADO'), findsNothing);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsNothing);
       expect(find.text('Validar'), findsNothing);
     });
 
@@ -66,7 +66,7 @@ Would you like me to proceed?
       expect(find.text('Analysis Complete'), findsOneWidget);
       expect(find.text('Use FastAPI for backend'), findsOneWidget);
       // Should NOT find document card for plain messages
-      expect(find.text('DOCUMENTO GENERADO'), findsNothing);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsNothing);
       expect(find.text('Validar'), findsNothing);
     });
 
@@ -113,8 +113,8 @@ src/
       );
 
       // Should find document card header
-      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
-      expect(find.byIcon(Icons.lightbulb_outline), findsOneWidget);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
+      expect(find.byIcon(Icons.description_outlined), findsOneWidget);
 
       // Should find validate button
       expect(find.text('Validar y Guardar'), findsOneWidget);
@@ -161,7 +161,7 @@ Both are ready for validation.
 
       // Assert
       // Should find TWO document cards
-      expect(find.text('DOCUMENTO GENERADO'), findsNWidgets(2));
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsNWidgets(2));
       expect(find.text('Validar y Guardar'), findsNWidgets(2));
 
       // Should find content from both documents
@@ -199,14 +199,14 @@ Content here
 
       // Assert - Find visual components
       // Header with icon
-      expect(find.byIcon(Icons.lightbulb_outline), findsOneWidget);
-      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
+      expect(find.byIcon(Icons.description_outlined), findsOneWidget);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
 
       // Validate button text and icon should exist
       expect(find.text('Validar y Guardar'), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
-      expect(find.byKey(const Key('proposal_refine_button')), findsOneWidget);
-      expect(find.byKey(const Key('proposal_reject_button')), findsOneWidget);
+      expect(find.text('Refinar'), findsOneWidget);
+      expect(find.text('Rechazar'), findsOneWidget);
 
       // Container with proper decoration
       final containers = find.byType(Container);
@@ -232,7 +232,7 @@ Content here
             body: SmartMessageRenderer(
               rawContent: testContent,
               isUser: false,
-              onSaveDocument: (path, content) async {
+              onSaveDocument: () async {
                 callbackCalled = true;
               },
             ),
@@ -300,7 +300,7 @@ That was empty.
 
       // Assert
       // Should still render document card (even if empty)
-      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
       expect(find.text('Validar y Guardar'), findsOneWidget);
 
       // Should find surrounding text
@@ -329,7 +329,7 @@ That was empty.
 
       // Assert
       // Should render without errors in dark theme
-      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
       expect(find.text('Validar y Guardar'), findsOneWidget);
 
       // Find container (dark theme uses different background color)
@@ -362,13 +362,11 @@ Still in the document?
 
       // The regex captures until EOF if no closing tag, so it WILL create a document card
       // This is the actual behavior of the widget
-      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
       expect(find.textContaining('Some content'), findsOneWidget);
     });
 
-    testWidgets('extracts path and triggers callback on validation', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('triggers callback on validation', (WidgetTester tester) async {
       // Arrange
       const testContent = '''
 <document>
@@ -379,8 +377,7 @@ Still in the document?
 </document>
 ''';
 
-      String? capturedPath;
-      String? capturedContent;
+      var callbackCalled = false;
 
       // Act
       await tester.pumpWidget(
@@ -389,9 +386,8 @@ Still in the document?
             body: SmartMessageRenderer(
               rawContent: testContent,
               isUser: false,
-              onSaveDocument: (path, content) async {
-                capturedPath = path;
-                capturedContent = content;
+              onSaveDocument: () async {
+                callbackCalled = true;
               },
             ),
           ),
@@ -408,17 +404,14 @@ Still in the document?
         const Duration(milliseconds: 100),
       ); // Wait for completion
 
-      // Assert callback was triggered with correct values
-      expect(capturedPath, 'context/RULES.md');
-      expect(capturedContent, isNot(contains('**Path:**')));
-      expect(capturedContent, contains('# Project Rules'));
-      expect(capturedContent, contains('- Rule 1'));
+      // Assert callback was triggered
+      expect(callbackCalled, isTrue);
 
       // Card remains visible after validation
       expect(find.text('Validar y Guardar'), findsOneWidget);
     });
 
-    testWidgets('uses fallback path when no path found', (
+    testWidgets('callback works when no path found', (
       WidgetTester tester,
     ) async {
       // Arrange
@@ -429,7 +422,7 @@ Just some content without path metadata.
 </document>
 ''';
 
-      String? capturedPath;
+      var callbackCalled = false;
 
       // Act
       await tester.pumpWidget(
@@ -438,8 +431,8 @@ Just some content without path metadata.
             body: SmartMessageRenderer(
               rawContent: testContent,
               isUser: false,
-              onSaveDocument: (path, content) async {
-                capturedPath = path;
+              onSaveDocument: () async {
+                callbackCalled = true;
               },
             ),
           ),
@@ -451,8 +444,8 @@ Just some content without path metadata.
       await tester.tap(find.text('Validar y Guardar'));
       await tester.pumpAndSettle();
 
-      // Assert fallback path is used
-      expect(capturedPath, 'context/UNSORTED/untitled.md');
+      // Assert callback was triggered
+      expect(callbackCalled, isTrue);
     });
 
     testWidgets('decodes double-escaped HTML entities correctly', (
@@ -481,7 +474,7 @@ Use &amp;lt;Component&amp;gt; in your code.
 
       // Assert - Should decode to proper <document> tags
       // The document card should be rendered (meaning <document> was detected)
-      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
 
       // Content should show <Component> not &lt;Component&gt;
       expect(find.textContaining('<Component>'), findsOneWidget);
@@ -540,7 +533,7 @@ This is a test document.
             body: SmartMessageRenderer(
               rawContent: testContent,
               isUser: false,
-              onSaveDocument: (String path, String content) async {
+              onSaveDocument: () async {
                 // Mock callback to simulate async save
                 await Future.delayed(const Duration(milliseconds: 50));
                 saveCallbackExecuted = true;
@@ -599,14 +592,10 @@ This is a test document.
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('proposal_refine_button')));
+      await tester.tap(find.text('Refinar'));
       await tester.pumpAndSettle();
 
-      expect(
-        capturedRefineMessage,
-        'Deseo refinar el documento en '
-        'context/10-BUSINESS_AND_SCOPE/EXECUTIVE_SUMMARY_MVP.md: ',
-      );
+      expect(capturedRefineMessage, 'Deseo refinar este documento: ');
     });
 
     testWidgets('reject button hides the document card locally', (
@@ -627,11 +616,11 @@ This is a test document.
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('DOCUMENTO GENERADO'), findsOneWidget);
-      await tester.tap(find.byKey(const Key('proposal_reject_button')));
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
+      await tester.tap(find.text('Rechazar'));
       await tester.pumpAndSettle();
 
-      expect(find.text('DOCUMENTO GENERADO'), findsNothing);
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsNothing);
       expect(find.text('Validar y Guardar'), findsNothing);
     });
   });

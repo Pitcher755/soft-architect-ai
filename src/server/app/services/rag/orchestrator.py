@@ -1,4 +1,4 @@
-"""RAG Orchestrator - Business logic with Friendly Workflow Enforcement."""
+"""RAG Orchestrator - Business logic with Deterministic Workflow Enforcement."""
 
 import asyncio
 import logging
@@ -6,10 +6,11 @@ from collections.abc import AsyncGenerator
 from typing import Any
 
 from app.core.exceptions import LLMConnectionError
-from app.domain.schemas.chat import ChatRequest, ChatResponse
+from app.domain.schemas.chat_schema import ChatRequest, ChatResponse
 from app.infrastructure.llm.base import BaseLLMClient
 from app.services.rag.template_builder_protocol import TemplateBuilderProtocol
 from app.services.rag.vector_store_protocol import VectorStoreProtocol
+from app.services.rag.workflow_injector import WorkflowInjector  # 👈 NUEVA IMPORTACIÓN
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,9 @@ class RAGOrchestrator:
         self.vector_store = vector_store
         self.template_builder = template_builder
         self.llm_client = llm_client
+        self.workflow_injector = (
+            WorkflowInjector()
+        )  # 👈 NUEVO: Instanciamos el Inyector
 
     def _check_validation_blocker(
         self, user_message: str, history: list[dict[str, str]]
@@ -51,8 +55,9 @@ class RAGOrchestrator:
         # 2. ¿Hay un documento pendiente de validar?
         last_doc_msg = None
         for msg in reversed(history):
-            if msg.get("role") == "assistant" and "<document>" in msg.get(
-                "content", ""
+            content = msg.get("content", "")
+            if msg.get("role") == "assistant" and (
+                "<document>" in content or "&lt;document&gt;" in content
             ):
                 last_doc_msg = msg
                 break
@@ -80,8 +85,24 @@ class RAGOrchestrator:
         return None
 
     async def _retrieve_dual_context(self, message: str, doc_type: str) -> list[str]:
-        """Dual-channel RAG retrieval with graceful degradation."""
+        """Retrieve context via hybrid RAG: deterministic disk injection + probabilistic ChromaDB.
 
+        The deterministic layer reads physical template and example files for the
+        given doc_type (guaranteed structure). The probabilistic layer queries ChromaDB
+        for the user's prior project ideas (optional enrichment, degrades gracefully).
+        """
+        combined = []
+
+        # 1. Deterministic disk injection (template + example from MASTER_WORKFLOW)
+        hardcoded_prompt = self.workflow_injector.get_injected_prompt(doc_type)
+        if hardcoded_prompt:
+            combined.append(hardcoded_prompt)
+        else:
+            logger.warning(
+                "No injection available for %s; LLM will receive no template.", doc_type
+            )
+
+        # 2. Probabilistic ChromaDB search for user's prior project context
         async def _safe_search(query: str, top_k: int) -> list[str]:
             try:
                 return await asyncio.wait_for(
@@ -91,25 +112,11 @@ class RAGOrchestrator:
                 logger.warning("⚠️ RAG channel degraded: %s", str(err))
                 return []
 
-        # ⚡ DOCTRINA ZERO LAZY WRITING: Forzamos la búsqueda de EJEMPLOS reales (densos), no de plantillas vacías.
-        master_query = (
-            f"Complete detailed Markdown technical specification and full example for {doc_type} "
-            f"including real data, architectural decisions, dense technical content, and zero empty placeholders"
-        )
-
-        user_results, master_results = await asyncio.gather(
-            _safe_search(message, 3), _safe_search(master_query, 2)
-        )
-
-        combined = []
-        if master_results:
-            combined.append(
-                "=== MASTER TEMPLATE EXAMPLE (FOLLOW THIS DENSITY AND STRUCTURE EXACTLY) ==="
-            )
-            combined.extend(master_results)
+        user_results = await _safe_search(message, 3)
         if user_results:
-            combined.append("=== USER PROJECT CONTEXT ===")
+            combined.append("=== USER PROJECT IDEAS (FROM CHROMADB) ===")
             combined.extend(user_results)
+
         return combined
 
     async def process_message(self, request: ChatRequest) -> ChatResponse:

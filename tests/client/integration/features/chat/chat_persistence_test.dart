@@ -3,11 +3,12 @@ import 'package:softarchitect_ai/features/chat/data/repositories/chat_repository
 import 'package:softarchitect_ai/features/chat/domain/entities/chat_message.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import '../../../helpers/test_helper.dart' show initSqfliteForTest;
+
 void main() {
   setUpAll(() {
-    // Initialize FFI for desktop testing
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
+    // ✅ Initialize FFI (centralized to avoid warnings)
+    initSqfliteForTest();
   });
 
   group('Chat Persistence Integration Tests', () {

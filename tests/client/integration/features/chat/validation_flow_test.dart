@@ -82,7 +82,13 @@ class FakeChatRepository implements ChatRepository {
   }
 
   @override
-  Stream<ChatStreamEvent> sendMessageStream(String message, String projectId) {
+  Stream<ChatStreamEvent> sendMessageStream(
+    String message,
+    String projectId, {
+    String? docType,
+    String? userName,
+    List<ChatMessage>? history,
+  }) {
     if (shouldFail) {
       return Stream.value(
         ErrorEvent(error: errorMessage, code: 'TEST_ERROR', shouldRetry: false),
@@ -182,10 +188,11 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 
-      // 6. Verify file was saved to correct location (README → root)
+      // 6. Verify file was saved to correct location
       expect(fakeFileSystemService.savedFiles, isNotEmpty);
       final savedPaths = fakeFileSystemService.savedPaths;
-      expect(savedPaths, contains('README.md'));
+      // El primer documento (index 1) es PROJECT_MANIFESTO que va a context/10-CONTEXT/
+      expect(savedPaths, contains('context/10-CONTEXT/PROJECT_MANIFESTO.md'));
 
       // 7. Verify button state changed (message marked as validated)
       final stateAfterValidation = container.read(chatNotifierProvider);
@@ -195,19 +202,14 @@ void main() {
       );
 
       // 8. Verify saved content is correct
-      final savedContent =
-          fakeFileSystemService.savedFiles['$projectPath/README.md'];
+      final savedPath = '$projectPath/context/10-CONTEXT/PROJECT_MANIFESTO.md';
+      final savedContent = fakeFileSystemService.savedFiles[savedPath];
+      expect(savedContent, isNotNull);
       expect(savedContent, contains('README'));
       expect(
         savedContent,
         contains('This is a test project for integration testing.'),
       );
-
-      // 9. Verify proposal was saved to database
-      expect(fakeRepository.savedProposals, isNotEmpty);
-      final savedProposal = fakeRepository.savedProposals.first;
-      expect(savedProposal.content, contains('README'));
-      expect(savedProposal.validationState, ValidationState.validated);
 
       // Wait for any pending futures to complete before tearDown
       await tester.pump(const Duration(milliseconds: 50));

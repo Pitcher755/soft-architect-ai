@@ -8,10 +8,13 @@ from fastapi import Header, HTTPException, status
 
 from app.core.security import TokenValidator
 from app.infrastructure.llm.factory import get_llm_client
-from app.services.rag.orchestrator import RAGOrchestrator
-from app.services.rag.template_builder import MVPTemplateBuilder
+
+# Sequential RAG components (Operation Rails architecture)
+from app.services.rag.sequential_orchestrator import SequentialOrchestrator
+from app.services.rag.template_loader import TemplateLoader
 from app.services.rag.vector_store import VectorStoreService
 from app.services.rag.vector_store_protocol import VectorStoreProtocol
+from app.services.rag.workflow_injector import WorkflowInjector
 
 
 async def verify_api_key(x_api_key: Annotated[str | None, Header()] = None) -> str:
@@ -26,32 +29,34 @@ async def verify_api_key(x_api_key: Annotated[str | None, Header()] = None) -> s
 
 
 @lru_cache
-def get_rag_orchestrator() -> RAGOrchestrator:
-    """Return a cached RAGOrchestrator instance for dependency injection."""
+def get_rag_orchestrator() -> SequentialOrchestrator:
+    """Return a cached SequentialOrchestrator instance for dependency injection."""
 
-    # 1. Obtener modo del .env
+    # 1. Get LLM mode from environment
     raw_mode = os.getenv("LLM_PROVIDER", "ollama").lower()
 
-    # TRADUCTOR: Convertir config de usuario ('local') a config técnica ('ollama')
+    # Normalize user-friendly config ('local') to technical config ('ollama')
     if raw_mode == "local":
         llm_mode = "ollama"
     elif raw_mode == "cloud":
         llm_mode = "groq"
     else:
-        # Si ya pone "ollama" o "groq", lo dejamos tal cual
+        # Keep 'ollama' or 'groq' as-is
         llm_mode = raw_mode
 
-    # Ahora sí, la factory recibirá "ollama" y funcionará
     llm_client = get_llm_client(mode=llm_mode)
 
-    # 2. Base de Datos Vectorial
+    # 2. Vector Store (used for supplementary context, not workflow control)
     vector_store = cast(VectorStoreProtocol, VectorStoreService())
 
-    # 3. Gestor de Prompts robusto (en memoria)
-    template_builder = MVPTemplateBuilder()
+    # 3. 🎯 EL NUEVO INYECTOR: Carga plantillas del disco duro de forma inquebrantable
+    workflow_injector = WorkflowInjector()
 
-    return RAGOrchestrator(
+    # 4. 🎯 EL NUEVO CEREBRO: Orquestador Secuencial con WorkflowInjector cableado
+    template_loader = TemplateLoader()
+    return SequentialOrchestrator(
         vector_store=vector_store,
-        template_builder=template_builder,
         llm_client=llm_client,
+        template_loader=template_loader,
+        workflow_injector=workflow_injector,
     )

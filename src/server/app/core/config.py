@@ -64,7 +64,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     # LLM Configuration
-    LLM_PROVIDER: Literal["local", "cloud", "ollama"] = "local"
+    LLM_PROVIDER: Literal["local", "cloud", "ollama", "gemini"] = "gemini"
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     GROQ_API_KEY: str = ""
 

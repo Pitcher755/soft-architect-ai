@@ -10,7 +10,7 @@ import pytest
 from pydantic import ValidationError
 from uuid import uuid4
 
-from app.domain.schemas.chat import ChatRequest
+from app.domain.schemas.chat_schema import ChatRequest
 
 
 class TestChatRequestUserNameField:

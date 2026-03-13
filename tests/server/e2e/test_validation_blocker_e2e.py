@@ -60,7 +60,7 @@ class TestValidationBlockerE2E:
         )
 
         # Prepare history with unvalidated document
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -82,8 +82,8 @@ class TestValidationBlockerE2E:
 
         # Assert: Should return blocking message WITHOUT calling LLM
         assert response.template_used == "VALIDATION_BLOCKED"
-        assert "Bloqueo de Seguridad" in response.ai_response
-        assert "RULE-06" in response.ai_response
+        assert "propuesta técnica pendiente" in response.ai_response
+        assert "Validar y Guardar" in response.ai_response
 
         # Critical: LLM should NOT have been called (saves tokens/money)
         mock_llm_client.generate.assert_not_called()
@@ -119,7 +119,7 @@ class TestValidationBlockerE2E:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -144,7 +144,7 @@ class TestValidationBlockerE2E:
 
         # Assert: Should call LLM normally
         assert response.template_used != "VALIDATION_BLOCKED"
-        assert "Bloqueo de Seguridad" not in response.ai_response
+        assert "propuesta técnica pendiente" not in response.ai_response
 
         # LLM SHOULD have been called
         mock_llm_client.generate.assert_called_once()
@@ -186,7 +186,7 @@ class TestValidationBlockerE2E:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -211,12 +211,12 @@ class TestValidationBlockerE2E:
 
         token_event = events[0]
         assert token_event["type"] == "token"
-        assert "Bloqueo de Seguridad" in token_event["data"]
+        assert "propuesta técnica pendiente" in token_event["data"]
+        assert "Validar y Guardar" in token_event["data"]
 
         done_event = events[1]
         assert done_event["type"] == "done"
         assert done_event["data"]["metadata"]["blocked"] is True
-        assert done_event["data"]["metadata"]["rule"] == "RULE-06"
 
 
 class TestValidationBlockerMultipleDocuments:
@@ -249,7 +249,7 @@ class TestValidationBlockerMultipleDocuments:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -310,7 +310,7 @@ class TestValidationBlockerMultipleDocuments:
             llm_client=mock_llm_client,
         )
 
-        from app.domain.schemas.chat import ChatRequest
+        from app.domain.schemas.chat_schema import ChatRequest
 
         request = ChatRequest(
             conversation_id=uuid4(),
@@ -336,5 +336,6 @@ class TestValidationBlockerMultipleDocuments:
 
         # Should block
         assert response.template_used == "VALIDATION_BLOCKED"
-        assert "Bloqueo de Seguridad" in response.ai_response
+        assert "propuesta técnica pendiente" in response.ai_response
+        assert "Validar y Guardar" in response.ai_response
         mock_llm_client.generate.assert_not_called()

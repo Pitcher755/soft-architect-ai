@@ -8,35 +8,49 @@ import '../../../../core/utils/uuid_generator.dart';
 import '../../../../domain/entities/chat_stream_event.dart';
 import '../../../../features/filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../../features/project_shell/core/services/file_system_service.dart';
+import '../../../../features/project_shell/infrastructure/services/project_progress_service.dart';
+import '../../../settings/presentation/providers/settings_providers.dart';
 import '../../data/repositories/chat_repository_impl.dart';
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/document_proposal.dart';
 import '../../domain/repositories/chat_repository.dart';
 import 'streaming_state.dart';
 
-/// Custom exception for missing project context
+/// Custom exception thrown when project context is missing or invalid.
+///
+/// This error indicates that an operation requiring project context
+/// was attempted without a valid project path being set.
 class ProjectContextError implements Exception {
   ProjectContextError(this.message);
   final String message;
-
   @override
   String toString() => 'ProjectContextError: $message';
 }
 
-/// Generate unique ID using UUID v4 (ensures collision-free IDs)
+/// Generates a unique identifier using UUID v4.
+///
+/// Returns a string representation of a randomly generated UUID.
 String generateId() => UuidGenerator.v4();
 
-/// Configuration flags for development/production switches
 const String _backendBaseUrl = String.fromEnvironment(
   'BACKEND_BASE_URL',
   defaultValue: 'http://localhost:8000',
 );
 const String _backendApiKey = String.fromEnvironment(
   'BACKEND_API_KEY',
-  defaultValue: 'dev_test_key_12345', // Valid dev API key (10+ chars)
+  defaultValue: 'dev_test_key_12345',
 );
 
-/// Notifier for chat state management using state machine pattern.
+/// Manages chat state and orchestrates AI-powered document generation workflow.
+///
+/// This notifier handles:
+/// - Message streaming from AI backend
+/// - Document validation and workflow progression
+/// - Project context management
+/// - Chat history persistence
+///
+/// The workflow progresses through 24 mandatory documents following the
+/// Master Workflow 0-100 structure.
 class ChatNotifier extends StateNotifier<ChatState> {
   ChatNotifier({
     required ChatRepository repository,
@@ -46,45 +60,58 @@ class ChatNotifier extends StateNotifier<ChatState> {
   }) : _repository = repository,
        _mockRepository = mockRepository,
        _fileSystemService = fileSystemService,
-       super(const ChatState());
+       super(const ChatState(totalDocs: 24));
 
   final ChatRepository _repository;
   final ChatRepository _mockRepository;
   final FileSystemService _fileSystemService;
   final Ref ref;
 
-  /// Active stream subscription for current streaming operation.
-  /// Used to cancel streaming when changing projects or disposing notifier.
   StreamSubscription<ChatStreamEvent>? _activeStreamSubscription;
-
-  /// Project ID of the currently active stream.
-  /// Used to verify chunks belong to the correct project.
   String? _activeStreamProjectId;
+  bool _isValidating = false;
 
-  /// Sets the project path for document saving.
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 1. INITIALIZATION & STATE MANAGEMENT
+  // ═══════════════════════════════════════════════════════════════════════════
+  /// Initializes a new project session and loads chat history.
   ///
-  /// Resets state and loads persisted history from SQLite to prevent
-  /// chat state pollution between projects.
+  /// Cancels any active streams, resets state, and loads workflow progress
+  /// from the project's `.softarchitect/status.json` file.
+  ///
+  /// [path] - Absolute path to the project directory.
   Future<void> setProjectPath(String path) async {
     await _cancelActiveStream();
 
-    state = ChatState.initial().copyWith(projectPath: path, isLoading: true);
+    state = ChatState.initial().copyWith(
+      projectPath: path,
+      isLoading: true,
+      totalDocs: 24,
+    );
+
     final projectId = UuidGenerator.fromString(path);
 
-    // ignore: avoid_print
-    print('📂 Loading history for project: $path (ID: $projectId)');
-
     try {
-      debugPrint('🔍 Fetching chat history from DB...');
       final history = await _repository.getChatHistory(projectId);
-      debugPrint('📖 Loaded ${history.length} messages from DB');
 
-      state = state.copyWith(messages: history, isLoading: false);
-    } on Exception catch (e, stackTrace) {
-      debugPrint('🔥 Stack trace: $stackTrace');
-      // On error, keep empty state but log the issue
-      // ignore: avoid_print
-      print('❌ Failed to load chat history: $e');
+      final visibleHistory = history.where((msg) {
+        final isHidden = msg.metadata?['hidden'] == true;
+        return !isHidden;
+      }).toList();
+
+      var savedIndex = 1;
+
+      if (!path.startsWith('mock://')) {
+        final progress = await ProjectProgressService.loadProgress(path);
+        savedIndex = (progress?.documentosCreados ?? 0) + 1;
+      }
+
+      state = state.copyWith(
+        messages: visibleHistory,
+        isLoading: false,
+        currentDocIndex: savedIndex,
+      );
+    } on Exception catch (e) {
       state = state.copyWith(
         isLoading: false,
         hasError: true,
@@ -93,127 +120,17 @@ class ChatNotifier extends StateNotifier<ChatState> {
     }
   }
 
-  /// **DEPRECATED:** Use [sendMessageStream] instead.
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 2. CORE CHAT & STREAMING LOGIC
+  // ═══════════════════════════════════════════════════════════════════════════
+  /// Sends a message to the AI backend and streams the response.
   ///
-  /// This method uses the unimplemented `generateDocument()` which throws
-  /// UnimplementedError. Use [sendMessageStream] for proper SSE streaming.
-  @Deprecated(
-    'Use sendMessageStream() instead. This method calls '
-    'generateDocument() which is not implemented.',
-  )
-  Future<void> sendMessage(String message) async {
-    if (message.trim().isEmpty) {
-      return;
-    }
-
-    try {
-      // ✅ CRITICAL: Guard against missing project context
-      final projectPath = state.projectPath;
-      if (projectPath == null) {
-        throw ProjectContextError(
-          'No project context initialized. Call setProjectPath() first.',
-        );
-      }
-
-      // Clear any previous errors
-      state = state.clearError();
-
-      // Add user message to chat
-      final userMessage = ChatMessage(
-        id: generateId(),
-        role: MessageRole.user,
-        content: message,
-        timestamp: DateTime.now().toIso8601String(),
-      );
-
-      final updatedMessages = [...state.messages, userMessage];
-      state = state.copyWith(messages: updatedMessages, isStreaming: true);
-
-      // Create assistant message placeholder
-      final assistantMessage = ChatMessage(
-        id: generateId(),
-        role: MessageRole.assistant,
-        content: '',
-        timestamp: DateTime.now().toIso8601String(),
-        isStreaming: true,
-      );
-
-      final messagesWithAssistant = [...updatedMessages, assistantMessage];
-
-      // Get document type and context
-      final docType = _getDocTypeForCurrentIndex();
-      final context = {
-        'project_context': {},
-        'chat_history': updatedMessages,
-        'current_doc_index': state.currentDocIndex,
-        'doc_type': docType,
-      };
-
-      final streamBuffer = StringBuffer();
-      final stream = _repository.generateDocument(docType, message, context);
-
-      await for (final token in stream) {
-        streamBuffer.write(token);
-
-        // Update assistant message with streamed content
-        final updatedAssistant = assistantMessage.copyWith(
-          content: streamBuffer.toString(),
-          isStreaming: true,
-        );
-
-        final newMessages = [
-          ...messagesWithAssistant.sublist(0, messagesWithAssistant.length - 1),
-          updatedAssistant,
-        ];
-
-        state = state.copyWith(messages: newMessages, isStreaming: true);
-      }
-
-      // Mark streaming as complete and create proposal
-      final completedAssistant = assistantMessage.copyWith(
-        content: streamBuffer.toString(),
-        isStreaming: false,
-      );
-
-      final finalMessages = [
-        ...messagesWithAssistant.sublist(0, messagesWithAssistant.length - 1),
-        completedAssistant,
-      ];
-
-      final proposal = DocumentProposal(
-        id: generateId(),
-        docType: docType,
-        content: streamBuffer.toString(),
-        metadata: {'doc_index': state.currentDocIndex},
-        validationState: ValidationState.pending,
-      );
-
-      state = state.copyWith(
-        messages: finalMessages,
-        currentProposal: proposal,
-        isStreaming: false,
-      );
-    } on ProjectContextError catch (e) {
-      // ✅ Show user-friendly error for missing context
-      state = state.copyWith(
-        isStreaming: false,
-        hasError: true,
-        errorMessage: 'Error: ${e.message}',
-      );
-    } on Exception catch (e) {
-      state = state.copyWith(
-        isStreaming: false,
-        hasError: true,
-        errorMessage: e.toString(),
-      );
-    }
-  }
-
-  /// Sends a user message and streams the AI response using SSE.
-  /// This method implements progressive token rendering with ChatStreamEvent.
+  /// Creates user and assistant messages, streams tokens from the backend,
+  /// and generates a [DocumentProposal] when complete.
   ///
-  /// [message] - The user message to send
-  /// [isHidden] - If true, the user message won't be added to the chat UI
+  /// [message] - The user's input text.
+  /// [isHidden] - If true, the message is not added to visible chat history
+  /// (used for silent validation workflows).
   Future<void> sendMessageStream(
     String message, {
     bool isHidden = false,
@@ -221,7 +138,6 @@ class ChatNotifier extends StateNotifier<ChatState> {
     if (message.trim().isEmpty) {
       return;
     }
-
     await _cancelActiveStream();
 
     try {
@@ -255,176 +171,116 @@ class ChatNotifier extends StateNotifier<ChatState> {
       );
 
       final streamBuffer = StringBuffer();
-
-      // Guard against missing project context
       final projectPath = state.projectPath;
       if (projectPath == null) {
-        throw ProjectContextError(
-          'No project context initialized. Call setProjectPath() first.',
-        );
+        throw ProjectContextError('No project context');
       }
 
-      // Use mock repository for guide project (offline mode)
       final isGuideProject = projectPath.startsWith('mock://');
       final repository = isGuideProject ? _mockRepository : _repository;
-
-      // Generate deterministic UUID from project path
       final projectId = UuidGenerator.fromString(projectPath);
 
-      // Save user message to persistence (after variables defined)
       if (!isGuideProject) {
-        try {
-          debugPrint(
-            '💾 Attempting to save user message: ${userMessage.id} '
-            'for project: $projectId',
-          );
-          await _repository.saveMessage(projectId, userMessage);
-          debugPrint('✅ User message saved successfully');
-          // ignore: avoid_catches_without_on_clauses
-        } catch (e, stackTrace) {
-          debugPrint('🔥 Failed to save user message: $e');
-          debugPrint('🔥 Stack trace: $stackTrace');
-          // Show error to user
-          state = state.copyWith(
-            hasError: true,
-            errorMessage: 'Warning: Your message was not saved: $e',
-          );
-        }
+        await _repository
+            .saveMessage(projectId, userMessage)
+            .catchError((e) => debugPrint('Error saving msg: $e'));
       }
 
-      // Store active stream project ID for validation
       _activeStreamProjectId = projectId;
+      final currentDocType = _getDocTypeForIndex(state.currentDocIndex);
+      final currentUserName = ref.read(userNameProvider);
 
-      final stream = repository.sendMessageStream(message, projectId);
+      // 🎯 FIX 422: Mapeo estricto del historial (Solo role y content)
+      final compatibleHistory = state.messages
+          .where((msg) => msg.role != MessageRole.system)
+          .map(
+            (msg) => ChatMessage(
+              id: '',
+              role: msg.role,
+              content: msg.content,
+              timestamp: '',
+            ),
+          )
+          .toList();
 
-      // Store subscription to allow cancellation
+      final stream = repository.sendMessageStream(
+        message,
+        projectId,
+        docType: currentDocType,
+        userName: currentUserName,
+        history: compatibleHistory,
+      );
+
       _activeStreamSubscription = stream.listen(
         (event) {
-          // ✅ CRITICAL: Verify event belongs to active project
           if (_activeStreamProjectId != projectId) {
-            debugPrint(
-              '⚠️ Discarding stream event: project mismatch '
-              '(expected: $projectId, active: $_activeStreamProjectId)',
-            );
             return;
           }
-
           if (event is TokenEvent) {
-            // 4️⃣ Append token to AI message
             streamBuffer.write(event.token);
-
             final updatedAssistant = assistantMessage.copyWith(
               content: streamBuffer.toString(),
               isStreaming: true,
             );
-
-            final newMessages = [
-              ...messagesWithAssistant.sublist(
-                0,
-                messagesWithAssistant.length - 1,
-              ),
-              updatedAssistant,
-            ];
-
-            state = state.copyWith(messages: newMessages, isStreaming: true);
+            state = state.copyWith(
+              messages: [
+                ...messagesWithAssistant.sublist(
+                  0,
+                  messagesWithAssistant.length - 1,
+                ),
+                updatedAssistant,
+              ],
+              isStreaming: true,
+            );
           } else if (event is DoneEvent) {
-            final fullResponse = event.fullResponse;
-
+            final fullResponse = event.fullResponse.isEmpty
+                ? streamBuffer.toString()
+                : event.fullResponse;
             final completedAssistant = assistantMessage.copyWith(
               content: fullResponse,
               isStreaming: false,
             );
-
-            final finalMessages = [
-              ...messagesWithAssistant.sublist(
-                0,
-                messagesWithAssistant.length - 1,
-              ),
-              completedAssistant,
-            ];
-
-            DocumentProposal? proposal;
-            if (!isHidden) {
-              final docType = _getDocTypeForCurrentIndex();
-              proposal = DocumentProposal(
-                id: generateId(),
-                docType: docType,
-                content: fullResponse,
-                metadata: {'doc_index': state.currentDocIndex},
-                validationState: ValidationState.pending,
-              );
-            }
-
             state = state.copyWith(
-              messages: finalMessages,
-              currentProposal: isHidden ? state.currentProposal : proposal,
+              messages: [
+                ...messagesWithAssistant.sublist(
+                  0,
+                  messagesWithAssistant.length - 1,
+                ),
+                completedAssistant,
+              ],
+              currentProposal: isHidden
+                  ? state.currentProposal
+                  : DocumentProposal(
+                      id: generateId(),
+                      docType: currentDocType,
+                      content: fullResponse,
+                      metadata: {'doc_index': state.currentDocIndex},
+                      validationState: ValidationState.pending,
+                    ),
               isStreaming: false,
             );
-
-            // Save assistant message to persistence (async without await)
             if (!isGuideProject) {
-              _repository
-                  .saveMessage(projectId, completedAssistant)
-                  .then((_) {
-                    debugPrint(
-                      '💾 Assistant message saved to DB: '
-                      '${completedAssistant.id}',
-                    );
-                  })
-                  .catchError((e) {
-                    debugPrint('❌ Failed to save assistant message: $e');
-                    // Show error to user
-                    state = state.copyWith(
-                      hasError: true,
-                      errorMessage: 'Warning: Message not saved to history: $e',
-                    );
-                  });
+              _repository.saveMessage(projectId, completedAssistant);
             }
-
-            // DO NOT clear here - let onDone handle cleanup
           } else if (event is ErrorEvent) {
-            // 6️⃣ Handle ErrorEvent
             state = state.copyWith(
               isStreaming: false,
               hasError: true,
               errorMessage: event.error,
             );
-
-            // DO NOT clear here - let onError handle cleanup
           }
         },
-        onError: (error) {
-          debugPrint('❌ Stream error: $error');
+        onError: (e) {
           state = state.copyWith(
             isStreaming: false,
             hasError: true,
-            errorMessage: error.toString(),
+            errorMessage: e.toString(),
           );
-          // Clear active stream tracking on error
           _activeStreamSubscription = null;
-          _activeStreamProjectId = null;
         },
-        onDone: () {
-          debugPrint('✅ Stream completed');
-          // Clear active stream tracking when done
-          _activeStreamSubscription = null;
-          _activeStreamProjectId = null;
-        },
-        cancelOnError: true,
+        onDone: () => _activeStreamSubscription = null,
       );
-
-      // ✅ CRITICAL: Save local reference before onDone clears it
-      final subscriptionToAwait = _activeStreamSubscription;
-
-      // Wait for stream to complete before returning
-      await subscriptionToAwait?.asFuture();
-    } on ProjectContextError catch (e) {
-      // ✅ Show user-friendly error for missing context
-      state = state.copyWith(
-        isStreaming: false,
-        hasError: true,
-        errorMessage: 'Error: ${e.message}',
-      );
+      await _activeStreamSubscription?.asFuture();
     } on Exception catch (e) {
       state = state.copyWith(
         isStreaming: false,
@@ -434,414 +290,280 @@ class ChatNotifier extends StateNotifier<ChatState> {
     }
   }
 
-  /// Validates the current proposal OR a specific message by ID.
-  /// Saves to filesystem with intelligent path detection.
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 3. DOCUMENT VALIDATION & WORKFLOW ENGINE
+  // ═══════════════════════════════════════════════════════════════════════════
+  /// Validates a document proposal and saves it to the project filesystem.
   ///
-  /// Special cases:
-  /// - README.md → Root of project
-  /// - Other docs → Organized by section folders
+  /// This method:
+  /// 1. Cleans the document content (removes markdown fences, metadata)
+  /// 2. Determines the document type based on current workflow index
+  /// 3. Saves the file to the appropriate context/section folder
+  /// 4. Updates workflow progress (advances to next document)
+  /// 5. Refreshes the filesystem notifier
+  ///
+  /// [messageId] - Optional message ID to validate a specific message.
+  /// If null, validates the current proposal.
   Future<void> validateProposal([String? messageId]) async {
-    final projectPath = state.projectPath;
-
-    if (projectPath == null) {
-      state = state.copyWith(
-        hasError: true,
-        errorMessage: 'No project context for saving document',
-      );
+    if (_isValidating) {
       return;
     }
-
+    _isValidating = true;
     try {
-      String content;
-      String docType;
+      final projectPath = state.projectPath;
+      if (projectPath == null) {
+        throw Exception('No project context');
+      }
 
-      // If messageId provided, validate that specific message
+      String content;
+      final docType = _getDocTypeForIndex(state.currentDocIndex);
+
       if (messageId != null) {
         final message = state.messages.firstWhere(
           (m) => m.id == messageId,
           orElse: () => throw Exception('Message not found'),
         );
         content = message.content;
-        // Detect doc type from content (first H1 header)
-        docType = _detectDocTypeFromContent(content);
       } else {
-        // Validate current proposal
-        final proposal = state.currentProposal;
-        if (proposal == null) {
-          state = state.copyWith(
-            hasError: true,
-            errorMessage: 'No proposal to validate',
-          );
-          return;
+        if (state.currentProposal == null) {
+          throw Exception('No proposal');
         }
-        content = proposal.content;
-        docType = proposal.docType;
+        content = state.currentProposal!.content;
       }
 
-      // Calculate file path with intelligent detection
-      final relativePath = _getFilePathForDocType(docType, content);
+      // 🎯 LIMPIEZA CIRUJANA: Solo aquí quitamos las marcas
+      // para el archivo real
+      final cleanedContent = _cleanDocumentContent(content);
+      final relativePath = _getFilePathForDocType(docType, cleanedContent);
 
-      debugPrint('📝 Validating document: $docType');
-      debugPrint('📂 Target path: $projectPath/$relativePath');
-
-      // Save to disk via FileSystemService (replaces existing file)
       await _fileSystemService.saveDocument(
         projectPath: projectPath,
         relativePath: relativePath,
-        content: content,
+        content: cleanedContent,
       );
 
-      debugPrint('✅ Document saved successfully');
-
-      // Mark message as validated
-      final newValidatedIds = {...state.validatedMessageIds};
-      if (messageId != null) {
-        newValidatedIds.add(messageId);
-      }
-
-      // Save proposal to database
-      if (messageId != null) {
-        final proposal = DocumentProposal(
-          id: messageId,
-          docType: docType,
-          content: content,
-          metadata: {'file_path': relativePath},
-          validationState: ValidationState.validated,
-        );
-        await _repository.saveProposal(proposal);
-      }
-
-      // Trigger file tree refresh
+      addSystemMessage('✅ Documento validado y guardado en `$relativePath`');
       ref.read(fileSystemNotifierProvider.notifier).refresh();
-      debugPrint('🔄 File tree refresh triggered');
 
-      final shouldAdvanceWorkflow =
-          messageId == null && state.currentProposal != null;
-      final savedDocumentPath = relativePath;
+      // Marcar mensaje como validado (si hay messageId específico)
+      final updatedValidatedIds = messageId != null
+          ? {...state.validatedMessageIds, messageId}
+          : state.validatedMessageIds;
 
+      // 🎯 FIX (Tarea 0.5): SIEMPRE avanzar el workflow tras validación exitosa
+      // ANTI-REGRESIÓN: NO bloquear el avance basándose en la presencia/ausencia de messageId
+      final nextIndex = state.currentDocIndex + 1;
+
+      // ✅ CRITICAL FIX: Update validatedMessageIds BEFORE potential exception
+      // This ensures the message is marked as validated even if
+      // ProjectProgressService.updateAfterDocumentSave fails
       state = state.copyWith(
-        validatedMessageIds: newValidatedIds,
-        clearProposal: messageId == null,
+        clearProposal: true,
+        currentDocIndex: nextIndex,
+        validatedMessageIds: updatedValidatedIds,
       );
 
-      if (shouldAdvanceWorkflow) {
-        state = state.copyWith(currentDocIndex: state.currentDocIndex + 1);
+      // Update project progress (might throw exception)
+      if (!projectPath.startsWith('mock://')) {
+        await ProjectProgressService.updateAfterDocumentSave(projectPath);
+      }
 
-        if (!state.isComplete) {
-          debugPrint('🤖 Sending silent validation message to backend');
-          await sendMessageStream(
-            'He validado y guardado el documento en $savedDocumentPath. '
-            '¿Cuál es el siguiente paso del Master Workflow?',
-            isHidden: true,
-          );
-          debugPrint('✅ Silent validation message sent');
-        } else {
-          debugPrint('🎉 All documents completed!');
-        }
+      if (nextIndex <= state.totalDocs) {
+        final nextDoc = _getDocTypeForIndex(nextIndex);
+        await sendMessageStream(
+          'He validado el documento anterior. '
+          'Por favor, genera ahora: $nextDoc',
+          isHidden: true,
+        );
       }
     } on Exception catch (e) {
-      debugPrint('❌ Error validating document: $e');
-      state = state.copyWith(
-        hasError: true,
-        errorMessage: 'Failed to save document: $e',
-      );
+      state = state.copyWith(hasError: true, errorMessage: 'Error saving: $e');
+    } finally {
+      _isValidating = false;
     }
   }
 
-  /// Detects document type from content (first H1 header)
-  String _detectDocTypeFromContent(String content) {
-    final lines = content.split('\n');
-    for (final line in lines) {
-      if (line.startsWith('# ')) {
-        final title = line.substring(2).trim();
-        // Convert "Project Manifesto" → "PROJECT_MANIFESTO"
-        return title.toUpperCase().replaceAll(' ', '_');
-      }
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 4. STRING UTILITIES & PATH ROUTING
+  // ═══════════════════════════════════════════════════════════════════════════
+  /// Removes markdown fences, metadata tags, and duplicate path labels.
+  String _cleanDocumentContent(String rawContent) {
+    var clean = rawContent;
+    if (clean.contains('[document]')) {
+      clean = clean.split('[document]').last;
     }
-    return 'DOCUMENT';
+
+    // 🎯 LIMPIEZA ROBUSTA: Regex para eliminar cualquier apertura/cierre de bloques de código
+    clean = clean.replaceAll(RegExp(r'```[a-zA-Z]*\n?'), '');
+    clean = clean.replaceAll('```', '');
+
+    // Limpieza de etiquetas de ruta duplicadas
+    clean = clean.replaceAll(
+      RegExp(r'\*\*(Path|File|Ruta):\*\*.*?\n', caseSensitive: false),
+      '',
+    );
+
+    return clean.trim();
   }
 
-  /// Returns the correct file path for a document type.
-  /// Handles special cases like README.md in root.
+  String _getDocTypeForIndex(int targetIndex) {
+    final docTypes = [
+      'PROJECT_MANIFESTO',
+      'DOMAIN_LANGUAGE',
+      'USER_JOURNEY_MAP',
+      'REQUIREMENTS_MASTER',
+      'USER_STORIES_MASTER',
+      'SECURITY_PRIVACY_POLICY',
+      'COMPLIANCE_MATRIX',
+      'TECH_STACK_DECISION',
+      'DATA_MODEL_SCHEMA',
+      'API_INTERFACE_CONTRACT',
+      'PROJECT_STRUCTURE_MAP',
+      'SECURITY_THREAT_MODEL',
+      'ARCH_DECISION_RECORDS',
+      'DESIGN_SYSTEM',
+      'UI_WIREFRAMES_FLOW',
+      'ACCESSIBILITY_GUIDE',
+      'ROADMAP_PHASES',
+      'DEPLOYMENT_INFRASTRUCTURE',
+      'CI_CD_PIPELINE',
+      'TESTING_STRATEGY',
+      'RULES',
+      'CONTRIBUTING',
+      'AGENTS',
+      'README',
+    ];
+    return docTypes[(targetIndex - 1).clamp(0, docTypes.length - 1)];
+  }
+
   String _getFilePathForDocType(String docType, String content) {
-    // Special case: README always goes to root
-    if (docType.contains('README') ||
-        content.toUpperCase().startsWith('# README')) {
-      return 'README.md';
+    if (docType == 'USER_STORIES_MASTER') {
+      return 'context/20-REQUIREMENTS/USER_STORIES_MASTER.json';
     }
 
-    // Get section folder
-    final section = _getSectionForDocType(docType);
+    final sectionMap = {
+      'PROJECT_MANIFESTO': '10-CONTEXT',
+      'DOMAIN_LANGUAGE': '10-CONTEXT',
+      'USER_JOURNEY_MAP': '10-CONTEXT',
+      'REQUIREMENTS_MASTER': '20-REQUIREMENTS',
+      'SECURITY_PRIVACY_POLICY': '20-REQUIREMENTS',
+      'COMPLIANCE_MATRIX': '20-REQUIREMENTS',
+      'TECH_STACK_DECISION': '30-ARCHITECTURE',
+      'DATA_MODEL_SCHEMA': '30-ARCHITECTURE',
+      'API_INTERFACE_CONTRACT': '30-ARCHITECTURE',
+      'PROJECT_STRUCTURE_MAP': '30-ARCHITECTURE',
+      'SECURITY_THREAT_MODEL': '30-ARCHITECTURE',
+      'ARCH_DECISION_RECORDS': '30-ARCHITECTURE',
+      'DESIGN_SYSTEM': '35-UX_UI',
+      'UI_WIREFRAMES_FLOW': '35-UX_UI',
+      'ACCESSIBILITY_GUIDE': '35-UX_UI',
+      'ROADMAP_PHASES': '40-PLANNING',
+      'DEPLOYMENT_INFRASTRUCTURE': '40-PLANNING',
+      'CI_CD_PIPELINE': '40-PLANNING',
+      'TESTING_STRATEGY': '40-PLANNING',
+    };
 
-    // Convert doc type to filename
-    // "PROJECT_MANIFESTO" → "PROJECT_MANIFESTO.md"
-    final fileName = '${docType.toUpperCase()}.md';
-
-    return '$section/$fileName';
-  }
-
-  /// Rejects the current proposal without advancing.
-  void rejectProposal() {
-    state = state.copyWith(clearProposal: true);
-  }
-
-  /// Regenerates the current document proposal.
-  Future<void> regenerateProposal() async {
-    if (state.messages.isEmpty) {
-      return;
+    if (sectionMap.containsKey(docType)) {
+      return 'context/${sectionMap[docType]}/$docType.md';
     }
-
-    // Get the last user message
-    final lastUserMessage = state.messages
-        .lastWhere(
-          (msg) => msg.role == MessageRole.user,
-          orElse: () => state.messages.first,
-        )
-        .content;
-
-    // Clear current proposal and re-stream
-    state = state.copyWith(clearProposal: true);
-    await sendMessage('Regenera el documento: $lastUserMessage');
+    return '$docType.md';
   }
 
-  /// Resets chat state for a new project.
-  /// Clears any error state.
-  void clearError() {
-    state = state.clearError();
+  // ══════════════════════════════════════════════════════════════
+  // 5. HELPER ACTIONS
+  // ══════════════════════════════════════════════════════════════
+
+  /// Adds a system message to the chat history.
+  ///
+  /// System messages are used for workflow notifications and context updates.
+  void addSystemMessage(String content) {
+    state = state.copyWith(
+      messages: [
+        ...state.messages,
+        ChatMessage(
+          id: generateId(),
+          role: MessageRole.system,
+          content: content,
+          timestamp: DateTime.now().toIso8601String(),
+        ),
+      ],
+    );
   }
 
-  /// Resets chat state for a new project.
-  void resetForNewProject({int totalDocs = 25}) {
+  /// Resets the notifier state for a new project session.
+  ///
+  /// [totalDocs] - Total number of documents in the workflow (default: 24).
+  void resetForNewProject({int totalDocs = 24}) {
     state = ChatState(totalDocs: totalDocs);
   }
 
-  /// Handles stream errors with retry logic.
+  /// Rejects the current document proposal and clears it from state.
+  void rejectProposal() => state = state.copyWith(clearProposal: true);
+
+  /// Retries sending the last user message.
+  ///
+  /// Resends the most recent user message to the AI backend.
   Future<void> retryLastMessage() async {
     if (state.messages.length < 2) {
       return;
     }
-
     final lastUserMessage = state.messages
         .lastWhere((msg) => msg.role == MessageRole.user)
         .content;
-
-    // Remove error state and retry
     state = state.clearError();
-    await sendMessage(lastUserMessage);
+    await sendMessageStream(lastUserMessage);
   }
 
-  // /// Triggers the next question automatically based on doc type.
-  // Future<void> _triggerNextQuestion() async {
-  //   final nextDocType = _getDocTypeForCurrentIndex();
-  //   final question = _getQuestionForDocType(nextDocType);
-  //
-  //   final systemMessage = ChatMessage(
-  //     id: generateId(),
-  //     role: MessageRole.system,
-  //     content: question,
-  //     timestamp: DateTime.now().toIso8601String(),
-  //   );
-  //
-  //   state = state.copyWith(messages: [...state.messages, systemMessage]);
-  // }
-
-  /// Maps current doc index to document type.
-  String _getDocTypeForCurrentIndex() {
-    final docTypes = [
-      'PROJECT_MANIFESTO',
-      'VISION_PROMISE',
-      'USER_JOURNEY',
-      'EXECUTIVE_SUMMARY',
-      'FUNCTIONAL_REQUIREMENTS',
-      'TECHNICAL_REQUIREMENTS',
-      'ACCESSIBILITY_CHECKLIST',
-      'DEFINITION_OF_READY',
-      'DOCUMENTATION_STANDARDS',
-      'ARCHITECTURE_OVERVIEW',
-      'DATABASE_SCHEMA',
-      'API_SPECIFICATION',
-      'SECURITY_HARDENING_POLICY',
-      'INFRASTRUCTURE_SETUP',
-      'CI_CD_PIPELINE',
-      'DEPLOYMENT_STRATEGY',
-      'MONITORING_OBSERVABILITY',
-      'DISASTER_RECOVERY',
-      'ROADMAP_PHASE_1',
-      'ROADMAP_PHASE_2',
-      'ROADMAP_PHASE_3',
-      'ROADMAP_PHASE_4',
-      'ROADMAP_PHASE_5',
-      'SUCCESS_METRICS',
-      'COMMUNICATION_PLAN',
-    ];
-
-    final index = (state.currentDocIndex - 1).clamp(0, docTypes.length - 1);
-    return docTypes[index];
-  }
-
-  /// Maps doc type to section folder.
-  String _getSectionForDocType(String docType) {
-    if (docType.startsWith('PROJECT_') ||
-        docType.startsWith('VISION_') ||
-        docType.startsWith('USER_') ||
-        docType.startsWith('EXECUTIVE_')) {
-      return '10-CONTEXT';
-    } else if (docType.contains('REQUIREMENTS') ||
-        docType.contains('ACCESSIBILITY') ||
-        docType.contains('DEFINITION') ||
-        docType.contains('DOCUMENTATION')) {
-      return '20-REQUIREMENTS_AND_SPEC';
-    } else if (docType.startsWith('ARCHITECTURE') ||
-        docType.startsWith('DATABASE') ||
-        docType.startsWith('API') ||
-        docType.startsWith('SECURITY') ||
-        docType.startsWith('INFRASTRUCTURE') ||
-        docType.startsWith('CI_') ||
-        docType.startsWith('DEPLOYMENT') ||
-        docType.startsWith('MONITORING') ||
-        docType.startsWith('DISASTER')) {
-      return '30-ARCHITECTURE';
-    } else if (docType.startsWith('ROADMAP') ||
-        docType.startsWith('SUCCESS') ||
-        docType.startsWith('COMMUNICATION')) {
-      return '40-ROADMAP';
-    }
-
-    return '10-CONTEXT';
-  }
-
-  // ❌ DEPRECATED (HU-5.0): Replaced by backend-driven workflow questions.
-  // The LLM now generates questions automatically after validation.
-  // This method is kept commented for reference but should NOT be used.
-  //
-  // /// Generates contextual question for next document.
-  // String _getQuestionForDocType(String docType) {
-  //   switch (docType) {
-  //     case 'PROJECT_MANIFESTO':
-  //       return '¿Cuál es el propósito y valores principales del proyecto?';
-  //     case 'VISION_PROMISE':
-  //       return '¿Cuál es la visión y promesa al usuario final?';
-  //     case 'USER_JOURNEY':
-  //       return '¿Cuál es el viaje del usuario a través del producto?';
-  //     case 'FUNCTIONAL_REQUIREMENTS':
-  //       return '¿Cuáles son los requisitos funcionales detallados?';
-  //     case 'TECHNICAL_REQUIREMENTS':
-  //       return '¿Cuáles son los requisitos técnicos y constraints?';
-  //     case 'ARCHITECTURE_OVERVIEW':
-  //       return '¿Cuál es la arquitectura técnica del sistema?';
-  //     default:
-  //       return 'Proporciona información sobre: $docType';
-  //   }
-  // }
-
-  /// Adds a system message to the chat.
-  ///
-  /// System messages are typically used for showing validation confirmations
-  /// or other system-level notifications to the user.
-  ///
-  /// Example:
-  /// ```dart
-  /// chatNotifier.addSystemMessage('✅ Document saved at /path/to/file.md');
-  /// ```
-  void addSystemMessage(String content) {
-    final systemMessage = ChatMessage(
-      id: generateId(),
-      role: MessageRole.system,
-      content: content,
-      timestamp: DateTime.now().toIso8601String(),
-    );
-
-    final updatedMessages = [...state.messages, systemMessage];
-    state = state.copyWith(messages: updatedMessages);
-  }
-
-  /// Cancels the currently active stream subscription.
-  ///
-  /// This prevents context bleed when:
-  /// - User changes to a different project
-  /// - User leaves the chat screen
-  /// - New message is sent before previous stream completes
   Future<void> _cancelActiveStream() async {
-    if (_activeStreamSubscription != null) {
-      debugPrint('🛑 Canceling active stream subscription');
-      await _activeStreamSubscription!.cancel();
-      _activeStreamSubscription = null;
-      _activeStreamProjectId = null;
-
-      // Reset streaming state
-      if (state.isStreaming) {
-        state = state.copyWith(isStreaming: false);
-      }
+    await _activeStreamSubscription?.cancel();
+    _activeStreamSubscription = null;
+    if (state.isStreaming) {
+      state = state.copyWith(isStreaming: false);
     }
   }
 
-  /// Disposes the notifier and cleans up resources.
-  ///
-  /// ✅ CRITICAL: Cancels active stream to prevent memory leaks
-  /// and context bleeding.
   @override
   void dispose() {
-    debugPrint('🧹 Disposing ChatNotifier - canceling active streams');
-    // Cancel synchronously (best effort)
     _activeStreamSubscription?.cancel();
-    _activeStreamSubscription = null;
-    _activeStreamProjectId = null;
     super.dispose();
   }
 }
 
-/// Mock implementation of ChatRepository for development.
-/// This allows the app to run without a backend service.
-/// Replace with actual implementation during backend integration.
+// ════════════════════════════════════════════════════════════════════════════
+// 6. PROVIDERS
+// ════════════════════════════════════════════════════════════════════════════
+
+/// Mock implementation of [ChatRepository] for guide/tutorial flows.
+///
+/// Returns canned responses without making real API calls.
 class _MockChatRepository implements ChatRepository {
   @override
   Stream<String> generateDocument(
-    String docType,
-    String userInput,
-    Map<String, dynamic> context,
+    String d,
+    String u,
+    Map<String, dynamic> c,
   ) async* {
-    // Simulate document generation with streaming tokens
-    final tokens = [
-      '# ',
-      docType,
-      '\n\n',
-      'Generated for user input: ',
-      userInput,
-      '\n\n',
-      'This is a mock response. ',
-      'The actual implementation will connect to the backend RAG system.',
-    ];
-
-    for (final token in tokens) {
-      await Future.delayed(const Duration(milliseconds: 50));
-      yield token;
-    }
+    yield 'Mock';
   }
 
   @override
   Stream<ChatStreamEvent> sendMessageStream(
-    String message,
-    String projectId,
-  ) async* {
-    // Mock implementation - simulate streaming response
+    String m,
+    String p, {
+    String? docType,
+    String? userName,
+    List<ChatMessage>? history,
+  }) async* {
     yield const TokenEvent(token: 'Mock');
-    yield const TokenEvent(token: ' response');
     yield const DoneEvent(fullResponse: 'Mock response');
   }
 
   @override
-  Future<void> saveProposal(DocumentProposal proposal) async {
-    // Mock implementation - does nothing
-  }
-
+  Future<void> saveProposal(DocumentProposal proposal) async {}
   @override
   Future<List<ChatMessage>> getChatHistory(String projectId) async => [];
-
   @override
-  Future<void> saveMessage(String projectId, ChatMessage message) async {
-    // Mock implementation - does nothing
-  }
-
+  Future<void> saveMessage(String projectId, ChatMessage message) async {}
   @override
   Future<void> clearChatHistory(String projectId) async {}
 }
@@ -849,15 +571,12 @@ class _MockChatRepository implements ChatRepository {
 final chatRepositoryProvider = Provider<ChatRepository>(
   (ref) => ChatRepositoryImpl(baseUrl: _backendBaseUrl, apiKey: _backendApiKey),
 );
-
 final mockChatRepositoryProvider = Provider<ChatRepository>(
   (ref) => _MockChatRepository(),
 );
-
 final fileSystemServiceProvider = Provider<FileSystemService>(
   (ref) => FileSystemServiceImpl(),
 );
-
 final chatNotifierProvider = StateNotifierProvider<ChatNotifier, ChatState>(
   (ref) => ChatNotifier(
     repository: ref.watch(chatRepositoryProvider),

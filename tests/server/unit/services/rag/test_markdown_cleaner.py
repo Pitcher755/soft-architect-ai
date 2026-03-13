@@ -9,7 +9,6 @@ Coverage target: ≥90% of services/rag/markdown_cleaner.py
 
 from services.rag.markdown_cleaner import MarkdownCleaner
 
-
 # ---------------------------------------------------------------------------
 # MarkdownCleaner.clean  (full pipeline)
 # ---------------------------------------------------------------------------
@@ -158,17 +157,13 @@ class TestRemoveSuspiciousPatterns:
 
     def test_removes_script_tag_with_content_directly(self):
         """_remove_suspicious_patterns strips <script> tags AND their content."""
-        result = MarkdownCleaner._remove_suspicious_patterns(
-            "<script>evil()</script> ok"
-        )
+        result = MarkdownCleaner._remove_suspicious_patterns("<script>evil()</script> ok")
         assert "evil()" not in result
         assert "ok" in result
 
     def test_removes_iframe_with_content_directly(self):
         """_remove_suspicious_patterns strips <iframe> tags AND their content."""
-        result = MarkdownCleaner._remove_suspicious_patterns(
-            "<iframe src='x'>hidden</iframe> ok"
-        )
+        result = MarkdownCleaner._remove_suspicious_patterns("<iframe src='x'>hidden</iframe> ok")
         assert "hidden" not in result
         assert "ok" in result
 
@@ -270,9 +265,7 @@ class TestIsValidMarkdown:
         assert MarkdownCleaner.is_valid_markdown("Hello world") is True
 
     def test_markdown_with_heading_is_valid(self):
-        assert (
-            MarkdownCleaner.is_valid_markdown("# Title\n\nContent paragraph.") is True
-        )
+        assert MarkdownCleaner.is_valid_markdown("# Title\n\nContent paragraph.") is True
 
     def test_markdown_with_only_numbers_is_valid(self):
         """Digits count as alphanumeric."""

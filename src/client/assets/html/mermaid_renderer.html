@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        /* Reseteamos márgenes y forzamos un fondo transparente para que se funda con tu app */
+        body {
+            margin: 0;
+            padding: 10px;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e0e0e0;
+            /* Color base para texto si no aplica el de Mermaid */
+        }
+
+        .mermaid {
+            background-color: transparent;
+        }
+    </style>
+    <script src="./mermaid.min.js"></script>
+</head>
+
+<body>
+    <div id="graph" class="mermaid"></div>
+
+    <script>
+        // Inicializamos Mermaid en modo oscuro (o cámbialo a 'default' / 'forest')
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'dark',
+            securityLevel: 'loose'
+        });
+
+        // Esta es la función mágica que Flutter llamará desde Dart
+        async function renderGraph(code) {
+            try {
+                const container = document.getElementById('graph');
+                // Limpiamos el atributo data-processed para que Mermaid lo re-dibuje si cambia
+                container.removeAttribute('data-processed');
+                container.innerHTML = code;
+
+                // Ejecutamos el renderizado
+                await mermaid.run({ nodes: [container] });
+
+                // (Opcional) Avisamos a Flutter de la altura del gráfico para ajustar el widget
+                if (window.flutter_inappwebview) {
+                    window.flutter_inappwebview.callHandler('FlutterChannel', document.body.scrollHeight.toString());
+                }
+            } catch (error) {
+                console.error("Error renderizando Mermaid: ", error);
+                document.getElementById('graph').innerHTML = `<p style="color:red;">Error de sintaxis Mermaid</p>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

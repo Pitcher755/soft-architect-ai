@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
-import '../../../../core/theme/app_colors.dart'; // Importante para usar AppColors
+import '../../../../core/theme/app_colors.dart';
+import '../../../../shared/presentation/widgets/markdown_builders/mermaid_builder.dart';
 
-/// Intelligent message renderer for chat interface.
+// ════════════════════════════════════════════════════════════════════════════
+// 1. SMART MESSAGE RENDERER
+// ════════════════════════════════════════════════════════════════════════════
+
 class SmartMessageRenderer extends StatelessWidget {
   const SmartMessageRenderer({
     required this.rawContent,
@@ -16,10 +20,33 @@ class SmartMessageRenderer extends StatelessWidget {
 
   final String rawContent;
   final bool isUser;
-  final Future<void> Function(String path, String content)? onSaveDocument;
+  final Future<void> Function()? onSaveDocument;
   final Future<void> Function(String message)? onSendChatMessage;
 
-  // RegEx a prueba de balas usando XML
+  @override
+  Widget build(BuildContext context) {
+    final decodedContent = _decodeHtmlEntities(rawContent);
+
+    if (isUser) {
+      return _buildMarkdown(context, decodedContent);
+    }
+
+    final matches = _documentBlockRegex.allMatches(decodedContent);
+    if (matches.isNotEmpty) {
+      return _buildMixedContent(context, matches, decodedContent);
+    }
+
+    if (_isRailOperationDocument(decodedContent)) {
+      return _buildRailMixedContent(context, decodedContent);
+    }
+
+    return _buildMarkdown(context, decodedContent);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 2. PARSING & FORMAT DETECTION
+  // ═══════════════════════════════════════════════════════════════════════════
+
   static final RegExp _documentBlockRegex = RegExp(
     r'<document>\r?\n?([\s\S]*?)(?:</document>|$)',
     caseSensitive: false,
@@ -34,59 +61,71 @@ class SmartMessageRenderer extends StatelessWidget {
       .replaceAll('&#x27;', "'")
       .replaceAll('&apos;', "'");
 
-  @override
-  Widget build(BuildContext context) {
-    final decodedContent = _decodeHtmlEntities(rawContent);
-
-    if (isUser) {
-      return _buildMarkdown(context, decodedContent);
-    }
-
-    final matches = _documentBlockRegex.allMatches(decodedContent);
-
-    if (matches.isEmpty) {
-      return _buildMarkdown(context, decodedContent);
-    }
-
-    return _buildMixedContent(context, matches, decodedContent);
+  bool _isRailOperationDocument(String content) {
+    final trimmed = content.trim();
+    return content.contains('**Path:**') ||
+        content.contains('Path:') ||
+        content.contains('**File:**') ||
+        content.contains('[document]') ||
+        content.contains('```json') ||
+        content.contains('```markdown') ||
+        (trimmed.startsWith('{') && trimmed.endsWith('}'));
   }
 
-  Widget _buildMarkdown(BuildContext context, String content) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 3. UI BUILDERS
+  // ═══════════════════════════════════════════════════════════════════════════
 
-    final baseStyle = theme.textTheme.bodyMedium?.copyWith(
-      fontSize: 16,
-      height: 1.6,
-      color: isDark ? AppColors.textMain : Colors.black87,
-    );
+  Widget _buildRailMixedContent(BuildContext context, String content) {
+    final elements = <Widget>[];
+    var reasoningText = '';
+    var documentText = content;
 
-    return MarkdownBody(
-      data: content,
-      selectable: true,
-      styleSheet: MarkdownStyleSheet(
-        p: baseStyle,
-        listBullet: baseStyle,
-        code: theme.textTheme.bodyMedium?.copyWith(
-          fontFamily: 'monospace',
-          fontSize: 15,
-          backgroundColor: theme.colorScheme.surfaceContainerHighest,
-          color: isDark ? Colors.greenAccent.shade100 : Colors.blue.shade800,
+    if (content.contains('[document]')) {
+      final parts = content.split('[document]');
+      reasoningText = parts.first.trim();
+      documentText = parts.length > 1 ? parts[1].trim() : '';
+
+      if (reasoningText.startsWith('[Razonamiento]')) {
+        reasoningText = reasoningText.replaceFirst('[Razonamiento]', '').trim();
+      }
+    } else {
+      final pathIndex = content.indexOf('**Path:**');
+      final altPathIndex = content.indexOf('Path:');
+      final startIndex = pathIndex != -1
+          ? pathIndex
+          : (altPathIndex != -1 ? altPathIndex : -1);
+
+      if (startIndex > 0) {
+        reasoningText = content.substring(0, startIndex).trim();
+        documentText = content.substring(startIndex).trim();
+      }
+    }
+
+    if (reasoningText.isNotEmpty) {
+      elements
+        ..add(_buildMarkdown(context, reasoningText))
+        ..add(const SizedBox(height: 12));
+    }
+
+    if (documentText.isNotEmpty) {
+      // 🎯 MODIFICACIÓN: NO limpiamos el documento aquí
+      // para mantener los bloques ```json
+      // Así el componente de Markdown puede renderizarlo
+      // con formato y colores.
+      elements.add(
+        _DocumentCard(
+          key: ValueKey(documentText.hashCode),
+          content: documentText, // Pasamos el contenido bruto con sus marcas
+          onSave: onSaveDocument,
+          onSendChatMessage: onSendChatMessage,
         ),
-        h1: theme.textTheme.headlineSmall?.copyWith(
-          color: baseStyle?.color,
-          fontWeight: FontWeight.bold,
-        ),
-        h2: theme.textTheme.titleLarge?.copyWith(
-          color: baseStyle?.color,
-          fontWeight: FontWeight.bold,
-        ),
-        h3: theme.textTheme.titleMedium?.copyWith(
-          color: baseStyle?.color,
-          fontWeight: FontWeight.bold,
-        ),
-        strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
-      ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: elements,
     );
   }
 
@@ -121,7 +160,6 @@ class SmartMessageRenderer extends StatelessWidget {
           ),
         )
         ..add(const SizedBox(height: 12));
-
       currentIndex = match.end;
     }
 
@@ -137,7 +175,42 @@ class SmartMessageRenderer extends StatelessWidget {
       children: elements,
     );
   }
+
+  Widget _buildMarkdown(BuildContext context, String content) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final baseStyle = theme.textTheme.bodyMedium?.copyWith(
+      fontSize: 16,
+      height: 1.6,
+      color: isDark ? AppColors.textMain : Colors.black87,
+    );
+
+    return MarkdownBody(
+      data: content,
+      selectable: true,
+      builders: {'code': MermaidBuilder()},
+      styleSheet: MarkdownStyleSheet(
+        p: baseStyle,
+        listBullet: baseStyle,
+        code: theme.textTheme.bodyMedium?.copyWith(
+          fontFamily: 'monospace',
+          fontSize: 15,
+          backgroundColor: theme.colorScheme.surfaceContainerHighest,
+          color: isDark ? Colors.greenAccent.shade100 : Colors.blue.shade800,
+        ),
+        h1: theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        h2: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 }
+
+// ════════════════════════════════════════════════════════════════════════════
+// 4. DOCUMENT CARD WIDGET
+// ════════════════════════════════════════════════════════════════════════════
 
 class _DocumentCard extends StatefulWidget {
   const _DocumentCard({
@@ -146,9 +219,8 @@ class _DocumentCard extends StatefulWidget {
     this.onSendChatMessage,
     super.key,
   });
-
   final String content;
-  final Future<void> Function(String path, String cleanContent)? onSave;
+  final Future<void> Function()? onSave;
   final Future<void> Function(String message)? onSendChatMessage;
 
   @override
@@ -166,54 +238,28 @@ class _DocumentCardState extends State<_DocumentCard> {
 
   bool get _isAlreadyValidated =>
       _isValidatedLocally || _validatedDocs.contains(widget.content.hashCode);
-
   bool get _isDismissed =>
       _isDismissedLocally || _dismissedDocs.contains(widget.content.hashCode);
-
-  static final RegExp _pathRegex = RegExp(
-    r'\*\*(?:Path|Ruta):\*\*\s*`?([^\n`]+)`?',
-    caseSensitive: false,
-  );
-
-  String _extractPath() {
-    final match = _pathRegex.firstMatch(widget.content);
-    return match?.group(1)?.trim() ?? 'context/UNSORTED/untitled.md';
-  }
-
-  String _extractCleanContent() =>
-      widget.content.replaceAll(_pathRegex, '').trim();
 
   Future<void> _handleValidation() async {
     if (_isValidating || _isAlreadyValidated) {
       return;
     }
-
-    setState(() {
-      _isValidating = true;
-    });
-
-    final extractedPath = _extractPath();
-    final cleanContent = _extractCleanContent();
+    setState(() => _isValidating = true);
 
     if (widget.onSave != null) {
       try {
-        await widget.onSave!(extractedPath, cleanContent);
-
-        // ✅ HU-5.0: Show green success SnackBar (visual feedback)
+        await widget.onSave!();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text('✅ Documento validado y guardado con éxito'),
               backgroundColor: Colors.green.shade600,
-              duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
             ),
           );
         }
-
-        // ✅ AÑADIMOS A LA MEMORIA ESTÁTICA
         _validatedDocs.add(widget.content.hashCode);
-
         if (mounted) {
           setState(() {
             _isValidating = false;
@@ -222,9 +268,7 @@ class _DocumentCardState extends State<_DocumentCard> {
         }
       } catch (e) {
         if (mounted) {
-          setState(() {
-            _isValidating = false;
-          });
+          setState(() => _isValidating = false);
         }
         rethrow;
       }
@@ -232,40 +276,26 @@ class _DocumentCardState extends State<_DocumentCard> {
   }
 
   Future<void> _handleRefine() async {
-    if (_isRefining || _isAlreadyValidated || _isDismissed) {
+    if (_isRefining ||
+        _isAlreadyValidated ||
+        _isDismissed ||
+        widget.onSendChatMessage == null) {
       return;
     }
-
-    final extractedPath = _extractPath();
-    final refineMessage = 'Deseo refinar el documento en $extractedPath: ';
-
-    if (widget.onSendChatMessage == null) {
-      return;
-    }
-
-    setState(() {
-      _isRefining = true;
-    });
-
+    setState(() => _isRefining = true);
     try {
-      await widget.onSendChatMessage!(refineMessage);
+      await widget.onSendChatMessage!('Deseo refinar este documento: ');
     } finally {
       if (mounted) {
-        setState(() {
-          _isRefining = false;
-        });
+        setState(() => _isRefining = false);
       }
     }
   }
 
   void _handleReject() {
-    if (_isAlreadyValidated || _isDismissed) {
-      return;
-    }
-
     setState(() {
-      _dismissedDocs.add(widget.content.hashCode);
       _isDismissedLocally = true;
+      _dismissedDocs.add(widget.content.hashCode);
     });
   }
 
@@ -294,7 +324,7 @@ class _DocumentCardState extends State<_DocumentCard> {
         children: [
           _buildHeader(context),
           Container(
-            constraints: const BoxConstraints(maxHeight: 700),
+            constraints: const BoxConstraints(maxHeight: 600),
             child: _buildContent(context),
           ),
           _buildActions(context),
@@ -313,16 +343,17 @@ class _DocumentCardState extends State<_DocumentCard> {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
+        const Row(
           children: [
-            const Icon(Icons.lightbulb_outline, color: Colors.amber, size: 16),
-            const SizedBox(width: 8),
+            Icon(
+              Icons.description_outlined,
+              color: Colors.blueAccent,
+              size: 16,
+            ),
+            SizedBox(width: 8),
             Text(
-              'DOCUMENTO GENERADO',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppColors.textMain,
-                fontWeight: FontWeight.w700,
-              ),
+              'PROPUESTA DE DOCUMENTO',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ],
         ),
@@ -347,39 +378,42 @@ class _DocumentCardState extends State<_DocumentCard> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final baseStyle = theme.textTheme.bodyMedium?.copyWith(
-      fontSize: 16,
-      height: 1.5,
-      color: isDark ? AppColors.textMain : Colors.black87,
-    );
+    // 🎯 MEJORA: Usamos MarkdownBody SIEMPRE, incluso para JSON.
+    // Si el contenido tiene ```json, MarkdownBody lo indentará
+    // y coloreará automáticamente.
+    // Si no los tiene, lo envolveremos visualmente.
+    var displayData = widget.content.trim();
+    if (!displayData.contains('```') &&
+        (displayData.startsWith('{') || displayData.startsWith('['))) {
+      displayData = '```json\n$displayData\n```';
+    }
 
     return Container(
+      width: double.infinity,
       color: AppColors.mainBg,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: MarkdownBody(
-          data: widget.content,
+          data: displayData,
           selectable: true,
           styleSheet: MarkdownStyleSheet(
-            p: baseStyle,
-            listBullet: baseStyle,
-            code: theme.textTheme.bodyMedium?.copyWith(
+            p: TextStyle(
+              fontSize: 15,
+              color: isDark ? AppColors.textMain : Colors.black87,
+            ),
+            code: TextStyle(
               fontFamily: 'monospace',
-              fontSize: 16,
+              fontSize: 14,
               backgroundColor: theme.colorScheme.surfaceContainerHighest,
               color: isDark
                   ? Colors.greenAccent.shade100
                   : Colors.blue.shade800,
             ),
-            h1: theme.textTheme.titleLarge?.copyWith(
-              color: baseStyle?.color,
-              fontWeight: FontWeight.bold,
+            codeblockPadding: const EdgeInsets.all(12),
+            codeblockDecoration: BoxDecoration(
+              color: isDark ? Colors.black26 : Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(8),
             ),
-            h2: theme.textTheme.titleMedium?.copyWith(
-              color: baseStyle?.color,
-              fontWeight: FontWeight.bold,
-            ),
-            strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -392,41 +426,23 @@ class _DocumentCardState extends State<_DocumentCard> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton.icon(
-          key: const Key('proposal_reject_button'),
           onPressed: _isValidating || _isRefining ? null : _handleReject,
           icon: const Icon(Icons.close, size: 16),
           label: const Text('Rechazar'),
-          style: TextButton.styleFrom(
-            foregroundColor: AppColors.error,
-            backgroundColor: AppColors.error.withValues(alpha: 0.1),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
+          style: TextButton.styleFrom(foregroundColor: AppColors.error),
         ),
         Row(
           children: [
             OutlinedButton.icon(
-              key: const Key('proposal_refine_button'),
               onPressed: _isValidating || _isRefining ? null : _handleRefine,
-              icon: _isRefining
-                  ? const SizedBox(
-                      width: 14,
-                      height: 14,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.edit, size: 16),
+              icon: const Icon(Icons.edit, size: 16),
               label: Text(_isRefining ? 'Refinando...' : 'Refinar'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.textMain,
-                side: const BorderSide(color: AppColors.border),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
               ),
             ),
             const SizedBox(width: 12),
             FilledButton.icon(
-              key: const Key('proposal_validate_button'),
               onPressed: _isValidating || _isRefining
                   ? null
                   : _handleValidation,
@@ -436,19 +452,12 @@ class _DocumentCardState extends State<_DocumentCard> {
                       height: 16,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        color: Colors.white,
                       ),
                     )
                   : const Icon(Icons.check_circle, size: 16),
               label: Text(_isValidating ? 'Validando...' : 'Validar y Guardar'),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.success,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-              ),
+              style: FilledButton.styleFrom(backgroundColor: AppColors.success),
             ),
           ],
         ),

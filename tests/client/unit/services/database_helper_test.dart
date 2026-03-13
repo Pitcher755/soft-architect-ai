@@ -3,6 +3,8 @@ import 'package:softarchitect_ai/services/database_helper.dart'
     show DatabaseException, ProjectModel;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' hide DatabaseException;
 
+import '../../helpers/test_helper.dart' show initSqfliteForTest;
+
 // Helper functions for in-memory database testing
 Future<ProjectModel> _insertProject(Database db, ProjectModel project) async {
   try {
@@ -68,9 +70,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() {
-    // Initialize FFI (for testing on desktop/CI)
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
+    // ✅ Initialize FFI (centralized to avoid warnings)
+    initSqfliteForTest();
   });
 
   group('ProjectModel', () {
@@ -256,7 +257,7 @@ void main() {
     setUp(() async {
       // ✅ CRITICAL FIX: Use fully in-memory database (prevents UNIQUE constraint errors)
       // Each test gets a completely fresh, isolated database in RAM
-      databaseFactory = databaseFactoryFfi;
+      // NOTE: databaseFactory already initialized in setUpAll
 
       // Create in-memory database (auto-destroyed after test)
       db = await databaseFactory.openDatabase(

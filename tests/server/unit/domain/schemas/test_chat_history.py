@@ -5,7 +5,7 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 
-from app.domain.schemas.chat import ChatRequest
+from app.domain.schemas.chat_schema import ChatRequest
 
 
 class TestChatRequestWithHistory:

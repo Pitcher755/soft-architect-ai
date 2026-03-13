@@ -19,8 +19,15 @@ from app.services.rag.sequential_orchestrator import SequentialOrchestrator
 @pytest.fixture
 def orchestrator():
     """Fixture for SequentialOrchestrator."""
+    mock_workflow_injector = Mock()
+    mock_workflow_injector.get_injected_prompt.return_value = (
+        "# Master Template\n\nInstruction: Generate based on {user_input}"
+    )
     return SequentialOrchestrator(
-        vector_store=Mock(), llm_client=Mock(), template_loader=Mock()
+        vector_store=Mock(),
+        llm_client=Mock(),
+        template_loader=Mock(),
+        workflow_injector=mock_workflow_injector,
     )
 
 
@@ -35,8 +42,8 @@ class TestSequentialOrchestrator:
         """Test that generate returns an async generator."""
         mock_template = Mock(content="Template: {user_input}")
         orchestrator.template_loader.load.return_value = mock_template
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["token1", "token2"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["token1", "token2"])
         )
         orchestrator.vector_store.query.return_value = {
             "documents": [[]],
@@ -66,8 +73,8 @@ class TestSequentialOrchestrator:
         }
         mock_template = Mock(content="Template: {context}\n{user_input}")
         orchestrator.template_loader.load.return_value = mock_template
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["test"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["test"])
         )
 
         async for _ in orchestrator.generate(
@@ -94,11 +101,9 @@ class TestSequentialOrchestrator:
         """
         mock_template = Mock(content="Template: {context}\n{user_input}")
         orchestrator.template_loader.load.return_value = mock_template
-        orchestrator.vector_store.query.side_effect = ConnectionError(
-            "ChromaDB unreachable"
-        )
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["degraded_token"])
+        orchestrator.vector_store.query.side_effect = ConnectionError("ChromaDB unreachable")
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["degraded_token"])
         )
 
         tokens = []
@@ -125,9 +130,7 @@ class TestSequentialOrchestrator:
             "documents": [[]],
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            side_effect=TimeoutError("LLM timeout")
-        )
+        orchestrator.llm_client.stream_generate = AsyncMock(side_effect=TimeoutError("LLM timeout"))
 
         with pytest.raises(LLMError) as exc_info:
             async for _ in orchestrator.generate(
@@ -145,14 +148,15 @@ class TestSequentialOrchestrator:
         orchestrator,
     ):
         """Test that correct template is loaded based on doc_type."""
-        mock_template = Mock(content="Template for manifesto")
-        orchestrator.template_loader.load.return_value = mock_template
+        orchestrator.workflow_injector.get_injected_prompt.return_value = (
+            "# Injected Template\n\nInstruction: {user_input}"
+        )
         orchestrator.vector_store.query.return_value = {
             "documents": [[]],
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["test"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["test"])
         )
 
         async for _ in orchestrator.generate(
@@ -162,7 +166,9 @@ class TestSequentialOrchestrator:
         ):
             pass
 
-        orchestrator.template_loader.load.assert_called_once_with("PROJECT_MANIFESTO")
+        orchestrator.workflow_injector.get_injected_prompt.assert_called_once_with(
+            "PROJECT_MANIFESTO"
+        )
 
     @pytest.mark.asyncio
     async def test_generate_includes_chat_history_in_context(
@@ -176,8 +182,8 @@ class TestSequentialOrchestrator:
             "documents": [[]],
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["test"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["test"])
         )
         chat_history = [
             {"role": "user", "content": "Previous message"},
@@ -206,8 +212,8 @@ class TestSequentialOrchestrator:
             "documents": [["Doc1", "Doc2"], ["Doc3"]],
             "metadatas": [[{"source": "file1.md"}, {"source": "file2.md"}]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["test"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["test"])
         )
 
         async for _ in orchestrator.generate(
@@ -234,8 +240,8 @@ class TestSequentialOrchestrator:
             "documents": [[]],  # Empty results
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["response"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["response"])
         )
 
         tokens = []
@@ -262,8 +268,8 @@ class TestSequentialOrchestrator:
             "documents": ["Single doc string"],
             "metadatas": [{"source": "file.md"}],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["test"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["test"])
         )
 
         async for _ in orchestrator.generate(
@@ -289,8 +295,8 @@ class TestSequentialOrchestrator:
             "documents": [[]],
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["test"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["test"])
         )
 
         chat_history = [
@@ -319,8 +325,8 @@ class TestSequentialOrchestrator:
             "documents": [[]],
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
-            return_value=self._mock_async_generator(["test"])
+        orchestrator.llm_client.stream_generate = Mock(
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(["test"])
         )
 
         async for _ in orchestrator.generate(
@@ -330,11 +336,12 @@ class TestSequentialOrchestrator:
         ):
             pass
 
-        # Verify vector store was queried (dual-channel: multiple calls)
+        # Verify vector store was queried with user_input
         assert orchestrator.vector_store.query.call_count >= 1
-        # doc_type should appear somewhere in the query args
-        all_calls = str(orchestrator.vector_store.query.call_args_list)
-        assert "DESIGN_DOCUMENT" in all_calls
+        # Verify user_input was passed to vector store query
+        call_args = orchestrator.vector_store.query.call_args
+        assert call_args is not None
+        assert call_args.kwargs.get("query_text") == "Architecture"
 
     @staticmethod
     async def _mock_async_generator(items: list[str]):

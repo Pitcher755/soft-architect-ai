@@ -263,8 +263,18 @@ print_header "PHASE 7️⃣: CODE COVERAGE"
 
 print_step "Python Coverage Analysis"
 echo -e "${YELLOW}⏳ Running coverage (timeout: 180s)...${NC}"
-rm -f /tmp/pycov.out /tmp/pycov.json
-timeout 180 "$PYTHON_TEST_BIN" -m pytest tests/server/ --cov=src/server/app --cov-report=term --cov-report=json:/tmp/pycov.json --tb=no -q > /tmp/pycov.out 2>&1
+
+# Clean previous coverage and create canonical directory
+rm -rf "$PROJECT_ROOT/coverage_html"
+mkdir -p "$PROJECT_ROOT/coverage_html"
+
+# Generate coverage with HTML report in canonical location
+timeout 180 "$PYTHON_TEST_BIN" -m pytest tests/server/ \
+    --cov=src/server/app \
+    --cov-report=term \
+    --cov-report=html:coverage_html/ \
+    --cov-report=json:coverage_html/coverage.json \
+    --tb=no -q > /tmp/pycov.out 2>&1
 COVERAGE_EXIT=$?
 
 if [ "$COVERAGE_EXIT" -eq 124 ]; then
@@ -275,7 +285,7 @@ else
 import json
 from pathlib import Path
 
-path = Path('/tmp/pycov.json')
+path = Path('coverage_html/coverage.json')
 if not path.exists():
     print('')
 else:
@@ -293,7 +303,7 @@ PY
     fi
 
     if [ -n "$COVERAGE_PERCENT" ] && [ "$COVERAGE_PERCENT" -ge 80 ]; then
-        print_success "Python Coverage: ${COVERAGE_PERCENT}% (≥80%)"
+        print_success "Python Coverage: ${COVERAGE_PERCENT}% (≥80%) [HTML: coverage_html/index.html]"
     else
         print_fail "Python Coverage: ${COVERAGE_PERCENT:-0}% (<80% or execution error)"
     fi
@@ -303,23 +313,30 @@ TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
 
 print_step "Flutter Coverage Analysis"
 echo -e "${YELLOW}⏳ Generating Flutter coverage report...${NC}"
+
+# Clean previous coverage
+rm -rf "$PROJECT_ROOT/coverage"
 rm -rf "$PROJECT_ROOT/src/client/coverage"
+
 if command -v flutter >/dev/null 2>&1; then
     # Generate coverage from client directory (Flutter project root)
     if (cd "$PROJECT_ROOT/src/client" && flutter test ../../tests/client/ --coverage >/tmp/flutter_cov.out 2>&1); then
+        # Move to canonical location
         if [ -f "$PROJECT_ROOT/src/client/coverage/lcov.info" ]; then
+            mv "$PROJECT_ROOT/src/client/coverage" "$PROJECT_ROOT/coverage"
+            
             if command -v lcov >/dev/null 2>&1; then
                 # Exclude database_helper.dart (has structural bug: uses updated_at column but schema has last_opened)
                 # TODO: Fix database_helper.dart schema/model mismatch, then remove this exclusion
-                lcov --remove "$PROJECT_ROOT/src/client/coverage/lcov.info" \
+                lcov --remove "$PROJECT_ROOT/coverage/lcov.info" \
                      'lib/services/database_helper.dart' \
-                     -o "$PROJECT_ROOT/src/client/coverage/lcov_filtered.info" --quiet
+                     -o "$PROJECT_ROOT/coverage/lcov_filtered.info" --quiet
 
-                FLUTTER_COVERAGE=$(lcov --summary "$PROJECT_ROOT/src/client/coverage/lcov_filtered.info" 2>&1 | grep -oP 'lines\.*: \K\d+\.\d+(?=%)')
+                FLUTTER_COVERAGE=$(lcov --summary "$PROJECT_ROOT/coverage/lcov_filtered.info" 2>&1 | grep -oP 'lines\.*: \K\d+\.\d+(?=%)')
                 if [ -n "$FLUTTER_COVERAGE" ]; then
                     FLUTTER_COVERAGE_INT=$(LC_NUMERIC=C printf "%.0f" "$FLUTTER_COVERAGE")
                     if [ "$FLUTTER_COVERAGE_INT" -ge 80 ]; then
-                        print_success "Flutter Coverage: ${FLUTTER_COVERAGE}% (≥80%, excluding buggy files)"
+                        print_success "Flutter Coverage: ${FLUTTER_COVERAGE}% (≥80%, excluding buggy files) [lcov: coverage/lcov.info]"
                     else
                         print_fail "Flutter Coverage: ${FLUTTER_COVERAGE}% (<80%)"
                     fi

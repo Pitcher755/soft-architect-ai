@@ -10,7 +10,7 @@ from httpx import ASGITransport, AsyncClient
 
 from app.api.dependencies import get_rag_orchestrator
 from app.core.exceptions import LLMConnectionError, RAGRetrievalError
-from app.domain.schemas.chat import ChatResponse
+from app.domain.schemas.chat_schema import ChatResponse
 from app.main import app
 
 
@@ -33,7 +33,7 @@ class TestChatEndpoint:
         self,
         mock_orchestrator_success: AsyncMock,
     ) -> None:
-        """Valid request: Should return 200 OK with ChatResponse."""
+        """Valid request: /chat/message is deprecated, should return 400."""
         app.dependency_overrides[get_rag_orchestrator] = (
             lambda: mock_orchestrator_success
         )
@@ -49,11 +49,11 @@ class TestChatEndpoint:
                 },
             )
 
-        assert response.status_code == 200
+        # Endpoint is deprecated in Operación Raíles
+        assert response.status_code == 400
         data = response.json()
-        assert data["ai_response"] == "Mocked AI response"
-        assert data["template_used"] == "10-CONTEXT"
-        assert data["sources"] == ["test.md"]
+        assert "deprecated" in data["detail"].lower()
+        assert "/chat/stream" in data["detail"]
 
         app.dependency_overrides.clear()
 
@@ -77,7 +77,7 @@ class TestChatEndpoint:
 
     @pytest.mark.asyncio
     async def test_chat_endpoint_llm_failure(self) -> None:
-        """LLM failure: Should return 503 Service Unavailable."""
+        """LLM failure: Endpoint deprecated, returns 400 regardless of orchestrator state."""
         mock = AsyncMock()
         mock.process_message.side_effect = LLMConnectionError("Ollama is down")
 
@@ -94,15 +94,16 @@ class TestChatEndpoint:
                 },
             )
 
-        assert response.status_code == 503
+        # Endpoint is deprecated, returns 400 before orchestrator is called
+        assert response.status_code == 400
         data = response.json()
-        assert "AI Engine" in data["detail"] or "unreachable" in data["detail"].lower()
+        assert "deprecated" in data["detail"].lower()
 
         app.dependency_overrides.clear()
 
     @pytest.mark.asyncio
     async def test_chat_endpoint_rag_failure(self) -> None:
-        """RAG failure: Should return 500 Internal Server Error."""
+        """RAG failure: Endpoint deprecated, returns 400 regardless of orchestrator state."""
         mock = AsyncMock()
         mock.process_message.side_effect = RAGRetrievalError("Vector store offline")
 
@@ -119,8 +120,9 @@ class TestChatEndpoint:
                 },
             )
 
-        assert response.status_code == 500
+        # Endpoint is deprecated, returns 400 before orchestrator is called
+        assert response.status_code == 400
         data = response.json()
-        assert "error" in data["detail"].lower() or "failed" in data["detail"].lower()
+        assert "deprecated" in data["detail"].lower()
 
         app.dependency_overrides.clear()
