@@ -72,8 +72,8 @@ class AppColors {
   // DIRECTORY PHASE COLORS
   // ==========================================================================
 
-  /// 00-ROOT: Root directory color
-  static const Color dirRoot = Color(0xFF94A3B8); // Slate
+  /// 00-ROOT: Root directory color - Achievement Gold (100% completion)
+  static const Color dirRoot = Color(0xFFFFD700); // Gold
 
   /// 10-CONTEXT: Context phase directory
   static const Color dirContext = phase1Context;
