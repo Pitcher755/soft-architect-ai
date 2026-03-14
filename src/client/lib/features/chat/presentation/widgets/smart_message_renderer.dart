@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:markdown/markdown.dart' as md;
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../shared/presentation/widgets/markdown_builders/mermaid_builder.dart';
+import '../../../../shared/presentation/widgets/markdown_builders/code_element_builder.dart';
 
 // ════════════════════════════════════════════════════════════════════════════
 // 1. SMART MESSAGE RENDERER
@@ -188,7 +189,8 @@ class SmartMessageRenderer extends StatelessWidget {
     return MarkdownBody(
       data: content,
       selectable: true,
-      builders: {'code': MermaidBuilder()},
+      extensionSet: md.ExtensionSet.gitHubFlavored,
+      builders: {'code': CodeElementBuilder()},
       styleSheet: MarkdownStyleSheet(
         p: baseStyle,
         listBullet: baseStyle,
@@ -378,10 +380,9 @@ class _DocumentCardState extends State<_DocumentCard> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    // 🎯 MEJORA: Usamos MarkdownBody SIEMPRE, incluso para JSON.
-    // Si el contenido tiene ```json, MarkdownBody lo indentará
-    // y coloreará automáticamente.
-    // Si no los tiene, lo envolveremos visualmente.
+    // 🎯 AUTO-WRAP JSON: If content is pure JSON (starts with { or [)
+    // and doesn't have triple backticks, wrap it in a JSON code block.
+    // This enables syntax highlighting via CodeElementBuilder.
     var displayData = widget.content.trim();
     if (!displayData.contains('```') &&
         (displayData.startsWith('{') || displayData.startsWith('['))) {
@@ -396,6 +397,8 @@ class _DocumentCardState extends State<_DocumentCard> {
         child: MarkdownBody(
           data: displayData,
           selectable: true,
+          extensionSet: md.ExtensionSet.gitHubFlavored,
+          builders: {'code': CodeElementBuilder()},
           styleSheet: MarkdownStyleSheet(
             p: TextStyle(
               fontSize: 15,
