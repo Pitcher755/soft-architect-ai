@@ -335,7 +335,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                     const SizedBox(height: 16),
 
                     // Mensaje final
-                    Text(
+                    SelectableText(
                       'No es necesario rellenarlo todo, pero cuanto más '
                       'contexto des, mejor será la arquitectura.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -371,7 +371,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                SelectableText(
                   title,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
@@ -379,7 +379,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
+                SelectableText(
                   example,
                   style: TextStyle(
                     fontSize: 12,
