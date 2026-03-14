@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../../settings/presentation/providers/settings_providers.dart';
 import '../../domain/entities/chat_message.dart';
 import '../notifiers/chat_notifier.dart';
@@ -250,23 +251,144 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
         : 'assets/images/Logo2.png';
 
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Renderizamos el logo
-          Image.asset(imagePath, width: 80, height: 80),
-          const SizedBox(height: 24),
-          Text(title, style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 8),
-          Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(fontSize: 14),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Renderizamos el logo
+            Image.asset(imagePath, width: 80, height: 80),
+            const SizedBox(height: 24),
+            Text(title, style: Theme.of(context).textTheme.headlineSmall),
+            const SizedBox(height: 8),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontSize: 14),
+            ),
+
+            // 💡 Tarjeta de Sugerencia (solo para proyectos normales)
+            if (!widget.isGuideProject) ...[
+              const SizedBox(height: 32),
+              Container(
+                constraints: const BoxConstraints(maxWidth: 600),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceLight,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.border,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header de la tarjeta
+                    Row(
+                      children: [
+                        const Text(
+                          '💡',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Estructura recomendada para tu Prompt:',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primary,
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Lista de sugerencias
+                    _buildPromptSuggestionItem(
+                      '📝',
+                      'Nombre del proyecto',
+                      'Ej: "Sistema de Gestión de Inventario"',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildPromptSuggestionItem(
+                      '👥',
+                      'Público objetivo',
+                      'Ej: "Pequeñas empresas retail"',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildPromptSuggestionItem(
+                      '💡',
+                      'Concepto principal',
+                      'Ej: "Control de stock en tiempo real"',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildPromptSuggestionItem(
+                      '⚡',
+                      'Funcionalidades clave',
+                      'Ej: "Alertas de stock bajo, reportes automáticos"',
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Mensaje final
+                    Text(
+                      'No es necesario rellenarlo todo, pero cuanto más '
+                      'contexto des, mejor será la arquitectura.',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: AppColors.textSecondary,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
+
+  /// Builds a single prompt suggestion item with icon, title, and example.
+  Widget _buildPromptSuggestionItem(
+    String emoji,
+    String title,
+    String example,
+  ) =>
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            emoji,
+            style: const TextStyle(fontSize: 18),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textMain,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  example,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary.withValues(alpha: 0.7),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
 }
