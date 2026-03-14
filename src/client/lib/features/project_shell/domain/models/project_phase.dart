@@ -111,16 +111,6 @@ class ProjectPhase {
     order: 4, // Phase 5 in generation order
   );
 
-  /// Meta phase - project metadata and documentation
-  static const meta = ProjectPhase(
-    id: 'META',
-    name: 'Meta',
-    icon: Icons.info_outline,
-    color: AppColors.dirMeta,
-    fileCount: 1,
-    order: 6,
-  );
-
   // ────────────────────────────────────────────────────────────
   // PHASE COLLECTIONS
   // ────────────────────────────────────────────────────────────
@@ -133,8 +123,7 @@ class ProjectPhase {
     architecture, // Phase 3: How to build (TECH_STACK, DATA_MODEL, STRUCTURE, API, THREATS, ADRS)
     uiUx, // Phase 4: User experience (DESIGN_SYSTEM, WIREFRAMES, ACCESSIBILITY)
     planning, // Phase 5: Operations (ROADMAP, TESTING, CI_CD, DEPLOYMENT)
-    root, // Phase 6: Synthesis (RULES, CONTRIBUTING, AGENTS, README) - LAST with full context
-    meta, // Phase 7: Metadata (unchanged)
+    root, // Phase 6: Synthesis (RULES.md, CONTRIBUTING.md, AGENTS.md, README.md) - LAST with full context
   ];
 
   /// Total number of expected files across all phases

@@ -1,6 +1,30 @@
+/// Constants defining the project structure and phase definitions.
+///
+/// This class contains the expected document count and phase definitions
+/// for the project workflow. Each phase has an index, name, folders,
+/// and mandatory/optional documents.
+///
+/// Total workflow: 6 phases, 24 documents.
 class ProjectStructureConstants {
-  static const int totalExpectedDocs = 25;
+  /// Total number of expected documents across all phases (24 docs).
+  static const int totalExpectedDocs = 24;
 
+  /// Phase definitions in generation order.
+  ///
+  /// Each phase contains:
+  /// - index: Phase order (0-5)
+  /// - name: Display name
+  /// - folders: Directory paths where documents are located
+  /// - mandatoryDocs: Required documents for phase completion
+  /// - optionalDocs: Optional documents that count toward progress
+  ///
+  /// Phases:
+  /// - Phase 0 (Root): 4 docs in project root
+  /// - Phase 1 (Context): 3 docs in context/10-CONTEXT/
+  /// - Phase 2 (Requirements): 4 docs in context/20-REQUIREMENTS/
+  /// - Phase 3 (Architecture): 6 docs in context/30-ARCHITECTURE/
+  /// - Phase 4 (UI/UX): 3 docs in context/35-UX_UI/
+  /// - Phase 5 (Planning): 4 docs in context/40-PLANNING/
   static const List<Map<String, Object>> phaseDefinitions = [
     {
       'index': 0,
@@ -66,12 +90,6 @@ class ProjectStructureConstants {
         'ROADMAP_PHASES.md',
         'TESTING_STRATEGY.md',
       ],
-    },
-    {
-      'index': 6,
-      'name': 'Meta',
-      'folders': ['context/99-META'],
-      'mandatoryDocs': ['CONTEXT_GENERATOR_PROMPT.md'],
     },
   ];
 }

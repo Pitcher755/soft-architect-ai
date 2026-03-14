@@ -56,8 +56,25 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
 
   // Cargar contenido directamente desde el archivo físico
   Future<void> _loadFileContent() async {
+    // Defensive check: widget.filename must be a file, not a directory
+    if (widget.filename == null) {
+      return;
+    }
+
     try {
       final file = File(widget.filename!);
+
+      // Extra safety: Verify it's not a directory before reading
+      if (FileSystemEntity.isDirectorySync(widget.filename!)) {
+        // Skip reading directories, use widget.content fallback
+        if (mounted && !_isEditing) {
+          setState(() {
+            _textController.text = widget.content ?? '';
+          });
+        }
+        return;
+      }
+
       final content = await file.readAsString();
       if (mounted && !_isEditing) {
         setState(() {
@@ -99,6 +116,9 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
 
       // 3. Escribir contenido directamente con dart:io
       await file.writeAsString(_textController.text, flush: true);
+
+      // 3.1 ✅ TRIGGER AUTO-REFRESH: Notify file tree to reload
+      ref.read(fileSystemNotifierProvider.notifier).refresh();
 
       // 4. Actualizar progreso del proyecto
       try {

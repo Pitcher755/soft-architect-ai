@@ -38,8 +38,8 @@ void main() {
 
       final state = notifier.state;
       expect(state, isA<AsyncData<ProjectPhaseProgress>>());
-      expect(state.value?.currentPhase, 6);
-      expect(state.value?.docsCompleted, 25);
+      expect(state.value?.currentPhase, 5);
+      expect(state.value?.docsCompleted, 24);
       expect(state.value?.progress, 1);
     });
 

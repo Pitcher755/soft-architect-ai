@@ -880,6 +880,100 @@ void main() {
       expect(state.hasError, true);
       expect(state.errorMessage, contains('No proposal'));
     });
+
+    test('should preserve internal Mermaid diagrams when validating', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      // LLM wraps response with outer markdown fence and includes Mermaid
+      fakeRepository.generatedTokens = [
+        '```markdown\n',
+        '# Architecture\n\n',
+        '```mermaid\n',
+        'graph TD;\n',
+        '  A-->B;\n',
+        '```\n',
+        '```',
+      ];
+
+      await notifier.sendMessageStream('Generate architecture');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      await notifier.validateProposal();
+
+      final savedContent = fakeFileSystemService.lastSavedContent;
+      expect(savedContent, isNotNull);
+      expect(savedContent, contains('```mermaid'));
+      expect(savedContent, contains('graph TD;'));
+      expect(savedContent, isNot(contains('```markdown')));
+    });
+
+    test('should remove outer fence but keep nested code blocks', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = [
+        '```\n',
+        '# Guide\n\n',
+        '```python\n',
+        'def test():\n',
+        '    pass\n',
+        '```\n',
+        '```',
+      ];
+
+      await notifier.sendMessageStream('Generate guide');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      await notifier.validateProposal();
+
+      final savedContent = fakeFileSystemService.lastSavedContent;
+      expect(savedContent, contains('```python'));
+      expect(savedContent, contains('def test():'));
+    });
+
+    test('should remove redundant path labels from content', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = [
+        '# Project Manifesto\n\n',
+        '**Path:** context/PROJECT_MANIFESTO.md\n\n',
+        '## Introduction\n',
+        'Content here.',
+      ];
+
+      await notifier.sendMessageStream('Generate manifesto');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      await notifier.validateProposal();
+
+      final savedContent = fakeFileSystemService.lastSavedContent;
+      expect(savedContent, isNot(contains('**Path:**')));
+      expect(savedContent, contains('# Project Manifesto'));
+    });
+
+    test('should handle [document] control markers', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      await notifier.setProjectPath('/tmp/test_project');
+
+      fakeRepository.generatedTokens = [
+        '[thinking] Processing...\n',
+        '[document]\n',
+        '# Clean Doc\n',
+        'Content',
+      ];
+
+      await notifier.sendMessageStream('Generate doc');
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      await notifier.validateProposal();
+
+      final savedContent = fakeFileSystemService.lastSavedContent;
+      expect(savedContent, isNot(contains('[thinking]')));
+      expect(savedContent, isNot(contains('[document]')));
+      expect(savedContent, contains('# Clean Doc'));
+    });
   });
 
   group('Context Bleed Prevention & Stream Management', () {

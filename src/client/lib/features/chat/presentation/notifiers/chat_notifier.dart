@@ -386,20 +386,71 @@ class ChatNotifier extends StateNotifier<ChatState> {
   // ═══════════════════════════════════════════════════════════════════════════
   // 4. STRING UTILITIES & PATH ROUTING
   // ═══════════════════════════════════════════════════════════════════════════
-  /// Removes markdown fences, metadata tags, and duplicate path labels.
+
+  /// Cleans document content by removing outer markdown fences and metadata.
+  ///
+  /// This method performs safe markdown cleanup that preserves internal code
+  /// blocks (e.g., Mermaid diagrams) while removing:
+  /// 1. Control markers like `[document]`
+  /// 2. JSON extraction for USER_STORIES_MASTER documents
+  /// 3. Outer markdown fence (``` wrapper) if present
+  /// 4. Redundant path labels (Path:, File:, etc.)
+  ///
+  /// **Safety:** Unlike aggressive `replaceAll`, this only removes the
+  /// outermost code fence wrapper, preserving all internal code blocks.
+  ///
+  /// Example:
+  /// ```dart
+  /// // Input (LLM wrapped response):
+  /// ```markdown
+  /// # Architecture
+  /// ```mermaid
+  /// graph TD;
+  ///   A-->B;
+  /// ```
+  /// ```
+  ///
+  /// // Output (cleaned, Mermaid preserved):
+  /// # Architecture
+  /// ```mermaid
+  /// graph TD;
+  ///   A-->B;
+  /// ```
+  /// ```
   String _cleanDocumentContent(String rawContent) {
-    var clean = rawContent;
+    var clean = rawContent.trim();
+
+    // 1. Remove control markers
     if (clean.contains('[document]')) {
-      clean = clean.split('[document]').last;
+      clean = clean.split('[document]').last.trim();
     }
 
-    // 🎯 LIMPIEZA ROBUSTA: Regex para eliminar cualquier apertura/cierre de bloques de código
-    clean = clean.replaceAll(RegExp(r'```[a-zA-Z]*\n?'), '');
-    clean = clean.replaceAll('```', '');
+    // 2. Extract pure JSON for USER_STORIES_MASTER
+    final currentDocType = _getDocTypeForIndex(state.currentDocIndex);
+    if (currentDocType == 'USER_STORIES_MASTER') {
+      final jsonRegex = RegExp(r'(\{[\s\S]*\}|\[[\s\S]*\])');
+      final match = jsonRegex.stringMatch(clean);
+      if (match != null) {
+        return match.trim();
+      }
+    }
 
-    // Limpieza de etiquetas de ruta duplicadas
+    // 3. SAFE Markdown cleanup (only removes outer wrapper)
+    if (clean.startsWith('```')) {
+      final lines = clean.split('\n');
+      if (lines.length > 1 &&
+          lines.first.startsWith('```') &&
+          lines.last.trim() == '```') {
+        lines
+          ..removeAt(0) // Remove first line
+          ..removeLast(); // Remove last line
+        clean = lines.join('\n');
+      }
+    }
+
+    // 4. Clean redundant path labels
     clean = clean.replaceAll(
-      RegExp(r'\*\*(Path|File|Ruta):\*\*.*?\n', caseSensitive: false),
+      RegExp(r'\*\*(Path|File|Archivo|Ruta):\*\*.*?\n', caseSensitive: false),
       '',
     );
 

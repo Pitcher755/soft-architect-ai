@@ -287,7 +287,7 @@ class ProjectProgressNotifier
       if (projectPath.startsWith('mock://')) {
         state = AsyncData(
           ProjectPhaseProgress(
-            currentPhase: 6,
+            currentPhase: 5,
             docsCompleted: ProjectPhase.totalFileCount,
             totalDocs: ProjectPhase.totalFileCount,
             progress: 1,

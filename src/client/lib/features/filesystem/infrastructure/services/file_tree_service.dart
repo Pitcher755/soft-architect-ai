@@ -7,18 +7,31 @@ import '../../domain/entities/file_node.dart';
 
 /// Infrastructure service specialized in hierarchical reading.
 ///
-/// Responsibility: Convert the physical disk structure (dart:io)
-/// into domain entities (FileNode) for the UI.
+/// Converts the physical disk structure ([dart:io]) into domain entities
+/// ([FileNode]) for the UI. Ensures all paths are absolute to prevent
+/// [PathNotFoundException] when files are accessed by widgets.
+///
+/// **Critical:** All [FileNode.path] values are guaranteed to be absolute paths,
+/// allowing direct usage with [File(path).readAsString()] without resolution.
 class FileTreeService {
   /// Builds the complete tree from a root path.
+  ///
+  /// Returns a [FileNode] tree where all `path` properties contain
+  /// **absolute paths**, ensuring widgets can directly open files.
+  ///
+  /// Example:
+  /// ```dart
+  /// final tree = await FileTreeService.buildTreeFromPath('/home/user/project');
+  /// // tree.children[0].path -> '/home/user/project/context/README.md' (absolute)
+  /// ```
   static Future<FileNode> buildTreeFromPath(String rootPath) async {
     final rootDir = Directory(rootPath);
 
-    // 1. Validación defensiva
+    // 1. Defensive validation
     if (!await rootDir.exists()) {
       return FileNode(
         id: 'error_root',
-        name: 'Ruta no encontrada',
+        name: 'Path not found',
         path: rootPath,
         isDirectory: true,
         children: [],
@@ -27,10 +40,10 @@ class FileTreeService {
 
     final rootName = p.basename(rootPath);
 
-    // 2. Recursión
+    // 2. Recursion with absolute path guarantee
     final node = await _buildNodeRecursive(rootDir);
 
-    // 3. Return the root with the formatted name (uppercase for project)
+    // 3. Return the root with formatted name (uppercase for project)
     return FileNode(
       id: node.id,
       name: rootName.toUpperCase(),
@@ -40,18 +53,24 @@ class FileTreeService {
     );
   }
 
+  /// Recursively builds [FileNode] tree ensuring all paths are absolute.
+  ///
+  /// Uses [FileSystemEntity.absolute] to guarantee path resolution.
   static Future<FileNode> _buildNodeRecursive(FileSystemEntity entity) async {
     final stat = await entity.stat();
     final isDirectory = stat.type == FileSystemEntityType.directory;
     final name = p.basename(entity.path);
     final children = <FileNode>[];
 
+    // ✅ CRITICAL FIX: Use absolute path to prevent PathNotFoundException
+    final absolutePath = entity.absolute.path;
+
     if (isDirectory) {
       try {
         final dir = Directory(entity.path);
         final entities = await dir.list().toList();
 
-        // Ordenamiento: Carpetas primero, luego archivos (alfabéticamente)
+        // Sort: Folders first, then files (alphabetically)
         entities.sort((a, b) {
           final aIsDir = FileSystemEntity.isDirectorySync(a.path);
           final bIsDir = FileSystemEntity.isDirectorySync(b.path);
@@ -64,20 +83,20 @@ class FileTreeService {
         });
 
         for (final child in entities) {
-          // Filtrar archivos ocultos (.git, .DS_Store, etc.)
+          // Filter hidden files (.git, .DS_Store, etc.)
           if (!p.basename(child.path).startsWith('.')) {
             children.add(await _buildNodeRecursive(child));
           }
         }
       } catch (e) {
-        // Ignorar errores de acceso
+        // Ignore access errors
       }
     }
 
     return FileNode(
-      id: entity.path, // ID único = ruta absoluta
+      id: absolutePath, // Unique ID = absolute path
       name: name,
-      path: entity.path,
+      path: absolutePath, // ✅ Absolute path for direct File() access
       isDirectory: isDirectory,
       children: children,
     );
