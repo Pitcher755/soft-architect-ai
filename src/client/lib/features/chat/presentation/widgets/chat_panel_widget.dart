@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -251,9 +252,10 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
         : 'assets/images/Logo2.png';
 
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Renderizamos el logo
@@ -334,6 +336,21 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
 
                     const SizedBox(height: 16),
 
+                    // Botón para copiar ejemplo completo
+                    Center(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _copyPromptExample(context),
+                        icon: const Icon(Icons.content_copy, size: 16),
+                        label: const Text('Copiar ejemplo de prompt'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.primary,
+                          side: const BorderSide(color: AppColors.border),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
                     // Mensaje final
                     SelectableText(
                       'No es necesario rellenarlo todo, pero cuanto más '
@@ -351,6 +368,31 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
         ),
       ),
     );
+  }
+
+  /// Copies a complete prompt example to clipboard.
+  Future<void> _copyPromptExample(BuildContext context) async {
+    const promptTemplate = '''
+📝 Nombre del proyecto: "Sistema de Gestión de Inventario"
+
+👥 Público objetivo: "Pequeñas empresas retail"
+
+💡 Concepto principal: "Control de stock en tiempo real"
+
+⚡ Funcionalidades clave: "Alertas de stock bajo, reportes automáticos"
+''';
+
+    await Clipboard.setData(const ClipboardData(text: promptTemplate));
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('✅ Ejemplo copiado al portapapeles'),
+          duration: Duration(seconds: 2),
+          backgroundColor: AppColors.success,
+        ),
+      );
+    }
   }
 
   /// Builds a single prompt suggestion item with icon, title, and example.
