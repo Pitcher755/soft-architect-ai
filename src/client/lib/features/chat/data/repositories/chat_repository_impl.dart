@@ -45,7 +45,8 @@ class ChatRepositoryImpl implements ChatRepository {
     String projectId, {
     String? docType,
     String? userName,
-    List<ChatMessage>? history, // 🎯 Recibimos el historial filtrado
+    List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   }) async* {
     final url = '$baseUrl/api/v1/chat/stream';
 
@@ -81,6 +82,8 @@ class ChatRepositoryImpl implements ChatRepository {
       'user_name': userName ?? 'Developer',
       'doc_type': docType ?? 'PROJECT_MANIFESTO',
       'metadata': {},
+      if (projectContext != null && projectContext.isNotEmpty)
+        'project_context': projectContext,
     };
     final headers = {'X-API-Key': apiKey};
 

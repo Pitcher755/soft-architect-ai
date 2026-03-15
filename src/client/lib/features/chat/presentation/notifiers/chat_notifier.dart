@@ -203,12 +203,18 @@ class ChatNotifier extends StateNotifier<ChatState> {
           )
           .toList();
 
+      // 🧠 Gather complete project context for AI injection (Task 8)
+      final projectContext = await ProjectProgressService.gatherProjectContext(
+        projectPath,
+      );
+
       final stream = repository.sendMessageStream(
         message,
         projectId,
         docType: currentDocType,
         userName: currentUserName,
         history: compatibleHistory,
+        projectContext: projectContext,
       );
 
       _activeStreamSubscription = stream.listen(
@@ -619,6 +625,7 @@ class _MockChatRepository implements ChatRepository {
     String? docType,
     String? userName,
     List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   }) async* {
     yield const TokenEvent(token: 'Mock');
     yield const DoneEvent(fullResponse: 'Mock response');

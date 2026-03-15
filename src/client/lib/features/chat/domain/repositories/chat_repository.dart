@@ -11,13 +11,24 @@ abstract class ChatRepository {
   );
 
   /// Send message and get streaming response.
-  /// Se añade el parámetro opcional [history] para enviar el contexto filtrado.
+  ///
+  /// Parameters:
+  /// - [message]: User's input message
+  /// - [projectId]: Unique project identifier
+  /// - [docType]: Current document type being generated (optional)
+  /// - [userName]: User's name for personalization (optional)
+  /// - [history]: Filtered chat history (optional, avoids 422 errors)
+  /// - [projectContext]: Complete project context (all .md/.json files) for AI injection
+  ///
+  /// The [projectContext] map contains file paths as keys and content as values,
+  /// preventing LLM amnesia by providing full project context with every request.
   Stream<ChatStreamEvent> sendMessageStream(
     String message,
     String projectId, {
     String? docType,
     String? userName,
-    List<ChatMessage>? history, // 🎯 Parámetro para evitar errores 422
+    List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   });
 
   Future<void> saveProposal(DocumentProposal proposal);

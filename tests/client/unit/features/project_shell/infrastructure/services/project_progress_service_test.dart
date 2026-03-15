@@ -445,5 +445,157 @@ void main() {
       expect(loaded, isNotNull);
       expect(loaded!.lastUpdated.isAfter(progress1.lastUpdated), isTrue);
     });
+
+    // ────────────────────────────────────────────────────────────────────────
+    // Tests for gatherProjectContext (Task 8: Context Injection)
+    // ────────────────────────────────────────────────────────────────────────
+
+    test('gatherProjectContext should collect .md files from context/', () async {
+      final contextDir = Directory(p.join(projectRoot, 'context'));
+      await contextDir.create(recursive: true);
+
+      // Create test documents
+      await File(p.join(contextDir.path, 'doc1.md')).writeAsString('# Document 1');
+      await File(p.join(contextDir.path, 'doc2.md')).writeAsString('# Document 2');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      expect(context, isNotEmpty);
+      expect(context.keys, contains('context${p.separator}doc1.md'));
+      expect(context.keys, contains('context${p.separator}doc2.md'));
+      expect(context['context${p.separator}doc1.md'], '# Document 1');
+      expect(context['context${p.separator}doc2.md'], '# Document 2');
+    });
+
+    test('gatherProjectContext should collect .json files from context/', () async {
+      final contextDir = Directory(p.join(projectRoot, 'context'));
+      await contextDir.create(recursive: true);
+
+      // Create test JSON documents
+      await File(p.join(contextDir.path, 'data.json'))
+          .writeAsString('{"key": "value"}');
+      await File(p.join(contextDir.path, 'config.json'))
+          .writeAsString('{"config": true}');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      expect(context, isNotEmpty);
+      expect(context.keys, contains('context${p.separator}data.json'));
+      expect(context.keys, contains('context${p.separator}config.json'));
+      expect(context['context${p.separator}data.json'], '{"key": "value"}');
+    });
+
+    test('gatherProjectContext should collect ROOT phase files', () async {
+      // Create ROOT phase documents
+      await File(p.join(projectRoot, 'RULES.md')).writeAsString('# Rules');
+      await File(p.join(projectRoot, 'CONTRIBUTING.md')).writeAsString('# Contributing');
+      await File(p.join(projectRoot, 'AGENTS.md')).writeAsString('# Agents');
+      await File(p.join(projectRoot, 'README.md')).writeAsString('# README');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      expect(context, isNotEmpty);
+      expect(context.keys, contains('RULES.md'));
+      expect(context.keys, contains('CONTRIBUTING.md'));
+      expect(context.keys, contains('AGENTS.md'));
+      expect(context.keys, contains('README.md'));
+      expect(context['RULES.md'], '# Rules');
+    });
+
+    test('gatherProjectContext should exclude README from context/', () async {
+      final contextDir = Directory(p.join(projectRoot, 'context'));
+      await contextDir.create(recursive: true);
+
+      await File(p.join(contextDir.path, 'doc1.md')).writeAsString('# Doc 1');
+      await File(p.join(contextDir.path, 'README.md')).writeAsString('# README');
+      await File(p.join(contextDir.path, 'readme.md')).writeAsString('# readme');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      // Should only contain doc1.md from context/ (README excluded)
+      // But README.md in root is included (ROOT phase)
+      expect(context.keys.where((k) => k.contains('context')), hasLength(1));
+      expect(context.keys, contains('context${p.separator}doc1.md'));
+      expect(context.keys.where((k) => k.contains('context') && k.toLowerCase().contains('readme')), isEmpty);
+    });
+
+    test('gatherProjectContext should exclude untitled files', () async {
+      final contextDir = Directory(p.join(projectRoot, 'context'));
+      await contextDir.create(recursive: true);
+
+      await File(p.join(contextDir.path, 'doc1.md')).writeAsString('# Doc 1');
+      await File(p.join(contextDir.path, 'untitled.md')).writeAsString('# Untitled');
+      await File(p.join(contextDir.path, 'Untitled-1.md')).writeAsString('# Untitled 1');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      expect(context.keys.where((k) => k.contains('context')), hasLength(1));
+      expect(context.keys, contains('context${p.separator}doc1.md'));
+      expect(context.keys.where((k) => k.toLowerCase().contains('untitled')), isEmpty);
+    });
+
+    test('gatherProjectContext should scan context/ recursively', () async {
+      final contextDir = Directory(p.join(projectRoot, 'context'));
+      await contextDir.create(recursive: true);
+
+      // Create nested structure
+      await File(p.join(contextDir.path, 'root.md')).writeAsString('# Root');
+
+      final subDir = Directory(p.join(contextDir.path, 'sub'));
+      await subDir.create();
+      await File(p.join(subDir.path, 'nested.md')).writeAsString('# Nested');
+
+      final deepDir = Directory(p.join(subDir.path, 'deep'));
+      await deepDir.create();
+      await File(p.join(deepDir.path, 'deep.md')).writeAsString('# Deep');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      expect(context.keys.where((k) => k.contains('context')), hasLength(3));
+      expect(context.keys, contains('context${p.separator}root.md'));
+      expect(context.keys, contains('context${p.separator}sub${p.separator}nested.md'));
+      expect(context.keys, contains('context${p.separator}sub${p.separator}deep${p.separator}deep.md'));
+    });
+
+    test('gatherProjectContext should return empty map for mock projects', () async {
+      final context = await ProjectProgressService.gatherProjectContext('mock://guide');
+
+      expect(context, isEmpty);
+    });
+
+    test('gatherProjectContext should return empty map if context/ does not exist', () async {
+      // No crear carpeta context/
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      expect(context, isEmpty);
+    });
+
+    test('gatherProjectContext should handle file read errors gracefully', () async {
+      final contextDir = Directory(p.join(projectRoot, 'context'));
+      await contextDir.create(recursive: true);
+
+      // Create a file that can be read
+      await File(p.join(contextDir.path, 'good.md')).writeAsString('# Good');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      // Should still return the good file despite potential errors
+      expect(context, isNotEmpty);
+      expect(context.keys, contains('context${p.separator}good.md'));
+    });
+
+    test('gatherProjectContext should use relative paths as keys', () async {
+      final contextDir = Directory(p.join(projectRoot, 'context', 'section'));
+      await contextDir.create(recursive: true);
+
+      await File(p.join(contextDir.path, 'doc.md')).writeAsString('# Doc');
+
+      final context = await ProjectProgressService.gatherProjectContext(projectRoot);
+
+      // Key should be relative path from project root
+      final expectedKey = 'context${p.separator}section${p.separator}doc.md';
+      expect(context.keys, contains(expectedKey));
+      expect(context[expectedKey], '# Doc');
+    });
   });
 }
