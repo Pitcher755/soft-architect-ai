@@ -235,7 +235,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
 
   /// Builds the empty state widget shown when no messages exist.
   ///
-  /// Displays different content based on [isGuideProject]:
+  /// Displays different content based on the `isGuideProject` flag:
   /// - **Guide Project**: Shows help assistant with documentation support
   /// - **Regular Project**: Shows prompting guide with suggested structure
   ///
@@ -292,9 +292,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                 decoration: BoxDecoration(
                   color: AppColors.surfaceLight,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.border,
-                  ),
+                  border: Border.all(color: AppColors.border),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,16 +300,11 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                     // Header de la tarjeta
                     Row(
                       children: [
-                        const Text(
-                          '💡',
-                          style: TextStyle(fontSize: 20),
-                        ),
+                        const Text('💡', style: TextStyle(fontSize: 20)),
                         const SizedBox(width: 8),
                         Text(
                           'Estructura recomendada para tu Prompt:',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
+                          style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primary,
@@ -368,9 +361,9 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                       'No es necesario rellenarlo todo, pero cuanto más '
                       'contexto des, mejor será la arquitectura.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontStyle: FontStyle.italic,
-                            color: AppColors.textSecondary,
-                          ),
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -412,37 +405,33 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     String emoji,
     String title,
     String example,
-  ) =>
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            emoji,
-            style: const TextStyle(fontSize: 18),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SelectableText(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textMain,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                SelectableText(
-                  example,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary.withValues(alpha: 0.7),
-                  ),
-                ),
-              ],
+  ) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(emoji, style: const TextStyle(fontSize: 18)),
+      const SizedBox(width: 12),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SelectableText(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: AppColors.textMain,
+              ),
             ),
-          ),
-        ],
-      );
+            const SizedBox(height: 4),
+            SelectableText(
+              example,
+              style: TextStyle(
+                fontSize: 12,
+                color: AppColors.textSecondary.withValues(alpha: 0.7),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }

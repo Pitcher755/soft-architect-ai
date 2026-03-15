@@ -148,6 +148,7 @@ class AppColors {
     'number': Color(0xFFD19A66), // Dark Yellow
   };
 }
+
 /*
 🏆 Dorado (actual)	0xFFFFD700	Premio, logro, victoria
 ✅ Verde Éxito	0xFF10B981	Completado, aprobado

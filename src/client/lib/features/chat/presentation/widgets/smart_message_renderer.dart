@@ -73,8 +73,9 @@ class SmartMessageRenderer extends StatelessWidget {
       return _buildMarkdown(context, decodedContent);
     }
 
-    final matches =
-        MessageParserUtils.documentBlockRegex.allMatches(decodedContent);
+    final matches = MessageParserUtils.documentBlockRegex.allMatches(
+      decodedContent,
+    );
     if (matches.isNotEmpty) {
       return _buildMixedContent(context, matches, decodedContent);
     }
@@ -86,6 +87,15 @@ class SmartMessageRenderer extends StatelessWidget {
     return _buildMarkdown(context, decodedContent);
   }
 
+  /// Builds content for rail operation documents (with **Path:** headers).
+  ///
+  /// Splits content into reasoning text and document content, then renders:
+  /// - Reasoning as markdown (optional)
+  /// - Document as [DocumentProposalCard] (handles JSON detection internally)
+  ///
+  /// Supports two formats:
+  /// - `[Razonamiento] ... [document] ...` (legacy format)
+  /// - `<reasoning text> **Path:** <path> <document>` (current format)
   Widget _buildRailMixedContent(BuildContext context, String content) {
     final elements = <Widget>[];
     var reasoningText = '';
@@ -135,6 +145,13 @@ class SmartMessageRenderer extends StatelessWidget {
     );
   }
 
+  /// Builds content with embedded `<document>...</document>` blocks.
+  ///
+  /// Extracts document blocks using regex and renders:
+  /// - Text before/after documents as markdown
+  /// - Documents as [DocumentProposalCard] instances (handles JSON internally)
+  ///
+  /// This method processes multiple document blocks in a single message.
   Widget _buildMixedContent(
     BuildContext context,
     Iterable<RegExpMatch> matches,
@@ -156,6 +173,7 @@ class SmartMessageRenderer extends StatelessWidget {
       }
 
       final documentContent = match.group(1)?.trim() ?? '';
+
       elements
         ..add(
           DocumentProposalCard(
@@ -182,6 +200,13 @@ class SmartMessageRenderer extends StatelessWidget {
     );
   }
 
+  /// Builds standard markdown content with syntax highlighting.
+  ///
+  /// Renders plain markdown text with:
+  /// - GitHub Flavored Markdown support
+  /// - Code syntax highlighting via [CodeElementBuilder]
+  /// - Theme-aware text colors
+  /// - Selectable text for copy/paste
   Widget _buildMarkdown(BuildContext context, String content) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;

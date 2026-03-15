@@ -347,9 +347,7 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
       data: content,
       padding: const EdgeInsets.all(24),
       extensionSet: md.ExtensionSet.gitHubFlavored,
-      builders: {
-        'code': CodeElementBuilder(),
-      },
+      builders: {'code': CodeElementBuilder()},
       styleSheet: MarkdownStyleSheet.fromTheme(safeTheme).copyWith(
         p: const TextStyle(color: Color(0xFFC9D1D9), fontSize: 14, height: 1.6),
         h1: const TextStyle(

@@ -29,29 +29,42 @@ class ProjectProgressService {
     }
 
     try {
-      final contextDir = Directory(p.join(projectPath, 'context'));
-      if (!contextDir.existsSync()) {
-        return 0;
-      }
-
       var count = 0;
-      await for (final entity in contextDir.list(
-        recursive: true,
-        followLinks: false,
-      )) {
-        if (entity is File) {
-          final path = entity.path.toLowerCase();
-          // 🎯 FIX: Ahora permitimos tanto .md como .json
-          // para que el paso 5 cuente
-          if (path.endsWith('.md') || path.endsWith('.json')) {
-            final filename = p.basename(path);
-            if (!filename.contains('readme') &&
-                !filename.contains('untitled')) {
-              count++;
+
+      // 1️⃣ Count documents in context/ folder (20 documents: phases 1-5)
+      final contextDir = Directory(p.join(projectPath, 'context'));
+      if (contextDir.existsSync()) {
+        await for (final entity in contextDir.list(
+          recursive: true,
+          followLinks: false,
+        )) {
+          if (entity is File) {
+            final path = entity.path.toLowerCase();
+            if (path.endsWith('.md') || path.endsWith('.json')) {
+              final filename = p.basename(path);
+              if (!filename.contains('readme') &&
+                  !filename.contains('untitled')) {
+                count++;
+              }
             }
           }
         }
       }
+
+      // 2️⃣ Count ROOT phase documents in project root (4 documents: phase 6)
+      final rootDocs = [
+        'RULES.md',
+        'CONTRIBUTING.md',
+        'AGENTS.md',
+        'README.md',
+      ];
+      for (final docName in rootDocs) {
+        final file = File(p.join(projectPath, docName));
+        if (file.existsSync()) {
+          count++;
+        }
+      }
+
       return count;
     } on FileSystemException {
       return 0;

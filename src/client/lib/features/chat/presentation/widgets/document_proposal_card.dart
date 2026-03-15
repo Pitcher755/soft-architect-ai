@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_highlighter/flutter_highlighter.dart';
+import 'package:flutter_highlighter/themes/atom-one-dark.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:markdown/markdown.dart' as md;
 
@@ -174,68 +176,86 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
   }
 
   Widget _buildHeader(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          border: const Border(bottom: BorderSide(color: AppColors.border)),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      border: const Border(bottom: BorderSide(color: AppColors.border)),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Row(
           children: [
-            const Row(
-              children: [
-                Icon(
-                  Icons.description_outlined,
-                  color: Colors.blueAccent,
-                  size: 16,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  'PROPUESTA DE DOCUMENTO',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                ),
-              ],
+            Icon(
+              Icons.description_outlined,
+              color: Colors.blueAccent,
+              size: 16,
             ),
-            InkWell(
-              onTap: () =>
-                  Clipboard.setData(ClipboardData(text: widget.content)),
-              child: const Row(
-                children: [
-                  Icon(Icons.copy, size: 14, color: AppColors.textSecondary),
-                  SizedBox(width: 4),
-                  Text(
-                    'Copiar',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 11,
-                    ),
-                  ),
-                ],
-              ),
+            SizedBox(width: 8),
+            Text(
+              'PROPUESTA DE DOCUMENTO',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ],
         ),
-      );
+        InkWell(
+          onTap: () => Clipboard.setData(ClipboardData(text: widget.content)),
+          child: const Row(
+            children: [
+              Icon(Icons.copy, size: 14, color: AppColors.textSecondary),
+              SizedBox(width: 4),
+              Text(
+                'Copiar',
+                style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 
+  /// Builds the content view based on document type.
+  ///
+  /// Detects JSON documents (either with `**Path:** ...json` header or
+  /// pure JSON) and renders them with syntax highlighting using
+  /// [HighlightView]. Other content types use standard Markdown rendering.
   Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    // Auto-wrap pure JSON in code block for syntax highlighting
-    var displayData = widget.content.trim();
-    if (!displayData.contains('```') &&
-        (displayData.startsWith('{') || displayData.startsWith('['))) {
-      displayData = '```json\n$displayData\n```';
+    // Check if this is a JSON document with Path header
+    final pathMatch = RegExp(
+      r'\*\*Path:\*\*\s+(.+?\.json)',
+      caseSensitive: false,
+    ).firstMatch(widget.content);
+
+    if (pathMatch != null) {
+      // Extract JSON content after the path header
+      final pathEndIndex = pathMatch.end;
+      final jsonContent = widget.content.substring(pathEndIndex).trim();
+
+      if (jsonContent.startsWith('{') || jsonContent.startsWith('[')) {
+        return _buildJsonView(jsonContent);
+      }
     }
 
+    // Fallback: Check if pure JSON without path header
+    final trimmedContent = widget.content.trim();
+    if ((trimmedContent.startsWith('{') || trimmedContent.startsWith('[')) &&
+        !trimmedContent.contains('```')) {
+      return _buildJsonView(trimmedContent);
+    }
+
+    // Standard markdown rendering for non-JSON content
     return Container(
       width: double.infinity,
       color: AppColors.mainBg,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: MarkdownBody(
-          data: displayData,
+          data: widget.content,
           selectable: true,
           extensionSet: md.ExtensionSet.gitHubFlavored,
           builders: {'code': CodeElementBuilder()},
@@ -263,53 +283,82 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
     );
   }
 
-  Widget _buildActions(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton.icon(
-              onPressed: _isValidating || _isRefining ? null : _handleReject,
-              icon: const Icon(Icons.close, size: 16),
-              label: const Text('Rechazar'),
-              style: TextButton.styleFrom(foregroundColor: AppColors.error),
+  /// Builds a specialized view for JSON content with syntax highlighting.
+  ///
+  /// Uses [HighlightView] from flutter_highlighter with Atom One Dark theme
+  /// for consistent, readable JSON formatting. This matches the rendering
+  /// used in the markdown preview widget.
+  Widget _buildJsonView(String jsonContent) => Container(
+    width: double.infinity,
+    color: AppColors.mainBg,
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: SelectionArea(
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: const Color(0xFF161B22),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: const Color(0xFF30363D)),
+          ),
+          padding: const EdgeInsets.all(16),
+          child: HighlightView(
+            jsonContent,
+            language: 'json',
+            theme: atomOneDarkTheme,
+            textStyle: const TextStyle(
+              fontFamily: 'JetBrains Mono',
+              fontSize: 13,
+              height: 1.5,
             ),
-            Row(
-              children: [
-                OutlinedButton.icon(
-                  onPressed:
-                      _isValidating || _isRefining ? null : _handleRefine,
-                  icon: const Icon(Icons.edit, size: 16),
-                  label: Text(_isRefining ? 'Refinando...' : 'Refinar'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.textMain,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                FilledButton.icon(
-                  onPressed: _isValidating || _isRefining
-                      ? null
-                      : _handleValidation,
-                  icon: _isValidating
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Icon(Icons.check_circle, size: 16),
-                  label: Text(
-                    _isValidating ? 'Validando...' : 'Validar y Guardar',
-                  ),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.success,
-                  ),
-                ),
-              ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+  Widget _buildActions(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(12),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton.icon(
+          onPressed: _isValidating || _isRefining ? null : _handleReject,
+          icon: const Icon(Icons.close, size: 16),
+          label: const Text('Rechazar'),
+          style: TextButton.styleFrom(foregroundColor: AppColors.error),
+        ),
+        Row(
+          children: [
+            OutlinedButton.icon(
+              onPressed: _isValidating || _isRefining ? null : _handleRefine,
+              icon: const Icon(Icons.edit, size: 16),
+              label: Text(_isRefining ? 'Refinando...' : 'Refinar'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.textMain,
+              ),
+            ),
+            const SizedBox(width: 12),
+            FilledButton.icon(
+              onPressed: _isValidating || _isRefining
+                  ? null
+                  : _handleValidation,
+              icon: _isValidating
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(Icons.check_circle, size: 16),
+              label: Text(_isValidating ? 'Validando...' : 'Validar y Guardar'),
+              style: FilledButton.styleFrom(backgroundColor: AppColors.success),
             ),
           ],
         ),
-      );
+      ],
+    ),
+  );
 }
