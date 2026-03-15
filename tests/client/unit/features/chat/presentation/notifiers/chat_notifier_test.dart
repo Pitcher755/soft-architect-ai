@@ -258,6 +258,10 @@ void main() {
 
     test('should advance document index after validation', () async {
       final notifier = container.read(chatNotifierProvider.notifier);
+
+      // Reset to ensure clean state
+      notifier.resetForNewProject();
+
       fakeRepository.generatedTokens = ['Document', ' ', 'One'];
 
       // Set project path
@@ -1145,6 +1149,58 @@ void main() {
           .toList();
       expect(userMessages.length, 2);
       expect(userMessages.last.content, 'Second message');
+    });
+  });
+
+  group('ChatNotifier - Workflow Completion Epic Message', () {
+    test('should display epic completion message when all 24 documents finished', () async {
+      final notifier = container.read(chatNotifierProvider.notifier);
+      notifier.resetForNewProject();
+      await notifier.setProjectPath('/tmp/test_epic_complete');
+
+      // Simulate completing all 24 documents
+      // Start from index 1 (README already considered generated)
+      for (var i = 1; i <= 24; i++) {
+        fakeRepository.generatedTokens = ['# DOC $i\n\n', 'Content of document $i'];
+        await notifier.sendMessageStream('Generate doc $i');
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+
+        // Validate the document to advance workflow
+        await notifier.validateProposal();
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+
+      // After validating document 24, the epic message should appear
+      final state = container.read(chatNotifierProvider);
+
+      // Verify that we have a system message with the epic completion
+      final systemMessages = state.messages
+          .where((m) => m.role == MessageRole.system)
+          .toList();
+
+      expect(systemMessages.isNotEmpty, true, reason: 'Should have system messages');
+
+      // Find the epic completion message
+      final epicMessage = systemMessages.firstWhere(
+        (m) => m.content.contains('🚀') &&
+               m.content.contains('Arquitectura de Contexto Finalizada'),
+        orElse: () => ChatMessage(
+          id: 'not-found',
+          role: MessageRole.system,
+          content: '',
+          timestamp: DateTime.now().toIso8601String(),
+        ),
+      );
+
+      expect(epicMessage.id, isNot('not-found'),
+        reason: 'Epic completion message should be present');
+      expect(epicMessage.content, contains('24 documentos maestros'));
+      expect(epicMessage.content, contains('🛠️ **Siguientes pasos:**'));
+      expect(epicMessage.content, contains('¡Mucha suerte con el desarrollo!'));
+
+      // Verify workflow state is complete
+      expect(state.currentDocIndex > state.totalDocs, true,
+        reason: 'Current index should exceed total docs after completion');
     });
   });
 }

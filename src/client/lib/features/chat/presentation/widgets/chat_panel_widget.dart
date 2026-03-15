@@ -233,6 +233,18 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
     return rawError;
   }
 
+  /// Builds the empty state widget shown when no messages exist.
+  ///
+  /// Displays different content based on [isGuideProject]:
+  /// - **Guide Project**: Shows help assistant with documentation support
+  /// - **Regular Project**: Shows prompting guide with suggested structure
+  ///
+  /// The prompting guide includes:
+  /// - Project name suggestion
+  /// - Target audience
+  /// - Main concept
+  /// - Key functionalities
+  /// - Copy-to-clipboard button for quick template use
   Widget _buildEmptyState() {
     // 🎯 Títulos limpios, sin emojis
     final title = widget.isGuideProject
