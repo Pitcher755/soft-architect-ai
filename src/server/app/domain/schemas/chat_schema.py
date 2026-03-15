@@ -68,6 +68,15 @@ class ChatRequest(BaseModel):
         description="Chat context history (last N messages for LLM context window)",
     )
 
+    project_context: dict[str, str] = Field(
+        default_factory=dict,
+        description=(
+            "Complete project context: all .md/.json files already generated "
+            "for this project. Key = relative file path, Value = file content. "
+            "Injected into the LLM prompt to prevent document inconsistency."
+        ),
+    )
+
     metadata: dict[str, str] | None = Field(
         default=None,
         description="Optional key-value metadata from the client.",

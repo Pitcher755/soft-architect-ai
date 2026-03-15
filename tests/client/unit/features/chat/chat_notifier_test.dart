@@ -33,6 +33,7 @@ class FakeChatRepository implements ChatRepository {
     String? docType,
     String? userName,
     List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   }) {
     final events = <ChatStreamEvent>[
       TokenEvent(token: 'Fake', isFinal: false),

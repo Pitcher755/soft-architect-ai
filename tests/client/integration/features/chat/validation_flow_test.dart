@@ -88,6 +88,7 @@ class FakeChatRepository implements ChatRepository {
     String? docType,
     String? userName,
     List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   }) {
     if (shouldFail) {
       return Stream.value(

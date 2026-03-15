@@ -73,6 +73,8 @@ async def chat_message_stream(
             "chat_history": request.history,
             "project_id": str(request.project_id),
             "user_name": request.user_name,
+            # 🧠 Task 8: inject full project context to prevent LLM amnesia
+            "project_context": request.project_context,
         }
 
         try:

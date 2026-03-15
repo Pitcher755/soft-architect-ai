@@ -17,11 +17,13 @@ abstract class ChatRepository {
   /// - [projectId]: Unique project identifier
   /// - [docType]: Current document type being generated (optional)
   /// - [userName]: User's name for personalization (optional)
-  /// - [history]: Filtered chat history (optional, avoids 422 errors)
-  /// - [projectContext]: Complete project context (all .md/.json files) for AI injection
+  /// - [history]: Previous chat messages for context (optional)
+  /// - [projectContext]: Complete project context (.md/.json files)
+  ///   for AI injection (optional)
   ///
-  /// The [projectContext] map contains file paths as keys and content as values,
-  /// preventing LLM amnesia by providing full project context with every request.
+  /// The [projectContext] map contains file paths as keys and content
+  /// as values, preventing LLM amnesia by providing full project
+  /// context with every request.
   Stream<ChatStreamEvent> sendMessageStream(
     String message,
     String projectId, {

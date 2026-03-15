@@ -2,6 +2,16 @@
 
 Optimized for Detail, Density, and Routing. Handles the sequential generation
 of architecture documents, injecting dynamic context and maintaining memory efficiency.
+
+Task 8 - Context Injection:
+    The orchestrator now accepts ``project_context`` inside the ``context`` dict.
+    This is a ``dict[str, str]`` mapping relative file paths to their content
+    (e.g. ``{"context/10-BUSINESS/MANIFEST.md": "# Project Manifest\n..."}``).
+    These documents are injected into the LLM prompt inside a
+    ``<project_documents>`` XML block, placed between the RAG context and the
+    critical rules. This ensures the LLM generates each new document consistent
+    with everything already produced for the project, eliminating the amnesia
+    problem observed from document 4 onwards.
 """
 
 import logging
@@ -11,6 +21,14 @@ from typing import Any
 from app.core.exceptions import LLMError
 from app.services.rag.template_loader import TemplateLoader
 from app.services.rag.workflow_injector import WorkflowInjector
+
+# Maximum characters per individual document included in the context block.
+# Prevents a single large file from saturating the LLM context window.
+_MAX_DOC_CHARS = 3_000
+
+# Maximum total characters for the entire project_documents block.
+# Keeps the prompt within a safe budget (approx. 10 k tokens).
+_MAX_TOTAL_CONTEXT_CHARS = 12_000
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +103,58 @@ class SequentialOrchestrator:
 
         return "\n\n".join(doc for doc in flat if doc)
 
+    def _build_project_documents_block(self, project_context: dict[str, str]) -> str:
+        """Serialize the project context map into a prompt-safe XML block.
+
+        Each file is wrapped with a path separator so the LLM can reference
+        individual documents by name.  Large documents are truncated to
+        ``_MAX_DOC_CHARS`` characters. The whole block is capped at
+        ``_MAX_TOTAL_CONTEXT_CHARS`` characters to avoid context-window overflow.
+
+        Args:
+            project_context: Mapping of relative file paths to file content.
+
+        Returns:
+            An XML-tagged string ready to be spliced into the LLM prompt,
+            or an empty string when ``project_context`` is empty.
+        """
+        if not project_context:
+            return ""
+
+        doc_lines: list[str] = []
+        total_chars = 0
+
+        for path, content in project_context.items():
+            if total_chars >= _MAX_TOTAL_CONTEXT_CHARS:
+                logger.debug(
+                    "project_context budget exhausted after %d chars – "
+                    "remaining files omitted.",
+                    total_chars,
+                )
+                break
+
+            # Truncate individual documents that are too large.
+            if len(content) > _MAX_DOC_CHARS:
+                content = content[:_MAX_DOC_CHARS] + "\n... [truncated]"
+
+            entry = f"--- {path} ---\n{content}"
+            doc_lines.append(entry)
+            total_chars += len(entry)
+
+        if not doc_lines:
+            return ""
+
+        joined = "\n\n".join(doc_lines)
+        return (
+            "<project_documents>\n"
+            "The following documents have ALREADY been generated for this specific "
+            "project. Your new document MUST be fully consistent with them: "
+            "same project name, same tech stack, same domain vocabulary, "
+            "same language (Spanish/English) and the same overall vision.\n\n"
+            f"{joined}\n"
+            "</project_documents>"
+        )
+
     def _build_prompt(
         self,
         injection_block: str,
@@ -93,7 +163,31 @@ class SequentialOrchestrator:
         context: dict[str, Any],
         doc_type: str,
     ) -> str:
-        """Construct the final deterministic prompt using XML tags for isolation."""
+        """Construct the final deterministic prompt using XML tags for isolation.
+
+        Prompt structure (ordered to maximise LLM accuracy):
+
+        1. Workflow injection block  – template + example for the target doc type.
+        2. RAG context               – relevant knowledge-base chunks.
+        3. project_documents         – all docs already generated for this project
+                                       (Task 8: prevents LLM amnesia).
+        4. Critical rules            – strict output format instructions.
+        5. Conversation history      – last 4 messages (truncated).
+        6. User input                – the current user request.
+
+        Args:
+            injection_block: Pre-rendered template/example block from WorkflowInjector.
+            user_input: Raw (sanitized) user message.
+            rag_context: Retrieved knowledge-base text wrapped in XML tags.
+            context: Runtime context dict provided by the API endpoint.
+                Expected keys:
+                    - ``chat_history``     – list[dict[str, str]]
+                    - ``project_context``  – dict[str, str]  (Task 8)
+            doc_type: Identifier of the document being generated.
+
+        Returns:
+            The fully assembled prompt string.
+        """
         raw_history = context.get("chat_history", [])
 
         # Memory optimization: filter history to avoid context window saturation
@@ -112,7 +206,10 @@ class SequentialOrchestrator:
                     or "Path:" in content
                     or "[document]" in content
                 ):
-                    content = "[Previous document generated and saved successfully. Omitted from memory to save context]"
+                    content = (
+                        "[Previous document generated and saved successfully."
+                        " Omitted from memory to save context]"
+                    )
                 elif len(content) > 1000:
                     content = content[:1000] + "... [text truncated]"
 
@@ -120,24 +217,53 @@ class SequentialOrchestrator:
 
             history_text = "\n".join(history_lines)
 
+        # ── Task 8: build the project_documents block ────────────────────────
+        raw_project_context = context.get("project_context", {})
+        project_docs_block = self._build_project_documents_block(
+            raw_project_context if isinstance(raw_project_context, dict) else {}
+        )
+        if project_docs_block:
+            logger.debug(
+                "Injecting project_context: %d files into prompt.",
+                len(raw_project_context),
+            )
+        # ─────────────────────────────────────────────────────────────────────
+
         critical_rules = (
             "\n\n<critical_rules>\n"
-            f"1. YOUR ONLY TASK is to output the final, populated [{doc_type}] document for the user's project.\n"
-            "2. NEVER output the `<template>` or `<example>` blocks in your response. They are just reference material for you.\n"
-            "3. Start your response EXACTLY with this line: **Path:** context/YOUR_PATH_HERE\n"
-            "4. Immediately after the Path line, output the raw markdown content of the generated document.\n"
-            "5. Replace all {{PLACEHOLDERS}} with specific, realistic data based on the user's project idea.\n"
-            "6. You MUST respond in the same language the user is speaking (e.g., if the user speaks Spanish, translate all headers and content to Spanish).\n"
-            "7. DO NOT wrap your entire response in ```markdown tags. Just output the text directly.\n"
+            f"1. YOUR ONLY TASK is to output the final, populated [{doc_type}]"
+            " document for the user's project.\n"
+            "2. NEVER output the `<template>` or `<example>` blocks in your"
+            " response. They are just reference material for you.\n"
+            "3. Start your response EXACTLY with this line:"
+            " **Path:** context/YOUR_PATH_HERE\n"
+            "4. Immediately after the Path line, output the raw markdown"
+            " content of the generated document.\n"
+            "5. Replace all {{PLACEHOLDERS}} with specific, realistic data"
+            " based on the user's project idea.\n"
+            "6. You MUST respond in the same language the user is speaking"
+            " (e.g., if the user speaks Spanish, translate all headers and"
+            " content to Spanish).\n"
+            "7. DO NOT wrap your entire response in ```markdown tags."
+            " Just output the text directly.\n"
+            "8. CRITICAL: If a <project_documents> block is present, your"
+            " document MUST be 100%% consistent with those existing documents."
+            " Use the exact same project name, technology stack, domain terms"
+            " and writing language as shown there.\n"
             "</critical_rules>\n"
         )
 
-        sections = []
+        sections: list[str] = []
         if injection_block:
             sections.append(injection_block)
 
         if rag_context:
             sections.append(rag_context)
+
+        # Inject project documents BEFORE critical rules so the LLM reads the
+        # existing work before receiving output formatting instructions.
+        if project_docs_block:
+            sections.append(project_docs_block)
 
         sections.append(critical_rules)
 
