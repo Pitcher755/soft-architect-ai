@@ -1,15 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:markdown/markdown.dart' as md;
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../shared/presentation/widgets/markdown_builders/mermaid_builder.dart';
+import '../../../../shared/presentation/widgets/markdown_builders/code_element_builder.dart';
+import 'document_proposal_card.dart';
+import 'message_parser_utils.dart';
 
-// ════════════════════════════════════════════════════════════════════════════
-// 1. SMART MESSAGE RENDERER
-// ════════════════════════════════════════════════════════════════════════════
-
+/// Smart renderer for chat messages with adaptive formatting.
+///
+/// Automatically detects and renders:
+/// - **User messages**: Plain markdown
+/// - **AI messages with `<document>` blocks**: Extracts and renders as
+///   interactive [DocumentProposalCard]
+/// - **Rail operation documents**: Splits reasoning from document content
+/// - **Standard AI messages**: Plain markdown with code highlighting
+///
+/// ## Architecture (SOLID - Single Responsibility)
+///
+/// This class follows SRP by delegating:
+/// - **Parsing logic** → [MessageParserUtils]
+/// - **Document cards** → [DocumentProposalCard]
+/// - **Rendering** → This class (routing only)
+///
+/// ## Usage
+///
+/// ```dart
+/// SmartMessageRenderer(
+///   rawContent: message.content,
+///   isUser: message.role == 'user',
+///   onSaveDocument: () async {
+///     await saveToFile(extractedDocument);
+///   },
+///   onSendChatMessage: (refinementPrompt) async {
+///     await chatNotifier.sendMessage(refinementPrompt);
+///   },
+/// )
+/// ```
 class SmartMessageRenderer extends StatelessWidget {
+  /// Creates a smart message renderer.
+  ///
+  /// Parameters:
+  /// - [rawContent]: The raw message content (may contain HTML entities)
+  /// - [isUser]: Whether this is a user message (vs AI message)
+  /// - [onSaveDocument]: Callback for saving extracted documents
+  /// - [onSendChatMessage]: Callback for sending refinement requests
   const SmartMessageRenderer({
     required this.rawContent,
     required this.isUser,
@@ -18,64 +53,49 @@ class SmartMessageRenderer extends StatelessWidget {
     super.key,
   });
 
+  /// The raw message content to render.
   final String rawContent;
+
+  /// Whether this message is from the user (vs AI).
   final bool isUser;
+
+  /// Callback invoked when user validates a document proposal.
   final Future<void> Function()? onSaveDocument;
+
+  /// Callback invoked when user requests document refinement.
   final Future<void> Function(String message)? onSendChatMessage;
 
   @override
   Widget build(BuildContext context) {
-    final decodedContent = _decodeHtmlEntities(rawContent);
+    final decodedContent = MessageParserUtils.decodeHtmlEntities(rawContent);
 
     if (isUser) {
       return _buildMarkdown(context, decodedContent);
     }
 
-    final matches = _documentBlockRegex.allMatches(decodedContent);
+    final matches = MessageParserUtils.documentBlockRegex.allMatches(
+      decodedContent,
+    );
     if (matches.isNotEmpty) {
       return _buildMixedContent(context, matches, decodedContent);
     }
 
-    if (_isRailOperationDocument(decodedContent)) {
+    if (MessageParserUtils.isRailOperationDocument(decodedContent)) {
       return _buildRailMixedContent(context, decodedContent);
     }
 
     return _buildMarkdown(context, decodedContent);
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // 2. PARSING & FORMAT DETECTION
-  // ═══════════════════════════════════════════════════════════════════════════
-
-  static final RegExp _documentBlockRegex = RegExp(
-    r'<document>\r?\n?([\s\S]*?)(?:</document>|$)',
-    caseSensitive: false,
-  );
-
-  static String _decodeHtmlEntities(String text) => text
-      .replaceAll('&amp;', '&')
-      .replaceAll('&lt;', '<')
-      .replaceAll('&gt;', '>')
-      .replaceAll('&quot;', '"')
-      .replaceAll('&#39;', "'")
-      .replaceAll('&#x27;', "'")
-      .replaceAll('&apos;', "'");
-
-  bool _isRailOperationDocument(String content) {
-    final trimmed = content.trim();
-    return content.contains('**Path:**') ||
-        content.contains('Path:') ||
-        content.contains('**File:**') ||
-        content.contains('[document]') ||
-        content.contains('```json') ||
-        content.contains('```markdown') ||
-        (trimmed.startsWith('{') && trimmed.endsWith('}'));
-  }
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // 3. UI BUILDERS
-  // ═══════════════════════════════════════════════════════════════════════════
-
+  /// Builds content for rail operation documents (with **Path:** headers).
+  ///
+  /// Splits content into reasoning text and document content, then renders:
+  /// - Reasoning as markdown (optional)
+  /// - Document as [DocumentProposalCard] (handles JSON detection internally)
+  ///
+  /// Supports two formats:
+  /// - `[Razonamiento] ... [document] ...` (legacy format)
+  /// - `<reasoning text> **Path:** <path> <document>` (current format)
   Widget _buildRailMixedContent(BuildContext context, String content) {
     final elements = <Widget>[];
     var reasoningText = '';
@@ -109,14 +129,10 @@ class SmartMessageRenderer extends StatelessWidget {
     }
 
     if (documentText.isNotEmpty) {
-      // 🎯 MODIFICACIÓN: NO limpiamos el documento aquí
-      // para mantener los bloques ```json
-      // Así el componente de Markdown puede renderizarlo
-      // con formato y colores.
       elements.add(
-        _DocumentCard(
+        DocumentProposalCard(
           key: ValueKey(documentText.hashCode),
-          content: documentText, // Pasamos el contenido bruto con sus marcas
+          content: documentText,
           onSave: onSaveDocument,
           onSendChatMessage: onSendChatMessage,
         ),
@@ -129,6 +145,13 @@ class SmartMessageRenderer extends StatelessWidget {
     );
   }
 
+  /// Builds content with embedded `<document>...</document>` blocks.
+  ///
+  /// Extracts document blocks using regex and renders:
+  /// - Text before/after documents as markdown
+  /// - Documents as [DocumentProposalCard] instances (handles JSON internally)
+  ///
+  /// This method processes multiple document blocks in a single message.
   Widget _buildMixedContent(
     BuildContext context,
     Iterable<RegExpMatch> matches,
@@ -150,9 +173,10 @@ class SmartMessageRenderer extends StatelessWidget {
       }
 
       final documentContent = match.group(1)?.trim() ?? '';
+
       elements
         ..add(
-          _DocumentCard(
+          DocumentProposalCard(
             key: ValueKey(documentContent.hashCode),
             content: documentContent,
             onSave: onSaveDocument,
@@ -176,6 +200,13 @@ class SmartMessageRenderer extends StatelessWidget {
     );
   }
 
+  /// Builds standard markdown content with syntax highlighting.
+  ///
+  /// Renders plain markdown text with:
+  /// - GitHub Flavored Markdown support
+  /// - Code syntax highlighting via [CodeElementBuilder]
+  /// - Theme-aware text colors
+  /// - Selectable text for copy/paste
   Widget _buildMarkdown(BuildContext context, String content) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -188,7 +219,8 @@ class SmartMessageRenderer extends StatelessWidget {
     return MarkdownBody(
       data: content,
       selectable: true,
-      builders: {'code': MermaidBuilder()},
+      extensionSet: md.ExtensionSet.gitHubFlavored,
+      builders: {'code': CodeElementBuilder()},
       styleSheet: MarkdownStyleSheet(
         p: baseStyle,
         listBullet: baseStyle,
@@ -206,262 +238,4 @@ class SmartMessageRenderer extends StatelessWidget {
       ),
     );
   }
-}
-
-// ════════════════════════════════════════════════════════════════════════════
-// 4. DOCUMENT CARD WIDGET
-// ════════════════════════════════════════════════════════════════════════════
-
-class _DocumentCard extends StatefulWidget {
-  const _DocumentCard({
-    required this.content,
-    this.onSave,
-    this.onSendChatMessage,
-    super.key,
-  });
-  final String content;
-  final Future<void> Function()? onSave;
-  final Future<void> Function(String message)? onSendChatMessage;
-
-  @override
-  State<_DocumentCard> createState() => _DocumentCardState();
-}
-
-class _DocumentCardState extends State<_DocumentCard> {
-  static final Set<int> _validatedDocs = {};
-  static final Set<int> _dismissedDocs = {};
-
-  bool _isValidating = false;
-  bool _isRefining = false;
-  bool _isValidatedLocally = false;
-  bool _isDismissedLocally = false;
-
-  bool get _isAlreadyValidated =>
-      _isValidatedLocally || _validatedDocs.contains(widget.content.hashCode);
-  bool get _isDismissed =>
-      _isDismissedLocally || _dismissedDocs.contains(widget.content.hashCode);
-
-  Future<void> _handleValidation() async {
-    if (_isValidating || _isAlreadyValidated) {
-      return;
-    }
-    setState(() => _isValidating = true);
-
-    if (widget.onSave != null) {
-      try {
-        await widget.onSave!();
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('✅ Documento validado y guardado con éxito'),
-              backgroundColor: Colors.green.shade600,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        }
-        _validatedDocs.add(widget.content.hashCode);
-        if (mounted) {
-          setState(() {
-            _isValidating = false;
-            _isValidatedLocally = true;
-          });
-        }
-      } catch (e) {
-        if (mounted) {
-          setState(() => _isValidating = false);
-        }
-        rethrow;
-      }
-    }
-  }
-
-  Future<void> _handleRefine() async {
-    if (_isRefining ||
-        _isAlreadyValidated ||
-        _isDismissed ||
-        widget.onSendChatMessage == null) {
-      return;
-    }
-    setState(() => _isRefining = true);
-    try {
-      await widget.onSendChatMessage!('Deseo refinar este documento: ');
-    } finally {
-      if (mounted) {
-        setState(() => _isRefining = false);
-      }
-    }
-  }
-
-  void _handleReject() {
-    setState(() {
-      _isDismissedLocally = true;
-      _dismissedDocs.add(widget.content.hashCode);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_isDismissed) {
-      return const SizedBox.shrink();
-    }
-
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.primaryDark.withValues(alpha: 0.15),
-        border: Border.all(color: AppColors.border),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.25),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildHeader(context),
-          Container(
-            constraints: const BoxConstraints(maxHeight: 600),
-            child: _buildContent(context),
-          ),
-          _buildActions(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-      border: const Border(bottom: BorderSide(color: AppColors.border)),
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Row(
-          children: [
-            Icon(
-              Icons.description_outlined,
-              color: Colors.blueAccent,
-              size: 16,
-            ),
-            SizedBox(width: 8),
-            Text(
-              'PROPUESTA DE DOCUMENTO',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-            ),
-          ],
-        ),
-        InkWell(
-          onTap: () => Clipboard.setData(ClipboardData(text: widget.content)),
-          child: const Row(
-            children: [
-              Icon(Icons.copy, size: 14, color: AppColors.textSecondary),
-              SizedBox(width: 4),
-              Text(
-                'Copiar',
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-
-  Widget _buildContent(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    // 🎯 MEJORA: Usamos MarkdownBody SIEMPRE, incluso para JSON.
-    // Si el contenido tiene ```json, MarkdownBody lo indentará
-    // y coloreará automáticamente.
-    // Si no los tiene, lo envolveremos visualmente.
-    var displayData = widget.content.trim();
-    if (!displayData.contains('```') &&
-        (displayData.startsWith('{') || displayData.startsWith('['))) {
-      displayData = '```json\n$displayData\n```';
-    }
-
-    return Container(
-      width: double.infinity,
-      color: AppColors.mainBg,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: MarkdownBody(
-          data: displayData,
-          selectable: true,
-          styleSheet: MarkdownStyleSheet(
-            p: TextStyle(
-              fontSize: 15,
-              color: isDark ? AppColors.textMain : Colors.black87,
-            ),
-            code: TextStyle(
-              fontFamily: 'monospace',
-              fontSize: 14,
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
-              color: isDark
-                  ? Colors.greenAccent.shade100
-                  : Colors.blue.shade800,
-            ),
-            codeblockPadding: const EdgeInsets.all(12),
-            codeblockDecoration: BoxDecoration(
-              color: isDark ? Colors.black26 : Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActions(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(12),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        TextButton.icon(
-          onPressed: _isValidating || _isRefining ? null : _handleReject,
-          icon: const Icon(Icons.close, size: 16),
-          label: const Text('Rechazar'),
-          style: TextButton.styleFrom(foregroundColor: AppColors.error),
-        ),
-        Row(
-          children: [
-            OutlinedButton.icon(
-              onPressed: _isValidating || _isRefining ? null : _handleRefine,
-              icon: const Icon(Icons.edit, size: 16),
-              label: Text(_isRefining ? 'Refinando...' : 'Refinar'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.textMain,
-              ),
-            ),
-            const SizedBox(width: 12),
-            FilledButton.icon(
-              onPressed: _isValidating || _isRefining
-                  ? null
-                  : _handleValidation,
-              icon: _isValidating
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Icon(Icons.check_circle, size: 16),
-              label: Text(_isValidating ? 'Validando...' : 'Validar y Guardar'),
-              style: FilledButton.styleFrom(backgroundColor: AppColors.success),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
 }

@@ -375,6 +375,21 @@ class ChatNotifier extends StateNotifier<ChatState> {
           'Por favor, genera ahora: $nextDoc',
           isHidden: true,
         );
+      } else {
+        // 🎉 Workflow completado - Mensaje épico de finalización
+        addSystemMessage(
+          '🚀 **Arquitectura de Contexto Finalizada con Éxito**\n\n'
+          'Has completado la generación de los 24 documentos maestros de tu '
+          'proyecto. El LLM ha estructurado el manifiesto, las historias de '
+          'usuario, la arquitectura técnica, el modelo de datos y las reglas '
+          'de los agentes.\n\n'
+          '🛠️ **Siguientes pasos:**\n'
+          '1. Revisa los archivos generados en el **Explorer**.\n'
+          '2. Cierra este chat y dirígete a tu IDE favorito.\n'
+          '3. Usa herramientas de IA referenciando la carpeta generada para '
+          'comenzar a programar con contexto perfecto.\n\n'
+          '¡Mucha suerte con el desarrollo!',
+        );
       }
     } on Exception catch (e) {
       state = state.copyWith(hasError: true, errorMessage: 'Error saving: $e');

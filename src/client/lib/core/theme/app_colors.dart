@@ -73,7 +73,7 @@ class AppColors {
   // ==========================================================================
 
   /// 00-ROOT: Root directory color - Achievement Gold (100% completion)
-  static const Color dirRoot = Color(0xFFFFD700); // Gold
+  static const Color dirRoot = Color(0xFF84CC16); // Gold
 
   /// 10-CONTEXT: Context phase directory
   static const Color dirContext = phase1Context;
@@ -148,3 +148,12 @@ class AppColors {
     'number': Color(0xFFD19A66), // Dark Yellow
   };
 }
+
+/*
+🏆 Dorado (actual)	0xFFFFD700	Premio, logro, victoria
+✅ Verde Éxito	0xFF10B981	Completado, aprobado
+💎 Cyan Brillante	0xFF06B6D4	Premium, tech, diamante
+🌟 Verde Lima Neón	0xFF84CC16	Energía, brillante
+🔆 Amarillo Neón	0xFFFBBF24	Igual que fase context
+🔥 Rojo Coral	0xFFFF6B6B	Energético, vibrante
+ */
