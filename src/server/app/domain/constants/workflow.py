@@ -219,6 +219,115 @@ MASTER_WORKFLOW: list[WorkflowStep] = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# Context Dependency Graph
+# ---------------------------------------------------------------------------
+# Maps each doc_type to the list of prior doc_types whose content is truly
+# needed to generate it.  The orchestrator uses this to filter project_context
+# before injecting it into the LLM prompt, avoiding context-window overflow.
+#
+# Design rationale (Dependency-Graph strategy):
+#   • Each entry lists ONLY the direct parents the doc needs to be consistent
+#     with — not every preceding document in the sequence.
+#   • PROJECT_MANIFESTO (step 1) is always included implicitly for docs that
+#     need the project "identity" (name, vision, domain).
+#   • Keeping this static means zero latency and no external service required.
+#   • Future evolution: replace filtering with semantic retrieval over a
+#     per-project ChromaDB collection once the vector-store layer is live.
+# ---------------------------------------------------------------------------
+CONTEXT_DEPENDENCIES: dict[str, list[str]] = {
+    # Phase 1: Context
+    "PROJECT_MANIFESTO": [],
+    "DOMAIN_LANGUAGE": ["PROJECT_MANIFESTO"],
+    "USER_JOURNEY_MAP": ["PROJECT_MANIFESTO", "DOMAIN_LANGUAGE"],
+    # Phase 2: Requirements
+    "REQUIREMENTS_MASTER": ["PROJECT_MANIFESTO", "USER_JOURNEY_MAP", "DOMAIN_LANGUAGE"],
+    "USER_STORIES_MASTER": [
+        "PROJECT_MANIFESTO",
+        "DOMAIN_LANGUAGE",
+        "REQUIREMENTS_MASTER",
+    ],
+    "SECURITY_PRIVACY_POLICY": ["PROJECT_MANIFESTO", "REQUIREMENTS_MASTER"],
+    "COMPLIANCE_MATRIX": ["PROJECT_MANIFESTO", "SECURITY_PRIVACY_POLICY"],
+    # Phase 3: Architecture
+    "TECH_STACK_DECISION": [
+        "PROJECT_MANIFESTO",
+        "REQUIREMENTS_MASTER",
+        "USER_JOURNEY_MAP",
+    ],
+    "DATA_MODEL_SCHEMA": [
+        "PROJECT_MANIFESTO",
+        "REQUIREMENTS_MASTER",
+        "TECH_STACK_DECISION",
+    ],
+    "API_INTERFACE_CONTRACT": [
+        "PROJECT_MANIFESTO",
+        "REQUIREMENTS_MASTER",
+        "DATA_MODEL_SCHEMA",
+    ],
+    "PROJECT_STRUCTURE_MAP": [
+        "TECH_STACK_DECISION",
+        "DATA_MODEL_SCHEMA",
+        "API_INTERFACE_CONTRACT",
+    ],
+    "SECURITY_THREAT_MODEL": [
+        "PROJECT_MANIFESTO",
+        "SECURITY_PRIVACY_POLICY",
+        "API_INTERFACE_CONTRACT",
+    ],
+    "ARCH_DECISION_RECORDS": [
+        "PROJECT_MANIFESTO",
+        "TECH_STACK_DECISION",
+        "DATA_MODEL_SCHEMA",
+        "API_INTERFACE_CONTRACT",
+    ],
+    # Phase 4: UX/UI
+    "DESIGN_SYSTEM": ["PROJECT_MANIFESTO", "USER_JOURNEY_MAP", "ARCH_DECISION_RECORDS"],
+    "UI_WIREFRAMES_FLOW": ["USER_JOURNEY_MAP", "DESIGN_SYSTEM"],
+    "ACCESSIBILITY_GUIDE": ["DESIGN_SYSTEM", "UI_WIREFRAMES_FLOW"],
+    # Phase 5: Planning
+    "ROADMAP_PHASES": [
+        "PROJECT_MANIFESTO",
+        "REQUIREMENTS_MASTER",
+        "ARCH_DECISION_RECORDS",
+    ],
+    "DEPLOYMENT_INFRASTRUCTURE": [
+        "PROJECT_MANIFESTO",
+        "TECH_STACK_DECISION",
+        "PROJECT_STRUCTURE_MAP",
+    ],
+    "CI_CD_PIPELINE": [
+        "TECH_STACK_DECISION",
+        "PROJECT_STRUCTURE_MAP",
+        "DEPLOYMENT_INFRASTRUCTURE",
+    ],
+    "TESTING_STRATEGY": [
+        "PROJECT_MANIFESTO",
+        "REQUIREMENTS_MASTER",
+        "CI_CD_PIPELINE",
+    ],
+    # Phase 6: Root / Meta  (synthesise the entire project)
+    "RULES": ["PROJECT_MANIFESTO", "TECH_STACK_DECISION", "ARCH_DECISION_RECORDS"],
+    "CONTRIBUTING": ["PROJECT_MANIFESTO", "PROJECT_STRUCTURE_MAP", "RULES"],
+    "AGENTS": ["PROJECT_MANIFESTO", "TECH_STACK_DECISION", "PROJECT_STRUCTURE_MAP"],
+    "README": [
+        "PROJECT_MANIFESTO",
+        "DOMAIN_LANGUAGE",
+        "REQUIREMENTS_MASTER",
+        "ARCH_DECISION_RECORDS",
+    ],
+}
+
+
+def get_context_dependencies(doc_type: str) -> list[str]:
+    """Return the list of prior doc_types needed to generate ``doc_type``.
+
+    Returns an empty list when the doc_type is not registered in the
+    dependency graph (e.g. PROJECT_MANIFESTO or an unknown type).
+    """
+    return CONTEXT_DEPENDENCIES.get(doc_type, [])
+
+
 def get_step_by_type(doc_type: str) -> WorkflowStep | None:
     """Return the workflow step matching the given doc_type, or None if not found."""
     return next((step for step in MASTER_WORKFLOW if step.doc_type == doc_type), None)

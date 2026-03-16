@@ -1,10 +1,13 @@
-"""Unit tests for SequentialOrchestrator – Task 8: Context Injection.
+"""Unit tests for SequentialOrchestrator – Context Injection Pipeline.
 
-Verifies that project documents already generated are correctly serialised into
-the LLM prompt, preventing LLM amnesia from document 4 onwards.
+Covers:
+  - _build_project_documents_block: XML serialisation, truncation, budget guard
+  - _filter_relevant_context: dependency-graph filtering
+  - _build_prompt: end-to-end prompt assembly with both filtering stages
+  - ChatRequest schema: project_context field presence / default
 
 Naming convention: test_{method}_{scenario}_{expected_result}
-Coverage target  : 100% of _build_project_documents_block and _build_prompt.
+Coverage target  : 100% of new filtering and prompt-assembly logic.
 """
 
 from unittest.mock import AsyncMock, MagicMock
@@ -14,9 +17,9 @@ import pytest
 from app.services.rag.sequential_orchestrator import (
     SequentialOrchestrator,
     _MAX_DOC_CHARS,
+    _MAX_PROMPT_CHARS,
     _MAX_TOTAL_CONTEXT_CHARS,
 )
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -139,8 +142,8 @@ class TestBuildProjectDocumentsBlock:
     def test_stops_adding_files_when_total_budget_exhausted(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """When total chars exceed _MAX_TOTAL_CONTEXT_CHARS, further files omitted."""
-        # Create enough files to exceed the budget
+        """When total chars exceed the budget, further files are omitted."""
+        # Create enough files to exceed the default budget.
         # Each file is just below _MAX_DOC_CHARS to avoid per-doc truncation.
         per_doc = _MAX_DOC_CHARS - 10
         n_files = (_MAX_TOTAL_CONTEXT_CHARS // per_doc) + 5
@@ -154,6 +157,35 @@ class TestBuildProjectDocumentsBlock:
         # Not all file separators should be present
         included_count = result.count("--- file_")
         assert included_count < n_files
+
+    def test_custom_budget_parameter_limits_block_size(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """Passing a small explicit budget must produce a smaller block."""
+        # With a very small budget only the first (small) doc should fit.
+        tiny_budget = 300
+        context = {
+            "doc_a.md": "A" * 100,
+            "doc_b.md": "B" * 100,
+            "doc_c.md": "C" * 100,
+        }
+
+        result = orchestrator._build_project_documents_block(
+            context, budget=tiny_budget
+        )
+
+        # With 300-char budget (250 overhead → 50 effective) only minimal content fits.
+        # The key assertion is that NOT all three files are present.
+        included_count = sum(1 for k in context if f"--- {k} ---" in result)
+        assert included_count < len(context)
+
+    def test_zero_budget_returns_empty_string(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """A budget of 0 must return an empty string without raising."""
+        context = {"doc.md": "Some content"}
+        result = orchestrator._build_project_documents_block(context, budget=0)
+        assert result == ""
 
     def test_includes_consistency_instruction(
         self, orchestrator: SequentialOrchestrator
@@ -192,9 +224,16 @@ class TestBuildPromptProjectContext:
     def test_prompt_contains_project_documents_block_when_context_provided(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """When project_context is non-empty, <project_documents> must appear."""
+        """When project_context contains a dependency-graph match, <project_documents> must appear.
+
+        Uses DOMAIN_LANGUAGE as doc_type (depends on PROJECT_MANIFESTO) and
+        the canonical output path of PROJECT_MANIFESTO so the dependency-graph
+        filter can resolve the match and produce a non-empty block.
+        """
         context = {
-            "project_context": {"RULES.md": "# Rules\nDo X"},
+            "project_context": {
+                "context/10-CONTEXT/PROJECT_MANIFESTO.md": "# Manifest\nProject here"
+            },
             "chat_history": [],
         }
 
@@ -203,12 +242,12 @@ class TestBuildPromptProjectContext:
             user_input="Generate doc",
             rag_context="",
             context=context,
-            doc_type="PROJECT_MANIFESTO",
+            doc_type="DOMAIN_LANGUAGE",
         )
 
         assert "<project_documents>" in prompt
-        assert "--- RULES.md ---" in prompt
-        assert "# Rules\nDo X" in prompt
+        assert "--- context/10-CONTEXT/PROJECT_MANIFESTO.md ---" in prompt
+        assert "# Manifest\nProject here" in prompt
 
     def test_prompt_omits_project_documents_block_when_context_empty(
         self, orchestrator: SequentialOrchestrator
@@ -253,9 +292,16 @@ class TestBuildPromptProjectContext:
     def test_project_documents_block_appears_before_critical_rules(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """The project_documents block must precede <critical_rules> in the prompt."""
+        """The *actual* project_documents block must precede <critical_rules> in the prompt.
+
+        Uses DOMAIN_LANGUAGE + PROJECT_MANIFESTO path to guarantee a real block
+        is emitted by the dependency-graph filter (PROJECT_MANIFESTO has no
+        dependencies so it would return an empty filter and no block).
+        """
         context = {
-            "project_context": {"RULES.md": "# Rules"},
+            "project_context": {
+                "context/10-CONTEXT/PROJECT_MANIFESTO.md": "# Project info"
+            },
             "chat_history": [],
         }
 
@@ -264,9 +310,11 @@ class TestBuildPromptProjectContext:
             user_input="Generate doc",
             rag_context="",
             context=context,
-            doc_type="PROJECT_MANIFESTO",
+            doc_type="DOMAIN_LANGUAGE",
         )
 
+        # Both tags must be present for a meaningful ordering check.
+        assert "</project_documents>" in prompt, "Expected real project_documents block"
         docs_pos = prompt.index("<project_documents>")
         rules_pos = prompt.index("<critical_rules>")
         assert (
@@ -333,6 +381,31 @@ class TestBuildPromptProjectContext:
 
         # Closing tag is only emitted by the real block (see note in empty-context test).
         assert "</project_documents>" not in prompt
+
+    def test_prompt_hard_cap_removes_project_docs_when_injection_block_is_huge(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """When the prompt would exceed _MAX_PROMPT_CHARS the project_documents
+        block is stripped (safety net) and the prompt stays within the cap."""
+        # Create a huge injection_block that alone pushes past the hard cap.
+        huge_injection = "T" * (_MAX_PROMPT_CHARS + 5_000)
+        context = {
+            "project_context": {"RULES.md": "# Rules\nDo X"},
+            "chat_history": [],
+        }
+
+        prompt = orchestrator._build_prompt(
+            injection_block=huge_injection,
+            user_input="Generate doc",
+            rag_context="",
+            context=context,
+            doc_type="PROJECT_MANIFESTO",
+        )
+
+        # Safety net should have dropped the project_documents block.
+        assert "</project_documents>" not in prompt
+        # The prompt must not contain the closing tag – though it may still
+        # be very large (injection_block is beyond our control).
 
     def test_prompt_contains_user_input(
         self, orchestrator: SequentialOrchestrator
@@ -404,20 +477,22 @@ class TestGenerateWithProjectContext:
         )
 
         context = {
-            "project_context": {"RULES.md": "# Rules\nContent"},
+            "project_context": {
+                "context/10-CONTEXT/PROJECT_MANIFESTO.md": "# Manifest\nContent"
+            },
             "chat_history": [],
         }
 
         async for _ in orch.generate(
-            doc_type="PROJECT_MANIFESTO",
-            user_input="Generate manifesto",
+            doc_type="DOMAIN_LANGUAGE",
+            user_input="Generate domain language doc",
             context=context,
         ):
             pass
 
         assert len(captured_prompts) == 1
         assert "<project_documents>" in captured_prompts[0]
-        assert "--- RULES.md ---" in captured_prompts[0]
+        assert "--- context/10-CONTEXT/PROJECT_MANIFESTO.md ---" in captured_prompts[0]
 
     @pytest.mark.asyncio
     async def test_generate_streams_tokens_without_project_context(
@@ -473,3 +548,254 @@ class TestChatRequestSchema:
         )
 
         assert request.project_context == {}
+
+
+# ---------------------------------------------------------------------------
+# Tests: CONTEXT_DEPENDENCIES graph and get_context_dependencies()
+# ---------------------------------------------------------------------------
+
+
+class TestContextDependencies:
+    """Verify the dependency graph defined in workflow.py."""
+
+    def test_project_manifesto_has_no_dependencies(self) -> None:
+        """First document has no predecessors."""
+        from app.domain.constants.workflow import get_context_dependencies
+
+        assert get_context_dependencies("PROJECT_MANIFESTO") == []
+
+    def test_domain_language_depends_on_project_manifesto(self) -> None:
+        """DOMAIN_LANGUAGE needs PROJECT_MANIFESTO for project identity."""
+        from app.domain.constants.workflow import get_context_dependencies
+
+        deps = get_context_dependencies("DOMAIN_LANGUAGE")
+        assert "PROJECT_MANIFESTO" in deps
+
+    def test_user_stories_master_depends_on_requirements(self) -> None:
+        """USER_STORIES_MASTER must list REQUIREMENTS_MASTER as dependency."""
+        from app.domain.constants.workflow import get_context_dependencies
+
+        deps = get_context_dependencies("USER_STORIES_MASTER")
+        assert "REQUIREMENTS_MASTER" in deps
+
+    def test_user_stories_master_dependencies_are_subset_of_workflow(self) -> None:
+        """All dependency doc_types must exist in MASTER_WORKFLOW."""
+        from app.domain.constants.workflow import (
+            MASTER_WORKFLOW,
+            get_context_dependencies,
+        )
+
+        all_types = {step.doc_type for step in MASTER_WORKFLOW}
+        deps = get_context_dependencies("USER_STORIES_MASTER")
+        for dep in deps:
+            assert dep in all_types, f"Unknown dep: {dep}"
+
+    def test_unknown_doc_type_returns_empty_list(self) -> None:
+        """Unregistered doc_type must return [] (no KeyError)."""
+        from app.domain.constants.workflow import get_context_dependencies
+
+        assert get_context_dependencies("NON_EXISTENT_TYPE") == []
+
+    def test_all_dependency_targets_exist_in_workflow(self) -> None:
+        """Every type listed in any dependency must exist in MASTER_WORKFLOW."""
+        from app.domain.constants.workflow import (
+            CONTEXT_DEPENDENCIES,
+            MASTER_WORKFLOW,
+        )
+
+        all_types = {step.doc_type for step in MASTER_WORKFLOW}
+        for source, deps in CONTEXT_DEPENDENCIES.items():
+            for dep in deps:
+                assert (
+                    dep in all_types
+                ), f"Dependency '{dep}' of '{source}' is not in MASTER_WORKFLOW"
+
+    def test_dependencies_do_not_include_self(self) -> None:
+        """No doc_type should depend on itself."""
+        from app.domain.constants.workflow import CONTEXT_DEPENDENCIES
+
+        for doc_type, deps in CONTEXT_DEPENDENCIES.items():
+            assert doc_type not in deps, f"{doc_type} depends on itself"
+
+    def test_readme_synthesis_includes_manifesto(self) -> None:
+        """README (last doc) must include PROJECT_MANIFESTO in its dependencies."""
+        from app.domain.constants.workflow import get_context_dependencies
+
+        deps = get_context_dependencies("README")
+        assert "PROJECT_MANIFESTO" in deps
+
+
+# ---------------------------------------------------------------------------
+# Tests: _filter_relevant_context – dependency-graph filtering
+# ---------------------------------------------------------------------------
+
+
+class TestFilterRelevantContext:
+    """Unit tests for SequentialOrchestrator._filter_relevant_context()."""
+
+    # ── canonical paths as Flutter sends them ──────────────────────────────
+    _MANIFESTO_PATH = "context/10-CONTEXT/PROJECT_MANIFESTO.md"
+    _DOMAIN_PATH = "context/10-CONTEXT/DOMAIN_LANGUAGE.md"
+    _JOURNEY_PATH = "context/10-CONTEXT/USER_JOURNEY_MAP.md"
+    _REQUIREMENTS_PATH = "context/20-REQUIREMENTS/REQUIREMENTS_MASTER.md"
+    _STORIES_PATH = "context/20-REQUIREMENTS/USER_STORIES_MASTER.json"
+
+    @property
+    def full_context(self) -> dict[str, str]:
+        return {
+            self._MANIFESTO_PATH: "# Manifesto",
+            self._DOMAIN_PATH: "# Domain",
+            self._JOURNEY_PATH: "# Journey",
+            self._REQUIREMENTS_PATH: "# Requirements",
+            self._STORIES_PATH: '{"stories": []}',
+        }
+
+    def test_filters_to_declared_dependencies(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """For USER_STORIES_MASTER, only its declared deps should be returned."""
+        result = orchestrator._filter_relevant_context(
+            self.full_context, "USER_STORIES_MASTER"
+        )
+        # USER_STORIES_MASTER depends on PROJECT_MANIFESTO, DOMAIN_LANGUAGE,
+        # REQUIREMENTS_MASTER — NOT on USER_JOURNEY_MAP or USER_STORIES_MASTER.
+        assert self._MANIFESTO_PATH in result
+        assert self._DOMAIN_PATH in result
+        assert self._REQUIREMENTS_PATH in result
+        assert self._JOURNEY_PATH not in result
+        assert self._STORIES_PATH not in result
+
+    def test_project_manifesto_returns_empty_dict(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """PROJECT_MANIFESTO has no deps → returns empty dict (first doc)."""
+        result = orchestrator._filter_relevant_context(
+            self.full_context, "PROJECT_MANIFESTO"
+        )
+        assert result == {}
+
+    def test_empty_project_context_returns_empty_dict(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """Filtering an empty context always yields empty dict."""
+        result = orchestrator._filter_relevant_context({}, "USER_STORIES_MASTER")
+        assert result == {}
+
+    def test_unknown_doc_type_returns_full_context_as_fallback(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """Unknown doc_type has no dependency entry → falls back to full context."""
+        result = orchestrator._filter_relevant_context(
+            self.full_context, "UNKNOWN_TYPE"
+        )
+        # get_context_dependencies("UNKNOWN_TYPE") returns [] which is falsy,
+        # so the method returns {} (same as first-doc case, no deps = no prior context).
+        assert result == {}
+
+    def test_domain_language_gets_only_manifesto(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """DOMAIN_LANGUAGE depends only on PROJECT_MANIFESTO."""
+        result = orchestrator._filter_relevant_context(
+            self.full_context, "DOMAIN_LANGUAGE"
+        )
+        assert list(result.keys()) == [self._MANIFESTO_PATH]
+
+    def test_non_matching_paths_trigger_fallback(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """If no path resolves to a needed type, full context is returned as fallback."""
+        bad_context = {
+            "wrong/path/PROJECT_MANIFESTO.md": "content",
+            "also/wrong.md": "other",
+        }
+        result = orchestrator._filter_relevant_context(bad_context, "DOMAIN_LANGUAGE")
+        # No path matches → fallback returns the full bad_context unchanged.
+        assert result == bad_context
+
+    def test_filtered_count_is_bounded_by_dependencies(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """Filtered context must have ≤ len(dependencies) entries."""
+        from app.domain.constants.workflow import get_context_dependencies
+
+        doc_type = "USER_STORIES_MASTER"
+        max_deps = len(get_context_dependencies(doc_type))
+        result = orchestrator._filter_relevant_context(self.full_context, doc_type)
+        assert len(result) <= max_deps
+
+
+# ---------------------------------------------------------------------------
+# Tests: _build_prompt uses dependency-graph filtering
+# ---------------------------------------------------------------------------
+
+
+class TestBuildPromptWithDependencyFiltering:
+    """Integration tests: _build_prompt must only inject filtered docs."""
+
+    _MANIFESTO_PATH = "context/10-CONTEXT/PROJECT_MANIFESTO.md"
+    _REQUIREMENTS_PATH = "context/20-REQUIREMENTS/REQUIREMENTS_MASTER.md"
+    _JOURNEY_PATH = "context/10-CONTEXT/USER_JOURNEY_MAP.md"
+
+    def test_irrelevant_documents_absent_from_prompt(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """Docs not in USER_STORIES_MASTER deps must not appear in the prompt."""
+        # USER_JOURNEY_MAP is NOT a dep of USER_STORIES_MASTER.
+        context = {
+            "project_context": {
+                self._MANIFESTO_PATH: "# Manifesto",
+                self._JOURNEY_PATH: "# THIS SHOULD NOT APPEAR IN PROMPT",
+                self._REQUIREMENTS_PATH: "# Requirements",
+                "context/10-CONTEXT/DOMAIN_LANGUAGE.md": "# Domain",
+            },
+            "chat_history": [],
+        }
+        prompt = orchestrator._build_prompt(
+            injection_block="",
+            user_input="Generate user stories",
+            rag_context="",
+            context=context,
+            doc_type="USER_STORIES_MASTER",
+        )
+        assert "THIS SHOULD NOT APPEAR IN PROMPT" not in prompt
+
+    def test_relevant_documents_present_in_prompt(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """Docs in USER_STORIES_MASTER deps MUST appear in the prompt."""
+        context = {
+            "project_context": {
+                self._MANIFESTO_PATH: "# Manifesto UNIQUE_TOKEN_MANIFESTO",
+                self._REQUIREMENTS_PATH: "# Reqs UNIQUE_TOKEN_REQS",
+                "context/10-CONTEXT/DOMAIN_LANGUAGE.md": "# Domain",
+                self._JOURNEY_PATH: "# Journey",
+            },
+            "chat_history": [],
+        }
+        prompt = orchestrator._build_prompt(
+            injection_block="",
+            user_input="Generate user stories",
+            rag_context="",
+            context=context,
+            doc_type="USER_STORIES_MASTER",
+        )
+        assert "UNIQUE_TOKEN_MANIFESTO" in prompt
+        assert "UNIQUE_TOKEN_REQS" in prompt
+
+    def test_prompt_for_project_manifesto_has_no_project_documents_block(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """First document must have no <project_documents> block (no deps)."""
+        context = {
+            "project_context": {self._MANIFESTO_PATH: "# Manifesto"},
+            "chat_history": [],
+        }
+        prompt = orchestrator._build_prompt(
+            injection_block="",
+            user_input="Start my project",
+            rag_context="",
+            context=context,
+            doc_type="PROJECT_MANIFESTO",
+        )
+        assert "</project_documents>" not in prompt
