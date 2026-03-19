@@ -1,8 +1,8 @@
 # 📊 HU-5.0: Seguimiento de Progreso
 
-> **Última actualización:** 2026-03-21
+> **Última actualización:** 2026-03-19
 > **Estado Global:** 🚧 En Progreso (65% completado)
-> **Fase Actual:** Fase 2-C RAG Orquestador ✅ completado + Fase 6 Knowledge Base (80%)
+> **Fase Actual:** Fase 2-D Inyección de Dependencias ✅ completado + Fase 6 Knowledge Base (80%)
 
 ---
 
@@ -20,6 +20,7 @@ Progreso Global: [████████████░░░░░░░░] 
 | **Fase 2:** Backend LLM Refinement | 🚧 En Progreso | 40% | 28.5h | - | - |
 | **Fase 2-B:** Dynamic RAG Ingestion | ✅ Completado | 100% | 8h | 6h | 2026-03-19 |
 | **Fase 2-C:** Orchestrator Semantic RAG | ✅ Completado | 100% | 4h | 3h | 2026-03-21 |
+| **Fase 2-D:** DI Wiring (Tarea 13) | ✅ Completado | 100% | 1h | 1h | 2026-03-19 |
 | **Fase 3:** Frontend Integration | ⏸️ Pendiente | 0% | 5.5h | - | - |
 | **Fase 4:** Testing Suite | ⏸️ Pendiente | 0% | 16h | - | - |
 | **Fase 5:** Deployment Homelab | ⏸️ Pendiente | 0% | 12.5h | - | - |
@@ -116,6 +117,36 @@ relevantes para cada llamada de generación de documento.
 | **Tests** | `tests/server/services/rag/test_sequential_orchestrator.py` – 43 tests (7 nuevos `TestRetrieveProjectContext`, 3 nuevos `TestBuildPromptWithRetrievedContext`) |
 | **Suite completa** | 685 tests unitarios pasan en 3,80 s (todos los módulos) |
 | **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 685/685 ✅ |
+
+---
+
+## ✅ Fase 2-D: Inyección de Dependencias – DI Wiring (100% completado)
+
+> **Completado:** 2026-03-19
+> **Rama:** `feature/hu-5.0-full-workflow-refinement`
+
+Conecta el adaptador `ChromaProjectStore` (ya construido en Fases 2-B y 2-C) al
+contenedor de dependencias de FastAPI para que cada petición entrante llegue al
+orquestador con un `project_store` real.  Sin este paso el orquestador tenía
+`project_store=None` y la recuperación semántica se omitía silenciosamente a
+partir del 4.º documento (cuando la idea del usuario sale del historial de
+4 mensajes).
+
+### Tarea 13 – Inyectar ChromaProjectStore en el Contenedor DI del Orquestador ✅
+
+| Elemento | Detalles |
+|----------|--------|
+| **Causa raíz** | `SequentialOrchestrator` aceptaba el parámetro `project_store` pero ambas funciones factory (`get_rag_orchestrator` en `dependencies.py` y `_get_orchestrator` en `chat.py`) lo omitían → `project_store=None` → recuperación RAG desactivada |
+| **Fix 1** | `src/server/app/api/dependencies.py` – la factory `get_rag_orchestrator()` ahora importa `ChromaProjectStore` de forma lazy (dentro del cuerpo de la función, `# noqa: PLC0415`) y pasa `project_store=ChromaProjectStore()` a `SequentialOrchestrator` |
+| **Fix 2** | `src/server/app/api/v1/chat.py` – la factory legacy `_get_orchestrator()` recibe el mismo tratamiento: import lazy + `project_store=ChromaProjectStore()` |
+| **Rationale import lazy** | Diferir el import de `chromadb` / gRPC al cuerpo de la función evita que la cadena de inicialización se ejecute en tiempo de import de módulo, lo que rompería la colección de tests en máquinas sin ChromaDB activo (patrón ya establecido en `projects.py`) |
+| **PyDoc** | PyDoc completo en inglés añadido a `get_rag_orchestrator`, `_get_orchestrator`, `get_orchestrator`, `set_orchestrator`, `_stream_generator`, `generate_document` |
+| **Limpieza de comentarios** | Eliminados comentarios inline en español con emojis (ej. `🎯 EL NUEVO INYECTOR`) de ambos archivos; la lógica queda autodocumentada mediante PyDoc |
+| **Fix regresión** | `test_deprecated_message_indicates_use_stream` en `test_chat_coverage.py` llamaba al `get_rag_orchestrator` real (sin `dependency_overrides`); corregido envolviendo en `app.dependency_overrides` + `try/finally` al igual que los tests circundantes |
+| **Tests nuevos** | `tests/server/unit/app/test_dependencies.py` – `TestGetRagOrchestrator` (4 tests): `test_get_rag_orchestrator_injects_project_store`, `test_get_rag_orchestrator_is_cached`, `test_get_rag_orchestrator_normalises_local_to_ollama`, `test_get_rag_orchestrator_normalises_cloud_to_groq` |
+| **Tests nuevos** | `tests/server/unit/api/v1/test_chat_endpoints.py` – `TestGetOrchestratorFactory` (3 tests): `test_get_orchestrator_injects_project_store`, `test_get_orchestrator_returns_cached_singleton`, `test_set_orchestrator_overrides_singleton` |
+| **Suite completa** | 478 tests unitarios pasan en 3,69 s (todos los módulos) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 478/478 ✅ |
 
 ---
 

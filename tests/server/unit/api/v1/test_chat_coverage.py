@@ -128,10 +128,18 @@ class TestChatMessageEndpoint:
 
     async def test_deprecated_message_indicates_use_stream(self) -> None:
         """Deprecation message should indicate to use /chat/stream instead."""
-        async with AsyncClient(
-            transport=ASGITransport(app=app), base_url="http://test"
-        ) as client:
-            resp = await client.post("/api/v1/chat/message", json=VALID_MESSAGE_PAYLOAD)
+        mock_orch = _make_mock_orchestrator()
+
+        app.dependency_overrides[get_rag_orchestrator] = lambda: mock_orch
+        try:
+            async with AsyncClient(
+                transport=ASGITransport(app=app), base_url="http://test"
+            ) as client:
+                resp = await client.post(
+                    "/api/v1/chat/message", json=VALID_MESSAGE_PAYLOAD
+                )
+        finally:
+            app.dependency_overrides.clear()
 
         body = resp.json()
         assert "/chat/stream" in body["detail"]
@@ -233,10 +241,10 @@ class TestChatStreamEndpoint:
 
     async def test_stream_emits_error_event_from_generator(self) -> None:
         """Error events from orchestrator are forwarded as SSE error events."""
-        
+
         async def _mock_generate(**kwargs):
             yield "test"
-            
+
         mock_orch = _make_mock_orchestrator()
         mock_orch.generate = Mock(side_effect=lambda **kwargs: _mock_generate())
 

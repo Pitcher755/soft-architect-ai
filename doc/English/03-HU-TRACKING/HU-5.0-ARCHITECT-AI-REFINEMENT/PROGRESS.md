@@ -2,7 +2,7 @@
 
 > **Last Updated:** 2026-03-19
 > **Status:** 🚧 In Progress
-> **Overall Completion:** 60% (Knowledge Base + Sequential Orchestrator + Dynamic RAG ingestion layer)
+> **Overall Completion:** 65% (Knowledge Base + Sequential Orchestrator + Dynamic RAG ingestion layer + DI wiring)
 
 ---
 
@@ -15,6 +15,7 @@ Phase 1: Setup & Planning      ████████████████�
 Phase 2: Backend Refinement    ████████░░░░░░░░░░░░  40% 🚧
 Phase 2-B: Dynamic RAG         ████████████████████ 100% ✅
 Phase 2-C: Orchestrator RAG    ████████████████████ 100% ✅
+Phase 2-D: DI Wiring (Task 13) ████████████████████ 100% ✅
 Phase 3: Frontend Integration  ░░░░░░░░░░░░░░░░░░░░   0%
 Phase 4: Testing Suite         ░░░░░░░░░░░░░░░░░░░░   0%
 Phase 5: Deployment            ░░░░░░░░░░░░░░░░░░░░   0%
@@ -110,6 +111,35 @@ chunks for each document generation call.
 | **Tests** | `tests/server/services/rag/test_sequential_orchestrator.py` – 43 tests (7 new `TestRetrieveProjectContext`, 3 new `TestBuildPromptWithRetrievedContext`) |
 | **Full suite** | 685 unit tests pass in 3.80s (all modules) |
 | **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 685/685 ✅ |
+
+---
+
+## ✅ Phase 2-D: Dependency Injection Wiring (100%)
+
+> **Completed:** 2026-03-19
+> **Branch:** `feature/hu-5.0-full-workflow-refinement`
+
+Wires the already-built `ChromaProjectStore` adapter into the FastAPI dependency
+container so that every incoming request reaches the orchestrator with a live
+`project_store`.  Without this step the orchestrator held `project_store=None`
+and semantic retrieval was silently skipped beyond the 4th document (when the
+user idea scrolls out of the 4-message chat history).
+
+### Task 13 – Inject ChromaProjectStore into the Orchestrator DI Container ✅
+
+| Item | Details |
+|------|--------|
+| **Root cause** | `SequentialOrchestrator` accepted `project_store` parameter but both factory functions (`get_rag_orchestrator` in `dependencies.py` and `_get_orchestrator` in `chat.py`) omitted it → `project_store=None` → RAG retrieval skipped |
+| **Fix 1** | `src/server/app/api/dependencies.py` – `get_rag_orchestrator()` factory now imports `ChromaProjectStore` lazily (inside function body, `# noqa: PLC0415`) and passes `project_store=ChromaProjectStore()` to `SequentialOrchestrator` |
+| **Fix 2** | `src/server/app/api/v1/chat.py` – legacy `_get_orchestrator()` factory receives the same treatment: lazy import + `project_store=ChromaProjectStore()` |
+| **Lazy import rationale** | Deferring the `chromadb` / gRPC import to function-body scope prevents the initialisation chain from running at module-import time, which would break test collection on machines without a running ChromaDB instance (pattern already established in `projects.py`) |
+| **PyDoc** | Full English PyDoc added to `get_rag_orchestrator`, `_get_orchestrator`, `get_orchestrator`, `set_orchestrator`, `_stream_generator`, `generate_document` |
+| **Inline comment cleanup** | Removed Spanish-language emoji comments (e.g. `🎯 EL NUEVO INYECTOR`) from both files; logic is now self-documenting via PyDoc |
+| **Regression fix** | `test_deprecated_message_indicates_use_stream` in `test_chat_coverage.py` was calling the real `get_rag_orchestrator` (no `dependency_overrides`); fixed by wrapping in `app.dependency_overrides` + `try/finally` identical to the surrounding tests |
+| **New tests** | `tests/server/unit/app/test_dependencies.py` – `TestGetRagOrchestrator` (4 tests): `test_get_rag_orchestrator_injects_project_store`, `test_get_rag_orchestrator_is_cached`, `test_get_rag_orchestrator_normalises_local_to_ollama`, `test_get_rag_orchestrator_normalises_cloud_to_groq` |
+| **New tests** | `tests/server/unit/api/v1/test_chat_endpoints.py` – `TestGetOrchestratorFactory` (3 tests): `test_get_orchestrator_injects_project_store`, `test_get_orchestrator_returns_cached_singleton`, `test_set_orchestrator_overrides_singleton` |
+| **Full suite** | 478 unit tests pass in 3.69s (all modules) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 478/478 ✅ |
 
 ---
 
