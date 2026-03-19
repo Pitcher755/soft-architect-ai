@@ -26,6 +26,7 @@ from .chat import router as chat_router
 from .conversations import router as conversations_router
 from .health import router as health_router
 from .knowledge import router as knowledge_router
+from .projects import router as projects_router
 from .rag_test import router as rag_test_router
 from .websocket.router import router as websocket_router
 
@@ -42,3 +43,4 @@ router.include_router(conversations_router)
 router.include_router(websocket_router)
 router.include_router(knowledge_router)
 router.include_router(rag_test_router)
+router.include_router(projects_router)

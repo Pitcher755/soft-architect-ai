@@ -10,7 +10,8 @@ Naming convention: test_{method}_{scenario}_{expected_result}
 Coverage target  : 100% of new filtering and prompt-assembly logic.
 """
 
-from unittest.mock import AsyncMock, MagicMock
+from collections.abc import AsyncGenerator
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -39,7 +40,7 @@ def mock_llm_client() -> MagicMock:
     """Return an LLM client stub that streams a single token."""
     client = MagicMock()
 
-    async def _fake_stream(prompt: str, history: list) -> AsyncMock:
+    async def _fake_stream(prompt: str, history: list) -> AsyncGenerator[str, None]:
         yield "token"
 
     client.stream_generate = _fake_stream
@@ -463,7 +464,9 @@ class TestGenerateWithProjectContext:
         """generate() must pass a prompt containing <project_documents> to the LLM."""
         captured_prompts: list[str] = []
 
-        async def _capture_stream(prompt: str, history: list):
+        async def _capture_stream(
+            prompt: str, history: list
+        ) -> AsyncGenerator[str, None]:
             captured_prompts.append(prompt)
             yield "token"
 

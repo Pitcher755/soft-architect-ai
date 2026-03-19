@@ -1,8 +1,8 @@
 # 📊 HU-5.0: Implementation Progress Tracking
 
-> **Last Updated:** 2026-02-22
-> **Status:** 🚧 In Progress (Day 2/7)
-> **Overall Completion:** 45% (Knowledge Base Complete)
+> **Last Updated:** 2026-03-19
+> **Status:** 🚧 In Progress
+> **Overall Completion:** 60% (Knowledge Base + Sequential Orchestrator + Dynamic RAG ingestion layer)
 
 ---
 
@@ -11,12 +11,13 @@
 ```
 [█████████░░░░░░░░░░░] 45% Complete
 
-Phase 1: Setup & Planning ████████████████████ 100% ✅
-Phase 2: Backend Refinement ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 3: Frontend Integration ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 4: Testing Suite ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 5: Deployment ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 6: Validation & Demo ████████████████░░░░  80% 🚧
+Phase 1: Setup & Planning      ████████████████████ 100% ✅
+Phase 2: Backend Refinement    ████████░░░░░░░░░░░░  40% 🚧
+Phase 2-B: Dynamic RAG         ████████████████████ 100% ✅
+Phase 3: Frontend Integration  ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 4: Testing Suite         ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 5: Deployment            ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 6: Validation & Demo     ████████████████░░░░  80% 🚧
 ```
 
 ---
@@ -36,7 +37,51 @@ Phase 6: Validation & Demo ████████████████░�
 
 ---
 
-## 🔧 Phase 2: Backend Refinement (0%)
+## ✅ Phase 2-B: Dynamic RAG – Per-Project Ingestion (100%)
+
+> **Completed:** 2026-03-19
+> **Branch:** `feature/hu-5.0-full-workflow-refinement`
+
+Implements the per-project vector-store layer so that each user project has
+its own isolated ChromaDB collection populated from generated markdown documents.
+
+### Task 4 – ChromaDB Project Adapter ✅
+
+| Item | Details |
+|------|---------|
+| **File** | `src/server/app/infrastructure/vector_store/chroma_store.py` |
+| **Pattern** | Adapter (Hexagonal Architecture – Ports & Adapters) |
+| **Port** | `VectorStoreProtocol.search()` |
+| **Key methods** | `get_or_create_project_collection`, `add_documents`, `query_project`, `delete_project_collection`, `get_project_chunk_count` |
+| **Collection naming** | `project_{sanitised_id}` (SHA-256 fallback for non-alphanumeric IDs) |
+| **Chunk IDs** | SHA-256 of `"{project_id}:{index}:{text[:200]}"` – deterministic upsert semantics |
+| **Embedding fn** | `DefaultEmbeddingFunction` (avoids heavy sentence-transformers dependency) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ |
+
+### Task 5 – Tests for ChromaProjectStore ✅
+
+| Item | Details |
+|------|---------|
+| **File** | `tests/server/services/vectors/` |
+| **Strategy** | Inject mock `ClientAPI` via `client=` constructor kwarg |
+
+### Task 6 – Ingestion REST Endpoint ✅
+
+| Item | Details |
+|------|---------|
+| **New files** | `src/server/app/services/ingestion/project_ingestion_service.py`, `src/server/app/api/v1/projects.py` |
+| **Endpoint** | `POST /api/v1/projects/{project_id}/documents/ingest` |
+| **Request schema** | `IngestDocumentRequest(doc_name: str, markdown_content: str)` |
+| **Response schema** | `IngestDocumentResponse(project_id, doc_name, chunks_ingested)` |
+| **HTTP codes** | 200 success · 400 empty content · 422 schema validation · 500 backend error |
+| **Splitting** | Paragraph-boundary splitting (double-newline), greedy grouping ≤ 4 000 chars/chunk |
+| **DI** | `_get_ingestion_service()` factory – overrideable for tests |
+| **Tests** | `tests/server/services/test_project_ingestion_service.py` (17 tests) · `tests/server/api/v1/endpoints/test_projects_endpoint.py` (11 tests) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 149 pass ✅ |
+
+---
+
+## 🔧 Phase 2: Backend Refinement (40%)
 
 ### 2.1 LLM Temperature Adjustment
 | Task | Status | File | Estimated | Actual |

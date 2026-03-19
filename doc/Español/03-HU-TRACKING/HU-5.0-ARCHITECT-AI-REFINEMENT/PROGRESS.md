@@ -1,15 +1,15 @@
 # 📊 HU-5.0: Seguimiento de Progreso
 
-> **Última actualización:** 2026-02-22
-> **Estado Global:** 🚧 En Progreso (45% completado)
-> **Fase Actual:** Fase 6 - Knowledge Base Enhancement (80% completo)
+> **Última actualización:** 2026-03-19
+> **Estado Global:** 🚧 En Progreso (60% completado)
+> **Fase Actual:** Fase 2-B RAG Dinámico ✅ completado + Fase 6 Knowledge Base (80%)
 
 ---
 
 ## 📈 Progreso General
 
 ```
-Progreso Global: [█████████░░░] 45% (Fase 1 + Fase 6 Knowledge Base completadas)
+Progreso Global: [████████████░░░░░░░░] 60% (Fase 1 + Fase 2-B Dynamic RAG + Fase 6 Knowledge Base)
 ```
 
 ### Desglose por Fases
@@ -17,10 +17,11 @@ Progreso Global: [█████████░░░] 45% (Fase 1 + Fase 6 Kno
 | Fase | Estado | Progreso | Duración Est. | Duración Real | Completado |
 |------|--------|----------|---------------|---------------|------------|
 | **Fase 1:** Setup & Planning | ✅ Completado | 100% | 1h | 1h | 2026-02-21 |
-| **Fase 2:** Backend LLM Refinement | ⏸️ Bloqueado | 0% | 28.5h | - | - |
-| **Fase 3:** Frontend Integration | ⏸️ Bloqueado | 0% | 5.5h | - | - |
-| **Fase 4:** Testing Suite | ⏸️ Bloqueado | 0% | 16h | - | - |
-| **Fase 5:** Deployment Homelab | ⏸️ Bloqueado | 0% | 12.5h | - | - |
+| **Fase 2:** Backend LLM Refinement | 🚧 En Progreso | 40% | 28.5h | - | - |
+| **Fase 2-B:** Dynamic RAG Ingestion | ✅ Completado | 100% | 8h | 6h | 2026-03-19 |
+| **Fase 3:** Frontend Integration | ⏸️ Pendiente | 0% | 5.5h | - | - |
+| **Fase 4:** Testing Suite | ⏸️ Pendiente | 0% | 16h | - | - |
+| **Fase 5:** Deployment Homelab | ⏸️ Pendiente | 0% | 12.5h | - | - |
 | **Fase 6:** Validation & Demo | 🚧 En Progreso | 80% | 25h | 20.5h | 2026-02-22 |
 
 ---
@@ -42,7 +43,51 @@ Progreso Global: [█████████░░░] 45% (Fase 1 + Fase 6 Kno
 
 ---
 
-## 🚧 Fase 2: Backend LLM Refinement (15% completado)
+## ✅ Fase 2-B: RAG Dinámico – Ingesta por Proyecto (100% completado)
+
+> **Completado:** 2026-03-19
+> **Rama:** `feature/hu-5.0-full-workflow-refinement`
+
+Implementa la capa de vector store por proyecto para que cada proyecto de usuario
+tenga su propia colección ChromaDB aislada, poblada con los documentos markdown generados.
+
+### Tarea 4 – Adaptador ChromaDB por Proyecto ✅
+
+| Elemento | Detalle |
+|----------|---------|
+| **Archivo** | `src/server/app/infrastructure/vector_store/chroma_store.py` |
+| **Patrón** | Adapter (Arquitectura Hexagonal – Ports & Adapters) |
+| **Puerto** | `VectorStoreProtocol.search()` |
+| **Métodos clave** | `get_or_create_project_collection`, `add_documents`, `query_project`, `delete_project_collection`, `get_project_chunk_count` |
+| **Nomenclatura** | `project_{id_sanitizado}` (fallback SHA-256 para IDs con caracteres especiales) |
+| **IDs de chunks** | SHA-256 de `"{project_id}:{index}:{text[:200]}"` – semántica de upsert idempotente |
+| **Función embedding** | `DefaultEmbeddingFunction` (evita la dependencia pesada de sentence-transformers) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ |
+
+### Tarea 5 – Tests para ChromaProjectStore ✅
+
+| Elemento | Detalle |
+|----------|---------|
+| **Archivo** | `tests/server/services/vectors/` |
+| **Estrategia** | Inyección de mock `ClientAPI` vía kwarg `client=` en el constructor |
+
+### Tarea 6 – Endpoint REST de Ingesta ✅
+
+| Elemento | Detalle |
+|----------|---------|
+| **Archivos nuevos** | `src/server/app/services/ingestion/project_ingestion_service.py`, `src/server/app/api/v1/projects.py` |
+| **Endpoint** | `POST /api/v1/projects/{project_id}/documents/ingest` |
+| **Esquema request** | `IngestDocumentRequest(doc_name: str, markdown_content: str)` |
+| **Esquema response** | `IngestDocumentResponse(project_id, doc_name, chunks_ingested)` |
+| **Códigos HTTP** | 200 éxito · 400 contenido vacío · 422 validación esquema · 500 error backend |
+| **Fragmentación** | División por párrafos (doble salto de línea), agrupación greedy ≤ 4 000 chars/chunk |
+| **Inyección de dependencias** | Factory `_get_ingestion_service()` – sobreescribible en tests |
+| **Tests** | `tests/server/services/test_project_ingestion_service.py` (17 tests) · `tests/server/api/v1/endpoints/test_projects_endpoint.py` (11 tests) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 149 pasados ✅ |
+
+---
+
+## 🚧 Fase 2: Backend LLM Refinement (40% completado)
 
 **Objetivo:** Refinar comportamiento del Arquitecto IA con 10 reglas del system prompt
 
