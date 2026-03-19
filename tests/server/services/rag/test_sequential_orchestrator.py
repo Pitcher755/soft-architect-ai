@@ -1,13 +1,15 @@
-"""Unit tests for SequentialOrchestrator – Context Injection Pipeline.
+"""Unit tests for SequentialOrchestrator – Dynamic RAG Context Injection Pipeline.
 
 Covers:
   - _build_project_documents_block: XML serialisation, truncation, budget guard
-  - _filter_relevant_context: dependency-graph filtering
-  - _build_prompt: end-to-end prompt assembly with both filtering stages
+  - _retrieve_project_context: dynamic per-project semantic RAG retrieval (Task 7)
+  - _build_prompt: end-to-end prompt assembly with retrieved_context injection
+  - generate(): integration with ChromaProjectStore via project_store
   - ChatRequest schema: project_context field presence / default
+  - CONTEXT_DEPENDENCIES graph: dependency declarations in workflow.py
 
 Naming convention: test_{method}_{scenario}_{expected_result}
-Coverage target  : 100% of new filtering and prompt-assembly logic.
+Coverage target  : >90% of orchestrator logic, 100% of new RAG retrieval path.
 """
 
 from collections.abc import AsyncGenerator
@@ -220,158 +222,116 @@ class TestBuildProjectDocumentsBlock:
 
 
 class TestBuildPromptProjectContext:
-    """Tests for _build_prompt injection of project_context (Task 8)."""
+    """Tests for _build_prompt injection of retrieved_context (Task 7)."""
 
-    def test_prompt_contains_project_documents_block_when_context_provided(
+    def test_prompt_contains_retrieved_context_block_when_provided(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """When project_context contains a dependency-graph match, <project_documents> must appear.
-
-        Uses DOMAIN_LANGUAGE as doc_type (depends on PROJECT_MANIFESTO) and
-        the canonical output path of PROJECT_MANIFESTO so the dependency-graph
-        filter can resolve the match and produce a non-empty block.
-        """
-        context = {
-            "project_context": {
-                "context/10-CONTEXT/PROJECT_MANIFESTO.md": "# Manifest\nProject here"
-            },
-            "chat_history": [],
-        }
-
+        """When retrieved_context is supplied, the block must appear in the prompt."""
         prompt = orchestrator._build_prompt(
             injection_block="<inj>template</inj>",
             user_input="Generate doc",
             rag_context="",
-            context=context,
+            context={"chat_history": []},
             doc_type="DOMAIN_LANGUAGE",
+            retrieved_context="<retrieved_context>\nChunk A\n</retrieved_context>",
         )
 
-        assert "<project_documents>" in prompt
-        assert "--- context/10-CONTEXT/PROJECT_MANIFESTO.md ---" in prompt
-        assert "# Manifest\nProject here" in prompt
+        assert "<retrieved_context>" in prompt
+        assert "</retrieved_context>" in prompt
+        assert "Chunk A" in prompt
 
-    def test_prompt_omits_project_documents_block_when_context_empty(
+    def test_prompt_omits_retrieved_context_block_when_empty(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """When project_context is empty, <project_documents> XML block must not appear.
-
-        Note: the literal string '<project_documents>' may appear inside
-        critical_rules text (rule 8).  We therefore check for the *closing*
-        tag '</project_documents>' which is only emitted by the real block.
-        """
-        context = {"project_context": {}, "chat_history": []}
-
+        """When retrieved_context is empty, no <retrieved_context> block appears."""
         prompt = orchestrator._build_prompt(
             injection_block="",
             user_input="Generate doc",
             rag_context="",
-            context=context,
+            context={"chat_history": []},
+            doc_type="PROJECT_MANIFESTO",
+            retrieved_context="",
+        )
+
+        assert "</retrieved_context>" not in prompt
+
+    def test_prompt_omits_retrieved_context_block_when_param_absent(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """When retrieved_context parameter is not passed, no block is emitted."""
+        prompt = orchestrator._build_prompt(
+            injection_block="",
+            user_input="Generate doc",
+            rag_context="",
+            context={"chat_history": []},
             doc_type="PROJECT_MANIFESTO",
         )
 
-        assert "</project_documents>" not in prompt
+        assert "</retrieved_context>" not in prompt
 
-    def test_prompt_omits_project_documents_block_when_key_missing(
+    def test_retrieved_context_block_appears_before_critical_rules(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """When project_context key is absent from context, no block is emitted.
-
-        Checks the closing tag (see note in sibling test).
-        """
-        context = {"chat_history": []}
-
+        """The <retrieved_context> block must precede <critical_rules> in the prompt."""
         prompt = orchestrator._build_prompt(
             injection_block="",
             user_input="Generate doc",
             rag_context="",
-            context=context,
-            doc_type="PROJECT_MANIFESTO",
-        )
-
-        assert "</project_documents>" not in prompt
-
-    def test_project_documents_block_appears_before_critical_rules(
-        self, orchestrator: SequentialOrchestrator
-    ) -> None:
-        """The *actual* project_documents block must precede <critical_rules> in the prompt.
-
-        Uses DOMAIN_LANGUAGE + PROJECT_MANIFESTO path to guarantee a real block
-        is emitted by the dependency-graph filter (PROJECT_MANIFESTO has no
-        dependencies so it would return an empty filter and no block).
-        """
-        context = {
-            "project_context": {
-                "context/10-CONTEXT/PROJECT_MANIFESTO.md": "# Project info"
-            },
-            "chat_history": [],
-        }
-
-        prompt = orchestrator._build_prompt(
-            injection_block="",
-            user_input="Generate doc",
-            rag_context="",
-            context=context,
+            context={"chat_history": []},
             doc_type="DOMAIN_LANGUAGE",
+            retrieved_context="<retrieved_context>\nProject data\n</retrieved_context>",
         )
 
-        # Both tags must be present for a meaningful ordering check.
-        assert "</project_documents>" in prompt, "Expected real project_documents block"
-        docs_pos = prompt.index("<project_documents>")
+        assert "</retrieved_context>" in prompt
+        ctx_pos = prompt.index("<retrieved_context>")
         rules_pos = prompt.index("<critical_rules>")
         assert (
-            docs_pos < rules_pos
-        ), "<project_documents> should appear before <critical_rules>"
+            ctx_pos < rules_pos
+        ), "<retrieved_context> must appear before <critical_rules>"
 
-    def test_project_documents_block_appears_after_rag_context(
+    def test_retrieved_context_block_appears_after_rag_context(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """The project_documents block must follow the RAG context."""
-        context = {
-            "project_context": {"RULES.md": "# Rules"},
-            "chat_history": [],
-        }
-
+        """The <retrieved_context> block must follow the <rag_context> block."""
         prompt = orchestrator._build_prompt(
             injection_block="",
             user_input="Generate doc",
-            rag_context="<rag_context>rag_data</rag_context>",
-            context=context,
+            rag_context="<rag_context>global_kb_data</rag_context>",
+            context={"chat_history": []},
             doc_type="PROJECT_MANIFESTO",
+            retrieved_context="<retrieved_context>\nProject chunk\n</retrieved_context>",
         )
 
         rag_pos = prompt.index("<rag_context>")
-        docs_pos = prompt.index("<project_documents>")
-        assert (
-            rag_pos < docs_pos
-        ), "<project_documents> should appear after <rag_context>"
+        ctx_pos = prompt.index("<retrieved_context>")
+        assert rag_pos < ctx_pos, "<retrieved_context> must appear after <rag_context>"
 
     def test_critical_rules_include_consistency_rule_8(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """Critical rules must contain rule 8 about project consistency."""
-        context = {"project_context": {}, "chat_history": []}
-
+        """Critical rules must contain rule 8 referencing retrieved_context."""
         prompt = orchestrator._build_prompt(
             injection_block="",
             user_input="Generate doc",
             rag_context="",
-            context=context,
+            context={"chat_history": []},
             doc_type="PROJECT_MANIFESTO",
         )
 
-        assert "project_documents" in prompt
+        assert "retrieved_context" in prompt
         assert "consistent" in prompt
 
-    def test_prompt_handles_non_dict_project_context_gracefully(
+    def test_prompt_handles_extra_context_keys_gracefully(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """Non-dict project_context must not raise; treated as empty."""
+        """Unknown keys in context dict must be silently ignored (no exception raised)."""
         context = {
-            "project_context": "invalid_string",
+            "legacy_project_context": {"RULES.md": "# Rules"},
             "chat_history": [],
+            "unknown_key": "ignored",
         }
 
-        # Must not raise
         prompt = orchestrator._build_prompt(
             injection_block="",
             user_input="Generate doc",
@@ -380,45 +340,35 @@ class TestBuildPromptProjectContext:
             doc_type="PROJECT_MANIFESTO",
         )
 
-        # Closing tag is only emitted by the real block (see note in empty-context test).
-        assert "</project_documents>" not in prompt
+        assert "Generate doc" in prompt
+        assert "</retrieved_context>" not in prompt
 
-    def test_prompt_hard_cap_removes_project_docs_when_injection_block_is_huge(
+    def test_prompt_hard_cap_removes_retrieved_context_when_injection_block_is_huge(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """When the prompt would exceed _MAX_PROMPT_CHARS the project_documents
-        block is stripped (safety net) and the prompt stays within the cap."""
-        # Create a huge injection_block that alone pushes past the hard cap.
+        """When the prompt exceeds _MAX_PROMPT_CHARS the retrieved_context
+        block is stripped by the safety net."""
         huge_injection = "T" * (_MAX_PROMPT_CHARS + 5_000)
-        context = {
-            "project_context": {"RULES.md": "# Rules\nDo X"},
-            "chat_history": [],
-        }
-
         prompt = orchestrator._build_prompt(
             injection_block=huge_injection,
             user_input="Generate doc",
             rag_context="",
-            context=context,
+            context={"chat_history": []},
             doc_type="PROJECT_MANIFESTO",
+            retrieved_context="<retrieved_context>\nShould be stripped\n</retrieved_context>",
         )
 
-        # Safety net should have dropped the project_documents block.
-        assert "</project_documents>" not in prompt
-        # The prompt must not contain the closing tag – though it may still
-        # be very large (injection_block is beyond our control).
+        assert "</retrieved_context>" not in prompt
 
     def test_prompt_contains_user_input(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
         """User input must always appear in the generated prompt."""
-        context = {"project_context": {}, "chat_history": []}
-
         prompt = orchestrator._build_prompt(
             injection_block="",
             user_input="Build a fintech app",
             rag_context="",
-            context=context,
+            context={"chat_history": []},
             doc_type="PROJECT_MANIFESTO",
         )
 
@@ -431,22 +381,33 @@ class TestBuildPromptProjectContext:
 
 
 class TestGenerateWithProjectContext:
-    """Integration tests for the generate() entry point."""
+    """Integration tests for the generate() entry point with dynamic RAG."""
 
     @pytest.mark.asyncio
-    async def test_generate_streams_tokens_with_project_context(
-        self, orchestrator: SequentialOrchestrator
+    async def test_generate_streams_tokens_with_project_store(
+        self,
+        mock_vector_store: MagicMock,
+        mock_llm_client: MagicMock,
+        mock_workflow_injector: MagicMock,
     ) -> None:
-        """generate() must stream tokens when project_context is provided."""
+        """generate() must stream tokens when project_store is configured."""
+        mock_project_store = MagicMock()
+        mock_project_store.query_project.return_value = ["Chunk A", "Chunk B"]
+
+        orch = SequentialOrchestrator(
+            vector_store=mock_vector_store,
+            llm_client=mock_llm_client,
+            workflow_injector=mock_workflow_injector,
+            project_store=mock_project_store,
+        )
+
         context = {
-            "project_context": {
-                "context/10-BUSINESS/MANIFEST.md": "# Project Manifesto\nIdea: ..."
-            },
+            "project_id": "test-project-123",
             "chat_history": [],
         }
 
         tokens = []
-        async for token in orchestrator.generate(
+        async for token in orch.generate(
             doc_type="DOMAIN_LANGUAGE",
             user_input="Generate domain language doc",
             context=context,
@@ -454,14 +415,16 @@ class TestGenerateWithProjectContext:
             tokens.append(token)
 
         assert len(tokens) > 0
+        mock_project_store.query_project.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_generate_calls_llm_with_prompt_containing_project_documents(
+    async def test_generate_calls_llm_with_prompt_containing_retrieved_context(
         self,
         mock_vector_store: MagicMock,
         mock_workflow_injector: MagicMock,
     ) -> None:
-        """generate() must pass a prompt containing <project_documents> to the LLM."""
+        """generate() must pass a prompt containing <retrieved_context> to the LLM
+        when project_store returns chunks for the given project_id."""
         captured_prompts: list[str] = []
 
         async def _capture_stream(
@@ -473,16 +436,21 @@ class TestGenerateWithProjectContext:
         llm_spy = MagicMock()
         llm_spy.stream_generate = _capture_stream
 
+        mock_project_store = MagicMock()
+        mock_project_store.query_project.return_value = [
+            "Project uses Python FastAPI",
+            "Clean Architecture pattern selected",
+        ]
+
         orch = SequentialOrchestrator(
             vector_store=mock_vector_store,
             llm_client=llm_spy,
             workflow_injector=mock_workflow_injector,
+            project_store=mock_project_store,
         )
 
         context = {
-            "project_context": {
-                "context/10-CONTEXT/PROJECT_MANIFESTO.md": "# Manifest\nContent"
-            },
+            "project_id": "abc-123",
             "chat_history": [],
         }
 
@@ -494,15 +462,16 @@ class TestGenerateWithProjectContext:
             pass
 
         assert len(captured_prompts) == 1
-        assert "<project_documents>" in captured_prompts[0]
-        assert "--- context/10-CONTEXT/PROJECT_MANIFESTO.md ---" in captured_prompts[0]
+        assert "<retrieved_context>" in captured_prompts[0]
+        assert "Project uses Python FastAPI" in captured_prompts[0]
+        assert "Clean Architecture pattern selected" in captured_prompts[0]
 
     @pytest.mark.asyncio
-    async def test_generate_streams_tokens_without_project_context(
+    async def test_generate_streams_tokens_without_project_store(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """generate() must still work when project_context is absent."""
-        context = {"chat_history": []}
+        """generate() must still work when project_store is None (no ChromaDB)."""
+        context = {"project_id": "any-id", "chat_history": []}
 
         tokens = []
         async for token in orchestrator.generate(
@@ -629,176 +598,216 @@ class TestContextDependencies:
 
 
 # ---------------------------------------------------------------------------
-# Tests: _filter_relevant_context – dependency-graph filtering
+# Tests: _retrieve_project_context – dynamic per-project semantic RAG (Task 7)
 # ---------------------------------------------------------------------------
 
 
-class TestFilterRelevantContext:
-    """Unit tests for SequentialOrchestrator._filter_relevant_context()."""
+class TestRetrieveProjectContext:
+    """Unit tests for SequentialOrchestrator._retrieve_project_context()."""
 
-    # ── canonical paths as Flutter sends them ──────────────────────────────
-    _MANIFESTO_PATH = "context/10-CONTEXT/PROJECT_MANIFESTO.md"
-    _DOMAIN_PATH = "context/10-CONTEXT/DOMAIN_LANGUAGE.md"
-    _JOURNEY_PATH = "context/10-CONTEXT/USER_JOURNEY_MAP.md"
-    _REQUIREMENTS_PATH = "context/20-REQUIREMENTS/REQUIREMENTS_MASTER.md"
-    _STORIES_PATH = "context/20-REQUIREMENTS/USER_STORIES_MASTER.json"
-
-    @property
-    def full_context(self) -> dict[str, str]:
-        return {
-            self._MANIFESTO_PATH: "# Manifesto",
-            self._DOMAIN_PATH: "# Domain",
-            self._JOURNEY_PATH: "# Journey",
-            self._REQUIREMENTS_PATH: "# Requirements",
-            self._STORIES_PATH: '{"stories": []}',
-        }
-
-    def test_filters_to_declared_dependencies(
+    def test_returns_empty_string_when_project_store_is_none(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """For USER_STORIES_MASTER, only its declared deps should be returned."""
-        result = orchestrator._filter_relevant_context(
-            self.full_context, "USER_STORIES_MASTER"
+        """When project_store is None, must return empty string without raising."""
+        # The default orchestrator fixture has project_store=None.
+        result = orchestrator._retrieve_project_context(
+            project_id="abc-123",
+            doc_type="DOMAIN_LANGUAGE",
+            user_input="Generate domain doc",
         )
-        # USER_STORIES_MASTER depends on PROJECT_MANIFESTO, DOMAIN_LANGUAGE,
-        # REQUIREMENTS_MASTER — NOT on USER_JOURNEY_MAP or USER_STORIES_MASTER.
-        assert self._MANIFESTO_PATH in result
-        assert self._DOMAIN_PATH in result
-        assert self._REQUIREMENTS_PATH in result
-        assert self._JOURNEY_PATH not in result
-        assert self._STORIES_PATH not in result
+        assert result == ""
 
-    def test_project_manifesto_returns_empty_dict(
-        self, orchestrator: SequentialOrchestrator
+    def test_returns_empty_string_when_project_id_is_empty(
+        self,
+        mock_vector_store: MagicMock,
+        mock_llm_client: MagicMock,
+        mock_workflow_injector: MagicMock,
     ) -> None:
-        """PROJECT_MANIFESTO has no deps → returns empty dict (first doc)."""
-        result = orchestrator._filter_relevant_context(
-            self.full_context, "PROJECT_MANIFESTO"
+        """Empty project_id must short-circuit and return empty string."""
+        mock_store = MagicMock()
+        orch = SequentialOrchestrator(
+            vector_store=mock_vector_store,
+            llm_client=mock_llm_client,
+            workflow_injector=mock_workflow_injector,
+            project_store=mock_store,
         )
-        assert result == {}
-
-    def test_empty_project_context_returns_empty_dict(
-        self, orchestrator: SequentialOrchestrator
-    ) -> None:
-        """Filtering an empty context always yields empty dict."""
-        result = orchestrator._filter_relevant_context({}, "USER_STORIES_MASTER")
-        assert result == {}
-
-    def test_unknown_doc_type_returns_full_context_as_fallback(
-        self, orchestrator: SequentialOrchestrator
-    ) -> None:
-        """Unknown doc_type has no dependency entry → falls back to full context."""
-        result = orchestrator._filter_relevant_context(
-            self.full_context, "UNKNOWN_TYPE"
+        result = orch._retrieve_project_context(
+            project_id="", doc_type="DOMAIN_LANGUAGE", user_input="some input"
         )
-        # get_context_dependencies("UNKNOWN_TYPE") returns [] which is falsy,
-        # so the method returns {} (same as first-doc case, no deps = no prior context).
-        assert result == {}
+        assert result == ""
+        mock_store.query_project.assert_not_called()
 
-    def test_domain_language_gets_only_manifesto(
-        self, orchestrator: SequentialOrchestrator
+    def test_returns_empty_string_when_store_returns_no_chunks(
+        self,
+        mock_vector_store: MagicMock,
+        mock_llm_client: MagicMock,
+        mock_workflow_injector: MagicMock,
     ) -> None:
-        """DOMAIN_LANGUAGE depends only on PROJECT_MANIFESTO."""
-        result = orchestrator._filter_relevant_context(
-            self.full_context, "DOMAIN_LANGUAGE"
+        """Empty query results must produce an empty string (no XML block)."""
+        mock_store = MagicMock()
+        mock_store.query_project.return_value = []
+        orch = SequentialOrchestrator(
+            vector_store=mock_vector_store,
+            llm_client=mock_llm_client,
+            workflow_injector=mock_workflow_injector,
+            project_store=mock_store,
         )
-        assert list(result.keys()) == [self._MANIFESTO_PATH]
+        result = orch._retrieve_project_context(
+            project_id="proj-1", doc_type="DOMAIN_LANGUAGE", user_input="some input"
+        )
+        assert result == ""
 
-    def test_non_matching_paths_trigger_fallback(
-        self, orchestrator: SequentialOrchestrator
+    def test_returns_retrieved_context_block_with_single_chunk(
+        self,
+        mock_vector_store: MagicMock,
+        mock_llm_client: MagicMock,
+        mock_workflow_injector: MagicMock,
     ) -> None:
-        """If no path resolves to a needed type, full context is returned as fallback."""
-        bad_context = {
-            "wrong/path/PROJECT_MANIFESTO.md": "content",
-            "also/wrong.md": "other",
-        }
-        result = orchestrator._filter_relevant_context(bad_context, "DOMAIN_LANGUAGE")
-        # No path matches → fallback returns the full bad_context unchanged.
-        assert result == bad_context
+        """A non-empty result must be wrapped in <retrieved_context> tags."""
+        mock_store = MagicMock()
+        mock_store.query_project.return_value = ["Project uses FastAPI"]
+        orch = SequentialOrchestrator(
+            vector_store=mock_vector_store,
+            llm_client=mock_llm_client,
+            workflow_injector=mock_workflow_injector,
+            project_store=mock_store,
+        )
+        result = orch._retrieve_project_context(
+            project_id="proj-1", doc_type="DOMAIN_LANGUAGE", user_input="input"
+        )
+        assert result.startswith("<retrieved_context>")
+        assert result.endswith("</retrieved_context>")
+        assert "Project uses FastAPI" in result
 
-    def test_filtered_count_is_bounded_by_dependencies(
-        self, orchestrator: SequentialOrchestrator
+    def test_query_uses_correct_semantic_format(
+        self,
+        mock_vector_store: MagicMock,
+        mock_llm_client: MagicMock,
+        mock_workflow_injector: MagicMock,
     ) -> None:
-        """Filtered context must have ≤ len(dependencies) entries."""
-        from app.domain.constants.workflow import get_context_dependencies
-
-        doc_type = "USER_STORIES_MASTER"
-        max_deps = len(get_context_dependencies(doc_type))
-        result = orchestrator._filter_relevant_context(self.full_context, doc_type)
-        assert len(result) <= max_deps
-
-
-# ---------------------------------------------------------------------------
-# Tests: _build_prompt uses dependency-graph filtering
-# ---------------------------------------------------------------------------
-
-
-class TestBuildPromptWithDependencyFiltering:
-    """Integration tests: _build_prompt must only inject filtered docs."""
-
-    _MANIFESTO_PATH = "context/10-CONTEXT/PROJECT_MANIFESTO.md"
-    _REQUIREMENTS_PATH = "context/20-REQUIREMENTS/REQUIREMENTS_MASTER.md"
-    _JOURNEY_PATH = "context/10-CONTEXT/USER_JOURNEY_MAP.md"
-
-    def test_irrelevant_documents_absent_from_prompt(
-        self, orchestrator: SequentialOrchestrator
-    ) -> None:
-        """Docs not in USER_STORIES_MASTER deps must not appear in the prompt."""
-        # USER_JOURNEY_MAP is NOT a dep of USER_STORIES_MASTER.
-        context = {
-            "project_context": {
-                self._MANIFESTO_PATH: "# Manifesto",
-                self._JOURNEY_PATH: "# THIS SHOULD NOT APPEAR IN PROMPT",
-                self._REQUIREMENTS_PATH: "# Requirements",
-                "context/10-CONTEXT/DOMAIN_LANGUAGE.md": "# Domain",
-            },
-            "chat_history": [],
-        }
-        prompt = orchestrator._build_prompt(
-            injection_block="",
-            user_input="Generate user stories",
-            rag_context="",
-            context=context,
+        """The semantic query must follow the format 'Context for {doc_type}: {user_input}'."""
+        mock_store = MagicMock()
+        mock_store.query_project.return_value = ["chunk"]
+        orch = SequentialOrchestrator(
+            vector_store=mock_vector_store,
+            llm_client=mock_llm_client,
+            workflow_injector=mock_workflow_injector,
+            project_store=mock_store,
+        )
+        orch._retrieve_project_context(
+            project_id="p-1",
             doc_type="USER_STORIES_MASTER",
+            user_input="Build todo app",
         )
-        assert "THIS SHOULD NOT APPEAR IN PROMPT" not in prompt
+        mock_store.query_project.assert_called_once_with(
+            "p-1",
+            "Context for USER_STORIES_MASTER: Build todo app",
+            n_results=5,
+        )
 
-    def test_relevant_documents_present_in_prompt(
+    def test_returns_empty_string_on_store_exception(
+        self,
+        mock_vector_store: MagicMock,
+        mock_llm_client: MagicMock,
+        mock_workflow_injector: MagicMock,
+    ) -> None:
+        """A store exception must be caught and return empty string (no crash)."""
+        mock_store = MagicMock()
+        mock_store.query_project.side_effect = RuntimeError("ChromaDB unavailable")
+        orch = SequentialOrchestrator(
+            vector_store=mock_vector_store,
+            llm_client=mock_llm_client,
+            workflow_injector=mock_workflow_injector,
+            project_store=mock_store,
+        )
+        result = orch._retrieve_project_context(
+            project_id="p-1", doc_type="DOMAIN_LANGUAGE", user_input="some input"
+        )
+        assert result == ""
+
+    def test_joins_multiple_chunks_with_double_newline(
+        self,
+        mock_vector_store: MagicMock,
+        mock_llm_client: MagicMock,
+        mock_workflow_injector: MagicMock,
+    ) -> None:
+        """Multiple chunks must be joined by double newline inside the XML block."""
+        mock_store = MagicMock()
+        mock_store.query_project.return_value = [
+            "Chunk One",
+            "Chunk Two",
+            "Chunk Three",
+        ]
+        orch = SequentialOrchestrator(
+            vector_store=mock_vector_store,
+            llm_client=mock_llm_client,
+            workflow_injector=mock_workflow_injector,
+            project_store=mock_store,
+        )
+        result = orch._retrieve_project_context(
+            project_id="p-1", doc_type="DOMAIN_LANGUAGE", user_input="input"
+        )
+        assert "Chunk One\n\nChunk Two\n\nChunk Three" in result
+
+
+# ---------------------------------------------------------------------------
+# Tests: _build_prompt assembles retrieved_context into the prompt
+# ---------------------------------------------------------------------------
+
+
+class TestBuildPromptWithRetrievedContext:
+    """Integration tests: _build_prompt must inject retrieved_context correctly."""
+
+    def test_retrieved_context_content_appears_in_prompt(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """Docs in USER_STORIES_MASTER deps MUST appear in the prompt."""
-        context = {
-            "project_context": {
-                self._MANIFESTO_PATH: "# Manifesto UNIQUE_TOKEN_MANIFESTO",
-                self._REQUIREMENTS_PATH: "# Reqs UNIQUE_TOKEN_REQS",
-                "context/10-CONTEXT/DOMAIN_LANGUAGE.md": "# Domain",
-                self._JOURNEY_PATH: "# Journey",
-            },
-            "chat_history": [],
-        }
+        """Retrieved chunk text must be present in the assembled prompt."""
+        retrieved = (
+            "<retrieved_context>\n"
+            "Tech stack: FastAPI + ChromaDB\n"
+            "Pattern: Clean Architecture\n"
+            "</retrieved_context>"
+        )
         prompt = orchestrator._build_prompt(
             injection_block="",
-            user_input="Generate user stories",
+            user_input="Generate architecture doc",
             rag_context="",
-            context=context,
-            doc_type="USER_STORIES_MASTER",
+            context={"chat_history": []},
+            doc_type="ARCHITECTURE_DESIGN",
+            retrieved_context=retrieved,
         )
-        assert "UNIQUE_TOKEN_MANIFESTO" in prompt
-        assert "UNIQUE_TOKEN_REQS" in prompt
+        assert "Tech stack: FastAPI + ChromaDB" in prompt
+        assert "Pattern: Clean Architecture" in prompt
 
-    def test_prompt_for_project_manifesto_has_no_project_documents_block(
+    def test_empty_retrieved_context_produces_no_block(
         self, orchestrator: SequentialOrchestrator
     ) -> None:
-        """First document must have no <project_documents> block (no deps)."""
-        context = {
-            "project_context": {self._MANIFESTO_PATH: "# Manifesto"},
-            "chat_history": [],
-        }
+        """When retrieved_context is empty, prompt must not contain the XML block."""
         prompt = orchestrator._build_prompt(
             injection_block="",
-            user_input="Start my project",
+            user_input="Generate architecture doc",
             rag_context="",
-            context=context,
-            doc_type="PROJECT_MANIFESTO",
+            context={"chat_history": []},
+            doc_type="ARCHITECTURE_DESIGN",
+            retrieved_context="",
         )
-        assert "</project_documents>" not in prompt
+        assert "</retrieved_context>" not in prompt
+
+    def test_retrieved_context_sandwiched_between_rag_and_rules(
+        self, orchestrator: SequentialOrchestrator
+    ) -> None:
+        """Order must be: <rag_context> … <retrieved_context> … <critical_rules>."""
+        prompt = orchestrator._build_prompt(
+            injection_block="",
+            user_input="some input",
+            rag_context="<rag_context>kb data</rag_context>",
+            context={"chat_history": []},
+            doc_type="DOMAIN_LANGUAGE",
+            retrieved_context="<retrieved_context>\nproject info\n</retrieved_context>",
+        )
+        rag_pos = prompt.index("<rag_context>")
+        ctx_pos = prompt.index("<retrieved_context>")
+        rules_pos = prompt.index("<critical_rules>")
+        assert (
+            rag_pos < ctx_pos < rules_pos
+        ), "Sections must appear in order: rag_context, retrieved_context, critical_rules"

@@ -1,8 +1,8 @@
 # 📊 HU-5.0: Seguimiento de Progreso
 
-> **Última actualización:** 2026-03-19
-> **Estado Global:** 🚧 En Progreso (60% completado)
-> **Fase Actual:** Fase 2-B RAG Dinámico ✅ completado + Fase 6 Knowledge Base (80%)
+> **Última actualización:** 2026-03-21
+> **Estado Global:** 🚧 En Progreso (65% completado)
+> **Fase Actual:** Fase 2-C RAG Orquestador ✅ completado + Fase 6 Knowledge Base (80%)
 
 ---
 
@@ -19,6 +19,7 @@ Progreso Global: [████████████░░░░░░░░] 
 | **Fase 1:** Setup & Planning | ✅ Completado | 100% | 1h | 1h | 2026-02-21 |
 | **Fase 2:** Backend LLM Refinement | 🚧 En Progreso | 40% | 28.5h | - | - |
 | **Fase 2-B:** Dynamic RAG Ingestion | ✅ Completado | 100% | 8h | 6h | 2026-03-19 |
+| **Fase 2-C:** Orchestrator Semantic RAG | ✅ Completado | 100% | 4h | 3h | 2026-03-21 |
 | **Fase 3:** Frontend Integration | ⏸️ Pendiente | 0% | 5.5h | - | - |
 | **Fase 4:** Testing Suite | ⏸️ Pendiente | 0% | 16h | - | - |
 | **Fase 5:** Deployment Homelab | ⏸️ Pendiente | 0% | 12.5h | - | - |
@@ -84,6 +85,37 @@ tenga su propia colección ChromaDB aislada, poblada con los documentos markdown
 | **Inyección de dependencias** | Factory `_get_ingestion_service()` – sobreescribible en tests |
 | **Tests** | `tests/server/services/test_project_ingestion_service.py` (17 tests) · `tests/server/api/v1/endpoints/test_projects_endpoint.py` (11 tests) |
 | **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 149 pasados ✅ |
+
+---
+
+## ✅ Fase 2-C: RAG Dinámico – Búsqueda Semántica en el Orquestador (100% completado)
+
+> **Completado:** 2026-03-21
+> **Rama:** `feature/hu-5.0-full-workflow-refinement`
+
+Sustituye el filtro estático de dependencias por recuperación semántica bajo demanda
+desde ChromaDB, de forma que el orquestador obtiene únicamente los chunks más
+relevantes para cada llamada de generación de documento.
+
+### Tarea 7 – Refactor del Orquestador a Búsqueda Semántica ✅
+
+| Elemento | Detalles |
+|----------|---------|
+| **Archivo** | `src/server/app/services/rag/sequential_orchestrator.py` |
+| **Eliminado** | `_filter_relevant_context` (filtrado estático por grafo de dependencias) |
+| **Imports eliminados** | `MASTER_WORKFLOW`, `get_context_dependencies` de `workflow.py` |
+| **Añadido** | Parámetro `project_store: ChromaProjectStore \| None = None` al constructor |
+| **Método añadido** | `_retrieve_project_context(project_id, doc_type, user_input) -> str` |
+| **Query semántica** | `` f"Context for {doc_type}: {user_input}" `` |
+| **Recuperación** | `ChromaProjectStore.query_project(project_id, query, n_results=5)` |
+| **Formato de retorno** | `<retrieved_context>\n{chunks}\n</retrieved_context>` o `""` |
+| **Estrategia de import** | Guard `TYPE_CHECKING` + `from __future__ import annotations` para evitar cadena chromadb/gRPC en tiempo de ejecución |
+| **Actualización `_build_prompt`** | Nuevo parámetro 6º `retrieved_context: str = ""`; regla 8 referencia `<retrieved_context>`; safety net elimina bloque si prompt > `_MAX_PROMPT_CHARS` |
+| **Fix: lazy import** | `projects.py` importa `ChromaProjectStore` dentro de `_get_ingestion_service()` para evitar cadena gRPC al cargar el módulo |
+| **Fix: lazy import** | `project_ingestion_service.py` usa guard `TYPE_CHECKING` análogamente |
+| **Tests** | `tests/server/services/rag/test_sequential_orchestrator.py` – 43 tests (7 nuevos `TestRetrieveProjectContext`, 3 nuevos `TestBuildPromptWithRetrievedContext`) |
+| **Suite completa** | 685 tests unitarios pasan en 3,80 s (todos los módulos) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 685/685 ✅ |
 
 ---
 

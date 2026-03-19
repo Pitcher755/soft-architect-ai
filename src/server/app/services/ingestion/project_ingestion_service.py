@@ -14,9 +14,10 @@ Responsibilities:
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from app.infrastructure.vector_store.chroma_store import ChromaProjectStore
+if TYPE_CHECKING:
+    from app.infrastructure.vector_store.chroma_store import ChromaProjectStore
 
 logger = logging.getLogger(__name__)
 

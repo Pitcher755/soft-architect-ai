@@ -3,41 +3,50 @@
 Optimized for Detail, Density, and Routing. Handles the sequential generation
 of architecture documents, injecting dynamic context and maintaining memory efficiency.
 
-Context Injection Strategy — Dependency-Graph Filtering
--------------------------------------------------------
-The orchestrator accepts ``project_context`` inside the ``context`` dict:
-a ``dict[str, str]`` mapping relative file paths to their content
-(e.g. ``{"context/10-CONTEXT/PROJECT_MANIFESTO.md": "# Project Manifest\n..."}``).
+Context Injection Strategy — Dynamic RAG (Task 7)
+-------------------------------------------------
+The orchestrator uses two complementary RAG retrieval paths:
 
-Instead of injecting ALL generated documents into every prompt (which causes
-Gemini 500 errors from context-window overflow at document 5+), the orchestrator
-uses the ``CONTEXT_DEPENDENCIES`` graph defined in ``workflow.py``.
+1. **Global knowledge-base context** (``_retrieve_user_context``)
+   Searches the ``softarchitect_kb`` collection for general software-
+   engineering knowledge relevant to the user's input. Result is injected
+   inside ``<rag_context>`` tags.
 
-For each ``doc_type``, the graph declares EXACTLY which prior documents are
-necessary for consistency.  For example, ``USER_STORIES_MASTER`` only needs:
-  - PROJECT_MANIFESTO  (project identity, vision)
-  - DOMAIN_LANGUAGE    (ubiquitous language)
-  - REQUIREMENTS_MASTER (consolidated feature list)
+2. **Per-project dynamic context** (``_retrieve_project_context``)
+   Searches the project-specific ChromaDB collection (managed by
+   ``ChromaProjectStore``) using a semantic query::
 
-not all 4 preceding documents.  This keeps the ``<project_documents>`` block
-at 2-4 files regardless of how far along the 24-step workflow the user is.
+       f"Context for {doc_type}: {user_input}"
 
-The flow is:
-  1. ``_filter_relevant_context()`` → returns only the 2-4 relevant files
-  2. ``_build_project_documents_block()`` → serialises to ``<project_documents>``
-  3. ``_build_prompt()`` → assembles the final prompt with adaptive budget guard
+   Returns the most relevant chunks as a ``<retrieved_context>`` block so
+   the LLM is grounded in the actual documents ingested for this project.
+   Requires ``project_id`` to be present in the ``context`` dict.
 
-Future evolution: once the ``VectorStoreService`` in the ``app/`` layer has a
-live ChromaDB connection, replace ``_filter_relevant_context()`` with a semantic
-query against a per-project collection (Retrieval-Augmented Context Injection).
+Prompt assembly order:
+  1. Workflow injection block  – template + example for the target doc type.
+  2. Global RAG context        – ``<rag_context>`` from the knowledge base.
+  3. Per-project context       – ``<retrieved_context>`` from ChromaDB.
+  4. Critical rules            – strict output format instructions.
+  5. Conversation history      – last 4 messages (truncated).
+  6. User input                – the current user request.
+
+The ``_build_project_documents_block`` utility is retained for serialising
+static document maps when needed (e.g. debugging or migration tooling).
 """
+
+from __future__ import annotations
 
 import logging
 from collections.abc import AsyncGenerator
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    # Imported only for static type analysis.  Keeping this under TYPE_CHECKING
+    # prevents the chromadb/gRPC chain from loading in test environments that
+    # do not need a live ChromaDB connection.
+    from app.infrastructure.vector_store.chroma_store import ChromaProjectStore
 
 from app.core.exceptions import LLMError
-from app.domain.constants.workflow import MASTER_WORKFLOW, get_context_dependencies
 from app.services.rag.template_loader import TemplateLoader
 from app.services.rag.workflow_injector import WorkflowInjector
 
@@ -67,17 +76,50 @@ class SequentialOrchestrator:
         llm_client: Any,
         template_loader: TemplateLoader | None = None,
         workflow_injector: WorkflowInjector | None = None,
-    ):
-        """Initialize the orchestrator with required external services."""
+        project_store: ChromaProjectStore | None = None,
+    ) -> None:
+        """Initialise the orchestrator with required external services.
+
+        Args:
+            vector_store: Global knowledge-base vector store (VectorStoreProtocol).
+            llm_client: LLM streaming client (must implement stream_generate).
+            template_loader: Loader for prompt templates. Defaults to TemplateLoader().
+            workflow_injector: Injector for workflow-step prompt blocks.
+                               Defaults to WorkflowInjector().
+            project_store: Per-project ChromaDB adapter for dynamic RAG retrieval.
+                           Pass ``None`` (default) to disable project-context
+                           injection (useful in tests or when ChromaDB is
+                           unavailable).
+        """
         self.vector_store = vector_store
         self.llm_client = llm_client
         self.template_loader = template_loader or TemplateLoader()
         self.workflow_injector = workflow_injector or WorkflowInjector()
+        self.project_store = project_store
 
     async def generate(
         self, doc_type: str, user_input: str, context: dict[str, Any]
     ) -> AsyncGenerator[str, None]:
-        """Generate a document sequentially based on workflow rules."""
+        """Generate a document sequentially based on workflow rules.
+
+        Retrieves both global knowledge-base context and per-project
+        dynamic context before assembling the final prompt.
+
+        Args:
+            doc_type: Identifier of the document type to generate
+                      (e.g. ``"DOMAIN_LANGUAGE"``).
+            user_input: Sanitised user message / project description.
+            context: Runtime context dict. Expected keys:
+                - ``project_id``   – str UUID of the current project
+                                     (required for per-project RAG).
+                - ``chat_history`` – list[dict[str, str]] (optional).
+
+        Yields:
+            Incremental token strings from the LLM.
+
+        Raises:
+            LLMError: On any unhandled error during generation.
+        """
         try:
             injection_block = self.workflow_injector.get_injected_prompt(doc_type)
             if not injection_block:
@@ -88,8 +130,18 @@ class SequentialOrchestrator:
 
             rag_context = await self._retrieve_user_context(user_input)
 
+            project_id = str(context.get("project_id", ""))
+            retrieved_context = self._retrieve_project_context(
+                project_id, doc_type, user_input
+            )
+
             prompt = self._build_prompt(
-                injection_block, user_input, rag_context, context, doc_type
+                injection_block,
+                user_input,
+                rag_context,
+                context,
+                doc_type,
+                retrieved_context,
             )
 
             # Stream tokens from LLM (history already injected in prompt)
@@ -128,71 +180,59 @@ class SequentialOrchestrator:
 
         return "\n\n".join(doc for doc in flat if doc)
 
-    def _filter_relevant_context(
-        self, project_context: dict[str, str], doc_type: str
-    ) -> dict[str, str]:
-        """Return only the files from ``project_context`` that ``doc_type`` needs.
+    def _retrieve_project_context(
+        self, project_id: str, doc_type: str, user_input: str
+    ) -> str:
+        """Retrieve project-specific context via semantic search in ChromaDB.
 
-        Uses the static ``CONTEXT_DEPENDENCIES`` graph from ``workflow.py`` to
-        determine which prior documents are necessary for the current
-        generation step.  The graph maps each ``doc_type`` to a list of the
-        ``doc_type`` values of its direct predecessors.
+        Replaces the former static ``_filter_relevant_context`` approach.
+        Generates a semantic query and retrieves the most relevant ingested
+        chunks from the per-project ChromaDB collection.
 
-        The filtering process:
-        1. Build a reverse map: ``output_path → doc_type`` from MASTER_WORKFLOW.
-        2. Look up the needed ``doc_type`` list for the current step.
-        3. Keep only ``project_context`` entries whose path resolves to one of
-           the needed types.
-        4. Fall back to returning the full ``project_context`` if:
-           • the dependency list is empty (e.g. PROJECT_MANIFESTO, first step)
-           • no paths matched (paths may differ if Flutter sent non-canonical keys)
+        The semantic query has the form::
+
+            f"Context for {doc_type}: {user_input}"
+
+        This anchors the embedding search to the document type being generated
+        while incorporating the user's current intent.
 
         Args:
-            project_context: Full map of path → content sent by the client.
-            doc_type: The document type currently being generated.
+            project_id: UUID string of the project whose collection to search.
+            doc_type: Document type being generated (e.g. ``"DOMAIN_LANGUAGE"``).
+            user_input: Raw (sanitised) user message.
 
         Returns:
-            A filtered subset of ``project_context`` containing only the
-            directly relevant prior documents.
+            XML-tagged string ``<retrieved_context>...</retrieved_context>``
+            containing the top-k most relevant chunks joined by double newlines,
+            or an empty string when:
+            - ``project_store`` is not configured (``None``),
+            - ``project_id`` is empty,
+            - the collection contains no matching documents, or
+            - the store raises an exception (logged as warning).
         """
-        needed_types: list[str] = get_context_dependencies(doc_type)
+        if not self.project_store or not project_id:
+            return ""
 
-        # No dependencies defined → first document or unknown type, pass nothing.
-        if not needed_types:
-            return {}
-
-        # Build path → doc_type lookup once per call (24 entries, negligible cost).
-        path_to_type: dict[str, str] = {
-            step.output_path: step.doc_type for step in MASTER_WORKFLOW
-        }
-
-        filtered: dict[str, str] = {}
-        for path, content in project_context.items():
-            # Normalise: strip leading slashes Flutter may add.
-            normalized_path = path.lstrip("/")
-            resolved_type = path_to_type.get(normalized_path)
-            if resolved_type in needed_types:
-                filtered[normalized_path] = content
-
-        if not filtered:
-            # No paths resolved (e.g. Windows-style separators or unknown paths).
-            # Safe fallback: pass ALL docs so the LLM is never context-blind.
-            logger.warning(
-                "Dependency graph filtering produced empty set for '%s'. "
-                "Falling back to full project_context (%d files).",
+        query = f"Context for {doc_type}: {user_input}"
+        try:
+            chunks = self.project_store.query_project(project_id, query, n_results=5)
+            if not chunks:
+                return ""
+            joined = "\n\n".join(chunks)
+            logger.info(
+                "Retrieved %d project-context chunks for project=%s doc_type=%s.",
+                len(chunks),
+                project_id,
                 doc_type,
-                len(project_context),
             )
-            return project_context
-
-        logger.info(
-            "Context filter for '%s': %d/%d files selected (needed types: %s).",
-            doc_type,
-            len(filtered),
-            len(project_context),
-            needed_types,
-        )
-        return filtered
+            return f"<retrieved_context>\n{joined}\n</retrieved_context>"
+        except Exception as exc:
+            logger.warning(
+                "Failed to retrieve project context for project=%s: %s",
+                project_id,
+                exc,
+            )
+            return ""
 
     def _build_project_documents_block(
         self,
@@ -307,87 +347,41 @@ class SequentialOrchestrator:
         rag_context: str,
         context: dict[str, Any],
         doc_type: str,
+        retrieved_context: str = "",
     ) -> str:
         """Construct the final deterministic prompt using XML tags for isolation.
 
         Prompt structure (ordered to maximise LLM accuracy):
 
         1. Workflow injection block  – template + example for the target doc type.
-        2. RAG context               – relevant knowledge-base chunks.
-        3. project_documents         – FILTERED docs already generated for this
-                                       project (dependency-graph strategy:
-                                       only direct predecessors of ``doc_type``).
+        2. Global RAG context        – relevant knowledge-base chunks from
+                                       ``<rag_context>`` tags.
+        3. Per-project context       – chunks retrieved via semantic search from
+                                       the project's ChromaDB collection, wrapped
+                                       in ``<retrieved_context>`` tags.
         4. Critical rules            – strict output format instructions.
         5. Conversation history      – last 4 messages (truncated).
         6. User input                – the current user request.
 
-        The ``project_documents`` block is built in two stages:
-          a. ``_filter_relevant_context()`` reduces the full ``project_context``
-             map to only the 2-4 files declared as direct dependencies of
-             ``doc_type`` in ``CONTEXT_DEPENDENCIES`` (workflow.py).
-          b. An adaptive char budget is computed from the remaining headroom
-             inside ``_MAX_PROMPT_CHARS`` after other sections are measured.
-        This two-stage approach prevents Gemini 500 errors from context-window
-        overflow while keeping the LLM consistent with prior project decisions.
+        The ``retrieved_context`` block replaces the former static
+        ``_filter_relevant_context`` + ``_build_project_documents_block``
+        pipeline.  It is built asynchronously in ``generate()`` via
+        ``_retrieve_project_context()`` before this method is called.
 
         Args:
             injection_block: Pre-rendered template/example block from WorkflowInjector.
             user_input: Raw (sanitized) user message.
-            rag_context: Retrieved knowledge-base text wrapped in XML tags.
-            context: Runtime context dict provided by the API endpoint.
-                Expected keys:
-                    - ``chat_history``     – list[dict[str, str]]
-                    - ``project_context``  – dict[str, str]
+            rag_context: Global knowledge-base text wrapped in ``<rag_context>`` tags.
+            context: Runtime context dict. Currently used for ``chat_history``.
             doc_type: Identifier of the document being generated.
+            retrieved_context: Pre-built ``<retrieved_context>`` block from the
+                               project's ChromaDB collection. Empty string when
+                               no project store is configured or collection is empty.
 
         Returns:
             The fully assembled prompt string.
         """
         history_text = self._build_history_text(context.get("chat_history", []))
-
-        # ── Context injection: filter then budget ───────────────────────────
-        # Step 1 – Dependency-graph filtering:
-        #   Reduce ``project_context`` to ONLY the files that are declared
-        #   as direct predecessors of ``doc_type`` in CONTEXT_DEPENDENCIES.
-        #   This limits the block to 2-4 files regardless of how many
-        #   documents have been generated so far in the 24-step workflow.
-        raw_project_context = context.get("project_context", {})
-        relevant_context = self._filter_relevant_context(
-            raw_project_context if isinstance(raw_project_context, dict) else {},
-            doc_type,
-        )
-
-        # Step 2 – Adaptive budget:
-        #   Even after filtering, large individual docs can be heavy.
-        #   Compute the remaining char allowance from the other sections.
-        static_sections_chars = (
-            len(injection_block)
-            + len(rag_context)
-            + len(history_text)
-            + len(user_input)
-            + 2_000  # overhead: critical_rules + XML envelope padding
-        )
-        adaptive_budget = max(0, _MAX_PROMPT_CHARS - static_sections_chars)
-        # Clamp to the absolute maximum we allow for this block.
-        adaptive_budget = min(adaptive_budget, _MAX_TOTAL_CONTEXT_CHARS)
-
-        project_docs_block = self._build_project_documents_block(
-            relevant_context,
-            budget=adaptive_budget,
-        )
-        if project_docs_block:
-            logger.info(
-                "Injecting project_context: %d/%d files after dependency filtering, "
-                "adaptive_budget=%d chars.",
-                len(relevant_context),
-                (
-                    len(raw_project_context)
-                    if isinstance(raw_project_context, dict)
-                    else 0
-                ),
-                adaptive_budget,
-            )
-        # ──────────────────────────────────────────────────────────────────────
 
         critical_rules = (
             "\n\n<critical_rules>\n"
@@ -406,10 +400,10 @@ class SequentialOrchestrator:
             " content to Spanish).\n"
             "7. DO NOT wrap your entire response in ```markdown tags."
             " Just output the text directly.\n"
-            "8. CRITICAL: If a <project_documents> block is present, your"
-            " document MUST be 100%% consistent with those existing documents."
-            " Use the exact same project name, technology stack, domain terms"
-            " and writing language as shown there.\n"
+            "8. CRITICAL: If a <retrieved_context> block is present, your"
+            " document MUST be 100%% consistent with the project information"
+            " retrieved from it. Use the exact same project name, technology"
+            " stack, domain terms and writing language found there.\n"
             "</critical_rules>\n"
         )
 
@@ -420,10 +414,10 @@ class SequentialOrchestrator:
         if rag_context:
             sections.append(rag_context)
 
-        # Inject project documents BEFORE critical rules so the LLM reads the
-        # existing work before receiving output formatting instructions.
-        if project_docs_block:
-            sections.append(project_docs_block)
+        # Inject per-project context BEFORE critical rules so the LLM reads
+        # the retrieved project information before receiving output instructions.
+        if retrieved_context:
+            sections.append(retrieved_context)
 
         sections.append(critical_rules)
 
@@ -437,20 +431,19 @@ class SequentialOrchestrator:
         prompt = "\n\n".join(sections)
 
         # ── Safety net: hard-cap the final prompt ────────────────────────────
-        # If after all adaptive budgeting the prompt still exceeds the ceiling
-        # (e.g. because injection_block alone is huge), truncate the least
-        # critical section (project_documents) rather than failing at the API.
+        # If the prompt still exceeds the ceiling after assembly, drop the
+        # retrieved_context block (least critical) rather than failing at the API.
         if len(prompt) > _MAX_PROMPT_CHARS:
             logger.warning(
                 "Prompt exceeded hard cap (%d > %d chars). "
-                "Rebuilding without project_documents block.",
+                "Rebuilding without retrieved_context block.",
                 len(prompt),
                 _MAX_PROMPT_CHARS,
             )
-            sections_no_docs = [
-                s for s in sections if not s.startswith("<project_documents>")
+            sections_no_context = [
+                s for s in sections if not s.startswith("<retrieved_context>")
             ]
-            prompt = "\n\n".join(sections_no_docs)
+            prompt = "\n\n".join(sections_no_context)
 
         logger.debug("Final prompt size: %d chars.", len(prompt))
         return prompt

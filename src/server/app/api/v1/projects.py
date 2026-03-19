@@ -17,7 +17,6 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 
-from app.infrastructure.vector_store.chroma_store import ChromaProjectStore
 from app.services.ingestion.project_ingestion_service import ProjectIngestionService
 
 logger = logging.getLogger(__name__)
@@ -51,6 +50,11 @@ class IngestDocumentResponse(BaseModel):
 
 def _get_ingestion_service() -> ProjectIngestionService:
     """Build a ProjectIngestionService with a real ChromaDB connection."""
+    # Lazy import to avoid loading chromadb at module import time (gRPC compatibility).
+    from app.infrastructure.vector_store.chroma_store import (
+        ChromaProjectStore,  # noqa: PLC0415
+    )
+
     store = ChromaProjectStore()
     return ProjectIngestionService(store=store)
 

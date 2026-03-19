@@ -14,6 +14,7 @@
 Phase 1: Setup & Planning      ████████████████████ 100% ✅
 Phase 2: Backend Refinement    ████████░░░░░░░░░░░░  40% 🚧
 Phase 2-B: Dynamic RAG         ████████████████████ 100% ✅
+Phase 2-C: Orchestrator RAG    ████████████████████ 100% ✅
 Phase 3: Frontend Integration  ░░░░░░░░░░░░░░░░░░░░   0%
 Phase 4: Testing Suite         ░░░░░░░░░░░░░░░░░░░░   0%
 Phase 5: Deployment            ░░░░░░░░░░░░░░░░░░░░   0%
@@ -78,6 +79,37 @@ its own isolated ChromaDB collection populated from generated markdown documents
 | **DI** | `_get_ingestion_service()` factory – overrideable for tests |
 | **Tests** | `tests/server/services/test_project_ingestion_service.py` (17 tests) · `tests/server/api/v1/endpoints/test_projects_endpoint.py` (11 tests) |
 | **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 149 pass ✅ |
+
+---
+
+## ✅ Phase 2-C: Dynamic RAG – Orchestrator Semantic Search (100%)
+
+> **Completed:** 2026-03-21
+> **Branch:** `feature/hu-5.0-full-workflow-refinement`
+
+Replaces the static context-dependency-graph filter with per-request semantic
+retrieval from ChromaDB, so the orchestrator fetches only the most relevant
+chunks for each document generation call.
+
+### Task 7 – Refactor Orchestrator to Semantic Search ✅
+
+| Item | Details |
+|------|---------|
+| **File** | `src/server/app/services/rag/sequential_orchestrator.py` |
+| **Removed** | `_filter_relevant_context` (static graph-based filtering) |
+| **Removed imports** | `MASTER_WORKFLOW`, `get_context_dependencies` from `workflow.py` |
+| **Added** | `project_store: ChromaProjectStore \| None = None` constructor parameter |
+| **Added method** | `_retrieve_project_context(project_id, doc_type, user_input) -> str` |
+| **Semantic query** | `` f"Context for {doc_type}: {user_input}" `` |
+| **Retrieval** | `ChromaProjectStore.query_project(project_id, query, n_results=5)` |
+| **Return format** | `<retrieved_context>\n{chunks}\n</retrieved_context>` or `""` |
+| **Import strategy** | `TYPE_CHECKING` guard + `from __future__ import annotations` to avoid chromadb/gRPC import at runtime |
+| **`_build_prompt` update** | New `retrieved_context: str = ""` 6th parameter; rule 8 references `<retrieved_context>`; safety net strips block if prompt > `_MAX_PROMPT_CHARS` |
+| **Fix: lazy import** | `projects.py` imports `ChromaProjectStore` inside `_get_ingestion_service()` preventing gRPC chain at module load |
+| **Fix: lazy import** | `project_ingestion_service.py` uses `TYPE_CHECKING` guard similarly |
+| **Tests** | `tests/server/services/rag/test_sequential_orchestrator.py` – 43 tests (7 new `TestRetrieveProjectContext`, 3 new `TestBuildPromptWithRetrievedContext`) |
+| **Full suite** | 685 unit tests pass in 3.80s (all modules) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 685/685 ✅ |
 
 ---
 
