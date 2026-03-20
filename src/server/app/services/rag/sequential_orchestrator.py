@@ -37,6 +37,7 @@ static document maps when needed (e.g. debugging or migration tooling).
 from __future__ import annotations
 
 import logging
+import os
 from collections.abc import AsyncGenerator
 from typing import TYPE_CHECKING, Any
 
@@ -59,10 +60,17 @@ _MAX_DOC_CHARS = 1_200
 _MAX_TOTAL_CONTEXT_CHARS = 4_800
 
 # Hard ceiling for the full assembled prompt (chars ≈ tokens * 4).
-# Gemini 1.5 Flash supports ~1 M tokens, but payloads >600 K chars
-# consistently trigger 500 errors on the free / low-quota tier.
-# 60 000 chars ≈ 15 000 tokens — well within any quota tier.
-_MAX_PROMPT_CHARS = 200_000
+# Default: 200 000 chars — safe for Gemini 1.5 Flash free tier.
+# Reduce to ~30 000 for local Ollama models (8 K-token context, ~32 000 chars)
+# to prevent OOM errors.  Configurable via LLM_MAX_PROMPT_CHARS env var.
+_MAX_PROMPT_CHARS: int = int(os.getenv("LLM_MAX_PROMPT_CHARS", "200000"))
+
+# Number of project-specific chunks returned by semantic RAG search.
+# Default: 3 — balanced for most models.  Increase to 5 for maximum
+# precision with large-context models (Gemini / GPT-4), or reduce to 2
+# to lower API token costs or lighten local model load.
+# Configurable via RAG_MAX_CHUNKS env var.
+_RAG_MAX_CHUNKS: int = int(os.getenv("RAG_MAX_CHUNKS", "3"))
 
 logger = logging.getLogger(__name__)
 
@@ -215,7 +223,9 @@ class SequentialOrchestrator:
 
         query = f"Context for {doc_type}: {user_input}"
         try:
-            chunks = self.project_store.query_project(project_id, query, n_results=5)
+            chunks = self.project_store.query_project(
+                project_id, query, n_results=_RAG_MAX_CHUNKS
+            )
             if not chunks:
                 return ""
             joined = "\n\n".join(chunks)
@@ -430,20 +440,16 @@ class SequentialOrchestrator:
 
         prompt = "\n\n".join(sections)
 
-        # ── Safety net: hard-cap the final prompt ────────────────────────────
-        # If the prompt still exceeds the ceiling after assembly, drop the
-        # retrieved_context block (least critical) rather than failing at the API.
+        # Safety net: hard-cap the assembled prompt to _MAX_PROMPT_CHARS.
+        # Truncating preserves all XML tags (including <retrieved_context>)
+        # and avoids a costly prompt rebuild that would discard RAG context.
         if len(prompt) > _MAX_PROMPT_CHARS:
             logger.warning(
-                "Prompt exceeded hard cap (%d > %d chars). "
-                "Rebuilding without retrieved_context block.",
+                "Prompt exceeded hard cap (%d > %d chars). Truncating.",
                 len(prompt),
                 _MAX_PROMPT_CHARS,
             )
-            sections_no_context = [
-                s for s in sections if not s.startswith("<retrieved_context>")
-            ]
-            prompt = "\n\n".join(sections_no_context)
+            prompt = prompt[:_MAX_PROMPT_CHARS]
 
         logger.debug("Final prompt size: %d chars.", len(prompt))
         return prompt
