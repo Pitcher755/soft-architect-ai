@@ -108,6 +108,33 @@ For detailed setup, troubleshooting, and advanced configuration, see [Detailed S
 * **Memory:** ChromaDB (Vector Store).
 * **Infrastructure:** Docker Compose.
 
+#### ⚙️ Optimization for Local vs Cloud LLMs (Hardware-Agnostic)
+
+SoftArchitect AI is designed to run on **any hardware**, from a standard developer laptop to a
+cloud-hosted server. Adjust two `.env` variables to match your model's context window and
+prevent Out-Of-Memory (OOM) crashes:
+
+| Variable | Default | Ollama 8K model | Gemini / GPT-4 |
+|----------|---------|-----------------|----------------|
+| `LLM_MAX_PROMPT_CHARS` | `200000` | `30000` | `200000` |
+| `RAG_MAX_CHUNKS` | `3` | `2` | `5` |
+
+```bash
+# .env — Laptop with local Ollama (8K context window — prevents OOM)
+LLM_MAX_PROMPT_CHARS=30000
+RAG_MAX_CHUNKS=2
+
+# .env — Cloud API (Gemini 1.5 Flash / Groq — maximum precision)
+LLM_MAX_PROMPT_CHARS=200000
+RAG_MAX_CHUNKS=5
+```
+
+> The safety-net **truncates** the prompt (never silently drops RAG context), so architectural
+> recommendations always remain grounded in the knowledge base.
+>
+> For full technical rationale, see
+> [ADR-002: Configurable RAG Limits](context/30-ARCHITECTURE/ADR/ADR-002-Configurable-RAG-Limits.en.md).
+
 #### 📂 Repository Structure (Monorepo)
 
 ```text
@@ -344,6 +371,34 @@ Para configuración detallada, solución de problemas y opciones avanzadas, cons
 * **IA Engine:** Ollama (Local) / Groq (Cloud).
 * **Memoria:** ChromaDB (Vector Store).
 * **Infra:** Docker Compose.
+
+#### ⚙️ Optimización para LLMs Locales vs Cloud (Hardware-Agnostic)
+
+SoftArchitect AI está diseñado para funcionar en **cualquier hardware**, desde un portátil de
+desarrollo estándar hasta un servidor en la nube. Ajusta dos variables en tu `.env` según la
+ventana de contexto de tu modelo para prevenir errores Out-Of-Memory (OOM):
+
+| Variable | Por defecto | Ollama modelo 8K | Gemini / GPT-4 |
+|----------|------------|------------------|----------------|
+| `LLM_MAX_PROMPT_CHARS` | `200000` | `30000` | `200000` |
+| `RAG_MAX_CHUNKS` | `3` | `2` | `5` |
+
+```bash
+# .env — Portátil con Ollama local (ventana de contexto 8K — previene OOM)
+LLM_MAX_PROMPT_CHARS=30000
+RAG_MAX_CHUNKS=2
+
+# .env — API Cloud (Gemini 1.5 Flash / Groq — máxima precisión)
+LLM_MAX_PROMPT_CHARS=200000
+RAG_MAX_CHUNKS=5
+```
+
+> La red de seguridad **trunca** el prompt (nunca elimina silenciosamente el contexto RAG),
+> por lo que las recomendaciones arquitectónicas siempre mantienen su fundamentación en
+> la base de conocimiento.
+>
+> Para el razonamiento técnico completo, consulta
+> [ADR-002: Límites RAG Configurables](context/30-ARCHITECTURE/ADR/ADR-002-Configurable-RAG-Limits.es.md).
 
 #### 📂 Estructura del Repositorio (Monorepo)
 
