@@ -205,10 +205,7 @@ class ChatRepositoryImpl implements ChatRepository {
       );
       final response = await http.post(
         uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': apiKey,
-        },
+        headers: {'Content-Type': 'application/json', 'X-API-Key': apiKey},
         body: jsonEncode({
           'doc_name': docName,
           'markdown_content': markdownContent,
