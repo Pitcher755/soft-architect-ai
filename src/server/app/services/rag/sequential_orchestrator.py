@@ -62,7 +62,7 @@ _MAX_TOTAL_CONTEXT_CHARS = 4_800
 # Gemini 1.5 Flash supports ~1 M tokens, but payloads >600 K chars
 # consistently trigger 500 errors on the free / low-quota tier.
 # 60 000 chars ≈ 15 000 tokens — well within any quota tier.
-_MAX_PROMPT_CHARS = 60_000
+_MAX_PROMPT_CHARS = 200_000
 
 logger = logging.getLogger(__name__)
 

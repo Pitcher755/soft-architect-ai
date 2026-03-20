@@ -37,4 +37,14 @@ abstract class ChatRepository {
   Future<List<ChatMessage>> getChatHistory(String projectId);
   Future<void> saveMessage(String projectId, ChatMessage message);
   Future<void> clearChatHistory(String projectId);
+
+  /// Ingest a generated markdown document into the project's vector store.
+  ///
+  /// Sends the document to the backend RAG ingestion endpoint so it becomes
+  /// available for semantic retrieval in subsequent chat requests.
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  });
 }

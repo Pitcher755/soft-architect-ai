@@ -66,6 +66,13 @@ class FakeChatRepository implements ChatRepository {
   ) {
     return Stream.value('Fake document content');
   }
+
+  @override
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  }) async {}
 }
 
 /// Fake FileSystemService for testing

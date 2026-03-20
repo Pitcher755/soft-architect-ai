@@ -348,6 +348,19 @@ class ChatNotifier extends StateNotifier<ChatState> {
         content: cleanedContent,
       );
 
+      // Ingest the saved document into ChromaDB for semantic RAG retrieval.
+      // Failures are handled silently to avoid blocking the validation flow.
+      try {
+        final projectId = UuidGenerator.fromString(projectPath);
+        await _repository.ingestDocument(
+          projectId: projectId,
+          docName: '$docType.md',
+          markdownContent: cleanedContent,
+        );
+      } on Exception catch (e) {
+        debugPrint('⚠️ Error en ingesta RAG: $e');
+      }
+
       addSystemMessage('✅ Documento validado y guardado en `$relativePath`');
       ref.read(fileSystemNotifierProvider.notifier).refresh();
 
@@ -639,6 +652,12 @@ class _MockChatRepository implements ChatRepository {
   Future<void> saveMessage(String projectId, ChatMessage message) async {}
   @override
   Future<void> clearChatHistory(String projectId) async {}
+  @override
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  }) async {}
 }
 
 final chatRepositoryProvider = Provider<ChatRepository>(

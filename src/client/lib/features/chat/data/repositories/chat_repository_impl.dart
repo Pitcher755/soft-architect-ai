@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../core/utils/uuid_generator.dart';
@@ -188,6 +190,38 @@ class ChatRepositoryImpl implements ChatRepository {
       }, conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  }) async {
+    try {
+      final uri = Uri.parse(
+        '$baseUrl/api/v1/projects/$projectId/documents/ingest',
+      );
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': apiKey,
+        },
+        body: jsonEncode({
+          'doc_name': docName,
+          'markdown_content': markdownContent,
+        }),
+      );
+      if (response.statusCode != 200) {
+        debugPrint(
+          'ingestDocument failed: status=${response.statusCode} '
+          'body=${response.body}',
+        );
+      }
+    } on Exception catch (e) {
+      debugPrint('ingestDocument error: $e');
     }
   }
 

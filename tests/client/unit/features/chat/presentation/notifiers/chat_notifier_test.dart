@@ -142,6 +142,13 @@ class FakeChatRepository implements ChatRepository {
   Future<void> saveMessage(String projectId, ChatMessage message) async {
     // No-op for testing (mock implementation)
   }
+
+  @override
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  }) async {}
 }
 
 void main() {

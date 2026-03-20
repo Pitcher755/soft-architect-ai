@@ -125,6 +125,14 @@ class FakeChatRepository implements ChatRepository {
   @override
   Future<void> saveMessage(String projectId, ChatMessage message) =>
       Future.value(); // Synchronous return
+
+  @override
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  }) =>
+      Future.value();
 }
 
 void main() {
