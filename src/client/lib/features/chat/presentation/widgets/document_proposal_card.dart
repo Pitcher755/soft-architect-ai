@@ -225,9 +225,11 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    // Check if this is a JSON document with Path header
+    // Check if this is a JSON document with Path header.
+    // Matches both plain "Path:" and bold "**Path:**" since the LLM may
+    // produce either variant depending on its system prompt.
     final pathMatch = RegExp(
-      r'\*\*Path:\*\*\s+(.+?\.json)',
+      r'\*{0,2}Path:\*{0,2}\s+(\S+\.json)',
       caseSensitive: false,
     ).firstMatch(widget.content);
 

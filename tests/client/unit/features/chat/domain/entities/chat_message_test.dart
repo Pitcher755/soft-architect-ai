@@ -125,5 +125,92 @@ void main() {
       expect(base == different, isFalse);
       expect(base.hashCode == different.hashCode, isFalse);
     });
+
+    test('equality is false when content differs (same id and role)', () {
+      // Forces full evaluation of operator== up to the content comparison.
+      final msg1 = ChatMessage(
+        id: '1',
+        role: MessageRole.user,
+        content: 'Hello',
+        timestamp: 't1',
+      );
+      final msg2 = ChatMessage(
+        id: '1',
+        role: MessageRole.user,
+        content: 'World',
+        timestamp: 't1',
+      );
+
+      expect(msg1 == msg2, isFalse);
+    });
+
+    test('fromJson deserialises a full JSON map correctly', () {
+      final json = {
+        'id': 'msg-42',
+        'role': 'assistant',
+        'content': 'Hello from AI',
+        'timestamp': '2026-01-01T00:00:00Z',
+        'metadata': <String, dynamic>{'tokens': 5},
+      };
+
+      final message = ChatMessage.fromJson(json);
+
+      expect(message.id, 'msg-42');
+      expect(message.role, MessageRole.assistant);
+      expect(message.content, 'Hello from AI');
+      expect(message.timestamp, '2026-01-01T00:00:00Z');
+      expect(message.metadata?['tokens'], 5);
+    });
+
+    test('fromJson falls back to user role for unknown role string', () {
+      final json = {
+        'id': 'x',
+        'role': 'unknown_role',
+        'content': 'content',
+        'timestamp': 't',
+        'metadata': null,
+      };
+
+      final message = ChatMessage.fromJson(json);
+
+      expect(message.role, MessageRole.user);
+    });
+
+    test('isHidden returns true when metadata contains hidden:true', () {
+      const hidden = ChatMessage(
+        id: 'h',
+        role: MessageRole.user,
+        content: 'secret',
+        timestamp: 't',
+        metadata: {'hidden': true},
+      );
+      const visible = ChatMessage(
+        id: 'v',
+        role: MessageRole.user,
+        content: 'visible',
+        timestamp: 't',
+      );
+
+      expect(hidden.isHidden, isTrue);
+      expect(visible.isHidden, isFalse);
+    });
+
+    test('toJson serialises all fields correctly', () {
+      const message = ChatMessage(
+        id: 'msg-1',
+        role: MessageRole.assistant,
+        content: 'Response text',
+        timestamp: '2026-06-01T12:00:00Z',
+        metadata: {'key': 'val'},
+      );
+
+      final json = message.toJson();
+
+      expect(json['id'], 'msg-1');
+      expect(json['role'], 'assistant');
+      expect(json['content'], 'Response text');
+      expect(json['timestamp'], '2026-06-01T12:00:00Z');
+      expect((json['metadata'] as Map<String, dynamic>)['key'], 'val');
+    });
   });
 }
