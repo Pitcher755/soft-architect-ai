@@ -1,39 +1,35 @@
+# ==============================================================================
+# 🐳 SoftArchitect AI - Docker Compose Configuration
+#
+# EN: Infrastructure orchestration file.
+#     Run with: docker compose --env-file ../.env up -d
+# ES: Archivo de orquestación de infraestructura.
+#     Ejecutar con: docker compose --env-file ../.env up -d
+# ==============================================================================
+
 services:
-  # ================================
-  # FastAPI Backend Service
-  # ================================
+  # ==========================================================================
+  # 🚀 FastAPI Backend Service / Servicio Backend FastAPI
+  # EN: Main application server handling API requests, RAG logic, and LLMs.
+  # ES: Servidor principal que maneja peticiones API, lógica RAG y LLMs.
+  # ==========================================================================
   api-server:
     build:
       context: ../src/server
       dockerfile: Dockerfile
     container_name: sa_api
+    # EN: Reads all variables directly from the master .env file at the root.
+    # ES: Lee todas las variables automáticamente desde el .env maestro en la raíz.
+    env_file:
+      - ../.env
     ports:
-      - "${BACKEND_PORT:-8000}:8000"
+      - "8000:8000"
     environment:
-      # Core Configuration
-      - ENVIRONMENT=${ENVIRONMENT:-development}
-      - DEBUG=${DEBUG:-true}
-      - LOG_LEVEL=${LOG_LEVEL:-INFO}
-
-      # Service Connections
-      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
-      - CHROMADB_HOST=chromadb
-      - CHROMADB_PORT=8000
-
-      # LLM Provider Config
-      - LLM_PROVIDER=${LLM_PROVIDER:-local}
-      - GROQ_API_KEY=${GROQ_API_KEY}
-      - GROQ_MODEL=${GROQ_MODEL}
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - GEMINI_MODEL=${GEMINI_MODEL}
-
-      # Chat Memory Configuration (NEW)
-      - CHAT_MAX_HISTORY_MESSAGES=${CHAT_MAX_HISTORY_MESSAGES:-20}
-      - CHAT_MAX_MESSAGE_LENGTH=${CHAT_MAX_MESSAGE_LENGTH:-5000}
-
-      # Knowledge Base Path (Docker volume mount)
+      # EN: Hardcoded Docker-specific paths (Overrides .env if necessary).
+      # ES: Rutas estáticas específicas de Docker (Sobrescriben al .env si es necesario).
       - KNOWLEDGE_BASE_PATH=/app/knowledge_base
-
+      - OLLAMA_BASE_URL=http://sa_ollama:11434
+      - CHROMADB_HOST=sa_chromadb
     volumes:
       - ./data/logs:/app/logs
       - ../src/server/app:/app/app
@@ -53,11 +49,13 @@ services:
       retries: 3
       start_period: 10s
 
-  # ================================
-  # ChromaDB Vector Database Service
-  # ================================
+  # ==========================================================================
+  # 🧠 ChromaDB Vector Database / Base de Datos Vectorial
+  # EN: Stores project embeddings and knowledge base for the RAG engine.
+  # ES: Almacena embeddings del proyecto y base de conocimiento para el motor RAG.
+  # ==========================================================================
   chromadb:
-    image: chromadb/chroma:latest
+    image: chromadb/chroma:${CHROMADB_IMAGE_VERSION:-latest}
     container_name: sa_chromadb
     ports:
       - "8001:8000"
@@ -77,11 +75,13 @@ services:
       retries: 3
       start_period: 10s
 
-  # ================================
-  # Ollama LLM Engine Service
-  # ================================
+  # ==========================================================================
+  # 🦙 Ollama LLM Engine / Motor LLM Local
+  # EN: Local AI provider. Consumes GPU if available and configured.
+  # ES: Proveedor de IA local. Consume GPU si está disponible y configurada.
+  # ==========================================================================
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:${OLLAMA_IMAGE_VERSION:-latest}
     container_name: sa_ollama
     ports:
       - "11434:11434"
@@ -90,11 +90,17 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0:11434
       - OLLAMA_MODELS=/root/.ollama/models
-      # Allow connection from other containers
+      # EN: Allow connection from other containers.
+      # ES: Permitir conexión desde otros contenedores.
       - OLLAMA_ORIGINS=*
     networks:
       - sa_network
     restart: unless-stopped
+
+    # ----------------------------------------------------------------------
+    # EN: GPU Acceleration (NVIDIA). Comment this deploy block if using CPU only.
+    # ES: Aceleración GPU (NVIDIA). Comenta este bloque 'deploy' si usas solo CPU.
+    # ----------------------------------------------------------------------
     deploy:
       resources:
         reservations:
@@ -102,6 +108,7 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
+
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/11434'" ]
       interval: 10s
@@ -109,9 +116,9 @@ services:
       retries: 3
       start_period: 30s
 
-# ================================
-# Docker Networks Configuration
-# ================================
+# ==========================================================================
+# 🌐 Docker Networks / Redes de Docker
+# ==========================================================================
 networks:
   sa_network:
     driver: bridge
@@ -119,9 +126,9 @@ networks:
       config:
         - subnet: 172.25.0.0/16
 
-# ================================
-# Volumes (Data Persistence)
-# ================================
+# ==========================================================================
+# 💾 Volumes (Data Persistence) / Volúmenes (Persistencia de Datos)
+# ==========================================================================
 volumes:
   ollama_data:
     driver: local
