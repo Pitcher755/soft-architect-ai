@@ -58,12 +58,12 @@ fi
 # Step 4: Pull latest images
 echo ""
 echo "📦 Descargando imágenes (esto puede tardar la primera vez)..."
-docker compose -f infrastructure/docker-compose.yml pull
+docker compose -f infrastructure/docker-compose.yml --env-file .env pull
 
 # Step 5: Start services
 echo ""
 echo "🐳 Iniciando contenedores..."
-docker compose -f infrastructure/docker-compose.yml up -d --build
+docker compose -f infrastructure/docker-compose.yml --env-file .env up -d --build
 
 print_success "Contenedores iniciados."
 

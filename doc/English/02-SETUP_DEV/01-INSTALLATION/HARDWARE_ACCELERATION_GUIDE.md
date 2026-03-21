@@ -177,10 +177,10 @@ OLLAMA_MODEL=llama3.1:8b
 
 ```bash
 # Stop services
-docker compose -f infrastructure/docker-compose.yml down
+docker compose -f infrastructure/docker-compose.yml --env-file .env down
 
 # Start with GPU
-docker compose -f infrastructure/docker-compose.yml up -d
+docker compose -f infrastructure/docker-compose.yml --env-file .env up -d
 ```
 
 ---

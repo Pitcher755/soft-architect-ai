@@ -73,7 +73,9 @@ poetry install
 
 Configurar entorno:
 ```bash
-cp ../../infrastructure/.env.example .env
+# La configuración de entorno vive en la raíz del repositorio
+# Ejecutar desde la raíz (si aún no existe el .env)
+cp .env.example .env
 # Editar .env con tu configuración
 ```
 
@@ -233,7 +235,9 @@ poetry install
 
 Configure environment:
 ```bash
-cp ../../infrastructure/.env.example .env
+# Environment configuration lives at the repository root
+# Run from the repo root (if .env does not exist yet)
+cp .env.example .env
 # Edit .env with your configuration
 ```
 
