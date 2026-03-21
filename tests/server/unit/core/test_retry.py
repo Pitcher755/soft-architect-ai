@@ -11,7 +11,7 @@ Test Coverage:
 - Logging of retry attempts
 """
 
-from unittest.mock import Mock, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
@@ -143,3 +143,64 @@ class TestRetryDecorator:
             # Second retry: 3.0s (3.0x multiplier)
             assert mock_sleep.call_args_list[0][0][0] == 1.0
             assert mock_sleep.call_args_list[1][0][0] == 3.0
+
+
+class TestRetryDecoratorAsync:
+    """Test suite for @with_retry decorator on async functions.
+
+    Covers the async_wrapper path (lines 74-118 of retry.py):
+    - async success on first attempt
+    - async success after transient failure (retry + asyncio.sleep)
+    - async exhausted after max attempts (RetryExhaustedError)
+    - async logs success when succeeding after retry
+    """
+
+    @pytest.mark.asyncio
+    async def test_async_retry_succeeds_on_first_attempt(self):
+        """Async function that succeeds immediately is called exactly once."""
+        mock_func = AsyncMock(return_value="async_result")
+        decorated = with_retry(max_retries=3)(mock_func)
+
+        result = await decorated()
+
+        assert result == "async_result"
+        assert mock_func.call_count == 1
+
+    @pytest.mark.asyncio
+    async def test_async_retry_succeeds_after_transient_failure(self):
+        """Async function retries once (with asyncio.sleep) and succeeds."""
+        mock_func = AsyncMock(side_effect=[ConnectionError("temporary"), "success"])
+        decorated = with_retry(max_retries=3, base_delay=0.01)(mock_func)
+
+        with patch("asyncio.sleep", new_callable=AsyncMock) as mock_sleep:
+            result = await decorated()
+
+        assert result == "success"
+        assert mock_func.call_count == 2
+        mock_sleep.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_async_retry_exhausted_raises_error(self):
+        """Async function exhausts all retries and raises RetryExhaustedError."""
+        mock_func = AsyncMock(side_effect=ConnectionError("always fails"))
+        decorated = with_retry(max_retries=3, base_delay=0.01)(mock_func)
+
+        with patch("asyncio.sleep", new_callable=AsyncMock):
+            with pytest.raises(RetryExhaustedError) as exc_info:
+                await decorated()
+
+        assert mock_func.call_count == 3
+        assert exc_info.value.details["attempts"] == 3
+
+    @pytest.mark.asyncio
+    async def test_async_retry_logs_success_after_retry(self, caplog):
+        """Async wrapper logs info when succeeding after at least one retry."""
+        mock_func = AsyncMock(side_effect=[ConnectionError("temp"), "ok"])
+        mock_func.__name__ = "async_operation"
+        decorated = with_retry(max_retries=3, base_delay=0.01)(mock_func)
+
+        with patch("asyncio.sleep", new_callable=AsyncMock):
+            result = await decorated()
+
+        assert result == "ok"
+        assert mock_func.call_count == 2
