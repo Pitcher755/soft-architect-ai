@@ -215,6 +215,7 @@ jobs:
 
       - name: ✅ Validate docker-compose
         run: |
+          cp .env.example .env
           docker compose --env-file .env -f infrastructure/docker-compose.yml config
 
       - name: 🏗️ Build-check Dockerfile
