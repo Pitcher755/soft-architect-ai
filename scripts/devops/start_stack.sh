@@ -58,12 +58,12 @@ fi
 # Step 4: Pull latest images
 echo ""
 echo "📦 Descargando imágenes (esto puede tardar la primera vez)..."
-docker compose -f infrastructure/docker-compose.yml --env-file .env pull
+docker compose --env-file .env -f infrastructure/docker-compose.yml pull
 
 # Step 5: Start services
 echo ""
 echo "🐳 Iniciando contenedores..."
-docker compose -f infrastructure/docker-compose.yml --env-file .env up -d --build
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d --build
 
 print_success "Contenedores iniciados."
 
@@ -86,7 +86,7 @@ if python3 infrastructure/verify_setup.py; then
     echo "   - Ollama:  http://localhost:11434"
     echo ""
     echo "📚 Para ver logs en tiempo real:"
-    echo "   docker compose -f infrastructure/docker-compose.yml logs -f"
+    echo "   docker compose --env-file .env -f infrastructure/docker-compose.yml logs -f"
     echo ""
     exit 0
 else

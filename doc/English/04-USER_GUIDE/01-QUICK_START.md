@@ -31,7 +31,7 @@ git clone https://github.com/Pitcher755/soft-architect-ai.git
 cd soft-architect-ai
 
 # 2. Start services
-docker compose -f infrastructure/docker-compose.yml --env-file .env up -d
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 
 # 3. Open the application
 # URL: http://localhost:5000

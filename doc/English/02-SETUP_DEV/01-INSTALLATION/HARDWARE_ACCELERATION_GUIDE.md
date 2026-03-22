@@ -177,10 +177,10 @@ OLLAMA_MODEL=llama3.1:8b
 
 ```bash
 # Stop services
-docker compose -f infrastructure/docker-compose.yml --env-file .env down
+docker compose --env-file .env -f infrastructure/docker-compose.yml down
 
 # Start with GPU
-docker compose -f infrastructure/docker-compose.yml --env-file .env up -d
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 ```
 
 ---
@@ -323,7 +323,7 @@ ollama pull deepseek-coder-v2:16b  # Pro coding
 #### 6️⃣ Restart Backend
 
 ```bash
-docker compose -f infrastructure/docker-compose.yml restart backend-server
+docker compose --env-file .env -f infrastructure/docker-compose.yml restart backend-server
 ```
 
 ---
@@ -429,7 +429,7 @@ GROQ_MODEL=llama-3.1-70b-versatile
 
 3️⃣ **Restart:**
 ```bash
-docker compose -f infrastructure/docker-compose.yml restart backend-server
+docker compose --env-file .env -f infrastructure/docker-compose.yml restart backend-server
 ```
 
 ✅ **Enjoy RTX 4090 speed from your office laptop!**

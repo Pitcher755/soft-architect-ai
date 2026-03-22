@@ -1,20 +1,22 @@
-# 🐋 Docker Compose Setup Guide - SoftArchitect AI
+# 🐋 Guía Docker Compose — SoftArchitect AI
 
-> **Last Updated:** 28 de enero de 2026
+> **Última Actualización:** 22 de marzo de 2026
 > **Estado:** ✅ Production Ready
-> **Pruebaed On:** Linux (Ubuntu 22.04), Windows (WSL2), macOS (M1/Intel)
+> **Probado en:** Linux (Ubuntu 22.04), Windows (WSL2), macOS (M1/Intel)
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 1. [Requisitos Previos](#requisitos-previos)
-2. [Instalación Rápida](#instalación-rápida)
-3. [Modos de Ejecución](#modos-de-ejecución)
-4. [Verificación de Servicios](#verificación-de-servicios)
-5. [Troubleshooting](#troubleshooting)
-6. [Performance Tuning](#performance-tuning)
-7. [Arquitectura Detallada](#arquitectura-detallada)
+2. [.env Centralizado (Raíz del Proyecto)](#env-centralizado-raíz-del-proyecto)
+3. [Comandos Esenciales](#comandos-esenciales)
+4. [Modos de Ejecución](#modos-de-ejecución)
+5. [Verificación de Servicios](#verificación-de-servicios)
+6. [Logs y Monitorización](#logs-y-monitorización)
+7. [Builds y Reconstrucción](#builds-y-reconstrucción)
+8. [Troubleshooting](#troubleshooting)
+9. [Arquitectura de Servicios](#arquitectura-de-servicios)
 
 ---
 
@@ -23,21 +25,17 @@
 ### Hardware Mínimo
 
 ```yaml
-CPU: 2 cores (4 cores recomendado)
-RAM: 8GB (4GB Ollama + 2GB ChromaDB + 2GB Sistema)
-Disco: 20GB libres (10GB Ollama + 5GB Docker overhead + 5GB caché)
+CPU: 2 cores (4 recomendado)
+RAM: 8 GB (4 GB Ollama + 2 GB ChromaDB + 2 GB Sistema)
+Disco: 20 GB libres
 GPU: Opcional (NVIDIA CUDA 11.8+ para acelerar Ollama)
 ```
 
 ### Software Requerido
 
 ```bash
-# Docker Desktop o Docker Engine + Docker Compose
-docker --version
-# Expected: Docker version 24.0.0 or higher
-
-docker compose version
-# Expected: Docker Compose version 2.20.0 or higher
+docker --version        # >= 24.0.0
+docker compose version  # >= 2.20.0
 ```
 
 **Instalación:**
@@ -45,457 +43,429 @@ docker compose version
 - **Linux:** `curl -fsSL https://get.docker.com | sh`
 - **macOS/Windows:** [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-### GPU NVIDIA (Opcional pero Recomendado)
+---
 
-Si tienes GPU NVIDIA, descomenta en `docker-compose.yml`:
+## 📁 .env Centralizado (Raíz del Proyecto)
 
-```yaml
-# En servicio ollama:
-deploy:
-  resources:
-    reservations:
-      devices:
-        - driver: nvidia
-          count: 1
-          capabilities: [gpu]
+> ⚠️ **El `.env` vive en la raíz del repositorio**, NO dentro de `infrastructure/`.
+> El archivo `docker-compose.yml` lee las variables con `env_file: ../.env` (un nivel arriba).
+
+### Estructura de archivos
+
+```
+soft-architect-ai/          ← RAÍZ DEL REPOSITORIO
+├── .env                    ← ✅ Archivo maestro de configuración
+├── .env.example            ← ✅ Plantilla pública (sin secretos reales)
+└── infrastructure/
+    ├── docker-compose.yml  ← Lee env_file: ../.env automáticamente
+    └── ...
 ```
 
-**Instalación NVIDIA Container Toolkit:**
+### Crear tu .env desde la plantilla
 
 ```bash
-# Linux
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -fsSL https://nvidia.github.io/nvidia-docker/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-docker-keyring.gpg
-sudo apt-get install -y nvidia-docker2 && sudo systemctl restart docker
+# Desde la raíz del repositorio
+cp .env.example .env
 
-# Verify
-docker run --rm --gpus all nvidia/cuda:12.0.0-runtime-ubuntu22.04 nvidia-smi
+# Editar si necesitas ajustar valores
+# Los defaults funcionan para entorno de desarrollo local
+nano .env
+```
+
+### Variables clave en .env
+
+```bash
+# Proveedor de LLM: ollama | groq | gemini
+LLM_PROVIDER=ollama
+OLLAMA_MODEL=qwen2.5-coder:3b
+
+# ChromaDB
+CHROMADB_HOST=sa_chromadb
+CHROMADB_PORT=8000
+
+# FastAPI
+DEBUG=True
+LOG_LEVEL=DEBUG
+
+# API Keys (solo si usas proveedores cloud)
+GROQ_API_KEY=
+GEMINI_API_KEY=
 ```
 
 ---
 
-## 🚀 Instalación Rápida
+## ⚡ Comandos Esenciales
 
-### Paso 1: Clonar Repositorio
+> Todos los comandos se ejecutan desde la **raíz del repositorio** (`soft-architect-ai/`).
+> El parámetro `--env-file .env` es obligatorio cuando se invoca desde la raíz.
+
+### Levantar el stack (detached)
 
 ```bash
-git clone https://github.com/Pitcher755/soft-architect-ai.git
-cd soft-architect-ai
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 ```
 
-### Paso 2: Crear Archivos de Configuración
+### Detener el stack
 
 ```bash
-# En infrastructure/
-cd infrastructure
-cp .env.example .env
-
-# En src/server/
-cd ../src/server
-cp .env.example .env
+docker compose --env-file .env -f infrastructure/docker-compose.yml down
 ```
 
-Editar ambos `.env` según tu preferencia (defaults funcionan para desarrollo local).
-
-### Paso 3: Iniciar Servicios
+### Ver estado de servicios
 
 ```bash
-cd infrastructure
-docker compose up --build
+docker compose --env-file .env -f infrastructure/docker-compose.yml ps
 ```
 
-**Esperado:**
-- Ollama descargará modelo (2-5 minutos, ~5GB)
-- ChromaDB se iniciará (~10s)
-- FastAPI estará listo (~5s)
-
-### Paso 4: Verificar
+### Usar el script de automatización (recomendado)
 
 ```bash
-# En otra terminal
-curl http://localhost:8000/api/v1/health
-# Expected: {"status":"OK","message":"SoftArchitect AI backend is running","version":"0.1.0"}
+# El script realiza pre-checks, valida .env, hace pull y levanta el stack
+./scripts/devops/start_stack.sh
 
-# Swagger UI
-open http://localhost:8000/docs
-# Expected: Interactive API documentation
+# Para detener
+./scripts/devops/stop_stack.sh
 ```
 
 ---
 
 ## 🎛️ Modos de Ejecución
 
-### Modo 1: Desarrollo (Hot-Reload)
+### Modo 1: Desarrollo (logs en vivo)
 
 ```bash
-cd infrastructure
-docker compose up
+docker compose --env-file .env -f infrastructure/docker-compose.yml up
 ```
 
-**Características:**
-- ✅ Hot-reload de código Python (cambios se reflejan al guardar)
-- ✅ Logs en vivo en terminal
-- ✅ Debug mode activado
-- ❌ No recomendado para producción
+- ✅ Logs en vivo en la terminal actual
+- ✅ `Ctrl+C` detiene todos los servicios limpiamente
 
-### Modo 2: Desarrollo en Background
+### Modo 2: Background (detached)
 
 ```bash
-docker compose up -d
-
-# Ver logs
-docker compose logs -f api-server
-
-# Ver logs solo de Ollama
-docker compose logs -f ollama
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 ```
 
-### Modo 3: Producción (Detached)
+- ✅ Libera la terminal
+- ✅ Los servicios continúan tras cerrar la terminal
+
+### Modo 3: Rebuild de imágenes
 
 ```bash
-# 1. Editar .env: DEBUG=False, IRON_MODE=True
-# 2. Iniciar en background
-docker compose up -d
-
-# 3. Verificar estado
-docker compose ps
-
-# 4. Ver logs en caso de problemas
-docker compose logs
-
-# 5. Detener servicios
-docker compose down
+# Build y arranque con imágenes reconstruidas
+docker compose --env-file .env -f infrastructure/docker-compose.yml up --build -d
 ```
 
-### Modo 4: Rebuild Completo (Limpiar Cache)
+### Modo 4: Build sin caché (limpieza total)
 
 ```bash
-# Detener y remover contenedores + volúmenes
-docker compose down -v
+# Paso 1: Construir sin usar el caché de capas Docker
+docker compose --env-file .env -f infrastructure/docker-compose.yml build --no-cache
 
-# Eliminar imágenes (para actualizar)
-docker rmi sa_api
+# Paso 2: Iniciar los servicios
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
+```
 
-# Reconstruir
-docker compose up --build
+> 💡 Úsalo cuando cambias `requirements.txt`, el `Dockerfile`, o dependencias del sistema operativo dentro del contenedor.
+
+### Modo 5: Destrucción total y reconstrucción desde cero
+
+```bash
+# ⚠️ El flag -v elimina también los volúmenes (datos de ChromaDB)
+docker compose --env-file .env -f infrastructure/docker-compose.yml down -v
+docker compose --env-file .env -f infrastructure/docker-compose.yml build --no-cache
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
+```
+
+### Modo 6: Reconstruir solo la API (sin recargar Ollama)
+
+```bash
+docker compose --env-file .env -f infrastructure/docker-compose.yml build --no-cache api-server
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d api-server
 ```
 
 ---
 
 ## 🔍 Verificación de Servicios
 
-### Verificar Estado
+### Estado de contenedores
 
 ```bash
-# Ver estado de todos los servicios
-docker compose ps
-
-# Salida esperada:
-# NAME           IMAGE                    STATUS
-# sa_ollama      ollama/ollama:latest     Up (healthy)
-# sa_chromadb    chromadb/chroma:latest   Up (healthy)
-# sa_api         sa_api:latest            Up (healthy)
+docker compose --env-file .env -f infrastructure/docker-compose.yml ps
 ```
 
-### Logs por Servicio
+**Salida esperada (todos los servicios `Up (healthy)`):**
 
-```bash
-# API (la más importante)
-docker compose logs api-server --tail 50
-
-# Ollama (ver descargas de modelo)
-docker compose logs ollama --tail 50
-
-# ChromaDB
-docker compose logs chromadb --tail 50
-
-# Todos
-docker compose logs --tail 100
+```
+NAME           IMAGE                    STATUS
+sa_api         sa_api:latest            Up (healthy)
+sa_chromadb    chromadb/chroma:latest   Up (healthy)
+sa_ollama      ollama/ollama:latest     Up (healthy)
 ```
 
-### Health Checks
+### Health check del backend
 
 ```bash
-# API
-curl -s http://localhost:8000/api/v1/health | jq .
-
-# Ollama
-curl -s http://localhost:11434/api/status | jq .
-
-# ChromaDB (requiere expose del puerto)
-curl -s http://localhost:8000 | jq .
+curl http://localhost:8000/api/v1/health
 ```
 
-### Acceso a Contenedores
+**Respuesta esperada:**
+
+```json
+{"status":"OK","message":"SoftArchitect AI backend is running","version":"0.1.0"}
+```
+
+### Swagger UI (explorador interactivo de la API)
+
+```
+http://localhost:8000/docs
+```
+
+### Verificar variables de entorno dentro del contenedor
 
 ```bash
-# Entrar en shell del API
-docker compose exec api-server bash
+# Ver variables relacionadas con LLM
+docker exec sa_api env | grep -i llm
 
-# Ver variables de ambiente
-docker compose exec api-server env | grep -i llm
+# Ver variables de ChromaDB
+docker exec sa_api env | grep -i chroma
 
-# Ver SQLite en vivo
-docker compose exec api-server sqlite3 /app/data/softarchitect.db ".tables"
+# Ver modo debug
+docker exec sa_api env | grep -i debug
+```
 
-# Entrar en Ollama
-docker compose exec ollama bash
-# Ver modelos descargados: ollama list
+### Acceder al shell del contenedor
+
+```bash
+# Shell interactivo en el contenedor de la API
+docker exec -it sa_api bash
+
+# Shell en ChromaDB
+docker exec -it sa_chromadb bash
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## 📋 Logs y Monitorización
 
-### Problema 1: "Cannot connect to Docker daemon"
+### Logs en tiempo real (todos los servicios)
 
 ```bash
-# Solución:
-sudo systemctl start docker  # Linux
-# o abrir Docker Desktop (macOS/Windows)
-
-# Verify
-docker ps
+docker compose --env-file .env -f infrastructure/docker-compose.yml logs -f
 ```
 
-### Problema 2: "Port 8000 already in use"
+### Logs solo del backend (sa_api)
 
 ```bash
-# Encontrar qué está usando puerto 8000
-lsof -i :8000  # macOS/Linux
-netstat -ano | findstr :8000  # Windows
-
-# Opción A: Cambiar puerto en docker-compose.yml
-ports:
-  - "8001:8000"  # Ahora será http://localhost:8001
-
-# Opción B: Matar proceso existente
-kill -9 <PID>
+docker logs -f sa_api
 ```
 
-### Problema 3: "Ollama out of memory"
+### Logs del backend con timestamps
 
 ```bash
-# Síntoma: Ollama crashea al procesar requests
+docker logs -f --timestamps sa_api
+```
 
-# Solución 1: Aumentar mem_limit
-# En docker-compose.yml, sección deploy de ollama:
-memory: 4GB  # o más
+### Logs de ChromaDB
 
-# Solución 2: Usar modelo más pequeño
-OLLAMA_MODEL=qwen2.5-coder:1.5b  # vs 7b
+```bash
+docker logs -f sa_chromadb
+```
 
-# Solución 3: Verificar que tengas espacio en disco
+### Logs de Ollama
+
+```bash
+docker logs -f sa_ollama
+```
+
+### Ver últimas N líneas
+
+```bash
+docker logs --tail 100 sa_api
+docker logs --tail 50  sa_chromadb
+docker logs --tail 50  sa_ollama
+```
+
+### Filtrar logs por nivel o patrón
+
+```bash
+# Solo errores
+docker logs -f sa_api 2>&1 | grep -i "error\|exception\|critical"
+
+# Solo peticiones HTTP
+docker logs -f sa_api 2>&1 | grep -i "POST\|GET\|DELETE\|PUT"
+
+# Solo log de startup
+docker logs sa_api 2>&1 | grep -i "started\|running\|uvicorn"
+```
+
+### Monitorización en tiempo real (CPU/RAM/Red)
+
+```bash
+# Todos los contenedores del proyecto
+docker stats sa_api sa_chromadb sa_ollama
+
+# Solo snapshot (sin refreshing)
+docker stats --no-stream sa_api sa_chromadb sa_ollama
+```
+
+---
+
+## 🏗️ Builds y Reconstrucción
+
+### Listar imágenes del proyecto
+
+```bash
+docker images | grep sa_
+```
+
+### Validar la configuración Docker Compose (sin ejecutar)
+
+```bash
+docker compose --env-file .env -f infrastructure/docker-compose.yml config
+```
+
+### Eliminar imagen de la API para forzar rebuild
+
+```bash
+docker rmi sa_api
+docker compose --env-file .env -f infrastructure/docker-compose.yml up --build -d
+```
+
+### Reiniciar un servicio sin detener el stack
+
+```bash
+# Reiniciar solo la API
+docker compose --env-file .env -f infrastructure/docker-compose.yml restart api-server
+
+# Reiniciar solo ChromaDB
+docker compose --env-file .env -f infrastructure/docker-compose.yml restart chromadb
+```
+
+### Limpiar recursos Docker no usados
+
+```bash
+# Contenedores detenidos, imágenes huérfanas y redes sin usar
+docker system prune -f
+
+# ⚠️ También elimina volúmenes (borra datos de ChromaDB)
+docker system prune -f --volumes
+```
+
+### Ver uso de espacio Docker
+
+```bash
 docker system df
 ```
 
-### Problema 4: "ChromaDB connection refused"
+---
+
+## 🔧 Troubleshooting
+
+### ❌ "env file .env not found"
 
 ```bash
-# Síntoma: API no conecta a ChromaDB
+# Causa: ejecutar docker compose desde infrastructure/ sin --env-file
+# ✅ Solución A: ejecutar siempre desde la raíz con --env-file .env
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 
-# Solución 1: Verificar que ChromaDB esté listo
-docker compose logs chromadb
-
-# Solución 2: Reiniciar ChromaDB
-docker compose restart chromadb
-
-# Solución 3: Revisar variables de ambiente
-docker compose exec api-server env | grep -i chroma
-# CHROMA_HOST debe ser "chromadb", CHROMA_PORT "8000"
+# ✅ Solución B: ejecutar desde infrastructure/ con ruta relativa
+cd infrastructure
+docker compose --env-file ../.env up -d
 ```
 
-### Problema 5: "Connection refused to Ollama"
+### ❌ "Cannot connect to Docker daemon"
 
 ```bash
-# Síntoma: API falla con "Cannot connect to Ollama:11434"
-
-# Verificar Ollama está corriendo
-docker compose exec api-server curl http://ollama:11434/api/status
-
-# Si falla, revisar logs
-docker compose logs ollama
-
-# Reiniciar
-docker compose restart ollama
+sudo systemctl start docker    # Linux (systemd)
+sudo service docker start      # Linux (init.d)
+# macOS/Windows: abrir Docker Desktop
+docker ps                      # verificar que responde
 ```
 
-### Problema 6: "ModuleNotFoundError: No module named 'app'"
+### ❌ "Port 8000 already in use"
 
 ```bash
-# Síntoma: API crashea en startup
+# Ver qué proceso ocupa el puerto 8000
+lsof -i :8000
 
-# Causa: El COPY en Dockerfile no funciona bien
+# Matar ese proceso
+kill -9 <PID>
 
-# Solución:
-# 1. Verificar que requirements.txt existe en src/server/
-# 2. Rebuild:
-docker compose up --build
-
-# 3. Verificar dentro del contenedor:
-docker compose exec api-server ls -la /app/app/main.py
+# Alternativa: cambiar el puerto en .env
+# API_PORT=8001
 ```
 
-### Problema 7: "NVIDIA Container ejecutartime not found"
+### ❌ "Ollama out of memory"
 
 ```bash
-# Si descomentas la sección GPU pero no tienes driver instalado
+# Opción 1: usar un modelo más ligero en .env
+OLLAMA_MODEL=qwen2.5-coder:1.5b
 
-# Opción A: Instalar NVIDIA Container Toolkit (recomendado)
-# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/
+# Opción 2: verificar RAM disponible
+docker stats --no-stream
+free -h
+```
 
-# Opción B: Comentar GPU config (volver a CPU-only)
-# En docker-compose.yml, comentar:
-# devices:
-#   - driver: nvidia
+### ❌ "ChromaDB connection refused" desde la API
+
+```bash
+# Ver estado y logs de ChromaDB
+docker logs sa_chromadb
+
+# Reiniciar solo ChromaDB
+docker compose --env-file .env -f infrastructure/docker-compose.yml restart chromadb
+
+# Verificar qué host ve la API en su entorno
+docker exec sa_api env | grep CHROMA
+```
+
+### ❌ API no arranca (ModuleNotFoundError / ImportError)
+
+```bash
+# Rebuild forzado sin caché (soluciona problemas de dependencias)
+docker compose --env-file .env -f infrastructure/docker-compose.yml build --no-cache api-server
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d api-server
+
+# Verificar que el código está montado dentro del contenedor
+docker exec sa_api ls -la /app/app/main.py
+docker exec sa_api pip list | grep fastapi
 ```
 
 ---
 
-## ⚡ Performance Tuning
+## 🏛️ Arquitectura de Servicios
 
-### RAM Eficiente (para máquinas limitadas)
+```
+soft-architect-ai/              ← Raíz del proyecto
+├── .env                        ← Variables maestras (AQUÍ)
+└── infrastructure/
+    └── docker-compose.yml      ← Orquestación (lee ../. env con env_file)
 
-```yaml
-# docker-compose.yml
-services:
-  ollama:
-    deploy:
-      resources:
-        limits:
-          memory: 1.5GB  # Redacir de 2GB
-  chromadb:
-    deploy:
-      resources:
-        limits:
-          memory: 256MB  # OK para mayoria
-  api-server:
-    deploy:
-      resources:
-        limits:
-          memory: 256MB  # Reducir de 512MB
+Red interna Docker: sa_network
+┌────────────────────────────────────────────────────┐
+│  sa_api       (FastAPI)     localhost:8000          │
+│  sa_chromadb  (ChromaDB)    localhost:8001          │
+│  sa_ollama    (Ollama LLM)  localhost:11434         │
+└────────────────────────────────────────────────────┘
 
-# .env
-OLLAMA_MODEL=qwen2.5-coder:1.5b  # Modelo más pequeño
+Flujo de datos típico:
+  Flutter App → sa_api:8000 → sa_chromadb:8000 (interno)
+                            → sa_ollama:11434  (interno)
 ```
 
-### Máxima Velocidad (máquinas potentes + GPU)
-
-```yaml
-# docker-compose.yml
-services:
-  ollama:
-    deploy:
-      resources:
-        limits:
-          memory: 4GB
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-  api-server:
-    deploy:
-      resources:
-        limits:
-          memory: 1GB
-
-# .env
-OLLAMA_MODEL=mistral:7b  # Mejor balance velocidad/quality
-LLM_PROVIDER=cloud  # Considerar Groq si necesitas <1s
-```
-
-### Diagnóstico de Recursos
-
-```bash
-# Ver uso real de Docker
-docker stats
-
-# Output:
-# CONTAINER       CPU %    MEM USAGE / LIMIT
-# sa_ollama       45.2%    1.8GB / 2GB
-# sa_chromadb     0.2%     45MB / 512MB
-# sa_api          0.1%     120MB / 512MB
-```
+| Servicio | Imagen | Puerto ext. | Puerto int. | Descripción |
+|----------|--------|-------------|-------------|-------------|
+| `sa_api` | `sa_api:latest` (build local) | `8000` | `8000` | Backend FastAPI |
+| `sa_chromadb` | `chromadb/chroma:latest` | `8001` | `8000` | Base de datos vectorial |
+| `sa_ollama` | `ollama/ollama:latest` | `11434` | `11434` | Motor LLM local |
 
 ---
 
-## 🏗️ Arquitectura Detallada
+## 🔗 Referencias
 
-### Flujo de Datos
-
-```
-┌─────────────────┐
-│  Flutter App    │
-│  (localhost)    │
-└────────┬────────┘
-         │ HTTP
-         ▼
-┌─────────────────────────┐
-│   FastAPI Backend       │
-│   (Port 8000)           │
-│   - API Routes          │
-│   - RAG Orchestration   │
-│   - Auth                │
-└────────┬────────────────┘
-         │         │
-         │ Network │
-    ┌────┴─────────┴──┐
-    │   sa_network    │
-    │  (172.25.0.0/16)│
-    └────┬─────────┬──┘
-         │         │
-    ┌────▼──┐  ┌───▼────┐
-    │ Ollama │  │ChromaDB│
-    │ :11434 │  │ :8000  │
-    └────────┘  └────────┘
-         │         │
-    ┌────▼──────────▼───┐
-    │  Docker Volumes    │
-    │ - ollama_storage   │
-    │ - chroma_storage   │
-    └────────────────────┘
-```
-
-### Stack de Puertos
-
-| Servicio   | Puerto | Acceso        | Propósito |
-|-----------|--------|---------------|-----------|
-| API       | 8000   | Host + Network | REST API + Swagger |
-| Ollama    | 11434  | Network only  | LLM inference |
-| ChromaDB  | 8000   | Network only  | Vector DB API |
-
-### Volúmenes
-
-| Volumen | Ubicación | Tamaño | Contenido |
-|---------|-----------|--------|-----------|
-| ollama_storage | `/root/.ollama` | ~5-10GB | Modelos descargados |
-| chroma_storage | `/chroma/chroma` | ~100-500MB | Embeddings indexados |
-| logs | `./logs` | Variable | Logs de aplicación |
-| data | `./data` | ~200MB | SQLite DB + caché |
-
----
-
-## 📚 Referencias
-
-- **AGENTS.md:** Definición de arquitectura del proyecto
-- **context/30-ARCHITECTURE/TECH_STACK_DETAILS.es.md:** Stack tecnológico
-- **src/server/README.md:** Documentoación de backend
-- **Docker Compose Docs:** https://docs.docker.com/compose/
-- **Ollama Docs:** https://ollama.ai
-- **ChromaDB Docs:** https://docs.trychroma.com
-
----
-
-## 🤝 Soporte
-
-Si encuentras problemas:
-
-1. **Revisa los logs:** `docker compose logs`
-2. **Consulta Troubleshooting arriba**
-3. **Abre issue en GitHub:** https://github.com/Pitcher755/soft-architect-ai/issues
-4. **Contacta al equipo:** team@softarchitect.ai
-
----
-
-**Happy Coding! 🚀**
+- [Inicio Rápido](../01-INSTALACION/GUIA_INICIO_RAPIDO.md) — Setup completo en 15 minutos
+- [Scripts de Automatización](../04-AUTOMATIZACION/AUTOMATIZACION.md) — `start_stack.sh`, `stop_stack.sh`
+- [CI/CD Pipeline](../05-CI-CD/) — Validación automática en GitHub Actions
+- [infrastructure/docker-compose.yml](../../../../infrastructure/docker-compose.yml) — Archivo fuente de la orquestación
+- [.env.example](../../../../.env.example) — Plantilla pública de variables de entorno

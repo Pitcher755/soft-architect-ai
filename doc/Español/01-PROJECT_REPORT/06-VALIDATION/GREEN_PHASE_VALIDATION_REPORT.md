@@ -248,7 +248,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 **Causa Raíz:**
-Script ejecutaba `docker compose -f infrastructure/docker-compose.yml ps -q` desde carpeta raíz, pero se debe ejecutar desde `infrastructure/`.
+Script ejecutaba `docker compose --env-file .env -f infrastructure/docker-compose.yml ps -q` desde carpeta raíz, pero se debe ejecutar desde `infrastructure/`.
 
 **Solución:**
 Cambio en [infrastructure/verify_setup.py](../../infrastructure/verify_setup.py) línea 39:

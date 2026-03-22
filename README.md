@@ -177,7 +177,7 @@ cp .env.example .env
 3. **Start Services:**
 
 ```bash
-docker compose -f infrastructure/docker-compose.yml --env-file .env up -d
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 ```
 
 #### 📚 Additional Resources
@@ -442,7 +442,7 @@ cp .env.example .env
 3. **Levantar Servicios:**
 
 ```bash
-docker compose -f infrastructure/docker-compose.yml --env-file .env up -d
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 ```
 
 #### 📚 Recursos Adicionales
