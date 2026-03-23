@@ -184,4 +184,101 @@ class ProjectProgressService {
     final percentage = (documentCount / _totalDocuments) * 100;
     return percentage.clamp(0.0, 100.0);
   }
+
+  /// Gathers complete project context for AI injection.
+  ///
+  /// Reads all `.md` and `.json` files from:
+  /// - `context/` folder (all subfolders recursively)
+  /// - Project root (ROOT phase documents)
+  ///
+  /// Returns a map where:
+  /// - **Key**: Relative file path (e.g., `context/10-BUSINESS/MANIFEST.md`)
+  /// - **Value**: File content as string
+  ///
+  /// **Ignores**:
+  /// - Mock projects (`mock://`)
+  /// - README files
+  /// - Untitled files
+  /// - Non-existent paths
+  ///
+  /// This context is sent to the AI backend to prevent LLM amnesia
+  /// and ensure consistent document generation based on existing work.
+  ///
+  /// [projectPath] - Absolute path to project directory.
+  ///
+  /// Example return:
+  /// ```dart
+  /// {
+  ///   'context/10-BUSINESS/MANIFEST.md': '# Project Manifest\n...',
+  ///   'RULES.md': '# Development Rules\n...',
+  /// }
+  /// ```
+  static Future<Map<String, String>> gatherProjectContext(
+    String projectPath,
+  ) async {
+    // Skip mock projects
+    if (isMockProject(projectPath)) {
+      return {};
+    }
+
+    final context = <String, String>{};
+
+    try {
+      // 1️⃣ Gather documents from context/ folder
+      final contextDir = Directory(p.join(projectPath, 'context'));
+      if (contextDir.existsSync()) {
+        await for (final entity in contextDir.list(
+          recursive: true,
+          followLinks: false,
+        )) {
+          if (entity is File) {
+            final path = entity.path.toLowerCase();
+            if (path.endsWith('.md') || path.endsWith('.json')) {
+              final filename = p.basename(path);
+              if (!filename.contains('readme') &&
+                  !filename.contains('untitled')) {
+                try {
+                  final content = await entity.readAsString();
+                  final relativePath = p.relative(
+                    entity.path,
+                    from: projectPath,
+                  );
+                  context[relativePath] = content;
+                } on FileSystemException catch (e) {
+                  debugPrint('⚠️ Error reading file ${entity.path}: $e');
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // 2️⃣ Gather ROOT phase documents from project root
+      final rootDocs = [
+        'RULES.md',
+        'CONTRIBUTING.md',
+        'AGENTS.md',
+        'README.md',
+      ];
+      for (final docName in rootDocs) {
+        final file = File(p.join(projectPath, docName));
+        if (file.existsSync()) {
+          try {
+            final content = await file.readAsString();
+            context[docName] = content;
+          } on FileSystemException catch (e) {
+            debugPrint('⚠️ Error reading ROOT file $docName: $e');
+          }
+        }
+      }
+
+      return context;
+    } on FileSystemException catch (e) {
+      debugPrint('⚠️ Error gathering project context: $e');
+      return {};
+    } on Exception catch (e) {
+      debugPrint('⚠️ Unexpected error gathering context: $e');
+      return {};
+    }
+  }
 }

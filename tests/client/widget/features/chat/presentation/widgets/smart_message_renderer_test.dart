@@ -623,5 +623,292 @@ This is a test document.
       expect(find.text('PROPUESTA DE DOCUMENTO'), findsNothing);
       expect(find.text('Validar y Guardar'), findsNothing);
     });
+
+    testWidgets('document card detects plain Path: .json header (no bold)', (
+      WidgetTester tester,
+    ) async {
+      // Regression: _buildContent regex previously only matched **bold**
+      // Path: headers. This verifies plain "Path:" is also handled.
+      const testContent = '''
+<document>
+Path: context/20-REQUIREMENTS/USER_STORIES.json
+{"user_stories": [{"id": 1, "title": "Login"}]}
+</document>
+''';
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Card header must be visible regardless of path format.
+      expect(find.text('PROPUESTA DE DOCUMENTO'), findsOneWidget);
+      // Action buttons are present (card rendered successfully).
+      expect(find.text('Validar y Guardar'), findsOneWidget);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Markdown JSON formatting helpers (_formatJsonPathBlock / _formatIfJson)
+  // ---------------------------------------------------------------------------
+
+  group('markdown JSON formatting', () {
+    testWidgets('renders plain Path: .json block without crash', (
+      WidgetTester tester,
+    ) async {
+      // Verifies _formatJsonPathBlock converts the LLM raw output to a
+      // code-fenced display string, preventing SelectableRegion assertion
+      // errors caused by unbounded single-line content.
+      const rawJson = '{"name": "test", "version": "1.0"}';
+      const testContent = 'Path: context/config.json\n$rawJson';
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Widget must render without throwing.
+      expect(find.byType(SmartMessageRenderer), findsOneWidget);
+    });
+
+    testWidgets('renders bold **Path:** .json block without crash', (
+      WidgetTester tester,
+    ) async {
+      // Verifies bold variant is also handled by _formatJsonPathBlock.
+      const rawJson = '{"key": "value"}';
+      const testContent = '**Path:** context/data.json\n$rawJson';
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SmartMessageRenderer), findsOneWidget);
+    });
+
+    testWidgets('renders raw JSON object wrapped in code block without crash', (
+      WidgetTester tester,
+    ) async {
+      // Verifies _formatIfJson wraps bare JSON objects in a ```json fence,
+      // providing natural line-break points to avoid layout overflow.
+      const testContent = '{"project":"SoftArchitect","version":"0.1.0"}';
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SmartMessageRenderer), findsOneWidget);
+    });
+
+    testWidgets('passes non-JSON content through unchanged', (
+      WidgetTester tester,
+    ) async {
+      // Verifies _formatIfJson leaves plain text untouched.
+      const testContent = 'This is just plain text, not JSON.';
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SmartMessageRenderer(rawContent: testContent, isUser: false),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('plain text, not JSON'), findsOneWidget);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // _buildRailMixedContent – [document] marker / reasoning extraction
+  // ---------------------------------------------------------------------------
+
+  group('rail mixed content', () {
+    testWidgets(
+      '_buildRailMixedContent handles [document] + [Razonamiento] prefix',
+      (tester) async {
+        // Content with legacy [Razonamiento] prefix followed by [document].
+        // This exercises the content.contains('[document]') branch that splits
+        // reasoning text from document content (lines 107-112, 129-130).
+        const testContent =
+            '[Razonamiento] Some analysis here [document] '
+            '**Path:** context/doc.md\n# Document Title';
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SmartMessageRenderer(
+                rawContent: testContent,
+                isUser: false,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SmartMessageRenderer), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '_buildRailMixedContent splits reasoning before **Path:** header',
+      (tester) async {
+        // Reasoning text BEFORE a **Path:** marker triggers the else-branch
+        // startIndex > 0 path (lines 122-123) and the reasoningText.isNotEmpty
+        // path (lines 129-130).
+        const testContent =
+            'Here is my analysis of the requirements.\n'
+            '**Path:** context/spec.json\n{"key": "value"}';
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SmartMessageRenderer(
+                rawContent: testContent,
+                isUser: false,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SmartMessageRenderer), findsOneWidget);
+      },
+    );
+  });
+
+  // ---------------------------------------------------------------------------
+  // _buildMarkdown helpers via user messages (isUser:true bypasses routing)
+  // ---------------------------------------------------------------------------
+
+  group('_buildMarkdown via user messages', () {
+    testWidgets(
+      '_formatJsonPathBlock formats valid Path:JSON in user message',
+      (tester) async {
+        // isUser:true always routes to _buildMarkdown → _formatJsonPathBlock
+        // is called with content that matches the regex (lines 245, 246,
+        // 251, 252, 253 of smart_message_renderer.dart).
+        const rawJson = '{"name": "test", "version": "1.0"}';
+        const testContent = 'Path: context/config.json\n$rawJson';
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SmartMessageRenderer(
+                rawContent: testContent,
+                isUser: true,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SmartMessageRenderer), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '_formatJsonPathBlock returns content-as-is for invalid JSON body',
+      (tester) async {
+        // Regex matches but jsonDecode throws FormatException (line 254).
+        const testContent = 'Path: context/data.json\n{not_valid_json_at_all}';
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SmartMessageRenderer(
+                rawContent: testContent,
+                isUser: true,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SmartMessageRenderer), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '_formatIfJson wraps a valid JSON object in a code fence (user msg)',
+      (tester) async {
+        // isUser:true → _buildMarkdown → _formatIfJson sees JSON object
+        // (lines 275, 276, 277 of smart_message_renderer.dart).
+        const testContent = '{"project": "SoftArchitect", "version": "0.1.0"}';
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SmartMessageRenderer(
+                rawContent: testContent,
+                isUser: true,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SmartMessageRenderer), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '_formatIfJson handles FormatException for JSON-like content',
+      (tester) async {
+        // Starts with { ends with } but is not valid JSON → FormatException
+        // caught (line 278 of smart_message_renderer.dart).
+        const testContent = '{key_without_quotes: "value"}';
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SmartMessageRenderer(
+                rawContent: testContent,
+                isUser: true,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SmartMessageRenderer), findsOneWidget);
+      },
+    );
+
+    testWidgets('_buildMarkdown applies dark-theme code style', (tester) async {
+      // Dark theme forces isDark == true → the greenAccent code-color branch
+      // inside _buildMarkdown's MarkdownStyleSheet (line 326).
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData.dark(),
+          home: const Scaffold(
+            body: SmartMessageRenderer(
+              rawContent: 'Plain AI response without any document blocks.',
+              isUser: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SmartMessageRenderer), findsOneWidget);
+    });
   });
 }

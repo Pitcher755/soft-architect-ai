@@ -211,7 +211,37 @@ Documentation for end users of the application.
 1. [Guía de Docker Compose](Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_GUIDE.md)
 2. [Automatización](Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md)
 3. [/infrastructure/docker-compose.yml](../infrastructure/docker-compose.yml)
-4. [/infrastructure/validate-docker-setup.sh](../infrastructure/validate-docker-setup.sh)
+
+**🐳 Comandos Docker de Referencia Rápida** (`.env` centralizado en raíz del repo):
+
+```bash
+# Levantar el stack (detached)
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
+
+# Logs de la API en tiempo real
+docker logs -f sa_api
+
+# Logs de todos los servicios
+docker compose --env-file .env -f infrastructure/docker-compose.yml logs -f
+
+# Estado de servicios
+docker compose --env-file .env -f infrastructure/docker-compose.yml ps
+
+# Build sin caché (cambios en requirements.txt o Dockerfile)
+docker compose --env-file .env -f infrastructure/docker-compose.yml build --no-cache
+
+# Validar configuración (CI/CD dry run)
+docker compose --env-file .env -f infrastructure/docker-compose.yml config
+
+# Acceder al shell de la API
+docker exec -it sa_api bash
+
+# Health check del backend
+curl http://localhost:8000/api/v1/health
+
+# Detener el stack
+docker compose --env-file .env -f infrastructure/docker-compose.yml down
+```
 
 ---
 
@@ -245,7 +275,7 @@ Documentation for end users of the application.
 | QUICK_START_GUIDE ⭐ NEW | Inicio rápido (3 opciones), troubleshooting | Nuevos usuarios | ~450 |
 | SETUP_GUIDE | Guía detallada paso a paso | DevOps | ~600 |
 | TOOLS_AND_STACK | Versiones exactas, compatibilidades | Desarrolladores | ~400 |
-| DOCKER_COMPOSE_GUIDE | Docker Compose detallado, networking | DevOps/Infra | ~500 |
+| DOCKER_COMPOSE_GUIDE | Docker Compose: .env centralizado, build, logs, troubleshooting | DevOps/Infra | ~300 |
 | AUTOMATION | CI/CD, scripts de automatización | DevOps/SRE | ~500 |
 | TEST_COVERAGE_DASHBOARD ⭐ NEW | Dashboard de cobertura y métricas de tests | QA/Dev/Leads | ~400 |
 | TEST_EXECUTION_LOG ⭐ NEW | Histórico y seguimiento de test runs | QA/CI | ~350 |
@@ -406,9 +436,13 @@ packages/knowledge_base/
 - [AUTOMATIZACION.md](Español/02-SETUP_DEV/04-AUTOMATIZACION/AUTOMATIZACION.md) - CI/CD y scripts
 - [HERRAMIENTAS_Y_STACK.md](Español/02-SETUP_DEV/01-INSTALACION/HERRAMIENTAS_Y_STACK.md) - Stack técnico
 
+**Docker (`.env` centralizado en raíz del repo):**
+- [DOCKER_COMPOSE_GUIDE.md](Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_GUIDE.md) — Referencia completa (build, logs, troubleshooting)
+- [infrastructure/docker-compose.yml](../infrastructure/docker-compose.yml) — Fuente de orquestación
+
 **Troubleshooting:**
 - [GUIA_INICIO_RAPIDO.md](Español/02-SETUP_DEV/01-INSTALACION/GUIA_INICIO_RAPIDO.md) - Problemas comunes
-- [DOCKER_COMPOSE_GUIDE.md](Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_GUIDE.md) - Problemas Docker
+- [DOCKER_COMPOSE_GUIDE.md](Español/02-SETUP_DEV/02-DOCKER/DOCKER_COMPOSE_GUIDE.md) - Problemas Docker (`env file not found`, puertos ocupados, ChromaDB connection refused)
 
 ---
 

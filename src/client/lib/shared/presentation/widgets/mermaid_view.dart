@@ -7,6 +7,12 @@ import 'package:flutter/material.dart';
 /// Sanitizes the raw LLM output before encoding to prevent HTTP 400 errors
 /// caused by malformed arrow syntax, then displays the result inline using
 /// [Image.network].
+///
+/// On failure the error builder distinguishes two cases:
+/// - **Network / service errors** (HTTP 503, 429, `SocketException`):
+///   displays a `cloud_off` icon with "Diagram temporarily unavailable".
+/// - **Syntax errors** (HTTP 400 or any other failure): displays a
+///   `warning_amber` icon with "Invalid diagram syntax".
 class MermaidView extends StatelessWidget {
   const MermaidView({required this.code, super.key});
 
@@ -64,21 +70,53 @@ class MermaidView extends StatelessWidget {
           debugPrint('MERMAID.INK error: $error');
           debugPrint('Attempted URL: $_imageUrl');
 
+          // Distinguish network/rate-limit errors (503, 429, socket) from
+          // genuine diagram syntax errors (HTTP 400 from mermaid.ink) so the
+          // fallback message is accurate.
+          // HTTP 400 = bad diagram syntax → warning icon.
+          // HTTP 503/429 or SocketException = service unavailable → cloud icon.
+          final errorStr = error.toString();
+          final isNetworkError =
+              errorStr.contains('SocketException') ||
+              errorStr.contains('statusCode: 503') ||
+              errorStr.contains('statusCode: 429');
+
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
-                  Icons.warning_amber_rounded,
-                  color: Colors.orangeAccent,
+                Icon(
+                  isNetworkError
+                      ? Icons.cloud_off_rounded
+                      : Icons.warning_amber_rounded,
+                  color: isNetworkError ? Colors.blueGrey : Colors.orangeAccent,
                   size: 32,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Invalid diagram syntax. Check the console for details.',
+                  isNetworkError
+                      ? 'Diagram temporarily unavailable'
+                      : 'Invalid diagram syntax',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
+                if (isNetworkError) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    'mermaid.ink is currently unreachable. Try again later.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.6),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ],
             ),
           );

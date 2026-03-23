@@ -199,7 +199,7 @@ Located in: `scripts/devops/`
 **Verification:**
 ```bash
 # Check services
-docker compose -f infrastructure/docker-compose.yml ps
+docker compose --env-file .env -f infrastructure/docker-compose.yml ps
 
 # Test backend
 curl http://localhost:8000/health
@@ -593,10 +593,10 @@ ls -ld coverage/ coverage_html/
 
 ```bash
 # Check Docker status
-docker compose -f infrastructure/docker-compose.yml ps
+docker compose --env-file .env -f infrastructure/docker-compose.yml ps
 
 # View logs
-docker compose -f infrastructure/docker-compose.yml logs
+docker compose --env-file .env -f infrastructure/docker-compose.yml logs
 
 # Restart clean
 ./scripts/devops/stop_stack.sh
@@ -820,7 +820,7 @@ Ubicación: `scripts/devops/`
 **Verificación:**
 ```bash
 # Verificar servicios
-docker compose -f infrastructure/docker-compose.yml ps
+docker compose --env-file .env -f infrastructure/docker-compose.yml ps
 
 # Testear backend
 curl http://localhost:8000/health
@@ -1214,10 +1214,10 @@ ls -ld coverage/ coverage_html/
 
 ```bash
 # Verificar estado de Docker
-docker compose -f infrastructure/docker-compose.yml ps
+docker compose --env-file .env -f infrastructure/docker-compose.yml ps
 
 # Ver logs
-docker compose -f infrastructure/docker-compose.yml logs
+docker compose --env-file .env -f infrastructure/docker-compose.yml logs
 
 # Reiniciar limpio
 ./scripts/devops/stop_stack.sh
@@ -1266,8 +1266,8 @@ flutter pub get
 
 ---
 
-**Last Updated:** March 11, 2026  
-**Version:** 1.0.0  
+**Last Updated:** March 11, 2026
+**Version:** 1.0.0
 **Maintained by:** SoftArchitect AI Team
 
 </div>

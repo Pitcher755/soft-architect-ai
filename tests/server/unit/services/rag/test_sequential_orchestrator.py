@@ -1,14 +1,14 @@
-"""
-Unit tests for SequentialOrchestrator - RAG Backend Orchestration.
+"""Unit tests for SequentialOrchestrator - RAG Backend Orchestration.
 
 Tests cover:
 - Async generator functionality
 - RAG context retrieval from ChromaDB
 - Error handling (ChromaDB unavailable, LLM timeout)
 - Template loading and prompt building
+- Environment variable configuration (RAG_MAX_CHUNKS, LLM_MAX_PROMPT_CHARS)
 """
 
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
@@ -43,7 +43,9 @@ class TestSequentialOrchestrator:
         mock_template = Mock(content="Template: {user_input}")
         orchestrator.template_loader.load.return_value = mock_template
         orchestrator.llm_client.stream_generate = Mock(
-            side_effect=lambda *args, **kwargs: self._mock_async_generator(["token1", "token2"])
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(
+                ["token1", "token2"]
+            )
         )
         orchestrator.vector_store.query.return_value = {
             "documents": [[]],
@@ -101,9 +103,13 @@ class TestSequentialOrchestrator:
         """
         mock_template = Mock(content="Template: {context}\n{user_input}")
         orchestrator.template_loader.load.return_value = mock_template
-        orchestrator.vector_store.query.side_effect = ConnectionError("ChromaDB unreachable")
+        orchestrator.vector_store.query.side_effect = ConnectionError(
+            "ChromaDB unreachable"
+        )
         orchestrator.llm_client.stream_generate = Mock(
-            side_effect=lambda *args, **kwargs: self._mock_async_generator(["degraded_token"])
+            side_effect=lambda *args, **kwargs: self._mock_async_generator(
+                ["degraded_token"]
+            )
         )
 
         tokens = []
@@ -130,7 +136,9 @@ class TestSequentialOrchestrator:
             "documents": [[]],
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(side_effect=TimeoutError("LLM timeout"))
+        orchestrator.llm_client.stream_generate = AsyncMock(
+            side_effect=TimeoutError("LLM timeout")
+        )
 
         with pytest.raises(LLMError) as exc_info:
             async for _ in orchestrator.generate(
@@ -346,5 +354,131 @@ class TestSequentialOrchestrator:
     @staticmethod
     async def _mock_async_generator(items: list[str]):
         """Helper to create async generator from list."""
+        for item in items:
+            yield item
+
+
+class TestEnvVarConfiguration:
+    """Tests for environment-variable-driven orchestrator configuration.
+
+    Validates that ``RAG_MAX_CHUNKS`` controls the number of chunks requested
+    from ChromaDB, and that ``LLM_MAX_PROMPT_CHARS`` enforces hard prompt
+    truncation while preserving the ``<retrieved_context>`` tag.
+    """
+
+    @pytest.mark.asyncio
+    async def test_rag_max_chunks_env_var_controls_n_results(
+        self,
+    ):
+        """RAG_MAX_CHUNKS env var must propagate to project_store.query_project.
+
+        When ``RAG_MAX_CHUNKS`` is set to ``"2"``, the orchestrator should call
+        ``query_project`` with ``n_results=2`` instead of the default 3.
+        """
+        import importlib
+
+        import app.services.rag.sequential_orchestrator as orch_module
+
+        with patch.dict("os.environ", {"RAG_MAX_CHUNKS": "2"}):
+            importlib.reload(orch_module)
+            mock_workflow_injector = Mock()
+            mock_workflow_injector.get_injected_prompt.return_value = "Block"
+            mock_project_store = Mock()
+            mock_project_store.query_project.return_value = ["chunk1", "chunk2"]
+
+            orchestrator = orch_module.SequentialOrchestrator(
+                vector_store=Mock(),
+                llm_client=Mock(),
+                workflow_injector=mock_workflow_injector,
+                project_store=mock_project_store,
+            )
+            orchestrator.vector_store.query.return_value = {"documents": [[]]}
+            orchestrator.llm_client.stream_generate = Mock(
+                side_effect=lambda *a, **kw: self._mock_async_generator(["ok"])
+            )
+
+            async for _ in orchestrator.generate(
+                doc_type="DOMAIN_LANGUAGE",
+                user_input="Test input",
+                context={"project_id": "proj-123"},
+            ):
+                pass
+
+            mock_project_store.query_project.assert_called_once()
+            _, call_kwargs = mock_project_store.query_project.call_args
+            assert (
+                call_kwargs["n_results"] == 2
+            ), f"Expected n_results=2 (from RAG_MAX_CHUNKS), got {call_kwargs['n_results']}"
+
+        # Restore the module-level constant for subsequent tests
+        importlib.reload(orch_module)
+
+    @pytest.mark.asyncio
+    async def test_llm_max_prompt_chars_env_var_truncates_prompt(
+        self,
+    ):
+        """LLM_MAX_PROMPT_CHARS env var enforces hard truncation of the prompt.
+
+        When the assembled prompt exceeds the configured ceiling the orchestrator
+        must truncate it (``prompt[:_MAX_PROMPT_CHARS]``) rather than rebuild
+        without the retrieved_context block.  This ensures:
+
+        1. The prompt sent to the LLM is at most ``LLM_MAX_PROMPT_CHARS`` chars.
+        2. The ``<retrieved_context>`` tag is still present in the truncated
+           prompt (i.e. truncation happens *after* the tag is injected).
+        """
+        import importlib
+
+        import app.services.rag.sequential_orchestrator as orch_module
+
+        # Force a very small cap so even a minimal prompt overflows.
+        cap = 100
+        with patch.dict("os.environ", {"LLM_MAX_PROMPT_CHARS": str(cap)}):
+            importlib.reload(orch_module)
+
+            captured_prompts: list[str] = []
+
+            def capture_stream(prompt: str, history: list):
+                captured_prompts.append(prompt)
+                return self._mock_async_generator(["tok"])
+
+            mock_workflow_injector = Mock()
+            mock_workflow_injector.get_injected_prompt.return_value = "Block"
+            mock_project_store = Mock()
+            mock_project_store.query_project.return_value = [
+                "A" * 200,  # large chunk to force overflow
+            ]
+
+            orchestrator = orch_module.SequentialOrchestrator(
+                vector_store=Mock(),
+                llm_client=Mock(),
+                workflow_injector=mock_workflow_injector,
+                project_store=mock_project_store,
+            )
+            orchestrator.vector_store.query.return_value = {"documents": [[]]}
+            orchestrator.llm_client.stream_generate = Mock(side_effect=capture_stream)
+
+            async for _ in orchestrator.generate(
+                doc_type="DOMAIN_LANGUAGE",
+                user_input="Hello",
+                context={"project_id": "proj-456"},
+            ):
+                pass
+
+            assert len(captured_prompts) == 1
+            sent_prompt = captured_prompts[0]
+            assert (
+                len(sent_prompt) <= cap
+            ), f"Prompt was {len(sent_prompt)} chars, expected ≤{cap}"
+            # retrieved_context tag must still be present (not stripped)
+            assert (
+                "<retrieved_context>" in sent_prompt
+            ), "<retrieved_context> tag should not be stripped by truncation"
+
+        importlib.reload(orch_module)
+
+    @staticmethod
+    async def _mock_async_generator(items: list[str]):
+        """Yield each item in *items* as an async generator."""
         for item in items:
             yield item

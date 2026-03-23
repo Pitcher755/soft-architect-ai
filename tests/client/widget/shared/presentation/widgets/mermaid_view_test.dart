@@ -181,5 +181,29 @@ void main() {
       final container = tester.widget<Container>(containerFinder);
       expect(container.constraints?.maxWidth, double.infinity);
     });
+
+    testWidgets('shows warning icon for syntax / generic errors', (
+      tester,
+    ) async {
+      // In the test environment Image.network fails immediately with a
+      // generic error (no real HTTP response). The errorBuilder must fall
+      // into the syntax-error branch and display Icons.warning_amber_rounded.
+      await tester.pumpWidget(buildWidget('NOT VALID ##'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
+
+      expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+    });
+
+    testWidgets(
+      'shows "Invalid diagram syntax" text for syntax / generic errors',
+      (tester) async {
+        await tester.pumpWidget(buildWidget('NOT VALID ##'));
+        await tester.pump();
+        await tester.pump(const Duration(seconds: 1));
+
+        expect(find.text('Invalid diagram syntax'), findsOneWidget);
+      },
+    );
   });
 }

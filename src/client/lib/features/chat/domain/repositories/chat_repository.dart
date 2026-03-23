@@ -11,17 +11,40 @@ abstract class ChatRepository {
   );
 
   /// Send message and get streaming response.
-  /// Se añade el parámetro opcional [history] para enviar el contexto filtrado.
+  ///
+  /// Parameters:
+  /// - [message]: User's input message
+  /// - [projectId]: Unique project identifier
+  /// - [docType]: Current document type being generated (optional)
+  /// - [userName]: User's name for personalization (optional)
+  /// - [history]: Previous chat messages for context (optional)
+  /// - [projectContext]: Complete project context (.md/.json files)
+  ///   for AI injection (optional)
+  ///
+  /// The [projectContext] map contains file paths as keys and content
+  /// as values, preventing LLM amnesia by providing full project
+  /// context with every request.
   Stream<ChatStreamEvent> sendMessageStream(
     String message,
     String projectId, {
     String? docType,
     String? userName,
-    List<ChatMessage>? history, // 🎯 Parámetro para evitar errores 422
+    List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   });
 
   Future<void> saveProposal(DocumentProposal proposal);
   Future<List<ChatMessage>> getChatHistory(String projectId);
   Future<void> saveMessage(String projectId, ChatMessage message);
   Future<void> clearChatHistory(String projectId);
+
+  /// Ingest a generated markdown document into the project's vector store.
+  ///
+  /// Sends the document to the backend RAG ingestion endpoint so it becomes
+  /// available for semantic retrieval in subsequent chat requests.
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  });
 }

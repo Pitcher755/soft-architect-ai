@@ -73,7 +73,9 @@ poetry install
 
 Configurar entorno:
 ```bash
-cp ../../infrastructure/.env.example .env
+# La configuración de entorno vive en la raíz del repositorio
+# Ejecutar desde la raíz (si aún no existe el .env)
+cp .env.example .env
 # Editar .env con tu configuración
 ```
 
@@ -233,7 +235,9 @@ poetry install
 
 Configure environment:
 ```bash
-cp ../../infrastructure/.env.example .env
+# Environment configuration lives at the repository root
+# Run from the repo root (if .env does not exist yet)
+cp .env.example .env
 # Edit .env with your configuration
 ```
 
@@ -350,6 +354,23 @@ Response:
 | `GROQ_API_KEY` | `` | Groq API key (if using cloud) |
 | `CHROMADB_PATH` | `./data/chromadb` | ChromaDB storage path |
 | `CHROMA_COLLECTION_NAME` | `softarchitect` | Vector collection name |
+
+#### LLM & RAG Configuration (Advanced)
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LLM_MAX_PROMPT_CHARS` | `200000` | Hard ceiling for the assembled LLM prompt (chars ≈ tokens × 4). |
+| `RAG_MAX_CHUNKS` | `3` | Number of per-project RAG chunks retrieved from ChromaDB per query. |
+
+**`LLM_MAX_PROMPT_CHARS`** — Controls the maximum length of the full prompt sent to
+the LLM. The default of `200000` is safe for cloud models (Gemini 1.5 Flash,
+GPT-4). **Reduce to `30000`** when running local Ollama models with an 8 K-token
+context window (≈32†00 chars) to avoid Out-of-Memory errors on commodity hardware.
+
+**`RAG_MAX_CHUNKS`** — Controls how many project-specific document
+fragments are retrieved from ChromaDB for each generation request.
+- Set to `5` for maximum precision with large-context cloud models (Gemini / GPT-4).
+- Set to `2` to reduce API token costs or to lighten the load on local models.
 
 #### Project Structure
 
@@ -560,6 +581,24 @@ mypy app/
 | `GROQ_API_KEY` | `` | API key de Groq (si usa cloud) |
 | `CHROMADB_PATH` | `./data/chromadb` | Ruta de almacenamiento ChromaDB |
 | `CHROMA_COLLECTION_NAME` | `softarchitect` | Nombre de colección vectorial |
+
+#### Configuración LLM & RAG (Avanzado)
+
+| Variable | Default | Descripción |
+|----------|---------|-------------|
+| `LLM_MAX_PROMPT_CHARS` | `200000` | Límite máximo del prompt completo enviado al LLM (chars ≈ tokens × 4). |
+| `RAG_MAX_CHUNKS` | `3` | Número de fragmentos de proyecto recuperados de ChromaDB por consulta. |
+
+**`LLM_MAX_PROMPT_CHARS`** — Controla la longitud máxima del prompt enviado al LLM.
+El valor por defecto `200000` es seguro para modelos en la nube (Gemini 1.5 Flash,
+GPT-4). **Reducir a `30000`** cuando se usen modelos locales Ollama con ventana de
+contexto de 8 K tokens (≈32†00 caracteres) para evitar errores Out-of-Memory en
+hardware convencional.
+
+**`RAG_MAX_CHUNKS`** — Controla cuántos fragmentos de documentos del proyecto se
+recuperan de ChromaDB por cada solicitud de generación.
+- Usar `5` para máxima precisión con modelos en la nube de gran contexto (Gemini / GPT-4).
+- Usar `2` para reducir costes de tokens de API o aligerar modelos locales.
 
 #### Estructura del Proyecto
 

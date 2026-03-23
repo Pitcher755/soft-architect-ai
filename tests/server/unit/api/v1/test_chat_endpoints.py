@@ -6,9 +6,10 @@ Tests cover:
 - Token streaming functionality
 - Request validation
 - Error handling
+- Task 13: _get_orchestrator injects ChromaProjectStore
 """
 
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -270,3 +271,85 @@ class TestChatEndpoints:
         """Helper for async generator."""
         for item in items:
             yield item
+
+
+# ---------------------------------------------------------------------------
+# Task 13 – _get_orchestrator injects ChromaProjectStore
+# ---------------------------------------------------------------------------
+
+
+class TestGetOrchestratorFactory:
+    """Tests for the _get_orchestrator lazy-init factory in chat.py.
+
+    Task 13 requirement: the legacy ``/generate`` endpoint's internal
+    orchestrator factory must also pass ``project_store`` so that semantic
+    RAG retrieval works for all request paths.
+    """
+
+    def setup_method(self) -> None:
+        """Reset the module-level orchestrator singleton before each test."""
+        import app.api.v1.chat as chat_module
+
+        chat_module.orchestrator = None
+
+    def teardown_method(self) -> None:
+        """Reset after each test to avoid polluting other suites."""
+        import app.api.v1.chat as chat_module
+
+        chat_module.orchestrator = None
+
+    def test_get_orchestrator_injects_project_store(self) -> None:
+        """Verify _get_orchestrator wires a ChromaProjectStore into the singleton.
+
+        Ensures that after Task 13 the orchestrator created by the legacy
+        factory has a non-None project_store so per-project RAG retrieval works.
+        """
+        from app.api.v1.chat import _get_orchestrator
+
+        mock_project_store = MagicMock()
+
+        with (
+            patch(
+                "app.infrastructure.vector_store.chroma_store.ChromaProjectStore",
+                return_value=mock_project_store,
+            ),
+            patch(
+                "app.services.rag.vector_store.VectorStoreService",
+                return_value=MagicMock(),
+            ),
+        ):
+            result = _get_orchestrator()
+
+        assert result.project_store is mock_project_store
+
+    def test_get_orchestrator_returns_cached_singleton(self) -> None:
+        """Verify that repeated calls return the same orchestrator instance."""
+        from app.api.v1.chat import _get_orchestrator
+
+        with (
+            patch(
+                "app.infrastructure.vector_store.chroma_store.ChromaProjectStore",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "app.services.rag.vector_store.VectorStoreService",
+                return_value=MagicMock(),
+            ),
+        ):
+            first = _get_orchestrator()
+            second = _get_orchestrator()
+
+        assert first is second
+
+    def test_set_orchestrator_overrides_singleton(self) -> None:
+        """Verify set_orchestrator replaces the module-level instance.
+
+        Used in tests to inject a pre-configured mock without triggering the
+        lazy-init path that requires a live ChromaDB + LLM stack.
+        """
+        from app.api.v1.chat import get_orchestrator, set_orchestrator
+
+        mock_instance = MagicMock()
+        set_orchestrator(mock_instance)
+
+        assert get_orchestrator() is mock_instance

@@ -1066,13 +1066,13 @@ poetry run ruff format .
 cd ../..
 
 # Detener servicios actuales
-docker compose -f infrastructure/docker-compose.yml down
+docker compose --env-file .env -f infrastructure/docker-compose.yml down
 
 # Reconstruir imagen del backend
-docker compose -f infrastructure/docker-compose.yml build api-server
+docker compose --env-file .env -f infrastructure/docker-compose.yml build api-server
 
 # Levantar servicios
-docker compose -f infrastructure/docker-compose.yml up -d
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 ```
 
 **Verificar logs del contenedor:**

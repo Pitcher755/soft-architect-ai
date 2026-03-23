@@ -1,8 +1,8 @@
 # 📊 HU-5.0: Implementation Progress Tracking
 
-> **Last Updated:** 2026-02-22
-> **Status:** 🚧 In Progress (Day 2/7)
-> **Overall Completion:** 45% (Knowledge Base Complete)
+> **Last Updated:** 2026-03-19
+> **Status:** 🚧 In Progress
+> **Overall Completion:** 65% (Knowledge Base + Sequential Orchestrator + Dynamic RAG ingestion layer + DI wiring)
 
 ---
 
@@ -11,12 +11,15 @@
 ```
 [█████████░░░░░░░░░░░] 45% Complete
 
-Phase 1: Setup & Planning ████████████████████ 100% ✅
-Phase 2: Backend Refinement ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 3: Frontend Integration ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 4: Testing Suite ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 5: Deployment ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 6: Validation & Demo ████████████████░░░░  80% 🚧
+Phase 1: Setup & Planning      ████████████████████ 100% ✅
+Phase 2: Backend Refinement    ████████░░░░░░░░░░░░  40% 🚧
+Phase 2-B: Dynamic RAG         ████████████████████ 100% ✅
+Phase 2-C: Orchestrator RAG    ████████████████████ 100% ✅
+Phase 2-D: DI Wiring (Task 13) ████████████████████ 100% ✅
+Phase 3: Frontend Integration  ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 4: Testing Suite         ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 5: Deployment            ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 6: Validation & Demo     ████████████████░░░░  80% 🚧
 ```
 
 ---
@@ -36,7 +39,111 @@ Phase 6: Validation & Demo ████████████████░�
 
 ---
 
-## 🔧 Phase 2: Backend Refinement (0%)
+## ✅ Phase 2-B: Dynamic RAG – Per-Project Ingestion (100%)
+
+> **Completed:** 2026-03-19
+> **Branch:** `feature/hu-5.0-full-workflow-refinement`
+
+Implements the per-project vector-store layer so that each user project has
+its own isolated ChromaDB collection populated from generated markdown documents.
+
+### Task 4 – ChromaDB Project Adapter ✅
+
+| Item | Details |
+|------|---------|
+| **File** | `src/server/app/infrastructure/vector_store/chroma_store.py` |
+| **Pattern** | Adapter (Hexagonal Architecture – Ports & Adapters) |
+| **Port** | `VectorStoreProtocol.search()` |
+| **Key methods** | `get_or_create_project_collection`, `add_documents`, `query_project`, `delete_project_collection`, `get_project_chunk_count` |
+| **Collection naming** | `project_{sanitised_id}` (SHA-256 fallback for non-alphanumeric IDs) |
+| **Chunk IDs** | SHA-256 of `"{project_id}:{index}:{text[:200]}"` – deterministic upsert semantics |
+| **Embedding fn** | `DefaultEmbeddingFunction` (avoids heavy sentence-transformers dependency) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ |
+
+### Task 5 – Tests for ChromaProjectStore ✅
+
+| Item | Details |
+|------|---------|
+| **File** | `tests/server/services/vectors/` |
+| **Strategy** | Inject mock `ClientAPI` via `client=` constructor kwarg |
+
+### Task 6 – Ingestion REST Endpoint ✅
+
+| Item | Details |
+|------|---------|
+| **New files** | `src/server/app/services/ingestion/project_ingestion_service.py`, `src/server/app/api/v1/projects.py` |
+| **Endpoint** | `POST /api/v1/projects/{project_id}/documents/ingest` |
+| **Request schema** | `IngestDocumentRequest(doc_name: str, markdown_content: str)` |
+| **Response schema** | `IngestDocumentResponse(project_id, doc_name, chunks_ingested)` |
+| **HTTP codes** | 200 success · 400 empty content · 422 schema validation · 500 backend error |
+| **Splitting** | Paragraph-boundary splitting (double-newline), greedy grouping ≤ 4 000 chars/chunk |
+| **DI** | `_get_ingestion_service()` factory – overrideable for tests |
+| **Tests** | `tests/server/services/test_project_ingestion_service.py` (17 tests) · `tests/server/api/v1/endpoints/test_projects_endpoint.py` (11 tests) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 149 pass ✅ |
+
+---
+
+## ✅ Phase 2-C: Dynamic RAG – Orchestrator Semantic Search (100%)
+
+> **Completed:** 2026-03-21
+> **Branch:** `feature/hu-5.0-full-workflow-refinement`
+
+Replaces the static context-dependency-graph filter with per-request semantic
+retrieval from ChromaDB, so the orchestrator fetches only the most relevant
+chunks for each document generation call.
+
+### Task 7 – Refactor Orchestrator to Semantic Search ✅
+
+| Item | Details |
+|------|---------|
+| **File** | `src/server/app/services/rag/sequential_orchestrator.py` |
+| **Removed** | `_filter_relevant_context` (static graph-based filtering) |
+| **Removed imports** | `MASTER_WORKFLOW`, `get_context_dependencies` from `workflow.py` |
+| **Added** | `project_store: ChromaProjectStore \| None = None` constructor parameter |
+| **Added method** | `_retrieve_project_context(project_id, doc_type, user_input) -> str` |
+| **Semantic query** | `` f"Context for {doc_type}: {user_input}" `` |
+| **Retrieval** | `ChromaProjectStore.query_project(project_id, query, n_results=5)` |
+| **Return format** | `<retrieved_context>\n{chunks}\n</retrieved_context>` or `""` |
+| **Import strategy** | `TYPE_CHECKING` guard + `from __future__ import annotations` to avoid chromadb/gRPC import at runtime |
+| **`_build_prompt` update** | New `retrieved_context: str = ""` 6th parameter; rule 8 references `<retrieved_context>`; safety net strips block if prompt > `_MAX_PROMPT_CHARS` |
+| **Fix: lazy import** | `projects.py` imports `ChromaProjectStore` inside `_get_ingestion_service()` preventing gRPC chain at module load |
+| **Fix: lazy import** | `project_ingestion_service.py` uses `TYPE_CHECKING` guard similarly |
+| **Tests** | `tests/server/services/rag/test_sequential_orchestrator.py` – 43 tests (7 new `TestRetrieveProjectContext`, 3 new `TestBuildPromptWithRetrievedContext`) |
+| **Full suite** | 685 unit tests pass in 3.80s (all modules) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 685/685 ✅ |
+
+---
+
+## ✅ Phase 2-D: Dependency Injection Wiring (100%)
+
+> **Completed:** 2026-03-19
+> **Branch:** `feature/hu-5.0-full-workflow-refinement`
+
+Wires the already-built `ChromaProjectStore` adapter into the FastAPI dependency
+container so that every incoming request reaches the orchestrator with a live
+`project_store`.  Without this step the orchestrator held `project_store=None`
+and semantic retrieval was silently skipped beyond the 4th document (when the
+user idea scrolls out of the 4-message chat history).
+
+### Task 13 – Inject ChromaProjectStore into the Orchestrator DI Container ✅
+
+| Item | Details |
+|------|--------|
+| **Root cause** | `SequentialOrchestrator` accepted `project_store` parameter but both factory functions (`get_rag_orchestrator` in `dependencies.py` and `_get_orchestrator` in `chat.py`) omitted it → `project_store=None` → RAG retrieval skipped |
+| **Fix 1** | `src/server/app/api/dependencies.py` – `get_rag_orchestrator()` factory now imports `ChromaProjectStore` lazily (inside function body, `# noqa: PLC0415`) and passes `project_store=ChromaProjectStore()` to `SequentialOrchestrator` |
+| **Fix 2** | `src/server/app/api/v1/chat.py` – legacy `_get_orchestrator()` factory receives the same treatment: lazy import + `project_store=ChromaProjectStore()` |
+| **Lazy import rationale** | Deferring the `chromadb` / gRPC import to function-body scope prevents the initialisation chain from running at module-import time, which would break test collection on machines without a running ChromaDB instance (pattern already established in `projects.py`) |
+| **PyDoc** | Full English PyDoc added to `get_rag_orchestrator`, `_get_orchestrator`, `get_orchestrator`, `set_orchestrator`, `_stream_generator`, `generate_document` |
+| **Inline comment cleanup** | Removed Spanish-language emoji comments (e.g. `🎯 EL NUEVO INYECTOR`) from both files; logic is now self-documenting via PyDoc |
+| **Regression fix** | `test_deprecated_message_indicates_use_stream` in `test_chat_coverage.py` was calling the real `get_rag_orchestrator` (no `dependency_overrides`); fixed by wrapping in `app.dependency_overrides` + `try/finally` identical to the surrounding tests |
+| **New tests** | `tests/server/unit/app/test_dependencies.py` – `TestGetRagOrchestrator` (4 tests): `test_get_rag_orchestrator_injects_project_store`, `test_get_rag_orchestrator_is_cached`, `test_get_rag_orchestrator_normalises_local_to_ollama`, `test_get_rag_orchestrator_normalises_cloud_to_groq` |
+| **New tests** | `tests/server/unit/api/v1/test_chat_endpoints.py` – `TestGetOrchestratorFactory` (3 tests): `test_get_orchestrator_injects_project_store`, `test_get_orchestrator_returns_cached_singleton`, `test_set_orchestrator_overrides_singleton` |
+| **Full suite** | 478 unit tests pass in 3.69s (all modules) |
+| **Quality gates** | Black ✅ · Ruff ✅ · Pyright 0 errors ✅ · 478/478 ✅ |
+
+---
+
+## 🔧 Phase 2: Backend Refinement (40%)
 
 ### 2.1 LLM Temperature Adjustment
 | Task | Status | File | Estimated | Actual |

@@ -1,15 +1,15 @@
 # 📊 HU-5.0: Seguimiento de Progreso
 
-> **Última actualización:** 2026-02-22
-> **Estado Global:** 🚧 En Progreso (45% completado)
-> **Fase Actual:** Fase 6 - Knowledge Base Enhancement (80% completo)
+> **Última actualización:** 2026-03-19
+> **Estado Global:** 🚧 En Progreso (65% completado)
+> **Fase Actual:** Fase 2-D Inyección de Dependencias ✅ completado + Fase 6 Knowledge Base (80%)
 
 ---
 
 ## 📈 Progreso General
 
 ```
-Progreso Global: [█████████░░░] 45% (Fase 1 + Fase 6 Knowledge Base completadas)
+Progreso Global: [████████████░░░░░░░░] 60% (Fase 1 + Fase 2-B Dynamic RAG + Fase 6 Knowledge Base)
 ```
 
 ### Desglose por Fases
@@ -17,10 +17,13 @@ Progreso Global: [█████████░░░] 45% (Fase 1 + Fase 6 Kno
 | Fase | Estado | Progreso | Duración Est. | Duración Real | Completado |
 |------|--------|----------|---------------|---------------|------------|
 | **Fase 1:** Setup & Planning | ✅ Completado | 100% | 1h | 1h | 2026-02-21 |
-| **Fase 2:** Backend LLM Refinement | ⏸️ Bloqueado | 0% | 28.5h | - | - |
-| **Fase 3:** Frontend Integration | ⏸️ Bloqueado | 0% | 5.5h | - | - |
-| **Fase 4:** Testing Suite | ⏸️ Bloqueado | 0% | 16h | - | - |
-| **Fase 5:** Deployment Homelab | ⏸️ Bloqueado | 0% | 12.5h | - | - |
+| **Fase 2:** Backend LLM Refinement | 🚧 En Progreso | 40% | 28.5h | - | - |
+| **Fase 2-B:** Dynamic RAG Ingestion | ✅ Completado | 100% | 8h | 6h | 2026-03-19 |
+| **Fase 2-C:** Orchestrator Semantic RAG | ✅ Completado | 100% | 4h | 3h | 2026-03-21 |
+| **Fase 2-D:** DI Wiring (Tarea 13) | ✅ Completado | 100% | 1h | 1h | 2026-03-19 |
+| **Fase 3:** Frontend Integration | ⏸️ Pendiente | 0% | 5.5h | - | - |
+| **Fase 4:** Testing Suite | ⏸️ Pendiente | 0% | 16h | - | - |
+| **Fase 5:** Deployment Homelab | ⏸️ Pendiente | 0% | 12.5h | - | - |
 | **Fase 6:** Validation & Demo | 🚧 En Progreso | 80% | 25h | 20.5h | 2026-02-22 |
 
 ---
@@ -42,7 +45,112 @@ Progreso Global: [█████████░░░] 45% (Fase 1 + Fase 6 Kno
 
 ---
 
-## 🚧 Fase 2: Backend LLM Refinement (15% completado)
+## ✅ Fase 2-B: RAG Dinámico – Ingesta por Proyecto (100% completado)
+
+> **Completado:** 2026-03-19
+> **Rama:** `feature/hu-5.0-full-workflow-refinement`
+
+Implementa la capa de vector store por proyecto para que cada proyecto de usuario
+tenga su propia colección ChromaDB aislada, poblada con los documentos markdown generados.
+
+### Tarea 4 – Adaptador ChromaDB por Proyecto ✅
+
+| Elemento | Detalle |
+|----------|---------|
+| **Archivo** | `src/server/app/infrastructure/vector_store/chroma_store.py` |
+| **Patrón** | Adapter (Arquitectura Hexagonal – Ports & Adapters) |
+| **Puerto** | `VectorStoreProtocol.search()` |
+| **Métodos clave** | `get_or_create_project_collection`, `add_documents`, `query_project`, `delete_project_collection`, `get_project_chunk_count` |
+| **Nomenclatura** | `project_{id_sanitizado}` (fallback SHA-256 para IDs con caracteres especiales) |
+| **IDs de chunks** | SHA-256 de `"{project_id}:{index}:{text[:200]}"` – semántica de upsert idempotente |
+| **Función embedding** | `DefaultEmbeddingFunction` (evita la dependencia pesada de sentence-transformers) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ |
+
+### Tarea 5 – Tests para ChromaProjectStore ✅
+
+| Elemento | Detalle |
+|----------|---------|
+| **Archivo** | `tests/server/services/vectors/` |
+| **Estrategia** | Inyección de mock `ClientAPI` vía kwarg `client=` en el constructor |
+
+### Tarea 6 – Endpoint REST de Ingesta ✅
+
+| Elemento | Detalle |
+|----------|---------|
+| **Archivos nuevos** | `src/server/app/services/ingestion/project_ingestion_service.py`, `src/server/app/api/v1/projects.py` |
+| **Endpoint** | `POST /api/v1/projects/{project_id}/documents/ingest` |
+| **Esquema request** | `IngestDocumentRequest(doc_name: str, markdown_content: str)` |
+| **Esquema response** | `IngestDocumentResponse(project_id, doc_name, chunks_ingested)` |
+| **Códigos HTTP** | 200 éxito · 400 contenido vacío · 422 validación esquema · 500 error backend |
+| **Fragmentación** | División por párrafos (doble salto de línea), agrupación greedy ≤ 4 000 chars/chunk |
+| **Inyección de dependencias** | Factory `_get_ingestion_service()` – sobreescribible en tests |
+| **Tests** | `tests/server/services/test_project_ingestion_service.py` (17 tests) · `tests/server/api/v1/endpoints/test_projects_endpoint.py` (11 tests) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 149 pasados ✅ |
+
+---
+
+## ✅ Fase 2-C: RAG Dinámico – Búsqueda Semántica en el Orquestador (100% completado)
+
+> **Completado:** 2026-03-21
+> **Rama:** `feature/hu-5.0-full-workflow-refinement`
+
+Sustituye el filtro estático de dependencias por recuperación semántica bajo demanda
+desde ChromaDB, de forma que el orquestador obtiene únicamente los chunks más
+relevantes para cada llamada de generación de documento.
+
+### Tarea 7 – Refactor del Orquestador a Búsqueda Semántica ✅
+
+| Elemento | Detalles |
+|----------|---------|
+| **Archivo** | `src/server/app/services/rag/sequential_orchestrator.py` |
+| **Eliminado** | `_filter_relevant_context` (filtrado estático por grafo de dependencias) |
+| **Imports eliminados** | `MASTER_WORKFLOW`, `get_context_dependencies` de `workflow.py` |
+| **Añadido** | Parámetro `project_store: ChromaProjectStore \| None = None` al constructor |
+| **Método añadido** | `_retrieve_project_context(project_id, doc_type, user_input) -> str` |
+| **Query semántica** | `` f"Context for {doc_type}: {user_input}" `` |
+| **Recuperación** | `ChromaProjectStore.query_project(project_id, query, n_results=5)` |
+| **Formato de retorno** | `<retrieved_context>\n{chunks}\n</retrieved_context>` o `""` |
+| **Estrategia de import** | Guard `TYPE_CHECKING` + `from __future__ import annotations` para evitar cadena chromadb/gRPC en tiempo de ejecución |
+| **Actualización `_build_prompt`** | Nuevo parámetro 6º `retrieved_context: str = ""`; regla 8 referencia `<retrieved_context>`; safety net elimina bloque si prompt > `_MAX_PROMPT_CHARS` |
+| **Fix: lazy import** | `projects.py` importa `ChromaProjectStore` dentro de `_get_ingestion_service()` para evitar cadena gRPC al cargar el módulo |
+| **Fix: lazy import** | `project_ingestion_service.py` usa guard `TYPE_CHECKING` análogamente |
+| **Tests** | `tests/server/services/rag/test_sequential_orchestrator.py` – 43 tests (7 nuevos `TestRetrieveProjectContext`, 3 nuevos `TestBuildPromptWithRetrievedContext`) |
+| **Suite completa** | 685 tests unitarios pasan en 3,80 s (todos los módulos) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 685/685 ✅ |
+
+---
+
+## ✅ Fase 2-D: Inyección de Dependencias – DI Wiring (100% completado)
+
+> **Completado:** 2026-03-19
+> **Rama:** `feature/hu-5.0-full-workflow-refinement`
+
+Conecta el adaptador `ChromaProjectStore` (ya construido en Fases 2-B y 2-C) al
+contenedor de dependencias de FastAPI para que cada petición entrante llegue al
+orquestador con un `project_store` real.  Sin este paso el orquestador tenía
+`project_store=None` y la recuperación semántica se omitía silenciosamente a
+partir del 4.º documento (cuando la idea del usuario sale del historial de
+4 mensajes).
+
+### Tarea 13 – Inyectar ChromaProjectStore en el Contenedor DI del Orquestador ✅
+
+| Elemento | Detalles |
+|----------|--------|
+| **Causa raíz** | `SequentialOrchestrator` aceptaba el parámetro `project_store` pero ambas funciones factory (`get_rag_orchestrator` en `dependencies.py` y `_get_orchestrator` en `chat.py`) lo omitían → `project_store=None` → recuperación RAG desactivada |
+| **Fix 1** | `src/server/app/api/dependencies.py` – la factory `get_rag_orchestrator()` ahora importa `ChromaProjectStore` de forma lazy (dentro del cuerpo de la función, `# noqa: PLC0415`) y pasa `project_store=ChromaProjectStore()` a `SequentialOrchestrator` |
+| **Fix 2** | `src/server/app/api/v1/chat.py` – la factory legacy `_get_orchestrator()` recibe el mismo tratamiento: import lazy + `project_store=ChromaProjectStore()` |
+| **Rationale import lazy** | Diferir el import de `chromadb` / gRPC al cuerpo de la función evita que la cadena de inicialización se ejecute en tiempo de import de módulo, lo que rompería la colección de tests en máquinas sin ChromaDB activo (patrón ya establecido en `projects.py`) |
+| **PyDoc** | PyDoc completo en inglés añadido a `get_rag_orchestrator`, `_get_orchestrator`, `get_orchestrator`, `set_orchestrator`, `_stream_generator`, `generate_document` |
+| **Limpieza de comentarios** | Eliminados comentarios inline en español con emojis (ej. `🎯 EL NUEVO INYECTOR`) de ambos archivos; la lógica queda autodocumentada mediante PyDoc |
+| **Fix regresión** | `test_deprecated_message_indicates_use_stream` en `test_chat_coverage.py` llamaba al `get_rag_orchestrator` real (sin `dependency_overrides`); corregido envolviendo en `app.dependency_overrides` + `try/finally` al igual que los tests circundantes |
+| **Tests nuevos** | `tests/server/unit/app/test_dependencies.py` – `TestGetRagOrchestrator` (4 tests): `test_get_rag_orchestrator_injects_project_store`, `test_get_rag_orchestrator_is_cached`, `test_get_rag_orchestrator_normalises_local_to_ollama`, `test_get_rag_orchestrator_normalises_cloud_to_groq` |
+| **Tests nuevos** | `tests/server/unit/api/v1/test_chat_endpoints.py` – `TestGetOrchestratorFactory` (3 tests): `test_get_orchestrator_injects_project_store`, `test_get_orchestrator_returns_cached_singleton`, `test_set_orchestrator_overrides_singleton` |
+| **Suite completa** | 478 tests unitarios pasan en 3,69 s (todos los módulos) |
+| **Control de calidad** | Black ✅ · Ruff ✅ · Pyright 0 errores ✅ · 478/478 ✅ |
+
+---
+
+## 🚧 Fase 2: Backend LLM Refinement (40% completado)
 
 **Objetivo:** Refinar comportamiento del Arquitecto IA con 10 reglas del system prompt
 

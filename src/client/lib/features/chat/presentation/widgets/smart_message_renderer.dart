@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:markdown/markdown.dart' as md;
@@ -200,6 +202,86 @@ class SmartMessageRenderer extends StatelessWidget {
     );
   }
 
+  /// Detects the LLM pattern `Path: <file>.json\n{...raw json...}` and
+  /// converts it into a display-safe Markdown string for the chat UI.
+  ///
+  /// **This method is for display only.** The original [content] string must
+  /// be used when saving the file to disk so no Markdown backticks are written.
+  ///
+  /// ### Input (raw LLM output)
+  /// ```
+  /// Path: context/20-REQUIREMENTS/USER_STORIES_MASTER.json
+  /// { "project_name": "PadelMatch Local", ... }
+  /// ```
+  ///
+  /// ### Output (display text)
+  /// ```
+  /// `Path: context/20-REQUIREMENTS/USER_STORIES_MASTER.json`
+  ///
+  /// ```json
+  /// {
+  ///   "project_name": "PadelMatch Local",
+  ///   ...
+  /// }
+  /// ```
+  /// ```
+  ///
+  /// If the content does not match the pattern, it is returned unchanged.
+  ///
+  /// Supports both plain (`Path:`) and bold (`**Path:**`) header variants.
+  static String _formatJsonPathBlock(String content) {
+    // Matches optional bold markers and captures:
+    //   group(1) → the raw path   (e.g. context/foo/bar.json)
+    //   group(2) → the JSON body  (everything after the path line)
+    final match = RegExp(
+      r'^\*{0,2}Path:\*{0,2}\s+(\S+\.json)\s*\n([\s\S]+)$',
+      caseSensitive: false,
+    ).firstMatch(content.trim());
+
+    if (match == null) {
+      return content;
+    }
+
+    final pathValue = match.group(1)!;
+    final jsonBody = match.group(2)!.trim();
+
+    // Only wrap when the body is actually valid JSON – if the LLM produced
+    // something malformed, fall back to the raw string so nothing is lost.
+    try {
+      final decoded = jsonDecode(jsonBody);
+      final pretty = const JsonEncoder.withIndent('  ').convert(decoded);
+      return '`Path: $pathValue`\n\n```json\n$pretty\n```';
+    } on FormatException {
+      // Body is not valid JSON – return as-is.
+      return content;
+    }
+  }
+
+  /// Detects if [content] is a raw (unformatted) JSON string and pretty-prints
+  /// it as a fenced markdown code block.
+  ///
+  /// A single-line JSON string has no word-break opportunities, which causes
+  /// Flutter's [SelectableRegion] to throw:
+  /// `'Drag target size is larger than scrollable size'`
+  /// because the text widget grows wider than the scrollable container.
+  ///
+  /// By converting it to an indented ` ```json ` block the text gains natural
+  /// break points and the [LayoutBuilder] constraint can enforce the max width.
+  static String _formatIfJson(String content) {
+    final trimmed = content.trim();
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+        (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        final decoded = jsonDecode(trimmed);
+        final formatted = const JsonEncoder.withIndent('  ').convert(decoded);
+        return '```json\n$formatted\n```';
+      } on FormatException {
+        // Not valid JSON – render the content as-is.
+      }
+    }
+    return content;
+  }
+
   /// Builds standard markdown content with syntax highlighting.
   ///
   /// Renders plain markdown text with:
@@ -216,25 +298,43 @@ class SmartMessageRenderer extends StatelessWidget {
       color: isDark ? AppColors.textMain : Colors.black87,
     );
 
-    return MarkdownBody(
-      data: content,
-      selectable: true,
-      extensionSet: md.ExtensionSet.gitHubFlavored,
-      builders: {'code': CodeElementBuilder()},
-      styleSheet: MarkdownStyleSheet(
-        p: baseStyle,
-        listBullet: baseStyle,
-        code: theme.textTheme.bodyMedium?.copyWith(
-          fontFamily: 'monospace',
-          fontSize: 15,
-          backgroundColor: theme.colorScheme.surfaceContainerHighest,
-          color: isDark ? Colors.greenAccent.shade100 : Colors.blue.shade800,
+    // 1. Try Path + JSON pattern first (most specific: "Path: *.json\n{...}").
+    // 2. Fall back to bare-JSON detection for pure JSON blob responses.
+    // Both helpers are display-only: the original [content] string is
+    // untouched by callers that write content to disk (DocumentProposalCard).
+    final displayContent = _formatIfJson(_formatJsonPathBlock(content));
+
+    // LayoutBuilder ensures MarkdownBody (and its internal SelectableRegion)
+    // is always bounded by available width, preventing the
+    // 'Drag target size is larger than scrollable size' assertion.
+    return LayoutBuilder(
+      builder: (context, constraints) => ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: constraints.maxWidth),
+        child: MarkdownBody(
+          data: displayContent,
+          selectable: true,
+          extensionSet: md.ExtensionSet.gitHubFlavored,
+          builders: {'code': CodeElementBuilder()},
+          styleSheet: MarkdownStyleSheet(
+            p: baseStyle,
+            listBullet: baseStyle,
+            code: theme.textTheme.bodyMedium?.copyWith(
+              fontFamily: 'monospace',
+              fontSize: 15,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              color: isDark
+                  ? Colors.greenAccent.shade100
+                  : Colors.blue.shade800,
+            ),
+            h1: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            h2: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
+          ),
         ),
-        h1: theme.textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
-        h2: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-        strong: baseStyle?.copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }

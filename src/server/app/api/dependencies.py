@@ -30,33 +30,46 @@ async def verify_api_key(x_api_key: Annotated[str | None, Header()] = None) -> s
 
 @lru_cache
 def get_rag_orchestrator() -> SequentialOrchestrator:
-    """Return a cached SequentialOrchestrator instance for dependency injection."""
+    """Build and cache a fully-wired :class:`SequentialOrchestrator` instance.
 
-    # 1. Get LLM mode from environment
+    Called once per process lifetime by FastAPI's dependency-injection system
+    (``Depends(get_rag_orchestrator)``).  All heavy objects – LLM client,
+    VectorStoreService, WorkflowInjector, TemplateLoader, and ChromaProjectStore
+    – are constructed here so that routers stay thin and stateless.
+
+    The ``ChromaProjectStore`` import is deferred to function-body scope so that
+    the gRPC / chromadb initialisation chain does **not** run at module-import
+    time, which would otherwise break test-collection on machines without a
+    running ChromaDB instance.
+
+    Returns:
+        A singleton :class:`SequentialOrchestrator` wired with all required
+        adapters, ready to serve streaming generation requests.
+    """
     raw_mode = os.getenv("LLM_PROVIDER", "ollama").lower()
 
-    # Normalize user-friendly config ('local') to technical config ('ollama')
     if raw_mode == "local":
         llm_mode = "ollama"
     elif raw_mode == "cloud":
         llm_mode = "groq"
     else:
-        # Keep 'ollama' or 'groq' as-is
         llm_mode = raw_mode
 
     llm_client = get_llm_client(mode=llm_mode)
-
-    # 2. Vector Store (used for supplementary context, not workflow control)
     vector_store = cast(VectorStoreProtocol, VectorStoreService())
-
-    # 3. 🎯 EL NUEVO INYECTOR: Carga plantillas del disco duro de forma inquebrantable
     workflow_injector = WorkflowInjector()
-
-    # 4. 🎯 EL NUEVO CEREBRO: Orquestador Secuencial con WorkflowInjector cableado
     template_loader = TemplateLoader()
+
+    from app.infrastructure.vector_store.chroma_store import (
+        ChromaProjectStore,  # noqa: PLC0415
+    )
+
+    project_store = ChromaProjectStore()
+
     return SequentialOrchestrator(
         vector_store=vector_store,
         llm_client=llm_client,
         template_loader=template_loader,
         workflow_injector=workflow_injector,
+        project_store=project_store,
     )

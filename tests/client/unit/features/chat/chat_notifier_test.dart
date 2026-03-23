@@ -33,6 +33,7 @@ class FakeChatRepository implements ChatRepository {
     String? docType,
     String? userName,
     List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   }) {
     final events = <ChatStreamEvent>[
       TokenEvent(token: 'Fake', isFinal: false),
@@ -65,6 +66,13 @@ class FakeChatRepository implements ChatRepository {
   ) {
     return Stream.value('Fake document content');
   }
+
+  @override
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  }) async {}
 }
 
 /// Fake FileSystemService for testing

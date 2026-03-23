@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../core/utils/uuid_generator.dart';
@@ -45,7 +47,8 @@ class ChatRepositoryImpl implements ChatRepository {
     String projectId, {
     String? docType,
     String? userName,
-    List<ChatMessage>? history, // 🎯 Recibimos el historial filtrado
+    List<ChatMessage>? history,
+    Map<String, String>? projectContext,
   }) async* {
     final url = '$baseUrl/api/v1/chat/stream';
 
@@ -81,6 +84,8 @@ class ChatRepositoryImpl implements ChatRepository {
       'user_name': userName ?? 'Developer',
       'doc_type': docType ?? 'PROJECT_MANIFESTO',
       'metadata': {},
+      if (projectContext != null && projectContext.isNotEmpty)
+        'project_context': projectContext,
     };
     final headers = {'X-API-Key': apiKey};
 
@@ -185,6 +190,35 @@ class ChatRepositoryImpl implements ChatRepository {
       }, conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> ingestDocument({
+    required String projectId,
+    required String docName,
+    required String markdownContent,
+  }) async {
+    try {
+      final uri = Uri.parse(
+        '$baseUrl/api/v1/projects/$projectId/documents/ingest',
+      );
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json', 'X-API-Key': apiKey},
+        body: jsonEncode({
+          'doc_name': docName,
+          'markdown_content': markdownContent,
+        }),
+      );
+      if (response.statusCode != 200) {
+        debugPrint(
+          'ingestDocument failed: status=${response.statusCode} '
+          'body=${response.body}',
+        );
+      }
+    } on Exception catch (e) {
+      debugPrint('ingestDocument error: $e');
     }
   }
 
