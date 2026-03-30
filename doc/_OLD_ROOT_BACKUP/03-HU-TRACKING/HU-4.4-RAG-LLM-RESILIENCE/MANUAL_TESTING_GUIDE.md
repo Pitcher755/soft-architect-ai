@@ -53,7 +53,7 @@
 cd /home/pitcherdev/Espacio-de-trabajo/Master/soft-architect-ai
 
 # Levantar todos los servicios
-docker compose -f infrastructure/docker-compose.yml up -d
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 
 # Esperar ~10 segundos para healthchecks
 sleep 10
@@ -501,13 +501,13 @@ tests/server/unit/services/rag/test_orchestrator_degradation.py::test_orchestrat
 
 ```bash
 # Detener todos los contenedores
-docker compose -f infrastructure/docker-compose.yml down
+docker compose --env-file .env -f infrastructure/docker-compose.yml down
 
 # Eliminar logs temporales
 rm -f /tmp/scenario1_*.{log,json} /tmp/ollama_test_*.json /tmp/test_ollama_retry.sh
 
 # Re-levantar stack limpio
-docker compose -f infrastructure/docker-compose.yml up -d
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d
 
 # Verificar estado
 docker ps --filter "name=sa_"
