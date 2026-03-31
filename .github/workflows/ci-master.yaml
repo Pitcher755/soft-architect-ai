@@ -17,7 +17,7 @@ jobs:
   # ═══════════════════════════════════════════════════════════════════
   changes:
     name: 🔍 Detect Changes
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
@@ -52,7 +52,7 @@ jobs:
     name: 🐍 Backend
     needs: changes
     if: needs.changes.outputs.backend == 'true'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -147,7 +147,7 @@ jobs:
     name: 📱 Frontend
     needs: changes
     if: needs.changes.outputs.frontend == 'true'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -222,7 +222,7 @@ jobs:
     if: |
       needs.changes.outputs.docker == 'true' &&
       (github.event_name == 'pull_request' || github.ref == 'refs/heads/develop')
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -247,7 +247,7 @@ jobs:
     name: ✅ CI Status Check
     needs: [changes, backend, frontend, docker]
     if: always()
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: 🎯 Verify All Checks
         run: |
