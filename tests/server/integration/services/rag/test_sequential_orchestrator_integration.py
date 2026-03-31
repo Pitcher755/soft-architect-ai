@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import AsyncGenerator
+from typing import cast
 from unittest.mock import MagicMock
 
 import pytest
@@ -506,9 +507,8 @@ class TestSequentialOrchestratorIntegration:
             tokens == expected
         ), f"Token order/content mismatch. Expected {expected}, got {tokens}"
         # WorkflowInjector must have been called exactly once per generate()
-        orchestrator.workflow_injector.get_injected_prompt.assert_called_once_with(
-            "PROJECT_MANIFESTO"
-        )
+        mock_injector = cast(MagicMock, orchestrator.workflow_injector)
+        mock_injector.get_injected_prompt.assert_called_once_with("PROJECT_MANIFESTO")
 
     # -----------------------------------------------------------------------
     # 11. Dual RAG channel injection — both XML tags present in prompt
@@ -587,9 +587,9 @@ class TestSequentialOrchestratorIntegration:
         orchestrator = _make_orchestrator(
             injected_block="# Template\n{user_input}",
         )
-        orchestrator.workflow_injector.get_injected_prompt.side_effect = (
-            lambda dt: f"[DocType: {dt}]"
-        )
+        cast(
+            MagicMock, orchestrator.workflow_injector
+        ).get_injected_prompt.side_effect = lambda dt: f"[DocType: {dt}]"
         orchestrator.llm_client.stream_generate = _doc_specific
 
         async def _run(doc_type: str, user_input: str) -> None:
@@ -743,7 +743,8 @@ class TestSequentialOrchestratorIntegration:
         # so check for the actual XML block (tag on its own line with content) being absent.
         assert "\n<retrieved_context>\n" not in captured_prompts[0]
         # Confirm query_project was called but returned nothing useful.
-        orchestrator.project_store.query_project.assert_called_once()
+        assert orchestrator.project_store is not None
+        cast(MagicMock, orchestrator.project_store).query_project.assert_called_once()
 
     # -----------------------------------------------------------------------
     # 18. _build_project_documents_block budget & truncation (lines 269-308)
