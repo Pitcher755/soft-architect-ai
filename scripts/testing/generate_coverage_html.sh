@@ -32,13 +32,31 @@ echo "✅ Tests completados"
 # Verificar si lcov.info existe
 if [ -f "coverage/lcov.info" ]; then
     echo "📄 lcov.info encontrado ($(wc -l < coverage/lcov.info) líneas)"
-    
+
     # Move coverage to canonical location (PROJECT_ROOT/coverage/)
     echo "📦 Moviendo cobertura a ubicación canónica: $PROJECT_ROOT/coverage/"
     mv coverage "$PROJECT_ROOT/coverage"
-    
+
     cd "$PROJECT_ROOT"
-    
+
+    # Filter generated files (*.g.dart, *.freezed.dart, gen/, l10n/)
+    echo "🔧 Filtrando archivos generados..."
+    if command -v lcov >/dev/null 2>&1; then
+        lcov --remove coverage/lcov.info \
+            '*.g.dart' \
+            '*.freezed.dart' \
+            '*/gen/*' \
+            '*/l10n/*' \
+            '*/generated/*' \
+            '*.gen.dart' \
+            -o coverage/lcov_filtered.info --quiet
+        LCOV_SOURCE="coverage/lcov_filtered.info"
+        echo "✅ Filtrado completado"
+    else
+        LCOV_SOURCE="coverage/lcov.info"
+        echo "⚠️  lcov no instalado, usando datos sin filtrar"
+    fi
+
     echo
     echo "📊 Generando reporte HTML con genhtml..."
 
@@ -46,7 +64,7 @@ if [ -f "coverage/lcov.info" ]; then
     mkdir -p coverage/html
 
     # Generar HTML
-    genhtml coverage/lcov.info -o coverage/html 2>&1 | grep -E "(Overall|Reading|Writing|lines|functions)" || true
+    genhtml "$LCOV_SOURCE" -o coverage/html 2>&1 | grep -E "(Overall|Reading|Writing|lines|functions)" || true
 
     echo
     echo "✅ Reporte HTML generado en: coverage/html/index.html"
@@ -54,7 +72,7 @@ if [ -f "coverage/lcov.info" ]; then
     echo
     echo "📊 Resumen:"
     ls -lh coverage/html/index.html
-    
+
     echo
     echo "🌐 Abrir con:"
     echo "   xdg-open $PROJECT_ROOT/coverage/html/index.html"

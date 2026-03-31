@@ -184,12 +184,25 @@ jobs:
             -v
         continue-on-error: false
 
+      - name: � Install lcov
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
+        run: |
+          command -v lcov >/dev/null 2>&1 || sudo apt-get install -y lcov
+
+      - name: 📊 Flutter Coverage Threshold (≥80%)
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
+        run: |
+          chmod +x scripts/testing/flutter_coverage_check.sh
+          scripts/testing/flutter_coverage_check.sh --threshold=80 --html
+        continue-on-error: false
+
       - name: 📊 Upload Coverage Report
         if: always() && github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: frontend-coverage-report-${{ github.run_id }}
-          path: tests/coverage/
+          path: |
+            coverage/
           retention-days: 7
 
       - name: 📝 Build Summary
