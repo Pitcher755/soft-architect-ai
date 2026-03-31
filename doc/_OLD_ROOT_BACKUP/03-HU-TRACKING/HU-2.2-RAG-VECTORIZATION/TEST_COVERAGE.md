@@ -293,7 +293,7 @@ python -m pytest tests/unit/services/rag/test_vector_store.py -v
 ### Run E2E Tests (Docker Required)
 ```bash
 # Start Docker
-docker compose -f infrastructure/docker-compose.yml up -d chromadb
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d chromadb
 
 # Run tests
 cd src/server
@@ -302,13 +302,13 @@ python -m pytest tests/integration/services/rag/test_vector_store_e2e.py -v
 # Expected: 9 passed in ~6s
 
 # Cleanup
-docker compose -f infrastructure/docker-compose.yml down
+docker compose --env-file .env -f infrastructure/docker-compose.yml down
 ```
 
 ### Run All Tests
 ```bash
 cd src/server
-docker compose -f infrastructure/docker-compose.yml up -d chromadb
+docker compose --env-file .env -f infrastructure/docker-compose.yml up -d chromadb
 source venv/bin/activate
 export CHROMA_HOST=localhost CHROMA_PORT=8001
 pytest tests/unit/services/rag/test_vector_store.py tests/integration/services/rag/test_vector_store_e2e.py -v

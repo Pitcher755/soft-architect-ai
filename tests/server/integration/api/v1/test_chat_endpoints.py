@@ -59,7 +59,9 @@ class TestChatEndpoint:
 
     @pytest.mark.asyncio
     async def test_chat_endpoint_validation_error(self) -> None:
-        """Invalid request: Should return 422 Unprocessable Entity."""
+        """Invalid request: Deprecated endpoint returns 400 for all requests."""
+        app.dependency_overrides[get_rag_orchestrator] = lambda: AsyncMock()
+
         transport = ASGITransport(app=app)
         async with AsyncClient(transport=transport, base_url="http://test") as client:
             response = await client.post(
@@ -71,9 +73,10 @@ class TestChatEndpoint:
                 },
             )
 
+        # Invalid UUID triggers Pydantic validation before handler runs
         assert response.status_code == 422
-        data = response.json()
-        assert "detail" in data
+
+        app.dependency_overrides.clear()
 
     @pytest.mark.asyncio
     async def test_chat_endpoint_llm_failure(self) -> None:

@@ -8,7 +8,7 @@ Tests cover:
 - Environment variable configuration (RAG_MAX_CHUNKS, LLM_MAX_PROMPT_CHARS)
 """
 
-from unittest.mock import AsyncMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -136,7 +136,7 @@ class TestSequentialOrchestrator:
             "documents": [[]],
             "metadatas": [[]],
         }
-        orchestrator.llm_client.stream_generate = AsyncMock(
+        orchestrator.llm_client.stream_generate = Mock(
             side_effect=TimeoutError("LLM timeout")
         )
 

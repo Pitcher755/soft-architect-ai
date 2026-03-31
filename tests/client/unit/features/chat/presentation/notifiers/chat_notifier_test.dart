@@ -272,16 +272,23 @@ void main() {
 
       fakeRepository.generatedTokens = ['Document', ' ', 'One'];
 
+      // Use isolated path with no residual progress files
+      const testPath = '/tmp/test_advance_doc_index';
+      final progressDir = Directory('$testPath/.softarchitect');
+      if (progressDir.existsSync()) {
+        progressDir.deleteSync(recursive: true);
+      }
+
       // Set project path
-      notifier.setProjectPath('/tmp/test_project');
+      notifier.setProjectPath(testPath);
 
       // Generate first document
       await notifier.sendMessageStream('First document');
       await Future<void>.delayed(const Duration(milliseconds: 200));
 
       final initialState = container.read(chatNotifierProvider);
-      // With ProjectProgressService, initial index is 3 (PROJECT_MANIFESTO + USER_JOURNEY_MAP already created)
-      expect(initialState.currentDocIndex, 3);
+      // No prior documents on disk, so index starts at 1
+      expect(initialState.currentDocIndex, 1);
       expect(initialState.currentProposal, isNotNull);
 
       // Validate proposal
@@ -290,8 +297,8 @@ void main() {
 
       final updatedState = container.read(chatNotifierProvider);
 
-      // Verify document index advanced from 3 to 4
-      expect(updatedState.currentDocIndex, 4);
+      // Verify document index advanced from 1 to 2
+      expect(updatedState.currentDocIndex, 2);
       expect(updatedState.currentProposal, isNull);
     });
   });
@@ -1161,39 +1168,92 @@ void main() {
   });
 
   group('ChatNotifier - Workflow Completion Epic Message', () {
+    late FakeFileSystemService epicFileSystemService;
+    late ProviderContainer epicContainer;
+    late FakeChatRepository epicRepository;
+
+    setUp(() {
+      epicRepository = FakeChatRepository();
+      epicFileSystemService = FakeFileSystemService();
+
+      // Create progress directory for the test path
+      final progressDir = Directory('/tmp/test_epic_complete/.softarchitect');
+      if (!progressDir.existsSync()) {
+        progressDir.createSync(recursive: true);
+      }
+      // Write progress as if 23 docs already done → currentDocIndex = 24
+      File('/tmp/test_epic_complete/.softarchitect/status.json')
+          .writeAsStringSync(
+        '{"documentosCreados":23,"porcentajeProgreso":95.83,'
+        '"timestamp":"2024-01-01T00:00:00.000"}',
+      );
+
+      epicContainer = ProviderContainer(
+        overrides: [
+          chatRepositoryProvider.overrideWithValue(epicRepository),
+          mockChatRepositoryProvider.overrideWithValue(epicRepository),
+          fileSystemServiceProvider.overrideWithValue(epicFileSystemService),
+          fileSystemNotifierProvider.overrideWith((ref) {
+            return FileSystemNotifier();
+          }),
+        ],
+      );
+    });
+
+    tearDown(() {
+      epicContainer.dispose();
+      final dir = Directory('/tmp/test_epic_complete');
+      if (dir.existsSync()) {
+        dir.deleteSync(recursive: true);
+      }
+    });
+
     test(
       'should display epic completion message when all 24 documents finished',
       () async {
-        final notifier = container.read(chatNotifierProvider.notifier);
-        notifier.resetForNewProject();
+        final notifier = epicContainer.read(chatNotifierProvider.notifier);
+
+        // setProjectPath loads progress (23 docs done) → currentDocIndex = 24
         await notifier.setProjectPath('/tmp/test_epic_complete');
+        await Future<void>.delayed(const Duration(milliseconds: 100));
 
-        // Simulate completing all 24 documents
-        // Start from index 1 (README already considered generated)
-        for (var i = 1; i <= 24; i++) {
-          fakeRepository.generatedTokens = ['# DOC $i\n\n', 'Content of document $i'];
-          await notifier.sendMessageStream('Generate doc $i');
-          await Future<void>.delayed(const Duration(milliseconds: 100));
+        var state = epicContainer.read(chatNotifierProvider);
+        expect(state.currentDocIndex, 24,
+            reason: 'Should start at doc 24 (last document)');
 
-          // Validate the document to advance workflow
-          await notifier.validateProposal();
-          await Future<void>.delayed(const Duration(milliseconds: 50));
-        }
+        // Generate and stream the LAST (24th) document
+        epicRepository.generatedTokens = [
+          '# AGENTS_RULES\n\n',
+          'Content of the final document',
+        ];
+        await notifier.sendMessageStream('Generate final doc');
 
-        // After validating document 24, the epic message should appear
-        final state = container.read(chatNotifierProvider);
+        // Wait for stream to complete
+        await Future<void>.delayed(const Duration(milliseconds: 300));
+
+        state = epicContainer.read(chatNotifierProvider);
+        expect(state.currentProposal, isNotNull,
+            reason: 'Should have a proposal after streaming');
+
+        // Validate the last document → triggers epic completion
+        await notifier.validateProposal();
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+
+        state = epicContainer.read(chatNotifierProvider);
 
         // Verify that we have a system message with the epic completion
         final systemMessages = state.messages
             .where((m) => m.role == MessageRole.system)
             .toList();
 
-        expect(systemMessages.isNotEmpty, true, reason: 'Should have system messages');
+        expect(systemMessages.isNotEmpty, true,
+            reason: 'Should have system messages');
 
         // Find the epic completion message
         final epicMessage = systemMessages.firstWhere(
-          (m) => m.content.contains('🚀') &&
-                 m.content.contains('Arquitectura de Contexto Finalizada'),
+          (m) =>
+              m.content.contains('🚀') &&
+              m.content.contains('Arquitectura de Contexto Finalizada'),
           orElse: () => ChatMessage(
             id: 'not-found',
             role: MessageRole.system,
@@ -1203,16 +1263,17 @@ void main() {
         );
 
         expect(epicMessage.id, isNot('not-found'),
-          reason: 'Epic completion message should be present');
+            reason: 'Epic completion message should be present');
         expect(epicMessage.content, contains('24 documentos maestros'));
         expect(epicMessage.content, contains('🛠️ **Siguientes pasos:**'));
-        expect(epicMessage.content, contains('¡Mucha suerte con el desarrollo!'));
+        expect(
+            epicMessage.content, contains('¡Mucha suerte con el desarrollo!'));
 
         // Verify workflow state is complete
         expect(state.currentDocIndex > state.totalDocs, true,
-          reason: 'Current index should exceed total docs after completion');
+            reason:
+                'Current index should exceed total docs after completion');
       },
-      skip: true, // Stream race condition: 24 sequential sendMessageStream calls cause "Cannot add event while adding stream" error
     );
   });
 }

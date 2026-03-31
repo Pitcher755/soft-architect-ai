@@ -8,7 +8,7 @@ environment with real HTTP requests.
 """
 
 import pytest
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 from uuid import uuid4
 
 from app.services.rag.orchestrator import RAGOrchestrator
@@ -43,14 +43,14 @@ class TestValidationBlockerE2E:
         4. System blocks request and returns warning (no LLM call)
         """
         # Arrange: Create mocked orchestrator
-        mock_vector_store = AsyncMock()
+        mock_vector_store = MagicMock()
         mock_vector_store.search = AsyncMock(return_value=[])
 
-        mock_template_builder = AsyncMock()
-        mock_template_builder.select_template = AsyncMock(return_value="CONTEXT_DRIVEN")
-        mock_template_builder.build_prompt = AsyncMock(return_value="Test prompt")
+        mock_template_builder = MagicMock()
+        mock_template_builder.select_template = MagicMock(return_value="CONTEXT_DRIVEN")
+        mock_template_builder.build_prompt = MagicMock(return_value="Test prompt")
 
-        mock_llm_client = AsyncMock()
+        mock_llm_client = MagicMock()
         mock_llm_client.generate = AsyncMock(return_value="LLM response")
 
         orchestrator = RAGOrchestrator(
@@ -103,14 +103,14 @@ class TestValidationBlockerE2E:
         5. System proceeds with normal LLM call
         """
         # Arrange
-        mock_vector_store = AsyncMock()
+        mock_vector_store = MagicMock()
         mock_vector_store.search = AsyncMock(return_value=[])
 
-        mock_template_builder = AsyncMock()
-        mock_template_builder.select_template = AsyncMock(return_value="CONTEXT_DRIVEN")
-        mock_template_builder.build_prompt = AsyncMock(return_value="Test prompt")
+        mock_template_builder = MagicMock()
+        mock_template_builder.select_template = MagicMock(return_value="CONTEXT_DRIVEN")
+        mock_template_builder.build_prompt = MagicMock(return_value="Test prompt")
 
-        mock_llm_client = AsyncMock()
+        mock_llm_client = MagicMock()
         mock_llm_client.generate = AsyncMock(return_value="Next step response")
 
         orchestrator = RAGOrchestrator(
@@ -163,12 +163,12 @@ class TestValidationBlockerE2E:
         4. System streams blocking message (no LLM stream)
         """
         # Arrange
-        mock_vector_store = AsyncMock()
+        mock_vector_store = MagicMock()
         mock_vector_store.search = AsyncMock(return_value=[])
 
-        mock_template_builder = AsyncMock()
-        mock_template_builder.select_template = AsyncMock(return_value="FALLBACK")
-        mock_template_builder.build_prompt = AsyncMock(return_value="Prompt")
+        mock_template_builder = MagicMock()
+        mock_template_builder.select_template = MagicMock(return_value="FALLBACK")
+        mock_template_builder.build_prompt = MagicMock(return_value="Prompt")
 
         async def mock_stream_generate(prompt):
             """Mock LLM stream that should NOT be called."""
@@ -177,7 +177,7 @@ class TestValidationBlockerE2E:
             yield " not"
             yield " happen"
 
-        mock_llm_client = AsyncMock()
+        mock_llm_client = MagicMock()
         mock_llm_client.stream_generate = mock_stream_generate
 
         orchestrator = RAGOrchestrator(
@@ -233,14 +233,14 @@ class TestValidationBlockerMultipleDocuments:
         3. Generate Doc 3 → Validate
         4. Ask for next step → Proceeds normally
         """
-        mock_vector_store = AsyncMock()
+        mock_vector_store = MagicMock()
         mock_vector_store.search = AsyncMock(return_value=[])
 
-        mock_template_builder = AsyncMock()
-        mock_template_builder.select_template = AsyncMock(return_value="CONTEXT_DRIVEN")
-        mock_template_builder.build_prompt = AsyncMock(return_value="Prompt")
+        mock_template_builder = MagicMock()
+        mock_template_builder.select_template = MagicMock(return_value="CONTEXT_DRIVEN")
+        mock_template_builder.build_prompt = MagicMock(return_value="Prompt")
 
-        mock_llm_client = AsyncMock()
+        mock_llm_client = MagicMock()
         mock_llm_client.generate = AsyncMock(return_value="Response")
 
         orchestrator = RAGOrchestrator(
@@ -294,14 +294,14 @@ class TestValidationBlockerMultipleDocuments:
         3. Generate Doc 3 → NO VALIDATION
         4. Ask for next step → Blocked!
         """
-        mock_vector_store = AsyncMock()
+        mock_vector_store = MagicMock()
         mock_vector_store.search = AsyncMock(return_value=[])
 
-        mock_template_builder = AsyncMock()
-        mock_template_builder.select_template = AsyncMock(return_value="FALLBACK")
-        mock_template_builder.build_prompt = AsyncMock(return_value="Prompt")
+        mock_template_builder = MagicMock()
+        mock_template_builder.select_template = MagicMock(return_value="FALLBACK")
+        mock_template_builder.build_prompt = MagicMock(return_value="Prompt")
 
-        mock_llm_client = AsyncMock()
+        mock_llm_client = MagicMock()
         mock_llm_client.generate = AsyncMock(return_value="Should not happen")
 
         orchestrator = RAGOrchestrator(
