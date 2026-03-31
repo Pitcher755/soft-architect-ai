@@ -51,7 +51,7 @@ apuntaba al **legacy** `RAGOrchestrator` en lugar del `SequentialOrchestrator`.
   pytest no propaga conftest.py entre directorios no-ancestros).
 
 - `tests/server/integration/services/rag/test_sequential_orchestrator_integration.py`
-  — 13 tests de integración (12 de PIT-142 + 1 adicional para `get_step_by_type`).
+  — 19 tests de integración (12 de PIT-142 + 1 adicional para `get_step_by_type` + 6 tests de cobertura de casos borde).
 
 **Estrategia:** Instanciación real del `SequentialOrchestrator` con dependencias
 externas completamente mockeadas (LLM client, vector store, ChromaDB per-project).
@@ -77,8 +77,14 @@ La capa de integración prueba el cableado real entre el orquestador, `MASTER_WO
 | 11 | `test_generate_produces_streaming_tokens` | 10 tokens generados en orden exacto, WorkflowInjector llamado una vez |
 | 12 | `test_dual_rag_channel_injection` | Ambas etiquetas `<rag_context>` y `<retrieved_context>` en el prompt |
 | 13 | `test_concurrent_generate_calls_do_not_interfere` | `gather()` paralelo produce streams independientes |
+| 14 | `test_empty_injection_block_falls_back_gracefully` | Inyector vacío → fallback solo RAG |
+| 15 | `test_extract_docs_text_empty_result_produces_no_rag_context` | Consulta vacía → sin bloque `<rag_context>` en el prompt |
+| 16 | `test_extract_docs_text_flat_string_docs_included_in_context` | Docs de cadena plana añadidos via rama `flat.append` |
+| 17 | `test_project_store_empty_chunks_produces_no_retrieved_context` | Chunks vacíos → sin bloque `<retrieved_context>` en el prompt |
+| 18 | `test_build_project_documents_block_budget_and_truncation` | Casos borde de presupuesto y truncación por documento |
+| 19 | `test_history_long_user_message_is_truncated_in_prompt` | Mensaje de usuario >1000 chars → `[text truncated]` |
 
-**Resultado:** ✅ 13/13 passed in 0.13s
+**Resultado:** ✅ 19/19 passed in 0.13s
 
 ---
 
@@ -94,6 +100,12 @@ Los tests de integración ahora cubren:
 - ✅ Protección prompt hard-cap (200K chars)
 - ✅ Integridad del grafo de dependencias de contexto
 - ✅ Seguridad de concurrencia
+- ✅ Fallback de inyección vacía (ruta solo RAG)
+- ✅ Caso borde: resultado vacío en `_extract_docs_text` → sin bloque `<rag_context>`
+- ✅ Caso borde: docs de cadena plana añadidos en `<rag_context>`
+- ✅ Caso borde: chunks vacíos en project store → sin bloque `<retrieved_context>`
+- ✅ Presupuesto de construcción de prompt y truncación por documento
+- ✅ Truncación de mensajes de usuario largos en historial (`[text truncated]`)
 
 ---
 
@@ -102,5 +114,5 @@ Los tests de integración ahora cubren:
 ```
 tests/server/integration/services/rag/
 ├── conftest.py                              [NUEVO] Parches SDK Google
-└── test_sequential_orchestrator_integration.py  [NUEVO] 13 tests de integración
+└── test_sequential_orchestrator_integration.py  [NUEVO] 19 tests de integración
 ```

@@ -51,7 +51,7 @@ pointing at the **legacy** `RAGOrchestrator` instead of `SequentialOrchestrator`
   pytest does not propagate conftest.py across non-ancestor directories).
 
 - `tests/server/integration/services/rag/test_sequential_orchestrator_integration.py`
-  — 13 integration tests (12 from PIT-142 + 1 bonus for `get_step_by_type`).
+  — 19 integration tests (12 from PIT-142 + 1 bonus for `get_step_by_type` + 6 edge-case coverage tests).
 
 **Strategy:** Real `SequentialOrchestrator` instantiation + fully mocked
 external dependencies (LLM client, vector store, per-project ChromaDB).
@@ -78,8 +78,14 @@ dual RAG channel pipeline.
 | 11 | `test_generate_produces_streaming_tokens` | 10 tokens yielded in exact order, WorkflowInjector called once |
 | 12 | `test_dual_rag_channel_injection` | Both `<rag_context>` and `<retrieved_context>` in prompt |
 | 13 | `test_concurrent_generate_calls_do_not_interfere` | Parallel `gather()` produces independent token streams |
+| 14 | `test_empty_injection_block_falls_back_gracefully` | Empty injector → RAG-only fallback |
+| 15 | `test_extract_docs_text_empty_result_produces_no_rag_context` | Empty query → no `<rag_context>` block in prompt |
+| 16 | `test_extract_docs_text_flat_string_docs_included_in_context` | Flat string docs appended via `flat.append` branch |
+| 17 | `test_project_store_empty_chunks_produces_no_retrieved_context` | Empty chunks → no `<retrieved_context>` block in prompt |
+| 18 | `test_build_project_documents_block_budget_and_truncation` | Budget and per-doc truncation edge cases |
+| 19 | `test_history_long_user_message_is_truncated_in_prompt` | User message >1000 chars → `[text truncated]` |
 
-**Result:** ✅ 13/13 passed in 0.13s
+**Result:** ✅ 19/19 passed in 0.13s
 
 ---
 
@@ -95,6 +101,12 @@ Integration tests now cover:
 - ✅ Prompt hard-cap safety (200K chars)
 - ✅ Context dependency graph integrity
 - ✅ Concurrency safety
+- ✅ Empty injection fallback (RAG-only path)
+- ✅ Edge case: empty `_extract_docs_text` result → no `<rag_context>` block
+- ✅ Edge case: flat string docs appended in `<rag_context>`
+- ✅ Edge case: empty project store chunks → no `<retrieved_context>` block
+- ✅ Prompt build budget and per-document truncation
+- ✅ Long user message history truncation (`[text truncated]`)
 
 ---
 
@@ -103,5 +115,5 @@ Integration tests now cover:
 ```
 tests/server/integration/services/rag/
 ├── conftest.py                              [NEW] Google SDK patches
-└── test_sequential_orchestrator_integration.py  [NEW] 13 integration tests
+└── test_sequential_orchestrator_integration.py  [NEW] 19 integration tests
 ```
