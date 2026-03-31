@@ -79,6 +79,11 @@ class Settings(BaseSettings):
     CHAT_MAX_HISTORY_MESSAGES: int = 100  # Max messages (50 user + 50 assistant)
     CHAT_MAX_MESSAGE_LENGTH: int = 20000  # Max chars per message (model supports 32K)
 
+    # OpenTelemetry Configuration
+    OTEL_ENABLED: bool = False
+    OTEL_SERVICE_NAME: str = "softarchitect-ai"
+    OTEL_EXPORTER_ENDPOINT: str = "localhost:4317"
+
     # Streaming Configuration
     WS_HEARTBEAT_INTERVAL_SECONDS: float = 30.0
     WS_IDLE_TIMEOUT_SECONDS: float = 300.0
