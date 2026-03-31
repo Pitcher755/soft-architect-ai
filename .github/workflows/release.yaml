@@ -1,0 +1,319 @@
+# =============================================================================
+# 🚀 Release Workflow — Release Please + Build & Upload Artifacts
+# =============================================================================
+# PIT-118 — [HU-6.1] Automated Release Workflow (GitHub Actions)
+#
+# Paradigm: Google Release Please (googleapis/release-please-action@v4)
+# - On push to main: Release Please creates/updates a release PR with
+#   auto-generated CHANGELOG from conventional commits.
+# - On merge of the release PR: Release Please creates a GitHub Release
+#   with tag(s), then Job 2 builds and uploads Linux artifacts.
+# =============================================================================
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # JOB 1 — Release Please: Create/Update Release PR → Tag → GitHub Release
+  # ═══════════════════════════════════════════════════════════════════════════
+  release-please:
+    name: 📦 Release Please
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      # Per-component outputs
+      backend_release_created: ${{ steps.release.outputs['src/server--release_created'] }}
+      backend_tag_name: ${{ steps.release.outputs['src/server--tag_name'] }}
+      backend_version: ${{ steps.release.outputs['src/server--version'] }}
+      frontend_release_created: ${{ steps.release.outputs['src/client--release_created'] }}
+      frontend_tag_name: ${{ steps.release.outputs['src/client--tag_name'] }}
+      frontend_version: ${{ steps.release.outputs['src/client--version'] }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # JOB 2 — Build & Upload Linux Artifacts (.deb + .AppImage)
+  # ═══════════════════════════════════════════════════════════════════════════
+  build-and-upload:
+    name: 🏗️ Build & Upload Linux Artifacts
+    runs-on: ubuntu-latest
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+
+    env:
+      APP_NAME: softarchitect-ai
+      FRONTEND_VERSION: ${{ needs.release-please.outputs.frontend_version || '0.0.0' }}
+      BACKEND_VERSION: ${{ needs.release-please.outputs.backend_version || '0.0.0' }}
+
+    steps:
+      # ─────────────────────────────────────────────────────────────────────
+      # 1. Checkout
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 2. Setup Flutter
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🎯 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.0'
+          channel: stable
+          cache: true
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 3. Setup Python
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: src/server/requirements.txt
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 4. Install Linux packaging tools
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🔧 Install packaging dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            dpkg-dev \
+            fakeroot \
+            libfuse2 \
+            patchelf \
+            desktop-file-utils \
+            libgtk-3-dev \
+            ninja-build \
+            clang \
+            cmake \
+            pkg-config
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 5. Build Flutter Linux desktop
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🎯 Build Flutter Linux
+        working-directory: src/client
+        run: |
+          flutter pub get
+          flutter build linux --release
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 6. Prepare backend bundle
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🐍 Prepare backend
+        working-directory: src/server
+        run: |
+          pip install -r requirements.txt --target=./dist/python-packages --quiet
+          mkdir -p dist/server
+          cp -r app core domain services utils dist/server/
+          cp requirements.txt pyproject.toml dist/server/
+          echo "Backend packaged to dist/"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 7. Package .deb
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 📦 Build .deb package
+        run: |
+          set -e
+          VERSION="${FRONTEND_VERSION}"
+          DEB_ROOT="build/deb/${APP_NAME}_${VERSION}"
+
+          # Directory structure
+          mkdir -p "${DEB_ROOT}/DEBIAN"
+          mkdir -p "${DEB_ROOT}/opt/${APP_NAME}/client"
+          mkdir -p "${DEB_ROOT}/opt/${APP_NAME}/server"
+          mkdir -p "${DEB_ROOT}/usr/share/applications"
+          mkdir -p "${DEB_ROOT}/usr/bin"
+
+          # Copy Flutter build
+          cp -r src/client/build/linux/x64/release/bundle/* \
+            "${DEB_ROOT}/opt/${APP_NAME}/client/"
+
+          # Copy backend
+          cp -r src/server/dist/server/* \
+            "${DEB_ROOT}/opt/${APP_NAME}/server/"
+
+          # Desktop entry
+          cat > "${DEB_ROOT}/usr/share/applications/${APP_NAME}.desktop" <<EOF
+          [Desktop Entry]
+          Type=Application
+          Name=SoftArchitect AI
+          Comment=Local-First AI Assistant for Software Architecture
+          Exec=/opt/${APP_NAME}/client/softarchitect_ai
+          Icon=/opt/${APP_NAME}/client/data/flutter_assets/assets/icon.png
+          Terminal=false
+          Categories=Development;IDE;
+          EOF
+
+          # Launcher symlink
+          cat > "${DEB_ROOT}/usr/bin/${APP_NAME}" <<'LAUNCHER'
+          #!/usr/bin/env bash
+          exec /opt/softarchitect-ai/client/softarchitect_ai "$@"
+          LAUNCHER
+          chmod +x "${DEB_ROOT}/usr/bin/${APP_NAME}"
+
+          # DEBIAN control
+          cat > "${DEB_ROOT}/DEBIAN/control" <<EOF
+          Package: ${APP_NAME}
+          Version: ${VERSION}
+          Section: devel
+          Priority: optional
+          Architecture: amd64
+          Depends: libgtk-3-0, python3 (>= 3.12)
+          Maintainer: PitcherDev <dev@pitcher.dev>
+          Description: SoftArchitect AI — Local-First AI Architecture Assistant
+           A privacy-first, offline desktop application that guides developers
+           through the Master Workflow 0-100 using local RAG and LLMs.
+          EOF
+
+          # Build
+          dpkg-deb --build "${DEB_ROOT}"
+          DEB_FILE="build/deb/${APP_NAME}_${VERSION}.deb"
+          echo "DEB_FILE=${DEB_FILE}" >> "$GITHUB_ENV"
+          echo "✅ .deb built: ${DEB_FILE}"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 8. Package .AppImage
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 📦 Build .AppImage
+        run: |
+          set -e
+          VERSION="${FRONTEND_VERSION}"
+          APPDIR="build/appimage/${APP_NAME}.AppDir"
+
+          # Download appimagetool if not cached
+          if [[ ! -f /tmp/appimagetool ]]; then
+            curl -sSL -o /tmp/appimagetool \
+              "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+            chmod +x /tmp/appimagetool
+          fi
+
+          # AppDir structure
+          mkdir -p "${APPDIR}/usr/bin"
+          mkdir -p "${APPDIR}/usr/share/applications"
+          mkdir -p "${APPDIR}/usr/share/icons/hicolor/256x256/apps"
+
+          # Copy Flutter bundle
+          cp -r src/client/build/linux/x64/release/bundle/* "${APPDIR}/usr/bin/"
+
+          # Copy backend
+          mkdir -p "${APPDIR}/usr/share/${APP_NAME}/server"
+          cp -r src/server/dist/server/* "${APPDIR}/usr/share/${APP_NAME}/server/"
+
+          # Desktop file
+          cat > "${APPDIR}/${APP_NAME}.desktop" <<EOF
+          [Desktop Entry]
+          Type=Application
+          Name=SoftArchitect AI
+          Comment=Local-First AI Architecture Assistant
+          Exec=softarchitect_ai
+          Icon=${APP_NAME}
+          Terminal=false
+          Categories=Development;IDE;
+          EOF
+          cp "${APPDIR}/${APP_NAME}.desktop" \
+            "${APPDIR}/usr/share/applications/${APP_NAME}.desktop"
+
+          # AppRun
+          cat > "${APPDIR}/AppRun" <<'APPRUN'
+          #!/usr/bin/env bash
+          SELF="$(readlink -f "$0")"
+          HERE="${SELF%/*}"
+          export LD_LIBRARY_PATH="${HERE}/usr/bin/lib:${LD_LIBRARY_PATH}"
+          exec "${HERE}/usr/bin/softarchitect_ai" "$@"
+          APPRUN
+          chmod +x "${APPDIR}/AppRun"
+
+          # Icon placeholder (use Flutter icon or generate one)
+          if [[ -f src/client/build/linux/x64/release/bundle/data/flutter_assets/assets/icon.png ]]; then
+            cp src/client/build/linux/x64/release/bundle/data/flutter_assets/assets/icon.png \
+              "${APPDIR}/${APP_NAME}.png"
+          else
+            # Placeholder: 1x1 transparent PNG
+            echo "⚠️  No icon found, using placeholder"
+            convert -size 256x256 xc:transparent "${APPDIR}/${APP_NAME}.png" 2>/dev/null || true
+          fi
+          cp "${APPDIR}/${APP_NAME}.png" \
+            "${APPDIR}/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png" 2>/dev/null || true
+
+          # Build AppImage
+          APPIMAGE_FILE="build/appimage/${APP_NAME}-${VERSION}-x86_64.AppImage"
+          ARCH=x86_64 /tmp/appimagetool --no-appstream "${APPDIR}" "${APPIMAGE_FILE}"
+          echo "APPIMAGE_FILE=${APPIMAGE_FILE}" >> "$GITHUB_ENV"
+          echo "✅ AppImage built: ${APPIMAGE_FILE}"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 9. Generate SHA-256 checksums
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🔐 Generate SHA-256 checksums
+        run: |
+          set -e
+          sha256sum "${DEB_FILE}" > "${DEB_FILE}.sha256"
+          sha256sum "${APPIMAGE_FILE}" > "${APPIMAGE_FILE}.sha256"
+
+          echo "### 🔐 SHA-256 Checksums" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat "${DEB_FILE}.sha256" >> "$GITHUB_STEP_SUMMARY"
+          cat "${APPIMAGE_FILE}.sha256" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 10. Upload artifacts to GitHub Release
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🚀 Upload artifacts to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+
+          # Determine the release tag (prefer frontend tag, fall back to backend)
+          TAG="${{ needs.release-please.outputs.frontend_tag_name }}"
+          if [[ -z "${TAG}" ]]; then
+            TAG="${{ needs.release-please.outputs.backend_tag_name }}"
+          fi
+
+          if [[ -z "${TAG}" ]]; then
+            echo "❌ No release tag found — cannot upload artifacts"
+            exit 1
+          fi
+
+          echo "📦 Uploading artifacts to release: ${TAG}"
+
+          gh release upload "${TAG}" \
+            "${DEB_FILE}" \
+            "${DEB_FILE}.sha256" \
+            "${APPIMAGE_FILE}" \
+            "${APPIMAGE_FILE}.sha256" \
+            --clobber
+
+          echo "✅ Artifacts uploaded to ${TAG}"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 11. Summary
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 📋 Release Summary
+        run: |
+          echo "### 🚀 Release Artifacts" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Artifact | File |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|----------|------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| .deb | \`$(basename "${DEB_FILE}")\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| .AppImage | \`$(basename "${APPIMAGE_FILE}")\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Frontend version | \`${FRONTEND_VERSION}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Backend version | \`${BACKEND_VERSION}\` |" >> "$GITHUB_STEP_SUMMARY"
