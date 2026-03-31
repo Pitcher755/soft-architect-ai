@@ -108,6 +108,8 @@ async def test_chat_stream_endpoint_without_history() -> None:
 @pytest.mark.asyncio
 async def test_chat_stream_endpoint_rejects_invalid_history() -> None:
     """Invalid history: Should return 422 for malformed history."""
+    mock_orchestrator = MagicMock()
+    app.dependency_overrides[get_rag_orchestrator] = lambda: mock_orchestrator
     app.dependency_overrides[verify_api_key] = lambda: "test-api-key"
 
     transport = ASGITransport(app=app)
@@ -140,6 +142,8 @@ async def test_chat_stream_endpoint_rejects_oversized_history() -> None:
         for i in range(101)  # Exceeds default limit of 100
     ]
 
+    mock_orchestrator = MagicMock()
+    app.dependency_overrides[get_rag_orchestrator] = lambda: mock_orchestrator
     app.dependency_overrides[verify_api_key] = lambda: "test-api-key"
 
     transport = ASGITransport(app=app)

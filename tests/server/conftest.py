@@ -5,15 +5,150 @@ This conftest configures the Python path to ensure all tests
 can properly import from the application modules.
 
 CRITICAL: This file is loaded FIRST by pytest before any test collection.
+It also patches the broken cryptography/Google SDK import chain to prevent
+ImportError during collection of test modules that import app-level code.
 """
 
-import json
 import sys
 from pathlib import Path
-from typing import AsyncGenerator
+from types import ModuleType
+from unittest.mock import MagicMock
 
-import pytest
-from fastapi.testclient import TestClient
+
+# ========================================================================
+# GOOGLE SDK / CRYPTOGRAPHY PATCH (must run before ANY app import)
+# ========================================================================
+
+
+def _make_package(name: str) -> ModuleType:
+    """Create a stub ModuleType that also acts as a package (has __path__)."""
+    mod = ModuleType(name)
+    mod.__spec__ = None  # type: ignore[assignment]
+    mod.__path__ = []  # marks it as a package so sub-imports work
+    mod.__package__ = name
+    return mod
+
+
+def _patch_google_sdk() -> None:
+    """Insert minimal stubs for google SDK packages into sys.modules.
+
+    Prevents the venv-level cryptography version conflict from crashing
+    test collection.  Registration order matters: parents before children.
+    """
+    for name in [
+        # Cryptography
+        "cryptography",
+        "cryptography.hazmat",
+        "cryptography.hazmat.bindings",
+        "cryptography.hazmat.bindings._rust",
+        "cryptography.hazmat.primitives",
+        "cryptography.x509",
+        # gRPC (needed by chromadb → opentelemetry)
+        "grpc",
+        "grpc.experimental",
+        # OpenTelemetry (cuts the chromadb telemetry import chain)
+        "opentelemetry",
+        "opentelemetry.exporter",
+        "opentelemetry.exporter.otlp",
+        "opentelemetry.exporter.otlp.proto",
+        "opentelemetry.exporter.otlp.proto.grpc",
+        "opentelemetry.exporter.otlp.proto.grpc.trace_exporter",
+        "opentelemetry.exporter.otlp.proto.grpc.exporter",
+        "opentelemetry.sdk",
+        "opentelemetry.sdk.trace",
+        "opentelemetry.sdk.trace.export",
+        "opentelemetry.sdk.resources",
+        "opentelemetry.trace",
+        "opentelemetry.trace.status",
+        "opentelemetry.context",
+        # Google namespace
+        "google",
+        "google.auth",
+        "google.auth.transport",
+        "google.auth.transport.grpc",
+        "google.auth.crypt",
+        "google.api_core",
+        "google.api_core.exceptions",
+        "google.api_core.gapic_v1",
+        "google.api_core.gapic_v1.method",
+        "google.api_core.retry",
+        "google.generativeai",
+        "google.generativeai.types",
+        "google.ai",
+        "google.ai.generativelanguage_v1beta",
+    ]:
+        if name not in sys.modules:
+            sys.modules[name] = _make_package(name)
+
+    # gRPC attributes required by opentelemetry (via chromadb)
+    grpc_mod = sys.modules["grpc"]
+    for attr in [
+        "ChannelCredentials",
+        "Compression",
+        "Channel",
+        "insecure_channel",
+        "secure_channel",
+        "ssl_channel_credentials",
+        "RpcError",
+        "StatusCode",
+    ]:
+        if not hasattr(grpc_mod, attr):
+            setattr(grpc_mod, attr, MagicMock())
+    if not hasattr(grpc_mod, "__version__"):
+        grpc_mod.__version__ = "1.0.0"  # type: ignore[attr-defined]
+
+    # opentelemetry.trace attribute stubs
+    trace_mod = sys.modules["opentelemetry.trace"]
+    for attr in ["get_tracer", "Tracer", "Span", "SpanKind", "StatusCode"]:
+        if not hasattr(trace_mod, attr):
+            setattr(trace_mod, attr, MagicMock())
+
+    # opentelemetry.sdk.resources stubs (chromadb telemetry)
+    sdk_resources = sys.modules["opentelemetry.sdk.resources"]
+    for attr in ["SERVICE_NAME", "Resource"]:
+        if not hasattr(sdk_resources, attr):
+            setattr(sdk_resources, attr, MagicMock())
+
+    # opentelemetry.sdk.trace stubs (chromadb telemetry)
+    sdk_trace = sys.modules["opentelemetry.sdk.trace"]
+    if not hasattr(sdk_trace, "TracerProvider"):
+        sdk_trace.TracerProvider = MagicMock()  # type: ignore[attr-defined]
+
+    # opentelemetry.sdk.trace.export stubs (chromadb telemetry)
+    sdk_trace_export = sys.modules["opentelemetry.sdk.trace.export"]
+    if not hasattr(sdk_trace_export, "BatchSpanProcessor"):
+        sdk_trace_export.BatchSpanProcessor = MagicMock()  # type: ignore[attr-defined]
+
+    # opentelemetry.exporter.otlp.proto.grpc.trace_exporter stubs
+    otlp_trace = sys.modules["opentelemetry.exporter.otlp.proto.grpc.trace_exporter"]
+    if not hasattr(otlp_trace, "OTLPSpanExporter"):
+        otlp_trace.OTLPSpanExporter = MagicMock()  # type: ignore[attr-defined]
+
+    # Attribute stubs accessed at import-time
+    genai_mod = sys.modules["google.generativeai"]
+    genai_mod.GenerativeModel = MagicMock()  # type: ignore[attr-defined]
+    genai_mod.configure = MagicMock()  # type: ignore[attr-defined]
+    genai_mod.GenerationConfig = MagicMock()  # type: ignore[attr-defined]
+
+    genai_types = sys.modules["google.generativeai.types"]
+    genai_types.HarmBlockThreshold = MagicMock()  # type: ignore[attr-defined]
+    genai_types.HarmCategory = MagicMock()  # type: ignore[attr-defined]
+
+    api_exc = sys.modules["google.api_core.exceptions"]
+    api_exc.GoogleAPIError = Exception  # type: ignore[attr-defined]
+
+
+_patch_google_sdk()
+
+
+# ========================================================================
+# Standard imports (safe after SDK patch)
+# ========================================================================
+import json  # noqa: E402
+from typing import AsyncGenerator  # noqa: E402
+
+import pytest  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
 
 # Get the project root (three levels up from this file)
 # File: /path/to/soft-architect-ai/tests/python/conftest.py

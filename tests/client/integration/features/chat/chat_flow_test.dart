@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  // NOTE: integration_test binding will be enabled in PHASE-5 when real
+  // E2E chat flow tests are implemented. Using flutter_test for now to
+  // avoid framework-level skip noise in the test reporter.
 
   setUpAll(() {
     // Global test setup (if needed)

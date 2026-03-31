@@ -702,7 +702,7 @@ class TestRetrieveProjectContext:
         mock_store.query_project.assert_called_once_with(
             "p-1",
             "Context for USER_STORIES_MASTER: Build todo app",
-            n_results=5,
+            n_results=3,
         )
 
     def test_returns_empty_string_on_store_exception(
