@@ -51,13 +51,18 @@ pointing at the **legacy** `RAGOrchestrator` instead of `SequentialOrchestrator`
   pytest does not propagate conftest.py across non-ancestor directories).
 
 - `tests/server/integration/services/rag/test_sequential_orchestrator_integration.py`
-  — 19 integration tests (12 from PIT-142 + 1 bonus for `get_step_by_type` + 6 edge-case coverage tests).
+  — 19 integration tests covering all PIT-142 acceptance criteria + 6 additional
+  edge-case scenarios for full branch coverage.
 
 **Strategy:** Real `SequentialOrchestrator` instantiation + fully mocked
 external dependencies (LLM client, vector store, per-project ChromaDB).
 The integration layer tests the actual wiring between the orchestrator,
 `MASTER_WORKFLOW`, `CONTEXT_DEPENDENCIES`, `WorkflowInjector`, and the
 dual RAG channel pipeline.
+
+**Additional scope (Session 3-4):** Beyond the integration tests, all
+pre-existing failures, skips, and warnings across both server (Python) and
+client (Flutter) test suites were fixed to achieve a fully green CI state.
 
 ---
 
@@ -78,14 +83,14 @@ dual RAG channel pipeline.
 | 11 | `test_generate_produces_streaming_tokens` | 10 tokens yielded in exact order, WorkflowInjector called once |
 | 12 | `test_dual_rag_channel_injection` | Both `<rag_context>` and `<retrieved_context>` in prompt |
 | 13 | `test_concurrent_generate_calls_do_not_interfere` | Parallel `gather()` produces independent token streams |
-| 14 | `test_empty_injection_block_falls_back_gracefully` | Empty injector → RAG-only fallback |
-| 15 | `test_extract_docs_text_empty_result_produces_no_rag_context` | Empty query → no `<rag_context>` block in prompt |
-| 16 | `test_extract_docs_text_flat_string_docs_included_in_context` | Flat string docs appended via `flat.append` branch |
-| 17 | `test_project_store_empty_chunks_produces_no_retrieved_context` | Empty chunks → no `<retrieved_context>` block in prompt |
-| 18 | `test_build_project_documents_block_budget_and_truncation` | Budget and per-doc truncation edge cases |
+| 14 | `test_empty_injection_block_falls_back_gracefully` | Empty `WorkflowInjector` → RAG-only fallback |
+| 15 | `test_extract_docs_text_empty_result_produces_no_rag_context` | Empty query → no `<rag_context>` block |
+| 16 | `test_extract_docs_text_flat_string_docs_included_in_context` | Flat string docs → `flat.append` branch |
+| 17 | `test_project_store_empty_chunks_produces_no_retrieved_context` | Empty chunks → no `<retrieved_context>` |
+| 18 | `test_build_project_documents_block_budget_and_truncation` | Budget/truncation edge cases (6 sub-assertions) |
 | 19 | `test_history_long_user_message_is_truncated_in_prompt` | User message >1000 chars → `[text truncated]` |
 
-**Result:** ✅ 19/19 passed in 0.13s
+**Result:** ✅ 19/19 passed — 98% coverage on `sequential_orchestrator.py`
 
 ---
 
@@ -112,8 +117,41 @@ Integration tests now cover:
 
 ## Files Changed
 
+### New files
+
 ```
 tests/server/integration/services/rag/
 ├── conftest.py                              [NEW] Google SDK patches
 └── test_sequential_orchestrator_integration.py  [NEW] 19 integration tests
 ```
+
+### Modified files (suite-wide fixes)
+
+| File | Change |
+|------|--------|
+| `tests/server/conftest.py` | `_patch_google_sdk()` for cryptography/gRPC/OpenTelemetry |
+| `tests/server/services/rag/test_sequential_orchestrator.py` | `n_results=5→3` alignment |
+| `tests/server/integration/api/v1/test_chat_endpoints.py` | Added `get_rag_orchestrator` dependency override |
+| `tests/server/integration/api/v1/test_chat_stream_endpoint.py` | Rewritten with FastAPI `dependency_overrides` |
+| `tests/server/integration/api/v1/test_chat_history_integration.py` | MagicMock orchestrator override |
+| `tests/server/integration/test_sqlite_persistence.py` | Removed `@pytest.mark.skip`, rewrote assertions |
+| `tests/server/e2e/test_validation_blocker_e2e.py` | `AsyncMock→MagicMock` for sync methods |
+| `tests/client/.../chat_notifier_test.dart` | Test isolation (unique `/tmp/` paths), epic completion rewrite |
+| `tests/client/.../chat_flow_test.dart` | Removed `integration_test` import from placeholder |
+
+### Full suite results
+
+| Suite | Passed | Failed | Skipped | Warnings |
+|-------|--------|--------|---------|----------|
+| **Server** (pytest) | 791 | 0 | 0 | 0 |
+| **Client** (flutter test) | 959 | 0 | 0 | 0 |
+| **Total** | **1750** | **0** | **0** | **0** |
+
+### Commits
+
+| Hash | Message |
+|------|---------|
+| `3629043` | feat(tests): add integration tests for SequentialOrchestrator |
+| `bb798b8` | test(coverage): raise integration test coverage to 98% |
+| `152806e` | fix: resolve all test failures, skips, and warnings across server and client |
+| `14a1cb9` | fix(tests): resolve Pyright type errors in integration tests |
