@@ -318,44 +318,21 @@ echo -e "${YELLOW}⏳ Generating Flutter coverage report...${NC}"
 rm -rf "$PROJECT_ROOT/coverage"
 rm -rf "$PROJECT_ROOT/src/client/coverage"
 
-if command -v flutter >/dev/null 2>&1; then
-    # Generate coverage from client directory (Flutter project root)
-    if (cd "$PROJECT_ROOT/src/client" && flutter test ../../tests/client/ --coverage >/tmp/flutter_cov.out 2>&1); then
-        # Move to canonical location
-        if [ -f "$PROJECT_ROOT/src/client/coverage/lcov.info" ]; then
-            mv "$PROJECT_ROOT/src/client/coverage" "$PROJECT_ROOT/coverage"
-            
-            if command -v lcov >/dev/null 2>&1; then
-                # Exclude database_helper.dart (has structural bug: uses updated_at column but schema has last_opened)
-                # TODO: Fix database_helper.dart schema/model mismatch, then remove this exclusion
-                lcov --remove "$PROJECT_ROOT/coverage/lcov.info" \
-                     'lib/services/database_helper.dart' \
-                     -o "$PROJECT_ROOT/coverage/lcov_filtered.info" --quiet
-
-                FLUTTER_COVERAGE=$(lcov --summary "$PROJECT_ROOT/coverage/lcov_filtered.info" 2>&1 | grep -oP 'lines\.*: \K\d+\.\d+(?=%)')
-                if [ -n "$FLUTTER_COVERAGE" ]; then
-                    FLUTTER_COVERAGE_INT=$(LC_NUMERIC=C printf "%.0f" "$FLUTTER_COVERAGE")
-                    if [ "$FLUTTER_COVERAGE_INT" -ge 80 ]; then
-                        print_success "Flutter Coverage: ${FLUTTER_COVERAGE}% (≥80%, excluding buggy files) [lcov: coverage/lcov.info]"
-                    else
-                        print_fail "Flutter Coverage: ${FLUTTER_COVERAGE}% (<80%)"
-                    fi
-                else
-                    print_fail "Flutter Coverage: Could not parse coverage percentage"
-                fi
-            else
-                echo -e "${YELLOW}⚠️  lcov not installed - cannot calculate coverage percentage${NC}"
-                echo -e "${YELLOW}   Install with: sudo apt install lcov${NC}"
-                print_fail "Flutter Coverage: lcov required but not installed"
-            fi
+if command -v flutter >/dev/null 2>&1 && command -v lcov >/dev/null 2>&1; then
+    # Use the dedicated flutter coverage check script
+    FLUTTER_COV_SCRIPT="$PROJECT_ROOT/scripts/testing/flutter_coverage_check.sh"
+    if [ -x "$FLUTTER_COV_SCRIPT" ]; then
+        if "$FLUTTER_COV_SCRIPT" --threshold=80 --html; then
+            print_success "Flutter Coverage: ≥80% (see coverage/html/index.html)"
         else
-            print_fail "Flutter Coverage: lcov.info not generated"
+            print_fail "Flutter Coverage: below 80% threshold"
         fi
     else
-        print_fail "Flutter Coverage: test execution failed"
+        echo -e "${YELLOW}⚠️  flutter_coverage_check.sh not found or not executable${NC}"
+        print_fail "Flutter Coverage: script missing"
     fi
 else
-    print_fail "Flutter Coverage: flutter not installed"
+    print_fail "Flutter Coverage: flutter or lcov not installed"
 fi
 
 TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
