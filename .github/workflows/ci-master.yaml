@@ -111,7 +111,7 @@ jobs:
         run: |
           pytest tests/server/integration \
             -v --tb=short -m "not slow"
-        continue-on-error: true  # Don't block if integration tests fail
+        continue-on-error: false
 
       - name: 📊 Upload Coverage Report
         if: always()

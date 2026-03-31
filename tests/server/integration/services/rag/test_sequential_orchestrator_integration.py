@@ -39,6 +39,7 @@ from app.domain.constants.workflow import (
 )
 from app.services.rag.sequential_orchestrator import (
     SequentialOrchestrator,
+    _MAX_DOC_CHARS,
     _MAX_PROMPT_CHARS,
 )
 
@@ -610,6 +611,232 @@ class TestSequentialOrchestratorIntegration:
         assert "README" in tokens_by_doc
         assert tokens_by_doc["PROJECT_MANIFESTO"] == ["manifesto_1", "manifesto_2"]
         assert tokens_by_doc["README"] == ["readme_1", "readme_2"]
+
+    # -----------------------------------------------------------------------
+    # 14. Empty injection block → warning branch (line 134)
+    # -----------------------------------------------------------------------
+
+    @pytest.mark.asyncio
+    async def test_empty_injection_block_falls_back_gracefully(self) -> None:
+        """WorkflowInjector returning '' must still yield tokens (RAG-only fallback).
+
+        Covers the logger.warning branch triggered when injection_block is falsy
+        (line 134 of sequential_orchestrator.py).
+        """
+        orchestrator = _make_orchestrator(
+            injected_block="", llm_tokens=["fallback_token"]
+        )
+
+        tokens = await _collect_tokens(
+            orchestrator.generate(
+                doc_type="PROJECT_MANIFESTO",
+                user_input="empty injection test",
+                context={"project_id": "proj-empty-inj"},
+            )
+        )
+
+        assert tokens == ["fallback_token"]
+
+    # -----------------------------------------------------------------------
+    # 15. _extract_docs_text empty result → early return guard (line 180)
+    # -----------------------------------------------------------------------
+
+    @pytest.mark.asyncio
+    async def test_extract_docs_text_empty_result_produces_no_rag_context(
+        self,
+    ) -> None:
+        """vector_store returning {} must produce empty rag_context.
+
+        Covers the early-return guard in _extract_docs_text when the results
+        dict is empty (line 180 of sequential_orchestrator.py).
+        """
+        captured_prompts: list[str] = []
+
+        async def _capture(prompt: str, history: list) -> AsyncGenerator[str, None]:
+            captured_prompts.append(prompt)
+            yield "ok"
+
+        orchestrator = _make_orchestrator()
+        orchestrator.vector_store.query.return_value = {}  # empty dict
+        orchestrator.llm_client.stream_generate = _capture
+
+        await _collect_tokens(
+            orchestrator.generate(
+                doc_type="PROJECT_MANIFESTO",
+                user_input="empty rag test",
+                context={"project_id": "proj-empty-rag"},
+            )
+        )
+
+        assert len(captured_prompts) == 1
+        assert "<rag_context>" not in captured_prompts[0]
+
+    # -----------------------------------------------------------------------
+    # 16. _extract_docs_text flat string docs → flat.append branch (line 187)
+    # -----------------------------------------------------------------------
+
+    @pytest.mark.asyncio
+    async def test_extract_docs_text_flat_string_docs_included_in_context(
+        self,
+    ) -> None:
+        """vector_store returning a flat string (not nested list) must be included.
+
+        When documents contains a plain string (not a list of strings), the code
+        takes the flat.append(group) branch (line 187) instead of flat.extend.
+        """
+        captured_prompts: list[str] = []
+
+        async def _capture(prompt: str, history: list) -> AsyncGenerator[str, None]:
+            captured_prompts.append(prompt)
+            yield "ok"
+
+        orchestrator = _make_orchestrator()
+        orchestrator.vector_store.query.return_value = {
+            "documents": ["flat KB document string"],
+            "metadatas": [[]],
+        }
+        orchestrator.llm_client.stream_generate = _capture
+
+        await _collect_tokens(
+            orchestrator.generate(
+                doc_type="PROJECT_MANIFESTO",
+                user_input="flat doc test",
+                context={"project_id": "proj-flat-doc"},
+            )
+        )
+
+        assert len(captured_prompts) == 1
+        assert "flat KB document string" in captured_prompts[0]
+
+    # -----------------------------------------------------------------------
+    # 17. project_store empty chunks → empty retrieved_context (line 230)
+    # -----------------------------------------------------------------------
+
+    @pytest.mark.asyncio
+    async def test_project_store_empty_chunks_produces_no_retrieved_context(
+        self,
+    ) -> None:
+        """project_store returning [] must NOT add <retrieved_context> to prompt.
+
+        Covers the empty-chunks early return in _retrieve_project_context
+        (line 230 of sequential_orchestrator.py).
+        """
+        captured_prompts: list[str] = []
+
+        async def _capture(prompt: str, history: list) -> AsyncGenerator[str, None]:
+            captured_prompts.append(prompt)
+            yield "ok"
+
+        orchestrator = _make_orchestrator(project_chunks=[])
+        orchestrator.llm_client.stream_generate = _capture
+
+        await _collect_tokens(
+            orchestrator.generate(
+                doc_type="DOMAIN_LANGUAGE",
+                user_input="no chunks test",
+                context={"project_id": "proj-no-chunks"},
+            )
+        )
+
+        assert len(captured_prompts) == 1
+        # critical_rules prose always mentions "<retrieved_context>" as text,
+        # so check for the actual XML block (tag on its own line with content) being absent.
+        assert "\n<retrieved_context>\n" not in captured_prompts[0]
+        # Confirm query_project was called but returned nothing useful.
+        orchestrator.project_store.query_project.assert_called_once()
+
+    # -----------------------------------------------------------------------
+    # 18. _build_project_documents_block budget & truncation (lines 269-308)
+    # -----------------------------------------------------------------------
+
+    def test_build_project_documents_block_budget_and_truncation(self) -> None:
+        """_build_project_documents_block must handle empty, oversized and budget-constrained.
+
+        Covers all key branches in the method body (lines 269-308):
+        - Empty dict → ""
+        - budget <= 0 → ""
+        - Normal content → XML <project_documents> block
+        - Content > _MAX_DOC_CHARS → individual doc truncated
+        - Cumulative budget exhausted → later files omitted
+        - Remaining budget <= 60 after overhead → entry skipped, returns ""
+        """
+        orchestrator = _make_orchestrator()
+
+        # Empty dict → ""
+        assert orchestrator._build_project_documents_block({}) == ""
+
+        # Budget = 0 → ""
+        assert (
+            orchestrator._build_project_documents_block(
+                {"file.md": "content"}, budget=0
+            )
+            == ""
+        )
+
+        # Normal content → XML block with file content
+        result = orchestrator._build_project_documents_block(
+            {"context/README.md": "# Project\nThis is the README."}
+        )
+        assert "<project_documents>" in result
+        assert "context/README.md" in result
+        assert "# Project" in result
+
+        # Content > _MAX_DOC_CHARS → individual doc truncated
+        big_doc = "A" * (_MAX_DOC_CHARS + 500)
+        result = orchestrator._build_project_documents_block({"big.md": big_doc})
+        assert "[truncated]" in result
+
+        # Cumulative budget exhaustion → later files omitted
+        file_content = "B" * 800
+        many_files = {f"file_{i:02d}.md": file_content for i in range(10)}
+        result = orchestrator._build_project_documents_block(many_files, budget=2500)
+        assert "<project_documents>" in result
+        assert "file_09.md" not in result  # should be cut off by budget
+
+        # Budget so tight that the first entry does not fit (remaining <= 60) → ""
+        # envelope_overhead=250, effective_budget=50 → first entry > 50 chars skipped
+        tiny_budget = 250 + 50
+        long_key = "context/10-BUSINESS_AND_SCOPE/VERY_LONG_PATH_NAME_DOC.md"
+        result = orchestrator._build_project_documents_block(
+            {long_key: "some content"}, budget=tiny_budget
+        )
+        assert result == ""
+
+    # -----------------------------------------------------------------------
+    # 19. Long user message in chat_history → truncation branch (line 348)
+    # -----------------------------------------------------------------------
+
+    @pytest.mark.asyncio
+    async def test_history_long_user_message_is_truncated_in_prompt(self) -> None:
+        """A user chat_history message > 1000 chars must be truncated in the prompt.
+
+        Covers the ``elif len(content) > 1000`` branch in _build_history_text
+        (line 348 of sequential_orchestrator.py).
+        """
+        captured_prompts: list[str] = []
+
+        async def _capture(prompt: str, history: list) -> AsyncGenerator[str, None]:
+            captured_prompts.append(prompt)
+            yield "ok"
+
+        orchestrator = _make_orchestrator()
+        orchestrator.llm_client.stream_generate = _capture
+
+        long_user_msg = "U" * 2000  # 2000 chars, no path markers → truncation branch
+        history = [{"role": "user", "content": long_user_msg}]
+
+        await _collect_tokens(
+            orchestrator.generate(
+                doc_type="REQUIREMENTS_MASTER",
+                user_input="truncation test",
+                context={"project_id": "proj-trunc", "chat_history": history},
+            )
+        )
+
+        assert len(captured_prompts) == 1
+        prompt = captured_prompts[0]
+        assert "U" * 2000 not in prompt, "Long user message must be truncated"
+        assert "... [text truncated]" in prompt
 
 
 # ---------------------------------------------------------------------------
