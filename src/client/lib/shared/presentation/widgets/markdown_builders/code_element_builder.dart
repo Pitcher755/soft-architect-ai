@@ -48,6 +48,8 @@ class CodeElementBuilder extends MarkdownElementBuilder {
       fontSize: 13,
       height: 1.4,
     ),
+    this.codeBgColor,
+    this.codeBorderColor,
   });
 
   /// Syntax highlighting theme for code blocks.
@@ -55,6 +57,12 @@ class CodeElementBuilder extends MarkdownElementBuilder {
 
   /// Text style applied to code content.
   final TextStyle textStyle;
+
+  /// Background color for code blocks (passed from widget context).
+  final Color? codeBgColor;
+
+  /// Border color for code blocks (passed from widget context).
+  final Color? codeBorderColor;
 
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
@@ -82,9 +90,9 @@ class CodeElementBuilder extends MarkdownElementBuilder {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF161B22), // GitHub dark code block bg
+        color: codeBgColor ?? const Color(0xFF161B22),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: const Color(0xFF30363D)), // Subtle border
+        border: Border.all(color: codeBorderColor ?? const Color(0xFF30363D)),
       ),
       child: HighlightView(
         codeContent,

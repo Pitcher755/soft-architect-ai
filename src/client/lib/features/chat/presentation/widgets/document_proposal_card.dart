@@ -6,6 +6,7 @@ import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:markdown/markdown.dart' as md;
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../shared/presentation/widgets/markdown_builders/code_element_builder.dart';
 
 /// Interactive card widget for displaying document proposals from AI.
@@ -260,7 +261,16 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
           data: widget.content,
           selectable: true,
           extensionSet: md.ExtensionSet.gitHubFlavored,
-          builders: {'code': CodeElementBuilder()},
+          builders: {
+            'code': CodeElementBuilder(
+              codeBgColor: Theme.of(
+                context,
+              ).extension<AppColorsExtension>()?.cardBg,
+              codeBorderColor: Theme.of(
+                context,
+              ).extension<AppColorsExtension>()?.cardBorder,
+            ),
+          },
           styleSheet: MarkdownStyleSheet(
             p: TextStyle(
               fontSize: 15,
@@ -299,9 +309,9 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0xFF161B22),
+            color: context.appColors.cardBg,
             borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: const Color(0xFF30363D)),
+            border: Border.all(color: context.appColors.cardBorder),
           ),
           padding: const EdgeInsets.all(16),
           child: HighlightView(

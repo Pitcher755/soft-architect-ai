@@ -1,8 +1,7 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../../gen/app_localizations.dart';
 import '../../../../../shared/utils/navigation_utils.dart';
 import '../../domain/entities/project.dart';
@@ -29,7 +28,7 @@ class ProjectsGrid extends ConsumerWidget {
         padding: const EdgeInsets.all(40),
         child: Text(
           l10n.loadingProjects,
-          style: const TextStyle(color: Color(0xFF8B949E)),
+          style: TextStyle(color: context.appColors.textSecondary),
         ),
       );
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
-// Asegúrate de importar tus colores
+import '../theme/app_colors_extension.dart';
 
 /// Central theme configuration for the application.
 /// Inspired by Modern SaaS (Linear, Vercel, OpenAI) Vibrant Dark Mode.
@@ -29,6 +29,7 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.dark,
     scaffoldBackgroundColor: bgPrimary,
+    extensions: const <ThemeExtension>[AppColorsExtension.dark],
 
     // Smooth, deep app bar
     appBarTheme: const AppBarTheme(
@@ -142,11 +143,12 @@ class AppTheme {
     ),
   );
 
-  /// Light Theme (Maintained for compatibility, but recommend locking to Dark)
+  /// Light Theme with full adaptive color support.
   static ThemeData lightTheme() => ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+    extensions: const <ThemeExtension>[AppColorsExtension.light],
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFFFFFFFF),
       elevation: 0,
