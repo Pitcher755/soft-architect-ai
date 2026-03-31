@@ -35,6 +35,7 @@ from starlette.middleware.gzip import GZipMiddleware
 from app.api.v1 import router as api_v1_router
 from app.core.config import settings
 from app.core.database import init_chromadb, init_sqlite
+from app.core.telemetry import setup_telemetry, shutdown_telemetry
 
 # ═══════════════════════════════════════════════════════════════
 # Logging Setup
@@ -103,8 +104,10 @@ async def lifespan(app: FastAPI):
     as the deprecated @app.on_event decorators using the modern
     FastAPI lifespan API.
     """
+    setup_telemetry(app)
     await startup_event()
     yield  # Application runs here
+    shutdown_telemetry()
     await shutdown_event()
 
 
