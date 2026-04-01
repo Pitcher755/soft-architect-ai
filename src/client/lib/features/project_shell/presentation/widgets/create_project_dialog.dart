@@ -75,8 +75,7 @@ class CreateProjectDialog {
                     label: 'Nombre del Proyecto',
                     controller: nameController,
                     hint: 'Ej: SoftArchitect_V1',
-                    helpText:
-                        'Solo caracteres alfanuméricos, guiones y guiones bajos.',
+                    helpText: 'Solo caracteres alfanuméricos, guiones.',
                   ),
                   const SizedBox(height: 24),
 
