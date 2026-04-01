@@ -51,34 +51,32 @@ class LabeledTextField extends StatelessWidget {
           style: TextStyle(color: c.textMain),
         ),
         const SizedBox(height: 4),
-        Text(
-          helpText,
-          style: TextStyle(fontSize: 11, color: c.textSecondary),
-        ),
+        Text(helpText, style: TextStyle(fontSize: 11, color: c.textSecondary)),
       ],
     );
   }
 
-  InputDecoration _buildInputDecoration(
-    String hint,
-    AppColorsExtension c,
-  ) => InputDecoration(
-    hintText: hint,
-    hintStyle: TextStyle(color: c.textSecondary.withValues(alpha: 0.5)),
-    filled: true,
-    fillColor: c.mainBg,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: c.border),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: c.border),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-    ),
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-  );
+  InputDecoration _buildInputDecoration(String hint, AppColorsExtension c) =>
+      InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: c.textSecondary.withValues(alpha: 0.5)),
+        filled: true,
+        fillColor: c.mainBg,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: c.border),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: c.border),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+      );
 }

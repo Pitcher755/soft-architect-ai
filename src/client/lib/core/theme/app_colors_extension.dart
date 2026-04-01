@@ -182,6 +182,5 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
 /// Convenience accessor so widgets can write `context.appColors.xxx`.
 extension AppColorsContext on BuildContext {
   AppColorsExtension get appColors =>
-      Theme.of(this).extension<AppColorsExtension>() ??
-      AppColorsExtension.dark;
+      Theme.of(this).extension<AppColorsExtension>() ?? AppColorsExtension.dark;
 }
