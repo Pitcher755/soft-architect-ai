@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../domain/entities/file_node.dart';
 
 /// A widget representing a single node in the file tree.
@@ -39,64 +40,63 @@ class FileTreeNode extends StatelessWidget {
   final VoidCallback? onToggle;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-    onTap: onTap,
-    child: Container(
-      padding: EdgeInsets.only(
-        left: 6 + (depth * 18),
-        right: 6,
-        top: 2,
-        bottom: 2,
-      ),
-      color: isSelected ? AppColors.primary.withValues(alpha: 0.2) : null,
-      child: Row(
-        children: [
-          // Expand/collapse arrow for directories
-          SizedBox(
-            width: 16,
-            child: node.isDirectory
-                ? GestureDetector(
-                    onTap: onToggle,
-                    child: Icon(
-                      isExpanded
-                          ? Icons.keyboard_arrow_down
-                          : Icons.keyboard_arrow_right,
-                      size: 16,
-                      color: AppColors.textSecondary,
-                    ),
-                  )
-                : const SizedBox(),
-          ),
-          const SizedBox(width: 4),
-          // File or folder icon
-          _buildFolderIcon(node),
-          const SizedBox(width: 6),
-          // Node name
-          Expanded(
-            child: Text(
-              node.name,
-              style: TextStyle(
-                fontSize: 12,
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
-                fontFamily: 'JetBrains Mono',
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-              ),
-              overflow: TextOverflow.ellipsis,
+  Widget build(BuildContext context) {
+    final c = context.appColors;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.only(
+          left: 6 + (depth * 18),
+          right: 6,
+          top: 2,
+          bottom: 2,
+        ),
+        color: isSelected ? AppColors.primary.withValues(alpha: 0.2) : null,
+        child: Row(
+          children: [
+            // Expand/collapse arrow for directories
+            SizedBox(
+              width: 16,
+              child: node.isDirectory
+                  ? GestureDetector(
+                      onTap: onToggle,
+                      child: Icon(
+                        isExpanded
+                            ? Icons.keyboard_arrow_down
+                            : Icons.keyboard_arrow_right,
+                        size: 16,
+                        color: c.textSecondary,
+                      ),
+                    )
+                  : const SizedBox(),
             ),
-          ),
-        ],
+            const SizedBox(width: 4),
+            // File or folder icon
+            _buildFolderIcon(node, c.textSecondary),
+            const SizedBox(width: 6),
+            // Node name
+            Expanded(
+              child: Text(
+                node.name,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isSelected ? AppColors.primary : c.textSecondary,
+                  fontFamily: 'JetBrains Mono',
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   /// Returns the icon widget for a file or folder node.
-  Widget _buildFolderIcon(FileNode node) {
+  Widget _buildFolderIcon(FileNode node, Color fileIconColor) {
     if (!node.isDirectory) {
-      return const Icon(
-        Icons.description,
-        size: 14,
-        color: AppColors.textSecondary,
-      );
+      return Icon(Icons.description, size: 14, color: fileIconColor);
     }
     final phaseColor = _getPhaseColorForPath(node.name);
     return CustomPaint(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../features/project_shell/domain/entities/project.dart';
 import '../../../features/project_shell/domain/services/project_phase_service.dart';
 import '../../../features/project_shell/presentation/providers/project_providers.dart';
@@ -81,7 +82,7 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
     }
 
     return Dialog(
-      backgroundColor: AppColors.surfaceBg,
+      backgroundColor: context.appColors.surfaceBg,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         width: 700,
@@ -94,22 +95,29 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.search, color: AppColors.primary, size: 28),
-                    SizedBox(width: 12),
+                    const Icon(
+                      Icons.search,
+                      color: AppColors.primary,
+                      size: 28,
+                    ),
+                    const SizedBox(width: 12),
                     Text(
                       'Búsqueda Global',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textMain,
+                        color: context.appColors.textMain,
                       ),
                     ),
                   ],
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close, color: AppColors.textSecondary),
+                  icon: Icon(
+                    Icons.close,
+                    color: context.appColors.textSecondary,
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -120,23 +128,23 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
             TextField(
               controller: _searchController,
               autofocus: true,
-              style: const TextStyle(color: AppColors.textMain, fontSize: 14),
+              style: TextStyle(color: context.appColors.textMain, fontSize: 14),
               decoration: InputDecoration(
                 hintText:
                     'Buscar por nombre, fase, o fecha '
                     '(ej: "Alpha", "Root", "2026")...',
                 hintStyle: TextStyle(
-                  color: AppColors.textSecondary.withValues(alpha: 0.6),
+                  color: context.appColors.textSecondary.withValues(alpha: 0.6),
                 ),
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   Icons.search,
-                  color: AppColors.textSecondary,
+                  color: context.appColors.textSecondary,
                 ),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.clear,
-                          color: AppColors.textSecondary,
+                          color: context.appColors.textSecondary,
                         ),
                         onPressed: () {
                           _searchController.clear();
@@ -144,14 +152,14 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
                       )
                     : null,
                 filled: true,
-                fillColor: AppColors.surfaceLight,
+                fillColor: context.appColors.surfaceLight,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.border),
+                  borderSide: BorderSide(color: context.appColors.border),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.border),
+                  borderSide: BorderSide(color: context.appColors.border),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -170,7 +178,7 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
                   ? '${allProjects.length} proyectos totales'
                   : '${_filteredProjects.length} resultados encontrados',
               style: TextStyle(
-                color: AppColors.textSecondary.withValues(alpha: 0.8),
+                color: context.appColors.textSecondary.withValues(alpha: 0.8),
                 fontSize: 12,
               ),
             ),
@@ -237,14 +245,14 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
         Icon(
           Icons.search_off,
           size: 64,
-          color: AppColors.textSecondary.withValues(alpha: 0.3),
+          color: context.appColors.textSecondary.withValues(alpha: 0.3),
         ),
         const SizedBox(height: 16),
         Text(
           'No se encontraron resultados',
           style: TextStyle(
             fontSize: 16,
-            color: AppColors.textSecondary.withValues(alpha: 0.7),
+            color: context.appColors.textSecondary.withValues(alpha: 0.7),
           ),
         ),
         const SizedBox(height: 8),
@@ -252,7 +260,7 @@ class _GlobalSearchDialogState extends ConsumerState<GlobalSearchDialog> {
           'Intenta con otro término de búsqueda',
           style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary.withValues(alpha: 0.5),
+            color: context.appColors.textSecondary.withValues(alpha: 0.5),
           ),
         ),
       ],

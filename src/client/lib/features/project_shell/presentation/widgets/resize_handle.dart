@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 
 /// Resizable handle for dragging panel boundaries.
 ///
@@ -46,7 +47,7 @@ class _ResizeHandleState extends State<ResizeHandle> {
             height: double.infinity,
             color: (_isHovering || _isDragging)
                 ? AppColors.primary
-                : AppColors.border,
+                : context.appColors.border,
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:markdown/markdown.dart' as md;
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../shared/presentation/widgets/markdown_builders/code_element_builder.dart';
 
 /// Interactive card widget for displaying document proposals from AI.
@@ -151,7 +152,7 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
       margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.primaryDark.withValues(alpha: 0.15),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.appColors.border),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -179,7 +180,7 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
-      border: const Border(bottom: BorderSide(color: AppColors.border)),
+      border: Border(bottom: BorderSide(color: context.appColors.border)),
       borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
     ),
     child: Row(
@@ -201,13 +202,20 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
         ),
         InkWell(
           onTap: () => Clipboard.setData(ClipboardData(text: widget.content)),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.copy, size: 14, color: AppColors.textSecondary),
-              SizedBox(width: 4),
+              Icon(
+                Icons.copy,
+                size: 14,
+                color: context.appColors.textSecondary,
+              ),
+              const SizedBox(width: 4),
               Text(
                 'Copiar',
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                style: TextStyle(
+                  color: context.appColors.textSecondary,
+                  fontSize: 11,
+                ),
               ),
             ],
           ),
@@ -253,19 +261,25 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
     // Standard markdown rendering for non-JSON content
     return Container(
       width: double.infinity,
-      color: AppColors.mainBg,
+      color: context.appColors.mainBg,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: MarkdownBody(
           data: widget.content,
           selectable: true,
           extensionSet: md.ExtensionSet.gitHubFlavored,
-          builders: {'code': CodeElementBuilder()},
-          styleSheet: MarkdownStyleSheet(
-            p: TextStyle(
-              fontSize: 15,
-              color: isDark ? AppColors.textMain : Colors.black87,
+          builders: {
+            'code': CodeElementBuilder(
+              codeBgColor: Theme.of(
+                context,
+              ).extension<AppColorsExtension>()?.cardBg,
+              codeBorderColor: Theme.of(
+                context,
+              ).extension<AppColorsExtension>()?.cardBorder,
             ),
+          },
+          styleSheet: MarkdownStyleSheet(
+            p: TextStyle(fontSize: 15, color: context.appColors.textMain),
             code: TextStyle(
               fontFamily: 'monospace',
               fontSize: 14,
@@ -292,16 +306,16 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
   /// used in the markdown preview widget.
   Widget _buildJsonView(String jsonContent) => Container(
     width: double.infinity,
-    color: AppColors.mainBg,
+    color: context.appColors.mainBg,
     child: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: SelectionArea(
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0xFF161B22),
+            color: context.appColors.cardBg,
             borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: const Color(0xFF30363D)),
+            border: Border.all(color: context.appColors.cardBorder),
           ),
           padding: const EdgeInsets.all(16),
           child: HighlightView(
@@ -337,7 +351,7 @@ class _DocumentProposalCardState extends State<DocumentProposalCard> {
               icon: const Icon(Icons.edit, size: 16),
               label: Text(_isRefining ? 'Refinando...' : 'Refinar'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.textMain,
+                foregroundColor: context.appColors.textMain,
               ),
             ),
             const SizedBox(width: 12),

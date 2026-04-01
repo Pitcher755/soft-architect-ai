@@ -1,10 +1,9 @@
-// ignore_for_file: always_put_control_body_on_new_line, avoid_slow_async_io, avoid_catches_without_on_clauses, lines_longer_than_80_chars, cascade_invocations
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../gen/app_localizations.dart';
 import '../../../../../shared/utils/navigation_utils.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/services/project_phase_service.dart';
 import '../providers/project_providers.dart';
@@ -29,7 +28,7 @@ class ProjectsGrid extends ConsumerWidget {
         padding: const EdgeInsets.all(40),
         child: Text(
           l10n.loadingProjects,
-          style: const TextStyle(color: Color(0xFF8B949E)),
+          style: TextStyle(color: context.appColors.textSecondary),
         ),
       );
     }
@@ -106,9 +105,15 @@ class ProjectsGrid extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final diff = now.difference(date);
-    if (diff.inDays == 0) return l10n.today;
-    if (diff.inDays == 1) return l10n.yesterday;
-    if (diff.inDays < 7) return l10n.daysAgo(diff.inDays);
+    if (diff.inDays == 0) {
+      return l10n.today;
+    }
+    if (diff.inDays == 1) {
+      return l10n.yesterday;
+    }
+    if (diff.inDays < 7) {
+      return l10n.daysAgo(diff.inDays);
+    }
     return '${date.day}/${date.month}/${date.year}';
   }
 }

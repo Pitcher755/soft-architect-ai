@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../project_shell/domain/models/project_phase.dart';
 import '../../../project_shell/presentation/providers/project_providers.dart';
 import '../../../settings/presentation/providers/settings_providers.dart';
@@ -99,20 +100,20 @@ class _ProgressIndicatorWidgetState
 
   Widget _buildEmptyState() => Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    decoration: const BoxDecoration(
-      color: AppColors.surfaceLight,
-      border: Border(bottom: BorderSide(color: AppColors.border)),
+    decoration: BoxDecoration(
+      color: context.appColors.surfaceLight,
+      border: Border(bottom: BorderSide(color: context.appColors.border)),
     ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Generating: Root',
               style: TextStyle(
-                color: AppColors.textMain,
+                color: context.appColors.textMain,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
@@ -120,7 +121,7 @@ class _ProgressIndicatorWidgetState
             Text(
               '0%',
               style: TextStyle(
-                color: AppColors.textSecondary,
+                color: context.appColors.textSecondary,
                 fontSize: 12,
                 fontFamily: 'JetBrains Mono',
               ),
@@ -132,7 +133,7 @@ class _ProgressIndicatorWidgetState
           height: 8,
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.surfaceBg,
+              color: context.appColors.surfaceBg,
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -143,7 +144,7 @@ class _ProgressIndicatorWidgetState
           child: Text(
             '0 / $_totalFiles docs',
             style: TextStyle(
-              color: AppColors.textSecondary.withValues(alpha: 0.5),
+              color: context.appColors.textSecondary.withValues(alpha: 0.5),
               fontSize: 10,
             ),
           ),
@@ -154,9 +155,9 @@ class _ProgressIndicatorWidgetState
 
   Widget _buildLoadingState() => Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    decoration: const BoxDecoration(
-      color: AppColors.surfaceLight,
-      border: Border(bottom: BorderSide(color: AppColors.border)),
+    decoration: BoxDecoration(
+      color: context.appColors.surfaceLight,
+      border: Border(bottom: BorderSide(color: context.appColors.border)),
     ),
     child: const Center(
       child: SizedBox(
@@ -177,9 +178,9 @@ class _ProgressIndicatorWidgetState
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: const BoxDecoration(
-        color: AppColors.surfaceLight,
-        border: Border(bottom: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: context.appColors.surfaceLight,
+        border: Border(bottom: BorderSide(color: context.appColors.border)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -205,8 +206,8 @@ class _ProgressIndicatorWidgetState
                     ),
                   Text(
                     'Generating: $currentPhase',
-                    style: const TextStyle(
-                      color: AppColors.textMain,
+                    style: TextStyle(
+                      color: context.appColors.textMain,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -215,8 +216,8 @@ class _ProgressIndicatorWidgetState
               ),
               Text(
                 '${progressPercent.toInt()}%',
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
+                style: TextStyle(
+                  color: context.appColors.textSecondary,
                   fontSize: 12,
                   fontFamily: 'JetBrains Mono',
                 ),
@@ -242,7 +243,7 @@ class _ProgressIndicatorWidgetState
             child: Text(
               '$documentsCreated / $_totalFiles docs',
               style: TextStyle(
-                color: AppColors.textSecondary.withValues(alpha: 0.5),
+                color: context.appColors.textSecondary.withValues(alpha: 0.5),
                 fontSize: 10,
               ),
             ),
@@ -332,7 +333,7 @@ class _PhaseSegment extends StatelessWidget {
       right: isLast ? const Radius.circular(4) : Radius.zero,
     );
 
-    const backgroundColor = AppColors.surfaceBg;
+    final backgroundColor = context.appColors.surfaceBg;
 
     return ClipRRect(
       borderRadius: borderRadius,

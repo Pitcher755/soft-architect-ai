@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../notifiers/chat_notifier.dart';
 import 'smart_message_renderer.dart';
 
@@ -76,8 +77,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                 Flexible(
                   child: Text(
                     message.content,
-                    style: const TextStyle(
-                      color: AppColors.textMain,
+                    style: TextStyle(
+                      color: context.appColors.textMain,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -133,8 +134,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                           Flexible(
                             child: SelectableText(
                               message.content,
-                              style: const TextStyle(
-                                color: AppColors.textMain,
+                              style: TextStyle(
+                                color: context.appColors.textMain,
                                 fontSize: 16,
                                 height: 1.5,
                               ),
@@ -143,7 +144,7 @@ class MessageBubbleWidget extends ConsumerWidget {
                           if (messageController != null)
                             IconButton(
                               icon: const Icon(Icons.edit, size: 16),
-                              color: AppColors.textMuted,
+                              color: context.appColors.textMuted,
                               iconSize: 16,
                               padding: const EdgeInsets.all(4),
                               constraints: const BoxConstraints(),
@@ -158,8 +159,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                         padding: const EdgeInsets.only(top: 6),
                         child: Text(
                           _formatTime(message.timestamp),
-                          style: const TextStyle(
-                            color: AppColors.textMuted,
+                          style: TextStyle(
+                            color: context.appColors.textMuted,
                             fontSize: 12,
                           ),
                         ),
@@ -246,8 +247,8 @@ class MessageBubbleWidget extends ConsumerWidget {
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(
                       _formatTime(message.timestamp),
-                      style: const TextStyle(
-                        color: AppColors.textMuted,
+                      style: TextStyle(
+                        color: context.appColors.textMuted,
                         fontSize: 12,
                       ),
                     ),
@@ -287,7 +288,7 @@ class _ActionButton extends StatelessWidget {
     iconSize: 16,
     padding: const EdgeInsets.all(4),
     constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-    color: AppColors.textMuted,
+    color: context.appColors.textMuted,
     hoverColor: AppColors.primary.withValues(alpha: 0.1),
     onPressed: onPressed,
     tooltip: tooltip,

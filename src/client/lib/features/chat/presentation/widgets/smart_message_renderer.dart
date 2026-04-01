@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:markdown/markdown.dart' as md;
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../shared/presentation/widgets/markdown_builders/code_element_builder.dart';
 import 'document_proposal_card.dart';
 import 'message_parser_utils.dart';
@@ -295,7 +295,7 @@ class SmartMessageRenderer extends StatelessWidget {
     final baseStyle = theme.textTheme.bodyMedium?.copyWith(
       fontSize: 16,
       height: 1.6,
-      color: isDark ? AppColors.textMain : Colors.black87,
+      color: context.appColors.textMain,
     );
 
     // 1. Try Path + JSON pattern first (most specific: "Path: *.json\n{...}").
@@ -314,7 +314,16 @@ class SmartMessageRenderer extends StatelessWidget {
           data: displayContent,
           selectable: true,
           extensionSet: md.ExtensionSet.gitHubFlavored,
-          builders: {'code': CodeElementBuilder()},
+          builders: {
+            'code': CodeElementBuilder(
+              codeBgColor: Theme.of(
+                context,
+              ).extension<AppColorsExtension>()?.cardBg,
+              codeBorderColor: Theme.of(
+                context,
+              ).extension<AppColorsExtension>()?.cardBorder,
+            ),
+          },
           styleSheet: MarkdownStyleSheet(
             p: baseStyle,
             listBullet: baseStyle,

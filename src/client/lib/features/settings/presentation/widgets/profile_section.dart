@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../gen/app_localizations.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../providers/settings_providers.dart';
 import 'settings_card.dart';
 
@@ -47,12 +49,12 @@ class _ProfileSectionState extends ConsumerState<ProfileSection> {
     }
 
     final avatarColors = <Color>[
-      const Color(0xFF58A6FF), // Blue (Default)
-      const Color(0xFF238636), // Green
-      const Color(0xFFA371F7), // Purple
-      const Color(0xFFD29922), // Orange
-      const Color(0xFFF85149), // Red
-      const Color(0xFFEC4899), // Pink
+      context.appColors.accentBlue,
+      AppColors.success,
+      AppColors.iconPurple,
+      AppColors.warning,
+      AppColors.error,
+      AppColors.iconPink,
     ];
 
     return SettingsCard(

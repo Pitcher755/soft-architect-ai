@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../gen/app_localizations.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../providers/settings_providers.dart';
 import 'setting_item.dart';
 import 'settings_card.dart';
@@ -39,15 +40,15 @@ class StorageSection extends ConsumerWidget {
                 ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  border: Border.all(color: const Color(0xFF30363d)),
+                  border: Border.all(color: context.appColors.cardBorder),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   settings.storagePath.isEmpty
                       ? '~/Documents/SoftArchitect'
                       : settings.storagePath,
-                  style: const TextStyle(
-                    color: Color(0xFF8b949e),
+                  style: TextStyle(
+                    color: context.appColors.textSecondary,
                     fontSize: 12,
                     fontFamily: 'Courier',
                   ),
@@ -58,13 +59,13 @@ class StorageSection extends ConsumerWidget {
               IconButton(
                 onPressed: () => _selectDirectory(context, ref),
                 icon: const Icon(Icons.folder_open, size: 20),
-                color: const Color(0xFF58A6FF),
+                color: context.appColors.accentBlue,
                 tooltip: l10n.changeDirectory,
                 style: IconButton.styleFrom(
-                  backgroundColor: const Color(0xFF21262D),
+                  backgroundColor: context.appColors.actionBg,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
-                    side: const BorderSide(color: Color(0xFF30363d)),
+                    side: BorderSide(color: context.appColors.cardBorder),
                   ),
                 ),
               ),
@@ -98,7 +99,7 @@ class StorageSection extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.directoryUpdated(selectedPath)),
-            backgroundColor: const Color(0xFF238636),
+            backgroundColor: context.appColors.successBg,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -109,7 +110,7 @@ class StorageSection extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.errorSelectingDirectory(e.toString())),
-            backgroundColor: const Color(0xFFDA3633),
+            backgroundColor: context.appColors.dangerBg,
             duration: const Duration(seconds: 3),
           ),
         );

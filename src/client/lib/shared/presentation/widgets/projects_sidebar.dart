@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../features/project_shell/presentation/providers/project_providers.dart';
 import '../../../features/settings/presentation/providers/settings_providers.dart'
     show lastProjectProvider;
@@ -161,9 +162,9 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
 
     return Container(
       width: 64,
-      decoration: const BoxDecoration(
-        color: AppColors.surfaceBg,
-        border: Border(right: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: context.appColors.surfaceBg,
+        border: Border(right: BorderSide(color: context.appColors.border)),
       ),
       child: Column(
         children: [
@@ -306,7 +307,7 @@ class _ProjectsSidebarState extends ConsumerState<ProjectsSidebar> {
                   child: _SidebarButton(
                     icon: Icons.search,
                     isActive: false, // Dialog, no navegación
-                    color: AppColors.textSecondary,
+                    color: context.appColors.textSecondary,
                     onTap:
                         widget.onSearchTap ??
                         () => GlobalSearchDialog.show(context),
@@ -366,7 +367,7 @@ class _SidebarButton extends StatelessWidget {
     // Si no, usamos gris atenuado (textSecondary).
     final finalColor = isActive
         ? color
-        : AppColors.textSecondary.withValues(alpha: 0.7);
+        : context.appColors.textSecondary.withValues(alpha: 0.7);
 
     // Fondo sutil si está activo
     final bgColor = isActive

@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../filesystem/domain/entities/file_node.dart';
 
 /// A hierarchical file tree widget styled like VS Code Explorer.
@@ -64,7 +65,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
             developer.log('File selected: ${node.name}');
             widget.onFileSelected(node);
           },
-          hoverColor: AppColors.surfaceLight,
+          hoverColor: context.appColors.surfaceLight,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
@@ -85,7 +86,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                     style: TextStyle(
                       color: isSelected
                           ? Theme.of(context).colorScheme.onPrimary
-                          : AppColors.textMain,
+                          : context.appColors.textMain,
                       fontSize: 12,
                       fontWeight: isSelected
                           ? FontWeight.w500
@@ -118,7 +119,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
             });
             developer.log('Directory toggled: ${node.name}');
           },
-          hoverColor: AppColors.surfaceLight,
+          hoverColor: context.appColors.surfaceLight,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
@@ -129,7 +130,7 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                   child: Icon(
                     isExpanded ? Icons.expand_more : Icons.chevron_right,
                     size: 16,
-                    color: AppColors.textSecondary,
+                    color: context.appColors.textSecondary,
                   ),
                 ),
                 // Folder icon with phase color
@@ -139,8 +140,8 @@ class _DirectoryTreeWidgetState extends State<DirectoryTreeWidget> {
                 Expanded(
                   child: Text(
                     node.name,
-                    style: const TextStyle(
-                      color: AppColors.textMain,
+                    style: TextStyle(
+                      color: context.appColors.textMain,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),

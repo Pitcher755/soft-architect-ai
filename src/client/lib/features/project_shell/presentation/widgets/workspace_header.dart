@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../gen/app_localizations.dart';
 
 /// Header section of the workspace screen.
@@ -25,19 +25,19 @@ class WorkspaceHeader extends StatelessWidget {
               children: [
                 Text(
                   l10n.workspaceSectionTitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 27,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFFE6EDF3),
+                    color: context.appColors.headingText,
                     letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   l10n.workspaceSubtitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
-                    color: Color(0xFF8b949e),
+                    color: context.appColors.textSecondary,
                   ),
                 ),
               ],
@@ -51,10 +51,10 @@ class WorkspaceHeader extends StatelessWidget {
           children: [
             Text(
               l10n.myProjects,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFFE6EDF3),
+                color: context.appColors.headingText,
                 letterSpacing: -0.5,
               ),
             ),
@@ -63,7 +63,7 @@ class WorkspaceHeader extends StatelessWidget {
               icon: const Icon(Icons.add, size: 20),
               label: Text(l10n.newProjectButton),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,

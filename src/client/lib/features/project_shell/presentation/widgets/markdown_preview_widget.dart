@@ -8,6 +8,8 @@ import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown/markdown.dart' as md;
 
+import '../../../../core/theme/app_colors_extension.dart';
+
 import '../../../../shared/presentation/widgets/markdown_builders/code_element_builder.dart';
 import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../../filesystem/presentation/providers/filesystem_providers.dart';
@@ -154,9 +156,9 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('✅ Archivo actualizado correctamente'),
-            backgroundColor: Color(0xFF238636), // Verde GitHub
+          SnackBar(
+            content: const Text('✅ Archivo actualizado correctamente'),
+            backgroundColor: context.appColors.successBg, // Verde GitHub
           ),
         );
       }
@@ -183,9 +185,11 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
     await Clipboard.setData(ClipboardData(text: textToCopy));
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Contenido copiado'),
-          backgroundColor: Color(0xFF238636),
+        SnackBar(
+          content: const Text('Contenido copiado'),
+          backgroundColor:
+              Theme.of(context).extension<AppColorsExtension>()?.successBg ??
+              const Color(0xFF238636),
         ),
       );
     }
@@ -222,9 +226,9 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF161B22).withValues(alpha: 0.95),
+        color: context.appColors.cardBg.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFF30363D)),
+        border: Border.all(color: context.appColors.cardBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.3),
@@ -265,7 +269,7 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
                   icon: const Icon(Icons.save, size: 14),
                   label: const Text('Guardar', style: TextStyle(fontSize: 12)),
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF238636),
+                    backgroundColor: context.appColors.successBg,
                     visualDensity: VisualDensity.compact,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                   ),
@@ -297,15 +301,15 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
   );
 
   Widget _buildEditorView() => Container(
-    color: const Color(0xFF0D1117), // Fondo oscuro IDE
+    color: context.appColors.codeBg, // Fondo oscuro IDE
     child: TextField(
       controller: _textController,
       maxLines: null,
       expands: true,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'JetBrains Mono',
         fontSize: 14,
-        color: Color(0xFFC9D1D9),
+        color: context.appColors.codeText,
         height: 1.5,
       ),
       decoration: const InputDecoration(
@@ -320,9 +324,9 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
     child: Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color(0xFF161B22),
+        color: context.appColors.cardBg,
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: const Color(0xFF30363D)),
+        border: Border.all(color: context.appColors.cardBorder),
       ),
       padding: const EdgeInsets.all(16),
       child: HighlightView(
@@ -347,36 +351,45 @@ class _MarkdownPreviewWidgetState extends ConsumerState<MarkdownPreviewWidget> {
       data: content,
       padding: const EdgeInsets.all(24),
       extensionSet: md.ExtensionSet.gitHubFlavored,
-      builders: {'code': CodeElementBuilder()},
+      builders: {
+        'code': CodeElementBuilder(
+          codeBgColor: context.appColors.cardBg,
+          codeBorderColor: context.appColors.cardBorder,
+        ),
+      },
       styleSheet: MarkdownStyleSheet.fromTheme(safeTheme).copyWith(
-        p: const TextStyle(color: Color(0xFFC9D1D9), fontSize: 14, height: 1.6),
-        h1: const TextStyle(
-          color: Color(0xFFE6EDF3),
+        p: TextStyle(
+          color: context.appColors.codeText,
+          fontSize: 14,
+          height: 1.6,
+        ),
+        h1: TextStyle(
+          color: context.appColors.headingText,
           fontSize: 24,
           fontWeight: FontWeight.bold,
           letterSpacing: -0.5,
         ),
-        h2: const TextStyle(
-          color: Color(0xFFE6EDF3),
+        h2: TextStyle(
+          color: context.appColors.headingText,
           fontSize: 20,
           fontWeight: FontWeight.bold,
           letterSpacing: -0.4,
         ),
-        h3: const TextStyle(
-          color: Color(0xFFE6EDF3),
+        h3: TextStyle(
+          color: context.appColors.headingText,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
-        code: const TextStyle(
+        code: TextStyle(
           fontFamily: 'JetBrains Mono',
-          backgroundColor: Color.fromRGBO(110, 118, 129, 0.4),
-          color: Color(0xFFC9D1D9),
+          backgroundColor: const Color.fromRGBO(110, 118, 129, 0.4),
+          color: context.appColors.codeText,
           fontSize: 13,
         ),
         codeblockDecoration: BoxDecoration(
-          color: const Color(0xFF161B22),
+          color: context.appColors.cardBg,
           borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: const Color(0xFF30363D)),
+          border: Border.all(color: context.appColors.cardBorder),
         ),
       ),
     );
@@ -397,7 +410,7 @@ class _ToolbarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-    icon: Icon(icon, size: 16, color: color ?? const Color(0xFF8B949E)),
+    icon: Icon(icon, size: 16, color: color ?? context.appColors.textSecondary),
     tooltip: tooltip,
     onPressed: onPressed,
     splashRadius: 20,

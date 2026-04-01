@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../domain/models/project_phase.dart';
 import '../providers/project_providers.dart';
 
@@ -125,16 +125,16 @@ class ProjectCard extends ConsumerWidget {
                 Icons.edit,
                 size: 18,
                 color: isGuideProject
-                    ? AppColors.textSecondary.withValues(alpha: 0.5)
-                    : AppColors.textSecondary,
+                    ? context.appColors.textSecondary.withValues(alpha: 0.5)
+                    : context.appColors.textSecondary,
               ),
               const SizedBox(width: 12),
               Text(
                 'Cambiar Nombre',
                 style: TextStyle(
                   color: isGuideProject
-                      ? AppColors.textSecondary.withValues(alpha: 0.5)
-                      : AppColors.textMain,
+                      ? context.appColors.textSecondary.withValues(alpha: 0.5)
+                      : context.appColors.textMain,
                 ),
               ),
             ],
@@ -445,8 +445,8 @@ class ProjectCard extends ConsumerWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: isMissing
-                      ? AppColors.surfaceBg.withValues(alpha: 0.5)
-                      : AppColors.surfaceBg,
+                      ? context.appColors.surfaceBg.withValues(alpha: 0.5)
+                      : context.appColors.surfaceBg,
                   border: Border.all(
                     color: isMissing
                         ? actualPhaseColor.withValues(alpha: 0.2)
@@ -555,9 +555,10 @@ class ProjectCard extends ConsumerWidget {
                                     style: TextStyle(
                                       fontSize: badgeFontSize,
                                       fontFamily: 'Courier',
-                                      color: AppColors.textSecondary.withValues(
-                                        alpha: isMissing ? 0.5 : 1.0,
-                                      ),
+                                      color: context.appColors.textSecondary
+                                          .withValues(
+                                            alpha: isMissing ? 0.5 : 1.0,
+                                          ),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   );
@@ -572,8 +573,10 @@ class ProjectCard extends ConsumerWidget {
                                 fontSize: nameFontSize,
                                 fontWeight: FontWeight.w600,
                                 color: isMissing
-                                    ? AppColors.textMain.withValues(alpha: 0.5)
-                                    : AppColors.textMain,
+                                    ? context.appColors.textMain.withValues(
+                                        alpha: 0.5,
+                                      )
+                                    : context.appColors.textMain,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -613,9 +616,10 @@ class ProjectCard extends ConsumerWidget {
                                     Icon(
                                       Icons.folder_open,
                                       size: pathIconSize,
-                                      color: AppColors.textSecondary.withValues(
-                                        alpha: isMissing ? 0.3 : 1.0,
-                                      ),
+                                      color: context.appColors.textSecondary
+                                          .withValues(
+                                            alpha: isMissing ? 0.3 : 1.0,
+                                          ),
                                     ),
                                     const SizedBox(width: 4),
                                     Expanded(
@@ -624,7 +628,7 @@ class ProjectCard extends ConsumerWidget {
                                         style: TextStyle(
                                           fontSize: pathFontSize,
                                           fontFamily: 'Courier',
-                                          color: AppColors.textSecondary
+                                          color: context.appColors.textSecondary
                                               .withValues(
                                                 alpha: isMissing ? 0.3 : 1.0,
                                               ),
@@ -644,18 +648,18 @@ class ProjectCard extends ConsumerWidget {
                                 Icon(
                                   Icons.access_time,
                                   size: pathIconSize,
-                                  color: AppColors.textSecondary.withValues(
-                                    alpha: isMissing ? 0.3 : 1.0,
-                                  ),
+                                  color: context.appColors.textSecondary
+                                      .withValues(alpha: isMissing ? 0.3 : 1.0),
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
                                   modified,
                                   style: TextStyle(
                                     fontSize: dateFontSize,
-                                    color: AppColors.textSecondary.withValues(
-                                      alpha: isMissing ? 0.3 : 1.0,
-                                    ),
+                                    color: context.appColors.textSecondary
+                                        .withValues(
+                                          alpha: isMissing ? 0.3 : 1.0,
+                                        ),
                                   ),
                                 ),
                               ],
