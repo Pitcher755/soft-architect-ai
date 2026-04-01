@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../gen/app_localizations.dart';
 import '../../../../../shared/presentation/widgets/labeled_text_area.dart';
 import '../../../../../shared/presentation/widgets/labeled_text_field.dart';
@@ -38,92 +39,97 @@ class CreateProjectDialog {
     showDialog(
       context: context,
       barrierDismissible: false, // Evitar cerrar por error
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: AppColors.surfaceBg,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppLocalizations.of(dialogContext).newProjectButton,
-              style: const TextStyle(
-                color: AppColors.textMain,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+      builder: (dialogContext) {
+        final c = dialogContext.appColors;
+        return AlertDialog(
+          backgroundColor: c.surfaceBg,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(dialogContext).newProjectButton,
+                style: TextStyle(
+                  color: c.textMain,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              IconButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                icon: Icon(Icons.close, color: c.textSecondary),
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: SizedBox(
+              width: 500,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Project Name Field
+                  LabeledTextField(
+                    label: 'Nombre del Proyecto',
+                    controller: nameController,
+                    hint: 'Ej: SoftArchitect_V1',
+                    helpText:
+                        'Solo caracteres alfanuméricos, guiones y guiones bajos.',
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Base Path Field
+                  PathPickerField(
+                    label: 'Ruta Base (Carpeta Contenedora)',
+                    controller: pathController,
+                    hint: 'Selecciona una ruta...',
+                    helpText: 'El proyecto se creará dentro de esta carpeta.',
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Description Field
+                  LabeledTextArea(
+                    label: 'Descripción Corta',
+                    controller: descController,
+                    hint: '¿Qué vamos a construir hoy?',
+                  ),
+                ],
               ),
             ),
-            IconButton(
+          ),
+          actions: [
+            TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              icon: const Icon(Icons.close, color: AppColors.textSecondary),
+              child: Text('Cancelar', style: TextStyle(color: c.textMain)),
+            ),
+            ElevatedButton.icon(
+              onPressed: () => CreateProjectDialog._handleCreateProject(
+                context, // Contexto padre (para navegación y snackbar)
+                dialogContext, // Contexto del diálogo (para cerrar)
+                ref, // Ref de Riverpod para actualizar estado
+                nameController.text.trim(),
+                pathController.text.trim(),
+                descController.text.trim(),
+              ),
+              icon: const Icon(Icons.rocket_launch, size: 18),
+              label: Text(AppLocalizations.of(dialogContext).createProject),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Theme.of(dialogContext).colorScheme.onPrimary,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ],
-        ),
-        content: SingleChildScrollView(
-          child: SizedBox(
-            width: 500,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Project Name Field
-                LabeledTextField(
-                  label: 'Nombre del Proyecto',
-                  controller: nameController,
-                  hint: 'Ej: SoftArchitect_V1',
-                  helpText:
-                      'Solo caracteres alfanuméricos, guiones y guiones bajos.',
-                ),
-                const SizedBox(height: 24),
-
-                // Base Path Field
-                PathPickerField(
-                  label: 'Ruta Base (Carpeta Contenedora)',
-                  controller: pathController,
-                  hint: 'Selecciona una ruta...',
-                  helpText: 'El proyecto se creará dentro de esta carpeta.',
-                ),
-                const SizedBox(height: 24),
-
-                // Description Field
-                LabeledTextArea(
-                  label: 'Descripción Corta',
-                  controller: descController,
-                  hint: '¿Qué vamos a construir hoy?',
-                ),
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: const Text(
-              'Cancelar',
-              style: TextStyle(color: AppColors.textMain),
-            ),
-          ),
-          ElevatedButton.icon(
-            onPressed: () => CreateProjectDialog._handleCreateProject(
-              context, // Contexto padre (para navegación y snackbar)
-              dialogContext, // Contexto del diálogo (para cerrar)
-              ref, // Ref de Riverpod para actualizar estado
-              nameController.text.trim(),
-              pathController.text.trim(),
-              descController.text.trim(),
-            ),
-            icon: const Icon(Icons.rocket_launch, size: 18),
-            label: Text(AppLocalizations.of(dialogContext).createProject),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Theme.of(dialogContext).colorScheme.onPrimary,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

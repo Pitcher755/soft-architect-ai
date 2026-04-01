@@ -10,6 +10,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 
 /// Common elevated button with standard styling.
 ///
@@ -56,7 +57,7 @@ class CustomButton extends StatelessWidget {
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(
                 Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.textMain
+                    ? context.appColors.textMain
                     : Colors.white,
               ),
             ),
@@ -104,17 +105,20 @@ class SecondaryButton extends StatelessWidget {
   final IconData? icon;
 
   @override
-  Widget build(BuildContext context) => OutlinedButton.icon(
-    onPressed: onPressed,
-    icon: Icon(icon ?? Icons.close),
-    label: Text(label),
-    style: OutlinedButton.styleFrom(
-      foregroundColor: AppColors.textSecondary,
-      side: const BorderSide(color: AppColors.border),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final c = context.appColors;
+    return OutlinedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon ?? Icons.close),
+      label: Text(label),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: c.textSecondary,
+        side: BorderSide(color: c.border),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
 }
 
 /// Compact icon button for toolbar/header use.

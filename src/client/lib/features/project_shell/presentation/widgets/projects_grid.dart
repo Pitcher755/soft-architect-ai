@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../../gen/app_localizations.dart';
 import '../../../../../shared/utils/navigation_utils.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/services/project_phase_service.dart';
 import '../providers/project_providers.dart';
@@ -105,9 +105,15 @@ class ProjectsGrid extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final diff = now.difference(date);
-    if (diff.inDays == 0) return l10n.today;
-    if (diff.inDays == 1) return l10n.yesterday;
-    if (diff.inDays < 7) return l10n.daysAgo(diff.inDays);
+    if (diff.inDays == 0) {
+      return l10n.today;
+    }
+    if (diff.inDays == 1) {
+      return l10n.yesterday;
+    }
+    if (diff.inDays < 7) {
+      return l10n.daysAgo(diff.inDays);
+    }
     return '${date.day}/${date.month}/${date.year}';
   }
 }

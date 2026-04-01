@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../shared/presentation/widgets/projects_sidebar.dart';
 import '../../../chat/presentation/notifiers/chat_notifier.dart';
 import '../../../chat/presentation/widgets/chat_panel_widget.dart';
@@ -110,7 +110,7 @@ class _ProjectShellScreenState extends ConsumerState<ProjectShellScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: AppColors.mainBg,
+    backgroundColor: context.appColors.mainBg,
     body: LayoutBuilder(
       builder: (context, constraints) {
         final layout = _calculateLayout(constraints);

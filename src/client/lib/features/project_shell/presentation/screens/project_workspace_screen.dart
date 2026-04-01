@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../shared/presentation/widgets/projects_sidebar.dart';
 import '../../../filesystem/presentation/notifiers/file_system_notifier.dart';
 import '../../domain/services/project_phase_service.dart';
@@ -65,7 +65,7 @@ class _ProjectWorkspaceScreenState
     final displayedProjects = allProjects.take(8).toList();
 
     return Scaffold(
-      backgroundColor: AppColors.mainBg,
+      backgroundColor: context.appColors.mainBg,
       body: Shortcuts(
         shortcuts: <LogicalKeySet, Intent>{
           LogicalKeySet(LogicalKeyboardKey.f5): const RefreshWorkspaceIntent(),

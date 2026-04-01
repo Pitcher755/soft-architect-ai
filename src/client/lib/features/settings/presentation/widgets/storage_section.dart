@@ -2,8 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../../gen/app_localizations.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../providers/settings_providers.dart';
 import 'setting_item.dart';
 import 'settings_card.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 
 /// Button to toggle showing all projects in a list view.
 ///
@@ -43,7 +44,7 @@ class ShowAllProjectsButton extends StatelessWidget {
             ),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.primary,
-              side: const BorderSide(color: AppColors.border),
+              side: BorderSide(color: context.appColors.border),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

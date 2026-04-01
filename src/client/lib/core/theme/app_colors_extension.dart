@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart' show AppColors;
+
 /// Adaptive color palette as a [ThemeExtension].
 ///
 /// Provides light/dark variants for every color that must change with the
@@ -130,31 +132,31 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? accentBlue,
     Color? successBg,
     Color? dangerBg,
-  }) {
-    return AppColorsExtension(
-      mainBg: mainBg ?? this.mainBg,
-      surfaceBg: surfaceBg ?? this.surfaceBg,
-      surfaceLight: surfaceLight ?? this.surfaceLight,
-      cardBg: cardBg ?? this.cardBg,
-      codeBg: codeBg ?? this.codeBg,
-      actionBg: actionBg ?? this.actionBg,
-      border: border ?? this.border,
-      borderLight: borderLight ?? this.borderLight,
-      cardBorder: cardBorder ?? this.cardBorder,
-      textMain: textMain ?? this.textMain,
-      textSecondary: textSecondary ?? this.textSecondary,
-      textMuted: textMuted ?? this.textMuted,
-      headingText: headingText ?? this.headingText,
-      codeText: codeText ?? this.codeText,
-      accentBlue: accentBlue ?? this.accentBlue,
-      successBg: successBg ?? this.successBg,
-      dangerBg: dangerBg ?? this.dangerBg,
-    );
-  }
+  }) => AppColorsExtension(
+    mainBg: mainBg ?? this.mainBg,
+    surfaceBg: surfaceBg ?? this.surfaceBg,
+    surfaceLight: surfaceLight ?? this.surfaceLight,
+    cardBg: cardBg ?? this.cardBg,
+    codeBg: codeBg ?? this.codeBg,
+    actionBg: actionBg ?? this.actionBg,
+    border: border ?? this.border,
+    borderLight: borderLight ?? this.borderLight,
+    cardBorder: cardBorder ?? this.cardBorder,
+    textMain: textMain ?? this.textMain,
+    textSecondary: textSecondary ?? this.textSecondary,
+    textMuted: textMuted ?? this.textMuted,
+    headingText: headingText ?? this.headingText,
+    codeText: codeText ?? this.codeText,
+    accentBlue: accentBlue ?? this.accentBlue,
+    successBg: successBg ?? this.successBg,
+    dangerBg: dangerBg ?? this.dangerBg,
+  );
 
   @override
   AppColorsExtension lerp(AppColorsExtension? other, double t) {
-    if (other is! AppColorsExtension) return this;
+    if (other is! AppColorsExtension) {
+      return this;
+    }
     return AppColorsExtension(
       mainBg: Color.lerp(mainBg, other.mainBg, t)!,
       surfaceBg: Color.lerp(surfaceBg, other.surfaceBg, t)!,
@@ -180,5 +182,6 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
 /// Convenience accessor so widgets can write `context.appColors.xxx`.
 extension AppColorsContext on BuildContext {
   AppColorsExtension get appColors =>
-      Theme.of(this).extension<AppColorsExtension>()!;
+      Theme.of(this).extension<AppColorsExtension>() ??
+      AppColorsExtension.dark;
 }

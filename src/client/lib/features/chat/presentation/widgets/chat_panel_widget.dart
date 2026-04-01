@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../settings/presentation/providers/settings_providers.dart';
 import '../../domain/entities/chat_message.dart';
 import '../notifiers/chat_notifier.dart';
@@ -290,9 +291,9 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                 constraints: const BoxConstraints(maxWidth: 600),
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceLight,
+                  color: context.appColors.surfaceLight,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.border),
+                  border: Border.all(color: context.appColors.border),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,7 +350,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                         label: const Text('Copiar ejemplo de prompt'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.primary,
-                          side: const BorderSide(color: AppColors.border),
+                          side: BorderSide(color: context.appColors.border),
                         ),
                       ),
                     ),
@@ -362,7 +363,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
                       'contexto des, mejor será la arquitectura.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontStyle: FontStyle.italic,
-                        color: AppColors.textSecondary,
+                        color: context.appColors.textSecondary,
                       ),
                     ),
                   ],
@@ -416,9 +417,9 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
           children: [
             SelectableText(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: AppColors.textMain,
+                color: context.appColors.textMain,
               ),
             ),
             const SizedBox(height: 4),
@@ -426,7 +427,7 @@ class _ChatPanelWidgetState extends ConsumerState<ChatPanelWidget> {
               example,
               style: TextStyle(
                 fontSize: 12,
-                color: AppColors.textSecondary.withValues(alpha: 0.7),
+                color: context.appColors.textSecondary.withValues(alpha: 0.7),
               ),
             ),
           ],

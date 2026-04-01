@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../project_shell/data/mock_data.dart';
 import '../../domain/entities/file_node.dart';
 import '../../infrastructure/services/file_tree_service.dart';
@@ -128,32 +129,34 @@ class _FileTreeWidgetState extends ConsumerState<FileTreeWidget> {
     }
 
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.surfaceLight,
-        border: Border(right: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: context.appColors.surfaceLight,
+        border: Border(right: BorderSide(color: context.appColors.border)),
       ),
       child: Column(
         children: [
           // Header: EXPLORER
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: AppColors.border)),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: context.appColors.border),
+              ),
             ),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.folder_outlined,
-                  color: AppColors.textSecondary,
+                  color: context.appColors.textSecondary,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
-                const Text(
+                Text(
                   'EXPLORER',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
+                    color: context.appColors.textSecondary,
                   ),
                 ),
                 const Spacer(),
@@ -166,7 +169,7 @@ class _FileTreeWidgetState extends ConsumerState<FileTreeWidget> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.refresh),
-                  color: AppColors.textSecondary,
+                  color: context.appColors.textSecondary,
                   iconSize: 16,
                   tooltip: 'Recargar',
                   onPressed: _isLoading ? null : _loadData,
